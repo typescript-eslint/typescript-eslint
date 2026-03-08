@@ -365,8 +365,10 @@ export default createRule<Options, MessageIds>({
         if (
           declarations.some(
             declaration =>
-              !ts.isInterfaceDeclaration(declaration.parent) ||
-              declaration.parent.name.text !== 'Object',
+              !(
+                ts.isInterfaceDeclaration(declaration.parent) &&
+                declaration.parent.name.text === 'Object'
+              ),
           )
         ) {
           return false;

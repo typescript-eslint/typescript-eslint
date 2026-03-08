@@ -2455,6 +2455,8 @@ a.toString();
         },
       ],
     },
+    // Covers the `!declarations?.length` branch — mapped types have
+    // no declarations for their synthesized properties.
     {
       code: `
         type Mapped = { [K in 'toString']: () => string };
