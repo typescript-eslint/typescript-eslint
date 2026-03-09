@@ -108,6 +108,26 @@ export default [
 </TabItem>
 </Tabs>
 
+:::tip
+If your config is typechecked and you see TS2742 on the default export (for example with `"composite": true` and pnpm), assign the config to a typed constant and export it:
+
+```js title="eslint.config.mjs"
+// @ts-check
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+/** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
+const config = tseslint.config(
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  {
+    /* ... */
+  },
+);
+export default config;
+```
+:::
+
 :::note
 We _**strongly**_ recommend using this utility to improve the config authoring experience — however it is entirely optional.
 By choosing not to use it you lose editor autocomplete and type checking for config files.
