@@ -58,12 +58,12 @@
     "debug": "^4.4.3"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "*",
-    "glob": "*",
-    "rimraf": "*",
-    "typescript": "*",
-    "vitest": "^4.0.18"
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "glob": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "funding": {
     "type": "opencollective",
