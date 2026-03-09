@@ -190,21 +190,25 @@ jobs:
         node-version: [18, 20]
         package:
           [
-            'ast-spec',
-            'eslint-plugin',
-            'eslint-plugin-internal',
-            'parser',
-            'project-service',
-            'rule-schema-to-typescript-types',
-            'rule-tester',
-            'scope-manager',
-            'tsconfig-utils',
-            'type-utils',
-            'typescript-eslint',
-            'typescript-estree',
-            'utils',
-            'visitor-keys',
+            { name: 'ast-spec', params: '' },
+            { name: 'eslint-plugin', params: '--shard=1/4' },
+            { name: 'eslint-plugin', params: '--shard=2/4' },
+            { name: 'eslint-plugin', params: '--shard=3/4' },
+            { name: 'eslint-plugin', params: '--shard=4/4' },
+            { name: 'eslint-plugin-internal', params: '' },
+            { name: 'parser', params: '' },
+            { name: 'project-service', params: '' },
+            { name: 'rule-schema-to-typescript-types', params: '' },
+            { name: 'rule-tester', params: '' },
+            { name: 'scope-manager', params: '' },
+            { name: 'tsconfig-utils', params: '' },
+            { name: 'type-utils', params: '' },
+            { name: 'typescript-eslint', params: '' },
+            { name: 'typescript-estree', params: '' },
+            { name: 'utils', params: '' },
+            { name: 'visitor-keys', params: '' },
           ]
+
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
@@ -222,14 +226,14 @@ jobs:
 
       # collect coverage on the primary node version
       # we don't collect coverage on other node versions so they run faster
-      - name: Run unit tests with coverage for ${{ matrix.package }}
+      - name: Run unit tests with coverage for ${{ matrix.package.name }}
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx run ${{ matrix.package }}:test -- --coverage
+        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
         env:
           CI: true
-      - name: Run unit tests for ${{ matrix.package }}
+      - name: Run unit tests for ${{ matrix.package.name }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package }}
+        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
         env:
           CI: true
 
@@ -237,8 +241,8 @@ jobs:
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.package }}-coverage
-          path: packages/${{ matrix.package }}/coverage/lcov.info
+          name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
+          path: packages/${{ matrix.package.name }}/coverage/lcov.info
           # Sadly 1 day is the minimum
           retention-days: 1
 

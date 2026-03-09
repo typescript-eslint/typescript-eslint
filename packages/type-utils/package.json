@@ -55,14 +55,14 @@
     "typescript": ">=4.8.4 <6.0.0"
   },
   "devDependencies": {
-    "@types/babel__code-frame": "^7.0.6",
+    "@types/babel__code-frame": "catalog:",
     "@typescript-eslint/parser": "workspace:*",
-    "@vitest/coverage-v8": "^4.0.18",
-    "ajv": "^6.12.6",
-    "eslint": "*",
-    "rimraf": "*",
-    "typescript": "*",
-    "vitest": "^4.0.18"
+    "@vitest/coverage-v8": "catalog:",
+    "ajv": "catalog:",
+    "eslint": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "funding": {
     "type": "opencollective",

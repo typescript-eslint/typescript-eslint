@@ -300,6 +300,55 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       `,
       options: [{ allowThrowingAny: true, allowThrowingUnknown: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12048
+    {
+      code: `
+        class CustomRejection {}
+        Promise.reject(new CustomRejection());
+      `,
+      options: [{ allow: [{ from: 'file', name: 'CustomRejection' }] }],
+    },
+    {
+      code: `
+        class CustomRejection {}
+        Promise.reject(new CustomRejection());
+      `,
+      options: [{ allow: ['CustomRejection'] }],
+    },
+    {
+      code: `
+        Promise.reject(new Date());
+      `,
+      options: [{ allow: [{ from: 'lib', name: 'Date' }] }],
+    },
+    {
+      code: `
+        new Promise((resolve, reject) => reject(new Date()));
+      `,
+      options: [{ allow: [{ from: 'lib', name: 'Date' }] }],
+    },
+    {
+      code: `
+        import { createError } from 'errors';
+        Promise.reject(createError());
+      `,
+      options: [
+        {
+          allow: [{ from: 'package', name: 'ErrorLike', package: 'errors' }],
+        },
+      ],
+    },
+    {
+      code: `
+        import { createError } from 'errors';
+        new Promise((resolve, reject) => reject(createError()));
+      `,
+      options: [
+        {
+          allow: [{ from: 'package', name: 'ErrorLike', package: 'errors' }],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1453,6 +1502,34 @@ function fun<T extends number>(t: T): void {
           messageId: 'rejectAnError',
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12048
+    {
+      code: `
+class CustomRejection {}
+Promise.reject(new CustomRejection());
+      `,
+      errors: [{ messageId: 'rejectAnError' }],
+    },
+    {
+      code: `
+Promise.reject(new Date());
+      `,
+      errors: [{ messageId: 'rejectAnError' }],
+    },
+    {
+      code: `
+import { createError } from 'errors';
+Promise.reject(createError());
+      `,
+      errors: [{ messageId: 'rejectAnError' }],
+    },
+    {
+      code: `
+import { createError } from 'errors';
+new Promise((resolve, reject) => reject(createError()));
+      `,
+      errors: [{ messageId: 'rejectAnError' }],
     },
   ],
 });
