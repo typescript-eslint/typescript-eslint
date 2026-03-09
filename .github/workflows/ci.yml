@@ -8,11 +8,11 @@ on:
   # NOTE: Never use pull_request_target here because that would populate secrets for forks
   pull_request:
     branches:
-      - '**'
+      - "**"
   merge_group:
 
 concurrency:
-  group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
+  group: "${{ github.workflow }} - ${{ github.head_ref || github.ref }}"
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
@@ -43,7 +43,7 @@ jobs:
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: "ubuntu-latest"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -58,7 +58,7 @@ jobs:
     needs: [install]
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: "ubuntu-latest"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -75,7 +75,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: "ubuntu-latest"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -95,9 +95,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: ['check-spelling', 'check-format', 'lint-markdown']
+        lint-task: ["check-spelling", "check-format", "lint-markdown"]
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: "ubuntu-latest"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -117,9 +117,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: ['deduplicate', 'lint', 'typecheck', 'knip']
+        lint-task: ["deduplicate", "lint", "typecheck", "knip"]
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: "ubuntu-latest"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -141,7 +141,7 @@ jobs:
     needs: [install]
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: "ubuntu-latest"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -159,7 +159,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: "ubuntu-latest"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -190,10 +190,10 @@ jobs:
         node-version: [18, 24]
         package:
           [
-            { name: 'eslint-plugin', params: '--shard=1/4' },
-            { name: 'eslint-plugin', params: '--shard=2/4' },
-            { name: 'eslint-plugin', params: '--shard=3/4' },
-            { name: 'eslint-plugin', params: '--shard=4/4' },
+            { name: "eslint-plugin", params: "--shard=1/4" },
+            { name: "eslint-plugin", params: "--shard=2/4" },
+            { name: "eslint-plugin", params: "--shard=3/4" },
+            { name: "eslint-plugin", params: "--shard=4/4" },
           ]
     steps:
       - name: Checkout
@@ -237,26 +237,26 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version 
+        # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version
         node-version: [24]
         package:
           [
-            { name: 'ast-spec', params: '' },
-            { name: 'eslint-plugin-internal', params: '' },
-            { name: 'parser', params: '' },
-            { name: 'project-service', params: '' },
-            { name: 'rule-schema-to-typescript-types', params: '' },
-            { name: 'rule-tester', params: '' },
-            { name: 'scope-manager', params: '' },
-            { name: 'tsconfig-utils', params: '' },
-            { name: 'type-utils', params: '' },
-            { name: 'typescript-eslint', params: '' },
-            { name: 'typescript-estree', params: '' },
-            { name: 'utils', params: '' },
-            { name: 'visitor-keys', params: '' },
+            { name: "ast-spec", params: "" },
+            { name: "eslint-plugin-internal", params: "" },
+            { name: "parser", params: "" },
+            { name: "project-service", params: "" },
+            { name: "rule-schema-to-typescript-types", params: "" },
+            { name: "rule-tester", params: "" },
+            { name: "scope-manager", params: "" },
+            { name: "tsconfig-utils", params: "" },
+            { name: "type-utils", params: "" },
+            { name: "typescript-eslint", params: "" },
+            { name: "typescript-estree", params: "" },
+            { name: "utils", params: "" },
+            { name: "visitor-keys", params: "" },
           ]
     env:
-      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
+      NX_CI_EXECUTION_ENV: "${{ matrix.os }} - Node ${{ matrix.node-version }}"
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
@@ -299,9 +299,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['eslint-plugin-internal', 'typescript-estree']
+        package: ["eslint-plugin-internal", "typescript-estree"]
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: "ubuntu-latest"
       COLLECT_COVERAGE: false,
     steps:
       - name: Checkout
