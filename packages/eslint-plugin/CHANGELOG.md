@@ -1,3 +1,35 @@
+## 8.57.0 (2026-03-09)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-condition] allow literal loop conditions in for/do loops ([#12080](https://github.com/typescript-eslint/typescript-eslint/pull/12080))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-base-to-string] fix false positive for toString with overloads ([#12089](https://github.com/typescript-eslint/typescript-eslint/pull/12089))
+- **eslint-plugin:** [prefer-promise-reject-errors] add allow `TypeOrValueSpecifier` to prefer-promise-reject-errors ([#12094](https://github.com/typescript-eslint/typescript-eslint/pull/12094))
+- **typescript-estree:** if the template literal is tagged and the text has an invalid escape, `cooked` will be `null` ([#11355](https://github.com/typescript-eslint/typescript-eslint/pull/11355))
+- **eslint-plugin:** guard against negative paramIndex in no-useless-default-assignment ([#12077](https://github.com/typescript-eslint/typescript-eslint/pull/12077))
+- **eslint-plugin:** handle statically analyzable computed keys in prefer-readonly ([#12079](https://github.com/typescript-eslint/typescript-eslint/pull/12079))
+- **eslint-plugin:** [strict-void-return] false positives with overloads ([#12055](https://github.com/typescript-eslint/typescript-eslint/pull/12055))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- Brian Schlenker @bschlenk
+- Evyatar Daud @StyleShit
+- James Henry @JamesHenry
+- Josh Goldberg
+- Kirk Waiblinger @kirkwaiblinger
+- Moses Odutusin @thebolarin
+- Newton Yuan @NewtonYuan
+- SungHyun627 @SungHyun627
+- Younsang Na @nayounsang
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.56.1 (2026-02-23)
 
 This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.
