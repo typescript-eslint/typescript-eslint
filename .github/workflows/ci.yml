@@ -207,8 +207,8 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      # collect coverage on the primary node version
-      # we don't collect coverage on other node versions so they run faster
+      # collect coverage on just the primary node version and on linux
+      # we don't collect coverage on the old node versions or other OSs so that they run faster
       - name: Run unit tests with coverage for ${{ matrix.package.name }}
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
         run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
@@ -270,8 +270,8 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      # collect coverage on the primary node version
-      # we don't collect coverage on other node versions so they run faster
+      # collect coverage on just linux
+      # we don't collect coverage on other OSs so that they run faster
       - name: Run unit tests with coverage for ${{ matrix.package.name }}
         if: matrix.os == 'ubuntu-latest'
         run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
