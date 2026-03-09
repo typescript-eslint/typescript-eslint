@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
-  PRIMARY_NODE_VERSION: 20
+  PRIMARY_NODE_VERSION: 24
   # Value will be controlled via GitHub environment (called "main") secret, will be read-write for main branch, read-only for other branches
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
@@ -175,8 +175,8 @@ jobs:
         env:
           CI: true
 
-  unit_tests:
-    name: Run Unit Tests
+  plugin_unit_tests:
+    name: Run eslint-plugin Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ${{ matrix.os }}
@@ -187,14 +187,28 @@ jobs:
             node-version: 18
         os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [18, 20]
+        node-version: [18, 24]
         package:
           [
-            { name: 'ast-spec', params: '' },
             { name: 'eslint-plugin', params: '--shard=1/4' },
             { name: 'eslint-plugin', params: '--shard=2/4' },
             { name: 'eslint-plugin', params: '--shard=3/4' },
             { name: 'eslint-plugin', params: '--shard=4/4' },
+          ]
+
+  unit_tests:
+    name: Run Unit Tests
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version 
+        node-version: [24]
+        package:
+          [
+            { name: 'ast-spec', params: '' },
             { name: 'eslint-plugin-internal', params: '' },
             { name: 'parser', params: '' },
             { name: 'project-service', params: '' },
@@ -277,7 +291,7 @@ jobs:
   upload_coverage:
     name: Upload Codecov Coverage
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [unit_tests]
+    needs: [unit_tests, plugin_unit_tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
