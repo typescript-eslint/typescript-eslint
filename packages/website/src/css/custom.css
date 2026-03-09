@@ -200,6 +200,11 @@ h6 {
   background-color: #00ff9510;
 }
 
+.code-block-added-line .token.string,
+.code-block-added-line .token.char {
+  color: #dd0000;
+}
+
 .markdown a {
   text-decoration: underline;
 }
