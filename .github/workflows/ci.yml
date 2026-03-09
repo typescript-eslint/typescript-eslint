@@ -195,37 +195,6 @@ jobs:
             { name: 'eslint-plugin', params: '--shard=3/4' },
             { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
-
-  unit_tests:
-    name: Run Unit Tests
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version 
-        node-version: [24]
-        package:
-          [
-            { name: 'ast-spec', params: '' },
-            { name: 'eslint-plugin-internal', params: '' },
-            { name: 'parser', params: '' },
-            { name: 'project-service', params: '' },
-            { name: 'rule-schema-to-typescript-types', params: '' },
-            { name: 'rule-tester', params: '' },
-            { name: 'scope-manager', params: '' },
-            { name: 'tsconfig-utils', params: '' },
-            { name: 'type-utils', params: '' },
-            { name: 'typescript-eslint', params: '' },
-            { name: 'typescript-estree', params: '' },
-            { name: 'utils', params: '' },
-            { name: 'visitor-keys', params: '' },
-          ]
-
-    env:
-      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
-      COLLECT_COVERAGE: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -253,6 +222,69 @@ jobs:
 
       - name: Store coverage for uploading
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
+          path: packages/${{ matrix.package.name }}/coverage/lcov.info
+          # Sadly 1 day is the minimum
+          retention-days: 1
+
+  unit_tests:
+    name: Run Unit Tests
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version 
+        node-version: [24]
+        package:
+          [
+            { name: 'ast-spec', params: '' },
+            { name: 'eslint-plugin-internal', params: '' },
+            { name: 'parser', params: '' },
+            { name: 'project-service', params: '' },
+            { name: 'rule-schema-to-typescript-types', params: '' },
+            { name: 'rule-tester', params: '' },
+            { name: 'scope-manager', params: '' },
+            { name: 'tsconfig-utils', params: '' },
+            { name: 'type-utils', params: '' },
+            { name: 'typescript-eslint', params: '' },
+            { name: 'typescript-estree', params: '' },
+            { name: 'utils', params: '' },
+            { name: 'visitor-keys', params: '' },
+          ]
+    env:
+      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
+      COLLECT_COVERAGE: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      # collect coverage on the primary node version
+      # we don't collect coverage on other node versions so they run faster
+      - name: Run unit tests with coverage for ${{ matrix.package.name }}
+        if: matrix.os == 'ubuntu-latest'
+        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
+        env:
+          CI: true
+      - name: Run unit tests for ${{ matrix.package.name }}
+        if: matrix.os != 'ubuntu-latest'
+        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
+        env:
+          CI: true
+
+      - name: Store coverage for uploading
+        if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
