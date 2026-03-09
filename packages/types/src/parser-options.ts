@@ -79,6 +79,7 @@ export interface ParserOptions {
   cacheLifetime?: {
     glob?: CacheDurationSeconds;
   };
+  parser?: string | Record<string, unknown>;
 
   // typescript-estree specific
   debugLevel?: DebugLevel;

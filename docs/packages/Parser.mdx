@@ -38,6 +38,7 @@ interface ParserOptions {
   cacheLifetime?: {
     glob?: number | 'Infinity';
   };
+  parser?: string | Record<string, unknown>;
   disallowAutomaticSingleRunInference?: boolean;
   ecmaFeatures?: {
     jsx?: boolean;
