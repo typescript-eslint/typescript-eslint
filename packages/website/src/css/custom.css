@@ -202,7 +202,7 @@ h6 {
 
 .code-block-added-line .token.string,
 .code-block-added-line .token.char {
-  color: #dd0000;
+  color: #d00;
 }
 
 .markdown a {
