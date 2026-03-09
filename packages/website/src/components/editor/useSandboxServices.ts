@@ -57,6 +57,7 @@ export const useSandboxServices = (
             domID: editorEmbedId,
             monacoSettings: {
               autoIndent: 'full',
+              fixedOverflowWidgets: true,
               fontSize: 13,
               formatOnPaste: true,
               formatOnType: true,
