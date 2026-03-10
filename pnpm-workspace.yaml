@@ -28,6 +28,8 @@ catalog:
 
 catalogMode: strict
 
+# The version range is very loose, allowing pnpm to install 5.8.2, which is the
+# version that's being used by `@microsoft/api-extractor`, so we override it.
 overrides:
   typescript: 6.0.1-rc
 

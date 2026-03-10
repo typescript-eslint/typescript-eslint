@@ -3,9 +3,7 @@
     "jsx": "preserve",
     "target": "es2015",
     "module": "commonjs",
-    "strict": true,
     "types": ["node", "react"],
-    "esModuleInterop": true,
     "lib": ["es2015", "es2017", "esnext"],
     "experimentalDecorators": true
   },

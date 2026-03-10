@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "allowSyntheticDefaultImports": true,
     "composite": true,
     "declaration": true,
     "declarationMap": false,
     "emitDeclarationOnly": true,
     "emitDecoratorMetadata": false,
-    "esModuleInterop": true,
     "experimentalDecorators": false,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": false,
@@ -26,7 +24,6 @@
     "skipDefaultLibCheck": false,
     "skipLibCheck": true,
     "sourceMap": false,
-    "strict": true,
     "target": "ES2022",
     "types": ["vitest/globals", "vitest/importMeta", "node"],
     "verbatimModuleSyntax": false

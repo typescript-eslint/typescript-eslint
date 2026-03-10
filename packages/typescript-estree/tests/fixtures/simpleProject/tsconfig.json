@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    "strict": true,
     "module": "commonjs",
     "target": "ES2022"
   }

@@ -5,7 +5,6 @@
     "module": "commonjs",
     "strict": false,
     "types": ["node", "react"],
-    "esModuleInterop": true,
     "lib": ["es2015", "es2017", "esnext"],
     "experimentalDecorators": true
   },

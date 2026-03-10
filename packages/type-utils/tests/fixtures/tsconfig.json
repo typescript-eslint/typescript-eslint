@@ -3,9 +3,7 @@
     "jsx": "preserve",
     "target": "es2015",
     "module": "commonjs",
-    "strict": true,
     "types": ["node"],
-    "esModuleInterop": true,
     "experimentalDecorators": true
   },
   "include": ["file.ts"]
