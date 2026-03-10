@@ -440,7 +440,7 @@ ruleTester.run('no-restricted-types', rule, {
       options: [
         { types: { Omit: { fixWith: 'Ok', message: 'Use Ok instead.' } } },
       ],
-      output: 'class Derived implements Ok<Foo, "a"> {}',
+      output: "class Derived implements Ok<Foo, 'a'> {}",
     },
     {
       code: 'interface Derived extends Banned {}',
@@ -476,7 +476,7 @@ ruleTester.run('no-restricted-types', rule, {
       options: [
         { types: { Omit: { fixWith: 'Ok', message: 'Use Ok instead.' } } },
       ],
-      output: 'interface Derived extends Ok<Foo, "a"> {}',
+      output: "interface Derived extends Ok<Foo, 'a'> {}",
     },
     {
       code: 'type Intersection = Banned & {};',
