@@ -22,8 +22,14 @@ catalog:
   prettier: 3.8.0
   rimraf: ^5.0.10
   tsx: ^4.7.2
-  typescript: '>=4.8.4 <6.0.0'
+  typescript: '>=4.8.4 <7.0.0'
   vitest: ^4.0.18
   yaml: ^2.8.2
 
 catalogMode: strict
+
+overrides:
+  typescript: 6.0.1-rc
+
+patchedDependencies:
+  typescript: patches/typescript-6.patch

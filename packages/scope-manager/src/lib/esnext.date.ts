@@ -5,10 +5,10 @@
 
 import type { LibDefinition } from '../variable';
 
-import { TYPE_VALUE } from './base-config';
+import { TYPE } from './base-config';
 import { esnext_temporal } from './esnext.temporal';
 
-export const esnext_intl: LibDefinition = {
+export const esnext_date: LibDefinition = {
   libs: [esnext_temporal],
-  variables: [['Intl', TYPE_VALUE]],
+  variables: [['Date', TYPE]],
 };

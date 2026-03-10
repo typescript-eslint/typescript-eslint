@@ -5,10 +5,12 @@
 
 import type { LibDefinition } from '../variable';
 
-import { TYPE_VALUE } from './base-config';
-import { esnext_temporal } from './esnext.temporal';
+import { TYPE } from './base-config';
 
-export const esnext_intl: LibDefinition = {
-  libs: [esnext_temporal],
-  variables: [['Intl', TYPE_VALUE]],
+export const esnext_typedarrays: LibDefinition = {
+  libs: [],
+  variables: [
+    ['Uint8Array', TYPE],
+    ['Uint8ArrayConstructor', TYPE],
+  ],
 };

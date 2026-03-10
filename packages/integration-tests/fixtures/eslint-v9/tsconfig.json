@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "types": ["node"],
+    "module": "commonjs"
   }
 }

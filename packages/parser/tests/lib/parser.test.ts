@@ -122,13 +122,16 @@ describe('parser', () => {
       globalReturn: undefined,
       jsxFragmentName: undefined,
       jsxPragma: undefined,
-      lib: ['lib'],
+      lib: ['es6'],
       sourceType: 'script',
     });
   });
 
   it.for([
     ['esnext.full', ScriptTarget.ESNext],
+    ['es2025.full', ScriptTarget.ES2025],
+    ['es2024.full', ScriptTarget.ES2024],
+    ['es2023.full', ScriptTarget.ES2023],
     ['es2022.full', ScriptTarget.ES2022],
     ['es2021.full', ScriptTarget.ES2021],
     ['es2020.full', ScriptTarget.ES2020],
@@ -137,8 +140,9 @@ describe('parser', () => {
     ['es2017.full', ScriptTarget.ES2017],
     ['es2016.full', ScriptTarget.ES2016],
     ['es6', ScriptTarget.ES2015],
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- Deprecated in TS 6 but we support TS < 6
     ['lib', ScriptTarget.ES5],
-    ['lib', undefined],
+    ['es6', undefined],
   ] as const)(
     'calls analyze() with `lib: [%s]` when the compiler options target is %s',
     ([lib, target], { expect }) => {

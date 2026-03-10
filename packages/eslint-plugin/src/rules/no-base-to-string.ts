@@ -323,6 +323,7 @@ export default createRule<Options, MessageIds>({
         node.name.expression.name.text === 'toPrimitive' &&
         checker
           .getSymbolAtLocation(node.name.expression.expression)
+          // eslint-disable-next-line @typescript-eslint/no-deprecated -- Deprecated in TS 6 but we support TS < 6
           ?.valueDeclaration?.getSourceFile().hasNoDefaultLib
       );
     }

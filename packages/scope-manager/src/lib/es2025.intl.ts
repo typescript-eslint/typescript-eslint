@@ -6,9 +6,9 @@
 import type { LibDefinition } from '../variable';
 
 import { TYPE_VALUE } from './base-config';
-import { esnext_temporal } from './esnext.temporal';
+import { es2018_intl } from './es2018.intl';
 
-export const esnext_intl: LibDefinition = {
-  libs: [esnext_temporal],
+export const es2025_intl: LibDefinition = {
+  libs: [es2018_intl],
   variables: [['Intl', TYPE_VALUE]],
 };
