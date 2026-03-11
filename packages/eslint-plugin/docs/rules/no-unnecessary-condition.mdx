@@ -275,6 +275,37 @@ if (condition) {
 }
 ```
 
+### Object types
+
+typescript-eslint assumes that all object types represent JavaScript objects, which are always truthy. This is not always the case, because object types only represent the shape of values.
+
+```ts showPlaygroundButton
+function foo(x: { toString(): string }) {
+  if (x) {
+    // Unnecessary conditional, value is always truthy.
+  }
+}
+
+foo(''); // Allowed by TypeScript; value is falsy
+```
+
+In this example, the type of `x` is an object type. However, JavaScript primitives like `string` and `number` also have the `toString` method and can be assigned to `x`, and these primitives can be falsy (e.g., `''` and `0`).
+
+Using the `object` type does not solve this issue. Although primitives aren't assignable to the `object` type, they are assignable to object types, which are in turn assignable to the `object` type. This is an [intentionally unsound TypeScript behavior](https://github.com/microsoft/TypeScript/issues/60582) for compatibility and convenience.
+
+```ts showPlaygroundButton
+function foo(x: object) {
+  if (x) {
+    // Unnecessary conditional, value is always truthy.
+  }
+}
+
+const obj: { toString(): string } = ''; // Allowed by TypeScript; value is falsy
+foo(obj);
+```
+
+This only happens if your object type is not sufficiently constrained; most object types contain properties that cannot be satisfied by primitives. When an error of this kind occurs, we recommend using a disable comment.
+
 ## When Not To Use It
 
 If your project is not accurately typed, such as if it's in the process of being converted to TypeScript or is susceptible to [trade-offs in control flow analysis](https://github.com/Microsoft/TypeScript/issues/9998), it may be difficult to enable this rule for particularly non-type-safe areas of code.
