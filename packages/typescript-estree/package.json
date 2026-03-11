@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.56.0",
+  "version": "8.57.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -63,12 +63,13 @@
     "ts-api-utils": "^2.4.0"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "*",
-    "glob": "*",
-    "rimraf": "*",
-    "typescript": "*",
-    "vitest": "^3.2.4"
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "glob": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "yaml": "catalog:"
   },
   "peerDependencies": {
     "typescript": ">=4.8.4 <6.0.0"
