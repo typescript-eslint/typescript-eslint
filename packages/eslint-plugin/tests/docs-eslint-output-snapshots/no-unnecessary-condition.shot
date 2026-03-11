@@ -188,3 +188,26 @@ f();
 if (condition) {
   // ...
 }
+
+
+
+function foo(x: { toString(): string }) {
+  if (x) {
+      ~ Unnecessary conditional, value is always truthy.
+    // Unnecessary conditional, value is always truthy.
+  }
+}
+
+foo(''); // Allowed by TypeScript; value is falsy
+
+
+
+function foo(x: object) {
+  if (x) {
+      ~ Unnecessary conditional, value is always truthy.
+    // Unnecessary conditional, value is always truthy.
+  }
+}
+
+const obj: { toString(): string } = ''; // Allowed by TypeScript; value is falsy
+foo(obj);

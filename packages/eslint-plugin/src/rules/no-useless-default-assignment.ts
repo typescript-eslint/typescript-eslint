@@ -297,6 +297,9 @@ export default createRule<Options, MessageId>({
         if (signature.thisParameter) {
           paramIndex--;
         }
+        if (paramIndex < 0 || paramIndex >= params.length) {
+          return null;
+        }
         return checker.getTypeOfSymbol(params[paramIndex]);
       }
 
