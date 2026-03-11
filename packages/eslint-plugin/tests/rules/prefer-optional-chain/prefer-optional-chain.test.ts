@@ -3740,3 +3740,54 @@ describe('base cases', () => {
     });
   });
 });
+
+// https://github.com/typescript-eslint/typescript-eslint/issues/11917
+describe('issue 11917 - should not fix when comparison value contains optional chain', () => {
+  ruleTester.run('prefer-optional-chain', rule, {
+    invalid: [
+      // Should still work when comparison value has NO optional chain
+      {
+        code: `
+          interface Foo {
+            bar: number;
+          }
+          declare const foo: Foo | null;
+          declare const foos: Foo[];
+          foo && foo.bar === foos[0].bar;
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: `
+          interface Foo {
+            bar: number;
+          }
+          declare const foo: Foo | null;
+          declare const foos: Foo[];
+          foo?.bar === foos[0].bar;
+        `,
+      },
+    ],
+    valid: [
+      // No error when comparison value has optional chain
+      {
+        code: `
+          interface Foo {
+            bar: number;
+          }
+          declare const foo: Foo | null;
+          declare const foos: Foo[];
+          foo && foo.bar === foos[0]?.bar;
+        `,
+      },
+      {
+        code: `
+          interface Foo {
+            bar: number;
+          }
+          declare const foo: Foo | null;
+          declare const obj: { prop?: Foo };
+          foo && foo.bar === obj.prop?.bar;
+        `,
+      },
+    ],
+  });
+});

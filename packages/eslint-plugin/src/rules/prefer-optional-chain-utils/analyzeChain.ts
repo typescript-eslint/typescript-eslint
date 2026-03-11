@@ -56,6 +56,28 @@ function includesType(
   return false;
 }
 
+function containsOptionalChain(node: TSESTree.Node): boolean {
+  switch (node.type) {
+    case AST_NODE_TYPES.ChainExpression:
+      return true;
+    case AST_NODE_TYPES.MemberExpression:
+      return node.optional || containsOptionalChain(node.object);
+    case AST_NODE_TYPES.CallExpression:
+      return node.optional || containsOptionalChain(node.callee);
+    case AST_NODE_TYPES.BinaryExpression:
+    case AST_NODE_TYPES.LogicalExpression:
+      return (
+        containsOptionalChain(node.left) || containsOptionalChain(node.right)
+      );
+    case AST_NODE_TYPES.UnaryExpression:
+      return containsOptionalChain(node.argument);
+    case AST_NODE_TYPES.TSNonNullExpression:
+      return containsOptionalChain(node.expression);
+    default:
+      return false;
+  }
+}
+
 function isValidAndLastChainOperand(
   ComparisonValueType: TSESTree.Node,
   comparisonType: ComparisonType,
@@ -778,8 +800,17 @@ export function analyzeChain(
 
     const { comparedName, comparisonValue, isSubset, isYoda } =
       resolveOperandSubset(lastOperand, lastChainOperand);
+
+    // If the comparison value contains an optional chain, converting the left side
+    // to optional chain would change semantics. For example:
+    // foo && foo.bar === foos[0]?.bar
+    // If converted to: foo?.bar === foos[0]?.bar
+    // When foo is null and foos[0] is undefined:
+    // Before: false (short-circuits on foo)
+    // After: undefined === undefined → true (semantic change)
     if (
       isSubset &&
+      !containsOptionalChain(comparisonValue) &&
       isValidLastChainOperand(
         comparisonValue,
         lastChainOperand.comparisonType,
