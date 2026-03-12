@@ -11,6 +11,7 @@ import {
   getParserServices,
   isArrayMethodCallWithPredicate,
   isFunction,
+  isPossiblyFalsy,
   isPromiseLike,
   isRestParameterDeclaration,
   nullThrows,
@@ -20,11 +21,17 @@ import { parseFinallyCall } from '../util/promiseUtils';
 
 export type Options = [
   {
-    checksConditionals?: boolean;
+    checksConditionals?: boolean | ChecksConditionalsOptions;
     checksSpreads?: boolean;
     checksVoidReturn?: boolean | ChecksVoidReturnOptions;
   },
 ];
+
+export type FlagUnionsOptions = 'all' | 'narrow' | 'none';
+
+export interface ChecksConditionalsOptions {
+  flagUnions?: FlagUnionsOptions;
+}
 
 export interface ChecksVoidReturnOptions {
   arguments?: boolean;
@@ -45,6 +52,26 @@ export type MessageId =
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
   | 'voidReturnVariable';
+
+function parseChecksConditionals(
+  checksConditionals: boolean | ChecksConditionalsOptions | undefined,
+): ChecksConditionalsOptions | false {
+  switch (checksConditionals) {
+    case false:
+      return false;
+
+    case true:
+    case undefined:
+      return {
+        flagUnions: 'none',
+      };
+
+    default:
+      return {
+        flagUnions: checksConditionals.flagUnions ?? 'none',
+      };
+  }
+}
 
 function parseChecksVoidReturn(
   checksVoidReturn: boolean | ChecksVoidReturnOptions | undefined,
@@ -108,9 +135,28 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
         properties: {
           checksConditionals: {
-            type: 'boolean',
             description:
               'Whether to warn when a Promise is provided to conditional statements.',
+            oneOf: [
+              {
+                type: 'boolean',
+                description:
+                  'Whether to disable checking all conditional statements.',
+              },
+              {
+                type: 'object',
+                additionalProperties: false,
+                description: 'Which forms of conditionals may be checked.',
+                properties: {
+                  flagUnions: {
+                    type: 'string',
+                    description:
+                      'Whether to warn when a promise non-promise union is provided.',
+                    enum: ['all', 'narrow', 'none'],
+                  },
+                },
+              },
+            ],
           },
           checksSpreads: {
             type: 'boolean',
@@ -183,18 +229,31 @@ export default createRule<Options, MessageId>({
 
     const checkedNodes = new Set<TSESTree.Node>();
 
-    const conditionalChecks: TSESLint.RuleListener = {
-      'CallExpression > MemberExpression': checkArrayPredicates,
-      ConditionalExpression: checkTestConditional,
-      DoWhileStatement: checkTestConditional,
-      ForStatement: checkTestConditional,
-      IfStatement: checkTestConditional,
-      LogicalExpression: checkConditional,
-      'UnaryExpression[operator="!"]'(node: TSESTree.UnaryExpression) {
-        checkConditional(node.argument, true);
-      },
-      WhileStatement: checkTestConditional,
-    };
+    checksConditionals = parseChecksConditionals(checksConditionals);
+    const conditionalChecks: TSESLint.RuleListener = checksConditionals
+      ? {
+          'CallExpression > MemberExpression': checkArrayPredicates,
+          ConditionalExpression: node =>
+            checkTestConditional(node, checksConditionals.flagUnions),
+          DoWhileStatement: node =>
+            checkTestConditional(node, checksConditionals.flagUnions),
+          ForStatement: node =>
+            checkTestConditional(node, checksConditionals.flagUnions),
+          IfStatement: node =>
+            checkTestConditional(node, checksConditionals.flagUnions),
+          LogicalExpression: node =>
+            checkConditional(node, false, checksConditionals.flagUnions),
+          'UnaryExpression[operator="!"]'(node: TSESTree.UnaryExpression) {
+            checkConditional(
+              node.argument,
+              true,
+              checksConditionals.flagUnions,
+            );
+          },
+          WhileStatement: node =>
+            checkTestConditional(node, checksConditionals.flagUnions),
+        }
+      : {};
 
     checksVoidReturn = parseChecksVoidReturn(checksVoidReturn);
 
@@ -299,9 +358,10 @@ export default createRule<Options, MessageId>({
         | TSESTree.ForStatement
         | TSESTree.IfStatement
         | TSESTree.WhileStatement,
+      scope: FlagUnionsOptions = 'none',
     ): void {
       if (node.test) {
-        checkConditional(node.test, true);
+        checkConditional(node.test, true, scope);
       }
     }
 
@@ -314,6 +374,7 @@ export default createRule<Options, MessageId>({
     function checkConditional(
       node: TSESTree.Expression,
       isTestExpr = false,
+      scope: FlagUnionsOptions = 'none',
     ): void {
       // prevent checking the same node multiple times
       if (checkedNodes.has(node)) {
@@ -332,8 +393,15 @@ export default createRule<Options, MessageId>({
         }
         return;
       }
+
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      if (isAlwaysThenable(checker, tsNode)) {
+      if (
+        (scope === 'all' && isSometimesThenable(checker, tsNode)) ||
+        (scope === 'narrow' &&
+          isSometimesThenable(checker, tsNode) &&
+          !isPossiblyFalsy(checker.getTypeAtLocation(tsNode))) ||
+        (scope === 'none' && isAlwaysThenable(checker, tsNode))
+      ) {
         context.report({
           node,
           messageId: 'conditional',
