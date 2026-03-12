@@ -1598,6 +1598,11 @@ describe('chain ending with comparison', () => {
           foo.three === a?.b();
         `,
       },
+      {
+        code: noFormat`foo && (foo.bar == 0)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar == 0',
+      },
     ],
     valid: [
       'foo && foo.bar == undeclaredVar;',
@@ -3186,6 +3191,72 @@ const baz = foo?.bar;
           },
         ],
         options: [{ checkString: false }],
+      },
+      {
+        code: noFormat`foo && (foo.bar)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar',
+      },
+      {
+        code: noFormat`foo && (foo.bar && baz)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && baz',
+      },
+      {
+        code: noFormat`foo && (((foo.bar && baz)))`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && baz',
+      },
+      {
+        code: noFormat`foo && (foo.bar && (foo.bar as any).baz)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && (foo.bar as any).baz',
+      },
+      {
+        code: noFormat`foo && /* inline comment ((( */ (foo.bar && (foo.bar as any).baz)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && (foo.bar as any).baz',
+      },
+      {
+        code: noFormat`foo && (foo.bar && (foo.bar as any).baz) /* inline comment ))) */`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && (foo.bar as any).baz /* inline comment ))) */',
+      },
+      {
+        code: noFormat`foo && (foo.bar/* inline comment ))) */ && (foo.bar as any).baz)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar/* inline comment ))) */ && (foo.bar as any).baz',
+      },
+      {
+        code: noFormat`foo && (foo.bar && bar) && (baz)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && bar && (baz)',
+      },
+      {
+        code: noFormat`foo && (foo.bar && bar) && (bar.baz)`,
+        errors: [
+          {
+            column: 1,
+            endColumn: 16,
+            messageId: 'preferOptionalChain',
+          },
+          {
+            column: 20,
+            endColumn: 37,
+            messageId: 'preferOptionalChain',
+          },
+        ],
+        output: ['foo?.bar && bar && (bar.baz)', 'foo?.bar && bar?.baz'],
+      },
+      {
+        code: noFormat`foo && (foo.bar && (baz))`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && (baz)',
+      },
+      {
+        code: noFormat`foo && (foo.bar && (a && b) && c)`,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        output: 'foo?.bar && (a && b) && c',
       },
     ],
     valid: [
