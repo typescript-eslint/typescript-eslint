@@ -106,11 +106,11 @@ export interface RuleMetaData<
   /**
    * The fixer category. Omit if there is no fixer
    */
-  fixable?: 'code' | 'whitespace';
+  fixable?: 'code' | 'whitespace' | undefined;
   /**
    * Specifies whether rules can return suggestions. Omit if there is no suggestions
    */
-  hasSuggestions?: boolean;
+  hasSuggestions?: boolean | undefined;
   /**
    * A map of messages which the rule can report.
    * The key is the messageId, and the string is the parameterised error string.
@@ -207,11 +207,11 @@ interface ReportDescriptorBase<MessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
-  readonly data?: ReportDescriptorMessageData;
+  readonly data?: ReportDescriptorMessageData | undefined;
   /**
    * The fixer function.
    */
-  readonly fix?: ReportFixFunction | null;
+  readonly fix?: ReportFixFunction | null | undefined;
   /**
    * The messageId which is being reported.
    */
@@ -226,7 +226,10 @@ interface ReportDescriptorWithSuggestion<
   /**
    * 6.7's Suggestions API
    */
-  readonly suggest?: Readonly<ReportSuggestionArray<MessageIds>> | null;
+  readonly suggest?:
+    | Readonly<ReportSuggestionArray<MessageIds>>
+    | null
+    | undefined;
 }
 
 interface ReportDescriptorNodeOptionalLoc {
@@ -235,7 +238,8 @@ interface ReportDescriptorNodeOptionalLoc {
    */
   readonly loc?:
     | Readonly<TSESTree.Position>
-    | Readonly<TSESTree.SourceLocation>;
+    | Readonly<TSESTree.SourceLocation>
+    | undefined;
   /**
    * The Node or AST Token which the report is being attached to
    */

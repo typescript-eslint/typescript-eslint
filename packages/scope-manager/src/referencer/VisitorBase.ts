@@ -4,7 +4,7 @@ import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 export interface VisitorOptions {
-  childVisitorKeys?: VisitorKeys | null;
+  childVisitorKeys?: VisitorKeys | null | undefined;
   visitChildrenEvenIfSelectorExists?: boolean;
 }
 
