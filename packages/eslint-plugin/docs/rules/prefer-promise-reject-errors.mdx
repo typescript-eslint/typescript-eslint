@@ -61,6 +61,27 @@ This rule adds the following options:
 ```ts
 interface Options {
   /**
+   * Type specifiers that can be used as Promise rejection reasons.
+   */
+  allow?: (
+    | {
+        from: 'file';
+        name: string[] | string;
+        path?: string;
+      }
+    | {
+        from: 'lib';
+        name: string[] | string;
+      }
+    | {
+        from: 'package';
+        name: string[] | string;
+        package: string;
+      }
+    | string
+  )[];
+
+  /**
    * Whether to always allow throwing values typed as `any`.
    */
   allowThrowingAny?: boolean;
@@ -72,6 +93,7 @@ interface Options {
 }
 
 const defaultOptions: Options = {
+  allow: [],
   allowThrowingAny: false,
   allowThrowingUnknown: false,
 };
