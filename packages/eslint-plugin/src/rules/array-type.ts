@@ -216,6 +216,16 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        for (
+          let scope = context.sourceCode.getScope(node);
+          scope.upper;
+          scope = scope.upper
+        ) {
+          if (scope.set.has(node.typeName.name)) {
+            return;
+          }
+        }
+
         const isReadonlyWithGenericArrayType =
           node.typeName.name === 'Readonly' &&
           node.typeArguments?.params[0].type === AST_NODE_TYPES.TSArrayType;
