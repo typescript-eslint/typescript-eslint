@@ -71,10 +71,15 @@ You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configur
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
   {
+    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+
+    extends: [
+      eslint.configs.recommended,
+      tseslint.configs.recommendedTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
+
     languageOptions: {
       parserOptions: {
         projectService: true,

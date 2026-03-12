@@ -41,10 +41,10 @@ import eslint from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommended,
-);
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [eslint.configs.recommended, tseslint.configs.recommended],
+});
 ```
 
 This config file exports a flat config that enables both the [core ESLint recommended config](https://www.npmjs.com/package/@eslint/js) and [our recommended config](../users/Shared_Configurations.mdx#recommended).
@@ -310,12 +310,15 @@ export default defineConfig(
     // config with just ignores is the replacement for `.eslintignore`
     ignores: ['**/build/**', '**/dist/**', 'src/some/file/to/ignore.ts'],
   },
-  eslint.configs.recommended,
   {
     plugins: {
       '@typescript-eslint': tseslint.plugin,
       jest: jestPlugin,
     },
+  },
+  {
+    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+    extends: [eslint.configs.recommended],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {

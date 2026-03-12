@@ -56,20 +56,23 @@ For each file being linted, the first matching project path will be used as its 
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: {
-        // Remove this line
-        project: true,
-        // Add this line
-        project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [
+    eslint.configs.recommended,
+    tseslint.configs.recommendedTypeChecked,
+    {
+      languageOptions: {
+        parserOptions: {
+          // Remove this line
+          project: true,
+          // Add this line
+          project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+        },
       },
     },
-  },
-);
+  ],
+});
 ```
 
 </TabItem>
@@ -106,20 +109,23 @@ Instead of globs that use `**` to recursively check all folders, prefer paths th
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: {
-        // Remove this line
-        project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
-        // Add this line
-        project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+export default defineConfig({
+  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  extends: [
+    eslint.configs.recommended,
+    tseslint.configs.recommendedTypeChecked,
+    {
+      languageOptions: {
+        parserOptions: {
+          // Remove this line
+          project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
+          // Add this line
+          project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+        },
       },
     },
-  },
-);
+  ],
+});
 ```
 
 </TabItem>
