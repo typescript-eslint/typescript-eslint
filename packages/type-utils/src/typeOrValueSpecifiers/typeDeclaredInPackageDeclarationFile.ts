@@ -28,6 +28,21 @@ function typeDeclaredInDeclareModule(
   );
 }
 
+/**
+ * Extracts the package name from a module specifier that may include subpaths.
+ * For scoped packages like "@types/babel__code-frame/index.d.ts", returns "@types/babel__code-frame".
+ * For non-scoped packages like "lodash/fp", returns "lodash".
+ */
+function extractPackageName(moduleSpecifier: string): string {
+  if (moduleSpecifier.startsWith('@')) {
+    // Scoped package: @scope/name or @scope/name/subpath
+    const parts = moduleSpecifier.split('/');
+    return parts.length >= 2 ? `${parts[0]}/${parts[1]}` : moduleSpecifier;
+  }
+  // Non-scoped package: name or name/subpath
+  return moduleSpecifier.split('/')[0];
+}
+
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
@@ -35,13 +50,20 @@ function typeDeclaredInDeclarationFile(
 ): boolean {
   // Handle scoped packages: if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
+  // Also handle @types packages for scoped packages
+  const atTypesPackageName = `@types/${typesPackageName}`;
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
+    if (packageIdName == null) {
+      return false;
+    }
+    // Extract just the package name from the module specifier
+    const extractedPackageName = extractPackageName(packageIdName);
     return (
-      packageIdName != null &&
-      matcher.test(packageIdName) &&
+      (extractedPackageName === packageName ||
+        extractedPackageName === typesPackageName ||
+        extractedPackageName === atTypesPackageName) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
