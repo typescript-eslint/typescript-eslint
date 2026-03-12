@@ -111,7 +111,6 @@ export default createRule<Options, MessageId>({
 
   create(context, [options]) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
 
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
@@ -449,19 +448,18 @@ export default createRule<Options, MessageId>({
       //   - Otherwise, check if the function is a function-expression or an arrow-function.
       //   -   If it is, get its contextual type and bail if we cannot.
       //   - Return based on whether the contextual type includes `void` or not
-
-      const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
-
-      if (functionTSNode.type) {
-        const returnType = checker.getTypeFromTypeNode(functionTSNode.type);
+      if (functionNode.returnType) {
+        const returnType = services.getTypeFromTypeNode(
+          functionNode.returnType.typeAnnotation,
+        );
 
         return tsutils
           .unionConstituents(returnType)
           .some(tsutils.isIntrinsicVoidType);
       }
 
-      if (ts.isExpression(functionTSNode)) {
-        const functionType = checker.getContextualType(functionTSNode);
+      if (functionNode.type !== AST_NODE_TYPES.FunctionDeclaration) {
+        const functionType = services.getContextualType(functionNode);
 
         if (functionType) {
           return tsutils

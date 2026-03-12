@@ -1,7 +1,5 @@
 import type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
-import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
-
-export const PARSER_NAME = '@typescript-eslint/parser';
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export const defaultParseSettings: ParseSettings = {
   allowInvalidAST: false,
@@ -32,8 +30,7 @@ export const defaultParseSettings: ParseSettings = {
   tsconfigRootDir: '/',
 };
 
-export const defaultEslintConfig: ClassicConfig.Config = {
-  parser: PARSER_NAME,
+export const defaultEslintLanguageConfig: FlatConfig.LanguageOptions = {
   parserOptions: {
     ecmaFeatures: {
       globalReturn: false,
@@ -43,5 +40,4 @@ export const defaultEslintConfig: ClassicConfig.Config = {
     project: ['./tsconfig.json'],
     sourceType: 'module',
   },
-  rules: {},
 };

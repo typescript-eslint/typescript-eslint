@@ -1,3 +1,86 @@
+## 8.57.0 (2026-03-09)
+
+### 🩹 Fixes
+
+- **typescript-estree:** if the template literal is tagged and the text has an invalid escape, `cooked` will be `null` ([#11355](https://github.com/typescript-eslint/typescript-eslint/pull/11355))
+- **typescript-estree:** switch back to use `ts.getModifiers()` ([#12034](https://github.com/typescript-eslint/typescript-eslint/pull/12034))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- fisker Cheung @fisker
+- James Henry @JamesHenry
+- Kirk Waiblinger @kirkwaiblinger
+- Younsang Na @nayounsang
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.56.1 (2026-02-23)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.56.0 (2026-02-16)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.55.0 (2026-02-09)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid invalid modifier in object expression ([#11931](https://github.com/typescript-eslint/typescript-eslint/pull/11931))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.55.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.54.0 (2026-01-26)
+
+### 🚀 Features
+
+- **typescript-estree:** add shortcut methods to ParserServicesWithTypeInformation ([#11965](https://github.com/typescript-eslint/typescript-eslint/pull/11965), [#11955](https://github.com/typescript-eslint/typescript-eslint/issues/11955))
+
+### ❤️ Thank You
+
+- MinJae @Ju-MINJAE
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.53.1 (2026-01-19)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.53.0 (2026-01-12)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid invalid `extends` and `implements` in interface declaration ([#11935](https://github.com/typescript-eslint/typescript-eslint/pull/11935))
+- **typescript-estree:** forbid invalid "import equals" declaration ([#11936](https://github.com/typescript-eslint/typescript-eslint/pull/11936))
+- **typescript-estree:** forbid invalid class implements ([#11934](https://github.com/typescript-eslint/typescript-eslint/pull/11934))
+- **typescript-estree:** fix syntax check for `using` declaration ([#11910](https://github.com/typescript-eslint/typescript-eslint/pull/11910))
+- **typescript-estree:** forbid type-only import with both default and named specifiers ([#11930](https://github.com/typescript-eslint/typescript-eslint/pull/11930))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.52.0 (2026-01-05)
 
 ### 🚀 Features

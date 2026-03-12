@@ -45,7 +45,7 @@ export default createRule({
     };
 
     const couldBeNullish = (type: ts.Type): boolean => {
-      if (type.flags & ts.TypeFlags.TypeParameter) {
+      if (tsutils.isTypeFlagSet(type, ts.TypeFlags.TypeParameter)) {
         const constraint = type.getConstraint();
         return constraint == null || couldBeNullish(constraint);
       }
@@ -58,7 +58,10 @@ export default createRule({
         }
         return false;
       }
-      return (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
+      return tsutils.isTypeFlagSet(
+        type,
+        ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+      );
     };
 
     const sameTypeWithoutNullish = (
@@ -67,7 +70,10 @@ export default createRule({
     ): boolean => {
       const nonNullishOriginalTypes = originalTypes.filter(
         type =>
-          (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) === 0,
+          !tsutils.isTypeFlagSet(
+            type,
+            ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+          ),
       );
 
       if (nonNullishOriginalTypes.length === originalTypes.length) {

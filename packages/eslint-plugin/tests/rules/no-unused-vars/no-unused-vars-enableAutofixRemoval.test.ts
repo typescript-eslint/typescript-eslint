@@ -39,7 +39,6 @@ export {};
           },
         ],
         output: `
-
 export {};
         `,
       },
@@ -66,7 +65,6 @@ export {};
           },
         ],
         output: `
-
 export {};
         `,
       },
@@ -93,7 +91,6 @@ export {};
           },
         ],
         output: `
-
 export {};
         `,
       },
@@ -128,7 +125,6 @@ export {};
           },
         ],
         output: `
-
 export {};
         `,
       },
@@ -271,7 +267,6 @@ export {};
           },
         ],
         output: `
-
 export {};
         `,
       },
@@ -559,6 +554,48 @@ export { Used };
         output: `
 import { Used, } from 'module';
 export { Used };
+        `,
+      },
+      {
+        code: `
+/* this is an important comment */ import assert from 'assert';
+        `,
+        errors: [
+          {
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+/* this is an important comment */ 
+        `,
+      },
+      {
+        code: `
+import assert from 'assert'; /* this is an important comment */
+        `,
+        errors: [
+          {
+            line: 2,
+            messageId: 'unusedVar',
+          },
+        ],
+        options: [
+          {
+            enableAutofixRemoval: {
+              imports: true,
+            },
+          },
+        ],
+        output: `
+ /* this is an important comment */
         `,
       },
     ],

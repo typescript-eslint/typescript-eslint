@@ -33,7 +33,9 @@ export function insertRuleOptions(page: RuleDocsPage): void {
     return;
   }
 
-  const defaultOptions = (page.rule.defaultOptions[0] ?? {}) as Record<
+  // Keep accepting deprecated defaultOptions for backward compatibility.
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  const defaultOptions = (page.rule.defaultOptions?.[0] ?? {}) as Record<
     string,
     unknown
   >;
