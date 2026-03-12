@@ -1971,9 +1971,7 @@ interface FooInterface {
 // -- eslint rule tester is not working with multi-pass
 // https://github.com/eslint/eslint/issues/11187
 describe('array-type (nested)', () => {
-  const linter = new TSESLint.Linter({ configType: 'eslintrc' });
-  linter.defineRule('array-type', rule);
-  linter.defineParser('@typescript-eslint/parser', parser);
+  const linter = new TSESLint.Linter({});
 
   describe('should deeply fix correctly', () => {
     function testOutput(
@@ -1986,9 +1984,14 @@ describe('array-type (nested)', () => {
         const result = linter.verifyAndFix(
           code,
           {
-            parser: '@typescript-eslint/parser',
+            languageOptions: {
+              parser,
+            },
+            plugins: {
+              '@typescript-eslint': { rules: { 'array-type': rule } },
+            },
             rules: {
-              'array-type': [
+              '@typescript-eslint/array-type': [
                 2,
                 { default: defaultOption, readonly: readonlyOption },
               ],

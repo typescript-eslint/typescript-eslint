@@ -60,6 +60,9 @@ export function eslintIntegrationTest(
       }
     }
     // console.log('Lint complete.');
+    if (stderr.length > 0) {
+      console.error(stderr);
+    }
     expect(stderr).toHaveLength(0);
 
     // assert the linting state is consistent
