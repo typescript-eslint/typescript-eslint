@@ -277,7 +277,7 @@ if (condition) {
 
 ### Object types
 
-typescript-eslint assumes that all object types represent JavaScript objects, which are always truthy. This is not always the case, because object types only represent the shape of values.
+typescript-eslint assumes that all [object types](https://www.typescriptlang.org/docs/handbook/2/objects.html) represent JavaScript objects, which are always truthy. This is not always the case, because object types only represent the shape of values.
 
 ```ts showPlaygroundButton
 function foo(x: { toString(): string }) {
@@ -291,7 +291,7 @@ foo(''); // Allowed by TypeScript; value is falsy
 
 In this example, the type of `x` is an object type. However, JavaScript primitives like `string` and `number` also have the `toString` method and can be assigned to `x`, and these primitives can be falsy (e.g., `''` and `0`).
 
-Using the `object` type does not solve this issue. Although primitives aren't assignable to the `object` type, they are assignable to object types, which are in turn assignable to the `object` type. This is an [intentionally unsound TypeScript behavior](https://github.com/microsoft/TypeScript/issues/60582) for compatibility and convenience.
+Using the `object` type does not solve this issue. Although primitives aren't directly assignable to the `object` type, they are assignable to object types, which are in turn assignable to the `object` type. This is an [intentionally unsound TypeScript behavior](https://github.com/microsoft/TypeScript/issues/60582) for compatibility and convenience.
 
 ```ts showPlaygroundButton
 function foo(x: object) {
