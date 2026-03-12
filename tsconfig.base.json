@@ -24,6 +24,7 @@
     "skipDefaultLibCheck": false,
     "skipLibCheck": true,
     "sourceMap": false,
+    "strict": true,
     "target": "ES2022",
     "types": ["vitest/globals", "vitest/importMeta", "node"],
     "verbatimModuleSyntax": false
