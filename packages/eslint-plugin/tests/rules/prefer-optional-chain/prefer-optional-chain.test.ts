@@ -1561,6 +1561,21 @@ describe('chain ending with comparison', () => {
       },
       {
         code: `
+          type Branch = { id: string } & { name: string };
+          declare const a: Branch | null;
+          declare const b: Branch;
+          !a || b.id !== a.id;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          type Branch = { id: string } & { name: string };
+          declare const a: Branch | null;
+          declare const b: Branch;
+          b.id !== a?.id;
+        `,
+      },
+      {
+        code: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: 3 };
           a == null || foo.three != a.b();
