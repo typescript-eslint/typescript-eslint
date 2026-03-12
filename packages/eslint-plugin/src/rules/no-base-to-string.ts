@@ -9,6 +9,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
+  isSymbolFromDefaultLibrary,
   matchesTypeOrBaseType,
   nullThrows,
 } from '../util';
@@ -321,10 +322,10 @@ export default createRule<Options, MessageIds>({
         node.name.expression.expression.text === 'Symbol' &&
         ts.isIdentifier(node.name.expression.name) &&
         node.name.expression.name.text === 'toPrimitive' &&
-        checker
-          .getSymbolAtLocation(node.name.expression.expression)
-          // eslint-disable-next-line @typescript-eslint/no-deprecated -- Deprecated in TS 6 but we support TS < 6
-          ?.valueDeclaration?.getSourceFile().hasNoDefaultLib
+        isSymbolFromDefaultLibrary(
+          program,
+          checker.getSymbolAtLocation(node.name.expression.expression),
+        )
       );
     }
 
