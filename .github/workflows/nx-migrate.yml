@@ -41,6 +41,7 @@ jobs:
         name: Install pnpm
         with:
           run_install: false
+          cache: true
 
       - name: Run nx migrate if @nx/workspace changed and commit the results
         if: ${{ steps.nrwl-workspace-package-check.outputs.was-changed == 'true' }}
