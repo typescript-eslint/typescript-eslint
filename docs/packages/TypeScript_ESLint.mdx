@@ -20,6 +20,8 @@ This package exports the following:
 | --------------------- | ------------------------------------------------------------------------------------------------- |
 | `config` (deprecated) | A utility function for creating type-safe flat configs -- see [`config(...)`](#config-deprecated) |
 | `configs`             | [Shared ESLint (flat) configs](../users/Shared_Configurations.mdx)                                |
+| `exts`                | File extension arrays for TypeScript/JavaScript files -- see [`exts`](#exts)                      |
+| `globs`               | Predefined glob patterns for TypeScript/JavaScript files -- see [`globs`](#globs)                 |
 | `parser`              | A re-export of [`@typescript-eslint/parser`](./Parser.mdx)                                        |
 | `plugin`              | A re-export of [`@typescript-eslint/eslint-plugin`](./ESLint_Plugin.mdx)                          |
 | `FlatConfig`          | A re-export of the type from [`@typescript-eslint/utils`](./Utils.mdx)                            |
@@ -48,6 +50,116 @@ export default defineConfig(
 ```
 
 This config file exports a flat config that enables both the [core ESLint recommended config](https://www.npmjs.com/package/@eslint/js) and [our recommended config](../users/Shared_Configurations.mdx#recommended).
+
+### `exts`
+
+The `exts` export provides arrays of file extensions (without leading dots) for TypeScript and JavaScript files. These arrays are useful when you need to programmatically construct globs or perform file extension checks.
+
+#### `exts.ts`
+
+Array of TypeScript file extensions: `['mts', 'ts', 'cts', 'tsx']`
+
+```js title="eslint.config.mjs"
+import tseslint from 'typescript-eslint';
+
+const customGlob = `src/**/*.{${tseslint.exts.ts.join(',')}}`;
+```
+
+#### `exts.js`
+
+Array of JavaScript file extensions: `['mjs', 'js', 'cjs', 'jsx']`
+
+```js title="eslint.config.mjs"
+import tseslint from 'typescript-eslint';
+
+const customGlob = `src/**/*.{${tseslint.exts.js.join(',')}}`;
+```
+
+#### `exts.tsjs`
+
+Array of both TypeScript and JavaScript file extensions: `['mts', 'ts', 'cts', 'tsx', 'mjs', 'js', 'cjs', 'jsx']`
+
+```js title="eslint.config.mjs"
+import tseslint from 'typescript-eslint';
+
+const customGlob = `src/**/*.{${tseslint.exts.tsjs.join(',')}}`;
+```
+
+### `globs`
+
+The `globs` export provides predefined glob patterns for matching TypeScript and JavaScript files in your ESLint configurations. These globs simplify typical configurations by providing consistent patterns for file matching.
+
+#### `globs.ts`
+
+Matches all standard TypeScript files: `**/*.{mts,ts,cts,tsx}`
+
+```js title="eslint.config.mjs"
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig({
+  files: [tseslint.globs.ts],
+  extends: [tseslint.configs.recommended],
+});
+```
+
+#### `globs.js`
+
+Matches all standard JavaScript files: `**/*.{mjs,js,cjs,jsx}`
+
+```js title="eslint.config.mjs"
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  // other configs...
+  {
+    files: [tseslint.globs.js],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
+);
+```
+
+#### `globs.tsjs`
+
+Matches both TypeScript and JavaScript files: `**/*.{mts,ts,cts,tsx,mjs,js,cjs,jsx}`
+
+```js title="eslint.config.mjs"
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  // other configs...
+  {
+    files: [tseslint.globs.tsjs],
+    rules: {
+      // Rules for all TS/JS files
+    },
+  },
+);
+```
+
+#### `globs.tsDeclaration`
+
+Matches TypeScript declaration files: `**/*.{d.ts,d.*.ts}`
+
+This matches standard `.d.ts` files as well as less-common declaration files like `.d.css.ts`, `.d.other-file-type.ts`, etc.
+
+```js title="eslint.config.mjs"
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  // other configs...
+  {
+    files: [tseslint.globs.tsDeclaration],
+    rules: {
+      // Disable rules that are problematic in declaration files
+      'no-var': 'off',
+    },
+  },
+);
+```
 
 ### `config(...)` (deprecated)
 
