@@ -422,6 +422,14 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       `,
       options: [{ default: 'generic' }],
     },
+    {
+      code: 'let x: Array;',
+      options: [{ default: 'array' }],
+    },
+    {
+      code: 'let x: Array;',
+      options: [{ default: 'array-simple' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
