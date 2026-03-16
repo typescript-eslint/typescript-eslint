@@ -37,6 +37,7 @@ jobs:
         name: Install pnpm
         with:
           run_install: false
+          cache: true
 
       - name: Run prettier formatting if prettier was changed and commit the results
         if: ${{ steps.prettier-package-check.outputs.was-changed == 'true' }}
