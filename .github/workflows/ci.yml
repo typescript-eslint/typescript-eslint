@@ -176,7 +176,8 @@ jobs:
           CI: true
 
   plugin_unit_tests:
-    name: Run eslint-plugin Unit Tests
+    # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
+    name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     runs-on: ${{ matrix.os }}
