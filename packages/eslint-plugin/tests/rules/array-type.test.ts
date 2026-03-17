@@ -430,6 +430,14 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       code: 'let x: Array;',
       options: [{ default: 'array-simple' }],
     },
+    {
+      code: "let z: Array = [3, '4'];",
+      options: [{ default: 'array' }],
+    },
+    {
+      code: "let z: Array = [3, '4'];",
+      options: [{ default: 'array-simple' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -1331,19 +1339,6 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       output: "let y: string[] = <string[]>['2'];",
     },
     {
-      code: "let z: Array = [3, '4'];",
-      errors: [
-        {
-          column: 8,
-          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-          line: 1,
-          messageId: 'errorStringArraySimple',
-        },
-      ],
-      options: [{ default: 'array-simple' }],
-      output: "let z: any[] = [3, '4'];",
-    },
-    {
       code: "let ya = [[1, '2']] as [number, string][];",
       errors: [
         {
@@ -1530,19 +1525,6 @@ function barFunction(bar: Array<ArrayClass<String>>) {
       ],
       options: [{ default: 'array' }],
       output: "let y: string[] = <string[]>['2'];",
-    },
-    {
-      code: "let z: Array = [3, '4'];",
-      errors: [
-        {
-          column: 8,
-          data: { className: 'Array', readonlyPrefix: '', type: 'any' },
-          line: 1,
-          messageId: 'errorStringArray',
-        },
-      ],
-      options: [{ default: 'array' }],
-      output: "let z: any[] = [3, '4'];",
     },
     {
       code: 'type Arr<T> = Array<T>;',
