@@ -143,18 +143,21 @@ jobs:
     strategy:
       matrix:
         include:
-          - shard: 1
+          - shard: '1/4'
+            args: '--concurrency=auto'
             projects:
               - eslint-plugin
 
-          - shard: 2
+          - shard: '2/4'
+            args: ''
             projects:
               - ast-spec
               - utils
               - scope-manager
               - eslint-plugin-internal
 
-          - shard: 3
+          - shard: '3/4'
+            args: ''
             projects:
               - typescript-estree
               - types
@@ -162,7 +165,8 @@ jobs:
               - rule-tester
               - visitor-keys
 
-          - shard: 4
+          - shard: '4/4'
+            args: ''
             projects:
               - parser
               - type-utils
@@ -179,7 +183,7 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - uses: ./.github/actions/prepare-build
-      - run: pnpm lint --projects=${{ join(matrix.projects, ',') }}
+      - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} {{ matarix.args }}
 
   stylelint:
     name: Stylelint
