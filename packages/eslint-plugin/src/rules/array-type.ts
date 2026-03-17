@@ -253,20 +253,6 @@ export default createRule<Options, MessageIds>({
               : 'errorStringArraySimple';
 
         if (!typeParams) {
-          // Create an 'any' array
-          context.report({
-            node,
-            messageId,
-            data: {
-              type: 'any',
-              className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
-              readonlyPrefix,
-            },
-            fix(fixer) {
-              return fixer.replaceText(node, `${readonlyPrefix}any[]`);
-            },
-          });
-
           return;
         }
 
