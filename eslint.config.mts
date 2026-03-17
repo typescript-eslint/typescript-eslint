@@ -1,5 +1,3 @@
-import type { ESLint } from 'eslint';
-
 import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import { fixupPluginRules } from '@eslint/compat';
 import eslint from '@eslint/js';
@@ -36,8 +34,7 @@ export default defineConfig(
     /* eslint-disable no-useless-computed-key */
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
-      ['@typescript-eslint/internal']:
-        tseslintInternalPlugin as unknown as ESLint.Plugin,
+      ['@typescript-eslint/internal']: tseslintInternalPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
       ['import']: fixupPluginRules(importPlugin),
       ['jsdoc']: jsdocPlugin,
