@@ -123,8 +123,7 @@
       },
       "generate-lib": {
         "dependsOn": [
-          "typescript-eslint:build",
-          "eslint-plugin-internal:build"
+          "typescript-eslint:build"
         ]
       },
       "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},

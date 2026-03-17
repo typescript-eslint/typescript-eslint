@@ -1,8 +1,8 @@
 {
   "name": "@typescript-eslint/eslint-plugin-internal",
   "private": true,
-  "main": "dist/index.js",
-  "types": "index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "type": "module",
   "repository": {
     "type": "git",
@@ -15,8 +15,6 @@
   "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
-    "build": "pnpm exec nx build",
-    "clean": "rimraf dist/ coverage/",
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
@@ -38,13 +36,6 @@
   },
   "nx": {
     "name": "eslint-plugin-internal",
-    "includedScripts": [
-      "clean"
-    ],
-    "targets": {
-      "lint": {
-        "command": "eslint"
-      }
-    }
+    "includedScripts": []
   }
 }

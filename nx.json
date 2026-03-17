@@ -47,10 +47,10 @@
   "targetDefaults": {
     "lint": {
       "cache": false,
-      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
+      "dependsOn": ["typescript-eslint:build"],
       "options": {
         "cwd": "{workspaceRoot}",
-        "config": "{workspaceRoot}/eslint.config.mjs",
+        "config": "{workspaceRoot}/eslint.config.mts",
         "args": ["{projectRoot}"]
       }
     },

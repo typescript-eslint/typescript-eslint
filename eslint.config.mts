@@ -1,4 +1,4 @@
-// @ts-check
+import type { ESLint } from 'eslint';
 
 import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import { fixupPluginRules } from '@eslint/compat';
@@ -36,7 +36,8 @@ export default defineConfig(
     /* eslint-disable no-useless-computed-key */
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
-      ['@typescript-eslint/internal']: tseslintInternalPlugin,
+      ['@typescript-eslint/internal']:
+        tseslintInternalPlugin as unknown as ESLint.Plugin,
       ['eslint-plugin']: eslintPluginPlugin,
       ['import']: fixupPluginRules(importPlugin),
       ['jsdoc']: jsdocPlugin,
@@ -451,7 +452,7 @@ export default defineConfig(
   },
   {
     files: [
-      'eslint.config.mjs',
+      'eslint.config.mts',
       'knip.ts',
       'packages/*/src/index.ts',
       'vitest.config.mts',
