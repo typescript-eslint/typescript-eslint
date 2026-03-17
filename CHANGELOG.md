@@ -1,3 +1,17 @@
+## 8.57.1 (2026-03-16)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] no report for property on intersection type ([#12126](https://github.com/typescript-eslint/typescript-eslint/pull/12126))
+
+### ❤️ Thank You
+
+- Newton Yuan @NewtonYuan
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.57.0 (2026-03-09)
 
 ### 🚀 Features
