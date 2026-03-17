@@ -36,6 +36,11 @@
   },
   "nx": {
     "name": "eslint-plugin-internal",
-    "includedScripts": []
+    "includedScripts": [],
+    "targets": {
+      "lint": {
+        "command": "eslint"
+      }
+    }
   }
 }
