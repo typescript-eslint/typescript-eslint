@@ -183,7 +183,7 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - uses: ./.github/actions/prepare-build
-      - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} {{ matarix.args }}
+      - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} ${{ matrix.args }}
 
   stylelint:
     name: Stylelint
