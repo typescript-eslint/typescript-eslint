@@ -139,7 +139,11 @@
           "cwd": "{projectRoot}"
         }
       },
-      "typecheck": {}
+      "typecheck": {
+        "dependsOn": [
+          "build"
+        ]
+      }
     }
   }
 }
