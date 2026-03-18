@@ -46,7 +46,7 @@
     "typecheck": {
       "cache": true,
       "executor": "nx:run-commands",
-      "dependsOn": ["^typecheck"],
+      "dependsOn": ["build", "^typecheck"],
       "options": {
         "command": "tsgo --build --emitDeclarationOnly",
         "cwd": "{projectRoot}"
