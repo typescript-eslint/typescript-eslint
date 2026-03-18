@@ -29,6 +29,7 @@ export default {
         '@nx/workspace',
         '@eslint/eslintrc',
         '@eslint/config-helpers',
+        '@typescript/native-preview',
       ],
 
       project: [
