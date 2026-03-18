@@ -658,11 +658,7 @@ importers:
         specifier: 'catalog:'
         version: 4.0.18(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2)
 
-  packages/tseslint.com:
-    devDependencies:
-      '@typescript/native-preview':
-        specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+  packages/tseslint.com: {}
 
   packages/type-utils:
     dependencies:
