@@ -6,7 +6,8 @@
       "esbenp.prettier-vscode",
       "streetsidesoftware.code-spell-checker",
       "mrmlnc.vscode-json5",
-      "vitest.explorer"
+      "vitest.explorer",
+      "typescriptteam.native-preview"
   ],
   "unwantedRecommendations": ["hookyqr.beautify", "dbaeumer.jshint"]
 }

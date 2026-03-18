@@ -60,6 +60,7 @@
     "typescript": ">=4.8.4 <6.0.0"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",

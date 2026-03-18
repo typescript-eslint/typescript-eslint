@@ -11,6 +11,7 @@ const excludedNames = new Set([
 
 const filteredTerms = ['casino', 'deepnude', 'tiktok'];
 
+// @ts-expect-error - https://github.com/microsoft/typescript-go/issues/3140
 const jsonApiFetch = async <T,>(
   api: string,
   options?: RequestInit,
@@ -69,6 +70,7 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
   method: 'POST',
 }).then(({ data }) => {
   // TODO: remove polyfill in Node 22
+  // @ts-expect-error - https://github.com/microsoft/typescript-go/issues/3140
   const groupBy = <T,>(
     arr: T[],
     fn: (item: T) => string,

@@ -18,6 +18,7 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "vitest": "catalog:",
@@ -39,7 +40,8 @@
       },
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck": {}
     }
   }
 }

@@ -58,6 +58,7 @@
     "debug": "^4.4.3"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",
@@ -77,7 +78,8 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck": {}
     }
   }
 }

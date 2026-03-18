@@ -8,6 +8,7 @@ catalog:
   '@types/natural-compare': ^1.4.3
   '@types/node': ^22.19.3
   '@types/react': ^18.3.21
+  '@typescript/native-preview': 7.0.0-dev.20260317.1
   '@vitest/coverage-v8': ^4.0.18
   '@vitest/pretty-format': ^4.0.18
   '@vitest/utils': ^4.0.18

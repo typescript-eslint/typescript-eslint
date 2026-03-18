@@ -63,6 +63,7 @@
     "ts-api-utils": "^2.4.0"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",
@@ -86,7 +87,8 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck": {}
     }
   }
 }
