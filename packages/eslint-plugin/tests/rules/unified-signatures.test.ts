@@ -1282,7 +1282,6 @@ function f(this: string | number, a: boolean): void {}
       code: `
 type A = 1 | 2;
 type B = 3 | 4;
-
 function c<T extends string>(s: T, param: string): string;
 function c<R extends string>(s: R): string;
 function c<T extends string>(s: T, param?: string): string {
