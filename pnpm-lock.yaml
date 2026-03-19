@@ -323,8 +323,8 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
       ts-api-utils:
-        specifier: ^2.4.0
-        version: 2.4.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3))
+        specifier: ^2.5.0
+        version: 2.5.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3))
     devDependencies:
       '@types/json-schema':
         specifier: ^7.0.15
@@ -644,8 +644,8 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
       ts-api-utils:
-        specifier: ^2.4.0
-        version: 2.4.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3))
+        specifier: ^2.5.0
+        version: 2.5.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3))
     devDependencies:
       '@types/babel__code-frame':
         specifier: 'catalog:'
@@ -751,8 +751,8 @@ importers:
         specifier: ^0.2.15
         version: 0.2.15
       ts-api-utils:
-        specifier: ^2.4.0
-        version: 2.4.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3))
+        specifier: ^2.5.0
+        version: 2.5.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3))
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
@@ -8849,8 +8849,8 @@ packages:
   trough@2.2.0:
     resolution: {integrity: sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==}
 
-  ts-api-utils@2.4.0:
-    resolution: {integrity: sha512-3TaVTaAv2gTiMB35i3FiGJaRfwb3Pyn/j3m/bfAvGe8FB7CF6u+LMYqYlDh7reQf7UNvoTvdfAqHGmPGOSsPmA==}
+  ts-api-utils@2.5.0:
+    resolution: {integrity: sha512-OJ/ibxhPlqrMM0UiNHJ/0CKQkoKF243/AEmplt3qpRgkW8VG7IfOS41h7V8TjITqdByHzrjcS/2si+y4lIh8NA==}
     engines: {node: '>=18.12'}
     peerDependencies:
       typescript: 6.0.1-rc
@@ -13175,7 +13175,7 @@ snapshots:
       minimatch: 10.2.4
       semver: 7.7.3
       tinyglobby: 0.2.15
-      ts-api-utils: 2.4.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3))
+      ts-api-utils: 2.5.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3))
       typescript: 6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3)
     transitivePeerDependencies:
       - supports-color
@@ -19198,7 +19198,7 @@ snapshots:
 
   trough@2.2.0: {}
 
-  ts-api-utils@2.4.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3)):
+  ts-api-utils@2.5.0(typescript@6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3)):
     dependencies:
       typescript: 6.0.1-rc(patch_hash=b30501ff21e0bb3abf6f53c357570de82997211bef376f3a48073b13a9e214b3)
 
