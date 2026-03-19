@@ -483,10 +483,7 @@ export default createRule<Options, MessageIds>({
       a: TSESTree.TSTypeParameter,
       b: TSESTree.TSTypeParameter,
     ): boolean {
-      return (
-        a.name.name === b.name.name &&
-        constraintsAreEqual(a.constraint, b.constraint)
-      );
+      return constraintsAreEqual(a.constraint, b.constraint);
     }
 
     function typesAreEqual(
@@ -506,7 +503,12 @@ export default createRule<Options, MessageIds>({
       a: TSESTree.TypeNode | undefined,
       b: TSESTree.TypeNode | undefined,
     ): boolean {
-      return a === b || (a != null && a.type === b?.type);
+      return (
+        a === b ||
+        (a != null &&
+          b != null &&
+          context.sourceCode.getText(a) === context.sourceCode.getText(b))
+      );
     }
 
     /* Returns the first index where `a` and `b` differ. */

@@ -408,6 +408,28 @@ function f(this: void, a: boolean): void;
 function f(this: {}, a: boolean): void;
 function f(this: void | {}, a: boolean): void {}
     `,
+    // Different type parameter constraints - function a
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+
+function a<T extends A>(s: T, param: string): string;
+function a<R extends B>(s: R): string;
+function a<T extends A | B>(s: T, param?: string): string {
+  return 'aaa';
+}
+    `,
+    // Different type parameter constraints - function b (same name)
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+
+function b<T extends A>(s: T, param: string): string;
+function b<T extends B>(s: T): string;
+function b<T extends A | B>(s: T, param?: string): string {
+  return 'aaa';
+}
+    `,
   ],
   invalid: [
     {
@@ -1253,6 +1275,29 @@ function f(this: string | number, a: boolean): void {}
           },
           line: 3,
           messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+type A = 1 | 2;
+type B = 3 | 4;
+
+function c<T extends string>(s: T, param: string): string;
+function c<R extends string>(s: R): string;
+function c<T extends string>(s: T, param?: string): string {
+  return 'aaa';
+}
+      `,
+      errors: [
+        {
+          column: 31,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 6,
+          messageId: 'omittingSingleParameter',
         },
       ],
     },
