@@ -77,6 +77,32 @@ declare const bigInt: 0n | 1n;
 if (bigInt) {
 }
     `,
+
+    `
+function test(t: \`a\${string}\`) {
+  if (t === 'ab') {
+  }
+}
+    `,
+    `
+type T = \`\${string}-\${number}\`;
+declare const t: T;
+if (t === 'hello-42') {
+}
+    `,
+    `
+type T = \`a\${string}\` | \`b\${string}\`;
+declare const t: T;
+if (t === 'abc') {
+}
+    `,
+    `
+type T = \`prefix\${string}\`;
+declare const t: T;
+const lit = 'prefixValue';
+if (t === lit) {
+}
+    `,
     necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
     necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
     necessaryConditionTest('0 | boolean'), // boolean and falsy literal

@@ -63,6 +63,13 @@ function toStaticValue(
   if (type.flags === ts.TypeFlags.Null) {
     return { value: null };
   }
+
+  // Template literal types like `a${string}` represent multiple possible values,
+  // not a single static value, so comparisons with them are necessary conditions.
+  if (tsutils.isTypeFlagSet(type, ts.TypeFlags.TemplateLiteral)) {
+    return undefined;
+  }
+
   if (type.isLiteral()) {
     return { value: getValueOfLiteralType(type) };
   }
