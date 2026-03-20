@@ -324,6 +324,10 @@ export default createRule<Options, MessageIds>({
       const sig1 = a.params;
       const sig2 = b.params;
 
+      // Extract type parameters for normalization
+      const aTypeParams = a.typeParameters?.params;
+      const bTypeParams = b.typeParameters?.params;
+
       const minLength = Math.min(sig1.length, sig2.length);
       const longer = sig1.length < sig2.length ? sig2 : sig1;
       const shorter = sig1.length < sig2.length ? sig1 : sig2;
@@ -361,7 +365,14 @@ export default createRule<Options, MessageIds>({
           ? sig2i.parameter.typeAnnotation
           : sig2i.typeAnnotation;
 
-        if (!typesAreEqual(typeAnnotation1, typeAnnotation2)) {
+        if (
+          !typesAreEqualWithTypeParams(
+            typeAnnotation1,
+            typeAnnotation2,
+            aTypeParams,
+            bTypeParams,
+          )
+        ) {
           return undefined;
         }
       }
@@ -484,6 +495,86 @@ export default createRule<Options, MessageIds>({
       b: TSESTree.TSTypeParameter,
     ): boolean {
       return constraintsAreEqual(a.constraint, b.constraint);
+    }
+
+    /**
+     * Creates a mapping from type parameter names to their normalized positional names.
+     * Example: <T, U> and <R, S> both map to { T/R: "_0", U/S: "_1" }
+     */
+    function buildTypeParameterMap(
+      typeParams: readonly TSESTree.TSTypeParameter[] | undefined,
+    ): Map<string, string> {
+      const map = new Map<string, string>();
+      if (!typeParams) {
+        return map;
+      }
+
+      for (let i = 0; i < typeParams.length; i++) {
+        map.set(typeParams[i].name.name, `_${i}`);
+      }
+
+      return map;
+    }
+
+    /**
+     * Normalizes a type annotation by replacing type parameter names with positional identifiers.
+     * This allows comparing types that reference different type parameter names but same positions.
+     * Example: "T" with map {T: "_0"} becomes "_0"
+     *          "Array<T>" with map {T: "_0"} becomes "Array<_0>"
+     */
+    function normalizeTypeAnnotation(
+      typeAnnotation: TSESTree.TSTypeAnnotation | undefined,
+      typeParamMap: Map<string, string>,
+    ): string | undefined {
+      if (!typeAnnotation || typeParamMap.size === 0) {
+        return typeAnnotation
+          ? context.sourceCode.getText(typeAnnotation.typeAnnotation)
+          : undefined;
+      }
+
+      // Get the source text
+      let text = context.sourceCode.getText(typeAnnotation.typeAnnotation);
+
+      // Replace type parameter names with normalized versions
+      // Sort by length descending to avoid partial replacements (e.g., "T" before "Type")
+      const sortedEntries = Array.from(typeParamMap.entries()).sort(
+        (a, b) => b[0].length - a[0].length,
+      );
+
+      for (const [name, normalized] of sortedEntries) {
+        // Use word boundaries to avoid replacing parts of other identifiers
+        // e.g., don't replace "T" in "Type"
+        const regex = new RegExp(`\\b${name}\\b`, 'g');
+        text = text.replace(regex, normalized);
+      }
+
+      return text;
+    }
+
+    /**
+     * Compares two type annotations, normalizing type parameter references.
+     * Used when comparing signatures with potentially different type parameter names.
+     */
+    function typesAreEqualWithTypeParams(
+      a: TSESTree.TSTypeAnnotation | undefined,
+      b: TSESTree.TSTypeAnnotation | undefined,
+      aTypeParams: readonly TSESTree.TSTypeParameter[] | undefined,
+      bTypeParams: readonly TSESTree.TSTypeParameter[] | undefined,
+    ): boolean {
+      // Fast path: if no type parameters, use existing comparison
+      if (!aTypeParams && !bTypeParams) {
+        return typesAreEqual(a, b);
+      }
+
+      // Build normalization maps
+      const aMap = buildTypeParameterMap(aTypeParams);
+      const bMap = buildTypeParameterMap(bTypeParams);
+
+      // Normalize and compare
+      const aNormalized = normalizeTypeAnnotation(a, aMap);
+      const bNormalized = normalizeTypeAnnotation(b, bMap);
+
+      return aNormalized === bNormalized;
     }
 
     function typesAreEqual(

@@ -1290,12 +1290,12 @@ function c<T extends string>(s: T, param?: string): string {
       `,
       errors: [
         {
-          column: 31,
+          column: 36,
           data: {
             failureStringStart:
               'These overloads can be combined into one signature',
           },
-          line: 6,
+          line: 4,
           messageId: 'omittingSingleParameter',
         },
       ],
