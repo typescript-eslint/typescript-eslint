@@ -1378,6 +1378,37 @@ function stringToNarrower<T extends string>(x: T) {
           },
         ],
       },
+
+      // exercises the second isTypeAssignableTo call
+      // (when the asserted type is a type parameter with a constraint)
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11824
+      {
+        code: `
+type A<T extends string> = T extends \`\${infer F}\${infer R}\`
+  ? \`\${F}b\${A<R>}\`
+  : '';
+
+type B<T extends string> = T extends \`\${infer F}\${infer R}\`
+  ? \`\${F}b\${B<R>}\`
+  : '';
+
+function foo<T extends string, U extends B<T>>(source: A<T>) {
+  source as U;
+}
+        `,
+        errors: [
+          {
+            column: 3,
+            data: {
+              type: 'U',
+            },
+            endColumn: 14,
+            endLine: 11,
+            line: 11,
+            messageId: 'unsafeTypeAssertionAssignableToConstraint',
+          },
+        ],
+      },
     ],
   });
 });
