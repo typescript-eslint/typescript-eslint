@@ -1363,5 +1363,43 @@ function j<T extends string>(x: T[], y?: string): void {}
         },
       ],
     },
+    {
+      // Same-constrained type parameters with optional parameter
+      code: `
+function f<T>(a: number): void;
+function f<U>(a: number, b?: string): void;
+function f<T>(a: number, b?: string): void {}
+      `,
+      errors: [
+        {
+          column: 26,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Same-constrained type parameters with rest parameter
+      code: `
+function g<T>(a: string): void;
+function g<U>(a: string, ...b: number[]): void;
+function g<T>(a: string, ...b: number[]): void {}
+      `,
+      errors: [
+        {
+          column: 26,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          messageId: 'omittingRestParameter',
+        },
+      ],
+    },
   ],
 });
