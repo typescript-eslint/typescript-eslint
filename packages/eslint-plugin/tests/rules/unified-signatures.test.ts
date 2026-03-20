@@ -430,6 +430,33 @@ function b<T extends A | B>(s: T, param?: string): string {
   return 'aaa';
 }
     `,
+    // Asymmetric type parameters - one has type params, other doesn't
+    `
+function d<T>(x: T): void;
+function d(x: number): void;
+function d<T>(x: T | number): void {}
+    `,
+    // Multiple type parameters with different constraints
+    `
+function e<T extends string, U extends number>(x: T, y: U): void;
+function e<R extends boolean, S extends symbol>(x: R, y: S): void;
+function e<T extends string | boolean, U extends number | symbol>(
+  x: T,
+  y: U,
+): void {}
+    `,
+    // Multi-character type parameter names
+    `
+function g<Type extends string>(x: Type): void;
+function g<Element extends number>(x: Element): void;
+function g<Type extends string | number>(x: Type): void {}
+    `,
+    // Complex nested generics
+    `
+function h<T extends string>(x: Array<T>): void;
+function h<R extends number>(x: Array<R>): void;
+function h<T extends string | number>(x: Array<T>): void {}
+    `,
   ],
   invalid: [
     {
@@ -1296,6 +1323,42 @@ function c<T extends string>(s: T, param?: string): string {
               'These overloads can be combined into one signature',
           },
           line: 4,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      code: `
+function i<T extends string, U extends number>(x: T, y: U, z: string): void;
+function i<R extends string, S extends number>(x: R, y: S): void;
+function i<T extends string, U extends number>(x: T, y: U, z?: string): void {}
+      `,
+      errors: [
+        {
+          column: 60,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      code: `
+function j<T extends string>(x: T[], y: string): void;
+function j<R extends string>(x: R[]): void;
+function j<T extends string>(x: T[], y?: string): void {}
+      `,
+      errors: [
+        {
+          column: 38,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 2,
           messageId: 'omittingSingleParameter',
         },
       ],
