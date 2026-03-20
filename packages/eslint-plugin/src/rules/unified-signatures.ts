@@ -537,7 +537,7 @@ export default createRule<Options, MessageIds>({
 
       // Replace type parameter names with normalized versions
       // Sort by length descending to avoid partial replacements (e.g., "T" before "Type")
-      const sortedEntries = Array.from(typeParamMap.entries()).sort(
+      const sortedEntries = [...typeParamMap.entries()].sort(
         (a, b) => b[0].length - a[0].length,
       );
 
