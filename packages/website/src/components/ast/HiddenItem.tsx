@@ -14,8 +14,8 @@ export default function HiddenItem({
   level,
   value,
 }: HiddenItemProps): React.JSX.Element {
-  const [isComplex, setIsComplex] = useState<boolean>(true);
-  const [length, setLength] = useState<number>(0);
+  const [isComplex, setIsComplex] = useState(true);
+  const [length, setLength] = useState(0);
 
   useEffect(() => {
     if (isArray) {
