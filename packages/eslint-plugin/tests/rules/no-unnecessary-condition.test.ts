@@ -1134,7 +1134,6 @@ isString(a);
       options: [{ checkTypePredicates: false }],
     },
     {
-      // Technically, this has type 'falafel' and not string.
       code: `
 declare function assertString(x: unknown): asserts x is string;
 assertString('falafel');
@@ -1142,10 +1141,37 @@ assertString('falafel');
       options: [{ checkTypePredicates: true }],
     },
     {
-      // Technically, this has type 'falafel' and not string.
       code: `
 declare function isString(x: unknown): x is string;
 isString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Mutually assignable types: Wider and Narrower are structurally
+      // compatible in both directions, so narrowing still has a real effect.
+      code: `
+interface Wider {
+  a: string;
+}
+interface Narrower {
+  a: string;
+  b?: number;
+}
+declare function isNarrower(x: unknown): x is Narrower;
+declare const w: Wider;
+if (isNarrower(w)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // string | number | bigint is not a subtype of string | number
+      code: `
+declare function isStringOrNumber(x: unknown): x is string | number;
+declare const s: string | number | bigint;
+if (isStringOrNumber(s)) {
+}
       `,
       options: [{ checkTypePredicates: true }],
     },
@@ -3499,6 +3525,22 @@ isString(a);
 declare function isString(x: unknown): x is string;
 declare const a: string;
 isString('fa' + 'lafel');
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // string is a strict subtype of string | number.
+      code: `
+declare function isStringOrNumber(x: unknown): x is string | number;
+declare const s: string;
+if (isStringOrNumber(s)) {
+}
       `,
       errors: [
         {
