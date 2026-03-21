@@ -43,7 +43,7 @@ export default createRule<[], MessageIds>({
     const checker = services.program.getTypeChecker();
 
     function isEmptyObjectType(type: ts.Type) {
-      if (!(type.flags & ts.TypeFlags.Object)) {
+      if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.Object)) {
         return false;
       }
 
@@ -62,8 +62,8 @@ export default createRule<[], MessageIds>({
       // If either type is `any` (including when they're unresolved) or `{}`,
       // they should be considered equivalent if they're explicitly the same reference
       if (
-        a.flags & ts.TypeFlags.Any ||
-        b.flags & ts.TypeFlags.Any ||
+        tsutils.isTypeFlagSet(a, ts.TypeFlags.Any) ||
+        tsutils.isTypeFlagSet(b, ts.TypeFlags.Any) ||
         isEmptyObjectType(a) ||
         isEmptyObjectType(b)
       ) {
