@@ -593,7 +593,22 @@ export default createRule<Options, MessageId>({
             services,
             typeGuardAssertedArgument.argument,
           );
-          if (typeOfArgument === typeGuardAssertedArgument.type) {
+          if (
+            typeOfArgument === typeGuardAssertedArgument.type ||
+            // Also flag if the argument type is a strict subtype of the
+            // asserted union type (assignable one-way but not mutually
+            // assignable). Restricted to union predicate types to avoid false
+            // positives with structural subtyping (e.g. class hierarchies).
+            (typeGuardAssertedArgument.type.isUnion() &&
+              checker.isTypeAssignableTo(
+                typeOfArgument,
+                typeGuardAssertedArgument.type,
+              ) &&
+              !checker.isTypeAssignableTo(
+                typeGuardAssertedArgument.type,
+                typeOfArgument,
+              ))
+          ) {
             context.report({
               node: typeGuardAssertedArgument.argument,
               messageId: 'typeGuardAlreadyIsType',
