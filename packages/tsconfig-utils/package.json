@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/tsconfig-utils",
-  "version": "8.56.1",
+  "version": "8.57.1",
   "description": "Utilities for collecting TSConfigs for linting scenarios.",
   "files": [
     "dist",
@@ -48,10 +48,10 @@
     "typescript": ">=4.8.4 <6.0.0"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.0.18",
-    "rimraf": "*",
-    "typescript": "*",
-    "vitest": "^4.0.18"
+    "@vitest/coverage-v8": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "funding": {
     "type": "opencollective",
