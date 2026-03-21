@@ -241,12 +241,12 @@ For example, the following config enables only the recommended config's type-che
 
 {/* prettier-ignore */}
 ```js title="eslint.config.mjs"
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  tseslint.configs.recommendedTypeCheckedOnly,
+  tsjs.configs.recommendedTypeCheckedOnly,
   {
     languageOptions: {
       parserOptions: {

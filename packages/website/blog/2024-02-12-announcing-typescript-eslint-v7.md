@@ -51,12 +51,12 @@ The simplest of this new tooling would be the following which will enable the ES
 ```js title="eslint.config.js"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+  js.configs.recommended,
+  ...tsjs.configs.recommended,
 );
 ```
 
