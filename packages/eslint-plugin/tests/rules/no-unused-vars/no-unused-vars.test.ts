@@ -61,7 +61,6 @@ export class Foo {}
               },
               messageId: 'removeUnusedImportDeclaration',
               output: `
-
 export class Foo {}
       `,
             },
@@ -124,7 +123,6 @@ console.log(a);
               },
               messageId: 'removeUnusedImportDeclaration',
               output: `
-
 const a: string = 'hello';
 console.log(a);
       `,
@@ -158,7 +156,6 @@ console.log(a);
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
-
 const a: Nullable<string> = 'hello';
 console.log(a);
       `,
@@ -197,7 +194,6 @@ new A();
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
-
 class A {
   do = (a: Nullable) => {
     console.log(a);
@@ -239,7 +235,6 @@ new A();
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
-
 class A {
   do(a: Nullable) {
     console.log(a);
@@ -281,7 +276,6 @@ new A();
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
-
 class A {
   do(): Nullable {
     return null;
@@ -320,7 +314,6 @@ export interface A {
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
-
 export interface A {
   do(a: Nullable);
 }
@@ -356,7 +349,6 @@ export interface A {
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
-
 export interface A {
   other: Nullable;
 }
@@ -391,7 +383,6 @@ foo();
               },
               messageId: 'removeUnusedImportDeclaration',
               output: `
-
 function foo(a: string) {
   console.log(a);
 }
@@ -427,7 +418,6 @@ foo();
               },
               messageId: 'removeUnusedImportDeclaration',
               output: `
-
 function foo(): string | null {
   return null;
 }
@@ -466,7 +456,6 @@ new A();
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
-
 import { Another } from 'some';
 class A extends Nullable {
   other: Nullable<Another>;
@@ -506,7 +495,6 @@ new A();
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
-
 import { Another } from 'some';
 abstract class A extends Nullable {
   other: Nullable<Another>;
@@ -561,7 +549,6 @@ export interface Bar extends baz.test {}
               },
               messageId: 'removeUnusedImportDeclaration',
               output: `
-
 import baz from 'baz';
 export interface Bar extends baz.test {}
       `,
@@ -593,7 +580,6 @@ export class Bar implements baz.test {}
               },
               messageId: 'removeUnusedImportDeclaration',
               output: `
-
 import baz from 'baz';
 export class Bar implements baz.test {}
       `,
@@ -777,7 +763,6 @@ export const ComponentFoo = () => {
               output: `
 import React from 'react';
 
-
 export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
@@ -820,7 +805,6 @@ export const ComponentFoo = () => {
               },
               messageId: 'removeUnusedImportDeclaration',
               output: `
-
 import { h } from 'some-other-jsx-lib';
 
 export const ComponentFoo = () => {
@@ -866,7 +850,6 @@ export const ComponentFoo = () => {
               },
               messageId: 'removeUnusedImportDeclaration',
               output: `
-
 
 export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
@@ -1116,7 +1099,6 @@ namespace Foo {
   export const foo = 1;
 }
 export namespace Bar {
-${'  '}
 }
       `,
             },

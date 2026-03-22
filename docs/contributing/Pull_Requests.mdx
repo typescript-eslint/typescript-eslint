@@ -25,12 +25,18 @@ Please don't:
 - Comment on a closed PR
   - Reasoning: It is much easier for maintainers to not lose track of things if they are posted as issues. If you think there's a bug in typescript-eslint, the right way to ask is to [file a new issue](https://github.com/typescript-eslint/typescript-eslint/issues/new/choose). The issue templates include helpful & necessary practices such as making sure you're on the latest version of all our packages. You can provide the link to the relevant PR to add more context.
 
+:::warning
+
+Please read our [AI Contribution Policy](./AI_Contribution_Policy.mdx) if you use AI in any way on a pull request.
+
+:::
+
 ## Testing Changes
 
 ### Code Coverage
 
 We aim for 100% code coverage in all PRs when possible, except in the `website/` package.
-Coverage reports are generated locally whenever `yarn test` is run.
+Coverage reports are generated locally whenever `pnpm run test` is run.
 
 The `codecov` bot also comments on each PR with its percentage, as well as links to the line-by-line coverage of each file touched by the PR.
 

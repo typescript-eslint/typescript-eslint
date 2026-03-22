@@ -202,7 +202,11 @@ export default createRule({
           receiverProperty.key.type === AST_NODE_TYPES.TemplateLiteral &&
           receiverProperty.key.quasis.length === 1
         ) {
-          key = receiverProperty.key.quasis[0].value.cooked;
+          const cooked = nullThrows(
+            receiverProperty.key.quasis[0].value.cooked,
+            'cooked can only be null inside a TaggedTemplateExpression, which is not possible here',
+          );
+          key = cooked;
         } else {
           // can't figure out the name, so skip it
           continue;

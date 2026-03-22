@@ -85,7 +85,7 @@ export async function insertNewRuleReferences(
               lang: 'js',
               meta: 'title="eslint.config.mjs"',
               type: 'code',
-              value: `export default tseslint.config(${eslintConfig});`,
+              value: `export default defineConfig(${eslintConfig});`,
             },
           ],
           name: 'TabItem',
@@ -186,6 +186,8 @@ function linkToConfigsForObject(docs: ESLintPluginDocs): string {
 }
 
 function getRuleDefaultOptions(page: RuleDocsPage): string {
+  // Keep accepting deprecated defaultOptions for backward compatibility.
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   const defaults = JSON.stringify(page.rule.defaultOptions);
   const recommended = page.rule.meta.docs.recommended;
 

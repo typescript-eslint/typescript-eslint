@@ -35,8 +35,9 @@ export function eslintIntegrationTest(
     let stderr = '';
     try {
       await execFile(
-        'yarn',
+        'pnpm',
         [
+          'exec',
           'eslint',
           '--format',
           'json',
@@ -59,6 +60,9 @@ export function eslintIntegrationTest(
       }
     }
     // console.log('Lint complete.');
+    if (stderr.length > 0) {
+      console.error(stderr);
+    }
     expect(stderr).toHaveLength(0);
 
     // assert the linting state is consistent
@@ -94,10 +98,14 @@ export function typescriptIntegrationTest(
 ): void {
   integrationTest(testName, testFilename, async testFolder => {
     const [result] = await Promise.allSettled([
-      execFile('yarn', ['tsc', '--noEmit', '--skipLibCheck', ...tscArgs], {
-        cwd: testFolder,
-        shell: true,
-      }),
+      execFile(
+        'pnpm',
+        ['exec', 'tsc', '--noEmit', '--skipLibCheck', ...tscArgs],
+        {
+          cwd: testFolder,
+          shell: true,
+        },
+      ),
     ]);
 
     if (result.status === 'rejected') {

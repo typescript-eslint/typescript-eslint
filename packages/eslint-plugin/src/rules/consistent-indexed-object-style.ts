@@ -163,7 +163,8 @@ export default createRule<Options, MessageIds>({
             node.id,
             `type ${node.id.name}${genericTypes} = `,
             ';',
-            !node.extends.length,
+            !node.extends.length &&
+              node.parent.type !== AST_NODE_TYPES.ExportDefaultDeclaration,
           );
         },
         TSMappedType(node): void {

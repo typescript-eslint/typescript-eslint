@@ -24,7 +24,7 @@ export class GlobalScope extends ScopeBase<
   // note this is accessed in used in the legacy eslint-scope tests, so it can't be true private
   private readonly implicit: {
     readonly set: Map<string, Variable>;
-    readonly variables: Variable[];
+    variables: Variable[];
     /**
      * List of {@link Reference}s that are left to be resolved (i.e. which
      * need to be linked to the variable they refer to).
@@ -39,6 +39,38 @@ export class GlobalScope extends ScopeBase<
       set: new Map<string, Variable>(),
       variables: [],
     };
+  }
+
+  public addVariables(names: string[]): void {
+    for (const name of names) {
+      this.defineVariable(name, this.set, this.variables, null, null);
+
+      this.implicit.set.delete(name);
+    }
+
+    const nameSet = new Set(names);
+    for (const reference of this.through) {
+      if (nameSet.has(reference.identifier.name)) {
+        const variable = this.set.get(reference.identifier.name);
+        assert(
+          variable,
+          `Expected variable with name "${reference.identifier.name}" to be specified.`,
+        );
+
+        reference.resolved = variable;
+        variable.references.push(reference);
+      }
+    }
+
+    this.through = this.through.filter(
+      reference => !nameSet.has(reference.identifier.name),
+    );
+    this.implicit.variables = this.implicit.variables.filter(
+      variable => !nameSet.has(variable.name),
+    );
+    this.implicit.leftToBeResolved = this.implicit.leftToBeResolved.filter(
+      reference => !nameSet.has(reference.identifier.name),
+    );
   }
 
   public override close(scopeManager: ScopeManager): Scope | null {
@@ -62,7 +94,10 @@ export class GlobalScope extends ScopeBase<
     }
 
     this.implicit.leftToBeResolved = this.leftToResolve;
-    return super.close(scopeManager);
+    super.close(scopeManager);
+    this.implicit.leftToBeResolved = [...this.through];
+
+    return null;
   }
 
   public defineImplicitVariable(

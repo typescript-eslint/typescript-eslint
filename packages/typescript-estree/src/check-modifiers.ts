@@ -154,10 +154,9 @@ export function checkModifiers(node: ts.Node): void {
     }
   }
 
-  for (const modifier of getModifiers(
-    node,
-    /* includeIllegalModifiers */ true,
-  ) ?? []) {
+  const modifiers =
+    getModifiers(node, /* includeIllegalModifiers */ true) ?? [];
+  for (const modifier of modifiers) {
     if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
       if (
         node.kind === SyntaxKind.PropertySignature ||
@@ -332,7 +331,7 @@ export function checkModifiers(node: ts.Node): void {
       modifier.kind === SyntaxKind.ProtectedKeyword ||
       modifier.kind === SyntaxKind.PrivateKeyword
     ) {
-      for (const anotherModifier of getModifiers(node) ?? []) {
+      for (const anotherModifier of modifiers) {
         if (
           anotherModifier !== modifier &&
           (anotherModifier.kind === SyntaxKind.PublicKeyword ||
@@ -388,17 +387,36 @@ export function checkModifiers(node: ts.Node): void {
       }
     }
 
-    // There are more cases in `checkGrammarObjectLiteralExpression` in TypeScript.
-    // We may add more validations for them here in the future.
-    if (
-      modifier.kind !== SyntaxKind.AsyncKeyword &&
-      node.kind === SyntaxKind.MethodDeclaration &&
-      node.parent.kind === SyntaxKind.ObjectLiteralExpression
-    ) {
-      throw createError(
-        modifier,
-        `'${ts.tokenToString(modifier.kind)}' modifier cannot be used here.`,
-      );
+    checkObjectPropertyModifier(node, modifier);
+  }
+
+  // `ts.getModifiers()` can't access invalid modifiers on object properties
+  // Eg: `({declare a: 1})`
+  // See https://github.com/typescript-eslint/typescript-eslint/pull/11931#discussion_r2678961730
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- incorrect type
+  if (node.parent?.kind === SyntaxKind.ObjectLiteralExpression) {
+    // @ts-expect-error intentional to access deprecated `node.modifiers`
+    for (const modifier of (node.modifiers as ts.Modifier[] | undefined) ??
+      []) {
+      if (ts.isDecorator(modifier) || modifiers.includes(modifier)) {
+        continue;
+      }
+
+      checkObjectPropertyModifier(node, modifier);
     }
+  }
+}
+
+function checkObjectPropertyModifier(node: ts.Node, modifier: ts.Modifier) {
+  // From `checkGrammarObjectLiteralExpression` function in `typescript`
+  if (
+    (modifier.kind !== SyntaxKind.AsyncKeyword ||
+      node.kind !== SyntaxKind.MethodDeclaration) &&
+    node.parent.kind === SyntaxKind.ObjectLiteralExpression
+  ) {
+    throw createError(
+      modifier,
+      `'${ts.tokenToString(modifier.kind)}' modifier cannot be used here.`,
+    );
   }
 }
