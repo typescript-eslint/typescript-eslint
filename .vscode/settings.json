@@ -21,8 +21,4 @@
   "typescript.preferences.quoteStyle": "single",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "nxConsole.generateAiAgentRules": true,
-  "chat.tools.terminal.autoApprove": {
-    "git ls-tree": true,
-    "awk": true
-  },
 }
