@@ -21,6 +21,38 @@ type T2 = Record<string, number>;
 
 const ast = parse(CODE, { range: true });
 
+function pruneSnapshot(value: unknown): unknown {
+  if (value == null || value === false) {
+    return undefined;
+  }
+
+  if (Array.isArray(value)) {
+    const prunedItems = value
+      .map(item => pruneSnapshot(item))
+      .filter(item => item != null);
+
+    return prunedItems.length === 0 ? undefined : prunedItems;
+  }
+
+  if (typeof value === 'object') {
+    const prunedEntries = Object.entries(value)
+      .map(([key, childValue]) => [key, pruneSnapshot(childValue)] as const)
+      .filter(
+        ([, childValue]) =>
+          childValue != null &&
+          (!Array.isArray(childValue) || childValue.length > 0) &&
+          (typeof childValue !== 'object' ||
+            Object.entries(childValue).length > 0),
+      );
+
+    return prunedEntries.length === 0
+      ? undefined
+      : Object.fromEntries(prunedEntries);
+  }
+
+  return value;
+}
+
 /**
  * Extracts a comparable snapshot from analyze() output:
  * - focuses on the global scope
@@ -30,18 +62,25 @@ const ast = parse(CODE, { range: true });
 function extractGlobalSnapshot(scopeManager: ScopeManager) {
   const globalScope = scopeManager.globalScope!;
 
-  return {
-    variables: [...globalScope.variables.values()]
-      .map(variable => ({
-        defs: variable.defs.map((def: Definition) => ({
-          type: def.type,
-        })),
-        isTypeVariable: variable.isTypeVariable,
-        isValueVariable: variable.isValueVariable,
-        name: variable.name,
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name)),
-  };
+  return pruneSnapshot({
+    variables: Object.fromEntries(
+      [...globalScope.variables.values()]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(variable => {
+          const varKind =
+            variable.isTypeVariable && variable.isValueVariable
+              ? 'both'
+              : variable.isTypeVariable
+                ? 'type'
+                : 'value';
+          const defs = variable.defs.map(def => def.type);
+          return [
+            variable.name,
+            defs.length === 0 ? varKind : { defs, variable: varKind },
+          ];
+        }),
+    ),
+  });
 }
 
 describe('populateGlobalsFromLib – behavior snapshot', () => {
