@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
 import type { ScopeManager } from '../src';
-import type { Definition } from '../src/definition';
 
 import { analyze } from '../src';
 import { parse } from './test-utils';
