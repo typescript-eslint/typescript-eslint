@@ -77,6 +77,7 @@ export default createRule({
         assertedType,
         checker,
         node.expression,
+        services.program,
       );
 
       if (unsafeExpressionAny) {
@@ -96,6 +97,7 @@ export default createRule({
         expressionType,
         checker,
         node.typeAnnotation,
+        services.program,
       );
 
       if (unsafeAssertedAny) {

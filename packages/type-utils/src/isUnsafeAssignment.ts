@@ -4,28 +4,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
 import { isTypeAnyType, isTypeUnknownType } from './predicates';
-
-/**
- * Checks if a type is from the default library (lib.*.d.ts files).
- * We skip these to avoid false positives from built-in types like Object, Array, etc.
- */
-function isFromDefaultLibrary(type: ts.Type): boolean {
-  const symbol = type.getSymbol();
-  if (!symbol) {
-    return false;
-  }
-
-  const declarations = symbol.getDeclarations();
-  if (!declarations || declarations.length === 0) {
-    return false;
-  }
-
-  return declarations.some(decl => {
-    const fileName = decl.getSourceFile().fileName.replaceAll('\\', '/');
-    return fileName.includes('/lib.') && fileName.endsWith('.d.ts');
-  });
-}
 
 /**
  * Does a simple check to see if there is an any being assigned to a non-any type.
@@ -42,6 +22,7 @@ export function isUnsafeAssignment(
   receiver: ts.Type,
   checker: ts.TypeChecker,
   senderNode: TSESTree.Node | null,
+  program: ts.Program,
 ): false | { receiver: ts.Type; sender: ts.Type } {
   return isUnsafeAssignmentWorker(
     type,
@@ -49,6 +30,7 @@ export function isUnsafeAssignment(
     checker,
     senderNode,
     new Map(),
+    program,
   );
 }
 
@@ -58,6 +40,7 @@ function isUnsafeAssignmentWorker(
   checker: ts.TypeChecker,
   senderNode: TSESTree.Node | null,
   visited: Map<ts.Type, Set<ts.Type>>,
+  program: ts.Program,
 ): false | { receiver: ts.Type; sender: ts.Type } {
   if (isTypeAnyType(type)) {
     // Allow assignment of any ==> unknown.
@@ -127,6 +110,7 @@ function isUnsafeAssignmentWorker(
         checker,
         senderNode,
         visited,
+        program,
       );
       if (unsafe) {
         return { receiver, sender: type };
@@ -140,7 +124,7 @@ function isUnsafeAssignmentWorker(
   if (tsutils.isObjectType(type) && tsutils.isObjectType(receiver)) {
     // Only check properties for non-default-library types to avoid
     // false positives from built-in types like Object, Array, etc.
-    if (!isFromDefaultLibrary(type)) {
+    if (!isSymbolFromDefaultLibrary(program, type.getSymbol())) {
       const typeProperties = type.getProperties();
       const receiverProperties = new Map(
         receiver.getProperties().map(prop => [prop.getName(), prop]),
@@ -161,6 +145,7 @@ function isUnsafeAssignmentWorker(
           checker,
           senderNode,
           visited,
+          program,
         );
         if (unsafe) {
           return { receiver, sender: type };
@@ -181,6 +166,7 @@ function isUnsafeAssignmentWorker(
           checker,
           senderNode,
           visited,
+          program,
         );
         if (unsafe) {
           return { receiver, sender: type };
@@ -212,6 +198,7 @@ function isUnsafeAssignmentWorker(
           checker,
           senderNode,
           visited,
+          program,
         );
         if (unsafe) {
           return { receiver, sender: type };
@@ -233,6 +220,7 @@ function isUnsafeAssignmentWorker(
           checker,
           senderNode,
           visited,
+          program,
         );
         if (unsafe) {
           return { receiver, sender: type };
@@ -256,6 +244,7 @@ function isUnsafeAssignmentWorker(
           checker,
           senderNode,
           visited,
+          program,
         );
         if (unsafe) {
           return { receiver, sender: type };

@@ -110,6 +110,7 @@ function getTypes(
   declarationIndex = 0,
 ): {
   checker: ts.TypeChecker;
+  program: ts.Program;
   receiver: ts.Type;
   sender: ts.Type;
   senderNode: TSESTree.Node;
@@ -136,6 +137,7 @@ function getTypes(
 
   return {
     checker,
+    program: services.program,
     receiver: services.getTypeAtLocation(declarator.id),
     sender: services.getTypeAtLocation(declarator.init),
     senderNode: declarator.init,
@@ -184,7 +186,7 @@ expect.extend({
 
     const { declarationIndex = 0, passSenderNode = false } = additionalOptions;
 
-    const { checker, receiver, sender, senderNode } = getTypes(
+    const { checker, program, receiver, sender, senderNode } = getTypes(
       code,
       declarationIndex,
     );
@@ -194,6 +196,7 @@ expect.extend({
       receiver,
       checker,
       passSenderNode ? senderNode : null,
+      program,
     );
 
     const expected = false;
@@ -299,7 +302,7 @@ expect.extend({
       senderStr,
     } = additionalOptions;
 
-    const { checker, receiver, sender, senderNode } = getTypes(
+    const { checker, program, receiver, sender, senderNode } = getTypes(
       code,
       declarationIndex,
     );
@@ -309,6 +312,7 @@ expect.extend({
       receiver,
       checker,
       passSenderNode ? senderNode : null,
+      program,
     );
 
     assert.isNotFalse(result);

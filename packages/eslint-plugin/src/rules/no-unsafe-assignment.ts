@@ -301,6 +301,7 @@ export default createRule({
         receiverType,
         checker,
         senderNode,
+        services.program,
       );
       if (!result) {
         return false;
