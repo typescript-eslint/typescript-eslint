@@ -188,7 +188,6 @@ export default createRule({
           functionReturnType,
           checker,
           returnNode,
-          services.program,
         );
         if (!result) {
           return;

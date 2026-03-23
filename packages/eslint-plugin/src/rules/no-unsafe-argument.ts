@@ -258,7 +258,6 @@ export default createRule<[], MessageIds>({
                   // we can't pass the individual tuple members in here as this will most likely be a spread variable
                   // not a spread array
                   null,
-                  services.program,
                 );
                 if (result) {
                   context.report({
@@ -298,7 +297,6 @@ export default createRule<[], MessageIds>({
               parameterType,
               checker,
               argument,
-              services.program,
             );
             if (result) {
               context.report({

@@ -4,7 +4,6 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
 import { isTypeAnyType, isTypeUnknownType } from './predicates';
 
 /**
@@ -22,7 +21,6 @@ export function isUnsafeAssignment(
   receiver: ts.Type,
   checker: ts.TypeChecker,
   senderNode: TSESTree.Node | null,
-  program: ts.Program,
 ): false | { receiver: ts.Type; sender: ts.Type } {
   return isUnsafeAssignmentWorker(
     type,
@@ -30,7 +28,6 @@ export function isUnsafeAssignment(
     checker,
     senderNode,
     new Map(),
-    program,
   );
 }
 
@@ -40,7 +37,6 @@ function isUnsafeAssignmentWorker(
   checker: ts.TypeChecker,
   senderNode: TSESTree.Node | null,
   visited: Map<ts.Type, Set<ts.Type>>,
-  program: ts.Program,
 ): false | { receiver: ts.Type; sender: ts.Type } {
   if (isTypeAnyType(type)) {
     // Allow assignment of any ==> unknown.
@@ -110,7 +106,6 @@ function isUnsafeAssignmentWorker(
         checker,
         senderNode,
         visited,
-        program,
       );
       if (unsafe) {
         return { receiver, sender: type };
@@ -122,39 +117,32 @@ function isUnsafeAssignmentWorker(
 
   // Check object types - compare properties, index signatures, and call signatures
   if (tsutils.isObjectType(type) && tsutils.isObjectType(receiver)) {
-    // Only check properties for non-default-library types to avoid
-    // false positives from built-in types like Object, Array, etc.
-    if (!isSymbolFromDefaultLibrary(program, type.getSymbol())) {
-      const typeProperties = type.getProperties();
-      const receiverProperties = new Map(
-        receiver.getProperties().map(prop => [prop.getName(), prop]),
+    const typeProperties = type.getProperties();
+    const receiverProperties = new Map(
+      receiver.getProperties().map(prop => [prop.getName(), prop]),
+    );
+
+    for (const typeProp of typeProperties) {
+      const receiverProp = receiverProperties.get(typeProp.getName());
+      if (!receiverProp) {
+        continue;
+      }
+
+      const typePropType = checker.getTypeOfSymbol(typeProp);
+      const receiverPropType = checker.getTypeOfSymbol(receiverProp);
+
+      const unsafe = isUnsafeAssignmentWorker(
+        typePropType,
+        receiverPropType,
+        checker,
+        senderNode,
+        visited,
       );
-
-      for (const typeProp of typeProperties) {
-        const receiverProp = receiverProperties.get(typeProp.getName());
-        if (!receiverProp) {
-          continue;
-        }
-
-        const typePropType = checker.getTypeOfSymbol(typeProp);
-        const receiverPropType = checker.getTypeOfSymbol(receiverProp);
-
-        const unsafe = isUnsafeAssignmentWorker(
-          typePropType,
-          receiverPropType,
-          checker,
-          senderNode,
-          visited,
-          program,
-        );
-        if (unsafe) {
-          return { receiver, sender: type };
-        }
+      if (unsafe) {
+        return { receiver, sender: type };
       }
     }
 
-    // Always check index signatures and call signatures,
-    // even for default library types (e.g., Record<string, any>)
     for (const indexKind of [ts.IndexKind.String, ts.IndexKind.Number]) {
       const typeIndexInfo = checker.getIndexInfoOfType(type, indexKind);
       const receiverIndexInfo = checker.getIndexInfoOfType(receiver, indexKind);
@@ -166,7 +154,6 @@ function isUnsafeAssignmentWorker(
           checker,
           senderNode,
           visited,
-          program,
         );
         if (unsafe) {
           return { receiver, sender: type };
@@ -198,7 +185,6 @@ function isUnsafeAssignmentWorker(
           checker,
           senderNode,
           visited,
-          program,
         );
         if (unsafe) {
           return { receiver, sender: type };
@@ -220,7 +206,6 @@ function isUnsafeAssignmentWorker(
           checker,
           senderNode,
           visited,
-          program,
         );
         if (unsafe) {
           return { receiver, sender: type };
@@ -244,7 +229,6 @@ function isUnsafeAssignmentWorker(
           checker,
           senderNode,
           visited,
-          program,
         );
         if (unsafe) {
           return { receiver, sender: type };

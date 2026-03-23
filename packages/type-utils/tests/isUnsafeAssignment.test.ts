@@ -531,11 +531,24 @@ describe(isUnsafeAssignment, () => {
       `).toBeSafeAssignment({ declarationIndex: 3 });
     });
 
-    // isFromDefaultLibrary: type from default library (lib.*.d.ts) skips property check
-    it('default library object type skips property check (safe)', () => {
+    it('built-in type (Error) with safe properties assigned to compatible shape (safe)', () => {
       expect(`
         declare const sender: Error;
         const test: { message: string } = sender;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
+    it('built-in type (Array) element access is safe (safe)', () => {
+      expect(`
+        declare const sender: Array<number>;
+        const test: Array<number> = sender;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
+    it('built-in type (Object) assigned to object (safe)', () => {
+      expect(`
+        declare const sender: Object;
+        const test: Object = sender;
       `).toBeSafeAssignment({ declarationIndex: 1 });
     });
 
