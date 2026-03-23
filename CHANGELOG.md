@@ -1,3 +1,31 @@
+## 8.57.2 (2026-03-23)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] remove dangling closing parenthesis ([#11865](https://github.com/typescript-eslint/typescript-eslint/pull/11865))
+- **eslint-plugin:** [array-type] ignore Array and ReadonlyArray without type arguments ([#11971](https://github.com/typescript-eslint/typescript-eslint/pull/11971))
+- **eslint-plugin:** [no-restricted-types] flag banned generics in extends or implements ([#12120](https://github.com/typescript-eslint/typescript-eslint/pull/12120))
+- **eslint-plugin:** [no-unsafe-return] false positive on unwrapping generic ([#12125](https://github.com/typescript-eslint/typescript-eslint/pull/12125))
+- **eslint-plugin:** [no-unsafe-return] false positive on unwrapping generic ([#12125](https://github.com/typescript-eslint/typescript-eslint/pull/12125))
+- **eslint-plugin:** [no-useless-default-assignment] skip reporting false positives for unresolved type parameters ([#12127](https://github.com/typescript-eslint/typescript-eslint/pull/12127))
+- **eslint-plugin:** [prefer-readonly-parameter-types] preserve type alias infomation ([#11954](https://github.com/typescript-eslint/typescript-eslint/pull/11954))
+- **typescript-estree:** skip createIsolatedProgram fallback for projectService ([#12066](https://github.com/typescript-eslint/typescript-eslint/pull/12066), [#12065](https://github.com/typescript-eslint/typescript-eslint/issues/12065))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- Kirk Waiblinger @kirkwaiblinger
+- Konv Suu
+- mdm317
+- Newton Yuan @NewtonYuan
+- RyoheiYamamoto
+- SungHyun627 @SungHyun627
+- Tamashoo @Tamashoo
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.57.1 (2026-03-16)
 
 ### 🩹 Fixes
