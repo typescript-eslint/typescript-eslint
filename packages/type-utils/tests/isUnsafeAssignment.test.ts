@@ -569,5 +569,31 @@ describe(isUnsafeAssignment, () => {
         }
       `).toBeSafeAssignment({ declarationIndex: 0 });
     });
+
+    // Different TypeReference targets: type.target !== receiver.target → return false (safe)
+    it('different generic type references (safe)', () => {
+      expect(`
+        declare const sender: Set<number>;
+        const test: Map<string, number> = sender;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
+    // Non-generic TypeReference: typeArguments is undefined → falls back to []
+    it('non-generic TypeReference assignment (safe)', () => {
+      expect(`
+        declare const sender: Error;
+        const test: Error = sender;
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
+
+    // Same type visited with different receivers (visited map: typeAlreadyVisited exists but receiver not in set)
+    it('mutually recursive types without any (safe due to visited map)', () => {
+      expect(`
+        declare const sender: A;
+        const test: A = sender;
+        type A = { b: B };
+        type B = { a: A };
+      `).toBeSafeAssignment({ declarationIndex: 1 });
+    });
   });
 });
