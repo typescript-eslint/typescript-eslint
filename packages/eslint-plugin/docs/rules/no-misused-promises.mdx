@@ -54,17 +54,17 @@ Doing so prevents the rule from looking at code like `if (somePromise)`.
 }
 ```
 
-#### `{ flagUnions: "all" }`
+#### `{ "flagUnions": "all" }`
 
 Flags any time a union containing a misused Promise is encountered in a conditional.
 
-#### `{ flagUnions: "narrow" }`
+#### `{ "flagUnions": "narrow" }`
 
 Flags when a Promise non-Promise union is encountered in a conditional only when
 no constituent of the union can be falsy. This allows patterns where the conditional
 is used for type narrowing such as `if (val: Promise<any> | null)`.
 
-#### `{ flagUnions: "none" }`
+#### `{ "flagUnions": "none" }`
 
 Disables checking for Promise non-Promise unions in conditionals.
 
@@ -155,9 +155,9 @@ If you don't want to check object spreads, you can add this configuration:
 
 {/* insert option description */}
 
-#### `{ flagUnions: "none" }`
+#### `{ "flagUnions": "none" }`
 
-Examples of code for this rule with `checksConditionals: true` or `checksConditionals: { flagUnions: "none" }`:
+Examples of code for this rule with `checksConditionals: true` or `checksConditionals: { "flagUnions": "none" }`:
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -202,9 +202,9 @@ while (await promise) {
 </TabItem>
 </Tabs>
 
-#### `{ flagUnions: "narrow" }`
+#### `{ "flagUnions": "narrow" }`
 
-Examples of code for this rule with `checksConditionals: { flagUnions: "narrow" }`:
+Examples of code for this rule with `checksConditionals: { "flagUnions": "narrow" }`:
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -236,9 +236,9 @@ if (val) {
 </TabItem>
 </Tabs>
 
-#### `{ flagUnions: "all" }`
+#### `{ "flagUnions": "all" }`
 
-Examples of code for this rule with `checksConditionals: { flagUnions: "all" }`:
+Examples of code for this rule with `checksConditionals: { "flagUnions": "all" }`:
 
 <Tabs>
 <TabItem value="❌ Incorrect">
