@@ -81,9 +81,9 @@ export default createRule<[], MessageIds>({
       tsNode: ParameterCapableTSNode,
     ): void {
       // Just check the last one. Must specify previous type parameters if the last one is specified.
-      const i = typeArguments.params.length - 1;
-      const typeArgument = typeArguments.params[i];
-      const typeParameter = typeParameters.at(i);
+      const lastParamIndex = typeArguments.params.length - 1;
+      const typeArgument = typeArguments.params[lastParamIndex];
+      const typeParameter = typeParameters.at(lastParamIndex);
 
       if (!typeParameter) {
         return;
@@ -140,10 +140,10 @@ export default createRule<[], MessageIds>({
               messageId: 'canBeInferred',
               fix: fixer =>
                 fixer.removeRange(
-                  i === 0
+                  lastParamIndex === 0
                     ? typeArguments.range
                     : [
-                        typeArguments.params[i - 1].range[1],
+                        typeArguments.params[lastParamIndex - 1].range[1],
                         typeArgument.range[1],
                       ],
                 ),
@@ -166,9 +166,12 @@ export default createRule<[], MessageIds>({
         messageId: 'isDefaultParameterValue',
         fix: fixer =>
           fixer.removeRange(
-            i === 0
+            lastParamIndex === 0
               ? typeArguments.range
-              : [typeArguments.params[i - 1].range[1], typeArgument.range[1]],
+              : [
+                  typeArguments.params[lastParamIndex - 1].range[1],
+                  typeArgument.range[1],
+                ],
           ),
       });
     }
