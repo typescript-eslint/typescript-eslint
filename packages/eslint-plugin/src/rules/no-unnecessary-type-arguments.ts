@@ -118,10 +118,14 @@ export default createRule<[], MessageIds>({
             parameter.valueDeclaration.type,
           );
 
-          // TODO: right now we check if the type is declared as `T` or `T | something`;
+          // TODO: right now we check if the type is declared as `T` or `T | something` (and isn't `any`);
           // we should really be checking if `parameterTypeFromDeclaration` depends on `typeParameterType` somehow
           // (e.g. `NonNullable<T>`, `(arg: T) => void`, etc.)
           if (
+            tsutils.isTypeFlagSet(
+              parameterTypeFromDeclaration,
+              ts.TypeFlags.Any,
+            ) ||
             !checker.isTypeAssignableTo(
               typeParameterType,
               parameterTypeFromDeclaration,
