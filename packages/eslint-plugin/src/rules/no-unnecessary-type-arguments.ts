@@ -81,9 +81,9 @@ export default createRule<[], MessageIds>({
       tsNode: ParameterCapableTSNode,
     ): void {
       // Just check the last one. Must specify previous type parameters if the last one is specified.
-      const i = typeArguments.params.length - 1;
-      const typeArgument = typeArguments.params[i];
-      const typeParameter = typeParameters.at(i);
+      const typeArgumentIndex = typeArguments.params.length - 1;
+      const typeArgument = typeArguments.params[typeArgumentIndex];
+      const typeParameter = typeParameters.at(typeArgumentIndex);
 
       if (!typeParameter) {
         return;
@@ -101,8 +101,8 @@ export default createRule<[], MessageIds>({
           tsNode as ts.CallExpression | ts.NewExpression,
         );
 
-        parent.arguments.forEach((argument, i) => {
-          const parameter = sig?.parameters.at(i);
+        parent.arguments.forEach((argument, argumentIndex) => {
+          const parameter = sig?.parameters.at(argumentIndex);
 
           if (
             !parameter?.valueDeclaration ||
@@ -140,10 +140,10 @@ export default createRule<[], MessageIds>({
               messageId: 'canBeInferred',
               fix: fixer =>
                 fixer.removeRange(
-                  i === 0
+                  typeArgumentIndex === 0
                     ? typeArguments.range
                     : [
-                        typeArguments.params[i - 1].range[1],
+                        typeArguments.params[typeArgumentIndex - 1].range[1],
                         typeArgument.range[1],
                       ],
                 ),
@@ -166,9 +166,12 @@ export default createRule<[], MessageIds>({
         messageId: 'isDefaultParameterValue',
         fix: fixer =>
           fixer.removeRange(
-            i === 0
+            typeArgumentIndex === 0
               ? typeArguments.range
-              : [typeArguments.params[i - 1].range[1], typeArgument.range[1]],
+              : [
+                  typeArguments.params[typeArgumentIndex - 1].range[1],
+                  typeArgument.range[1],
+                ],
           ),
       });
     }

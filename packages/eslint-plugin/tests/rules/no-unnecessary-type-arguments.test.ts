@@ -1001,5 +1001,31 @@ function Button<T = string>() {
 const button = <Button />;
       `,
     },
+    {
+      code: `
+class Foo<T> {
+  public constructor(a: any, b: any, c: any, d: any) {}
+}
+interface Bar {
+  val: any;
+}
+const foo = new Foo<Bar>(0, 0, 0, { val: 0 });
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+class Foo<T> {
+  public constructor(a: any, b: any, c: any, d: any) {}
+}
+interface Bar {
+  val: any;
+}
+const foo = new Foo(0, 0, 0, { val: 0 });
+      `,
+    },
   ],
 });
