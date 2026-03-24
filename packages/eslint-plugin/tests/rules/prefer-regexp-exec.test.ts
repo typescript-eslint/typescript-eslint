@@ -260,6 +260,46 @@ function test(pattern: string) {
       `,
     },
     {
+      // Covers dynamic patterns without an explicit flags argument.
+      code: `
+function test(pattern: string) {
+  'check'.match(new RegExp(pattern));
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+function test(pattern: string) {
+  new RegExp(pattern).exec('check');
+}
+      `,
+    },
+    {
+      // Covers dynamic patterns with statically known non-global flags.
+      code: `
+function test(pattern: string) {
+  'check'.match(new RegExp(pattern, 'i'));
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+function test(pattern: string) {
+  new RegExp(pattern, 'i').exec('check');
+}
+      `,
+    },
+    {
       // https://github.com/typescript-eslint/typescript-eslint/issues/3941
       code: `
 function temp(text: string): void {
