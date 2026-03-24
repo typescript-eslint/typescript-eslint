@@ -277,10 +277,10 @@ f<number, number>();
     `,
     `
 class Foo<T> {
-    public constructor(a: any, b: any, c: any, d: any) {}
+  public constructor(a: any, b: any, c: any, d: any) {}
 }
 interface Bar {
-    val: any;
+  val: any;
 }
 let foo = new Foo<Bar>(0, 0, 0, { val: 0 });
     `,
