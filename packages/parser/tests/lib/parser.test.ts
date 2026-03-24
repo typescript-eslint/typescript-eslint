@@ -122,7 +122,7 @@ describe('parser', () => {
       globalReturn: undefined,
       jsxFragmentName: undefined,
       jsxPragma: undefined,
-      lib: ['es6'],
+      lib: ['lib'],
       sourceType: 'script',
     });
   });
@@ -142,7 +142,7 @@ describe('parser', () => {
     ['es6', ScriptTarget.ES2015],
     // eslint-disable-next-line @typescript-eslint/no-deprecated -- Deprecated in TS 6 but we support TS < 6
     ['lib', ScriptTarget.ES5],
-    ['es6', undefined],
+    ['lib', undefined],
   ] as const)(
     'calls analyze() with `lib: [%s]` when the compiler options target is %s',
     ([lib, target], { expect }) => {
