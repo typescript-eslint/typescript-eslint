@@ -196,10 +196,18 @@ export default createRule<Options, MessageIds>({
       ...keywordSelectors,
 
       TSClassImplements(node): void {
-        checkBannedTypes(node);
+        checkBannedTypes(node.expression);
+
+        if (node.typeArguments) {
+          checkBannedTypes(node);
+        }
       },
       TSInterfaceHeritage(node): void {
-        checkBannedTypes(node);
+        checkBannedTypes(node.expression);
+
+        if (node.typeArguments) {
+          checkBannedTypes(node);
+        }
       },
       TSTupleType(node): void {
         if (!node.elementTypes.length) {

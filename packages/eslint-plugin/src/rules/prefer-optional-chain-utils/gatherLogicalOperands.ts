@@ -6,6 +6,7 @@ import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
+  intersectionConstituents,
   isBigIntLiteralType,
   isBooleanLiteralType,
   isNumberLiteralType,
@@ -89,6 +90,9 @@ function isValidFalseBooleanCheckType(
 ): boolean {
   const type = parserServices.getTypeAtLocation(node);
   const types = unionConstituents(type);
+  const primitiveAndObjectParts = types.flatMap(type =>
+    intersectionConstituents(type),
+  );
 
   if (
     disallowFalseyLiteral &&
@@ -102,12 +106,18 @@ function isValidFalseBooleanCheckType(
     We don't want to consider these two cases because the boolean expression
     narrows out the non-nullish falsy cases - so converting the chain to `x?.a`
     would introduce a build error
-    */ (types.some(
+    */ (primitiveAndObjectParts.some(
       t => isBooleanLiteralType(t) && t.intrinsicName === 'false',
     ) ||
-      types.some(t => isStringLiteralType(t) && t.value === '') ||
-      types.some(t => isNumberLiteralType(t) && t.value === 0) ||
-      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0'))
+      primitiveAndObjectParts.some(
+        t => isStringLiteralType(t) && t.value === '',
+      ) ||
+      primitiveAndObjectParts.some(
+        t => isNumberLiteralType(t) && t.value === 0,
+      ) ||
+      primitiveAndObjectParts.some(
+        t => isBigIntLiteralType(t) && t.value.base10Value === '0',
+      ))
   ) {
     return false;
   }
@@ -131,7 +141,7 @@ function isValidFalseBooleanCheckType(
   if (options.checkBigInt === true) {
     allowedFlags |= ts.TypeFlags.BigIntLike;
   }
-  return types.every(t => isTypeFlagSet(t, allowedFlags));
+  return primitiveAndObjectParts.every(t => isTypeFlagSet(t, allowedFlags));
 }
 
 export function gatherLogicalOperands(
