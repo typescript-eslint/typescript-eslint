@@ -75,7 +75,7 @@ In some cases this distinction _may_ matter - which is why these fixers are cons
 declare const foo: { bar: boolean } | null | undefined;
 declare function acceptsBoolean(arg: boolean): void;
 
-// ✅ typechecks succesfully as the expression only returns `boolean`
+// ✅ typechecks successfully as the expression only returns `boolean`
 acceptsBoolean(foo != null && foo.bar);
 
 // ❌ typechecks UNSUCCESSFULLY as the expression returns `boolean | undefined`

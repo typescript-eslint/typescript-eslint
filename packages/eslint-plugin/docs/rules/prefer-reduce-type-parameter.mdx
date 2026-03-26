@@ -33,8 +33,8 @@ It will suggest instead pass the asserted type to `Array#reduce` as a generic ty
 [1, 2, 3].reduce((arr, num) => arr.concat(num * 2), [] as number[]);
 
 ['a', 'b'].reduce(
-  (accum, name) => ({
-    ...accum,
+  (accumulator, name) => ({
+    ...accumulator,
     [name]: true,
   }),
   {} as Record<string, boolean>,
@@ -48,8 +48,8 @@ It will suggest instead pass the asserted type to `Array#reduce` as a generic ty
 [1, 2, 3].reduce<number[]>((arr, num) => arr.concat(num * 2), []);
 
 ['a', 'b'].reduce<Record<string, boolean>>(
-  (accum, name) => ({
-    ...accum,
+  (accumulator, name) => ({
+    ...accumulator,
     [name]: true,
   }),
   {},
