@@ -991,6 +991,19 @@ ruleTester.run('strict-void-return', rule, {
     {
       code: noFormat`
         declare function foo(cb: () => void): void;
+        foo(async () => (((Promise.resolve(true)))));
+      `,
+      errors: [
+        {
+          column: 22,
+          line: 3,
+          messageId: 'asyncFunc',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+        declare function foo(cb: () => void): void;
         foo(() => {
           if (maybe) {
             return (((1) + 1));
@@ -1129,6 +1142,44 @@ ruleTester.run('strict-void-return', rule, {
           column: 22,
           line: 4,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        declare function foo(cb: () => void): void;
+        declare function foo(cb: () => any): void;
+        foo(() => { (async () => {
+          return Math.random();
+        })(); });
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function foo(cb: () => void): void;
+        foo(async function () {
+          return -Math.random();
+        });
+      `,
+      errors: [
+        {
+          column: 13,
+          line: 3,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        declare function foo(cb: () => void): void;
+        foo(function () { (async () => {
+          return -Math.random();
+        })(); });
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1318,6 +1369,21 @@ ruleTester.run('strict-void-return', rule, {
           column: 22,
           line: 3,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        declare function foo(cb: () => void): void;
+        foo(() => { (async () => {
+          try {
+            await Promise.resolve();
+          } catch {
+            console.error('fail');
+          }
+        })(); });
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1518,6 +1584,17 @@ ruleTester.run('strict-void-return', rule, {
           column: 29,
           line: 3,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        const arr = [1, 2];
+        arr.forEach(x => { (async () => {
+          console.log(x);
+        })(); });
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1629,6 +1706,18 @@ ruleTester.run('strict-void-return', rule, {
           column: 58,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        const cb: () => void = (): void => { (async () => {
+          try {
+            return Promise.resolve(1);
+          } catch {}
+        })(); };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1655,6 +1744,18 @@ ruleTester.run('strict-void-return', rule, {
           column: 42,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        const foo: () => void = () => { (async () => {
+          try {
+            return 1;
+          } catch {}
+        })(); };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1672,6 +1773,19 @@ ruleTester.run('strict-void-return', rule, {
           column: 57,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        const foo: () => void = (): void => { (async () => {
+          try {
+            await Promise.resolve();
+          } finally {
+          }
+        })(); };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1691,6 +1805,21 @@ ruleTester.run('strict-void-return', rule, {
           column: 42,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        const foo: () => void = () => { (async () => {
+          try {
+            await Promise.resolve();
+          } catch (err) {
+            console.error(err);
+          }
+          console.log('ok');
+        })(); };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1793,6 +1922,16 @@ ruleTester.run('strict-void-return', rule, {
           column: 81,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        const foo: ((arg: number) => void) | ((arg: string) => void) = () => { (async () => {
+          return 1;
+        })(); };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2128,6 +2267,21 @@ ruleTester.run('strict-void-return', rule, {
           column: 11,
           line: 4,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        declare let foo: { cb: (() => void) | number };
+        foo = {
+          cb: () => { (async () => {
+            if (maybe) {
+              return 'asd';
+            }
+          })(); },
+        };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2190,6 +2344,24 @@ ruleTester.run('strict-void-return', rule, {
           column: 22,
           line: 7,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        const foo: { cbs: Array<() => void> | null } = {
+          cbs: [
+            function* () {
+              yield 1;
+            },
+            () => { (async () => {
+              await 1;
+            })(); },
+            null,
+          ],
+        };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2513,6 +2685,21 @@ ruleTester.run('strict-void-return', rule, {
           column: 11,
           line: 6,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        interface Foo {
+          cb(): void;
+        }
+        class Bar implements Foo {
+          cb(): void { (async () => {
+            return Promise.resolve('siema');
+          })(); }
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2536,6 +2723,25 @@ ruleTester.run('strict-void-return', rule, {
           column: 11,
           line: 6,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        interface Foo {
+          cb(): void;
+        }
+        class Bar implements Foo {
+          cb() { (async () => {
+            try {
+              return { a: ['asdf', 1234] };
+            } catch {
+              console.error('error');
+            }
+          })(); }
+        }
+      `,
+            },
+          ],
         },
       ],
     },
