@@ -408,6 +408,55 @@ function f(this: void, a: boolean): void;
 function f(this: {}, a: boolean): void;
 function f(this: void | {}, a: boolean): void {}
     `,
+    // Different type parameter constraints - function a
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+
+function a<T extends A>(s: T, param: string): string;
+function a<R extends B>(s: R): string;
+function a<T extends A | B>(s: T, param?: string): string {
+  return 'aaa';
+}
+    `,
+    // Different type parameter constraints - function b (same name)
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+
+function b<T extends A>(s: T, param: string): string;
+function b<T extends B>(s: T): string;
+function b<T extends A | B>(s: T, param?: string): string {
+  return 'aaa';
+}
+    `,
+    // Asymmetric type parameters - one has type params, other doesn't
+    `
+function d<T>(x: T): void;
+function d(x: number): void;
+function d<T>(x: T | number): void {}
+    `,
+    // Multiple type parameters with different constraints
+    `
+function e<T extends string, U extends number>(x: T, y: U): void;
+function e<R extends boolean, S extends symbol>(x: R, y: S): void;
+function e<T extends string | boolean, U extends number | symbol>(
+  x: T,
+  y: U,
+): void {}
+    `,
+    // Multi-character type parameter names
+    `
+function g<Type extends string>(x: Type): void;
+function g<Element extends number>(x: Element): void;
+function g<Type extends string | number>(x: Type): void {}
+    `,
+    // Complex nested generics
+    `
+function h<T extends string>(x: Array<T>): void;
+function h<R extends number>(x: Array<R>): void;
+function h<T extends string | number>(x: Array<T>): void {}
+    `,
   ],
   invalid: [
     {
@@ -1253,6 +1302,102 @@ function f(this: string | number, a: boolean): void {}
           },
           line: 3,
           messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+type A = 1 | 2;
+type B = 3 | 4;
+function c<T extends string>(s: T, param: string): string;
+function c<R extends string>(s: R): string;
+function c<T extends string>(s: T, param?: string): string {
+  return 'aaa';
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 4,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      code: `
+function i<T extends string, U extends number>(x: T, y: U, z: string): void;
+function i<R extends string, S extends number>(x: R, y: S): void;
+function i<T extends string, U extends number>(x: T, y: U, z?: string): void {}
+      `,
+      errors: [
+        {
+          column: 60,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      code: `
+function j<T extends string>(x: T[], y: string): void;
+function j<R extends string>(x: R[]): void;
+function j<T extends string>(x: T[], y?: string): void {}
+      `,
+      errors: [
+        {
+          column: 38,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Same-constrained type parameters with optional parameter
+      code: `
+function f<T>(a: number): void;
+function f<U>(a: number, b?: string): void;
+function f<T>(a: number, b?: string): void {}
+      `,
+      errors: [
+        {
+          column: 26,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Same-constrained type parameters with rest parameter
+      code: `
+function g<T>(a: string): void;
+function g<U>(a: string, ...b: number[]): void;
+function g<T>(a: string, ...b: number[]): void {}
+      `,
+      errors: [
+        {
+          column: 26,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 3,
+          messageId: 'omittingRestParameter',
         },
       ],
     },
