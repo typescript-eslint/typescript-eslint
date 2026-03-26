@@ -709,6 +709,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 10.0.0(jiti@2.6.1)
+      minimatch:
+        specifier: '*'
+        version: 10.2.4
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
