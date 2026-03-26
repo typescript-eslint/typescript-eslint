@@ -1,8 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import { isTypeAnyType, isTypeUnknownType } from './predicates';
 
@@ -109,6 +109,130 @@ function isUnsafeAssignmentWorker(
       );
       if (unsafe) {
         return { receiver, sender: type };
+      }
+    }
+
+    return false;
+  }
+
+  // Check object types - compare properties, index signatures, and call signatures
+  if (tsutils.isObjectType(type) && tsutils.isObjectType(receiver)) {
+    const typeProperties = type.getProperties();
+    const receiverProperties = new Map(
+      receiver.getProperties().map(prop => [prop.getName(), prop]),
+    );
+
+    for (const typeProp of typeProperties) {
+      const receiverProp = receiverProperties.get(typeProp.getName());
+      if (!receiverProp) {
+        continue;
+      }
+
+      const typePropType = checker.getTypeOfSymbol(typeProp);
+      const receiverPropType = checker.getTypeOfSymbol(receiverProp);
+
+      const unsafe = isUnsafeAssignmentWorker(
+        typePropType,
+        receiverPropType,
+        checker,
+        senderNode,
+        visited,
+      );
+      if (unsafe) {
+        return { receiver, sender: type };
+      }
+    }
+
+    for (const indexKind of [ts.IndexKind.String, ts.IndexKind.Number]) {
+      const typeIndexInfo = checker.getIndexInfoOfType(type, indexKind);
+      const receiverIndexInfo = checker.getIndexInfoOfType(receiver, indexKind);
+
+      if (typeIndexInfo && receiverIndexInfo) {
+        const unsafe = isUnsafeAssignmentWorker(
+          typeIndexInfo.type,
+          receiverIndexInfo.type,
+          checker,
+          senderNode,
+          visited,
+        );
+        if (unsafe) {
+          return { receiver, sender: type };
+        }
+      }
+    }
+
+    // Check call signatures (function return types)
+    const senderSignatures = type.getCallSignatures();
+    const receiverSignatures = receiver.getCallSignatures();
+
+    if (senderSignatures.length > 0 && receiverSignatures.length > 0) {
+      const minSigs = Math.min(
+        senderSignatures.length,
+        receiverSignatures.length,
+      );
+
+      for (let i = 0; i < minSigs; i += 1) {
+        const senderReturnType = checker.getReturnTypeOfSignature(
+          senderSignatures[i],
+        );
+        const receiverReturnType = checker.getReturnTypeOfSignature(
+          receiverSignatures[i],
+        );
+
+        const unsafe = isUnsafeAssignmentWorker(
+          senderReturnType,
+          receiverReturnType,
+          checker,
+          senderNode,
+          visited,
+        );
+        if (unsafe) {
+          return { receiver, sender: type };
+        }
+      }
+    }
+  }
+
+  // Check union types - compare constituent types pairwise
+  if (type.isUnion() && receiver.isUnion()) {
+    const senderMembers = type.types;
+    const receiverMembers = receiver.types;
+
+    if (senderMembers.length === receiverMembers.length) {
+      for (let i = 0; i < senderMembers.length; i += 1) {
+        const unsafe = isUnsafeAssignmentWorker(
+          senderMembers[i],
+          receiverMembers[i],
+          checker,
+          senderNode,
+          visited,
+        );
+        if (unsafe) {
+          return { receiver, sender: type };
+        }
+      }
+    }
+
+    return false;
+  }
+
+  // Check intersection types - compare constituent types pairwise
+  if (type.isIntersection() && receiver.isIntersection()) {
+    const senderMembers = type.types;
+    const receiverMembers = receiver.types;
+
+    if (senderMembers.length === receiverMembers.length) {
+      for (let i = 0; i < senderMembers.length; i += 1) {
+        const unsafe = isUnsafeAssignmentWorker(
+          senderMembers[i],
+          receiverMembers[i],
+          checker,
+          senderNode,
+          visited,
+        );
+        if (unsafe) {
+          return { receiver, sender: type };
+        }
       }
     }
 
