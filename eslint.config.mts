@@ -1,5 +1,3 @@
-// @ts-check
-
 import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import { fixupPluginRules } from '@eslint/compat';
 import eslint from '@eslint/js';
@@ -451,7 +449,7 @@ export default defineConfig(
   },
   {
     files: [
-      'eslint.config.mjs',
+      'eslint.config.mts',
       'knip.ts',
       'packages/*/src/index.ts',
       'vitest.config.mts',

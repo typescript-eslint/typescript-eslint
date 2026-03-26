@@ -415,9 +415,6 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 10.0.0(jiti@2.6.1)
-      rimraf:
-        specifier: 'catalog:'
-        version: 5.0.10
       vitest:
         specifier: 'catalog:'
         version: 4.0.18(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.2)
