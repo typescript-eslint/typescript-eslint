@@ -33,7 +33,7 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
    * export default tseslint.config({
    *   files: ['** /*.ts'],
    *   extends: [
-   *     eslint.configs.recommended,
+   *     js.configs.recommended,
    *     tseslint.configs.recommended,
    *   ],
    *   rules: {
@@ -46,7 +46,7 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
    *
    * export default [
    *   {
-   *     ...eslint.configs.recommended,
+   *     ...js.configs.recommended,
    *     files: ['** /*.ts'],
    *   },
    *   ...tseslint.configs.recommended.map(conf => ({
@@ -75,11 +75,11 @@ export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
  * ```js
  * // @ts-check
  *
- * import eslint from '@eslint/js';
+ * import js from '@eslint/js';
  * import tseslint from 'typescript-eslint';
  *
  * export default tseslint.config(
- *   eslint.configs.recommended,
+ *   js.configs.recommended,
  *   tseslint.configs.recommended,
  *   {
  *     rules: {

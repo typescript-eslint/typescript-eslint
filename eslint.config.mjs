@@ -2,7 +2,7 @@
 
 import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import { fixupPluginRules } from '@eslint/compat';
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
 import vitestPlugin from '@vitest/eslint-plugin';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
@@ -84,7 +84,7 @@ export default defineConfig(
 
   // extends ...
   eslintCommentsPlugin.recommended,
-  { name: `${eslint.meta.name}/recommended`, ...eslint.configs.recommended },
+  { name: `${js.meta.name}/recommended`, ...js.configs.recommended },
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   jsdocPlugin.configs['flat/recommended-typescript-error'],
