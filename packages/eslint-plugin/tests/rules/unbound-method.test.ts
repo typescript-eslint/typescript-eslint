@@ -1,46 +1,7 @@
-import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
-
-import type { MessageIds, Options } from '../../src/rules/unbound-method';
-
 import rule from '../../src/rules/unbound-method';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes();
-
-function addContainsMethodsClass(code: string): string {
-  return `
-class ContainsMethods {
-  bound?: () => void;
-  unbound?(): void;
-
-  static boundStatic?: () => void;
-  static unboundStatic?(): void;
-}
-
-let instance = new ContainsMethods();
-
-const arith = {
-  double(this: void, x: number): number {
-    return x * 2;
-  }
-};
-
-${code}
-  `;
-}
-function addContainsMethodsClassInvalid(
-  code: string[],
-): InvalidTestCase<MessageIds, Options>[] {
-  return code.map(c => ({
-    code: addContainsMethodsClass(c),
-    errors: [
-      {
-        line: 18,
-        messageId: 'unboundWithoutThisAnnotation',
-      },
-    ],
-  }));
-}
 
 ruleTester.run('unbound-method', rule, {
   valid: [
@@ -120,114 +81,1482 @@ ruleTester.run('unbound-method', rule, {
       const fooObject = { foo };
       const { foo: bar } = fooObject;
     `,
-    ...[
-      'instance.bound();',
-      'instance.unbound();',
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      'ContainsMethods.boundStatic();',
-      'ContainsMethods.unboundStatic();',
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
 
-      'const bound = instance.bound;',
-      'const boundStatic = ContainsMethods;',
+let instance = new ContainsMethods();
 
-      'const { bound } = instance;',
-      'const { boundStatic } = ContainsMethods;',
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
 
-      '(instance.bound)();',
-      '(instance.unbound)();',
+instance.bound();
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      '(ContainsMethods.boundStatic)();',
-      '(ContainsMethods.unboundStatic)();',
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
 
-      'instance.bound``;',
-      'instance.unbound``;',
+let instance = new ContainsMethods();
 
-      'if (instance.bound) { }',
-      'if (instance.unbound) { }',
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
 
-      'if (instance.bound !== undefined) { }',
-      'if (instance.unbound !== undefined) { }',
+instance.unbound();
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      'if (ContainsMethods.boundStatic) { }',
-      'if (ContainsMethods.unboundStatic) { }',
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
 
-      'if (ContainsMethods.boundStatic !== undefined) { }',
-      'if (ContainsMethods.unboundStatic !== undefined) { }',
+let instance = new ContainsMethods();
 
-      'if (ContainsMethods.boundStatic && instance) { }',
-      'if (ContainsMethods.unboundStatic && instance) { }',
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
 
-      'if (instance.bound || instance) { }',
-      'if (instance.unbound || instance) { }',
+ContainsMethods.boundStatic();
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      'ContainsMethods.unboundStatic && 0 || ContainsMethods;',
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
 
-      '(instance.bound || instance) ? 1 : 0',
-      '(instance.unbound || instance) ? 1 : 0',
+let instance = new ContainsMethods();
 
-      'while (instance.bound) { }',
-      'while (instance.unbound) { }',
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
 
-      'while (instance.bound !== undefined) { }',
-      'while (instance.unbound !== undefined) { }',
+ContainsMethods.unboundStatic();
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      'while (ContainsMethods.boundStatic) { }',
-      'while (ContainsMethods.unboundStatic) { }',
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
 
-      'while (ContainsMethods.boundStatic !== undefined) { }',
-      'while (ContainsMethods.unboundStatic !== undefined) { }',
+let instance = new ContainsMethods();
 
-      'instance.bound as any;',
-      'ContainsMethods.boundStatic as any;',
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
 
-      'instance.bound++;',
-      '+instance.bound;',
-      '++instance.bound;',
-      'instance.bound--;',
-      '-instance.bound;',
-      '--instance.bound;',
-      'instance.bound += 1;',
-      'instance.bound -= 1;',
-      'instance.bound *= 1;',
-      'instance.bound /= 1;',
+const bound = instance.bound;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      'instance.bound || 0;',
-      'instance.bound && 0;',
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
 
-      'instance.bound ? 1 : 0;',
-      'instance.unbound ? 1 : 0;',
+let instance = new ContainsMethods();
 
-      'ContainsMethods.boundStatic++;',
-      '+ContainsMethods.boundStatic;',
-      '++ContainsMethods.boundStatic;',
-      'ContainsMethods.boundStatic--;',
-      '-ContainsMethods.boundStatic;',
-      '--ContainsMethods.boundStatic;',
-      'ContainsMethods.boundStatic += 1;',
-      'ContainsMethods.boundStatic -= 1;',
-      'ContainsMethods.boundStatic *= 1;',
-      'ContainsMethods.boundStatic /= 1;',
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
 
-      'ContainsMethods.boundStatic || 0;',
-      'instane.boundStatic && 0;',
+const boundStatic = ContainsMethods;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      'ContainsMethods.boundStatic ? 1 : 0;',
-      'ContainsMethods.unboundStatic ? 1 : 0;',
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
 
-      "typeof instance.bound === 'function';",
-      "typeof instance.unbound === 'function';",
+let instance = new ContainsMethods();
 
-      "typeof ContainsMethods.boundStatic === 'function';",
-      "typeof ContainsMethods.unboundStatic === 'function';",
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
 
-      'instance.unbound = () => {};',
-      'instance.unbound = instance.unbound.bind(instance);',
-      'if (!!instance.unbound) {}',
-      'void instance.unbound',
-      'delete instance.unbound',
+const { bound } = instance;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      'const { double } = arith;',
-    ].map(addContainsMethodsClass),
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+const { boundStatic } = ContainsMethods;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound();
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.unbound();
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic();
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.unboundStatic();
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound\`\`;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.unbound\`\`;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (instance.bound) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (instance.unbound) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (instance.bound !== undefined) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (instance.unbound !== undefined) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (ContainsMethods.boundStatic) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (ContainsMethods.unboundStatic) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (ContainsMethods.boundStatic !== undefined) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (ContainsMethods.unboundStatic !== undefined) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (ContainsMethods.boundStatic && instance) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (ContainsMethods.unboundStatic && instance) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (instance.bound || instance) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (instance.unbound || instance) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+(ContainsMethods.unboundStatic && 0) || ContainsMethods;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound || instance ? 1 : 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.unbound || instance ? 1 : 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+while (instance.bound) {}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+while (instance.unbound) {}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+while (instance.bound !== undefined) {}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+while (instance.unbound !== undefined) {}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+while (ContainsMethods.boundStatic) {}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+while (ContainsMethods.unboundStatic) {}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+while (ContainsMethods.boundStatic !== undefined) {}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+while (ContainsMethods.unboundStatic !== undefined) {}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound as any;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic as any;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound++;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
++instance.bound;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+++instance.bound;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound--;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+-instance.bound;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+--instance.bound;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound += 1;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound -= 1;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound *= 1;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound /= 1;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound || 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound && 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.bound ? 1 : 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.unbound ? 1 : 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic++;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
++ContainsMethods.boundStatic;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+++ContainsMethods.boundStatic;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic--;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+-ContainsMethods.boundStatic;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+--ContainsMethods.boundStatic;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic += 1;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic -= 1;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic *= 1;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic /= 1;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic || 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instane.boundStatic && 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.boundStatic ? 1 : 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.unboundStatic ? 1 : 0;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+typeof instance.bound === 'function';
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+typeof instance.unbound === 'function';
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+typeof ContainsMethods.boundStatic === 'function';
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+typeof ContainsMethods.unboundStatic === 'function';
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.unbound = () => {};
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.unbound = instance.unbound.bind(instance);
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+if (!!instance.unbound) {
+}
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+void instance.unbound;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+delete instance.unbound;
+    `,
+    `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+const { double } = arith;
+    `,
     `
 interface RecordA {
   readonly type: 'A';
@@ -503,14 +1832,34 @@ const x = console.log;
       ],
     },
     {
-      code: addContainsMethodsClass(`
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
 function foo(arg: ContainsMethods | null) {
   const unbound = arg?.unbound;
   arg.unbound += 1;
   arg?.unbound as any;
 }
-      `),
+      `,
       errors: [
+        {
+          line: 19,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
         {
           line: 20,
           messageId: 'unboundWithoutThisAnnotation',
@@ -519,30 +1868,305 @@ function foo(arg: ContainsMethods | null) {
           line: 21,
           messageId: 'unboundWithoutThisAnnotation',
         },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+const unbound = instance.unbound;
+      `,
+      errors: [
         {
-          line: 22,
+          line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
-    ...addContainsMethodsClassInvalid([
-      'const unbound = instance.unbound;',
-      'const unboundStatic = ContainsMethods.unboundStatic;',
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      'const { unbound } = instance;',
-      'const { unboundStatic } = ContainsMethods;',
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
 
-      '<any>instance.unbound;',
-      'instance.unbound as any;',
+let instance = new ContainsMethods();
 
-      '<any>ContainsMethods.unboundStatic;',
-      'ContainsMethods.unboundStatic as any;',
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
 
-      'instance.unbound || 0;',
-      'ContainsMethods.unboundStatic || 0;',
+const unboundStatic = ContainsMethods.unboundStatic;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
 
-      'instance.unbound ? instance.unbound : null',
-    ]),
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+const { unbound } = instance;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+const { unboundStatic } = ContainsMethods;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+<any>instance.unbound;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.unbound as any;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+<any>ContainsMethods.unboundStatic;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.unboundStatic as any;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.unbound || 0;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+ContainsMethods.unboundStatic || 0;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+instance.unbound ? instance.unbound : null;
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
     {
       code: `
 class ContainsMethods {
