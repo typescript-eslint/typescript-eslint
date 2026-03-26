@@ -34,6 +34,23 @@ function foo<T extends boolean>(a: T) {
   return a as T | number;
 }
       `,
+
+      // this test is to ensure the rule doesn't crash with recursive template literal
+      // types that cause isTypeAssignableTo to exceed the call stack
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11824
+      `
+type A<T extends string> = T extends \`\${infer F}\${infer R}\`
+  ? \`\${F}b\${A<R>}\`
+  : '';
+
+type B<T extends string> = T extends \`\${infer F}\${infer R}\`
+  ? \`\${F}b\${B<R>}\`
+  : '';
+
+function foo<T extends string>(source: A<T>) {
+  source as B<T>;
+}
+      `,
     ],
     invalid: [
       {
@@ -1358,6 +1375,37 @@ function stringToNarrower<T extends string>(x: T) {
             endLine: 3,
             line: 3,
             messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+
+      // exercises the second isTypeAssignableTo call
+      // (when the asserted type is a type parameter with a constraint)
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11824
+      {
+        code: `
+type A<T extends string> = T extends \`\${infer F}\${infer R}\`
+  ? \`\${F}b\${A<R>}\`
+  : '';
+
+type B<T extends string> = T extends \`\${infer F}\${infer R}\`
+  ? \`\${F}b\${B<R>}\`
+  : '';
+
+function foo<T extends string, U extends B<T>>(source: A<T>) {
+  source as U;
+}
+        `,
+        errors: [
+          {
+            column: 3,
+            data: {
+              type: 'U',
+            },
+            endColumn: 14,
+            endLine: 11,
+            line: 11,
+            messageId: 'unsafeTypeAssertionAssignableToConstraint',
           },
         ],
       },
