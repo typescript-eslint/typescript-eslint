@@ -6,12 +6,13 @@
 import type { LibDefinition } from '../variable';
 
 import { TYPE } from './base-config';
-import { es2025_collection } from './es2025.collection';
+import { es2024_collection } from './es2024.collection';
 
-export const esnext_collection: LibDefinition = {
-  libs: [es2025_collection],
+export const es2025_collection: LibDefinition = {
+  libs: [es2024_collection],
   variables: [
-    ['Map', TYPE],
-    ['WeakMap', TYPE],
+    ['ReadonlySetLike', TYPE],
+    ['Set', TYPE],
+    ['ReadonlySet', TYPE],
   ],
 };
