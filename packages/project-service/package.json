@@ -54,6 +54,7 @@
     "debug": "^4.4.3"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
@@ -70,6 +71,9 @@
     "name": "project-service",
     "includedScripts": [
       "clean"
-    ]
+    ],
+    "targets": {
+      "typecheck": {}
+    }
   }
 }
