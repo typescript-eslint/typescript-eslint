@@ -12,11 +12,12 @@ import type { MakeRequired } from '../util';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getParserServices,
   isClosingParenToken,
   isOpeningParenToken,
   isParenthesized,
+  isAwaitExpression,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -119,8 +120,19 @@ export default createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const type = getConstrainedTypeAtLocation(services, node);
-        if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+        const checker = services.program.getTypeChecker();
+        const { constraintType } = getConstraintInfo(
+          checker,
+          services.getTypeAtLocation(
+            isAwaitExpression(node) ? node.argument : node,
+          ),
+        );
+
+        if (constraintType == null) {
+          return;
+        }
+
+        if (!tsutils.isTypeFlagSet(constraintType, ts.TypeFlags.VoidLike)) {
           // not a void expression
           return;
         }
@@ -420,8 +432,15 @@ export default createRule<Options, MessageId>({
           ? node.argument
           : node.body;
 
-      const type = getConstrainedTypeAtLocation(services, targetNode);
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+      const checker = services.program.getTypeChecker();
+      const { constraintType } = getConstraintInfo(
+        checker,
+        services.getTypeAtLocation(targetNode),
+      );
+      return (
+        constraintType != null &&
+        tsutils.isTypeFlagSet(constraintType, ts.TypeFlags.VoidLike)
+      );
     }
 
     function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
