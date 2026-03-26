@@ -89,10 +89,17 @@ export default createRule({
         node.callee.name === 'RegExp'
       ) {
         const flags = node.arguments.at(1);
-        return !(
-          flags?.type === AST_NODE_TYPES.Literal &&
-          typeof flags.value === 'string' &&
-          flags.value.includes('g')
+
+        if (!flags) {
+          return true;
+        }
+
+        const flagsValue = getStaticValue(flags, globalScope);
+
+        return (
+          !!flagsValue &&
+          (typeof flagsValue.value !== 'string' ||
+            !flagsValue.value.includes('g'))
         );
       }
 
