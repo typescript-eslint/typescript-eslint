@@ -275,6 +275,15 @@ class Bar extends Foo<string> {}
 function f<T>() {}
 f<number, number>();
     `,
+    `
+class Foo<T> {
+  public constructor(a: any, b: any, c: any, d: any) {}
+}
+interface Bar {
+  val: any;
+}
+let foo = new Foo<Bar>(0, 0, 0, { val: 0 });
+    `,
     {
       code: `
 function Button<T>() {
