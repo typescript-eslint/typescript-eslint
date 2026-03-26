@@ -1061,6 +1061,162 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
       `,
       options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
+    {
+      code: `
+declare const a: Promise<boolean> | boolean;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | false;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | boolean | null;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const f: () => Promise<boolean> | boolean;
+if (f()) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const f: (() => Promise<boolean>) | (() => boolean);
+if (f()) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const a: Promise<number> | number;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const a: Promise<number> | 0;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | boolean;
+const b = a ? 1 : 2;
+      `,
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | boolean;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | false;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | true;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | boolean | null;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const f: () => Promise<boolean> | boolean;
+if (f()) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const f: (() => Promise<boolean>) | (() => boolean);
+if (f()) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const a: Promise<number> | number;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const a: Promise<number> | 1;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const a: Promise<number> | 0;
+if (a) {
+}
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | boolean;
+const b = a ? 1 : 2;
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | true;
+const b = a ? 1 : 2;
+      `,
+      options: [{ checksConditionals: { flagUnions: 'none' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | true;
+const b = a ? 1 : 2;
+      `,
+      options: [{ checksConditionals: { flagUnions: undefined } }],
+    },
     "const notAFn1: string = '';",
     'const notAFn2: number = 1;',
     'const notAFn3: boolean = true;',
@@ -2658,6 +2814,241 @@ const a: A = {
           messageId: 'voidReturnProperty',
         },
       ],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | boolean;
+if (a) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | false;
+if (a) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | true;
+if (a) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | boolean | null;
+if (a) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const f: () => Promise<boolean> | boolean;
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const f: (() => Promise<boolean>) | (() => boolean);
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const a: Promise<number> | number;
+if (a) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const a: Promise<number> | 1;
+if (a) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const a: Promise<number> | 0;
+if (a) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | boolean;
+const b = a ? 1 : 2;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | true;
+const b = a ? 1 : 2;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'all' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | true;
+if (a) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const a: Promise<number> | 1;
+if (a) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
+    },
+    {
+      code: `
+declare const a: Promise<boolean> | true;
+const b = a ? 1 : 2;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [{ checksConditionals: { flagUnions: 'narrow' } }],
     },
   ],
 });

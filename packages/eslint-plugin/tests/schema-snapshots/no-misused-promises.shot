@@ -7,7 +7,24 @@
     "properties": {
       "checksConditionals": {
         "description": "Whether to warn when a Promise is provided to conditional statements.",
-        "type": "boolean"
+        "oneOf": [
+          {
+            "description": "Whether to disable checking all conditional statements.",
+            "type": "boolean"
+          },
+          {
+            "additionalProperties": false,
+            "description": "Which forms of conditionals may be checked.",
+            "properties": {
+              "flagUnions": {
+                "description": "Whether to warn when a promise non-promise union is provided.",
+                "enum": ["all", "narrow", "none"],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        ]
       },
       "checksSpreads": {
         "description": "Whether to warn when `...` spreading a `Promise`.",
@@ -64,7 +81,20 @@
 type Options = [
   {
     /** Whether to warn when a Promise is provided to conditional statements. */
-    checksConditionals?: boolean;
+    checksConditionals?: /**
+       * Whether to warn when a Promise is provided to conditional statements.
+       * Whether to disable checking all conditional statements.
+       */
+      | boolean
+      /** Which forms of conditionals may be checked. */
+      | {
+          /** Whether to warn when a promise non-promise union is provided. */
+          flagUnions?:
+            | 'narrow'
+            | 'none'
+            /** Whether to warn when a promise non-promise union is provided. */
+            | 'all';
+        };
     /** Whether to warn when `...` spreading a `Promise`. */
     checksSpreads?: boolean;
     /** Whether to warn when a Promise is returned from a function typed as returning `void`. */
