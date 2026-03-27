@@ -100,9 +100,7 @@ export function createParser(
             ),
           getResolvedSignature: node =>
             checker.getResolvedSignature(
-              converted.astMaps.esTreeNodeToTSNodeMap.get(
-                node,
-              ) as ts.CallLikeExpression,
+              converted.astMaps.esTreeNodeToTSNodeMap.get(node),
             ),
           getSymbolAtLocation: node =>
             checker.getSymbolAtLocation(

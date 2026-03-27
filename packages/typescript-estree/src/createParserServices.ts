@@ -35,9 +35,7 @@ export function createParserServices(
         astMaps.esTreeNodeToTSNodeMap.get(node) as ts.Expression,
       ),
     getResolvedSignature: node =>
-      checker.getResolvedSignature(
-        astMaps.esTreeNodeToTSNodeMap.get(node) as ts.CallLikeExpression,
-      ),
+      checker.getResolvedSignature(astMaps.esTreeNodeToTSNodeMap.get(node)),
     getSymbolAtLocation: node =>
       checker.getSymbolAtLocation(astMaps.esTreeNodeToTSNodeMap.get(node)),
     getTypeAtLocation: node =>
