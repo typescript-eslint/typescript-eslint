@@ -199,7 +199,7 @@ export class RuleTester extends TestFramework {
   }
 
   #getLinterForFilename(filename: string | undefined): Linter {
-    let basePath: string | undefined =
+    let basePath =
       this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir;
     // For an absolute path (`/foo.ts`), or a path that steps
     // up (`../foo.ts`), resolve the path relative to the base
@@ -606,7 +606,7 @@ export class RuleTester extends TestFramework {
     afterAST: TSESTree.Program;
     beforeAST: TSESTree.Program;
     config: RuleTesterConfig;
-    filename?: string;
+    filename?: string | undefined;
     messages: Linter.LintMessage[];
     outputs: string[];
   } {

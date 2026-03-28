@@ -22,8 +22,8 @@ const enum Readonlyness {
 }
 
 export interface ReadonlynessOptions {
-  readonly allow?: TypeOrValueSpecifier[];
-  readonly treatMethodsAsReadonly?: boolean;
+  readonly allow?: TypeOrValueSpecifier[] | undefined;
+  readonly treatMethodsAsReadonly?: boolean | undefined;
 }
 
 export const readonlynessOptionsSchema = {
@@ -37,10 +37,10 @@ export const readonlynessOptionsSchema = {
   type: 'object',
 } satisfies JSONSchema4;
 
-export const readonlynessOptionsDefaults: ReadonlynessOptions = {
+export const readonlynessOptionsDefaults = {
   allow: [],
   treatMethodsAsReadonly: false,
-};
+} satisfies ReadonlynessOptions;
 
 function hasSymbol(node: ts.Node): node is { symbol: ts.Symbol } & ts.Node {
   return Object.hasOwn(node, 'symbol');
