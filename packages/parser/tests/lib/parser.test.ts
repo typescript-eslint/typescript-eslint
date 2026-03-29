@@ -129,6 +129,9 @@ describe('parser', () => {
 
   it.for([
     ['esnext.full', ScriptTarget.ESNext],
+    ['es2025.full', ScriptTarget.ES2025],
+    ['es2024.full', ScriptTarget.ES2024],
+    ['es2023.full', ScriptTarget.ES2023],
     ['es2022.full', ScriptTarget.ES2022],
     ['es2021.full', ScriptTarget.ES2021],
     ['es2020.full', ScriptTarget.ES2020],
@@ -137,8 +140,8 @@ describe('parser', () => {
     ['es2017.full', ScriptTarget.ES2017],
     ['es2016.full', ScriptTarget.ES2016],
     ['es6', ScriptTarget.ES2015],
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- Deprecated in TS 6 but we support TS < 6
     ['lib', ScriptTarget.ES5],
-    ['lib', undefined],
   ] as const)(
     'calls analyze() with `lib: [%s]` when the compiler options target is %s',
     ([lib, target], { expect }) => {
@@ -161,6 +164,54 @@ describe('parser', () => {
           },
         },
       } as typescriptESTree.ParseAndGenerateServicesResult<typescriptESTree.TSESTreeOptions>);
+
+      parseForESLint(code, config);
+
+      expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect.anything(),
+        expect.objectContaining({
+          lib: [lib],
+        }),
+      );
+    },
+  );
+
+  it.for([
+    ['lib', '5.9'],
+    [`es${new Date().getFullYear() - 1}.full`, '6.0'],
+  ] as const)(
+    'calls analyze() with `lib: [%s]` as the default when TS version is %s',
+    ([lib, tsVersion], { expect }) => {
+      const code = 'const valid = true;';
+      const spy = vi.spyOn(scopeManager, 'analyze');
+      const config: ParserOptions = {
+        filePath: 'isolated-file.src.ts',
+        project: 'tsconfig.json',
+        tsconfigRootDir: FIXTURES_DIR,
+      };
+
+      vi.spyOn(
+        typescriptESTree,
+        'parseAndGenerateServices',
+      ).mockReturnValueOnce({
+        ast: {},
+        services: {
+          program: {
+            // Explicitly not setting a target so that the default is used
+            getCompilerOptions: () => ({ target: undefined }),
+          },
+        },
+      } as typescriptESTree.ParseAndGenerateServicesResult<typescriptESTree.TSESTreeOptions>);
+
+      vi.spyOn(
+        typescriptESTree,
+        'typescriptVersionIsAtLeast',
+        'get',
+      ).mockReturnValue({
+        '5.9': false,
+        '6.0': false,
+        [tsVersion]: true,
+      } as Record<string, boolean>);
 
       parseForESLint(code, config);
 

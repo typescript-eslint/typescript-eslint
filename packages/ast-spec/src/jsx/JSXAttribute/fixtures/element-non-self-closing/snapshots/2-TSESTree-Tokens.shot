@@ -81,11 +81,21 @@
   },
   Punctuator {
     type: "Punctuator",
-    value: "</",
+    value: "<",
 
-    range: [17, 19],
+    range: [17, 18],
     loc: {
       start: { column: 17, line: 1 },
+      end: { column: 18, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "/",
+
+    range: [18, 19],
+    loc: {
+      start: { column: 18, line: 1 },
       end: { column: 19, line: 1 },
     },
   },
