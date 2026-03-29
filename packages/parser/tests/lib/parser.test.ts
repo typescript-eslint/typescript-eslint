@@ -142,7 +142,6 @@ describe('parser', () => {
     ['es6', ScriptTarget.ES2015],
     // eslint-disable-next-line @typescript-eslint/no-deprecated -- Deprecated in TS 6 but we support TS < 6
     ['lib', ScriptTarget.ES5],
-    ['lib', undefined],
   ] as const)(
     'calls analyze() with `lib: [%s]` when the compiler options target is %s',
     ([lib, target], { expect }) => {
@@ -165,6 +164,54 @@ describe('parser', () => {
           },
         },
       } as typescriptESTree.ParseAndGenerateServicesResult<typescriptESTree.TSESTreeOptions>);
+
+      parseForESLint(code, config);
+
+      expect(spy).toHaveBeenCalledExactlyOnceWith(
+        expect.anything(),
+        expect.objectContaining({
+          lib: [lib],
+        }),
+      );
+    },
+  );
+
+  it.for([
+    ['lib', '5.9'],
+    [`es${new Date().getFullYear() - 1}.full`, '6.0'],
+  ] as const)(
+    'calls analyze() with `lib: [%s]` as the default when TS version is %s',
+    ([lib, tsVersion], { expect }) => {
+      const code = 'const valid = true;';
+      const spy = vi.spyOn(scopeManager, 'analyze');
+      const config: ParserOptions = {
+        filePath: 'isolated-file.src.ts',
+        project: 'tsconfig.json',
+        tsconfigRootDir: FIXTURES_DIR,
+      };
+
+      vi.spyOn(
+        typescriptESTree,
+        'parseAndGenerateServices',
+      ).mockReturnValueOnce({
+        ast: {},
+        services: {
+          program: {
+            // Explicitly not setting a target so that the default is used
+            getCompilerOptions: () => ({ target: undefined }),
+          },
+        },
+      } as typescriptESTree.ParseAndGenerateServicesResult<typescriptESTree.TSESTreeOptions>);
+
+      vi.spyOn(
+        typescriptESTree,
+        'typescriptVersionIsAtLeast',
+        'get',
+      ).mockReturnValue({
+        '5.9': false,
+        '6.0': false,
+        [tsVersion]: true,
+      } as Record<string, boolean>);
 
       parseForESLint(code, config);
 
