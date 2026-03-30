@@ -1,3 +1,27 @@
+## 8.58.0 (2026-03-30)
+
+### 🚀 Features
+
+- support TypeScript 6 ([#12124](https://github.com/typescript-eslint/typescript-eslint/pull/12124))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-regexp-exec] avoid fixing unknown RegExp flags ([#12161](https://github.com/typescript-eslint/typescript-eslint/pull/12161))
+- **eslint-plugin:** [no-extraneous-class] handle index signatures ([#12142](https://github.com/typescript-eslint/typescript-eslint/pull/12142))
+- **eslint-plugin:** crash in `no-unnecessary-type-arguments` ([#12163](https://github.com/typescript-eslint/typescript-eslint/pull/12163))
+
+### ❤️ Thank You
+
+- ej shafran @ej-shafran
+- Evyatar Daud @StyleShit
+- GG ZIBLAKING
+- milkboy2564 @SeolJaeHyeok
+- teee32 @teee32
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.57.2 (2026-03-23)
 
 ### 🩹 Fixes
