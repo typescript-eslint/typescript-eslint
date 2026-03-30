@@ -57,6 +57,7 @@
   "devDependencies": {
     "@types/babel__code-frame": "catalog:",
     "@typescript-eslint/parser": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "ajv": "catalog:",
     "eslint": "catalog:",
@@ -76,7 +77,8 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck": {}
     }
   }
 }

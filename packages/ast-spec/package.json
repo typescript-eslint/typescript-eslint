@@ -52,6 +52,7 @@
     "@types/babel__code-frame": "catalog:",
     "@types/babel__core": "^7.20.5",
     "@typescript-eslint/typescript-estree": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/pretty-format": "catalog:",
     "@vitest/utils": "catalog:",

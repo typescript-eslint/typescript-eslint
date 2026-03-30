@@ -45,6 +45,7 @@
     "@typescript-eslint/tsconfig-utils": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "esbuild": "~0.27.2",
     "eslint": "catalog:",
     "esquery": "catalog:",
@@ -60,6 +61,7 @@
       "build": {
         "command": "tsx build.mts",
         "dependsOn": [
+          "^build",
           "types:copy-ast-spec"
         ],
         "cache": true,
@@ -72,7 +74,8 @@
       },
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck": {}
     }
   }
 }

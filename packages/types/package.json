@@ -47,6 +47,7 @@
     "typecheck": "pnpm -w exec nx typecheck"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
@@ -94,7 +95,8 @@
           "typescript-eslint:build",
           "eslint-plugin-internal:build"
         ]
-      }
+      },
+      "typecheck": {}
     }
   }
 }

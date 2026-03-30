@@ -75,6 +75,7 @@
     "@typescript-eslint/types": "workspace:^",
     "@typescript-eslint/typescript-estree": "workspace:^",
     "@typescript-eslint/utils": "workspace:^",
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/eslint-plugin": "1.6.5",
     "console-fail-test": "^0.6.1",
@@ -129,7 +130,7 @@
       },
       "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
       "typecheck": {
-        "command": "tsc -b tsconfig.repo-config-files.json",
+        "command": "tsgo -b tsconfig.repo-config-files.json",
         "dependsOn": [
           "types:copy-ast-spec",
           "website:build"

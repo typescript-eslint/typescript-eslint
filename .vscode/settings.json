@@ -21,4 +21,6 @@
   "typescript.preferences.quoteStyle": "single",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "nxConsole.generateAiAgentRules": true,
+
+  "typescript.experimental.useTsgo": true
 }

@@ -75,6 +75,7 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "history": "^4.10.1",
     "mdast-util-from-markdown": "catalog:",
     "mdast-util-mdx": "catalog:",
@@ -137,7 +138,8 @@
         "options": {
           "cwd": "{projectRoot}"
         }
-      }
+      },
+      "typecheck": {}
     }
   }
 }
