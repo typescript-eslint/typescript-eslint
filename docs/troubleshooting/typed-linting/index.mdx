@@ -70,8 +70,14 @@ You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configur
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
+// @ts-check
+
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   {
