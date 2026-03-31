@@ -988,6 +988,22 @@ function foo(a = wrap(function a() {})) {}
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
+    {
+      code: `
+var a = 1;
+var b = function a() {};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+    },
   ],
   valid: [
     `
