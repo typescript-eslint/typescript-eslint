@@ -62,6 +62,7 @@
   "devDependencies": {
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
+    "minimatch": "*",
     "rimraf": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
