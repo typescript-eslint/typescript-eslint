@@ -972,6 +972,22 @@ const FooBarComponent = memo(function FooBarComponent() {});
       ],
       options: [{ ignoreOnInitialization: true }],
     },
+    {
+      code: `
+function foo(a = wrap(function a() {})) {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 14,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
   ],
   valid: [
     `
@@ -999,6 +1015,12 @@ var a = foo || function a() {};
     {
       code: `
 var a = foo ? function a() {} : bar;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo(a = function a() {}) {}
       `,
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
