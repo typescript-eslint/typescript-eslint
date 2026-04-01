@@ -102,13 +102,13 @@ type MappedType = {
 
 There are a few practical differences between the two forms for defining indexed object types.
 
-| Feature                       | `Record<K, V>`  | Index Signature `{ [key: K]: V }` |
-| ----------------------------- | --------------- | --------------------------------- |
-| Conciseness                   | ✅ Shorter      | More verbose                      |
-| Mixed with named properties   | ❌ Not possible | ✅ Can be combined with named properties |
-| Named key parameter           | ❌              | ✅ Allows naming the key for documentation (e.g., `[userId: string]`) |
-| Mapped type iteration         | ❌              | ✅ `[key in K]` can iterate over union types |
-| `readonly` modifier on key    | ❌              | ✅ Supported                      |
+| Feature                     | `Record<K, V>`  | Index Signature `{ [key: K]: V }`                                     |
+| --------------------------- | --------------- | --------------------------------------------------------------------- |
+| Conciseness                 | ✅ Shorter      | More verbose                                                          |
+| Mixed with named properties | ❌ Not possible | ✅ Can be combined with named properties                              |
+| Named key parameter         | ❌              | ✅ Allows naming the key for documentation (e.g., `[userId: string]`) |
+| Mapped type iteration       | ❌              | ✅ `[key in K]` can iterate over union types                          |
+| `readonly` modifier on key  | ❌              | ✅ Supported                                                          |
 
 The most impactful difference is that only index signatures can be combined with named properties:
 
