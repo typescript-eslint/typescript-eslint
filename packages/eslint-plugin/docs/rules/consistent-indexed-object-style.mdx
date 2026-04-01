@@ -96,6 +96,33 @@ type MappedType = {
 </TabItem>
 </Tabs>
 
+## FAQs
+
+### What are the differences between `Record` and an index signature?
+
+There are a few practical differences between the two forms for defining indexed object types.
+
+| Feature                       | `Record<K, V>`  | Index Signature `{ [key: K]: V }` |
+| ----------------------------- | --------------- | --------------------------------- |
+| Conciseness                   | ✅ Shorter      | More verbose                      |
+| Mixed with named properties   | ❌ Not possible | ✅ Can be combined with named properties |
+| Named key parameter           | ❌              | ✅ Allows naming the key for documentation (e.g., `[userId: string]`) |
+| Mapped type iteration         | ❌              | ✅ `[key in K]` can iterate over union types |
+| `readonly` modifier on key    | ❌              | ✅ Supported                      |
+
+The most impactful difference is that only index signatures can be combined with named properties:
+
+```ts
+// Only possible with index signature
+interface UserMap {
+  default: User;
+  [userId: string]: User;
+}
+```
+
+We recommend choosing one style and applying it consistently.
+The only time you **must** use an index signature is when combining with named properties.
+
 ## When Not To Use It
 
 This rule is purely a stylistic rule for maintaining consistency in your project.
