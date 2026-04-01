@@ -10,6 +10,11 @@ Some typescript-eslint rules utilize TypeScript's type checking APIs to provide 
 This requires TypeScript to analyze your entire project instead of just the file being linted.
 As a result, these rules are slower than traditional lint rules but are much more powerful.
 
+:::caution
+Type-aware linting requires [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) to be enabled in your TypeScript configuration.
+Using type-aware rules with `strictNullChecks: false` is unsupported and may produce incorrect or misleading results.
+:::
+
 To enable typed linting, there are two small changes you need to make to your config file:
 
 <Tabs groupId="eslint-config">
