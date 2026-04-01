@@ -4,7 +4,7 @@
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!dist/*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"

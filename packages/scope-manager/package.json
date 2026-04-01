@@ -4,7 +4,7 @@
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!dist/*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"

@@ -4,7 +4,7 @@
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!dist/*.tsbuildinfo",
     "README.md",
     "LICENSE"
   ],

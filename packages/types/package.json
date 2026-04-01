@@ -4,7 +4,7 @@
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!dist/*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"

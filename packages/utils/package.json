@@ -4,7 +4,7 @@
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!dist/*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
