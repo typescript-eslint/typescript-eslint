@@ -4,7 +4,7 @@
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!**/*.tsbuildinfo",
     "index.d.ts",
     "raw-plugin.d.ts",
     "rules.d.ts",
