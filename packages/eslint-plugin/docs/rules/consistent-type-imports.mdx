@@ -113,23 +113,18 @@ Otherwise you can explicitly tell our tooling to analyze your code as if the com
 ## Comparison with `importsNotUsedAsValues` / `verbatimModuleSyntax`
 
 [`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax) was introduced in TypeScript v5.0 (as a replacement for `importsNotUsedAsValues`).
-It is not a direct replacement for this rule.
-`consistent-type-imports` is an ESLint rule that enforces how you _write_ imports.
-`verbatimModuleSyntax` is a TypeScript compiler option that controls how those imports are preserved in emitted JavaScript.
-
-There are a few important behavior differences:
+This rule and `verbatimModuleSyntax` overlap in some situations, but there are a few behavior differences:
 | Situation | `consistent-type-imports` (ESLint) | `verbatimModuleSyntax` (TypeScript) |
 | -------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------- |
-| `import { Foo } from 'foo'; type T = Foo;` | Reports and can auto-fix to `import type` | Allowed, and the import is preserved in emitted JavaScript |
+| Unused imports | Ignored (consider using [`@typescript-eslint/no-unused-vars`](/rules/no-unused-vars)) | Type error |
 | Usage with `emitDecoratorMetadata` & `experimentalDecorators` | Ignores files that contain decorators | Reports on files that contain decorators |
 | Failures detected | Does not fail `tsc` build; can be auto-fixed with `--fix` | Fails `tsc` build; cannot be auto-fixed on the command-line |
-| `import { type T } from 'T';` | Allowed with `fixStyle: 'inline-type-imports'`; use `fixStyle: 'separate-type-imports'` to prefer `import type` | Emits `import {} from 'T'` |
+| `import { type T } from 'T';` | TypeScript will emit nothing (it "elides" the import) | TypeScript emits `import {} from 'T'` |
 
-If your goal is to make type-only imports explicit in source code, keep this rule enabled even when using `verbatimModuleSyntax`.
-If your goal is only predictable emit semantics, `verbatimModuleSyntax` may be sufficient on its own.
-
-Projects that use both often also want [`no-import-type-side-effects`](./no-import-type-side-effects.mdx), especially when using inline `type` specifiers.
-If the overlap between ESLint and TypeScript diagnostics is noisy in your project, you can choose one of them as the source of truth.
+Because there are some differences, using both this rule and `verbatimModuleSyntax` at the same time can lead to duplicate reports on the same import.
+For example, TypeScript may report that a type must be imported using `import type`, and this rule may also report that the import should use your configured style.
+If you want ESLint autofixes and style enforcement for explicit `import type`, keep this rule enabled.
+If TypeScript's diagnostics are sufficient for your project, you can disable this rule to avoid duplicate reports.
 
 ## When Not To Use It
 
