@@ -21,7 +21,7 @@ export function isUnsafeAssignment(
   receiver: ts.Type,
   checker: ts.TypeChecker,
   senderNode: TSESTree.Node | null,
-): false | { receiver: ts.Type; sender: ts.Type } {
+): false | { receiver: ts.Type; sender: ts.Type; path: string[] } {
   return isUnsafeAssignmentWorker(
     type,
     receiver,
@@ -37,7 +37,7 @@ function isUnsafeAssignmentWorker(
   checker: ts.TypeChecker,
   senderNode: TSESTree.Node | null,
   visited: Map<ts.Type, Set<ts.Type>>,
-): false | { receiver: ts.Type; sender: ts.Type } {
+): false | { receiver: ts.Type; sender: ts.Type; path: string[] } {
   if (isTypeAnyType(type)) {
     // Allow assignment of any ==> unknown.
     if (isTypeUnknownType(receiver)) {
@@ -45,7 +45,7 @@ function isUnsafeAssignmentWorker(
     }
 
     if (!isTypeAnyType(receiver)) {
-      return { receiver, sender: type };
+      return { path: [], receiver, sender: type };
     }
   }
 
@@ -108,7 +108,10 @@ function isUnsafeAssignmentWorker(
         visited,
       );
       if (unsafe) {
-        return { receiver, sender: type };
+        // TODO: Generic type parameter paths (e.g., `T` in `Array<T>`) could be
+        // represented using the type parameter name, but retrieving it reliably
+        // here is non-trivial. For now we propagate any nested path as-is.
+        return { path: unsafe.path, receiver, sender: type };
       }
     }
 
@@ -139,7 +142,11 @@ function isUnsafeAssignmentWorker(
         visited,
       );
       if (unsafe) {
-        return { receiver, sender: type };
+        return {
+          path: [typeProp.getName(), ...unsafe.path],
+          receiver,
+          sender: type,
+        };
       }
     }
 
@@ -156,7 +163,9 @@ function isUnsafeAssignmentWorker(
           visited,
         );
         if (unsafe) {
-          return { receiver, sender: type };
+          // TODO: Index signature paths could be represented as `[string]` or
+          // `[number]`, but the actual key used is unknown at this point.
+          return { path: [], receiver, sender: type };
         }
       }
     }
@@ -187,7 +196,9 @@ function isUnsafeAssignmentWorker(
           visited,
         );
         if (unsafe) {
-          return { receiver, sender: type };
+          // TODO: A call signature's return type path could be represented as
+          // `(return type)`, but there is no standard notation for this.
+          return { path: [], receiver, sender: type };
         }
       }
     }
@@ -208,7 +219,10 @@ function isUnsafeAssignmentWorker(
           visited,
         );
         if (unsafe) {
-          return { receiver, sender: type };
+          // TODO: Union members are unnamed, so a clean dotted path is not
+          // possible (e.g., `string | any` — the unsafe member has no label).
+          // We propagate any nested path from inside the member as-is.
+          return { path: unsafe.path, receiver, sender: type };
         }
       }
     }
@@ -231,7 +245,8 @@ function isUnsafeAssignmentWorker(
           visited,
         );
         if (unsafe) {
-          return { receiver, sender: type };
+          // TODO: Intersection members are also unnamed; same limitation as union.
+          return { path: unsafe.path, receiver, sender: type };
         }
       }
     }

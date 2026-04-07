@@ -50,6 +50,10 @@ export default createRule({
       unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
+      unsafeAssignmentWithPath: [
+        'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
+        '  `{{path}}` is the unsafe `any` type.',
+      ].join('\n'),
       unsafeObjectPattern:
         'Unsafe object destructuring of a property with an {{sender}} value.',
     },
@@ -306,11 +310,15 @@ export default createRule({
         return false;
       }
 
-      const { receiver, sender } = result;
+      const { path, receiver, sender } = result;
       context.report({
         node: reportingNode,
-        messageId: 'unsafeAssignment',
-        data: createData(sender, receiver),
+        messageId:
+          path.length > 0 ? 'unsafeAssignmentWithPath' : 'unsafeAssignment',
+        data: {
+          ...createData(sender, receiver),
+          ...(path.length > 0 ? { path: path.join('.') } : {}),
+        },
       });
 
       if (senderNode.type === AST_NODE_TYPES.ObjectExpression) {
