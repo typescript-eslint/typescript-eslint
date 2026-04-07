@@ -60,6 +60,12 @@ function test(pattern: string) {
   'hello hello'.match(new RegExp(pattern, 'gi'))?.reduce(() => []);
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12085
+    `
+function findMatches(text: string, pattern: string, flags: string) {
+  return text.match(new RegExp(pattern, flags));
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/3477
     `
 const matchCount = (str: string, re: RegExp) => {
@@ -250,6 +256,46 @@ function test(pattern: string) {
       output: `
 function test(pattern: string) {
   new RegExp(pattern, undefined).exec('check');
+}
+      `,
+    },
+    {
+      // Covers dynamic patterns without an explicit flags argument.
+      code: `
+function test(pattern: string) {
+  'check'.match(new RegExp(pattern));
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+function test(pattern: string) {
+  new RegExp(pattern).exec('check');
+}
+      `,
+    },
+    {
+      // Covers dynamic patterns with statically known non-global flags.
+      code: `
+function test(pattern: string) {
+  'check'.match(new RegExp(pattern, 'i'));
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
+        },
+      ],
+      output: `
+function test(pattern: string) {
+  new RegExp(pattern, 'i').exec('check');
 }
       `,
     },

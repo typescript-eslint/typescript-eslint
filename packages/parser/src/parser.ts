@@ -12,7 +12,10 @@ import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
 import type * as ts from 'typescript';
 
 import { analyze } from '@typescript-eslint/scope-manager';
-import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
+import {
+  parseAndGenerateServices,
+  typescriptVersionIsAtLeast,
+} from '@typescript-eslint/typescript-estree';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import debug from 'debug';
 import { ScriptTarget } from 'typescript';
@@ -50,8 +53,12 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
       .filter((lib): lib is Lib => !!lib);
   }
 
-  const target = compilerOptions.target ?? ScriptTarget.ES5;
-  // https://github.com/microsoft/TypeScript/blob/ae582a22ee1bb052e19b7c1bc4cac60509b574e0/src/compiler/utilitiesPublic.ts#L13-L36
+  const defaultTarget = typescriptVersionIsAtLeast['6.0']
+    ? ScriptTarget.LatestStandard
+    : ScriptTarget.ES5; // eslint-disable-line @typescript-eslint/no-deprecated -- Deprecated in TS 6 but we support TS < 6
+
+  const target = compilerOptions.target ?? defaultTarget;
+  // https://github.com/microsoft/TypeScript/blob/35ff23d4b0cc715691323ebe54f523c16fe6e3a5/src/compiler/utilitiesPublic.ts#L312-L346
   switch (target) {
     case ScriptTarget.ES2015:
       return ['es6'];
@@ -73,6 +80,8 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
       return ['es2023.full'];
     case ScriptTarget.ES2024:
       return ['es2024.full'];
+    case ScriptTarget.ES2025:
+      return ['es2025.full'];
     case ScriptTarget.ESNext:
       return ['esnext.full'];
     default:

@@ -5,14 +5,7 @@
 
 import type { LibDefinition } from '../variable';
 
-import { TYPE } from './base-config';
-
 export const dom_asynciterable: LibDefinition = {
   libs: [],
-  variables: [
-    ['FileSystemDirectoryHandleAsyncIterator', TYPE],
-    ['FileSystemDirectoryHandle', TYPE],
-    ['ReadableStreamAsyncIterator', TYPE],
-    ['ReadableStream', TYPE],
-  ],
+  variables: [],
 };

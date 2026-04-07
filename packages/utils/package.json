@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "8.57.1",
+  "version": "8.58.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -68,7 +68,7 @@
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
-    "typescript": ">=4.8.4 <6.0.0"
+    "typescript": ">=4.8.4 <6.1.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "catalog:",

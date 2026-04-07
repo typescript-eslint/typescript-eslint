@@ -179,7 +179,10 @@ export default createRule<Options, MessageId>({
                 !tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional)
               ) {
                 const paramType = checker.getTypeOfSymbol(paramSymbol);
-                if (!canBeUndefined(paramType)) {
+                if (
+                  !tsutils.isTypeParameter(paramType) &&
+                  !canBeUndefined(paramType)
+                ) {
                   reportUselessDefaultAssignment(node, 'parameter');
                 }
               }
