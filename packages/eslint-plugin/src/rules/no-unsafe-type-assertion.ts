@@ -148,16 +148,10 @@ export default createRule({
 
         // special case message if the original type is assignable to the
         // constraint of the target type parameter
-        let isAssignableToConstraint: boolean;
-        try {
-          isAssignableToConstraint = checker.isTypeAssignableTo(
-            expressionWidenedType,
-            assertedTypeConstraint,
-          );
-        } catch {
-          // workaround for https://github.com/microsoft/TypeScript/issues/62933
-          return;
-        }
+        const isAssignableToConstraint = checker.isTypeAssignableTo(
+          expressionWidenedType,
+          assertedTypeConstraint,
+        );
         if (isAssignableToConstraint) {
           context.report({
             node,
