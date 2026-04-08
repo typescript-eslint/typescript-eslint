@@ -1134,38 +1134,6 @@ isString(a);
       options: [{ checkTypePredicates: false }],
     },
     {
-      code: `
-declare function assertString(x: unknown): asserts x is string;
-assertString('falafel');
-      `,
-      options: [{ checkTypePredicates: true }],
-    },
-    {
-      code: `
-declare function isString(x: unknown): x is string;
-isString('falafel');
-      `,
-      options: [{ checkTypePredicates: true }],
-    },
-    {
-      // Mutually assignable types: Wider and Narrower are structurally
-      // compatible in both directions, so narrowing still has a real effect.
-      code: `
-interface Wider {
-  a: string;
-}
-interface Narrower {
-  a: string;
-  b?: number;
-}
-declare function isNarrower(x: unknown): x is Narrower;
-declare const w: Wider;
-if (isNarrower(w)) {
-}
-      `,
-      options: [{ checkTypePredicates: true }],
-    },
-    {
       // string | number | bigint is not a subtype of string | number
       code: `
 declare function isStringOrNumber(x: unknown): x is string | number;
@@ -3562,6 +3530,56 @@ interface Narrower {
 declare function isWider(x: unknown): x is Wider;
 declare const n: Narrower;
 if (isWider(n)) {
+}
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+assertString('falafel');
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+isString('falafel');
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Mutually assignable types: Wider is assignable to Narrower (b is
+      // optional), so the type guard condition is always true.
+      code: `
+interface Wider {
+  a: string;
+}
+interface Narrower {
+  a: string;
+  b?: number;
+}
+declare function isNarrower(x: unknown): x is Narrower;
+declare const w: Wider;
+if (isNarrower(w)) {
 }
       `,
       errors: [
