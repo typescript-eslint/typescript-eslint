@@ -4,7 +4,7 @@
   "description": "Standalone TypeScript project service wrapper for linting.",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!**/*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
