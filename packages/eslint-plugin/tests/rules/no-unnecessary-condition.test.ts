@@ -1134,6 +1134,22 @@ isString(a);
       options: [{ checkTypePredicates: false }],
     },
     {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+assertString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function isString(x: unknown): x is string;
+isString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
       // string | number | bigint is not a subtype of string | number
       code: `
 declare function isStringOrNumber(x: unknown): x is string | number;
@@ -3535,32 +3551,6 @@ if (isWider(n)) {
       errors: [
         {
           line: 11,
-          messageId: 'typeGuardAlreadyIsType',
-        },
-      ],
-      options: [{ checkTypePredicates: true }],
-    },
-    {
-      code: `
-declare function assertString(x: unknown): asserts x is string;
-assertString('falafel');
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'typeGuardAlreadyIsType',
-        },
-      ],
-      options: [{ checkTypePredicates: true }],
-    },
-    {
-      code: `
-declare function isString(x: unknown): x is string;
-isString('falafel');
-      `,
-      errors: [
-        {
-          line: 3,
           messageId: 'typeGuardAlreadyIsType',
         },
       ],

@@ -594,10 +594,27 @@ export default createRule<Options, MessageId>({
             typeGuardAssertedArgument.argument,
           );
           if (
+            // Skip `any` — it is assignable to everything, producing
+            // false positives for meaningful runtime type guards.
+            !tsutils.isTypeFlagSet(
+              typeOfArgument,
+              ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+            ) &&
             checker.isTypeAssignableTo(
               typeOfArgument,
               typeGuardAssertedArgument.type,
-            )
+            ) &&
+            // Only flag if the types are mutually assignable (i.e. equivalent,
+            // like Narrower ↔ Wider with optional props) or the predicate type
+            // is a union that the argument is a strict subtype of.  This avoids
+            // false positives with structural subtypes whose extra members are
+            // all optional in the *predicate* type (e.g. custom MappedType
+            // interfaces extending ts.Type).
+            (checker.isTypeAssignableTo(
+              typeGuardAssertedArgument.type,
+              typeOfArgument,
+            ) ||
+              typeGuardAssertedArgument.type.isUnion())
           ) {
             context.report({
               node: typeGuardAssertedArgument.argument,
