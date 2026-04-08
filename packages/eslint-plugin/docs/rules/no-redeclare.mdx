@@ -14,13 +14,7 @@ import TypeScriptOverlap from '@site/src/components/TypeScriptOverlap';
 <TypeScriptOverlap />
 
 It adds support for TypeScript function overloads and declaration merging.
-
-:::note
-The overlap with TypeScript applies only to true variable redeclarations.
-This rule also reports naming collisions between values (e.g., `const Foo`) and types
-(e.g., `type Foo` or `interface Foo`), which TypeScript does **not** check.
-This is intentional — such collisions are often accidental and can lead to confusing code.
-:::
+Unlike TypeScript, this rule also reports collisions between value and type declarations with the same name (e.g., `const Foo` and `type Foo`).
 
 ## Options
 
