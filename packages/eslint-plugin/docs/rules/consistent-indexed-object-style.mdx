@@ -102,26 +102,51 @@ type MappedType = {
 
 There are a few practical differences between the two forms for defining indexed object types.
 
-| Feature                     | `Record<K, V>`  | Index Signature `{ [key: K]: V }`                                     |
-| --------------------------- | --------------- | --------------------------------------------------------------------- |
-| Conciseness                 | ✅ Shorter      | More verbose                                                          |
-| Mixed with named properties | ❌ Not possible | ✅ Can be combined with named properties                              |
-| Named key parameter         | ❌              | ✅ Allows naming the key for documentation (e.g., `[userId: string]`) |
-| Mapped type iteration       | ❌              | ✅ `[key in K]` can iterate over union types                          |
-| `readonly` modifier on key  | ❌              | ✅ Supported                                                          |
+| Feature                        | `Record<K, V>`                          | Index Signature `{ [key: K]: V }`                                     |
+| ------------------------------ | --------------------------------------- | --------------------------------------------------------------------- |
+| Conciseness                    | ✅ Shorter                              | More verbose                                                          |
+| Mixed with named properties    | Via intersection: `Record<K,V> & {...}` | ✅ Directly within the type definition                                |
+| Named key parameter            | ❌                                      | ✅ Allows naming the key for documentation (e.g., `[userId: string]`) |
+| Union/literal key types        | ✅ `Record<'a' \| 'b', V>`             | ❌ Requires mapped type syntax `{ [K in ...]: V }`                    |
+| Key exhaustiveness enforcement | ✅ All union keys must be present       | ❌ No exhaustiveness — any key of the base type is valid              |
+| `readonly` modifier on value   | Via `Readonly<Record<K, V>>`            | ✅ `{ readonly [key: K]: V }`                                         |
 
-The most impactful difference is that only index signatures can be combined with named properties:
+#### Mixing with named properties
+
+Index signatures allow combining named and indexed properties directly within a single type:
 
 ```ts
-// Only possible with index signature
 interface UserMap {
   default: User;
   [userId: string]: User;
 }
 ```
 
+With `Record`, you can achieve the same result using an intersection type:
+
+```ts
+type UserMap = Record<string, User> & { default: User };
+```
+
+#### Union and literal key types
+
+`Record` supports union and literal key types natively and enforces that all keys are present:
+
+```ts
+type Flags = Record<'featureA' | 'featureB', boolean>;
+
+// Error: Property 'featureB' is missing
+const flags: Flags = { featureA: true };
+```
+
+Index signatures do not support union or literal key types directly — for that, you need a mapped type:
+
+```ts
+type Flags = { [K in 'featureA' | 'featureB']: boolean };
+```
+
 We recommend choosing one style and applying it consistently.
-The only time you **must** use an index signature is when combining with named properties.
+The only time you **must** use an index signature is when combining named and indexed properties within a single type definition.
 
 ## When Not To Use It
 
