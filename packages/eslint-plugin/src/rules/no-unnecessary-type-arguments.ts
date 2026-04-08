@@ -113,7 +113,13 @@ export default createRule<Options, MessageIds>({
 
       const typeArgumentType = services.getTypeAtLocation(typeArgument);
 
-      if (context.options[0].checkForInferrableTypes) {
+      const typeArgumentIsRemovable =
+        typeArgumentIndex === 0 || typeParameter.default;
+
+      if (
+        context.options[0].checkForInferrableTypes &&
+        typeArgumentIsRemovable
+      ) {
         const parent = typeArguments.parent;
 
         if (
