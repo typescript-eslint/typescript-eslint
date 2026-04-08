@@ -284,6 +284,14 @@ interface Bar {
 }
 let foo = new Foo<Bar>(0, 0, 0, { val: 0 });
     `,
+    {
+      code: `
+declare function takes<T>(a: unknown, b: unknown, c: T): void;
+
+takes<string>(1, 2, 'x');
+    `,
+      options: [{ checkForInferrableTypes: true }],
+    },
     `
 class Box<T> {
   constructor(a: unknown, b: unknown, c: T) {}
@@ -291,14 +299,18 @@ class Box<T> {
 
 new Box<string>(1, 2, 'x');
     `,
-    `
+    {
+      code: `
 interface Args { [name: string]: any; }
 
 type ArgTypes<TArgs = Args> = { [name in keyof TArgs]: string };
 
 const foo: ArgTypes<{foo?: string}> = {};
     `,
-    `
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
 enum SomeKeys { A ,B, C }
 
 export const someMapping = Object.freeze<
@@ -309,7 +321,10 @@ export const someMapping = Object.freeze<
   [SomeKeys .C]: '/c/foobar',
 });
     `,
-    `
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
 type TUnionType = { type: 'idle' | 'busy' } | { type: 'error', message: string };
 
 declare const defaultVal: TUnionType | undefined;
@@ -318,14 +333,20 @@ declare const func: <T>(val: T) => T;
 
 const val1 = func<TUnionType>(defaultVal ?? { type: 'idle' });
     `,
-    `
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
 function identity<T>(value: T) {
   return value;
 }
 
 const map = identity<Map<string, number>>(new Map());
     `,
-    `
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
 type Wrapper<T = Record<string, any>> = {
   args: T;
 }
@@ -333,7 +354,10 @@ type Wrapper<T = Record<string, any>> = {
 type Works = Wrapper<{ a: number }>;
 type Fails = Wrapper<{ a?: number }>;
     `,
-    `
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
 type Fn<P extends any[], R> = (...args: P) => Promise<R>;
 
 declare function foo<P extends any[], R, F extends Fn<P, R>>(fn: F, ...args: P): Promise<R>;
@@ -342,7 +366,10 @@ declare function bar(a: string): Promise<number>;
 
 foo<Parameters<typeof bar>, Awaited<ReturnType<typeof bar>>, typeof bar>(bar, "hello");
     `,
-    `
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
 type Foo = { bar: string };
 
 declare const arr: (Foo | undefined)[];
@@ -352,6 +379,8 @@ arr.reduce<Foo>(
   { bar: "x" },
 );
     `,
+      options: [{ checkForInferrableTypes: true }],
+    },
     {
       code: `
 function Button<T>() {
