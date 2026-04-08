@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["ES2019", "DOM"],
+    "types": ["node"],
+    "module": "commonjs"
+  }
+}

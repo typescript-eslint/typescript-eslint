@@ -1,10 +1,10 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "8.56.1",
+  "version": "8.58.1",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!**/*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
@@ -48,21 +48,21 @@
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
     "debug": "^4.4.3",
-    "ts-api-utils": "^2.4.0"
+    "ts-api-utils": "^2.5.0"
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
-    "typescript": ">=4.8.4 <6.0.0"
+    "typescript": ">=4.8.4 <6.1.0"
   },
   "devDependencies": {
-    "@types/babel__code-frame": "^7.0.6",
+    "@types/babel__code-frame": "catalog:",
     "@typescript-eslint/parser": "workspace:*",
-    "@vitest/coverage-v8": "^4.0.18",
-    "ajv": "^6.12.6",
-    "eslint": "*",
-    "rimraf": "*",
-    "typescript": "*",
-    "vitest": "^4.0.18"
+    "@vitest/coverage-v8": "catalog:",
+    "ajv": "catalog:",
+    "eslint": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "funding": {
     "type": "opencollective",

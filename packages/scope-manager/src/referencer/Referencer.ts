@@ -52,36 +52,49 @@ export class Referencer extends Visitor {
   }
 
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
-    const flattenedLibs = new Set<LibDefinition>();
-    for (const lib of this.#lib) {
-      const definition = TSLibraries.get(lib);
-      if (!definition) {
-        throw new Error(`Invalid value for lib provided: ${lib}`);
-      }
-      flattenedLibs.add(definition);
-    }
+    const libs = this.resolveLibDefinitions();
 
-    // Flatten and deduplicate the set of included libs
-    for (const lib of flattenedLibs) {
-      // By adding the dependencies to the set as we iterate it,
-      // they get iterated only if they are new
-      for (const referencedLib of lib.libs) {
-        flattenedLibs.add(referencedLib);
-      }
-
-      // This loop is guaranteed to see each included lib exactly once
+    for (const lib of libs) {
       for (const [name, variable] of lib.variables) {
         globalScope.defineImplicitVariable(name, variable);
       }
     }
 
-    // for const assertions (`{} as const` / `<const>{}`)
+    // Special implicit global for const assertions (`{} as const`, `<const>{}`)
     globalScope.defineImplicitVariable('const', {
       eslintImplicitGlobalSetting: 'readonly',
       isTypeVariable: true,
       isValueVariable: false,
     });
   }
+
+  /**
+   * Resolves lib names into a deduplicated set of LibDefinitions,
+   * including all transitive dependencies.
+   */
+  private resolveLibDefinitions(): Set<LibDefinition> {
+    const resolvedLibs = new Set<LibDefinition>();
+
+    // Resolve the top-level lib names into LibDefinition objects
+    for (const lib of this.#lib) {
+      const definition = TSLibraries.get(lib);
+      if (!definition) {
+        throw new Error(`Invalid value for lib provided: ${lib}`);
+      }
+      resolvedLibs.add(definition);
+    }
+
+    // Expand transitive lib dependencies.
+    // New entries added to the Set during iteration will be visited exactly once.
+    for (const lib of resolvedLibs) {
+      for (const dependency of lib.libs) {
+        resolvedLibs.add(dependency);
+      }
+    }
+
+    return resolvedLibs;
+  }
+
   public close(node: TSESTree.Node): void {
     while (this.currentScope(true) && node === this.currentScope().block) {
       this.scopeManager.currentScope = this.currentScope().close(
