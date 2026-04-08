@@ -431,6 +431,257 @@ f();
     },
     {
       code: `
+function f<T>(x: T) {}
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: number;
+f<number>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+declare const x: number;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: any;
+f<any>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+declare const x: any;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: {};
+f<{}>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+declare const x: {};
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: Record<string, never>;
+f<Record<string, never>>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+declare const x: Record<string, never>;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+interface F {}
+declare const x: F;
+f<F>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+interface F {}
+declare const x: F;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare function y(): number;
+f<number>(y());
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+declare function y(): number;
+f(y());
+      `,
+    },
+    {
+      code: `
+enum E {
+  A,
+  B,
+}
+function f<T>(x: T) {}
+f<E>(E.A);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+enum E {
+  A,
+  B,
+}
+function f<T>(x: T) {}
+f(E.A);
+      `,
+    },
+    // Should fail, but not crash
+    {
+      code: `
+declare function takes<T>(a: unknown, b: unknown, c: T): void;
+
+takes<string>(1, 2, 'x');
+    `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+declare function takes<T>(a: unknown, b: unknown, c: T): void;
+
+takes(1, 2, 'x');
+    `,
+    },
+    {
+      code: `
+function f<T = number>(x: T) {}
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        { messageId: 'canBeInferred' },
+        { messageId: 'isDefaultTypeArgument' },
+      ],
+      output: `
+function f<T = number>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+function f<T extends number>(x: T) {}
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T extends number>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+function f<T extends number | string>(x: T) {}
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T extends number | string>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried<number>(10)<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }, { messageId: 'canBeInferred' }],
+      output: `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried(10)(10);
+      `,
+    },
+    {
+      code: `
+declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
+declare function f<T>(): [T | undefined, (x: T | undefined) => void];
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
+declare function f<T>(): [T | undefined, (x: T | undefined) => void];
+f(10);
+      `,
+    },
+    // Ignore invalid arguments, check just ones we know the types of
+    {
+      code: `
+function f<T>(x: T) {}
+f<number>(10, 10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+f(10, 10);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T, y: number) {}
+f<number>(10, 10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T, y: number) {}
+f(10, 10);
+      `,
+    },
+    {
+      code: `
 function g<T = number, U = string>() {}
 g<string, string>();
       `,
