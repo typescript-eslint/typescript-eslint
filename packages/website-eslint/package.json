@@ -60,6 +60,7 @@
       "build": {
         "command": "tsx build.mts",
         "dependsOn": [
+          "^build",
           "types:copy-ast-spec"
         ],
         "cache": true,
