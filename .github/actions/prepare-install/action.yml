@@ -34,6 +34,7 @@ runs:
       uses: pnpm/action-setup@v4
       with:
         cache: true
+        package_json_file: ${{ inputs.working-directory }}/package.json
 
     - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@v4
