@@ -11,7 +11,7 @@ for (const additionalFlags of [
   typescriptIntegrationTest(
     `typescript${additionalFlags.length ? ` with ${additionalFlags.join(', ')}` : ''}`,
     __filename,
-    ['--allowJs', '--esModuleInterop', ...additionalFlags, 'eslint.config.js'],
+    additionalFlags,
     out => {
       const lines = out.split('\n').filter(
         line =>

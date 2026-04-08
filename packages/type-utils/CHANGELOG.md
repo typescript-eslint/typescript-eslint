@@ -1,3 +1,79 @@
+## 8.58.0 (2026-03-30)
+
+### 🚀 Features
+
+- support TypeScript 6 ([#12124](https://github.com/typescript-eslint/typescript-eslint/pull/12124))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.57.2 (2026-03-23)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-readonly-parameter-types] preserve type alias infomation ([#11954](https://github.com/typescript-eslint/typescript-eslint/pull/11954))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- Tamashoo @Tamashoo
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.57.1 (2026-03-16)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.57.0 (2026-03-09)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.56.1 (2026-02-23)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.56.0 (2026-02-16)
+
+### 🚀 Features
+
+- support ESLint v10 ([#12057](https://github.com/typescript-eslint/typescript-eslint/pull/12057))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- Joshua Chen
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.55.0 (2026-02-09)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.55.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.54.0 (2026-01-26)
 
 ### 🚀 Features

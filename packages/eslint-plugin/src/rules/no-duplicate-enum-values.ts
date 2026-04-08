@@ -71,7 +71,7 @@ export default createRule({
           return initializer.operator === '-' ? -inner : inner;
         }
         case isStaticTemplateLiteral(initializer):
-          return initializer.quasis[0].value.cooked;
+          return initializer.quasis[0].value.cooked ?? undefined;
         default:
           return undefined;
       }

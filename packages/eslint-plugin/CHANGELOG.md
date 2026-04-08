@@ -1,3 +1,151 @@
+## 8.58.0 (2026-03-30)
+
+### 🚀 Features
+
+- support TypeScript 6 ([#12124](https://github.com/typescript-eslint/typescript-eslint/pull/12124))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-regexp-exec] avoid fixing unknown RegExp flags ([#12161](https://github.com/typescript-eslint/typescript-eslint/pull/12161))
+- **eslint-plugin:** [no-extraneous-class] handle index signatures ([#12142](https://github.com/typescript-eslint/typescript-eslint/pull/12142))
+- **eslint-plugin:** crash in `no-unnecessary-type-arguments` ([#12163](https://github.com/typescript-eslint/typescript-eslint/pull/12163))
+
+### ❤️ Thank You
+
+- ej shafran @ej-shafran
+- Evyatar Daud @StyleShit
+- GG ZIBLAKING
+- milkboy2564 @SeolJaeHyeok
+- teee32 @teee32
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.57.2 (2026-03-23)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-readonly-parameter-types] preserve type alias infomation ([#11954](https://github.com/typescript-eslint/typescript-eslint/pull/11954))
+- **eslint-plugin:** [no-useless-default-assignment] skip reporting false positives for unresolved type parameters ([#12127](https://github.com/typescript-eslint/typescript-eslint/pull/12127))
+- **eslint-plugin:** [no-unsafe-return] false positive on unwrapping generic ([#12125](https://github.com/typescript-eslint/typescript-eslint/pull/12125))
+- **eslint-plugin:** [no-restricted-types] flag banned generics in extends or implements ([#12120](https://github.com/typescript-eslint/typescript-eslint/pull/12120))
+- **eslint-plugin:** [array-type] ignore Array and ReadonlyArray without type arguments ([#11971](https://github.com/typescript-eslint/typescript-eslint/pull/11971))
+- **eslint-plugin:** [prefer-optional-chain] remove dangling closing parenthesis ([#11865](https://github.com/typescript-eslint/typescript-eslint/pull/11865))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- Konv Suu
+- mdm317
+- Newton Yuan @NewtonYuan
+- SungHyun627 @SungHyun627
+- Tamashoo @Tamashoo
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.57.1 (2026-03-16)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] no report for property on intersection type ([#12126](https://github.com/typescript-eslint/typescript-eslint/pull/12126))
+
+### ❤️ Thank You
+
+- Newton Yuan @NewtonYuan
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.57.0 (2026-03-09)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-condition] allow literal loop conditions in for/do loops ([#12080](https://github.com/typescript-eslint/typescript-eslint/pull/12080))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-base-to-string] fix false positive for toString with overloads ([#12089](https://github.com/typescript-eslint/typescript-eslint/pull/12089))
+- **eslint-plugin:** [prefer-promise-reject-errors] add allow `TypeOrValueSpecifier` to prefer-promise-reject-errors ([#12094](https://github.com/typescript-eslint/typescript-eslint/pull/12094))
+- **typescript-estree:** if the template literal is tagged and the text has an invalid escape, `cooked` will be `null` ([#11355](https://github.com/typescript-eslint/typescript-eslint/pull/11355))
+- **eslint-plugin:** guard against negative paramIndex in no-useless-default-assignment ([#12077](https://github.com/typescript-eslint/typescript-eslint/pull/12077))
+- **eslint-plugin:** handle statically analyzable computed keys in prefer-readonly ([#12079](https://github.com/typescript-eslint/typescript-eslint/pull/12079))
+- **eslint-plugin:** [strict-void-return] false positives with overloads ([#12055](https://github.com/typescript-eslint/typescript-eslint/pull/12055))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- Brian Schlenker @bschlenk
+- Evyatar Daud @StyleShit
+- James Henry @JamesHenry
+- Josh Goldberg
+- Kirk Waiblinger @kirkwaiblinger
+- Moses Odutusin @thebolarin
+- Newton Yuan @NewtonYuan
+- SungHyun627 @SungHyun627
+- Younsang Na @nayounsang
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.56.1 (2026-02-23)
+
+This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.56.0 (2026-02-16)
+
+### 🚀 Features
+
+- support ESLint v10 ([#12057](https://github.com/typescript-eslint/typescript-eslint/pull/12057))
+
+### 🩹 Fixes
+
+- use parser options from context.languageOptions ([#12043](https://github.com/typescript-eslint/typescript-eslint/pull/12043))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- fnx @DMartens
+- Joshua Chen
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.55.0 (2026-02-09)
+
+### 🚀 Features
+
+- **utils:** deprecate defaultOptions in favor of meta.defaultOptions ([#11992](https://github.com/typescript-eslint/typescript-eslint/pull/11992))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-useless-default-assignment] reduce param index to ts this handling ([#11949](https://github.com/typescript-eslint/typescript-eslint/pull/11949))
+- **eslint-plugin:** [no-useless-default-assignment] report unnecessary defaults in ternary expressions ([#11984](https://github.com/typescript-eslint/typescript-eslint/pull/11984))
+- **eslint-plugin:** [no-useless-default-assignment] require strictNullChecks ([#11966](https://github.com/typescript-eslint/typescript-eslint/pull/11966), [#12000](https://github.com/typescript-eslint/typescript-eslint/pull/12000))
+- **eslint-plugin:** [no-unused-vars] remove trailing newline when removing entire import ([#11990](https://github.com/typescript-eslint/typescript-eslint/pull/11990))
+
+### ❤️ Thank You
+
+- Christian Rose @chrros95
+- Josh Goldberg
+- Maria Solano @MariaSolOs
+- Minyeong Kim @minyeong981
+- SungHyun627 @SungHyun627
+- Yukihiro Hasegawa @y-hsgw
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.55.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.54.0 (2026-01-26)
 
 ### 🚀 Features

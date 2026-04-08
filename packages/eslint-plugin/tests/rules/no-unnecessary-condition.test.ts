@@ -499,6 +499,24 @@ for (; true; ) {}
     },
     {
       code: `
+for (; true; ) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+for (; 0; ) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+do {} while (0);
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
 do {} while (true);
       `,
       options: [{ allowConstantLoopConditions: 'always' }],
@@ -2073,27 +2091,6 @@ declare const test: true;
 do {} while (test);
       `,
       errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
-    },
-    {
-      code: `
-for (; true; ) {}
-      `,
-      errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
-    },
-    {
-      code: `
-for (; 0; ) {}
-      `,
-      errors: [{ column: 8, line: 2, messageId: 'alwaysFalsy' }],
-      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
-    },
-    {
-      code: `
-do {} while (0);
-      `,
-      errors: [{ column: 14, line: 2, messageId: 'alwaysFalsy' }],
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {

@@ -199,6 +199,8 @@ describe('Rule schemas should validate options correctly', () => {
       expect(
         areOptionsValid(
           rule,
+          // Keep accepting deprecated defaultOptions for backward compatibility.
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           overrideValidOptions[ruleName] ?? rule.defaultOptions,
         ),
       ).toBe(true);
