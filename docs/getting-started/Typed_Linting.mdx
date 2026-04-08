@@ -19,12 +19,12 @@ To enable typed linting, there are two small changes you need to make to your co
 2. Add `languageOptions.parserOptions` to tell our parser how to find the TSConfig for each source file.
 
 ```js title="eslint.config.mjs"
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   // Remove this line
   tseslint.configs.recommended,
   // Added lines start
@@ -44,7 +44,6 @@ In more detail:
 
 - `tseslint.configs.recommendedTypeChecked` is a [shared configuration](../users/Shared_Configurations.mdx). It contains recommended rules that additionally require type information.
 - `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser > Project Service](../packages/Parser.mdx#projectservice)).
-- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser > tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
 
 </TabItem>
 <TabItem value="Legacy Config">
@@ -100,7 +99,7 @@ If you enabled the [`strict` shared config](../users/Shared_Configurations.mdx#s
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   // Removed lines start
   tseslint.configs.strict,
   tseslint.configs.stylistic,

@@ -4,7 +4,7 @@
   "description": "ESLint which works in browsers.",
   "files": [
     "dist",
-    "!*.tsbuildinfo"
+    "!**/*.tsbuildinfo"
   ],
   "repository": {
     "type": "git",

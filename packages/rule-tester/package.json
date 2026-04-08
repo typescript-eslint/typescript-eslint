@@ -1,10 +1,10 @@
 {
   "name": "@typescript-eslint/rule-tester",
-  "version": "8.57.1",
+  "version": "8.58.1",
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!**/*.tsbuildinfo",
     "README.md",
     "LICENSE"
   ],
