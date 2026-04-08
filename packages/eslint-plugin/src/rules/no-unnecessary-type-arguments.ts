@@ -22,7 +22,7 @@ type ParameterCapableTSNode =
   | ts.TypeQueryNode
   | ts.TypeReferenceNode;
 
-export type MessageIds = 'unnecessaryTypeParameter';
+export type MessageIds = 'isDefaultTypeArgument';
 
 export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
@@ -35,7 +35,7 @@ export default createRule<[], MessageIds>({
     },
     fixable: 'code',
     messages: {
-      unnecessaryTypeParameter:
+      isDefaultTypeArgument:
         'This is the default value for this type parameter, so it can be omitted.',
     },
     schema: [],
@@ -99,7 +99,7 @@ export default createRule<[], MessageIds>({
 
       context.report({
         node: arg,
-        messageId: 'unnecessaryTypeParameter',
+        messageId: 'isDefaultTypeArgument',
         fix: fixer =>
           fixer.removeRange(
             i === 0

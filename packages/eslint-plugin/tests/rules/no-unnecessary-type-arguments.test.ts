@@ -207,7 +207,7 @@ f<number>();
       errors: [
         {
           column: 3,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -223,7 +223,7 @@ g<string, string>();
       errors: [
         {
           column: 11,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -239,7 +239,7 @@ f<number>\`\${1}\`;
       errors: [
         {
           column: 3,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -254,7 +254,7 @@ function h(c: C<number>) {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -269,7 +269,7 @@ new C<number>();
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -284,7 +284,7 @@ class D extends C<number> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -299,7 +299,7 @@ class Impl implements I<number> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -314,7 +314,7 @@ const foo = new Foo<number>();
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -329,7 +329,7 @@ class Foo<T = number> implements Bar<string> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -344,7 +344,7 @@ class Foo<T = number> extends Bar<string> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -362,7 +362,7 @@ bar<F<string>>();
         {
           column: 5,
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -385,7 +385,7 @@ declare module 'bar' {
         {
           column: 12,
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -406,7 +406,7 @@ type B = A<Map<string, string>>;
       errors: [
         {
           line: 3,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -423,7 +423,7 @@ type C = B<A>;
       errors: [
         {
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -441,7 +441,7 @@ type C = B<Map<string, string>>;
       errors: [
         {
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -460,7 +460,7 @@ type D = C<B>;
       errors: [
         {
           line: 5,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -482,7 +482,7 @@ type F = E<D>;
       errors: [
         {
           line: 7,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -505,7 +505,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -527,7 +527,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -547,7 +547,7 @@ class Bar implements Foo<string> {}
       errors: [
         {
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -567,7 +567,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -588,7 +588,7 @@ const button = <Button<string>></Button>;
       errors: [
         {
           line: 5,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       languageOptions: {
@@ -615,7 +615,7 @@ const button = <Button<string> />;
       errors: [
         {
           line: 5,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       languageOptions: {
