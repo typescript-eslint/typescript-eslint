@@ -3550,6 +3550,28 @@ if (isStringOrNumber(s)) {
       ],
       options: [{ checkTypePredicates: true }],
     },
+    {
+      code: `
+interface Wider {
+  a: string;
+}
+interface Narrower {
+  a: string;
+  b?: number;
+}
+declare function isWider(x: unknown): x is Wider;
+declare const n: Narrower;
+if (isWider(n)) {
+}
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
 
     // "branded" types
     unnecessaryConditionTest('"" & {}', 'alwaysFalsy'),
