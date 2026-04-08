@@ -899,7 +899,7 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       prettier:
-        specifier: 3.8.0
+        specifier: 'catalog:'
         version: 3.8.0
       prism-react-renderer:
         specifier: ^2.4.1
