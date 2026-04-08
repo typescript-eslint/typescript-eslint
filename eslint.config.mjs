@@ -773,7 +773,7 @@ export default defineConfig(
               groupName: 'fourth',
             },
           ],
-          groups: ['first', 'second', 'third'],
+          groups: ['first', 'second', 'third', 'fourth'],
         },
       ],
     },
