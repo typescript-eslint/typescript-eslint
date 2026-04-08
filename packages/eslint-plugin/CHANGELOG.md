@@ -1,3 +1,17 @@
+## 8.58.1 (2026-04-08)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unused-vars] fix false negative for type predicate parameter ([#12004](https://github.com/typescript-eslint/typescript-eslint/pull/12004))
+
+### ❤️ Thank You
+
+- MinJae @Ju-MINJAE
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.58.0 (2026-03-30)
 
 ### 🚀 Features
