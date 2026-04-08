@@ -20,6 +20,91 @@ function f<T = number>() {}
 f<string>();
     `,
     `
+function f<T>(x: T) {}
+f(10);
+    `,
+    `
+function f<T>(x: T) {}
+f<10>(10);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: any;
+f<string>(x);
+    `,
+    `
+function f<T>(x: T) {}
+f<Record<string, boolean>>({});
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: {};
+f<Record<string, boolean>>(x);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: Record<string, never>;
+f<Record<string, boolean>>(x);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: any;
+f<{}>(x);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: {};
+f<any>(x);
+    `,
+    `
+function f<T>(x: T) {}
+interface F {}
+declare const x: {};
+f<F>(x);
+    `,
+    `
+function f<T>(x: T) {}
+f<number[]>([]);
+    `,
+    `
+function f<T = number>(x: T) {}
+f(10);
+    `,
+    `
+function f<T extends number>(x: T) {}
+f(10);
+    `,
+    `
+function f<T extends number | string>(x: T) {}
+f(10);
+    `,
+    `
+function f<T extends number | string>(x: T) {}
+f<number | string>(10);
+    `,
+    `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried(10)(10);
+    `,
+    `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried<10>(10)<10>(10);
+    `,
+    `
+declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
+declare function f<T>(): [T | undefined, (x: T | undefined) => void];
+f(10);
+f<number>();
+    `,
+    `
+function f<T>(x: T) {}
+f<boolean | null>(true);
+    `,
+    `
 declare const f: (<T = number>() => void) | null;
 f?.();
     `,
@@ -68,6 +153,10 @@ class C<T = number> {}
 new C<string>();
     `,
     `
+class C<T> {}
+new C<string>();
+    `,
+    `
 declare const C: any;
 new C<string>();
     `,
@@ -108,6 +197,12 @@ class D<TD = number> extends C {}
 class Foo<T> {}
 const foo = new Foo<number>();
     `,
+    `
+class Foo<T> {
+  constructor<T>(x: T) {}
+}
+const foo = new Foo(10);
+    `,
     "type Foo<T> = import('foo').Foo<T>;",
     `
 class Bar<T = number> {}
@@ -130,10 +225,18 @@ import { F } from './missing';
 function bar<T = F>() {}
 bar<F<number>>();
     `,
-    `
+    {
+      code: `
 type A<T = Element> = T;
 type B = A<HTMLInputElement>;
-    `,
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.lib-dom.json',
+          projectService: false,
+        },
+      },
+    },
     `
 type A<T = Map<string, string>> = T;
 type B = A<Map<string, number>>;
@@ -166,6 +269,88 @@ namespace Foo {
   export class Bar {}
 }
 class Bar extends Foo<string> {}
+    `,
+    // Ignore invalid type arguments
+    `
+function f<T>() {}
+f<number, number>();
+    `,
+    `
+class Foo<T> {
+  public constructor(a: any, b: any, c: any, d: any) {}
+}
+interface Bar {
+  val: any;
+}
+let foo = new Foo<Bar>(0, 0, 0, { val: 0 });
+    `,
+    `
+class Box<T> {
+  constructor(a: unknown, b: unknown, c: T) {}
+}
+
+new Box<string>(1, 2, 'x');
+    `,
+    `
+interface Args { [name: string]: any; }
+
+type ArgTypes<TArgs = Args> = { [name in keyof TArgs]: string };
+
+const foo: ArgTypes<{foo?: string}> = {};
+    `,
+    `
+enum SomeKeys { A ,B, C }
+
+export const someMapping = Object.freeze<
+  Record<SomeKeys, string>
+>({
+  [SomeKeys .A]: '/doA',
+  [SomeKeys .B]: '/callB',
+  [SomeKeys .C]: '/c/foobar',
+});
+    `,
+    `
+type TUnionType = { type: 'idle' | 'busy' } | { type: 'error', message: string };
+
+declare const defaultVal: TUnionType | undefined;
+
+declare const func: <T>(val: T) => T;
+
+const val1 = func<TUnionType>(defaultVal ?? { type: 'idle' });
+    `,
+    `
+function identity<T>(value: T) {
+  return value;
+}
+
+const map = identity<Map<string, number>>(new Map());
+    `,
+    `
+type Wrapper<T = Record<string, any>> = {
+  args: T;
+}
+
+type Works = Wrapper<{ a: number }>;
+type Fails = Wrapper<{ a?: number }>;
+    `,
+    `
+type Fn<P extends any[], R> = (...args: P) => Promise<R>;
+
+declare function foo<P extends any[], R, F extends Fn<P, R>>(fn: F, ...args: P): Promise<R>;
+
+declare function bar(a: string): Promise<number>;
+
+foo<Parameters<typeof bar>, Awaited<ReturnType<typeof bar>>, typeof bar>(bar, "hello");
+    `,
+    `
+type Foo = { bar: string };
+
+declare const arr: (Foo | undefined)[];
+
+arr.reduce<Foo>(
+  (prev, curr) => ({ bar: curr?.bar ?? prev.bar }),
+  { bar: "x" },
+);
     `,
     {
       code: `
