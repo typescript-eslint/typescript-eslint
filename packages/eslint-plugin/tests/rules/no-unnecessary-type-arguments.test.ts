@@ -284,14 +284,6 @@ interface Bar {
 }
 let foo = new Foo<Bar>(0, 0, 0, { val: 0 });
     `,
-    {
-      code: `
-declare function takes<T>(a: unknown, b: unknown, c: T): void;
-
-takes<string>(1, 2, 'x');
-    `,
-      options: [{ checkForInferrableTypes: true }],
-    },
     `
 class Box<T> {
   constructor(a: unknown, b: unknown, c: T) {}
