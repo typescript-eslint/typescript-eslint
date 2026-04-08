@@ -107,7 +107,7 @@ There are a few practical differences between the two forms for defining indexed
 | Conciseness                    | ✅ Shorter                              | More verbose                                                          |
 | Mixed with named properties    | Via intersection: `Record<K,V> & {...}` | ✅ Directly within the type definition                                |
 | Named key parameter            | ❌                                      | ✅ Allows naming the key for documentation (e.g., `[userId: string]`) |
-| Union/literal key types        | ✅ `Record<'a' \| 'b', V>`             | ❌ Requires mapped type syntax `{ [K in ...]: V }`                    |
+| Union/literal key types        | ✅ `Record<'a' \| 'b', V>`              | ❌ Requires mapped type syntax `{ [K in ...]: V }`                    |
 | Key exhaustiveness enforcement | ✅ All union keys must be present       | ❌ No exhaustiveness — any key of the base type is valid              |
 | `readonly` modifier on value   | Via `Readonly<Record<K, V>>`            | ✅ `{ readonly [key: K]: V }`                                         |
 
