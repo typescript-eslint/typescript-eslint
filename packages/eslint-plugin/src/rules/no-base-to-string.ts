@@ -9,6 +9,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
+  isSymbolFromDefaultLibrary,
   matchesTypeOrBaseType,
   nullThrows,
 } from '../util';
@@ -321,9 +322,10 @@ export default createRule<Options, MessageIds>({
         node.name.expression.expression.text === 'Symbol' &&
         ts.isIdentifier(node.name.expression.name) &&
         node.name.expression.name.text === 'toPrimitive' &&
-        checker
-          .getSymbolAtLocation(node.name.expression.expression)
-          ?.valueDeclaration?.getSourceFile().hasNoDefaultLib
+        isSymbolFromDefaultLibrary(
+          program,
+          checker.getSymbolAtLocation(node.name.expression.expression),
+        )
       );
     }
 

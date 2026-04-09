@@ -73,11 +73,11 @@ It's been experimentally available since v6.1.0 under the name `EXPERIMENTAL_use
 You can use the new project service in your configuration instead of the previous `parserOptions.project`:
 
 ```js title="eslint.config.mjs"
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  eslint.configs.recommended,
+  js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
@@ -103,11 +103,11 @@ Typed linting for out-of-project files can be done by specifying two properties 
 - `defaultProject`: path to a TypeScript configuration file to use for the slower default project
 
 ```js title="eslint.config.mjs"
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  eslint.configs.recommended,
+  js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
