@@ -236,10 +236,6 @@ const { boundStatic } = ContainsMethods;
     `
 class ContainsMethods {
   bound?: () => void;
-  unbound?(): void;
-
-  static boundStatic?: () => void;
-  static unboundStatic?(): void;
 }
 
 let instance = new ContainsMethods();
@@ -254,11 +250,7 @@ instance.bound();
     `,
     `
 class ContainsMethods {
-  bound?: () => void;
   unbound?(): void;
-
-  static boundStatic?: () => void;
-  static unboundStatic?(): void;
 }
 
 let instance = new ContainsMethods();
@@ -273,11 +265,7 @@ instance.unbound();
     `,
     `
 class ContainsMethods {
-  bound?: () => void;
-  unbound?(): void;
-
   static boundStatic?: () => void;
-  static unboundStatic?(): void;
 }
 
 let instance = new ContainsMethods();
@@ -292,10 +280,6 @@ ContainsMethods.boundStatic();
     `,
     `
 class ContainsMethods {
-  bound?: () => void;
-  unbound?(): void;
-
-  static boundStatic?: () => void;
   static unboundStatic?(): void;
 }
 
