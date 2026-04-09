@@ -107,13 +107,13 @@ This rule treats index signatures (`{ [key: string]: V }`), mapped types over pr
 The differences below apply between the `Record<K, V>` shorthand and the verbose index signature form.
 :::
 
-| Feature                     | `Record<K, V>`                          | Index Signature `{ [key: K]: V }`                                     |
-| --------------------------- | --------------------------------------- | --------------------------------------------------------------------- |
-| Conciseness                 | ✅ Shorter                              | More verbose                                                          |
-| Mixed with named properties | Via intersection: `Record<K,V> & {...}` | ✅ Directly within the type definition                                |
-| Named key parameter         | ❌                                      | ✅ Allows naming the key for documentation (e.g., `[userId: string]`) |
-| Union/literal key types     | ✅ `Record<'a' \| 'b', V>`              | ❌ Not supported — index signatures only accept `string`, `number`, `symbol`, and template literals as key types |
-| `readonly` modifier on value | Via `Readonly<Record<K, V>>`           | ✅ `{ readonly [key: K]: V }`                                         |
+| Feature                      | `Record<K, V>`                          | Index Signature `{ [key: K]: V }`                                                                                |
+| ---------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Conciseness                  | ✅ Shorter                              | More verbose                                                                                                     |
+| Mixed with named properties  | Via intersection: `Record<K,V> & {...}` | ✅ Directly within the type definition                                                                           |
+| Named key parameter          | ❌                                      | ✅ Allows naming the key for documentation (e.g., `[userId: string]`)                                            |
+| Union/literal key types      | ✅ `Record<'a' \| 'b', V>`              | ❌ Not supported — index signatures only accept `string`, `number`, `symbol`, and template literals as key types |
+| `readonly` modifier on value | Via `Readonly<Record<K, V>>`            | ✅ `{ readonly [key: K]: V }`                                                                                    |
 
 #### Mixing with named properties
 
