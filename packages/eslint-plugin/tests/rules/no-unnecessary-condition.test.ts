@@ -1159,6 +1159,23 @@ if (isStringOrNumber(s)) {
       `,
       options: [{ checkTypePredicates: true }],
     },
+    {
+      // Narrower is not a subtype of Wider
+      code: `
+interface Wider {
+  a: string;
+}
+interface Narrower {
+  a: string;
+  b: number;
+}
+declare function isNarrower(x: unknown): x is Narrower;
+declare const w: Wider;
+if (isNarrower(w)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
     `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
