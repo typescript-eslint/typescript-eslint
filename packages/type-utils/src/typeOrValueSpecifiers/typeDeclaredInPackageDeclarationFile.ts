@@ -37,7 +37,7 @@ function extractPackageName(moduleSpecifier: string): string {
   if (moduleSpecifier.startsWith('@')) {
     // Scoped package: @scope/name or @scope/name/subpath
     const parts = moduleSpecifier.split('/');
-    return parts.length >= 2 ? `${parts[0]}/${parts[1]}` : moduleSpecifier;
+    return `${parts[0]}/${parts[1]}`;
   }
   // Non-scoped package: name or name/subpath
   return moduleSpecifier.split('/')[0];
