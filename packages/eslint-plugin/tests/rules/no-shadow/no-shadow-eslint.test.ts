@@ -925,6 +925,85 @@ function foo(cb) {
         },
       ],
     },
+    {
+      code: `
+const FooBarComponent = memo(function FooBarComponent() {});
+      `,
+      errors: [
+        {
+          data: {
+            name: 'FooBarComponent',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+const FooBarComponent = memo(class FooBarComponent {});
+      `,
+      errors: [
+        {
+          data: {
+            name: 'FooBarComponent',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const FooBarComponent = memo(function FooBarComponent() {});
+      `,
+      errors: [
+        {
+          data: {
+            name: 'FooBarComponent',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreOnInitialization: true }],
+    },
+    {
+      code: `
+function foo(a = wrap(function a() {})) {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 14,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var a = 1;
+var b = function a() {};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+    },
   ],
   valid: [
     `
@@ -943,6 +1022,24 @@ setTimeout(function () {
   doSomething();
 })();
     `,
+    {
+      code: `
+var a = foo || function a() {};
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var a = foo ? function a() {} : bar;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo(a = function a() {}) {}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
     `
 var arguments;
 function bar() {}
