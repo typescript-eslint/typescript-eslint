@@ -24,6 +24,7 @@ import { createEventsBinder } from '../lib/createEventsBinder';
 import { parseESLintRC, parseTSConfig } from '../lib/parseConfig';
 import { defaultEslintLanguageConfig } from './config';
 import { createParser } from './createParser';
+import { fileTypes } from '../options';
 
 export interface CreateLinter {
   configs: string[];
@@ -66,7 +67,7 @@ export function createLinter(
   );
 
   const eslintLanguageConfig: FlatConfig.Config = {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: fileTypes.map(extension => `**/*${extension}`),
     languageOptions: {
       ...defaultEslintLanguageConfig,
       parser,
