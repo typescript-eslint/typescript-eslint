@@ -57,6 +57,7 @@ export = {
     '@typescript-eslint/no-unsafe-assignment': 'error',
     '@typescript-eslint/no-unsafe-call': 'error',
     '@typescript-eslint/no-unsafe-declaration-merging': 'error',
+    '@typescript-eslint/no-unsafe-enum-assignment': 'error',
     '@typescript-eslint/no-unsafe-enum-comparison': 'error',
     '@typescript-eslint/no-unsafe-function-type': 'error',
     '@typescript-eslint/no-unsafe-member-access': 'error',
