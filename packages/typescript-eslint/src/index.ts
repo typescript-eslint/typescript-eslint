@@ -1,6 +1,4 @@
-// see the comment in config-helper.ts for why this doesn't use /ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
-import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
 import pluginBase from '@typescript-eslint/eslint-plugin';
 import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
@@ -16,10 +14,8 @@ import type {
 import { config } from './config-helper';
 import { getTSConfigRootDirFromStack } from './getTSConfigRootDirFromStack';
 
-export type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
-
 export const parser: CompatibleParser =
-  rawPlugin.parser as CompatibleParser satisfies FlatConfig.Parser;
+  rawPlugin.parser as CompatibleParser satisfies TSESLint.FlatConfig.Parser;
 
 /*
 we could build a plugin object here without the `configs` key - but if we do
@@ -45,7 +41,7 @@ would never be able to satisfy this constraint and thus users would be blocked
 from using them.
 */
 export const plugin: CompatiblePlugin =
-  pluginBase satisfies FlatConfig.Plugins['string'];
+  pluginBase satisfies TSESLint.FlatConfig.Plugins['string'];
 
 export const configs = createConfigsGetters({
   /**
@@ -146,7 +142,7 @@ export const configs = createConfigsGetters({
   stylisticTypeCheckedOnly: rawPlugin.flatConfigs[
     'flat/stylistic-type-checked-only'
   ] as CompatibleConfigArray,
-}) satisfies Record<string, FlatConfig.Config | FlatConfig.ConfigArray>;
+}) satisfies Record<string, TSESLint.FlatConfig.Config | TSESLint.FlatConfig.ConfigArray>;
 
 function createConfigsGetters<T extends object>(values: T): T {
   const configs = {};
