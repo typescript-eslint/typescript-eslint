@@ -121,7 +121,7 @@ export function createLinter(
       const lintMessage: Linter.LintMessage = {
         column: 1,
         line: 1,
-        message: String(e instanceof Error ? e.stack : e),
+        message: String(e instanceof Error ? `${e.message}\n\n${e.stack}` : e),
         ruleId: '',
         severity: 2,
         source: 'eslint',
