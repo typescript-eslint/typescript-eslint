@@ -62,7 +62,7 @@ export function extractNameForMember(node: MemberNode): ExtractedName | null {
     const identifier =
       node.parameter.type === AST_NODE_TYPES.Identifier
         ? node.parameter
-        : (node.parameter.left as TSESTree.Identifier);
+        : node.parameter.left;
     return extractNonComputedName(identifier);
   }
 
