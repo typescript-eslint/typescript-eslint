@@ -22,9 +22,9 @@ import type {
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createEventsBinder } from '../lib/createEventsBinder';
 import { parseESLintRC, parseTSConfig } from '../lib/parseConfig';
+import { fileTypes } from '../options';
 import { defaultEslintLanguageConfig } from './config';
 import { createParser } from './createParser';
-import { fileTypes } from '../options';
 
 export interface CreateLinter {
   configs: string[];
