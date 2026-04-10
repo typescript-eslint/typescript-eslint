@@ -113,17 +113,18 @@ Otherwise you can explicitly tell our tooling to analyze your code as if the com
 ## Comparison with `importsNotUsedAsValues` / `verbatimModuleSyntax`
 
 [`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax) was introduced in TypeScript v5.0 (as a replacement for `importsNotUsedAsValues`).
-This rule and `verbatimModuleSyntax` _mostly_ behave in the same way.
-There are a few behavior differences:
+This rule and `verbatimModuleSyntax` overlap in some situations, but there are a few behavior differences:
 | Situation | `consistent-type-imports` (ESLint) | `verbatimModuleSyntax` (TypeScript) |
 | -------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------- |
 | Unused imports | Ignored (consider using [`@typescript-eslint/no-unused-vars`](/rules/no-unused-vars)) | Type error |
-| Usage with `emitDecoratorMetadata` & `experimentalDecorations` | Ignores files that contain decorators | Reports on files that contain decorators |
+| Usage with `emitDecoratorMetadata` & `experimentalDecorators` | Ignores files that contain decorators | Reports on files that contain decorators |
 | Failures detected | Does not fail `tsc` build; can be auto-fixed with `--fix` | Fails `tsc` build; cannot be auto-fixed on the command-line |
 | `import { type T } from 'T';` | TypeScript will emit nothing (it "elides" the import) | TypeScript emits `import {} from 'T'` |
 
-Because there are some differences, using both this rule and `verbatimModuleSyntax` at the same time can lead to conflicting errors.
-As such we recommend that you only ever use one _or_ the other -- never both.
+Because there are some differences, using both this rule and `verbatimModuleSyntax` at the same time can lead to duplicate reports on the same import.
+For example, TypeScript may report that a type must be imported using `import type`, and this rule may also report that the import should use your configured style.
+If you want ESLint autofixes and style enforcement for explicit `import type`, keep this rule enabled.
+If TypeScript's diagnostics are sufficient for your project, you can disable this rule to avoid duplicate reports.
 
 ## When Not To Use It
 
