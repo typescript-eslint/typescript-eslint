@@ -216,7 +216,34 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkIfMethodAndReport(node, services.getSymbolAtLocation(node));
+        if (checkIfMethodAndReport(node, services.getSymbolAtLocation(node))) {
+          return;
+        }
+
+        // When accessing a property on a union type, TypeScript may not
+        // resolve a single symbol for the member expression if the property
+        // kind differs between constituents (e.g. a method on one type and a
+        // non-method property on another). Iterate the union/intersection
+        // constituents of the object's type so we still report such cases,
+        // matching the behavior already implemented for destructuring via
+        // ObjectPattern.
+        if (node.computed || node.property.type !== AST_NODE_TYPES.Identifier) {
+          return;
+        }
+        const propertyName = node.property.name;
+        const constituents = tsutils
+          .unionConstituents(services.getTypeAtLocation(node.object))
+          .flatMap(unionPart => tsutils.intersectionConstituents(unionPart));
+        if (constituents.length <= 1) {
+          return;
+        }
+        for (const constituent of constituents) {
+          if (
+            checkIfMethodAndReport(node, constituent.getProperty(propertyName))
+          ) {
+            return;
+          }
+        }
       },
       ObjectPattern(node): void {
         if (isNodeInsideTypeDeclaration(node)) {
