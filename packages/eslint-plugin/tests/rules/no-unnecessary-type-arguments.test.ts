@@ -20,6 +20,91 @@ function f<T = number>() {}
 f<string>();
     `,
     `
+function f<T>(x: T) {}
+f(10);
+    `,
+    `
+function f<T>(x: T) {}
+f<10>(10);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: any;
+f<string>(x);
+    `,
+    `
+function f<T>(x: T) {}
+f<Record<string, boolean>>({});
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: {};
+f<Record<string, boolean>>(x);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: Record<string, never>;
+f<Record<string, boolean>>(x);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: any;
+f<{}>(x);
+    `,
+    `
+function f<T>(x: T) {}
+declare const x: {};
+f<any>(x);
+    `,
+    `
+function f<T>(x: T) {}
+interface F {}
+declare const x: {};
+f<F>(x);
+    `,
+    `
+function f<T>(x: T) {}
+f<number[]>([]);
+    `,
+    `
+function f<T = number>(x: T) {}
+f(10);
+    `,
+    `
+function f<T extends number>(x: T) {}
+f(10);
+    `,
+    `
+function f<T extends number | string>(x: T) {}
+f(10);
+    `,
+    `
+function f<T extends number | string>(x: T) {}
+f<number | string>(10);
+    `,
+    `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried(10)(10);
+    `,
+    `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried<10>(10)<10>(10);
+    `,
+    `
+declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
+declare function f<T>(): [T | undefined, (x: T | undefined) => void];
+f(10);
+f<number>();
+    `,
+    `
+function f<T>(x: T) {}
+f<boolean | null>(true);
+    `,
+    `
 declare const f: (<T = number>() => void) | null;
 f?.();
     `,
@@ -68,6 +153,10 @@ class C<T = number> {}
 new C<string>();
     `,
     `
+class C<T> {}
+new C<string>();
+    `,
+    `
 declare const C: any;
 new C<string>();
     `,
@@ -108,6 +197,12 @@ class D<TD = number> extends C {}
 class Foo<T> {}
 const foo = new Foo<number>();
     `,
+    `
+class Foo<T> {
+  constructor<T>(x: T) {}
+}
+const foo = new Foo(10);
+    `,
     "type Foo<T> = import('foo').Foo<T>;",
     `
 class Bar<T = number> {}
@@ -130,10 +225,18 @@ import { F } from './missing';
 function bar<T = F>() {}
 bar<F<number>>();
     `,
-    `
+    {
+      code: `
 type A<T = Element> = T;
 type B = A<HTMLInputElement>;
-    `,
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.lib-dom.json',
+          projectService: false,
+        },
+      },
+    },
     `
 type A<T = Map<string, string>> = T;
 type B = A<Map<string, number>>;
@@ -167,6 +270,109 @@ namespace Foo {
 }
 class Bar extends Foo<string> {}
     `,
+    // Ignore invalid type arguments
+    `
+function f<T>() {}
+f<number, number>();
+    `,
+    `
+class Foo<T> {
+  public constructor(a: any, b: any, c: any, d: any) {}
+}
+interface Bar {
+  val: any;
+}
+let foo = new Foo<Bar>(0, 0, 0, { val: 0 });
+    `,
+    `
+class Box<T> {
+  constructor(a: unknown, b: unknown, c: T) {}
+}
+
+new Box<string>(1, 2, 'x');
+    `,
+    {
+      code: `
+interface Args { [name: string]: any; }
+
+type ArgTypes<TArgs = Args> = { [name in keyof TArgs]: string };
+
+const foo: ArgTypes<{foo?: string}> = {};
+    `,
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
+enum SomeKeys { A ,B, C }
+
+export const someMapping = Object.freeze<
+  Record<SomeKeys, string>
+>({
+  [SomeKeys .A]: '/doA',
+  [SomeKeys .B]: '/callB',
+  [SomeKeys .C]: '/c/foobar',
+});
+    `,
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
+type TUnionType = { type: 'idle' | 'busy' } | { type: 'error', message: string };
+
+declare const defaultVal: TUnionType | undefined;
+
+declare const func: <T>(val: T) => T;
+
+const val1 = func<TUnionType>(defaultVal ?? { type: 'idle' });
+    `,
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
+function identity<T>(value: T) {
+  return value;
+}
+
+const map = identity<Map<string, number>>(new Map());
+    `,
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
+type Wrapper<T = Record<string, any>> = {
+  args: T;
+}
+
+type Works = Wrapper<{ a: number }>;
+type Fails = Wrapper<{ a?: number }>;
+    `,
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
+type Fn<P extends any[], R> = (...args: P) => Promise<R>;
+
+declare function foo<P extends any[], R, F extends Fn<P, R>>(fn: F, ...args: P): Promise<R>;
+
+declare function bar(a: string): Promise<number>;
+
+foo<Parameters<typeof bar>, Awaited<ReturnType<typeof bar>>, typeof bar>(bar, "hello");
+    `,
+      options: [{ checkForInferrableTypes: true }],
+    },
+    {
+      code: `
+type Foo = { bar: string };
+
+declare const arr: (Foo | undefined)[];
+
+arr.reduce<Foo>(
+  (prev, curr) => ({ bar: curr?.bar ?? prev.bar }),
+  { bar: "x" },
+);
+    `,
+      options: [{ checkForInferrableTypes: true }],
+    },
     {
       code: `
 function Button<T>() {
@@ -207,12 +413,263 @@ f<number>();
       errors: [
         {
           column: 3,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
 function f<T = number>() {}
 f();
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: number;
+f<number>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+declare const x: number;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: any;
+f<any>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+declare const x: any;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: {};
+f<{}>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+declare const x: {};
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare const x: Record<string, never>;
+f<Record<string, never>>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+declare const x: Record<string, never>;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+interface F {}
+declare const x: F;
+f<F>(x);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T>(x: T) {}
+interface F {}
+declare const x: F;
+f(x);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T) {}
+declare function y(): number;
+f<number>(y());
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+declare function y(): number;
+f(y());
+      `,
+    },
+    {
+      code: `
+enum E {
+  A,
+  B,
+}
+function f<T>(x: T) {}
+f<E>(E.A);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+enum E {
+  A,
+  B,
+}
+function f<T>(x: T) {}
+f(E.A);
+      `,
+    },
+    // Should fail, but not crash
+    {
+      code: `
+declare function takes<T>(a: unknown, b: unknown, c: T): void;
+
+takes<string>(1, 2, 'x');
+    `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+declare function takes<T>(a: unknown, b: unknown, c: T): void;
+
+takes(1, 2, 'x');
+    `,
+    },
+    {
+      code: `
+function f<T = number>(x: T) {}
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        { messageId: 'canBeInferred' },
+        { messageId: 'isDefaultTypeArgument' },
+      ],
+      output: `
+function f<T = number>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+function f<T extends number>(x: T) {}
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T extends number>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+function f<T extends number | string>(x: T) {}
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+function f<T extends number | string>(x: T) {}
+f(10);
+      `,
+    },
+    {
+      code: `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried<number>(10)<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }, { messageId: 'canBeInferred' }],
+      output: `
+const curried =
+  <Outer,>(outer: Outer) =>
+  <Inner,>(inner: Inner) => {};
+curried(10)(10);
+      `,
+    },
+    {
+      code: `
+declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
+declare function f<T>(): [T | undefined, (x: T | undefined) => void];
+f<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [{ messageId: 'canBeInferred' }],
+      output: `
+declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
+declare function f<T>(): [T | undefined, (x: T | undefined) => void];
+f(10);
+      `,
+    },
+    // Ignore invalid arguments, check just ones we know the types of
+    {
+      code: `
+function f<T>(x: T) {}
+f<number>(10, 10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T) {}
+f(10, 10);
+      `,
+    },
+    {
+      code: `
+function f<T>(x: T, y: number) {}
+f<number>(10, 10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+function f<T>(x: T, y: number) {}
+f(10, 10);
       `,
     },
     {
@@ -223,7 +680,7 @@ g<string, string>();
       errors: [
         {
           column: 11,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -239,7 +696,7 @@ f<number>\`\${1}\`;
       errors: [
         {
           column: 3,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -254,7 +711,7 @@ function h(c: C<number>) {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -269,7 +726,7 @@ new C<number>();
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -284,7 +741,7 @@ class D extends C<number> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -299,7 +756,7 @@ class Impl implements I<number> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -314,7 +771,7 @@ const foo = new Foo<number>();
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -324,12 +781,32 @@ const foo = new Foo();
     },
     {
       code: `
+class Foo<T> {
+  constructor(x: T) {}
+}
+const foo = new Foo<number>(10);
+      `,
+      options: [{ checkForInferrableTypes: true }],
+      errors: [
+        {
+          messageId: 'canBeInferred',
+        },
+      ],
+      output: `
+class Foo<T> {
+  constructor(x: T) {}
+}
+const foo = new Foo(10);
+      `,
+    },
+    {
+      code: `
 interface Bar<T = string> {}
 class Foo<T = number> implements Bar<string> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -344,7 +821,7 @@ class Foo<T = number> extends Bar<string> {}
       `,
       errors: [
         {
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -362,7 +839,7 @@ bar<F<string>>();
         {
           column: 5,
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -385,7 +862,7 @@ declare module 'bar' {
         {
           column: 12,
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -406,7 +883,7 @@ type B = A<Map<string, string>>;
       errors: [
         {
           line: 3,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -423,7 +900,7 @@ type C = B<A>;
       errors: [
         {
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -441,7 +918,7 @@ type C = B<Map<string, string>>;
       errors: [
         {
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -460,7 +937,7 @@ type D = C<B>;
       errors: [
         {
           line: 5,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -482,7 +959,7 @@ type F = E<D>;
       errors: [
         {
           line: 7,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -505,7 +982,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -527,7 +1004,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -547,7 +1024,7 @@ class Bar implements Foo<string> {}
       errors: [
         {
           line: 4,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -567,7 +1044,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       output: `
@@ -588,7 +1065,7 @@ const button = <Button<string>></Button>;
       errors: [
         {
           line: 5,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       languageOptions: {
@@ -615,7 +1092,7 @@ const button = <Button<string> />;
       errors: [
         {
           line: 5,
-          messageId: 'unnecessaryTypeParameter',
+          messageId: 'isDefaultTypeArgument',
         },
       ],
       languageOptions: {
