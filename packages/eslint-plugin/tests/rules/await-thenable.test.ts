@@ -3,6 +3,8 @@ import { noFormat } from '@typescript-eslint/rule-tester';
 import rule from '../../src/rules/await-thenable';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
+// cspell:ignore Hecker,unional
+
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('await-thenable', rule, {

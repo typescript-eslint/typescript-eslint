@@ -99,9 +99,9 @@ enum Foo {
 }
 function enumArg(arg: Foo) {}
 
-function symb1(arg: symbol) {}
+function symbol1(arg: symbol) {}
 const customSymbol = Symbol('a');
-function symb2(arg: typeof customSymbol) {}
+function symbol2(arg: typeof customSymbol) {}
 
 // function types
 interface Foo {
