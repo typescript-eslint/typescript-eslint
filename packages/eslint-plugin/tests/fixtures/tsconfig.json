@@ -12,6 +12,7 @@
     "file.ts",
     "consistent-type-exports.ts",
     "deprecated.ts",
+    "bootstrap-vue-next.d.ts",
     "mixed-enums-decl.ts",
     "react.tsx",
     "var-declaration.ts",

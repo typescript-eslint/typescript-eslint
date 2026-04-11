@@ -1,8 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
 
@@ -394,7 +394,10 @@ export default createRule<Options, MessageId>({
     }
 
     function isPromiseArray(node: ts.Node): boolean {
-      const type = checker.getTypeAtLocation(node);
+      const type = getSafeTypeAtLocation(node);
+      if (!type) {
+        return false;
+      }
       for (const ty of tsutils
         .unionConstituents(type)
         .map(t => checker.getApparentType(t))) {
@@ -417,7 +420,10 @@ export default createRule<Options, MessageId>({
     }
 
     function isPromiseLike(node: ts.Node, type?: ts.Type): boolean {
-      type ??= checker.getTypeAtLocation(node);
+      type ??= getSafeTypeAtLocation(node);
+      if (!type) {
+        return false;
+      }
 
       // The highest priority is to allow anything allowlisted
       if (
@@ -472,6 +478,38 @@ export default createRule<Options, MessageId>({
       }
       return false;
     }
+
+    function getSafeTypeAtLocation(node: ts.Node): ts.Type | undefined {
+      try {
+        return checker.getTypeAtLocation(node);
+      } catch (error) {
+        // Work around recursive type display failures in TypeScript for some
+        // deeply nested generic call expressions.
+        if (
+          isMaximumCallStackSizeExceededError(error) &&
+          (ts.isCallExpression(node) || ts.isNewExpression(node))
+        ) {
+          return getCallLikeReturnType(node);
+        }
+
+        throw error;
+      }
+    }
+
+    function getCallLikeReturnType(
+      node: ts.CallExpression | ts.NewExpression,
+    ): ts.Type | undefined {
+      const calleeType = getSafeTypeAtLocation(node.expression);
+      if (!calleeType) {
+        return undefined;
+      }
+
+      const signatures = ts.isCallExpression(node)
+        ? checker.getSignaturesOfType(calleeType, ts.SignatureKind.Call)
+        : checker.getSignaturesOfType(calleeType, ts.SignatureKind.Construct);
+
+      return signatures[0]?.getReturnType();
+    }
   },
 });
 
@@ -502,4 +540,13 @@ function isFunctionParam(
     }
   }
   return false;
+}
+
+function isMaximumCallStackSizeExceededError(
+  error: unknown,
+): error is RangeError {
+  return (
+    error instanceof RangeError &&
+    error.message === 'Maximum call stack size exceeded'
+  );
 }
