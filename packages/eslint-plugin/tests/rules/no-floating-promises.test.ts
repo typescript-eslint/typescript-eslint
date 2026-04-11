@@ -5644,11 +5644,16 @@ await Promise.reject('foo').then(...[], () => {});
 
 describe('no-floating-promises fallback type lookup', () => {
   const parserOptions = {
+    disallowAutomaticSingleRunInference: true,
     filePath: path.join(rootDir, 'react.tsx'),
     project: './tsconfig.json',
     projectService: false,
     tsconfigRootDir: rootDir,
   } as const;
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   function createRuleListener(
     code: string,
