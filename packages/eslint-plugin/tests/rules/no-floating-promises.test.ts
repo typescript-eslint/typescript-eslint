@@ -5666,8 +5666,10 @@ describe('no-floating-promises fallback type lookup', () => {
     );
 
     assert.isDefined(expressionStatement);
+    assert.isNotNull(services.program);
 
-    const checker = services.program.getTypeChecker();
+    const program = services.program;
+    const checker = program.getTypeChecker();
     const checkerOverride = createCheckerOverride?.(
       checker,
       services,
@@ -5675,8 +5677,8 @@ describe('no-floating-promises fallback type lookup', () => {
     );
 
     if (checkerOverride) {
-      vi.spyOn(services.program, 'getTypeChecker').mockReturnValue(
-        checkerOverride,
+      vi.spyOn(program, 'getTypeChecker').mockImplementation(
+        () => checkerOverride,
       );
     }
 
