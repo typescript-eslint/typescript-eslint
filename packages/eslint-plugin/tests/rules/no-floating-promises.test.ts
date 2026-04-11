@@ -887,6 +887,26 @@ myAsyncFunction();
         },
       ],
     },
+    {
+      code: `
+import { vi } from 'vitest';
+
+vi.mock('bootstrap-vue-next', async importActual => {
+  const actual = await importActual<typeof import('bootstrap-vue-next')>();
+  return {
+    ...actual,
+    useModal: vi.fn<typeof actual.useModal>(() => {
+      const result = actual.useModal();
+      return {
+        ...result,
+        create: vi.fn<typeof result.create<unknown>>(result.create),
+      };
+    }),
+  };
+});
+      `,
+      filename: 'react.tsx',
+    },
   ],
 
   invalid: [
