@@ -1,4 +1,9 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+
+import { parseForESLint } from '@typescript-eslint/parser';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as path from 'node:path';
+import * as ts from 'typescript';
 
 import rule from '../../src/rules/no-floating-promises';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
@@ -5635,4 +5640,180 @@ await Promise.reject('foo').then(...[], () => {});
       ],
     },
   ],
+});
+
+describe('no-floating-promises fallback type lookup', () => {
+  const parserOptions = {
+    filePath: path.join(rootDir, 'react.tsx'),
+    project: './tsconfig.json',
+    projectService: false,
+    tsconfigRootDir: rootDir,
+  } as const;
+
+  function createRuleListener(
+    code: string,
+    createCheckerOverride?: (
+      checker: ts.TypeChecker,
+      services: ReturnType<typeof parseForESLint>['services'],
+      expressionStatement: TSESTree.ExpressionStatement,
+    ) => ts.TypeChecker,
+  ) {
+    const { ast, services } = parseForESLint(code, parserOptions);
+    const report = vi.fn();
+
+    const expressionStatement = ast.body.find(
+      statement => statement.type === AST_NODE_TYPES.ExpressionStatement,
+    );
+
+    assert.isDefined(expressionStatement);
+
+    const checker = services.program.getTypeChecker();
+    const checkerOverride = createCheckerOverride?.(
+      checker,
+      services,
+      expressionStatement,
+    );
+
+    if (checkerOverride) {
+      vi.spyOn(services.program, 'getTypeChecker').mockReturnValue(
+        checkerOverride,
+      );
+    }
+
+    const listener = rule.create({
+      languageOptions: {
+        parser: {
+          meta: {
+            name: '@typescript-eslint/parser',
+          },
+        },
+      },
+      options: [],
+      report,
+      sourceCode: {
+        ...ast,
+        parserServices: services,
+        text: code,
+      },
+    } as never);
+
+    return {
+      ExpressionStatement: listener.ExpressionStatement!,
+      expressionStatement,
+      report,
+      services,
+    };
+  }
+
+  it('rethrows non-recursion type lookup errors', () => {
+    const { ExpressionStatement, expressionStatement } = createRuleListener(
+      'Promise.resolve();',
+      (checker, services, statement) => {
+        const tsNode = services.esTreeNodeToTSNodeMap.get(statement.expression);
+
+        return {
+          ...checker,
+          getTypeAtLocation(node: ts.Node) {
+            if (node === tsNode) {
+              throw new Error('boom');
+            }
+
+            return checker.getTypeAtLocation(node);
+          },
+        };
+      },
+    );
+
+    expect(() => ExpressionStatement(expressionStatement)).toThrowError('boom');
+  });
+
+  it('returns early when the fallback cannot resolve a callee type', () => {
+    const { ExpressionStatement, expressionStatement, report } =
+      createRuleListener(
+        'Promise.resolve();',
+        (checker, services, statement) => {
+          assert(statement.expression.type === AST_NODE_TYPES.CallExpression);
+
+          const expressionTsNode = services.esTreeNodeToTSNodeMap.get(
+            statement.expression,
+          );
+          const calleeTsNode = services.esTreeNodeToTSNodeMap.get(
+            statement.expression.callee,
+          );
+
+          return {
+            ...checker,
+            getTypeAtLocation(node: ts.Node) {
+              if (node === expressionTsNode) {
+                throw new RangeError('Maximum call stack size exceeded');
+              }
+              if (node === calleeTsNode) {
+                return undefined as never;
+              }
+
+              return checker.getTypeAtLocation(node);
+            },
+          };
+        },
+      );
+
+    ExpressionStatement(expressionStatement);
+
+    expect(report).not.toHaveBeenCalled();
+  });
+
+  it('uses construct signatures in the fallback for new expressions', () => {
+    const getSignaturesOfType = vi.fn();
+    const { ExpressionStatement, expressionStatement, report } =
+      createRuleListener(
+        'new Promise((resolve) => resolve());',
+        (checker, services, statement) => {
+          assert(statement.expression.type === AST_NODE_TYPES.NewExpression);
+
+          const expressionTsNode = services.esTreeNodeToTSNodeMap.get(
+            statement.expression,
+          );
+
+          getSignaturesOfType.mockImplementation(
+            checker.getSignaturesOfType.bind(checker),
+          );
+
+          return {
+            ...checker,
+            getSignaturesOfType,
+            getTypeAtLocation(node: ts.Node) {
+              if (node === expressionTsNode) {
+                throw new RangeError('Maximum call stack size exceeded');
+              }
+
+              return checker.getTypeAtLocation(node);
+            },
+          };
+        },
+      );
+
+    ExpressionStatement(expressionStatement);
+
+    expect(report).toHaveBeenCalledOnce();
+    expect(getSignaturesOfType).toHaveBeenCalledWith(
+      expect.anything(),
+      ts.SignatureKind.Construct,
+    );
+  });
+
+  it('returns false when no thenable signature matches', () => {
+    const { ExpressionStatement, expressionStatement, report } =
+      createRuleListener(`
+interface ThenableWithoutRejection {
+  then(onFulfilled: () => void): ThenableWithoutRejection;
+}
+
+declare const thenableWithoutRejection: ThenableWithoutRejection;
+thenableWithoutRejection;
+      `);
+
+    ExpressionStatement(expressionStatement);
+
+    expect(report).not.toHaveBeenCalled();
+  });
 });
