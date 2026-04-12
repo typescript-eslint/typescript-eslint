@@ -29,6 +29,11 @@ void (() => {})();
 
 function foo() {}
 void foo();
+
+declare const box: { value: string };
+void box;
+void box.value;
+void box.value.toUpperCase();
 ```
 
 </TabItem>
@@ -39,6 +44,11 @@ void foo();
 
 function foo() {}
 foo(); // nothing to discard
+
+function bar(x: number) {
+  return 2;
+}
+void bar(1); // discarding a number
 
 void Promise.resolve(); // intentionally ignore a Promise
 ```
