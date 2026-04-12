@@ -78,5 +78,32 @@ function bar(x: never) {
       options: [{ checkNever: true }],
       output: null,
     },
+    {
+      code: `
+declare const box: { value: string };
+
+void box;
+void box.value;
+void box.value.toUpperCase();
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+        {
+          column: 1,
+          line: 5,
+          messageId: 'meaninglessVoidOperator',
+        },
+        {
+          column: 1,
+          line: 6,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
   ],
 });
