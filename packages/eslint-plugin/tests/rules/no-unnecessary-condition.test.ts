@@ -1149,6 +1149,33 @@ isString('falafel');
       `,
       options: [{ checkTypePredicates: true }],
     },
+    {
+      // string | number | bigint is not a subtype of string | number
+      code: `
+declare function isStringOrNumber(x: unknown): x is string | number;
+declare const s: string | number | bigint;
+if (isStringOrNumber(s)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Narrower is not a subtype of Wider
+      code: `
+interface Wider {
+  a: string;
+}
+interface Narrower {
+  a: string;
+  b: number;
+}
+declare function isNarrower(x: unknown): x is Narrower;
+declare const w: Wider;
+if (isNarrower(w)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
     `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
@@ -3503,6 +3530,68 @@ isString('fa' + 'lafel');
       errors: [
         {
           line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // string is a strict subtype of string | number.
+      code: `
+declare function isStringOrNumber(x: unknown): x is string | number;
+declare const s: string;
+if (isStringOrNumber(s)) {
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+interface Wider {
+  a: string;
+}
+interface Narrower {
+  a: string;
+  b?: number;
+}
+declare function isWider(x: unknown): x is Wider;
+declare const n: Narrower;
+if (isWider(n)) {
+}
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Mutually assignable types: Wider is assignable to Narrower (b is
+      // optional), so the type guard condition is always true.
+      code: `
+interface Wider {
+  a: string;
+}
+interface Narrower {
+  a: string;
+  b?: number;
+}
+declare function isNarrower(x: unknown): x is Narrower;
+declare const w: Wider;
+if (isNarrower(w)) {
+}
+      `,
+      errors: [
+        {
+          line: 11,
           messageId: 'typeGuardAlreadyIsType',
         },
       ],
