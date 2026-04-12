@@ -321,11 +321,14 @@ void (<string>x);
       output: null,
     },
     {
-      code: 'declare const s: symbol; void s.toString();',
+      code: `
+declare const s: symbol;
+void s.toString();
+      `,
       errors: [
         {
-          column: 26,
-          line: 1,
+          column: 1,
+          line: 3,
           messageId: 'meaninglessVoidOperator',
         },
       ],
