@@ -51,17 +51,17 @@ void getBox().value;
 declare const str: string;
 void str.normalize('NFC');
     `,
-    // Optional call — covers node.optional = true in isSideEffectFreeStringMethodCall
+    // Optional call — the call itself is optional, not clearly side-effect-free
     `
 declare const str: string;
 void str.toUpperCase?.();
     `,
-    // Computed method call — covers callee.computed = true in isSideEffectFreeStringMethodCall
+    // Computed method call — not clearly side-effect-free
     `
 declare const str: string;
 void str['toUpperCase']();
     `,
-    // String method called on a non-string type
+    // Method called on a non-primitive type
     `
 declare const someObj: { toString(): string };
 void someObj.toString();
@@ -293,6 +293,39 @@ void (<string>x);
         {
           column: 1,
           line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'void (42).toString();',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'void true.toString();',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: 'declare const s: symbol; void s.toString();',
+      errors: [
+        {
+          column: 26,
+          line: 1,
           messageId: 'meaninglessVoidOperator',
         },
       ],

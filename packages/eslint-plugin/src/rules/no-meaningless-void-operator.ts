@@ -1,4 +1,8 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -16,20 +20,98 @@ export type Options = [
   },
 ];
 
-const sideEffectFreeStringMethods = new Set([
-  'normalize',
-  'toLocaleLowerCase',
-  'toLocaleUpperCase',
-  'toLowerCase',
-  'toString',
-  'toUpperCase',
-  'trim',
-  'trimEnd',
-  'trimLeft',
-  'trimRight',
-  'trimStart',
-  'valueOf',
-]);
+const PRIMITIVE_TYPE_FLAGS =
+  ts.TypeFlags.StringLike |
+  ts.TypeFlags.NumberLike |
+  ts.TypeFlags.BooleanLike |
+  ts.TypeFlags.BigIntLike |
+  ts.TypeFlags.ESSymbolLike;
+
+function isClearlyMeaninglessMemberAccess(
+  node: TSESTree.MemberExpression,
+  services: ParserServicesWithTypeInformation,
+  program: ts.Program,
+): boolean {
+  if (!isClearlyMeaninglessExpression(node.object, services, program)) {
+    return false;
+  }
+
+  if (!node.computed) {
+    return true;
+  }
+
+  return isClearlyMeaninglessExpression(node.property, services, program);
+}
+
+function isClearlyMeaninglessExpression(
+  node: TSESTree.Expression,
+  services: ParserServicesWithTypeInformation,
+  program: ts.Program,
+): boolean {
+  switch (node.type) {
+    case AST_NODE_TYPES.ChainExpression:
+    case AST_NODE_TYPES.TSAsExpression:
+    case AST_NODE_TYPES.TSInstantiationExpression:
+    case AST_NODE_TYPES.TSNonNullExpression:
+    case AST_NODE_TYPES.TSTypeAssertion:
+      return isClearlyMeaninglessExpression(node.expression, services, program);
+
+    case AST_NODE_TYPES.Identifier:
+    case AST_NODE_TYPES.Literal:
+    case AST_NODE_TYPES.ThisExpression:
+      return true;
+
+    case AST_NODE_TYPES.MemberExpression:
+      return isClearlyMeaninglessMemberAccess(node, services, program);
+
+    case AST_NODE_TYPES.CallExpression:
+      return isSideEffectFreeMethodCallOnPrimitive(node, services, program);
+
+    default:
+      return false;
+  }
+}
+
+function isSideEffectFreeMethodCallOnPrimitive(
+  node: TSESTree.CallExpression,
+  services: ParserServicesWithTypeInformation,
+  program: ts.Program,
+): boolean {
+  const { callee } = node;
+  if (
+    node.optional ||
+    node.arguments.length > 0 ||
+    callee.type !== AST_NODE_TYPES.MemberExpression ||
+    callee.computed ||
+    callee.optional
+  ) {
+    return false;
+  }
+
+  const { object, property } = callee;
+  if (property.type !== AST_NODE_TYPES.Identifier) {
+    return false;
+  }
+
+  if (!isClearlyMeaninglessExpression(object, services, program)) {
+    return false;
+  }
+
+  const objectType = getConstrainedTypeAtLocation(services, object);
+  if (
+    !tsutils
+      .unionConstituents(objectType)
+      .every(part => tsutils.isTypeFlagSet(part, PRIMITIVE_TYPE_FLAGS))
+  ) {
+    return false;
+  }
+
+  const propertySymbol = services.getSymbolAtLocation(property);
+  return (
+    propertySymbol != null &&
+    isSymbolFromDefaultLibrary(program, propertySymbol)
+  );
+}
 
 export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
   name: 'no-meaningless-void-operator',
@@ -68,90 +150,6 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
     const services = ESLintUtils.getParserServices(context);
     const { program } = services;
     const checker = program.getTypeChecker();
-
-    function isClearlyMeaninglessMemberAccess(
-      node: TSESTree.MemberExpression,
-    ): boolean {
-      if (!isClearlyMeaninglessExpression(node.object)) {
-        return false;
-      }
-
-      if (!node.computed) {
-        return true;
-      }
-
-      return isClearlyMeaninglessExpression(node.property);
-    }
-
-    function isClearlyMeaninglessExpression(
-      node: TSESTree.Expression,
-    ): boolean {
-      switch (node.type) {
-        case AST_NODE_TYPES.ChainExpression:
-        case AST_NODE_TYPES.TSAsExpression:
-        case AST_NODE_TYPES.TSInstantiationExpression:
-        case AST_NODE_TYPES.TSNonNullExpression:
-        case AST_NODE_TYPES.TSTypeAssertion:
-          return isClearlyMeaninglessExpression(node.expression);
-
-        case AST_NODE_TYPES.Identifier:
-        case AST_NODE_TYPES.Literal:
-        case AST_NODE_TYPES.ThisExpression:
-          return true;
-
-        case AST_NODE_TYPES.MemberExpression:
-          return isClearlyMeaninglessMemberAccess(node);
-
-        case AST_NODE_TYPES.CallExpression:
-          return isSideEffectFreeStringMethodCall(node);
-
-        default:
-          return false;
-      }
-    }
-
-    function isSideEffectFreeStringMethodCall(
-      node: TSESTree.CallExpression,
-    ): boolean {
-      const { callee } = node;
-      if (
-        node.optional ||
-        node.arguments.length > 0 ||
-        callee.type !== AST_NODE_TYPES.MemberExpression ||
-        callee.computed ||
-        callee.optional
-      ) {
-        return false;
-      }
-
-      const { object, property } = callee;
-      if (property.type !== AST_NODE_TYPES.Identifier) {
-        return false;
-      }
-
-      if (!sideEffectFreeStringMethods.has(property.name)) {
-        return false;
-      }
-
-      if (!isClearlyMeaninglessExpression(object)) {
-        return false;
-      }
-
-      const objectType = getConstrainedTypeAtLocation(services, object);
-      if (
-        !tsutils
-          .unionConstituents(objectType)
-          .every(part => tsutils.isTypeFlagSet(part, ts.TypeFlags.StringLike))
-      ) {
-        return false;
-      }
-
-      const propertySymbol = services.getSymbolAtLocation(property);
-      return (
-        propertySymbol != null &&
-        isSymbolFromDefaultLibrary(program, propertySymbol)
-      );
-    }
 
     return {
       'UnaryExpression[operator="void"]'(node: TSESTree.UnaryExpression): void {
@@ -200,7 +198,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           return;
         }
 
-        if (!isClearlyMeaninglessExpression(node.argument)) {
+        if (!isClearlyMeaninglessExpression(node.argument, services, program)) {
           return;
         }
 
