@@ -51,15 +51,36 @@ void getBox().value;
 declare const str: string;
 void str.normalize('NFC');
     `,
-    // Optional call — callee may be undefined, so the call is not clearly side-effect-free
+    // Optional call — covers node.optional = true in isSideEffectFreeStringMethodCall
     `
 declare const str: string;
-void str?.toUpperCase();
+void str.toUpperCase?.();
+    `,
+    // Computed method call — covers callee.computed = true in isSideEffectFreeStringMethodCall
+    `
+declare const str: string;
+void str['toUpperCase']();
     `,
     // String method called on a non-string type
     `
 declare const someObj: { toString(): string };
 void someObj.toString();
+    `,
+    // Private class method — property is PrivateIdentifier, not Identifier
+    `
+class Foo {
+  #method() {
+    return 'hello';
+  }
+  bar() {
+    void this.#method();
+  }
+}
+    `,
+    // Template literal — hits the default case in isClearlyMeaninglessExpression
+    `
+declare const str: string;
+void \`\${str}\`;
     `,
   ],
   invalid: [
