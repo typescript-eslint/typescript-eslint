@@ -88,8 +88,6 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
     ): boolean {
       switch (node.type) {
         case AST_NODE_TYPES.ChainExpression:
-          return isClearlyMeaninglessExpression(node.expression);
-
         case AST_NODE_TYPES.TSAsExpression:
         case AST_NODE_TYPES.TSInstantiationExpression:
         case AST_NODE_TYPES.TSNonNullExpression:
