@@ -35,7 +35,7 @@ void Promise.resolve();
 declare const obj: { method(): string };
 void obj.method();
     `,
-    // Computed member access with side-effectful key expression
+    // Computed member access with a key expression that may have side effects
     `
 declare const obj: Record<string, number>;
 declare function getKey(): string;
