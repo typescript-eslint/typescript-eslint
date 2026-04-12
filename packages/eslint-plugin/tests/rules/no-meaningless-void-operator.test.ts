@@ -11,8 +11,7 @@ ruleTester.run('no-meaningless-void-operator', rule, {
 function foo() {}
 foo(); // nothing to discard
 
-function bar(x: number) {
-  void x;
+function bar() {
   return 2;
 }
 void bar(); // discarding a number
@@ -21,6 +20,26 @@ void bar(); // discarding a number
 function bar(x: never) {
   void x;
 }
+    `,
+    // Function call returning non-void (side effects possible, void is intentional)
+    `
+declare function getStr(): string;
+void getStr();
+    `,
+    // Common pattern: ignoring a Promise
+    `
+void Promise.resolve();
+    `,
+    // Method call returning non-void (side effects possible)
+    `
+declare const obj: { method(): string };
+void obj.method();
+    `,
+    // Computed member access with side-effectful key expression
+    `
+declare const obj: Record<string, number>;
+declare function getKey(): string;
+void obj[getKey()];
     `,
   ],
   invalid: [
@@ -83,7 +102,35 @@ function bar(x: never) {
 declare const box: { value: string };
 
 void box;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const box: { value: string };
+
 void box.value;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const box: { value: string };
+
 void box.value.toUpperCase();
       `,
       errors: [
@@ -92,14 +139,74 @@ void box.value.toUpperCase();
           line: 4,
           messageId: 'meaninglessVoidOperator',
         },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const x: string;
+void x;
+      `,
+      errors: [
         {
           column: 1,
-          line: 5,
+          line: 3,
           messageId: 'meaninglessVoidOperator',
         },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const obj: { value?: { nested: string } };
+void obj.value?.nested;
+      `,
+      errors: [
         {
           column: 1,
-          line: 6,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const x: unknown;
+void (x as string);
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const obj: { key: number };
+void obj['key'];
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const x: string | null;
+void x!;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
           messageId: 'meaninglessVoidOperator',
         },
       ],

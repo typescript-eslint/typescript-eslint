@@ -1,16 +1,35 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule } from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  isSymbolFromDefaultLibrary,
+} from '../util';
 
 export type Options = [
   {
     checkNever: boolean;
   },
 ];
+
+const sideEffectFreeStringMethods = new Set([
+  'normalize',
+  'toLocaleLowerCase',
+  'toLocaleUpperCase',
+  'toLowerCase',
+  'toString',
+  'toUpperCase',
+  'trim',
+  'trimEnd',
+  'trimLeft',
+  'trimRight',
+  'trimStart',
+  'valueOf',
+]);
 
 export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
   name: 'no-meaningless-void-operator',
@@ -47,7 +66,94 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
 
   create(context, [{ checkNever }]) {
     const services = ESLintUtils.getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program } = services;
+    const checker = program.getTypeChecker();
+
+    function isClearlyMeaninglessMemberAccess(
+      node: TSESTree.MemberExpression,
+    ): boolean {
+      if (!isClearlyMeaninglessExpression(node.object)) {
+        return false;
+      }
+
+      if (!node.computed) {
+        return true;
+      }
+
+      return isClearlyMeaninglessExpression(node.property);
+    }
+
+    function isClearlyMeaninglessExpression(
+      node: TSESTree.Expression,
+    ): boolean {
+      switch (node.type) {
+        case AST_NODE_TYPES.ChainExpression:
+          return isClearlyMeaninglessExpression(node.expression);
+
+        case AST_NODE_TYPES.TSAsExpression:
+        case AST_NODE_TYPES.TSInstantiationExpression:
+        case AST_NODE_TYPES.TSNonNullExpression:
+        case AST_NODE_TYPES.TSTypeAssertion:
+          return isClearlyMeaninglessExpression(node.expression);
+
+        case AST_NODE_TYPES.Identifier:
+        case AST_NODE_TYPES.Literal:
+        case AST_NODE_TYPES.ThisExpression:
+          return true;
+
+        case AST_NODE_TYPES.MemberExpression:
+          return isClearlyMeaninglessMemberAccess(node);
+
+        case AST_NODE_TYPES.CallExpression:
+          return isSideEffectFreeStringMethodCall(node);
+
+        default:
+          return false;
+      }
+    }
+
+    function isSideEffectFreeStringMethodCall(
+      node: TSESTree.CallExpression,
+    ): boolean {
+      const { callee } = node;
+      if (
+        node.optional ||
+        node.arguments.length > 0 ||
+        callee.type !== AST_NODE_TYPES.MemberExpression ||
+        callee.computed ||
+        callee.optional
+      ) {
+        return false;
+      }
+
+      const { object, property } = callee;
+      if (property.type !== AST_NODE_TYPES.Identifier) {
+        return false;
+      }
+
+      if (!sideEffectFreeStringMethods.has(property.name)) {
+        return false;
+      }
+
+      if (!isClearlyMeaninglessExpression(object)) {
+        return false;
+      }
+
+      const objectType = getConstrainedTypeAtLocation(services, object);
+      if (
+        !tsutils
+          .unionConstituents(objectType)
+          .every(part => tsutils.isTypeFlagSet(part, ts.TypeFlags.StringLike))
+      ) {
+        return false;
+      }
+
+      const propertySymbol = services.getSymbolAtLocation(property);
+      return (
+        propertySymbol != null &&
+        isSymbolFromDefaultLibrary(program, propertySymbol)
+      );
+    }
 
     return {
       'UnaryExpression[operator="void"]'(node: TSESTree.UnaryExpression): void {
@@ -74,8 +180,10 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
             data: { type: checker.typeToString(argType) },
             fix,
           });
-        } else if (
-          checkNever &&
+          return;
+        }
+
+        if (
           unionParts.every(part =>
             tsutils.isTypeFlagSet(
               part,
@@ -83,13 +191,26 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
             ),
           )
         ) {
-          context.report({
-            node,
-            messageId: 'meaninglessVoidOperator',
-            data: { type: checker.typeToString(argType) },
-            suggest: [{ messageId: 'removeVoid', fix }],
-          });
+          if (checkNever) {
+            context.report({
+              node,
+              messageId: 'meaninglessVoidOperator',
+              data: { type: checker.typeToString(argType) },
+              suggest: [{ messageId: 'removeVoid', fix }],
+            });
+          }
+          return;
         }
+
+        if (!isClearlyMeaninglessExpression(node.argument)) {
+          return;
+        }
+
+        context.report({
+          node,
+          messageId: 'meaninglessVoidOperator',
+          data: { type: checker.typeToString(argType) },
+        });
       },
     };
   },
