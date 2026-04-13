@@ -1,9 +1,6 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
-
 import rule from '../../../src/rules/prefer-optional-chain';
-import { dedupeTestCases } from '../../dedupeTestCases';
 import { createRuleTesterWithTypes } from '../../RuleTester';
-import { BaseCases, identity } from './base-cases';
 
 const ruleTester = createRuleTesterWithTypes();
 
@@ -3531,16 +3528,46 @@ describe('base cases', () => {
     describe('boolean', () => {
       ruleTester.run('prefer-optional-chain', rule, {
         invalid: [
-          ...BaseCases({ operator: '&&' }),
-          // it should ignore parts of the expression that aren't part of the expression chain
-          ...BaseCases({
-            mutateCode: c => c.replace(/;$/, ' && bing;'),
-            operator: '&&',
-          }),
-          ...BaseCases({
-            mutateCode: c => c.replace(/;$/, ' && bing.bong;'),
-            operator: '&&',
-          }),
+          // Basic simple chain
+          {
+            code: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo && foo.bar;`,
+            output: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo?.bar;`,
+            errors: [{ messageId: 'preferOptionalChain' }],
+          },
+          // Deeply nested chain
+          {
+            code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz;`,
+            output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo?.bar?.baz?.buzz;`,
+            errors: [{ messageId: 'preferOptionalChain' }],
+          },
+          // Extra trailing expression (&& bing)
+          {
+            code: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo && foo.bar && bing;`,
+            output: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo?.bar && bing;`,
+            errors: [{ messageId: 'preferOptionalChain' }],
+          },
+          // Extra trailing member expression (&& bing.bong)
+          {
+            code: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo && foo.bar && bing.bong;`,
+            output: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo?.bar && bing.bong;`,
+            errors: [{ messageId: 'preferOptionalChain' }],
+          },
         ],
         valid: [],
       });
@@ -3551,33 +3578,139 @@ describe('base cases', () => {
         ruleTester.run('prefer-optional-chain', rule, {
           // with the `| null | undefined` type - `!== null` doesn't cover the
           // `undefined` case - so optional chaining is not a valid conversion
-          valid: BaseCases({
-            mutateCode: c => c.replaceAll('&&', '!== null &&'),
-            mutateOutput: identity,
-            operator: '&&',
-          }),
+          valid: [
+            `// 1
+declare const foo: { bar: number } | null | undefined;
+foo !== null && foo.bar;`,
+            `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo !== null && foo.bar !== null && foo.bar.baz !== null && foo.bar.baz.buzz;`,
+          ],
           // but if the type is just `| null` - then it covers the cases and is
           // a valid conversion
           invalid: [
-            ...BaseCases({
-              mutateCode: c => c.replaceAll('&&', '!== null &&'),
-              mutateDeclaration: c => c.replaceAll('| undefined', ''),
-              mutateOutput: identity,
-              operator: '&&',
-              useSuggestionFixer: true,
-            }),
+            {
+              code: `// 1
+declare const foo: { bar: number } | null;
+foo !== null && foo.bar;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 1
+declare const foo: { bar: number } | null;
+foo?.bar;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null } | null } | null;
+foo !== null && foo.bar !== null && foo.bar.baz !== null && foo.bar.baz.buzz;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null } | null } | null;
+foo?.bar?.baz?.buzz;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 4
+declare const foo: { bar: () => number } | null;
+foo.bar !== null && foo.bar();`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 4
+declare const foo: { bar: () => number } | null;
+foo.bar?.();`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
           ],
         });
       });
 
       describe('!= null', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          invalid: BaseCases({
-            mutateCode: c => c.replaceAll('&&', '!= null &&'),
-            mutateOutput: identity,
-            operator: '&&',
-            useSuggestionFixer: true,
-          }),
+          invalid: [
+            {
+              code: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo != null && foo.bar;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo?.bar;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo != null && foo.bar != null && foo.bar.baz != null && foo.bar.baz.buzz;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo?.bar?.baz?.buzz;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 4
+declare const foo: { bar: () => number } | null | undefined;
+foo.bar != null && foo.bar();`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 4
+declare const foo: { bar: () => number } | null | undefined;
+foo.bar?.();`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+          ],
           valid: [],
         });
       });
@@ -3586,60 +3719,112 @@ describe('base cases', () => {
         ruleTester.run('prefer-optional-chain', rule, {
           // with the `| null | undefined` type - `!== undefined` doesn't cover the
           // `null` case - so optional chaining is not a valid conversion
-          valid: BaseCases({
-            mutateCode: c => c.replaceAll('&&', '!== undefined &&'),
-            mutateOutput: identity,
-            operator: '&&',
-            skipIds: [20, 26],
-          }),
+          valid: [
+            `// 1
+declare const foo: { bar: number } | null | undefined;
+foo !== undefined && foo.bar;`,
+            `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo !== undefined && foo.bar !== undefined && foo.bar.baz !== undefined && foo.bar.baz.buzz;`,
+          ],
           // but if the type is just `| undefined` - then it covers the cases and is
           // a valid conversion
           invalid: [
-            ...BaseCases({
-              mutateCode: c => c.replaceAll('&&', '!== undefined &&'),
-              mutateDeclaration: c => c.replaceAll('| null', ''),
-              mutateOutput: identity,
-              operator: '&&',
-              useSuggestionFixer: true,
-            }),
             {
-              code: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar !== undefined &&
-                  foo.bar() !== undefined &&
-                  foo.bar().baz !== undefined &&
-                  foo.bar().baz.buzz !== undefined &&
-                  foo.bar().baz.buzz();
-              `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar?.() !== undefined &&
-                  foo.bar().baz !== undefined &&
-                  foo.bar().baz.buzz !== undefined &&
-                  foo.bar().baz.buzz();
-              `,
+              code: `// 1
+declare const foo: { bar: number } | undefined;
+foo !== undefined && foo.bar;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 1
+declare const foo: { bar: number } | undefined;
+foo?.bar;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
+foo !== undefined && foo.bar !== undefined && foo.bar.baz !== undefined && foo.bar.baz.buzz;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
+foo?.bar?.baz?.buzz;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 4
+declare const foo: { bar: () => number } | undefined;
+foo.bar !== undefined && foo.bar();`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 4
+declare const foo: { bar: () => number } | undefined;
+foo.bar?.();`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
             },
             {
               code: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar !== undefined && foo.bar?.() !== undefined && foo.bar?.().baz;
-              `,
+          declare const foo: {
+            bar: () =>
+              | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
+              | null
+              | undefined;
+          };
+          foo.bar !== undefined &&
+            foo.bar() !== undefined &&
+            foo.bar().baz !== undefined &&
+            foo.bar().baz.buzz !== undefined &&
+            foo.bar().baz.buzz();
+        `,
               errors: [{ messageId: 'preferOptionalChain' }],
               output: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar?.() !== undefined && foo.bar?.().baz;
-              `,
+          declare const foo: {
+            bar: () =>
+              | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
+              | null
+              | undefined;
+          };
+          foo.bar?.() !== undefined &&
+            foo.bar().baz !== undefined &&
+            foo.bar().baz.buzz !== undefined &&
+            foo.bar().baz.buzz();
+        `,
+            },
+            {
+              code: `
+          declare const foo: { bar: () => { baz: number } | null | undefined };
+          foo.bar !== undefined && foo.bar?.() !== undefined && foo.bar?.().baz;
+        `,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `
+          declare const foo: { bar: () => { baz: number } | null | undefined };
+          foo.bar?.() !== undefined && foo.bar?.().baz;
+        `,
             },
           ],
         });
@@ -3647,12 +3832,65 @@ describe('base cases', () => {
 
       describe('!= undefined', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          invalid: BaseCases({
-            mutateCode: c => c.replaceAll('&&', '!= undefined &&'),
-            mutateOutput: identity,
-            operator: '&&',
-            useSuggestionFixer: true,
-          }),
+          invalid: [
+            {
+              code: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo != undefined && foo.bar;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo?.bar;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo != undefined && foo.bar != undefined && foo.bar.baz != undefined && foo.bar.baz.buzz;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo?.bar?.baz?.buzz;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 4
+declare const foo: { bar: () => number } | null | undefined;
+foo.bar != undefined && foo.bar();`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 4
+declare const foo: { bar: () => number } | null | undefined;
+foo.bar?.();`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+          ],
           valid: [],
         });
       });
@@ -3662,11 +3900,26 @@ describe('base cases', () => {
   describe('or', () => {
     describe('boolean', () => {
       ruleTester.run('prefer-optional-chain', rule, {
-        invalid: BaseCases({
-          mutateCode: c => `!${c.replaceAll('||', '|| !')}`,
-          mutateOutput: c => `!${c}`,
-          operator: '||',
-        }),
+        invalid: [
+          {
+            code: `// 1
+declare const foo: { bar: number } | null | undefined;
+!foo || !foo.bar;`,
+            output: `// 1
+declare const foo: { bar: number } | null | undefined;
+!foo?.bar;`,
+            errors: [{ messageId: 'preferOptionalChain' }],
+          },
+          {
+            code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+!foo || !foo.bar || !foo.bar.baz || !foo.bar.baz.buzz;`,
+            output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+!foo?.bar?.baz?.buzz;`,
+            errors: [{ messageId: 'preferOptionalChain' }],
+          },
+        ],
         valid: [],
       });
     });
@@ -3676,42 +3929,109 @@ describe('base cases', () => {
         ruleTester.run('prefer-optional-chain', rule, {
           // with the `| null | undefined` type - `=== null` doesn't cover the
           // `undefined` case - so optional chaining is not a valid conversion
-          valid: BaseCases({
-            mutateCode: c => c.replaceAll('||', '=== null ||'),
-            mutateOutput: identity,
-            operator: '||',
-          }),
+          valid: [
+            `// 1
+declare const foo: { bar: number } | null | undefined;
+foo === null || foo.bar;`,
+            `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo === null || foo.bar === null || foo.bar.baz === null || foo.bar.baz.buzz;`,
+          ],
           // but if the type is just `| null` - then it covers the cases and is
           // a valid conversion
           invalid: [
-            ...BaseCases({
-              mutateCode: c =>
-                c
-                  .replaceAll('||', '=== null ||')
-                  // SEE TODO AT THE BOTTOM OF THE RULE
-                  // We need to ensure the final operand is also a "valid" `||` check
-                  .replace(/;$/, ' === null;'),
-              mutateDeclaration: c => c.replaceAll('| undefined', ''),
-              mutateOutput: c => c.replace(/;$/, ' === null;'),
-              operator: '||',
-              useSuggestionFixer: true,
-            }),
+            {
+              code: `// 1
+declare const foo: { bar: number } | null;
+foo === null || foo.bar === null;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 1
+declare const foo: { bar: number } | null;
+foo?.bar === null;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null } | null } | null;
+foo === null || foo.bar === null || foo.bar.baz === null || foo.bar.baz.buzz === null;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null } | null } | null;
+foo?.bar?.baz?.buzz === null;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
+            {
+              code: `// 4
+declare const foo: { bar: () => number } | null;
+foo.bar === null || foo.bar() === null;`,
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `// 4
+declare const foo: { bar: () => number } | null;
+foo.bar?.() === null;`,
+                    },
+                  ],
+                },
+              ],
+              output: null,
+            },
           ],
         });
       });
 
       describe('== null', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          invalid: BaseCases({
-            mutateCode: c =>
-              c
-                .replaceAll('||', '== null ||')
-                // SEE TODO AT THE BOTTOM OF THE RULE
-                // We need to ensure the final operand is also a "valid" `||` check
-                .replace(/;$/, ' == null;'),
-            mutateOutput: c => c.replace(/;$/, ' == null;'),
-            operator: '||',
-          }),
+          invalid: [
+            {
+              code: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo == null || foo.bar == null;`,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo?.bar == null;`,
+            },
+            {
+              code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo == null || foo.bar == null || foo.bar.baz == null || foo.bar.baz.buzz == null;`,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo?.bar?.baz?.buzz == null;`,
+            },
+            {
+              code: `// 4
+declare const foo: { bar: () => number } | null | undefined;
+foo.bar == null || foo.bar() == null;`,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `// 4
+declare const foo: { bar: () => number } | null | undefined;
+foo.bar?.() == null;`,
+            },
+          ],
           valid: [],
         });
       });
@@ -3720,64 +4040,82 @@ describe('base cases', () => {
         ruleTester.run('prefer-optional-chain', rule, {
           // with the `| null | undefined` type - `=== undefined` doesn't cover the
           // `null` case - so optional chaining is not a valid conversion
-          valid: BaseCases({
-            mutateCode: c => c.replaceAll('||', '=== undefined ||'),
-            mutateOutput: identity,
-            operator: '||',
-            skipIds: [20, 26],
-          }),
+          valid: [
+            `// 1
+declare const foo: { bar: number } | null | undefined;
+foo === undefined || foo.bar;`,
+            `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo === undefined || foo.bar === undefined || foo.bar.baz === undefined || foo.bar.baz.buzz;`,
+          ],
           // but if the type is just `| undefined` - then it covers the cases and is
           // a valid conversion
           invalid: [
-            ...BaseCases({
-              mutateCode: c =>
-                c
-                  .replaceAll('||', '=== undefined ||')
-                  // SEE TODO AT THE BOTTOM OF THE RULE
-                  // We need to ensure the final operand is also a "valid" `||` check
-                  .replace(/;$/, ' === undefined;'),
-              mutateDeclaration: c => c.replaceAll('| null', ''),
-              mutateOutput: c => c.replace(/;$/, ' === undefined;'),
-              operator: '||',
-            }),
             {
-              code: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar === undefined ||
-                  foo.bar() === undefined ||
-                  foo.bar().baz === undefined ||
-                  foo.bar().baz.buzz === undefined ||
-                  foo.bar().baz.buzz();
-              `,
+              code: `// 1
+declare const foo: { bar: number } | undefined;
+foo === undefined || foo.bar === undefined;`,
               errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
-                declare const foo: {
-                  bar: () =>
-                    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
-                    | null
-                    | undefined;
-                };
-                foo.bar?.() === undefined ||
-                  foo.bar().baz === undefined ||
-                  foo.bar().baz.buzz === undefined ||
-                  foo.bar().baz.buzz();
-              `,
+              output: `// 1
+declare const foo: { bar: number } | undefined;
+foo?.bar === undefined;`,
+            },
+            {
+              code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
+foo === undefined || foo.bar === undefined || foo.bar.baz === undefined || foo.bar.baz.buzz === undefined;`,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
+foo?.bar?.baz?.buzz === undefined;`,
+            },
+            {
+              code: `// 4
+declare const foo: { bar: () => number } | undefined;
+foo.bar === undefined || foo.bar() === undefined;`,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `// 4
+declare const foo: { bar: () => number } | undefined;
+foo.bar?.() === undefined;`,
             },
             {
               code: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar === undefined || foo.bar?.() === undefined || foo.bar?.().baz;
-              `,
+          declare const foo: {
+            bar: () =>
+              | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
+              | null
+              | undefined;
+          };
+          foo.bar === undefined ||
+            foo.bar() === undefined ||
+            foo.bar().baz === undefined ||
+            foo.bar().baz.buzz === undefined ||
+            foo.bar().baz.buzz();
+        `,
               errors: [{ messageId: 'preferOptionalChain' }],
               output: `
-                declare const foo: { bar: () => { baz: number } | null | undefined };
-                foo.bar?.() === undefined || foo.bar?.().baz;
-              `,
+          declare const foo: {
+            bar: () =>
+              | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
+              | null
+              | undefined;
+          };
+          foo.bar?.() === undefined ||
+            foo.bar().baz === undefined ||
+            foo.bar().baz.buzz === undefined ||
+            foo.bar().baz.buzz();
+        `,
+            },
+            {
+              code: `
+          declare const foo: { bar: () => { baz: number } | null | undefined };
+          foo.bar === undefined || foo.bar?.() === undefined || foo.bar?.().baz;
+        `,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `
+          declare const foo: { bar: () => { baz: number } | null | undefined };
+          foo.bar?.() === undefined || foo.bar?.().baz;
+        `,
             },
           ],
         });
@@ -3785,16 +4123,35 @@ describe('base cases', () => {
 
       describe('== undefined', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          invalid: BaseCases({
-            mutateCode: c =>
-              c
-                .replaceAll('||', '== undefined ||')
-                // SEE TODO AT THE BOTTOM OF THE RULE
-                // We need to ensure the final operand is also a "valid" `||` check
-                .replace(/;$/, ' == undefined;'),
-            mutateOutput: c => c.replace(/;$/, ' == undefined;'),
-            operator: '||',
-          }),
+          invalid: [
+            {
+              code: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo == undefined || foo.bar == undefined;`,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo?.bar == undefined;`,
+            },
+            {
+              code: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo == undefined || foo.bar == undefined || foo.bar.baz == undefined || foo.bar.baz.buzz == undefined;`,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `// 5
+declare const foo: { bar: { baz: { buzz: number } | null | undefined } | null | undefined } | null | undefined;
+foo?.bar?.baz?.buzz == undefined;`,
+            },
+            {
+              code: `// 4
+declare const foo: { bar: () => number } | null | undefined;
+foo.bar == undefined || foo.bar() == undefined;`,
+              errors: [{ messageId: 'preferOptionalChain' }],
+              output: `// 4
+declare const foo: { bar: () => number } | null | undefined;
+foo.bar?.() == undefined;`,
+            },
+          ],
           valid: [],
         });
       });
@@ -3804,25 +4161,52 @@ describe('base cases', () => {
   describe('should ignore spacing sanity checks', () => {
     ruleTester.run('prefer-optional-chain', rule, {
       valid: [],
-      // One base case does not match the mutator, so we have to dedupe it
-      invalid: dedupeTestCases(
-        // it should ignore whitespace in the expressions
-        BaseCases({
-          mutateCode: c => c.replaceAll('.', '.      '),
-          operator: '&&',
-          // note - the rule will use raw text for computed expressions - so we
-          //        need to ensure that the spacing for the computed member
-          //        expressions is retained for correct fixer matching
-          mutateOutput: c =>
-            c.replaceAll(/(\[.+])/g, m => m.replaceAll('.', '.      ')),
-        }),
-        BaseCases({
-          mutateCode: c => c.replaceAll('.', '.\n'),
-          mutateOutput: c =>
-            c.replaceAll(/(\[.+])/g, m => m.replaceAll('.', '.\n')),
-          operator: '&&',
-        }),
-      ),
+      invalid: [
+        // Extra spaces in property access (ID 1) - output normalized
+        {
+          code: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo && foo.      bar;`,
+          output: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo?.bar;`,
+          errors: [{ messageId: 'preferOptionalChain' }],
+        },
+        // Extra spaces in element access chain (ID 11) - output normalized
+        {
+          code: `// 11
+declare const bar: string;
+declare const foo: {[k: string]: {baz: {buzz: number} | null | undefined} | null | undefined} | null | undefined;
+foo && foo[bar] && foo[bar].      baz && foo[bar].      baz.      buzz;`,
+          output: `// 11
+declare const bar: string;
+declare const foo: {[k: string]: {baz: {buzz: number} | null | undefined} | null | undefined} | null | undefined;
+foo?.[bar]?.baz?.buzz;`,
+          errors: [{ messageId: 'preferOptionalChain' }],
+        },
+        // Newlines in property access (ID 1) - output normalized
+        {
+          code: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo && foo.\nbar;`,
+          output: `// 1
+declare const foo: { bar: number } | null | undefined;
+foo?.bar;`,
+          errors: [{ messageId: 'preferOptionalChain' }],
+        },
+        // Newlines in element access chain (ID 11) - output normalized
+        {
+          code: `// 11
+declare const bar: string;
+declare const foo: {[k: string]: {baz: {buzz: number} | null | undefined} | null | undefined} | null | undefined;
+foo && foo[bar] && foo[bar].\nbaz && foo[bar].\nbaz.\nbuzz;`,
+          output: `// 11
+declare const bar: string;
+declare const foo: {[k: string]: {baz: {buzz: number} | null | undefined} | null | undefined} | null | undefined;
+foo?.[bar]?.baz?.buzz;`,
+          errors: [{ messageId: 'preferOptionalChain' }],
+        },
+      ],
     });
   });
 });
