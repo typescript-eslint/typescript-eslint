@@ -121,6 +121,7 @@
     "jameshenry",
     "joshuakgoldberg",
     "Katt",
+    "Kazik",
     "kirkwaiblinger",
     "libspecifier",
     "linebreaks",
@@ -220,7 +221,8 @@
     "warnonunsupportedtypescriptversion",
     "WHATWG",
     "Yukihiro",
-    "Zacher"
+    "Zacher",
+    "Zenek"
   ],
   "overrides": [
     {
