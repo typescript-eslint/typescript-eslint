@@ -17,6 +17,7 @@ import {
 } from '@typescript-eslint/utils';
 
 import { isTypeImport } from './isTypeImport';
+import { referenceContainsTypePredicate } from './referenceContainsTypePredicate';
 import { referenceContainsTypeQuery } from './referenceContainsTypeQuery';
 
 interface VariableAnalysis {
@@ -792,7 +793,11 @@ function isUsedVariable(variable: ScopeVariable): boolean {
     return (
       ref.isRead() &&
       !forItself &&
-      !(!isImportedAsType && referenceContainsTypeQuery(ref.identifier)) &&
+      !(
+        !isImportedAsType &&
+        (referenceContainsTypeQuery(ref.identifier) ||
+          referenceContainsTypePredicate(ref.identifier))
+      ) &&
       !(isFunctionDefinition && isSelfReference(ref, functionNodes)) &&
       !(isTypeDecl && isInsideOneOf(ref, typeDeclNodes)) &&
       !(isModuleDecl && isSelfReference(ref, moduleDeclNodes)) &&

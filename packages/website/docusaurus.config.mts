@@ -293,6 +293,10 @@ const pluginPwaOptions: PluginPwaOptions = {
 const redirects: PluginRedirectOptions = {
   redirects: [
     {
+      from: '/docs',
+      to: '/getting-started',
+    },
+    {
       from: '/getting-started/typed-linting/monorepos',
       to: '/troubleshooting/typed-linting/monorepos',
     },

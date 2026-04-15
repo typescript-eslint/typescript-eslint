@@ -20,91 +20,6 @@ function f<T = number>() {}
 f<string>();
     `,
     `
-function f<T>(x: T) {}
-f(10);
-    `,
-    `
-function f<T>(x: T) {}
-f<10>(10);
-    `,
-    `
-function f<T>(x: T) {}
-declare const x: any;
-f<string>(x);
-    `,
-    `
-function f<T>(x: T) {}
-f<Record<string, boolean>>({});
-    `,
-    `
-function f<T>(x: T) {}
-declare const x: {};
-f<Record<string, boolean>>(x);
-    `,
-    `
-function f<T>(x: T) {}
-declare const x: Record<string, never>;
-f<Record<string, boolean>>(x);
-    `,
-    `
-function f<T>(x: T) {}
-declare const x: any;
-f<{}>(x);
-    `,
-    `
-function f<T>(x: T) {}
-declare const x: {};
-f<any>(x);
-    `,
-    `
-function f<T>(x: T) {}
-interface F {}
-declare const x: {};
-f<F>(x);
-    `,
-    `
-function f<T>(x: T) {}
-f<number[]>([]);
-    `,
-    `
-function f<T = number>(x: T) {}
-f(10);
-    `,
-    `
-function f<T extends number>(x: T) {}
-f(10);
-    `,
-    `
-function f<T extends number | string>(x: T) {}
-f(10);
-    `,
-    `
-function f<T extends number | string>(x: T) {}
-f<number | string>(10);
-    `,
-    `
-const curried =
-  <Outer,>(outer: Outer) =>
-  <Inner,>(inner: Inner) => {};
-curried(10)(10);
-    `,
-    `
-const curried =
-  <Outer,>(outer: Outer) =>
-  <Inner,>(inner: Inner) => {};
-curried<10>(10)<10>(10);
-    `,
-    `
-declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
-declare function f<T>(): [T | undefined, (x: T | undefined) => void];
-f(10);
-f<number>();
-    `,
-    `
-function f<T>(x: T) {}
-f<boolean | null>(true);
-    `,
-    `
 declare const f: (<T = number>() => void) | null;
 f?.();
     `,
@@ -153,10 +68,6 @@ class C<T = number> {}
 new C<string>();
     `,
     `
-class C<T> {}
-new C<string>();
-    `,
-    `
 declare const C: any;
 new C<string>();
     `,
@@ -197,12 +108,6 @@ class D<TD = number> extends C {}
 class Foo<T> {}
 const foo = new Foo<number>();
     `,
-    `
-class Foo<T> {
-  constructor<T>(x: T) {}
-}
-const foo = new Foo(10);
-    `,
     "type Foo<T> = import('foo').Foo<T>;",
     `
 class Bar<T = number> {}
@@ -225,18 +130,10 @@ import { F } from './missing';
 function bar<T = F>() {}
 bar<F<number>>();
     `,
-    {
-      code: `
+    `
 type A<T = Element> = T;
 type B = A<HTMLInputElement>;
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.lib-dom.json',
-          projectService: false,
-        },
-      },
-    },
+    `,
     `
 type A<T = Map<string, string>> = T;
 type B = A<Map<string, number>>;
@@ -269,11 +166,6 @@ namespace Foo {
   export class Bar {}
 }
 class Bar extends Foo<string> {}
-    `,
-    // Ignore invalid type arguments
-    `
-function f<T>() {}
-f<number, number>();
     `,
     {
       code: `
@@ -315,233 +207,12 @@ f<number>();
       errors: [
         {
           column: 3,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
 function f<T = number>() {}
 f();
-      `,
-    },
-    {
-      code: `
-function f<T>(x: T) {}
-f<number>(10);
-      `,
-      errors: [
-        {
-          messageId: 'canBeInferred',
-        },
-      ],
-      output: `
-function f<T>(x: T) {}
-f(10);
-      `,
-    },
-    {
-      code: `
-function f<T>(x: T) {}
-declare const x: number;
-f<number>(x);
-      `,
-      errors: [
-        {
-          messageId: 'canBeInferred',
-        },
-      ],
-      output: `
-function f<T>(x: T) {}
-declare const x: number;
-f(x);
-      `,
-    },
-    {
-      code: `
-function f<T>(x: T) {}
-declare const x: any;
-f<any>(x);
-      `,
-      errors: [{ messageId: 'canBeInferred' }],
-      output: `
-function f<T>(x: T) {}
-declare const x: any;
-f(x);
-      `,
-    },
-    {
-      code: `
-function f<T>(x: T) {}
-declare const x: {};
-f<{}>(x);
-      `,
-      errors: [{ messageId: 'canBeInferred' }],
-      output: `
-function f<T>(x: T) {}
-declare const x: {};
-f(x);
-      `,
-    },
-    {
-      code: `
-function f<T>(x: T) {}
-declare const x: Record<string, never>;
-f<Record<string, never>>(x);
-      `,
-      errors: [{ messageId: 'canBeInferred' }],
-      output: `
-function f<T>(x: T) {}
-declare const x: Record<string, never>;
-f(x);
-      `,
-    },
-    {
-      code: `
-function f<T>(x: T) {}
-interface F {}
-declare const x: F;
-f<F>(x);
-      `,
-      errors: [{ messageId: 'canBeInferred' }],
-      output: `
-function f<T>(x: T) {}
-interface F {}
-declare const x: F;
-f(x);
-      `,
-    },
-    {
-      code: `
-function f<T>(x: T) {}
-declare function y(): number;
-f<number>(y());
-      `,
-      errors: [
-        {
-          messageId: 'canBeInferred',
-        },
-      ],
-      output: `
-function f<T>(x: T) {}
-declare function y(): number;
-f(y());
-      `,
-    },
-    {
-      code: `
-enum E {
-  A,
-  B,
-}
-function f<T>(x: T) {}
-f<E>(E.A);
-      `,
-      errors: [
-        {
-          messageId: 'canBeInferred',
-        },
-      ],
-      output: `
-enum E {
-  A,
-  B,
-}
-function f<T>(x: T) {}
-f(E.A);
-      `,
-    },
-    {
-      code: `
-function f<T = number>(x: T) {}
-f<number>(10);
-      `,
-      errors: [
-        { messageId: 'canBeInferred' },
-        { messageId: 'isDefaultParameterValue' },
-      ],
-      output: `
-function f<T = number>(x: T) {}
-f(10);
-      `,
-    },
-    {
-      code: `
-function f<T extends number>(x: T) {}
-f<number>(10);
-      `,
-      errors: [{ messageId: 'canBeInferred' }],
-      output: `
-function f<T extends number>(x: T) {}
-f(10);
-      `,
-    },
-    {
-      code: `
-function f<T extends number | string>(x: T) {}
-f<number>(10);
-      `,
-      errors: [{ messageId: 'canBeInferred' }],
-      output: `
-function f<T extends number | string>(x: T) {}
-f(10);
-      `,
-    },
-    {
-      code: `
-const curried =
-  <Outer,>(outer: Outer) =>
-  <Inner,>(inner: Inner) => {};
-curried<number>(10)<number>(10);
-      `,
-      errors: [{ messageId: 'canBeInferred' }, { messageId: 'canBeInferred' }],
-      output: `
-const curried =
-  <Outer,>(outer: Outer) =>
-  <Inner,>(inner: Inner) => {};
-curried(10)(10);
-      `,
-    },
-    {
-      code: `
-declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
-declare function f<T>(): [T | undefined, (x: T | undefined) => void];
-f<number>(10);
-      `,
-      errors: [{ messageId: 'canBeInferred' }],
-      output: `
-declare function f<T>(x: T | (() => T)): [T, (x: T) => void];
-declare function f<T>(): [T | undefined, (x: T | undefined) => void];
-f(10);
-      `,
-    },
-    // Ignore invalid arguments, check just ones we know the types of
-    {
-      code: `
-function f<T>(x: T) {}
-f<number>(10, 10);
-      `,
-      errors: [
-        {
-          messageId: 'canBeInferred',
-        },
-      ],
-      output: `
-function f<T>(x: T) {}
-f(10, 10);
-      `,
-    },
-    {
-      code: `
-function f<T>(x: T, y: number) {}
-f<number>(10, 10);
-      `,
-      errors: [
-        {
-          messageId: 'canBeInferred',
-        },
-      ],
-      output: `
-function f<T>(x: T, y: number) {}
-f(10, 10);
       `,
     },
     {
@@ -552,7 +223,7 @@ g<string, string>();
       errors: [
         {
           column: 11,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -562,34 +233,13 @@ g<string>();
     },
     {
       code: `
-function g<T, U>(x: T, y: U) {}
-g<number, number>(10, 10);
-      `,
-      errors: [
-        {
-          messageId: 'canBeInferred',
-        },
-      ],
-      output: [
-        `
-function g<T, U>(x: T, y: U) {}
-g<number>(10, 10);
-      `,
-        `
-function g<T, U>(x: T, y: U) {}
-g(10, 10);
-      `,
-      ],
-    },
-    {
-      code: `
 function f<T = number>(templates: TemplateStringsArray, arg: T) {}
 f<number>\`\${1}\`;
       `,
       errors: [
         {
           column: 3,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -604,7 +254,7 @@ function h(c: C<number>) {}
       `,
       errors: [
         {
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -619,7 +269,7 @@ new C<number>();
       `,
       errors: [
         {
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -634,7 +284,7 @@ class D extends C<number> {}
       `,
       errors: [
         {
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -649,7 +299,7 @@ class Impl implements I<number> {}
       `,
       errors: [
         {
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -664,7 +314,7 @@ const foo = new Foo<number>();
       `,
       errors: [
         {
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -674,31 +324,12 @@ const foo = new Foo();
     },
     {
       code: `
-class Foo<T> {
-  constructor(x: T) {}
-}
-const foo = new Foo<number>(10);
-      `,
-      errors: [
-        {
-          messageId: 'canBeInferred',
-        },
-      ],
-      output: `
-class Foo<T> {
-  constructor(x: T) {}
-}
-const foo = new Foo(10);
-      `,
-    },
-    {
-      code: `
 interface Bar<T = string> {}
 class Foo<T = number> implements Bar<string> {}
       `,
       errors: [
         {
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -713,7 +344,7 @@ class Foo<T = number> extends Bar<string> {}
       `,
       errors: [
         {
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -731,7 +362,7 @@ bar<F<string>>();
         {
           column: 5,
           line: 4,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -754,7 +385,7 @@ declare module 'bar' {
         {
           column: 12,
           line: 4,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -775,7 +406,7 @@ type B = A<Map<string, string>>;
       errors: [
         {
           line: 3,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -792,7 +423,7 @@ type C = B<A>;
       errors: [
         {
           line: 4,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -810,7 +441,7 @@ type C = B<Map<string, string>>;
       errors: [
         {
           line: 4,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -829,7 +460,7 @@ type D = C<B>;
       errors: [
         {
           line: 5,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -851,7 +482,7 @@ type F = E<D>;
       errors: [
         {
           line: 7,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -874,7 +505,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -896,7 +527,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -916,7 +547,7 @@ class Bar implements Foo<string> {}
       errors: [
         {
           line: 4,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -936,7 +567,7 @@ class Bar extends Foo<string> {}
       errors: [
         {
           line: 6,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       output: `
@@ -957,7 +588,7 @@ const button = <Button<string>></Button>;
       errors: [
         {
           line: 5,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       languageOptions: {
@@ -984,7 +615,7 @@ const button = <Button<string> />;
       errors: [
         {
           line: 5,
-          messageId: 'isDefaultParameterValue',
+          messageId: 'unnecessaryTypeParameter',
         },
       ],
       languageOptions: {

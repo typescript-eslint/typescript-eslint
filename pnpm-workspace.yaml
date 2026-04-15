@@ -22,8 +22,14 @@ catalog:
   prettier: 3.8.0
   rimraf: ^5.0.10
   tsx: ^4.7.2
-  typescript: '>=4.8.4 <6.0.0'
+  typescript: '>=4.8.4 <6.1.0'
   vitest: ^4.0.18
   yaml: ^2.8.2
 
 catalogMode: strict
+
+# The typescript version range is very loose, allowing pnpm to install 5.8.2,
+# which is the version that's being used by `@microsoft/api-extractor`, so we
+# override it.
+overrides:
+  typescript: 6.0.2

@@ -1,10 +1,10 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "8.57.2",
+  "version": "8.58.2",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!**/*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"

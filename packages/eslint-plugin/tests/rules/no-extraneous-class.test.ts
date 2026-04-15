@@ -111,6 +111,11 @@ class Foo {
 }
     `,
     `
+class Foo {
+  [key: string]: string;
+}
+    `,
+    `
 abstract class Foo {
   accessor prop: string;
 }

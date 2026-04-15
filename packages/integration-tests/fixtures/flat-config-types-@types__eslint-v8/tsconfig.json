@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "types": ["eslint"],
+    "esModuleInterop": true,
+    "allowJs": true,
+    "strict": false
+  },
+  "include": ["./eslint.config.js"]
+}

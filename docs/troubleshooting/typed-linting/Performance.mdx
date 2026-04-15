@@ -177,11 +177,11 @@ Instead of globs that use `**` to recursively check all folders, prefer paths th
 ```js title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommendedRequiringTypeChecking,
   {
     languageOptions: {
