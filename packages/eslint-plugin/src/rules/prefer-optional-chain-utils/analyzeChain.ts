@@ -41,6 +41,104 @@ type LastChainOperandForReport = Omit<LastChainOperand, 'yoda'> & {
   isYoda: boolean;
 };
 
+function allowsUndefined(checker: ts.TypeChecker, type: ts.Type): boolean {
+  return checker.isTypeAssignableTo(checker.getUndefinedType(), type);
+}
+
+function getAnnotatedFunctionReturnType(
+  checker: ts.TypeChecker,
+  node: TSESTree.Node,
+  parserServices: ParserServicesWithTypeInformation,
+): ts.Type | undefined {
+  for (let current = node.parent; current; current = current.parent) {
+    switch (current.type) {
+      case AST_NODE_TYPES.ArrowFunctionExpression:
+      case AST_NODE_TYPES.FunctionDeclaration:
+      case AST_NODE_TYPES.FunctionExpression: {
+        const tsFunctionNode =
+          parserServices.esTreeNodeToTSNodeMap.get(current);
+
+        if (ts.isFunctionLike(tsFunctionNode) && tsFunctionNode.type) {
+          return checker.getTypeFromTypeNode(tsFunctionNode.type);
+        }
+
+        return undefined;
+      }
+    }
+  }
+
+  return undefined;
+}
+
+function getTypeRejectingUndefinedForUnsafeContext(
+  parserServices: ParserServicesWithTypeInformation,
+  node: TSESTree.LogicalExpression,
+): ts.Type | undefined {
+  const checker = parserServices.program.getTypeChecker();
+  const parent = node.parent;
+
+  switch (parent.type) {
+    case AST_NODE_TYPES.AssignmentExpression:
+      if (parent.operator === '=' && parent.right === node) {
+        return parserServices.getTypeAtLocation(parent.left);
+      }
+      return undefined;
+
+    case AST_NODE_TYPES.ArrowFunctionExpression:
+      if (parent.body === node) {
+        return getAnnotatedFunctionReturnType(checker, node, parserServices);
+      }
+      return undefined;
+
+    case AST_NODE_TYPES.CallExpression:
+    case AST_NODE_TYPES.NewExpression: {
+      const index = parent.arguments.findIndex(argument => argument === node);
+      if (index === -1) {
+        return undefined;
+      }
+
+      const tsCallNode = parserServices.esTreeNodeToTSNodeMap.get(parent);
+      if (ts.isCallExpression(tsCallNode) || ts.isNewExpression(tsCallNode)) {
+        return checker.getContextualTypeForArgumentAtIndex(tsCallNode, index);
+      }
+
+      return undefined;
+    }
+
+    case AST_NODE_TYPES.Property:
+      if (parent.value === node) {
+        return parserServices.getContextualType(node);
+      }
+      return undefined;
+
+    case AST_NODE_TYPES.ReturnStatement:
+      if (parent.argument === node) {
+        return getAnnotatedFunctionReturnType(checker, node, parserServices);
+      }
+      return undefined;
+
+    case AST_NODE_TYPES.VariableDeclarator: {
+      if (parent.init !== node) {
+        return undefined;
+      }
+
+      const tsVariableDeclarator =
+        parserServices.esTreeNodeToTSNodeMap.get(parent);
+      if (
+        ts.isVariableDeclaration(tsVariableDeclarator) &&
+        tsVariableDeclarator.type
+      ) {
+        return checker.getTypeFromTypeNode(tsVariableDeclarator.type);
+      }
+
+      return undefined;
+    }
+
+    default:
+      return undefined;
+  }
+}
+
 function includesType(
   parserServices: ParserServicesWithTypeInformation,
   node: TSESTree.Node,
@@ -681,6 +779,62 @@ function getReportDescriptor(
   }
 }
 
+function canUnsafeOptionalChainRewriteChangeResultType(
+  parserServices: ParserServicesWithTypeInformation,
+  operator: '&&' | '||',
+  chain: readonly ValidOperand[],
+  lastChain: LastChainOperandForReport | ValidOperand | undefined,
+): boolean {
+  const lastOperand = lastChain ?? chain[chain.length - 1];
+
+  if (
+    lastChain ||
+    lastOperand.comparisonType === NullishComparisonType.EqualNullOrUndefined ||
+    lastOperand.comparisonType ===
+      NullishComparisonType.NotEqualNullOrUndefined ||
+    lastOperand.comparisonType === NullishComparisonType.StrictEqualUndefined ||
+    lastOperand.comparisonType ===
+      NullishComparisonType.NotStrictEqualUndefined ||
+    (operator === '||' &&
+      lastOperand.comparisonType === NullishComparisonType.NotBoolean)
+  ) {
+    return false;
+  }
+
+  return !chain.some(operand =>
+    includesType(parserServices, operand.node, ts.TypeFlags.Undefined),
+  );
+}
+
+function shouldSuppressUnsafeContextReport(
+  parserServices: ParserServicesWithTypeInformation,
+  operator: '&&' | '||',
+  node: TSESTree.LogicalExpression,
+  chain: readonly ValidOperand[],
+  lastChain: LastChainOperandForReport | ValidOperand | undefined,
+): boolean {
+  if (
+    !canUnsafeOptionalChainRewriteChangeResultType(
+      parserServices,
+      operator,
+      chain,
+      lastChain,
+    )
+  ) {
+    return false;
+  }
+
+  const targetType = getTypeRejectingUndefinedForUnsafeContext(
+    parserServices,
+    node,
+  );
+  if (targetType == null) {
+    return false;
+  }
+
+  return !allowsUndefined(parserServices.program.getTypeChecker(), targetType);
+}
+
 export function analyzeChain(
   context: RuleContext<
     PreferOptionalChainMessageIds,
@@ -688,7 +842,7 @@ export function analyzeChain(
   >,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
-  node: TSESTree.Node,
+  node: TSESTree.LogicalExpression,
   operator: TSESTree.LogicalExpression['operator'],
   chain: ValidOperand[],
   lastChainOperand?: LastChainOperand,
@@ -726,6 +880,17 @@ export function analyzeChain(
       const maybeNullishNodes = lastChain
         ? subChainFlat.map(({ node }) => node)
         : subChainFlat.slice(0, -1).map(({ node }) => node);
+      if (
+        shouldSuppressUnsafeContextReport(
+          parserServices,
+          operator,
+          node,
+          subChainFlat,
+          lastChain,
+        )
+      ) {
+        return;
+      }
       checkNullishAndReport(
         context,
         parserServices,

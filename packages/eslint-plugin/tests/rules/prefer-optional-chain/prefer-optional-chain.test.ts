@@ -3041,24 +3041,6 @@ describe('hand-crafted cases', () => {
       },
       {
         code: `
-          declare const foo: { bar: boolean } | null | undefined;
-          declare function acceptsBoolean(arg: boolean): void;
-          acceptsBoolean(foo != null && foo.bar);
-        `,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [
-          {
-            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: true,
-          },
-        ],
-        output: `
-          declare const foo: { bar: boolean } | null | undefined;
-          declare function acceptsBoolean(arg: boolean): void;
-          acceptsBoolean(foo?.bar);
-        `,
-      },
-      {
-        code: `
           function foo(globalThis?: { Array: Function }) {
             typeof globalThis !== 'undefined' && globalThis.Array();
           }
@@ -3798,6 +3780,167 @@ describe('base cases', () => {
           valid: [],
         });
       });
+    });
+  });
+
+  describe('type-unsafe rewrite contexts', () => {
+    ruleTester.run('prefer-optional-chain', rule, {
+      invalid: [
+        {
+          code: `
+            function hasItems(arr: string[] | null): boolean {
+              return !arr || !arr.length;
+            }
+          `,
+          errors: [{ messageId: 'preferOptionalChain' }],
+          output: `
+            function hasItems(arr: string[] | null): boolean {
+              return !arr?.length;
+            }
+          `,
+        },
+        {
+          code: `
+            type Item = { p: string | null };
+            function hasProp(a: Item | null): boolean {
+              return a && a.p != null;
+            }
+          `,
+          errors: [{ messageId: 'preferOptionalChain' }],
+          output: `
+            type Item = { p: string | null };
+            function hasProp(a: Item | null): boolean {
+              return a?.p != null;
+            }
+          `,
+        },
+        {
+          code: `
+            declare const node: { kind: number } | null;
+            if (node && node.kind === 160) {
+            }
+          `,
+          errors: [{ messageId: 'preferOptionalChain' }],
+          output: `
+            declare const node: { kind: number } | null;
+            if (node?.kind === 160) {
+            }
+          `,
+        },
+        {
+          code: `
+            declare const path: string;
+            declare const repo: { name: string } | null;
+            declare function getBase(path: string): string;
+            (repo && repo.name) || getBase(path);
+          `,
+          errors: [
+            {
+              messageId: 'preferOptionalChain',
+              suggestions: [
+                {
+                  messageId: 'optionalChainSuggest',
+                  output: `
+            declare const path: string;
+            declare const repo: { name: string } | null;
+            declare function getBase(path: string): string;
+            (repo?.name) || getBase(path);
+          `,
+                },
+              ],
+            },
+          ],
+          output: null,
+        },
+        {
+          code: `
+            declare const path: string;
+            declare const repo: { name: string } | null;
+            declare function getBase(path: string): string;
+            (repo && repo.name) ?? getBase(path);
+          `,
+          errors: [
+            {
+              messageId: 'preferOptionalChain',
+              suggestions: [
+                {
+                  messageId: 'optionalChainSuggest',
+                  output: `
+            declare const path: string;
+            declare const repo: { name: string } | null;
+            declare function getBase(path: string): string;
+            (repo?.name) ?? getBase(path);
+          `,
+                },
+              ],
+            },
+          ],
+          output: null,
+        },
+        {
+          code: `
+            declare const a: { b: string } | null;
+            if (a && a.b) {
+            }
+          `,
+          errors: [
+            {
+              messageId: 'preferOptionalChain',
+              suggestions: [
+                {
+                  messageId: 'optionalChainSuggest',
+                  output: `
+            declare const a: { b: string } | null;
+            if (a?.b) {
+            }
+          `,
+                },
+              ],
+            },
+          ],
+          output: null,
+        },
+      ],
+      valid: [
+        `
+          function getLen(arr: string[] | null): number | null {
+            return arr && arr.length;
+          }
+        `,
+        `
+          const getLen = (arr: string[] | null): number | null =>
+            arr && arr.length;
+        `,
+        `
+          declare const a: string[] | null;
+          const x: number | null = a && a.length;
+        `,
+        `
+          type VersionHolder = { version: string | null };
+          declare const e: VersionHolder | null;
+          const value: VersionHolder = { version: e && e.version };
+        `,
+        `
+          declare const el: { nodeName: string } | null;
+          declare function lowercase(value: string): string;
+          lowercase(el && el.nodeName);
+        `,
+        `
+          declare const foo: { bar: boolean } | null | undefined;
+          declare function acceptsBoolean(arg: boolean): void;
+          acceptsBoolean(foo != null && foo.bar);
+        `,
+        `
+          declare const item: { name: string } | null;
+          let imageURL: string | null = null;
+          imageURL = item && item.name;
+        `,
+        `
+          declare const holder: { value: string | null };
+          declare const item: { name: string } | null;
+          holder.value = item && item.name;
+        `,
+      ],
     });
   });
 
