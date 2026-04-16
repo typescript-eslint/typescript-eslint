@@ -64,11 +64,6 @@
       "count": 9
     }
   },
-  "packages/eslint-plugin/tests/rules/prefer-nullish-coalescing.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 42
-    }
-  },
   "packages/eslint-plugin/tests/rules/prefer-optional-chain/prefer-optional-chain.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 17
