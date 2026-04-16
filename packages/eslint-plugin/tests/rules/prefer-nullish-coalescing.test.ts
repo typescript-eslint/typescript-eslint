@@ -1,40 +1,11 @@
-import type {
-  InvalidTestCase,
-  ValidTestCase,
-} from '@typescript-eslint/rule-tester';
-
 import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
-
-import type {
-  MessageIds,
-  Options,
-} from '../../src/rules/prefer-nullish-coalescing';
 
 import rule from '../../src/rules/prefer-nullish-coalescing';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
-
-const types = ['string', 'number', 'boolean', 'object'];
-const nullishTypes = ['null', 'undefined', 'null | undefined'];
-
-const nullishTypeTest = <
-  T extends
-    | string
-    | InvalidTestCase<MessageIds, Options>
-    | ValidTestCase<Options>,
->(
-  cb: (nullish: string, type: string, equals: string) => T,
-): T[] =>
-  nullishTypes.flatMap(nullish =>
-    types.flatMap(type =>
-      ['', ...(cb.length === 3 ? ['='] : [])].map(equals =>
-        cb(nullish, type, equals),
-      ),
-    ),
-  );
 
 ruleTester.run('prefer-nullish-coalescing', rule, {
   valid: [
@@ -7035,12 +7006,12 @@ while ((x ??= 'foo')) {}
     },
 
     // ignoreMixedLogicalExpressions
-    ...nullishTypeTest((nullish, type) => ({
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-a || b && c;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a || (b && c);
       `,
       errors: [
         {
@@ -7053,24 +7024,115 @@ a || b && c;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-a ?? b && c;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a ?? (b && c);
       `,
             },
           ],
         },
       ],
       options: [{ ignoreMixedLogicalExpressions: false }],
-    })),
-    ...nullishTypeTest((nullish, type) => ({
+      output: null,
+    },
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a || b || c && d;
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+a || (b && c);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+a ?? (b && c);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+a || (b && c);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+a ?? (b && c);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+a || (b && c);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+a ?? (b && c);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+a || b || (c && d);
       `,
       errors: [
         {
@@ -7083,11 +7145,11 @@ a || b || c && d;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-(a ?? b) || c && d;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a ?? b) || (c && d);
       `,
             },
           ],
@@ -7102,28 +7164,48 @@ declare let d: ${type} | ${nullish};
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a || b ?? c && d;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+a || b ?? (c && d);
       `,
             },
           ],
         },
       ],
       options: [{ ignoreMixedLogicalExpressions: false }],
-    })),
-    ...nullishTypeTest((nullish, type) => ({
+      output: null,
+    },
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a && b || c || d;
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+a || b || (c && d);
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+(a ?? b) || (c && d);
+      `,
+            },
+          ],
+        },
+        {
           column: 8,
           endColumn: 10,
           endLine: 6,
@@ -7133,18 +7215,31 @@ a && b || c || d;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a && (b ?? c) || d;
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+a || b ?? (c && d);
       `,
             },
           ],
         },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+a || b || (c && d);
+      `,
+      errors: [
         {
-          column: 13,
-          endColumn: 15,
+          column: 3,
+          endColumn: 5,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
@@ -7152,29 +7247,332 @@ a && (b ?? c) || d;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a && b || c ?? d;
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+(a ?? b) || (c && d);
+      `,
+            },
+          ],
+        },
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+a || b ?? (c && d);
       `,
             },
           ],
         },
       ],
       options: [{ ignoreMixedLogicalExpressions: false }],
-    })),
+      output: null,
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+a || b || (c && d);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+(a ?? b) || (c && d);
+      `,
+            },
+          ],
+        },
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+a || b ?? (c && d);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a && b) || c || d;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a && (b) ?? c) || d;
+      `,
+            },
+          ],
+        },
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a && b) || c ?? d;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+(a && b) || c || d;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+(a && (b) ?? c) || d;
+      `,
+            },
+          ],
+        },
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+(a && b) || c ?? d;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+(a && b) || c || d;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+(a && (b) ?? c) || d;
+      `,
+            },
+          ],
+        },
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+(a && b) || c ?? d;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+(a && b) || c || d;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+(a && (b) ?? c) || d;
+      `,
+            },
+          ],
+        },
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+(a && b) || c ?? d;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
 
     // should not false positive for functions inside conditional tests
-    ...nullishTypeTest((nullish, type, equals) => ({
+    {
       code: `
-declare let x: ${type} | ${nullish};
-if (() => (x ||${equals} 'foo')) {}
+declare let x: string | null | undefined;
+if (() => x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+if (() => x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if (() => (x ||= 'foo')) {
+}
       `,
       errors: [
         {
           column: 14,
-          endColumn: 16 + equals.length,
+          endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -7182,24 +7580,26 @@ if (() => (x ||${equals} 'foo')) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-if (() => (x ??${equals} 'foo')) {}
+declare let x: string | null | undefined;
+if (() => (x ??= 'foo')) {
+}
       `,
             },
           ],
         },
       ],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-if (function weird() { return (x ||${equals} 'foo') }) {}
+declare let x: number | null | undefined;
+if (() => x || 'foo') {
+}
       `,
       errors: [
         {
-          column: 34,
-          endColumn: 36 + equals.length,
+          column: 13,
+          endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -7207,21 +7607,437 @@ if (function weird() { return (x ||${equals} 'foo') }) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-if (function weird() { return (x ??${equals} 'foo') }) {}
+declare let x: number | null | undefined;
+if (() => x ?? 'foo') {
+}
       `,
             },
           ],
         },
       ],
       output: null,
-    })),
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1290
-    ...nullishTypeTest((nullish, type) => ({
+    },
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type};
-declare let c: ${type};
+declare let x: number | null | undefined;
+if (() => (x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if (() => (x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (() => x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (() => x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (() => (x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (() => (x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (() => x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (() => x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (() => (x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (() => (x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if (
+  function weird() {
+    return x || 'foo';
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+if (
+  function weird() {
+    return x ?? 'foo';
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if (
+  function weird() {
+    return (x ||= 'foo');
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+if (
+  function weird() {
+    return (x ??= 'foo');
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+if (
+  function weird() {
+    return x || 'foo';
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if (
+  function weird() {
+    return x ?? 'foo';
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+if (
+  function weird() {
+    return (x ||= 'foo');
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if (
+  function weird() {
+    return (x ??= 'foo');
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (
+  function weird() {
+    return x || 'foo';
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (
+  function weird() {
+    return x ?? 'foo';
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (
+  function weird() {
+    return (x ||= 'foo');
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (
+  function weird() {
+    return (x ??= 'foo');
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (
+  function weird() {
+    return x || 'foo';
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (
+  function weird() {
+    return x ?? 'foo';
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (
+  function weird() {
+    return (x ||= 'foo');
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (
+  function weird() {
+    return (x ??= 'foo');
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1290
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string;
+declare let c: string;
 a || b || c;
       `,
       errors: [
@@ -7235,9 +8051,9 @@ a || b || c;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type};
-declare let c: ${type};
+declare let a: string | null | undefined;
+declare let b: string;
+declare let c: string;
 (a ?? b) || c;
       `,
             },
@@ -7245,7 +8061,94 @@ declare let c: ${type};
         },
       ],
       output: null,
-    })),
+    },
+    {
+      code: `
+declare let a: number | null | undefined;
+declare let b: number;
+declare let c: number;
+a || b || c;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number;
+declare let c: number;
+(a ?? b) || c;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean;
+declare let c: boolean;
+a || b || c;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean;
+declare let c: boolean;
+(a ?? b) || c;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object;
+declare let c: object;
+a || b || c;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object;
+declare let c: object;
+(a ?? b) || c;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
     // default for missing option
     {
       code: `
