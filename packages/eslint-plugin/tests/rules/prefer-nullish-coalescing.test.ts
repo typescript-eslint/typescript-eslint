@@ -5823,58 +5823,136 @@ x?.n?.a ?? y;
       output: null,
     },
 
-    ...[
-      `
+    {
+      code: `
 declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? x?.n?.a : y;
+x.n?.a ? x?.n?.a : y;
       `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? x.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? (x?.n)?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? (x.n)?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? (x?.n).a : y;
-      `,
-    ].map(code => ({
-      code,
       errors: [
         {
           column: 1,
-          endColumn: code.split('\n')[2].length,
+          endColumn: 21,
           endLine: 3,
           line: 3,
-          messageId: 'preferNullishOverTernary' as const,
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
-              messageId: 'suggestNullish' as const,
+              messageId: 'suggestNullish',
               output: `
-${code.split('\n')[1]}
-(x.n)?.a ?? y;
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
       `,
             },
           ],
         },
       ],
-      options: [{ ignoreTernaryTests: false }] as const,
+      options: [{ ignoreTernaryTests: false }],
       output: null,
-    })),
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ? x.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ? (x?.n).a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
 
     // noStrictNullCheck
     {
@@ -5899,15 +5977,41 @@ if (x) {
     },
 
     // ignoreConditionalTests
-    ...nullishTypeTest((nullish, type, equals) => ({
+    {
       code: `
-declare let x: ${type} | ${nullish};
-(x ||${equals} 'foo') ? null : null;
+declare let x: string | null | undefined;
+x || 'foo' ? null : null;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+x ?? 'foo' ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+(x ||= 'foo') ? null : null;
       `,
       errors: [
         {
           column: 4,
-          endColumn: 6 + equals.length,
+          endColumn: 7,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -5915,8 +6019,8 @@ declare let x: ${type} | ${nullish};
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-(x ??${equals} 'foo') ? null : null;
+declare let x: string | null | undefined;
+(x ??= 'foo') ? null : null;
       `,
             },
           ],
@@ -5924,16 +6028,201 @@ declare let x: ${type} | ${nullish};
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-if ((x ||${equals} 'foo')) {}
+declare let x: number | null | undefined;
+x || 'foo' ? null : null;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+x ?? 'foo' ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+(x ||= 'foo') ? null : null;
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+(x ??= 'foo') ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+x || 'foo' ? null : null;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+x ?? 'foo' ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+(x ||= 'foo') ? null : null;
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+(x ??= 'foo') ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+x || 'foo' ? null : null;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+x ?? 'foo' ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+(x ||= 'foo') ? null : null;
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+(x ??= 'foo') ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if (x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+if (x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if ((x ||= 'foo')) {
+}
       `,
       errors: [
         {
           column: 8,
-          endColumn: 10 + equals.length,
+          endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -5941,8 +6230,9 @@ if ((x ||${equals} 'foo')) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-if ((x ??${equals} 'foo')) {}
+declare let x: string | null | undefined;
+if ((x ??= 'foo')) {
+}
       `,
             },
           ],
@@ -5950,16 +6240,210 @@ if ((x ??${equals} 'foo')) {}
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-do {} while ((x ||${equals} 'foo'))
+declare let x: number | null | undefined;
+if (x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if (x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+if ((x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if ((x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if ((x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if ((x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if ((x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if ((x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+do {} while (x || 'foo');
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+do {} while (x ?? 'foo');
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+do {} while ((x ||= 'foo'));
       `,
       errors: [
         {
           column: 17,
-          endColumn: 19 + equals.length,
+          endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -5967,8 +6451,8 @@ do {} while ((x ||${equals} 'foo'))
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-do {} while ((x ??${equals} 'foo'))
+declare let x: string | null | undefined;
+do {} while ((x ??= 'foo'));
       `,
             },
           ],
@@ -5976,16 +6460,172 @@ do {} while ((x ??${equals} 'foo'))
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-for (;(x ||${equals} 'foo');) {}
+declare let x: number | null | undefined;
+do {} while (x || 'foo');
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+do {} while (x ?? 'foo');
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+do {} while ((x ||= 'foo'));
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+do {} while ((x ??= 'foo'));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+do {} while (x || 'foo');
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+do {} while (x ?? 'foo');
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+do {} while ((x ||= 'foo'));
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+do {} while ((x ??= 'foo'));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+do {} while (x || 'foo');
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+do {} while (x ?? 'foo');
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+do {} while ((x ||= 'foo'));
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+do {} while ((x ??= 'foo'));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+for (; x || 'foo'; ) {}
       `,
       errors: [
         {
           column: 10,
-          endColumn: 12 + equals.length,
+          endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -5993,8 +6633,8 @@ for (;(x ||${equals} 'foo');) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-for (;(x ??${equals} 'foo');) {}
+declare let x: string | null | undefined;
+for (; x ?? 'foo'; ) {}
       `,
             },
           ],
@@ -6002,16 +6642,16 @@ for (;(x ??${equals} 'foo');) {}
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-while ((x ||${equals} 'foo')) {}
+declare let x: string | null | undefined;
+for (; (x ||= 'foo'); ) {}
       `,
       errors: [
         {
           column: 11,
-          endColumn: 13 + equals.length,
+          endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -6019,8 +6659,8 @@ while ((x ||${equals} 'foo')) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-while ((x ??${equals} 'foo')) {}
+declare let x: string | null | undefined;
+for (; (x ??= 'foo'); ) {}
       `,
             },
           ],
@@ -6028,7 +6668,371 @@ while ((x ??${equals} 'foo')) {}
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+for (; x || 'foo'; ) {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+for (; x ?? 'foo'; ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+for (; (x ||= 'foo'); ) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+for (; (x ??= 'foo'); ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+for (; x || 'foo'; ) {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+for (; x ?? 'foo'; ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+for (; (x ||= 'foo'); ) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+for (; (x ??= 'foo'); ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+for (; x || 'foo'; ) {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+for (; x ?? 'foo'; ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+for (; (x ||= 'foo'); ) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+for (; (x ??= 'foo'); ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+while (x || 'foo') {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+while (x ?? 'foo') {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+while ((x ||= 'foo')) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+while ((x ??= 'foo')) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+while (x || 'foo') {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+while (x ?? 'foo') {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+while ((x ||= 'foo')) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+while ((x ??= 'foo')) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+while (x || 'foo') {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+while (x ?? 'foo') {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+while ((x ||= 'foo')) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+while ((x ??= 'foo')) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+while (x || 'foo') {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+while (x ?? 'foo') {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+while ((x ||= 'foo')) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+while ((x ??= 'foo')) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
 
     // ignoreMixedLogicalExpressions
     ...nullishTypeTest((nullish, type) => ({
