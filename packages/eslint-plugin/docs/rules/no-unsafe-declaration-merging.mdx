@@ -16,14 +16,14 @@ The TypeScript compiler doesn't check whether properties are initialized, which 
 
 ```ts
 interface Foo {
-  nums: number[];
+  numbers: number[];
 }
 
 class Foo {}
 
 const foo = new Foo();
 
-foo.nums.push(1); // Runtime Error: Cannot read properties of undefined.
+foo.numbers.push(1); // Runtime Error: Cannot read properties of undefined.
 ```
 
 ## Examples

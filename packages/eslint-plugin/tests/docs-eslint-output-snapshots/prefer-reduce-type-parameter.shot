@@ -4,8 +4,8 @@ Incorrect
                                                     ~~~~~~~~~~~~~~ Unnecessary assertion: Array#reduce accepts a type parameter for the default value.
 
 ['a', 'b'].reduce(
-  (accum, name) => ({
-    ...accum,
+  (accumulator, name) => ({
+    ...accumulator,
     [name]: true,
   }),
   {} as Record<string, boolean>,
@@ -17,8 +17,8 @@ Correct
 [1, 2, 3].reduce<number[]>((arr, num) => arr.concat(num * 2), []);
 
 ['a', 'b'].reduce<Record<string, boolean>>(
-  (accum, name) => ({
-    ...accum,
+  (accumulator, name) => ({
+    ...accumulator,
     [name]: true,
   }),
   {},
