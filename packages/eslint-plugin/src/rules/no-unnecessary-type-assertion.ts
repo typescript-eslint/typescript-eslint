@@ -2,7 +2,11 @@ import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  ASTUtils,
+} from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -222,6 +226,63 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function doesExpressionHaveFreshLiterals(
+      node: TSESTree.Expression,
+    ): boolean {
+      // Actual literals don't seem to have the type of a "fresh literal"
+      if (
+        node.type === AST_NODE_TYPES.TemplateLiteral ||
+        node.type === AST_NODE_TYPES.Literal
+      ) {
+        return true;
+      }
+
+      if (node.type === AST_NODE_TYPES.Identifier) {
+        // It seems "fresh literals" have a slightly different type at their
+        // definition rather than their reference.
+        const scope = context.sourceCode.getScope(node);
+        const superVar = ASTUtils.findVariable(scope, node.name);
+
+        if (superVar == null) {
+          return true;
+        }
+
+        const definition = superVar.defs.at(0);
+
+        if (definition == null) {
+          return true;
+        }
+
+        const typeAtDefinition = services.getTypeAtLocation(definition.node);
+
+        if (tsutils.isUnionType(typeAtDefinition)) {
+          return tsutils
+            .unionConstituents(typeAtDefinition)
+            .some(part => isFreshLiteralType(part));
+        }
+
+        return isFreshLiteralType(typeAtDefinition);
+      }
+
+      if (node.type === AST_NODE_TYPES.ConditionalExpression) {
+        return (
+          doesExpressionHaveFreshLiterals(node.alternate) ||
+          doesExpressionHaveFreshLiterals(node.consequent)
+        );
+      }
+
+      if (
+        tsutils.isTypeFlagSet(
+          services.getTypeAtLocation(node),
+          ts.TypeFlags.EnumLiteral | ts.TypeFlags.UniqueESSymbol,
+        )
+      ) {
+        return true;
+      }
+
+      return false;
+    }
+
     function isTypeLiteral(type: ts.Type) {
       return type.isLiteral() || tsutils.isBooleanLiteralType(type);
     }
@@ -295,7 +356,11 @@ export default createRule<Options, MessageIds>({
         const uncastType = getUncastType(node);
 
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
-        const wouldSameTypeBeInferred = castTypeIsLiteral
+        const hasFreshLiterals = doesExpressionHaveFreshLiterals(
+          node.expression,
+        );
+
+        const wouldSameTypeBeInferred = hasFreshLiterals
           ? isImplicitlyNarrowedLiteralDeclaration(node)
           : !typeAnnotationIsConstAssertion;
 
@@ -493,3 +558,8 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+// https://github.com/microsoft/TypeScript/blob/21c1a61b49082915f93e3327dad0d73205cf4273/src/compiler/checker.ts/#L19679-L19681
+function isFreshLiteralType(type: ts.Type) {
+  return tsutils.isFreshableType(type) && type.freshType === type;
+}
