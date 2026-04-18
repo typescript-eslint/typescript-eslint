@@ -170,12 +170,7 @@ export default util.createRule<Options, MessageId>({
           continue;
         }
 
-        // Check against the contextual type first
-        if (checkExpressionNode(argNode)) {
-          continue;
-        }
-
-        // Check against the types from all of the call signatures
+        // Collect the types from all of the call signatures
         const argExpectedReturnTypes = funcSignatures
           .map(s => s.parameters[argIdx])
           .filter(Boolean)
@@ -185,27 +180,58 @@ export default util.createRule<Options, MessageId>({
           .flatMap(paramType => tsutils.unionConstituents(paramType))
           .flatMap(paramType => paramType.getCallSignatures())
           .map(paramSignature => paramSignature.getReturnType());
+
+        const hasSingleSignature = funcSignatures.length === 1;
+
+        const allSignaturesReturnVoid = argExpectedReturnTypes.every(
+          type =>
+            isVoid(type) ||
+            // Treat as void even though it might be technically any.
+            isNullishOrAny(type) ||
+            // `getTypeOfSymbolAtLocation` returns unresolved type parameters
+            // (e.g. `T`), even for overloads that match the call.
+            //
+            // Since we can't tell whether a generic overload currently matches,
+            // we treat TypeParameters similar to void.
+            tsutils.isTypeParameter(type),
+        );
+
+        // Check against the contextual type first, but only when there is a
+        // single signature or when all signatures return void, because
+        // `getContextualType` resolves to the first overload's return type even
+        // though there may be another one that matches the call.
+        if (
+          (hasSingleSignature || allSignaturesReturnVoid) &&
+          checkExpressionNode(argNode)
+        ) {
+          continue;
+        }
+
         if (
           // At least one return type is void
-          argExpectedReturnTypes.some(type =>
-            tsutils.isTypeFlagSet(type, ts.TypeFlags.Void),
-          ) &&
+          argExpectedReturnTypes.some(isVoid) &&
           // The rest are nullish or any
-          argExpectedReturnTypes.every(type =>
-            tsutils.isTypeFlagSet(
-              type,
-              ts.TypeFlags.VoidLike |
-                ts.TypeFlags.Undefined |
-                ts.TypeFlags.Null |
-                ts.TypeFlags.Any |
-                ts.TypeFlags.Never,
-            ),
-          )
+          argExpectedReturnTypes.every(isNullishOrAny)
         ) {
           // We treat this argument as void even though it might be technically any.
           reportIfNonVoidFunction(argNode);
         }
       }
+    }
+
+    function isNullishOrAny(type: ts.Type): boolean {
+      return tsutils.isTypeFlagSet(
+        type,
+        ts.TypeFlags.VoidLike |
+          ts.TypeFlags.Undefined |
+          ts.TypeFlags.Null |
+          ts.TypeFlags.Any |
+          ts.TypeFlags.Never,
+      );
+    }
+
+    function isVoid(type: ts.Type): boolean {
+      return tsutils.isTypeFlagSet(type, ts.TypeFlags.Void);
     }
 
     /**

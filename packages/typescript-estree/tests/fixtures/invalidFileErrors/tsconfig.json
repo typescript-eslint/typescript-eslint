@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "allowJs": true
+    "allowJs": true,
+    "module": "commonjs"
   },
   "include": [
     "ts/included01.ts",

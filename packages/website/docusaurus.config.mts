@@ -11,6 +11,7 @@ import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import { version } from '@typescript-eslint/parser/package.json';
 
 import { blogFooter } from './plugins/blog-footer';
+import { faqData } from './plugins/faq-data';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
 
@@ -49,6 +50,7 @@ const presetClassicOptions: PresetClassicOptions = {
 };
 
 const pluginContentDocsOptions: PluginContentDocsOptions = {
+  beforeDefaultRemarkPlugins: [faqData],
   breadcrumbs: false,
   editUrl: `${githubUrl}/edit/main/packages/website/`,
   id: 'base-docs',
@@ -290,6 +292,10 @@ const pluginPwaOptions: PluginPwaOptions = {
 
 const redirects: PluginRedirectOptions = {
   redirects: [
+    {
+      from: '/docs',
+      to: '/getting-started',
+    },
     {
       from: '/getting-started/typed-linting/monorepos',
       to: '/troubleshooting/typed-linting/monorepos',

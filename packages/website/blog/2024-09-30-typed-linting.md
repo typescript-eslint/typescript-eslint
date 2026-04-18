@@ -84,6 +84,8 @@ The lint rule is right to report.
 Calls to the `getDataKey` function can return a value that's not a `string`, despite the function's explicit return type annotation.
 That can lead to unexpected behavior at runtime:
 
+<!-- cspell:ignore bleu -->
+
 ```ts
 console.log(getDataKey(`{ "blue": "cheese" }`, 'bleu').toUpperCase());
 // Uncaught TypeError: Cannot read properties of undefined (reading 'toUpperCase')
@@ -215,10 +217,11 @@ You can add typed linting to your ESLint configuration by following the steps in
 We recommend doing so by enabling [`parserOptions.projectService`](/packages/parser#projectservice):
 
 ```js title="eslint.config.js"
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  eslint.configs.recommended,
+  js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {

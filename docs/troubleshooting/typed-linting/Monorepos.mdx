@@ -56,8 +56,14 @@ For each file being linted, the first matching project path will be used as its 
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
+// @ts-check
+
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
@@ -106,8 +112,14 @@ Instead of globs that use `**` to recursively check all folders, prefer paths th
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
+// @ts-check
+
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {

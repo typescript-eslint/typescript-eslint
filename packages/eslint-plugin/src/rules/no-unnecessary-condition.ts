@@ -540,20 +540,6 @@ export default createRule<Options, MessageId>({
       checkNode(node.left);
     }
 
-    function checkIfWhileLoopIsNecessaryConditional(
-      node: TSESTree.WhileStatement,
-    ): void {
-      if (
-        allowConstantLoopConditionsOption === 'only-allowed-literals' &&
-        node.test.type === AST_NODE_TYPES.Literal &&
-        constantLoopConditionsAllowedLiterals.has(node.test.value)
-      ) {
-        return;
-      }
-
-      checkIfLoopIsNecessaryConditional(node);
-    }
-
     /**
      * Checks that a testable expression of a loop is necessarily conditional, reports otherwise.
      */
@@ -565,6 +551,14 @@ export default createRule<Options, MessageId>({
     ): void {
       if (node.test == null) {
         // e.g. `for(;;)`
+        return;
+      }
+
+      if (
+        allowConstantLoopConditionsOption === 'only-allowed-literals' &&
+        node.test.type === AST_NODE_TYPES.Literal &&
+        constantLoopConditionsAllowedLiterals.has(node.test.value)
+      ) {
         return;
       }
 
@@ -599,7 +593,29 @@ export default createRule<Options, MessageId>({
             services,
             typeGuardAssertedArgument.argument,
           );
-          if (typeOfArgument === typeGuardAssertedArgument.type) {
+          if (
+            // Skip `any` — it is assignable to everything, producing
+            // false positives for meaningful runtime type guards.
+            !tsutils.isTypeFlagSet(
+              typeOfArgument,
+              ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+            ) &&
+            checker.isTypeAssignableTo(
+              typeOfArgument,
+              typeGuardAssertedArgument.type,
+            ) &&
+            // Only flag if the types are mutually assignable (i.e. equivalent,
+            // like Narrower ↔ Wider with optional props) or the predicate type
+            // is a union that the argument is a strict subtype of.  This avoids
+            // false positives with structural subtypes whose extra members are
+            // all optional in the *predicate* type (e.g. custom MappedType
+            // interfaces extending ts.Type).
+            (checker.isTypeAssignableTo(
+              typeGuardAssertedArgument.type,
+              typeOfArgument,
+            ) ||
+              typeGuardAssertedArgument.type.isUnion())
+          ) {
             context.report({
               node: typeGuardAssertedArgument.argument,
               messageId: 'typeGuardAlreadyIsType',
@@ -933,7 +949,7 @@ export default createRule<Options, MessageId>({
           );
         }
       },
-      WhileStatement: checkIfWhileLoopIsNecessaryConditional,
+      WhileStatement: checkIfLoopIsNecessaryConditional,
     };
   },
 });

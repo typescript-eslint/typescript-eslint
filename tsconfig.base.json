@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "allowSyntheticDefaultImports": true,
     "composite": true,
     "declaration": true,
     "declarationMap": false,
     "emitDeclarationOnly": true,
     "emitDecoratorMetadata": false,
-    "esModuleInterop": true,
     "experimentalDecorators": false,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": false,

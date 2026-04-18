@@ -552,6 +552,69 @@ function custom1(arg: TaggedFunction) {}
         },
       ],
     },
+    {
+      code: `
+        interface ViewStyle {
+          field1: number;
+        }
+        type Falsy = undefined | null | false | '';
+        
+        interface RecursiveArray<T> extends Array<
+          T | ReadonlyArray<T> | RecursiveArray<T>
+        > {}
+        
+        type RegisteredStyle<T> = number & { __registeredStyleBrand: T };
+        
+        type StyleProp<T> =
+          | T
+          | RegisteredStyle<T>
+          | RecursiveArray<T | RegisteredStyle<T> | Falsy>
+          | Falsy;
+        
+        function process(arg1: ViewStyle, arg2: StyleProp<ViewStyle>): void {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: ['StyleProp', 'ViewStyle'] }],
+        },
+      ],
+    },
+    {
+      code: `
+        type MyArray<T> = T | T[] | null;
+        interface Item {
+          value: string;
+        }
+        function process(items: MyArray<Item>): void {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: ['MyArray', 'Item'] }],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function foo<T>(callback: (arg: T) => void): void;
+        foo<readonly string[]>(arg => {});
+      `,
+      name: 'type inference with readonly type',
+    },
+    {
+      code: `
+        type MyReadonlyType = Readonly<{
+          prop: string;
+        }>;
+
+        function foo(arg: MyReadonlyType) {}
+      `,
+      name: 'type alias not in allow list but is readonly',
+      options: [
+        {
+          allow: ['OtherType'],
+        },
+      ],
+    },
   ],
   invalid: [
     // arrays
@@ -1241,6 +1304,21 @@ function foo(arg: Test) {}
           allow: [{ from: 'package', name: 'RegExp', package: 'regexp-lib' }],
         },
       ],
+    },
+    {
+      code: `
+        declare function foo<T>(callback: (arg: T) => void): void;
+        foo<string[]>(arg => {});
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 26,
+          line: 3,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      name: 'type inference with mutable type',
     },
   ],
 });
