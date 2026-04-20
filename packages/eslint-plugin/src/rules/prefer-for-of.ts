@@ -8,12 +8,12 @@ export default createRule({
   name: 'prefer-for-of',
   meta: {
     type: 'suggestion',
-    fixable: 'code',
     docs: {
       description:
         'Enforce the use of `for-of` loop over the standard `for` loop where possible',
       recommended: 'stylistic',
     },
+    fixable: 'code',
     messages: {
       preferForOf:
         'Expected a `for-of` loop instead of a `for` loop with this simple iteration.',
@@ -204,7 +204,7 @@ export default createRule({
                 const parent = id.parent;
 
                 if (
-                  parent?.type === AST_NODE_TYPES.MemberExpression &&
+                  parent.type === AST_NODE_TYPES.MemberExpression &&
                   parent.property === id &&
                   parent.computed
                 ) {

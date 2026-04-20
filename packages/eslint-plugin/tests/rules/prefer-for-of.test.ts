@@ -243,13 +243,13 @@ for (let i = 0; i < arr.length; i++) {
   console.log(arr[i]);
 }
       `,
+      errors: [{ messageId: 'preferForOf' }],
       output: `
 const value = 1;
 for (const value1 of arr) {
   console.log(value1);
 }
       `,
-      errors: [{ messageId: 'preferForOf' }],
     },
     {
       code: `
@@ -257,29 +257,29 @@ for (var a = 0; a < obj.arr.length; a++) {
   console.log(obj.arr[a]);
 }
       `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
       output: `
 for (const value of obj.arr) {
   console.log(value);
 }
       `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
     },
     {
       code: `
 for (var b = 0; b < arr.length; b++) console.log(arr[b]);
       `,
-      output: `
-for (const value of arr) console.log(value);
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) console.log(value);
+      `,
     },
     {
       code: `
@@ -287,29 +287,29 @@ for (let a = 0; a < arr.length; a++) {
   console.log(arr[a]);
 }
       `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
       output: `
 for (const value of arr) {
   console.log(value);
 }
       `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
     },
     {
       code: `
 for (var b = 0; b < arr.length; b++) console?.log(arr[b]);
       `,
-      output: `
-for (const value of arr) console?.log(value);
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) console?.log(value);
+      `,
     },
     {
       code: `
@@ -317,16 +317,16 @@ for (let a = 0; a < arr.length; a++) {
   console?.log(arr[a]);
 }
       `,
-      output: `
-for (const value of arr) {
-  console?.log(value);
-}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  console?.log(value);
+}
+      `,
     },
     {
       code: `
@@ -334,68 +334,68 @@ for (let a = 0; a < arr.length; ++a) {
   arr[a].whatever();
 }
       `,
+      errors: [
+        {
+          messageId: 'preferForOf',
+        },
+      ],
       output: `
 for (const value of arr) {
   value.whatever();
 }
       `,
-      errors: [
-        {
-          messageId: 'preferForOf',
-        },
-      ],
     },
     {
       code: `
 for (let x = 0; x < arr.length; x++) {}
       `,
-      output: `
-for (const value of arr) {}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {}
+      `,
     },
     {
       code: `
 for (let x = 0; x < arr.length; x += 1) {}
       `,
-      output: `
-for (const value of arr) {}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {}
+      `,
     },
     {
       code: `
 for (let x = 0; x < arr.length; x = x + 1) {}
       `,
-      output: `
-for (const value of arr) {}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {}
+      `,
     },
     {
       code: `
 for (let x = 0; x < arr.length; x = 1 + x) {}
       `,
-      output: `
-for (const value of arr) {}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {}
+      `,
     },
     {
       code: `
@@ -403,11 +403,6 @@ for (let shadow = 0; shadow < arr.length; shadow++) {
   for (let shadow = 0; shadow < arr.length; shadow++) {}
 }
       `,
-      output: `
-for (const value of arr) {
-  for (const value of arr) {}
-}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
@@ -416,6 +411,11 @@ for (const value of arr) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  for (const value of arr) {}
+}
+      `,
     },
     {
       code: `
@@ -423,16 +423,16 @@ for (let i = 0; i < arr.length; i++) {
   obj[arr[i]] = 1;
 }
       `,
-      output: `
-for (const value of arr) {
-  obj[value] = 1;
-}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  obj[value] = 1;
+}
+      `,
     },
     {
       code: `
@@ -440,16 +440,16 @@ for (let i = 0; i < arr.length; i++) {
   delete obj[arr[i]];
 }
       `,
-      output: `
-for (const value of arr) {
-  delete obj[value];
-}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  delete obj[value];
+}
+      `,
     },
     {
       code: `
@@ -457,16 +457,16 @@ for (let i = 0; i < arr.length; i++) {
   [obj[arr[i]]] = [1];
 }
       `,
-      output: `
-for (const value of arr) {
-  [obj[value]] = [1];
-}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  [obj[value]] = [1];
+}
+      `,
     },
     {
       code: `
@@ -474,16 +474,16 @@ for (let i = 0; i < arr.length; i++) {
   [...obj[arr[i]]] = [1];
 }
       `,
-      output: `
-for (const value of arr) {
-  [...obj[value]] = [1];
-}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  [...obj[value]] = [1];
+}
+      `,
     },
     {
       code: `
@@ -491,16 +491,16 @@ for (let i = 0; i < arr.length; i++) {
   ({ foo: obj[arr[i]] } = { foo: 1 });
 }
       `,
-      output: `
-for (const value of arr) {
-  ({ foo: obj[value] } = { foo: 1 });
-}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  ({ foo: obj[value] } = { foo: 1 });
+}
+      `,
     },
     {
       code: `
@@ -508,16 +508,16 @@ for (let i = 0; i < this.item.length; ++i) {
   this.item[i];
 }
       `,
-      output: `
-for (const value of this.item) {
-  value;
-}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of this.item) {
+  value;
+}
+      `,
     },
     {
       code: `
@@ -525,16 +525,16 @@ for (let i = 0; i < this.array.length; ++i) {
   yield this.array[i];
 }
       `,
-      output: `
-for (const value of this.array) {
-  yield value;
-}
-      `,
       errors: [
         {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of this.array) {
+  yield value;
+}
+      `,
     },
   ],
 });
