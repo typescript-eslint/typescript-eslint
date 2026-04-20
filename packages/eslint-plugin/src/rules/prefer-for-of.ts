@@ -8,6 +8,7 @@ export default createRule({
   name: 'prefer-for-of',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description:
         'Enforce the use of `for-of` loop over the standard `for` loop where possible',
@@ -21,6 +22,26 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    function getSafeName(base: string, scope: TSESLint.Scope.Scope): string {
+      const declared = new Set<string>();
+
+      let current: TSESLint.Scope.Scope | null = scope;
+      while (current) {
+        for (const variable of current.variables) {
+          declared.add(variable.name);
+        }
+        current = current.upper;
+      }
+
+      let name = base;
+      let i = 1;
+      while (declared.has(name)) {
+        name = `${base}${i++}`;
+      }
+
+      return name;
+    }
+
     function isSingleVariableDeclaration(
       node: TSESTree.Node | null,
     ): node is TSESTree.VariableDeclaration {
@@ -159,6 +180,40 @@ export default createRule({
           context.report({
             node,
             messageId: 'preferForOf',
+            fix(fixer) {
+              const sourceCode = context.sourceCode;
+              const arrayText = sourceCode.getText(arrayExpression);
+              const scope = sourceCode.getScope(node);
+              const elementName = getSafeName('value', scope);
+              const fixes: TSESLint.RuleFix[] = [];
+
+              fixes.push(
+                fixer.replaceTextRange(
+                  [node.range[0], node.body.range[0]],
+                  `for (const ${elementName} of ${arrayText}) `,
+                ),
+              );
+
+              for (const reference of indexVar.references) {
+                const id = reference.identifier;
+
+                if (!contains(node.body, id)) {
+                  continue;
+                }
+
+                const parent = id.parent;
+
+                if (
+                  parent?.type === AST_NODE_TYPES.MemberExpression &&
+                  parent.property === id &&
+                  parent.computed
+                ) {
+                  fixes.push(fixer.replaceText(parent, elementName));
+                }
+              }
+
+              return fixes;
+            },
           });
         }
       },
