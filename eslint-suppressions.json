@@ -29,11 +29,6 @@
       "count": 12
     }
   },
-  "packages/eslint-plugin/tests/rules/no-invalid-this.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 43
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-loop-func.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 2
