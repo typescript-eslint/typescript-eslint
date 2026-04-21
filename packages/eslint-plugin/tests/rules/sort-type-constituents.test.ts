@@ -7,31 +7,31 @@ const ruleTester = new RuleTester();
 ruleTester.run('sort-type-constituents', rule, {
   valid: [
     {
-      code: `type T = A | B;`,
+      code: 'type T = A | B;',
     },
     {
-      code: `type T = A | /* comment */ B;`,
+      code: 'type T = A | /* comment */ B;',
     },
     {
-      code: `type T = 'A' | 'B';`,
+      code: "type T = 'A' | 'B';",
     },
     {
-      code: `type T = 1 | 2;`,
+      code: 'type T = 1 | 2;',
     },
     {
       code: noFormat`type T = (A) | (B);`,
     },
     {
-      code: `type T = { a: string } | { b: string };`,
+      code: 'type T = { a: string } | { b: string };',
     },
     {
-      code: `type T = [1, 2, 3] | [1, 2, 4];`,
+      code: 'type T = [1, 2, 3] | [1, 2, 4];',
     },
     {
-      code: `type T = (() => string) | (() => void);`,
+      code: 'type T = (() => string) | (() => void);',
     },
     {
-      code: `type T = () => string | void;`,
+      code: 'type T = () => string | void;',
     },
     {
       // testing the default ordering
@@ -76,7 +76,7 @@ type T =
   | (B | C)
   | null
   | undefined
-    `,
+      `,
     },
     {
       code: 'type T = B | A;',
@@ -104,31 +104,31 @@ type T =
     },
 
     {
-      code: `type T = A & B;`,
+      code: 'type T = A & B;',
     },
     {
-      code: `type T = A & /* comment */ B;`,
+      code: 'type T = A & /* comment */ B;',
     },
     {
-      code: `type T = 'A' & 'B';`,
+      code: "type T = 'A' & 'B';",
     },
     {
-      code: `type T = 1 & 2;`,
+      code: 'type T = 1 & 2;',
     },
     {
       code: noFormat`type T = (A) & (B);`,
     },
     {
-      code: `type T = { a: string } & { b: string };`,
+      code: 'type T = { a: string } & { b: string };',
     },
     {
-      code: `type T = [1, 2, 3] & [1, 2, 4];`,
+      code: 'type T = [1, 2, 3] & [1, 2, 4];',
     },
     {
-      code: `type T = (() => string) & (() => void);`,
+      code: 'type T = (() => string) & (() => void);',
     },
     {
-      code: `type T = () => string & void;`,
+      code: 'type T = () => string & void;',
     },
     {
       // testing the default ordering
@@ -173,7 +173,7 @@ type T =
   & (B | C)
   & null
   & undefined
-    `,
+      `,
     },
     {
       code: 'type T = B & A;',
@@ -217,7 +217,7 @@ type T = 1 | string | {} | A;
   ],
   invalid: [
     {
-      code: `type T = B | A;`,
+      code: 'type T = B | A;',
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -227,7 +227,7 @@ type T = 1 | string | {} | A;
       output: `type T = A | B;`,
     },
     {
-      code: `type T = 'B' | 'A';`,
+      code: "type T = 'B' | 'A';",
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -237,7 +237,7 @@ type T = 1 | string | {} | A;
       output: `type T = 'A' | 'B';`,
     },
     {
-      code: `type T = 2 | 1;`,
+      code: 'type T = 2 | 1;',
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -257,7 +257,7 @@ type T = 1 | string | {} | A;
       output: `type T = A | B;`,
     },
     {
-      code: `type T = { b: string } | { a: string };`,
+      code: 'type T = { b: string } | { a: string };',
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -267,7 +267,7 @@ type T = 1 | string | {} | A;
       output: `type T = { a: string } | { b: string };`,
     },
     {
-      code: `type T = [1, 2, 4] | [1, 2, 3];`,
+      code: 'type T = [1, 2, 4] | [1, 2, 3];',
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -277,7 +277,7 @@ type T = 1 | string | {} | A;
       output: `type T = [1, 2, 3] | [1, 2, 4];`,
     },
     {
-      code: `type T = (() => void) | (() => string);`,
+      code: 'type T = (() => void) | (() => string);',
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -287,7 +287,7 @@ type T = 1 | string | {} | A;
       output: `type T = (() => string) | (() => void);`,
     },
     {
-      code: `type T = () => void | string;`,
+      code: 'type T = () => void | string;',
       errors: [
         {
           data: { type: 'Union' },
@@ -297,7 +297,7 @@ type T = 1 | string | {} | A;
       output: `type T = () => string | void;`,
     },
     {
-      code: `type T = () => undefined | null;`,
+      code: 'type T = () => undefined | null;',
       errors: [
         {
           data: { type: 'Union' },
@@ -344,7 +344,7 @@ type T =
       `,
     },
     {
-      code: `type T = B | /* comment */ A;`,
+      code: 'type T = B | /* comment */ A;',
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -360,7 +360,7 @@ type T =
       output: null,
     },
     {
-      code: `type T = (() => /* comment */ A) | B;`,
+      code: 'type T = (() => /* comment */ A) | B;',
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -371,7 +371,7 @@ type T =
       output: `type T = B | (() => /* comment */ A);`,
     },
     {
-      code: `type Expected = (new (x: number) => boolean) | string;`,
+      code: 'type Expected = (new (x: number) => boolean) | string;',
       errors: [
         {
           messageId: 'notSortedNamed',
@@ -380,7 +380,7 @@ type T =
       output: `type Expected = string | (new (x: number) => boolean);`,
     },
     {
-      code: `type T = (| A) | B;`,
+      code: noFormat`type T = (| A) | B;`,
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -390,7 +390,7 @@ type T =
       output: `type T = B | (| A);`,
     },
     {
-      code: `type T = (& A) | B;`,
+      code: noFormat`type T = (& A) | B;`,
       errors: [
         {
           data: { name: 'T', type: 'Union' },
@@ -400,7 +400,7 @@ type T =
       output: `type T = B | (& A);`,
     },
     {
-      code: `type T = B & A;`,
+      code: 'type T = B & A;',
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
@@ -410,7 +410,7 @@ type T =
       output: `type T = A & B;`,
     },
     {
-      code: `type T = 'B' & 'A';`,
+      code: "type T = 'B' & 'A';",
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
@@ -420,7 +420,7 @@ type T =
       output: `type T = 'A' & 'B';`,
     },
     {
-      code: `type T = 2 & 1;`,
+      code: 'type T = 2 & 1;',
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
@@ -440,7 +440,7 @@ type T =
       output: `type T = A & B;`,
     },
     {
-      code: `type T = { b: string } & { a: string };`,
+      code: 'type T = { b: string } & { a: string };',
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
@@ -450,7 +450,7 @@ type T =
       output: `type T = { a: string } & { b: string };`,
     },
     {
-      code: `type T = [1, 2, 4] & [1, 2, 3];`,
+      code: 'type T = [1, 2, 4] & [1, 2, 3];',
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
@@ -460,7 +460,7 @@ type T =
       output: `type T = [1, 2, 3] & [1, 2, 4];`,
     },
     {
-      code: `type T = (() => void) & (() => string);`,
+      code: 'type T = (() => void) & (() => string);',
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
@@ -470,7 +470,7 @@ type T =
       output: `type T = (() => string) & (() => void);`,
     },
     {
-      code: `type T = () => void & string;`,
+      code: 'type T = () => void & string;',
       errors: [
         {
           data: { type: 'Intersection' },
@@ -480,7 +480,7 @@ type T =
       output: `type T = () => string & void;`,
     },
     {
-      code: `type T = () => undefined & null;`,
+      code: 'type T = () => undefined & null;',
       errors: [
         {
           data: { type: 'Intersection' },
@@ -527,7 +527,7 @@ type T =
       `,
     },
     {
-      code: `type T = B & /* comment */ A;`,
+      code: 'type T = B & /* comment */ A;',
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
@@ -543,7 +543,7 @@ type T =
       output: null,
     },
     {
-      code: `type T = (() => /* comment */ A) & B;`,
+      code: 'type T = (() => /* comment */ A) & B;',
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
@@ -554,7 +554,7 @@ type T =
       output: `type T = B & (() => /* comment */ A);`,
     },
     {
-      code: `type Expected = (new (x: number) => boolean) & string;`,
+      code: 'type Expected = (new (x: number) => boolean) & string;',
       errors: [
         {
           messageId: 'notSortedNamed',
@@ -563,7 +563,7 @@ type T =
       output: `type Expected = string & (new (x: number) => boolean);`,
     },
     {
-      code: `type T = (| A) & B;`,
+      code: noFormat`type T = (| A) & B;`,
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
@@ -573,7 +573,7 @@ type T =
       output: `type T = B & (| A);`,
     },
     {
-      code: `type T = (& A) & B;`,
+      code: noFormat`type T = (& A) & B;`,
       errors: [
         {
           data: { name: 'T', type: 'Intersection' },
