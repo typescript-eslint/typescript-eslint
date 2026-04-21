@@ -19,11 +19,6 @@
       "count": 4
     }
   },
-  "packages/eslint-plugin/tests/rules/naming-convention/naming-convention.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 12
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 12
