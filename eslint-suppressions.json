@@ -4,11 +4,6 @@
       "count": 26
     }
   },
-  "packages/eslint-plugin/tests/rules/dot-notation.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 1
-    }
-  },
   "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-case-insensitive-order.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 4
