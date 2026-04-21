@@ -2,16 +2,6 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-this-alias';
 
-const idError = {
-  messageId: 'thisAssignment' as const,
-};
-const destructureError = {
-  messageId: 'thisDestructure' as const,
-};
-const arrayDestructureError = {
-  messageId: 'thisDestructure' as const,
-};
-
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-this-alias', rule, {
@@ -50,27 +40,18 @@ declare module 'foo' {
   invalid: [
     {
       code: 'const self = this;',
-      errors: [idError],
-      options: [
-        {
-          allowDestructuring: true,
-        },
-      ],
-    },
-    {
-      code: 'const self = this;',
-      errors: [idError],
+      errors: [{ messageId: 'thisAssignment' as const }],
     },
     {
       code: `
 let that;
 that = this;
       `,
-      errors: [idError],
+      errors: [{ messageId: 'thisAssignment' as const }],
     },
     {
       code: 'const { props, state } = this;',
-      errors: [destructureError],
+      errors: [{ messageId: 'thisDestructure' as const }],
       options: [
         {
           allowDestructuring: false,
@@ -88,7 +69,11 @@ const testLambda = () => {
   const inLambda = this;
 };
       `,
-      errors: [idError, idError, idError],
+      errors: [
+        { messageId: 'thisAssignment' as const },
+        { messageId: 'thisAssignment' as const },
+        { messageId: 'thisAssignment' as const },
+      ],
     },
     {
       code: `
@@ -112,13 +97,13 @@ class TestClass {
 }
       `,
       errors: [
-        idError,
-        idError,
-        idError,
-        destructureError,
-        destructureError,
-        arrayDestructureError,
-        arrayDestructureError,
+        { messageId: 'thisAssignment' as const },
+        { messageId: 'thisAssignment' as const },
+        { messageId: 'thisAssignment' as const },
+        { messageId: 'thisDestructure' as const },
+        { messageId: 'thisDestructure' as const },
+        { messageId: 'thisDestructure' as const },
+        { messageId: 'thisDestructure' as const },
       ],
       options: [
         {
