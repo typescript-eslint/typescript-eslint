@@ -274,7 +274,9 @@ export default createRule<Options, MessageIds>({
     }
 
     function hasIndexSignature(type: ts.Type): boolean {
-      return checker.getIndexInfosOfType(type).length > 0;
+      return tsutils
+        .unionConstituents(type)
+        .some(part => checker.getIndexInfosOfType(part).length > 0);
     }
 
     function getTypeArguments(type: ts.Type): readonly ts.Type[] {

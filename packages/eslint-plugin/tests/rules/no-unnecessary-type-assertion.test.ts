@@ -845,6 +845,11 @@ fn({
 declare const a: number[] | number | undefined;
 const b: number[] = a ?? ([0] as any);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12249
+    `
+const context: { meta: Record<string, unknown> | undefined } = { meta: {} };
+const meta = context.meta as { schema?: object } | undefined;
+    `,
   ],
 
   invalid: [
