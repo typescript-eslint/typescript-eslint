@@ -9,11 +9,6 @@
       "count": 1
     }
   },
-  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-case-insensitive-order.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 4
-    }
-  },
   "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-order.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 4
