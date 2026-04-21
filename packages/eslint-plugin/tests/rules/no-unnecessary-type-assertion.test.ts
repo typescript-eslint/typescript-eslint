@@ -796,6 +796,30 @@ enum E {
 }
 const x: E = fn(n => n | 0, 0 as E);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12244
+    `
+type BasePayload = { id: string };
+
+abstract class AbstractHandler {
+  constructor(_ctx: { token: number }) {}
+}
+
+abstract class AbstractPayloadHandler<
+  TPayload extends BasePayload = BasePayload,
+> extends AbstractHandler {}
+
+type HandlerCtor = new (ctx: { token: number }) => AbstractHandler;
+
+declare const registeredHandlers: HandlerCtor[];
+
+function example<TItem extends BasePayload>(
+  handlerClass: typeof AbstractPayloadHandler<TItem>,
+) {
+  registeredHandlers.includes(
+    handlerClass as new (...args: any[]) => AbstractPayloadHandler<TItem>,
+  );
+}
+    `,
     `
 function fn<T extends { type: string }, K extends string, V>(
   node: T,

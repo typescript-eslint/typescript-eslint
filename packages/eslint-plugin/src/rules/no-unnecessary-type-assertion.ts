@@ -277,6 +277,12 @@ export default createRule<Options, MessageIds>({
       return checker.getIndexInfosOfType(type).length > 0;
     }
 
+    function getTypeArguments(type: ts.Type): readonly ts.Type[] {
+      return tsutils.isTypeReference(type)
+        ? checker.getTypeArguments(type)
+        : [];
+    }
+
     function typeContains(
       type: ts.Type,
       predicate: (type: ts.Type) => boolean,
@@ -293,7 +299,7 @@ export default createRule<Options, MessageIds>({
         return type.types.some(t => typeContains(t, predicate, seen));
       }
       const nestedTypes = [
-        ...checker.getTypeArguments(type as ts.TypeReference),
+        ...getTypeArguments(type),
         ...type
           .getCallSignatures()
           .flatMap(sig => [
@@ -358,8 +364,8 @@ export default createRule<Options, MessageIds>({
     }
 
     function haveSameTypeArguments(uncast: ts.Type, cast: ts.Type): boolean {
-      const uncastArgs = checker.getTypeArguments(uncast as ts.TypeReference);
-      const castArgs = checker.getTypeArguments(cast as ts.TypeReference);
+      const uncastArgs = getTypeArguments(uncast);
+      const castArgs = getTypeArguments(cast);
       return (
         uncastArgs.length === castArgs.length &&
         uncastArgs.every((arg, i) => arg === castArgs[i])
@@ -514,9 +520,7 @@ export default createRule<Options, MessageIds>({
           ts.isParameter(param.valueDeclaration) &&
           param.valueDeclaration.dotDotDotToken
         ) {
-          const typeArgs = checker.getTypeArguments(
-            paramType as ts.TypeReference,
-          );
+          const typeArgs = getTypeArguments(paramType);
           if (typeArgs.length > 0) {
             paramType = typeArgs[0];
           }
