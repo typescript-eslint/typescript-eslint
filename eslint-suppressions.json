@@ -34,11 +34,6 @@
       "count": 43
     }
   },
-  "packages/eslint-plugin/tests/rules/no-loop-func.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 2
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-this-alias.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 14
