@@ -24,11 +24,6 @@
       "count": 12
     }
   },
-  "packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 12
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-invalid-this.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 43
