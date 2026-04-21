@@ -54,11 +54,6 @@
       "count": 1
     }
   },
-  "packages/eslint-plugin/tests/rules/no-unsafe-enum-comparison.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 2
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 9
