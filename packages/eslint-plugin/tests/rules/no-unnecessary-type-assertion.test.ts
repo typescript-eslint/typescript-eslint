@@ -850,6 +850,22 @@ const b: number[] = a ?? ([0] as any);
 const context: { meta: Record<string, unknown> | undefined } = { meta: {} };
 const meta = context.meta as { schema?: object } | undefined;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12250
+    `
+type Test<T extends Record<string, unknown>> = {}
+
+function inferred<T extends Test<never>[]>(_input: { addons?: T }): {
+  options: T extends Test<infer C>[] ? C : never
+} {
+  return {
+    options: {} as T extends Test<infer C>[] ? C : never
+  }
+}
+
+const test = inferred({ addons: [{} as Test<{ parameters: { potato: boolean } }>] });
+
+console.log(test.options.parameters.potato)
+    `,
   ],
 
   invalid: [

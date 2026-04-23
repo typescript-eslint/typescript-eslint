@@ -280,9 +280,10 @@ export default createRule<Options, MessageIds>({
     }
 
     function getTypeArguments(type: ts.Type): readonly ts.Type[] {
-      return tsutils.isTypeReference(type)
-        ? checker.getTypeArguments(type)
-        : [];
+      return (
+        type.aliasTypeArguments ??
+        (tsutils.isTypeReference(type) ? checker.getTypeArguments(type) : [])
+      );
     }
 
     function typeContains(
@@ -320,6 +321,10 @@ export default createRule<Options, MessageIds>({
       return typeContains(type, t =>
         isTypeFlagSet(t, ts.TypeFlags.TypeVariable | ts.TypeFlags.Index),
       );
+    }
+
+    function hasPhantomTypeArguments(type: ts.Type): boolean {
+      return isEmptyObjectType(type) && getTypeArguments(type).length > 0;
     }
 
     function hasTypeParams(sig: ts.Signature): boolean {
@@ -658,6 +663,19 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function hasPhantomTypeArgumentMismatch(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      uncastType: ts.Type,
+      contextualType: ts.Type,
+    ): boolean {
+      return (
+        isInGenericContext(node) &&
+        (hasPhantomTypeArguments(uncastType) ||
+          hasPhantomTypeArguments(contextualType)) &&
+        !haveSameTypeArguments(uncastType, contextualType)
+      );
+    }
+
     const SKIP_PARENT_TYPES = new Set([
       AST_NODE_TYPES.TSAsExpression,
       AST_NODE_TYPES.TSTypeAssertion,
@@ -882,6 +900,7 @@ export default createRule<Options, MessageIds>({
             !typeAnnotationIsConstAssertion &&
             !containsAny(uncastType) &&
             anyInvolvedInContextualCheck &&
+            !hasPhantomTypeArgumentMismatch(node, uncastType, contextualType) &&
             (castIsAny || !genericsMismatch(uncastType, contextualType)) &&
             (contextualTypeIsAny ||
               checker.isTypeAssignableTo(uncastType, contextualType)) &&
