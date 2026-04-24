@@ -878,7 +878,10 @@ export default createRule<Options, MessageIds>({
           // the enum domain for downstream checks (for example enum-indexed access).
           // Treat this as meaningful, so we do not report unnecessaryAssertion.
           const expressionType = services.getTypeAtLocation(node.expression);
-          const isNumber = (expressionType.flags & ts.TypeFlags.Number) !== 0;
+          const isNumber = tsutils.isTypeFlagSet(
+            expressionType,
+            ts.TypeFlags.Number,
+          );
           if (isNumber && isTypeFlagSet(castType, ts.TypeFlags.EnumLike)) {
             return;
           }
