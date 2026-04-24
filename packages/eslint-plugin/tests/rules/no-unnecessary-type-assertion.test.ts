@@ -882,6 +882,7 @@ const test = inferred({
 });
 
 console.log(test.options.parameters.potato);
+    `,
     // reporter repro: should not flag enum-typed index usage assertions
     `
 enum Color { Red, Green, Blue }
