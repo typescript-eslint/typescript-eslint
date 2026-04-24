@@ -832,6 +832,80 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    /**
+     * Whether `identifier` is used as a computed member key (`values[color]`).
+     * Resolves the binding via `getScope` + `variable.references` so a later
+     * line like `values[color]` is found after `const color = ...`.
+     *
+     * @see https://github.com/typescript-eslint/typescript-eslint/issues/12271
+     */
+    function isIdentifierUsedAsComputedMemberProperty(
+      identifier: TSESTree.Identifier,
+    ): boolean {
+      const scope = context.sourceCode.getScope(identifier);
+      const variable = scope.variables.find(scopeVar =>
+        scopeVar.identifiers.includes(identifier),
+      );
+
+      if (!variable) {
+        return false;
+      }
+
+      return variable.references.some(reference => {
+        const referenceIdentifier = reference.identifier;
+        const parent = referenceIdentifier.parent;
+        return (
+          parent.type === AST_NODE_TYPES.MemberExpression &&
+          parent.computed &&
+          parent.property === referenceIdentifier
+        );
+      });
+    }
+
+    /**
+     * `number as Enum` used for enum-key indexing only (#12271). Does not
+     * exempt other sites (e.g. function arguments). Resolves operand and
+     * assertion-target types from the node.
+     *
+     * @see https://github.com/typescript-eslint/typescript-eslint/issues/12271
+     */
+    function isNumberToEnumAssertionUsedForIndexing(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const expressionType = services.getTypeAtLocation(node.expression);
+      const assertedType = services.getTypeAtLocation(node.typeAnnotation);
+      const isExpressionNumberLike = isTypeFlagSet(
+        expressionType,
+        ts.TypeFlags.NumberLike,
+      );
+      const isAssertedTypeEnumLike = isTypeFlagSet(
+        assertedType,
+        ts.TypeFlags.EnumLike,
+      );
+
+      if (!isExpressionNumberLike || !isAssertedTypeEnumLike) {
+        return false;
+      }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.MemberExpression &&
+        node.parent.computed &&
+        node.parent.property === node
+      ) {
+        return true;
+      }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
+        node.parent.init === node &&
+        node.parent.id.type === AST_NODE_TYPES.Identifier
+      ) {
+        return isIdentifierUsedAsComputedMemberProperty(node.parent.id);
+      }
+
+      return false;
+    }
+
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -870,19 +944,7 @@ export default createRule<Options, MessageIds>({
           : !typeAnnotationIsConstAssertion;
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
-          // `node.expression` is the value before `as ...`. For cases like
-          // `+valueStr as Color`, the expression type is `number`.
-          //
-          // If a numeric expression is asserted to an enum-like type (`as Color`),
-          // that assertion can change/narrow the apparent type from `number` to
-          // the enum domain for downstream checks (for example enum-indexed access).
-          // Treat this as meaningful, so we do not report unnecessaryAssertion.
-          const expressionType = services.getTypeAtLocation(node.expression);
-          const isNumber = tsutils.isTypeFlagSet(
-            expressionType,
-            ts.TypeFlags.Number,
-          );
-          if (isNumber && isTypeFlagSet(castType, ts.TypeFlags.EnumLike)) {
+          if (isNumberToEnumAssertionUsedForIndexing(node)) {
             return;
           }
 
