@@ -882,6 +882,55 @@ const test = inferred({
 });
 
 console.log(test.options.parameters.potato);
+    // reporter repro: should not flag enum-typed index usage assertions
+    `
+enum Color { Red, Green, Blue }
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+}
+
+function example1(valueStr: string) {
+  const color = +valueStr as Color;
+  values[color] = 'updated';
+}
+
+function eaxmple2(valueStr: string) {
+  const color: Color = +valueStr;
+  values[color] = 'updated';
+}
+
+function update3(valueStr: string) {
+  values[+valueStr as Color] = 'updated';
+}
+    `,
+    `
+    enum Color { Red, Green, Blue }
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+}
+
+function example1(valueStr: string) {
+  const color = +valueStr as Color;
+  values[color] = 'updated';
+}
+
+    `,
+    `
+    enum Color { Red, Green, Blue }
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+}
+
+function eaxmple2(valueStr: string) {
+  const color: Color = +valueStr;
+  values[color] = 'updated';
+}
     `,
   ],
 

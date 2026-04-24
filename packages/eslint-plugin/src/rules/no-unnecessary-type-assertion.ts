@@ -870,6 +870,19 @@ export default createRule<Options, MessageIds>({
           : !typeAnnotationIsConstAssertion;
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
+          // `node.expression` is the value before `as ...`. For cases like
+          // `+valueStr as Color`, the expression type is `number`.
+          //
+          // If a numeric expression is asserted to an enum-like type (`as Color`),
+          // that assertion can change/narrow the apparent type from `number` to
+          // the enum domain for downstream checks (for example enum-indexed access).
+          // Treat this as meaningful, so we do not report unnecessaryAssertion.
+          const expressionType = services.getTypeAtLocation(node.expression);
+          const isNumber = (expressionType.flags & ts.TypeFlags.Number) !== 0;
+          if (isNumber && isTypeFlagSet(castType, ts.TypeFlags.EnumLike)) {
+            return;
+          }
+
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
