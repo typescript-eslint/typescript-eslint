@@ -129,11 +129,10 @@ export default createRule<Options, MessageIds>({
         case AST_NODE_TYPES.Property:
           // foo in "const { foo } = bar" will be processed twice, as parent.key
           // and parent.value. The second is treated as a declaration.
-          if (parent.shorthand && parent.value === node) {
-            return parent.parent.type === AST_NODE_TYPES.ObjectPattern;
-          }
+          // Similarly, bar in "const { foo: bar } = baz" is a binding target,
+          // not a reference to the property named "bar".
           if (parent.value === node) {
-            return false;
+            return parent.parent.type === AST_NODE_TYPES.ObjectPattern;
           }
           return parent.parent.type === AST_NODE_TYPES.ObjectExpression;
 

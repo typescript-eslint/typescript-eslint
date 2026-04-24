@@ -422,6 +422,15 @@ ruleTester.run('no-deprecated', rule, {
       } = x;
     `,
     `
+      interface BaseEvent {
+        dataSource: string;
+        /** @deprecated */
+        connection: string;
+      }
+      declare const event: BaseEvent;
+      const { dataSource: connection } = event;
+    `,
+    `
       interface Props {
         anchor: 'foo';
       }
@@ -2625,6 +2634,27 @@ exists('/foo');
           endColumn: 20,
           endLine: 7,
           line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface BaseEvent {
+          dataSource: string;
+          /** @deprecated */
+          connection: string;
+        }
+        declare const event: BaseEvent;
+        const { connection: conn } = event;
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: 'connection' },
+          endColumn: 27,
+          endLine: 8,
+          line: 8,
           messageId: 'deprecated',
         },
       ],
