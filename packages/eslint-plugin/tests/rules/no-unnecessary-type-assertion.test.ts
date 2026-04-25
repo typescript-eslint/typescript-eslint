@@ -316,6 +316,19 @@ const item = arr[0] as object;
 declare const arr: (object | undefined)[];
 const item = <object>arr[0];
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12245
+    `
+const array: object[] = [{}];
+
+let nullish: object | undefined;
+nullish ??= array[1] as object | undefined;
+
+let falsy: object | undefined;
+falsy ||= array[1] as object | undefined;
+
+let truthy: object | undefined = {};
+truthy &&= array[1] as object | undefined;
+    `,
     {
       code: `
 function foo(item: string) {}
