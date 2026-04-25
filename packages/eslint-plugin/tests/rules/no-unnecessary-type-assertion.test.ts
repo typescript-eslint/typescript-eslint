@@ -870,9 +870,66 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12270
+    `
+type UntypedUpdate = Record<string, unknown> & {
+  Document?: {
+    Form?: string;
+    unid: string;
+  };
+};
+type Update = UntypedUpdate & {
+  Document?: {
+    className: string;
+  };
+};
+type UpdateAction = {
+  Document?: {
+    action?: 'update';
+  };
+};
+
+declare const orgDoc: Update;
+declare const diff: Update;
+const diffWithAction = diff as UpdateAction & Update;
+diffWithAction.Document = { action: 'update', ...orgDoc.Document! };
+    `,
   ],
 
   invalid: [
+    {
+      code: `
+type Update = {
+  Document?: {
+    className: string;
+  };
+};
+type SameUpdate = {
+  Document?: {
+    className: string;
+  };
+};
+
+declare const diff: Update;
+const same = diff as SameUpdate;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: `
+type Update = {
+  Document?: {
+    className: string;
+  };
+};
+type SameUpdate = {
+  Document?: {
+    className: string;
+  };
+};
+
+declare const diff: Update;
+const same = diff;
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [{ column: 13, line: 1, messageId: 'unnecessaryAssertion' }],
