@@ -899,15 +899,25 @@ diffWithAction.Document = { action: 'update', ...orgDoc.Document! };
   invalid: [
     {
       code: `
+type SourceNode = {
+  child?: SourceNode;
+  value: string;
+};
+type EquivalentNode = {
+  child?: EquivalentNode;
+  value: string;
+};
+type AnotherEquivalentNode = {
+  child?: AnotherEquivalentNode;
+  value: string;
+};
 type Update = {
-  Document?: {
-    className: string;
-  };
+  first?: SourceNode;
+  second?: SourceNode;
 };
 type SameUpdate = {
-  Document?: {
-    className: string;
-  };
+  first?: EquivalentNode;
+  second?: AnotherEquivalentNode;
 };
 
 declare const diff: Update;
@@ -915,15 +925,25 @@ const same = diff as SameUpdate;
       `,
       errors: [{ messageId: 'unnecessaryAssertion' }],
       output: `
+type SourceNode = {
+  child?: SourceNode;
+  value: string;
+};
+type EquivalentNode = {
+  child?: EquivalentNode;
+  value: string;
+};
+type AnotherEquivalentNode = {
+  child?: AnotherEquivalentNode;
+  value: string;
+};
 type Update = {
-  Document?: {
-    className: string;
-  };
+  first?: SourceNode;
+  second?: SourceNode;
 };
 type SameUpdate = {
-  Document?: {
-    className: string;
-  };
+  first?: EquivalentNode;
+  second?: AnotherEquivalentNode;
 };
 
 declare const diff: Update;
