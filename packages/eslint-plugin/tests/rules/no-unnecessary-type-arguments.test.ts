@@ -197,6 +197,15 @@ const button = <Button<string> />;
         },
       },
     },
+    `
+function f<T = number>() {}
+const g = f<number>;
+    `,
+    `
+function f<T = number>() {}
+function takesFn(fn: () => void) {}
+takesFn(f<number>);
+    `,
   ],
   invalid: [
     {

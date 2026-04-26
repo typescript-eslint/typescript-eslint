@@ -111,6 +111,12 @@ export default createRule<[], MessageIds>({
 
     return {
       TSTypeParameterInstantiation(node): void {
+        // TypeScript does not apply default type parameters in instantiation
+        // expressions, so explicit type args here are always meaningful.
+        if (node.parent.type === AST_NODE_TYPES.TSInstantiationExpression) {
+          return;
+        }
+
         const expression = services.esTreeNodeToTSNodeMap.get(node);
         const typeParameters = getTypeParametersFromNode(
           node,

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "8.58.2",
+  "version": "8.59.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "files": [
     "dist",
