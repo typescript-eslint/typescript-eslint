@@ -1,14 +1,10 @@
-import type { RunTests } from '@typescript-eslint/rule-tester';
-
 import { RuleTester } from '@typescript-eslint/rule-tester';
-
-import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 
 const ruleTester = new RuleTester();
 
-const sortedCiWithoutGrouping: RunTests<MessageIds, Options> = {
+ruleTester.run('member-ordering-alphabetically-case-insensitive-order', rule, {
   invalid: [
     // default option + interface + wrong order (multiple)
     {
@@ -152,103 +148,6 @@ const foo = class Foo {
         },
       ],
     },
-  ],
-  valid: [
-    // default option + interface + lower/upper case
-    {
-      code: `
-interface Foo {
-  a: b;
-  B: b;
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + type literal + lower/upper case
-    {
-      code: `
-type Foo = {
-  a: b;
-  B: b;
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class + lower/upper case
-    {
-      code: `
-class Foo {
-  public static a: string;
-  public static B: string;
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class expression + lower/upper case
-    {
-      code: `
-const foo = class Foo {
-  public static a: string;
-  public static B: string;
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class + decorators
-    {
-      code: `
-class Foo {
-  public static a: string;
-  @Dec() static B: string;
-  public static c: string;
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-  ],
-};
-
-const sortedCiWithGrouping: RunTests<MessageIds, Options> = {
-  invalid: [
     // default option + interface + wrong order within group and wrong group order + alphabetically
     {
       code: `
@@ -460,6 +359,96 @@ const foo = class Foo {
     },
   ],
   valid: [
+    // default option + interface + lower/upper case
+    {
+      code: `
+interface Foo {
+  a: b;
+  B: b;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + type literal + lower/upper case
+    {
+      code: `
+type Foo = {
+  a: b;
+  B: b;
+};
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class + lower/upper case
+    {
+      code: `
+class Foo {
+  public static a: string;
+  public static B: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class expression + lower/upper case
+    {
+      code: `
+const foo = class Foo {
+  public static a: string;
+  public static B: string;
+};
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class + decorators
+    {
+      code: `
+class Foo {
+  public static a: string;
+  @Dec() static B: string;
+  public static c: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
     // default option + interface + default order + alphabetically
     {
       code: `
@@ -721,12 +710,4 @@ class Foo {
       ],
     },
   ],
-};
-
-ruleTester.run('member-ordering-alphabetically-case-insensitive-order', rule, {
-  invalid: [
-    ...sortedCiWithoutGrouping.invalid,
-    ...sortedCiWithGrouping.invalid,
-  ],
-  valid: [...sortedCiWithoutGrouping.valid, ...sortedCiWithGrouping.valid],
 });
