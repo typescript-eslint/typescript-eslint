@@ -79,11 +79,9 @@ function isSideEffectFreeMethodCallOnPrimitive(
 ): boolean {
   const { callee } = node;
   if (
-    node.optional ||
     node.arguments.length > 0 ||
     callee.type !== AST_NODE_TYPES.MemberExpression ||
-    callee.computed ||
-    callee.optional
+    callee.computed
   ) {
     return false;
   }

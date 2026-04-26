@@ -21,52 +21,38 @@ function bar(x: never) {
   void x;
 }
     `,
-    // Function call returning non-void (side effects possible, void is intentional)
     `
 declare function getStr(): string;
 void getStr();
     `,
-    // Common pattern: ignoring a Promise
     `
 void Promise.resolve();
     `,
-    // Method call returning non-void (side effects possible)
     `
 declare const obj: { method(): string };
 void obj.method();
     `,
-    // Computed member access with a key expression that may have side effects
     `
 declare const obj: Record<string, number>;
 declare function getKey(): string;
 void obj[getKey()];
     `,
-    // Member access where the object is not clearly side-effect-free
     `
 declare function getBox(): { value: string };
 void getBox().value;
     `,
-    // String method with arguments — arguments may affect the result
     `
 declare const str: string;
 void str.normalize('NFC');
     `,
-    // Optional call — the call itself is optional, not clearly side-effect-free
-    `
-declare const str: string;
-void str.toUpperCase?.();
-    `,
-    // Computed method call — not clearly side-effect-free
     `
 declare const str: string;
 void str['toUpperCase']();
     `,
-    // Method called on a non-primitive type
     `
 declare const someObj: { toString(): string };
 void someObj.toString();
     `,
-    // Private class method — property is PrivateIdentifier, not Identifier
     `
 class Foo {
   #method() {
@@ -77,7 +63,6 @@ class Foo {
   }
 }
     `,
-    // Template literal — hits the default case in isClearlyMeaninglessExpression
     `
 declare const str: string;
 void \`\${str}\`;
@@ -178,6 +163,20 @@ void box.value.toUpperCase();
         {
           column: 1,
           line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const str: string;
+void str.toUpperCase?.();
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
           messageId: 'meaninglessVoidOperator',
         },
       ],
