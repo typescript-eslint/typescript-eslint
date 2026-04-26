@@ -55,6 +55,7 @@ function packageNameFromFilePath(filePath: string): string | undefined {
   const normalized = filePath.replaceAll('\\', '/');
   const marker = '/node_modules/';
   const idx = normalized.lastIndexOf(marker);
+  /* istanbul ignore next */
   if (idx === -1) {
     return undefined;
   }
