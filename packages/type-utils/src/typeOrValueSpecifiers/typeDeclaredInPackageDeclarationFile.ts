@@ -55,10 +55,8 @@ function packageNameFromFilePath(filePath: string): string | undefined {
   const normalized = filePath.replaceAll('\\', '/');
   const marker = '/node_modules/';
   const idx = normalized.lastIndexOf(marker);
-  /* v8 ignore next 3 */
-  if (idx === -1) {
-    return undefined;
-  }
+  // eslint-disable-next-line curly
+  /* istanbul ignore if */ if (idx === -1) return undefined;
   return extractPackageName(normalized.slice(idx + marker.length));
 }
 
