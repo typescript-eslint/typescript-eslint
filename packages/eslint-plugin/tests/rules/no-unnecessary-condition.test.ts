@@ -73,6 +73,10 @@ const result1 = foo() === undefined;
 const result2 = foo() == null;
     `,
     `
+declare function foo(): number | void;
+foo() ?? 1;
+    `,
+    `
 declare const bigInt: 0n | 1n;
 if (bigInt) {
 }
