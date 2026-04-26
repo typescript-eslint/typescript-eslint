@@ -9,11 +9,6 @@
       "count": 14
     }
   },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-condition.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 44
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-unnecessary-template-expression.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 1
