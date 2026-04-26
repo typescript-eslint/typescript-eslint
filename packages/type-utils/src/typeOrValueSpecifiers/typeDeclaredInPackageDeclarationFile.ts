@@ -29,33 +29,29 @@ function typeDeclaredInDeclareModule(
 }
 
 /**
- * Extracts just the package name from a module specifier that may include
+ * Extracts the bare package name from a module specifier that may include
  * subpath segments (e.g. `@angular/common/http` → `@angular/common`,
  * `lodash/fp` → `lodash`).
  */
 function extractPackageName(moduleSpecifier: string): string {
   if (moduleSpecifier.startsWith('@')) {
-    const slashIndex = moduleSpecifier.indexOf('/', 1);
-    const secondSlash =
-      slashIndex !== -1 ? moduleSpecifier.indexOf('/', slashIndex + 1) : -1;
-    return secondSlash !== -1
-      ? moduleSpecifier.slice(0, secondSlash)
-      : moduleSpecifier;
+    // Scoped package: keep the first two segments.
+    return moduleSpecifier.split('/').slice(0, 2).join('/');
   }
-  const slashIndex = moduleSpecifier.indexOf('/');
-  return slashIndex !== -1
-    ? moduleSpecifier.slice(0, slashIndex)
-    : moduleSpecifier;
+  // Unscoped package: keep only the first segment.
+  return moduleSpecifier.split('/')[0];
 }
 
 /**
- * Falls back to deriving the package name from the file-system path when
- * TypeScript's `sourceFileToPackageName` map has no entry for the file.
- * This covers cases where a package re-exports its symbols through
- * dynamically-named internal files (e.g. Angular 19.2.5+ hashed chunks)
- * that the compiler cannot automatically attribute to a package.
+ * Derives the package name from the `node_modules` portion of a file path.
+ * Returns `undefined` when the path does not contain a `node_modules` segment.
+ *
+ * This is used alongside `program.sourceFileToPackageName` to cover packages
+ * that re-export symbols through dynamically-named internal chunk files
+ * (e.g. Angular 19.2.5+ hashed files) where the TS compiler map may lack an
+ * entry.
  */
-function getPackageNameFromFilePath(filePath: string): string | undefined {
+function packageNameFromFilePath(filePath: string): string | undefined {
   const normalized = filePath.replaceAll('\\', '/');
   const marker = '/node_modules/';
   const idx = normalized.lastIndexOf(marker);
@@ -77,25 +73,27 @@ function typeDeclaredInDeclarationFile(
     if (!program.isSourceFileFromExternalLibrary(declaration)) {
       return false;
     }
-    const rawPackageIdName = program.sourceFileToPackageName.get(
-      declaration.path,
-    );
-    // Fall back to deriving the package name from the file path for packages
-    // that use dynamic/hashed re-export filenames (e.g. Angular 19.2.5+).
-    const packageIdName =
-      rawPackageIdName ?? getPackageNameFromFilePath(declaration.path);
-    if (packageIdName == null) {
-      return false;
-    }
 
-    // Normalize to the bare package name (strip any subpath like `/http`).
-    const extractedName = extractPackageName(packageIdName);
+    // Consult both TypeScript's own package-name map and the file-system path.
+    // Using both covers packages that re-export via dynamically-named internal
+    // files (e.g. Angular 19.2.5+ hashed chunks) where the TS map may have no
+    // entry for the declaration file.
+    const candidateNames = [
+      program.sourceFileToPackageName.get(declaration.path),
+      packageNameFromFilePath(declaration.path),
+    ];
 
-    return (
-      extractedName === packageName ||
-      extractedName === typesPackageName ||
-      extractedName === `@types/${typesPackageName}`
-    );
+    return candidateNames.some(packageIdName => {
+      if (packageIdName == null) {
+        return false;
+      }
+      const extracted = extractPackageName(packageIdName);
+      return (
+        extracted === packageName ||
+        extracted === typesPackageName ||
+        extracted === `@types/${typesPackageName}`
+      );
+    });
   });
 }
 
