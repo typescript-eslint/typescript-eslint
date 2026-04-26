@@ -549,7 +549,7 @@ function collectTypeParameterUsageCounts(
 interface MappedType extends ts.ObjectType {
   constraintType?: ts.Type;
   templateType?: ts.Type;
-  typeParameter?: ts.Type;
+  typeParameter: ts.Type;
 }
 
 function isMappedType(type: ts.Type): type is MappedType {

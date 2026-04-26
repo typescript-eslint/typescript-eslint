@@ -1,8 +1,8 @@
 declare module '@eslint-community/eslint-plugin-eslint-comments/configs' {
-  import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
+  import type { Config } from '@eslint/config-helpers';
 
   declare const exprt: {
-    recommended: FlatConfig.Config;
+    recommended: Config;
   };
   export = exprt;
 }

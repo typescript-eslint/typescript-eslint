@@ -1,12 +1,16 @@
 declare module 'eslint-plugin-jsx-a11y' {
-  import type { FlatConfig, Linter } from '@typescript-eslint/utils/ts-eslint';
+  import type { Config, Plugin } from '@eslint/config-helpers';
 
   declare const exprt: {
     flatConfigs: {
-      recommended: FlatConfig.Config;
-      strict: FlatConfig.Config;
+      recommended: Config & {
+        plugins: {
+          'jsx-a11y': Plugin;
+        };
+      };
+      strict: Config;
     };
-    rules: NonNullable<Linter.Plugin['rules']>;
+    rules: NonNullable<Plugin['rules']>;
   };
   export = exprt;
 }

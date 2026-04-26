@@ -3,5 +3,5 @@
 exports[`AST Fixtures > expression > ObjectExpression > _error_ > property-modifier-abstract > TSESTree - Error`]
 TSError
 > 1 | ({abstract property: 1})
-    |   ^^^^^^^^ 'abstract' modifier can only appear on a class, method, or property declaration.
+    |   ^^^^^^^^ 'abstract' modifier cannot be used here.
   2 |

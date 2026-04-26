@@ -61,7 +61,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const { jsDocParsingMode } = context.parserOptions;
+    const { jsDocParsingMode } = context.languageOptions.parserOptions;
     const allow = options.allow;
     if (jsDocParsingMode === 'none' || jsDocParsingMode === 'type-info') {
       throw new Error(
@@ -416,7 +416,8 @@ export default createRule<Options, MessageIds>({
 
         const propertyName = propertyType.isStringLiteral()
           ? propertyType.value
-          : String(propertyType.value as number);
+          : // eslint-disable-next-line @typescript-eslint/no-base-to-string
+            String(propertyType.value);
 
         const property = objectType.getProperty(propertyName);
 

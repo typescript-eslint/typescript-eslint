@@ -5,31 +5,31 @@
 
 import type { LibDefinition } from '../variable';
 
-import { es2024 } from './es2024';
+import { es2025 } from './es2025';
 import { esnext_array } from './esnext.array';
 import { esnext_collection } from './esnext.collection';
+import { esnext_date } from './esnext.date';
 import { esnext_decorators } from './esnext.decorators';
 import { esnext_disposable } from './esnext.disposable';
 import { esnext_error } from './esnext.error';
-import { esnext_float16 } from './esnext.float16';
 import { esnext_intl } from './esnext.intl';
-import { esnext_iterator } from './esnext.iterator';
-import { esnext_promise } from './esnext.promise';
 import { esnext_sharedmemory } from './esnext.sharedmemory';
+import { esnext_temporal } from './esnext.temporal';
+import { esnext_typedarrays } from './esnext.typedarrays';
 
 export const esnext: LibDefinition = {
   libs: [
-    es2024,
+    es2025,
     esnext_intl,
+    esnext_collection,
     esnext_decorators,
     esnext_disposable,
-    esnext_collection,
     esnext_array,
-    esnext_iterator,
-    esnext_promise,
-    esnext_float16,
     esnext_error,
     esnext_sharedmemory,
+    esnext_typedarrays,
+    esnext_temporal,
+    esnext_date,
   ],
   variables: [],
 };

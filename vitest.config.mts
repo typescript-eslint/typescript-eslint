@@ -24,15 +24,16 @@ const vitestConfig = mergeConfig(
 
       dir: path.join(import.meta.dirname, 'packages'),
       name: 'root',
-      root: import.meta.dirname,
 
-      workspace: [
+      projects: [
         'packages/*/vitest.config.mts',
         '!packages/website/vitest.config.mts',
         '!packages/website-eslint/vitest.config.mts',
         '!packages/rule-schema-to-typescript-types/vitest.config.mts',
         '!packages/types/vitest.config.mts',
       ],
+
+      root: import.meta.dirname,
     },
   }),
 );

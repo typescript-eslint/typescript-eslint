@@ -12,7 +12,6 @@ exports[`vue-sfc > eslint > should work successfully 1`] = `
       {
         "fatal": true,
         "message": "Parsing error: error TS5012: Cannot read file '/usr/linked/tsconfig.json': ENOENT: no such file or directory, open '/usr/linked/tsconfig.json'.",
-        "nodeType": null,
         "ruleId": null,
         "severity": 2,
       },
@@ -98,7 +97,6 @@ export default Vue.extend({
       {
         "fatal": true,
         "message": "Parsing error: error TS5012: Cannot read file '/usr/linked/tsconfig.json': ENOENT: no such file or directory, open '/usr/linked/tsconfig.json'.",
-        "nodeType": null,
         "ruleId": null,
         "severity": 2,
       },
@@ -160,7 +158,6 @@ export default class Utility {
       {
         "fatal": true,
         "message": "Parsing error: error TS5012: Cannot read file '/usr/linked/tsconfig.json': ENOENT: no such file or directory, open '/usr/linked/tsconfig.json'.",
-        "nodeType": null,
         "ruleId": null,
         "severity": 2,
       },

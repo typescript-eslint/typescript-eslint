@@ -6,8 +6,7 @@ export const vitestBaseConfig = {
   test: {
     coverage: {
       exclude: [...coverageConfigDefaults.exclude, '**/fixtures/'],
-      extension: ['.ts', '.tsx', '.js', '.jsx'],
-      include: ['src'],
+      include: ['src/**/*.{ts,tsx,js,jsx}'],
 
       reporter: process.env.GITHUB_ACTIONS
         ? [['lcov'], ['text'], ['text-summary']]

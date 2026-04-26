@@ -274,7 +274,9 @@ export interface RuleContext<
   /**
    * The language options configured for this run
    */
-  languageOptions: FlatConfig.LanguageOptions;
+  languageOptions: FlatConfig.LanguageOptions & {
+    parserOptions: FlatConfig.ParserOptions;
+  };
   /**
    * An array of the configured options for this rule.
    * This array does not include the rule severity.
@@ -282,10 +284,12 @@ export interface RuleContext<
   options: Options;
   /**
    * The parser options configured for this run
+   * @deprecated This was deprecated in ESLint 9 and removed in ESLint 10.
    */
   parserOptions: Linter.ParserOptions;
   /**
    * The name of the parser from configuration, if in eslintrc (legacy) config.
+   * @deprecated This was deprecated in ESLint 9 and removed in ESLint 10.
    */
   parserPath: string | undefined;
   /**

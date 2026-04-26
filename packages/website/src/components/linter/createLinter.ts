@@ -1,7 +1,7 @@
 import type * as tsvfs from '@site/src/vendor/typescript-vfs';
 import type { JSONSchema, TSESTree } from '@typescript-eslint/utils';
 import type {
-  ClassicConfig,
+  FlatConfig,
   Linter,
   SourceType,
 } from '@typescript-eslint/utils/ts-eslint';
@@ -22,7 +22,8 @@ import type {
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createEventsBinder } from '../lib/createEventsBinder';
 import { parseESLintRC, parseTSConfig } from '../lib/parseConfig';
-import { defaultEslintConfig, PARSER_NAME } from './config';
+import { fileTypes } from '../options';
+import { defaultEslintLanguageConfig } from './config';
 import { createParser } from './createParser';
 
 export interface CreateLinter {
@@ -55,13 +56,6 @@ export function createLinter(
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
   let compilerOptions: ts.CompilerOptions = {};
-  const eslintConfig: ClassicConfig.Config = { ...defaultEslintConfig };
-
-  const onLint = createEventsBinder<LinterOnLint>();
-  const onParse = createEventsBinder<LinterOnParse>();
-
-  const linter = webLinterModule.createLinter();
-
   const parser = createParser(
     system,
     compilerOptions,
@@ -72,14 +66,45 @@ export function createLinter(
     vfs,
   );
 
-  linter.defineParser(PARSER_NAME, parser);
+  const eslintLanguageConfig: FlatConfig.Config = {
+    files: fileTypes.map(extension => `**/*${extension}`),
+    languageOptions: {
+      ...defaultEslintLanguageConfig,
+      parser,
+      parserOptions: { ...defaultEslintLanguageConfig.parserOptions },
+    },
+    plugins: {
+      '@typescript-eslint': {
+        rules: webLinterModule.rules,
+      },
+    },
+  };
 
-  linter.getRules().forEach((item, name) => {
+  const eslintExtendedConfig: FlatConfig.ConfigArray = [];
+
+  const eslintRulesConfig: FlatConfig.Config = {
+    rules: {},
+  };
+
+  const onLint = createEventsBinder<LinterOnLint>();
+  const onParse = createEventsBinder<LinterOnParse>();
+  const linter = webLinterModule.createLinter();
+
+  Object.entries(webLinterModule.rules).forEach(([name, item]) => {
+    rules.set(`@typescript-eslint/${name}`, {
+      description: item.meta.docs?.description,
+      name: `@typescript-eslint/${name}`,
+      schema: item.meta.schema,
+      url: item.meta.docs?.url,
+    });
+  });
+
+  [...webLinterModule.builtinRules.entries()].forEach(([name, item]) => {
     rules.set(name, {
-      description: item.meta?.docs?.description,
+      description: item.meta.docs?.description,
       name,
-      schema: item.meta?.schema ?? [],
-      url: item.meta?.docs?.url,
+      schema: item.meta.schema,
+      url: item.meta.docs?.url,
     });
   });
 
@@ -87,13 +112,17 @@ export function createLinter(
     console.info('[Editor] linting triggered for file', filename);
     const code = system.readFile(filename) ?? '\n';
     try {
-      const messages = linter.verify(code, eslintConfig, filename);
+      const messages = linter.verify(
+        code,
+        [eslintLanguageConfig, ...eslintExtendedConfig, eslintRulesConfig],
+        filename,
+      );
       onLint.trigger(filename, messages);
     } catch (e) {
       const lintMessage: Linter.LintMessage = {
         column: 1,
         line: 1,
-        message: String(e instanceof Error ? e.stack : e),
+        message: String(e instanceof Error ? `${e.message}\n\n${e.stack}` : e),
         ruleId: '',
         severity: 2,
         source: 'eslint',
@@ -112,49 +141,44 @@ export function createLinter(
   const triggerFix = (filename: string): Linter.FixReport | undefined => {
     const code = system.readFile(filename);
     if (code) {
-      return linter.verifyAndFix(code, eslintConfig, {
-        filename,
-        fix: true,
-      });
+      return linter.verifyAndFix(
+        code,
+        [eslintLanguageConfig, ...eslintExtendedConfig, eslintRulesConfig],
+        {
+          filename,
+          fix: true,
+        },
+      );
     }
     return undefined;
   };
 
   const updateParserOptions = (sourceType?: SourceType): void => {
-    eslintConfig.parserOptions ??= {};
-    eslintConfig.parserOptions.sourceType = sourceType ?? 'module';
-  };
-
-  const resolveEslintConfig = (
-    cfg: Partial<ClassicConfig.Config>,
-  ): ClassicConfig.Config => {
-    const config = { rules: {} };
-    if (cfg.extends) {
-      const cfgExtends = Array.isArray(cfg.extends)
-        ? cfg.extends
-        : [cfg.extends];
-      for (const extendsName of cfgExtends) {
-        const maybeConfig = configs.get(extendsName);
-        if (maybeConfig) {
-          const resolved = resolveEslintConfig(maybeConfig);
-          if (resolved.rules) {
-            Object.assign(config.rules, resolved.rules);
-          }
-        }
-      }
-    }
-    if (cfg.rules) {
-      Object.assign(config.rules, cfg.rules);
-    }
-    return config;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    eslintLanguageConfig.languageOptions!.parserOptions!.sourceType =
+      sourceType ?? 'module';
   };
 
   const applyEslintConfig = (fileName: string): void => {
     try {
       const file = system.readFile(fileName) ?? '{}';
-      const parsed = resolveEslintConfig(parseESLintRC(file));
-      eslintConfig.rules = parsed.rules;
-      console.log('[Editor] Updating', fileName, eslintConfig);
+      const parsed = parseESLintRC(file);
+      eslintRulesConfig.rules = parsed.rules;
+      for (const extendsName of parsed.extends) {
+        const maybeConfig = configs.get(extendsName);
+        if (maybeConfig) {
+          if (Array.isArray(maybeConfig)) {
+            eslintExtendedConfig.push(...maybeConfig);
+          } else {
+            eslintExtendedConfig.push(maybeConfig);
+          }
+        }
+      }
+      console.log('[Editor] Updating', fileName, [
+        eslintLanguageConfig,
+        ...eslintExtendedConfig,
+        eslintRulesConfig,
+      ]);
     } catch (e) {
       console.error(e);
     }
