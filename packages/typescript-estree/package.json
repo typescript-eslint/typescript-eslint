@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.58.2",
+  "version": "8.59.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
