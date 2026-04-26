@@ -354,6 +354,16 @@ const templateLiteral = <const>\`\${myString}-somethingElse\`;
 const myString = 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12276
+    `
+type ValuePath = 'values' | \`values.\${string}\`;
+
+declare function apply(paths: ValuePath[]): void;
+
+export function update(ids: string[]) {
+  apply(ids.map(id => \`values.\${id}\` as ValuePath));
+}
+    `,
     'let a = `a` as const;',
     {
       code: `

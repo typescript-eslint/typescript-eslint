@@ -912,6 +912,7 @@ export default createRule<Options, MessageIds>({
 
           const isContextuallyUnnecessary =
             !typeAnnotationIsConstAssertion &&
+            !isTemplateLiteralWithExpressions(node.expression) &&
             !containsAny(uncastType) &&
             anyInvolvedInContextualCheck &&
             !hasPhantomTypeArgumentMismatch(node, uncastType, contextualType) &&
