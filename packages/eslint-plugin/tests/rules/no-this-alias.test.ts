@@ -41,6 +41,15 @@ declare module 'foo' {
     {
       code: 'const self = this;',
       errors: [{ messageId: 'thisAssignment' as const }],
+      options: [
+        {
+          allowDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const self = this;',
+      errors: [{ messageId: 'thisAssignment' as const }],
     },
     {
       code: `
