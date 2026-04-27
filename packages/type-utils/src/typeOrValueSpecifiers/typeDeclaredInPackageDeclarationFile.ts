@@ -40,6 +40,24 @@ function extractPackageName(moduleSpecifier: string): string {
   return moduleSpecifier.split('/')[0];
 }
 
+/**
+ * Derives the package name from the `node_modules` portion of a file path.
+ * Returns `undefined` when the path does not contain a `node_modules` segment.
+ *
+ * Used as a fallback alongside `program.sourceFileToPackageName` for packages
+ * that re-export symbols through dynamically-named internal chunk files where
+ * the TypeScript compiler map may have no entry for the declaration file.
+ */
+function packageNameFromFilePath(filePath: string): string | undefined {
+  const normalized = filePath.replaceAll('\\', '/');
+  const marker = '/node_modules/';
+  const idx = normalized.lastIndexOf(marker);
+  if (idx === -1) {
+    return undefined;
+  }
+  return extractPackageName(normalized.slice(idx + marker.length));
+}
+
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
@@ -52,16 +70,26 @@ function typeDeclaredInDeclarationFile(
     if (!program.isSourceFileFromExternalLibrary(declaration)) {
       return false;
     }
-    const packageIdName = program.sourceFileToPackageName.get(declaration.path);
-    if (packageIdName == null) {
-      return false;
-    }
-    const extracted = extractPackageName(packageIdName);
-    return (
-      extracted === packageName ||
-      extracted === typesPackageName ||
-      extracted === `@types/${typesPackageName}`
-    );
+
+    // Check both TypeScript's package-name map and the file path itself.
+    // The file-path fallback handles packages that re-export via hashed
+    // internal files (e.g. Angular 19.2.5+) where the TS map has no entry.
+    const candidateNames = [
+      program.sourceFileToPackageName.get(declaration.path),
+      packageNameFromFilePath(declaration.path),
+    ];
+
+    return candidateNames.some(packageIdName => {
+      if (packageIdName == null) {
+        return false;
+      }
+      const extracted = extractPackageName(packageIdName);
+      return (
+        extracted === packageName ||
+        extracted === typesPackageName ||
+        extracted === `@types/${typesPackageName}`
+      );
+    });
   });
 }
 
