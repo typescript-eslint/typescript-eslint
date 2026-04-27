@@ -40,7 +40,7 @@ declare module 'foo' {
   invalid: [
     {
       code: 'const self = this;',
-      errors: [{ messageId: 'thisAssignment' as const }],
+      errors: [{ messageId: 'thisAssignment' }],
       options: [
         {
           allowDestructuring: true,
@@ -49,18 +49,18 @@ declare module 'foo' {
     },
     {
       code: 'const self = this;',
-      errors: [{ messageId: 'thisAssignment' as const }],
+      errors: [{ messageId: 'thisAssignment' }],
     },
     {
       code: `
 let that;
 that = this;
       `,
-      errors: [{ messageId: 'thisAssignment' as const }],
+      errors: [{ messageId: 'thisAssignment' }],
     },
     {
       code: 'const { props, state } = this;',
-      errors: [{ messageId: 'thisDestructure' as const }],
+      errors: [{ messageId: 'thisDestructure' }],
       options: [
         {
           allowDestructuring: false,
@@ -79,9 +79,9 @@ const testLambda = () => {
 };
       `,
       errors: [
-        { messageId: 'thisAssignment' as const },
-        { messageId: 'thisAssignment' as const },
-        { messageId: 'thisAssignment' as const },
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisAssignment' },
       ],
     },
     {
@@ -106,13 +106,13 @@ class TestClass {
 }
       `,
       errors: [
-        { messageId: 'thisAssignment' as const },
-        { messageId: 'thisAssignment' as const },
-        { messageId: 'thisAssignment' as const },
-        { messageId: 'thisDestructure' as const },
-        { messageId: 'thisDestructure' as const },
-        { messageId: 'thisDestructure' as const },
-        { messageId: 'thisDestructure' as const },
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisDestructure' },
+        { messageId: 'thisDestructure' },
+        { messageId: 'thisDestructure' },
+        { messageId: 'thisDestructure' },
       ],
       options: [
         {
