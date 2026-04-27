@@ -40,24 +40,6 @@ function extractPackageName(moduleSpecifier: string): string {
   return moduleSpecifier.split('/')[0];
 }
 
-/**
- * Derives the package name from the `node_modules` portion of a file path.
- * Returns `undefined` when the path does not contain a `node_modules` segment.
- *
- * Used as a fallback alongside `program.sourceFileToPackageName` for packages
- * that re-export symbols through dynamically-named internal chunk files where
- * the TypeScript compiler map may have no entry for the declaration file.
- */
-function packageNameFromFilePath(filePath: string): string | undefined {
-  const normalized = filePath.replaceAll('\\', '/');
-  const marker = '/node_modules/';
-  const idx = normalized.lastIndexOf(marker);
-  if (idx === -1) {
-    return undefined;
-  }
-  return extractPackageName(normalized.slice(idx + marker.length));
-}
-
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
@@ -72,15 +54,22 @@ function typeDeclaredInDeclarationFile(
     }
 
     // Check both TypeScript's package-name map and the file path itself.
-    // The file-path fallback handles packages that re-export via hashed
-    // internal files (e.g. Angular 19.2.5+) where the TS map has no entry.
+    // The file-path fallback handles packages that re-export via hashed internal
+    // files (e.g. Angular 19.2.5+) where the TS map has no entry for the file.
+    // External library files are always inside node_modules, so splitting on
+    // '/node_modules/' always yields at least two parts; the last part is the
+    // package-relative path from which we extract the package name.
+    const normalized = declaration.path.replaceAll('\\', '/');
+    const nmParts = normalized.split('/node_modules/');
+    const fromFilePath = extractPackageName(nmParts[nmParts.length - 1]);
+
     const candidateNames = [
       program.sourceFileToPackageName.get(declaration.path),
-      packageNameFromFilePath(declaration.path),
+      fromFilePath,
     ];
 
     return candidateNames.some(packageIdName => {
-      if (packageIdName == null) {
+      if (packageIdName == null || packageIdName === '') {
         return false;
       }
       const extracted = extractPackageName(packageIdName);
