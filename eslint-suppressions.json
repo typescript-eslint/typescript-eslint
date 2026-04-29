@@ -1,9 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/no-this-alias.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 14
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-unnecessary-template-expression.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 1
