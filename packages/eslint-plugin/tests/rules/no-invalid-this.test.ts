@@ -4,11 +4,6 @@ import rule from '../../src/rules/no-invalid-this';
 
 const ruleTester = new RuleTester();
 
-const errors = [
-  { messageId: 'unexpectedThis' as const },
-  { messageId: 'unexpectedThis' as const },
-];
-
 ruleTester.run('no-invalid-this', rule, {
   valid: [
     `
@@ -446,14 +441,28 @@ function foo() {
 console.log(this);
 z(x => console.log(x, this));
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
 console.log(this);
 z(x => console.log(x, this));
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
       languageOptions: {
         parserOptions: {
           ecmaFeatures: { globalReturn: true },
@@ -469,7 +478,14 @@ z(x => console.log(x, this));
   z(x => console.log(x, this));
 })();
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Just functions.
@@ -480,7 +496,14 @@ function foo() {
   z(x => console.log(x, this));
 }
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -489,7 +512,14 @@ function foo() {
   z(x => console.log(x, this));
 }
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
       options: [{ capIsConstructor: false }], // test that the option doesn't reverse the logic and mistakenly allows lowercase functions
     },
     {
@@ -499,7 +529,14 @@ function Foo() {
   z(x => console.log(x, this));
 }
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
       options: [{ capIsConstructor: false }],
     },
     {
@@ -510,7 +547,14 @@ function foo() {
   z(x => console.log(x, this));
 }
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -520,7 +564,14 @@ function Foo() {
   z(x => console.log(x, this));
 }
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
       options: [{ capIsConstructor: false }],
     },
     {
@@ -530,7 +581,14 @@ return function () {
   z(x => console.log(x, this));
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
       languageOptions: {
         parserOptions: {
           ecmaFeatures: { globalReturn: true },
@@ -544,7 +602,14 @@ var foo = function () {
   z(x => console.log(x, this));
 }.bar(obj);
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Functions in methods.
@@ -560,7 +625,14 @@ var obj = {
   },
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -574,7 +646,14 @@ var obj = {
   },
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -587,7 +666,14 @@ var obj = {
   },
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -601,7 +687,14 @@ var obj = {
   },
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -612,7 +705,14 @@ obj.foo = function () {
   };
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -624,7 +724,14 @@ obj.foo = function () {
   };
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Class Methods.
@@ -640,7 +747,14 @@ class A {
   }
 }
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Class Properties.
@@ -654,7 +768,14 @@ class A {
   });
 }
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
@@ -668,7 +789,14 @@ class A {
   };
 }
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Class Static methods.
@@ -682,7 +810,14 @@ obj.foo = (function () {
   };
 })();
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -691,7 +826,14 @@ obj.foo = (() => () => {
   z(x => console.log(x, this));
 })();
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     // Bind/Call/Apply
 
@@ -702,7 +844,14 @@ var foo = function () {
   z(x => console.log(x, this));
 }.bind(null);
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
@@ -712,7 +861,14 @@ var foo = function () {
   z(x => console.log(x, this));
 }).call(undefined);
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
@@ -722,7 +878,14 @@ var foo = function () {
   z(x => console.log(x, this));
 }).apply(void 0);
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // Array methods.
@@ -733,7 +896,14 @@ Array.from([], function () {
   z(x => console.log(x, this));
 });
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -742,7 +912,14 @@ foo.every(function () {
   z(x => console.log(x, this));
 });
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -751,7 +928,14 @@ foo.filter(function () {
   z(x => console.log(x, this));
 });
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -760,7 +944,14 @@ foo.find(function () {
   z(x => console.log(x, this));
 });
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -769,7 +960,14 @@ foo.findIndex(function () {
   z(x => console.log(x, this));
 });
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -778,7 +976,14 @@ foo.forEach(function () {
   z(x => console.log(x, this));
 });
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -787,7 +992,14 @@ foo.map(function () {
   z(x => console.log(x, this));
 });
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -796,7 +1008,14 @@ foo.some(function () {
   z(x => console.log(x, this));
 });
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
@@ -806,7 +1025,14 @@ foo.forEach(function () {
   z(x => console.log(x, this));
 }, null);
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     // @this tag.
@@ -818,7 +1044,14 @@ foo.forEach(function () {
   z(x => console.log(x, this));
 }
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -827,7 +1060,14 @@ foo.forEach(function () {
   z(x => console.log(x, this));
 });
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
@@ -837,7 +1077,14 @@ var Ctor = function () {
   z(x => console.log(x, this));
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
       options: [{ capIsConstructor: false }],
     },
     {
@@ -847,7 +1094,14 @@ var func = function () {
   z(x => console.log(x, this));
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -856,7 +1110,14 @@ var func = function () {
   z(x => console.log(x, this));
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
       options: [{ capIsConstructor: false }],
     },
 
@@ -867,7 +1128,14 @@ Ctor = function () {
   z(x => console.log(x, this));
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
       options: [{ capIsConstructor: false }],
     },
     {
@@ -877,7 +1145,14 @@ func = function () {
   z(x => console.log(x, this));
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     {
       code: `
@@ -886,7 +1161,14 @@ func = function () {
   z(x => console.log(x, this));
 };
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
       options: [{ capIsConstructor: false }],
     },
 
@@ -899,7 +1181,14 @@ function foo(
   },
 ) {}
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
 
     {
@@ -911,7 +1200,14 @@ function foo(
   },
 ] = a;
       `,
-      errors,
+      errors: [
+        {
+          messageId: 'unexpectedThis',
+        },
+        {
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
   ],
 });

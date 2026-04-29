@@ -93,7 +93,7 @@
     "execa": "7.2.0",
     "globals": "catalog:",
     "husky": "^9.1.7",
-    "knip": "5.85.0",
+    "knip": "5.88.1",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.48.0",
     "nx": "22.3.3",

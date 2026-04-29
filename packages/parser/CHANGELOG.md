@@ -1,3 +1,41 @@
+## 8.59.1 (2026-04-27)
+
+This was a version bump only for parser to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.59.0 (2026-04-20)
+
+This was a version bump only for parser to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.58.2 (2026-04-13)
+
+### 🩹 Fixes
+
+- remove tsbuildinfo cache file from published packages ([#12187](https://github.com/typescript-eslint/typescript-eslint/pull/12187))
+
+### ❤️ Thank You
+
+- Abhijeet Singh @cseas
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.58.1 (2026-04-08)
+
+This was a version bump only for parser to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.58.0 (2026-03-30)
 
 ### 🚀 Features

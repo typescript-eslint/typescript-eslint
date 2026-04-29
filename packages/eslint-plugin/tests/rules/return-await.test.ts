@@ -1,5 +1,3 @@
-import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
-
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/return-await';
@@ -578,10 +576,8 @@ class C<R extends unknown> {
       output: 'const test = async () => Promise.resolve(1);',
     },
 
-    ...['error-handling-correctness-only', 'always', 'in-try-catch'].map(
-      option =>
-        ({
-          code: `
+    {
+      code: `
         async function test() {
           try {
             return Promise.resolve(1);
@@ -592,14 +588,14 @@ class C<R extends unknown> {
           }
         }
       `,
-          errors: [
+      errors: [
+        {
+          line: 4,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
             {
-              line: 4,
-              messageId: 'requiredPromiseAwait',
-              suggestions: [
-                {
-                  messageId: 'requiredPromiseAwaitSuggestion',
-                  output: `
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
         async function test() {
           try {
             return await Promise.resolve(1);
@@ -610,16 +606,16 @@ class C<R extends unknown> {
           }
         }
       `,
-                },
-              ],
             },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
             {
-              line: 6,
-              messageId: 'requiredPromiseAwait',
-              suggestions: [
-                {
-                  messageId: 'requiredPromiseAwaitSuggestion',
-                  output: `
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
         async function test() {
           try {
             return Promise.resolve(1);
@@ -630,17 +626,127 @@ class C<R extends unknown> {
           }
         }
       `,
-                },
-              ],
             },
           ],
-          options: [option],
-          output: null,
-        }) satisfies InvalidTestCase<
-          'requiredPromiseAwait' | 'requiredPromiseAwaitSuggestion',
-          [string]
-        >,
-    ),
+        },
+      ],
+      options: ['error-handling-correctness-only'],
+      output: null,
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            return Promise.resolve(1);
+          } catch (e) {
+            return Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+        async function test() {
+          try {
+            return await Promise.resolve(1);
+          } catch (e) {
+            return Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+        async function test() {
+          try {
+            return Promise.resolve(1);
+          } catch (e) {
+            return await Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+      options: ['always'],
+      output: null,
+    },
+    {
+      code: `
+        async function test() {
+          try {
+            return Promise.resolve(1);
+          } catch (e) {
+            return Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+        async function test() {
+          try {
+            return await Promise.resolve(1);
+          } catch (e) {
+            return Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+        async function test() {
+          try {
+            return Promise.resolve(1);
+          } catch (e) {
+            return await Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+      options: ['in-try-catch'],
+      output: null,
+    },
 
     {
       code: `

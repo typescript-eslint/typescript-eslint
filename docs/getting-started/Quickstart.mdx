@@ -34,12 +34,12 @@ Next, create an `eslint.config.mjs` config file in the root of your project, and
 ```js title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommended,
 );
 ```
@@ -49,7 +49,7 @@ This code will enable our [recommended configuration](../users/Shared_Configurat
 #### Details
 
 - `defineConfig(...)` is an optional helper function built in to current versions of ESLint. See [the ESLint configuration docs](https://eslint.org/docs/latest/use/configure/configuration-files) for more detail.
-- `'@eslint/js'` / `eslint.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
+- `'@eslint/js'` / `js.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
 - `tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
 <details>
@@ -102,7 +102,7 @@ We recommend you consider enabling the following two configs:
 
 ```js title="eslint.config.mjs"
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   // Remove this line
   tseslint.configs.recommended,
   // Add this line

@@ -1,15 +1,5 @@
-import type {
-  InvalidTestCase,
-  ValidTestCase,
-} from '@typescript-eslint/rule-tester';
-
 import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
-
-import type {
-  MessageIds,
-  Options,
-} from '../../src/rules/prefer-nullish-coalescing';
 
 import rule from '../../src/rules/prefer-nullish-coalescing';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
@@ -17,353 +7,591 @@ import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
-const types = ['string', 'number', 'boolean', 'object'];
-const nullishTypes = ['null', 'undefined', 'null | undefined'];
-const ignorablePrimitiveTypes = ['string', 'number', 'boolean', 'bigint'];
-
-function typeValidTest(
-  cb: (type: string, equals: '' | '=') => string | ValidTestCase<Options>,
-): (string | ValidTestCase<Options>)[] {
-  return [
-    ...types.map(type => cb(type, '')),
-    ...types.map(type => cb(type, '=')),
-  ];
-}
-
-const nullishTypeTest = <
-  T extends
-    | string
-    | InvalidTestCase<MessageIds, Options>
-    | ValidTestCase<Options>,
->(
-  cb: (nullish: string, type: string, equals: string) => T,
-): T[] =>
-  nullishTypes.flatMap(nullish =>
-    types.flatMap(type =>
-      ['', ...(cb.length === 3 ? ['='] : [])].map(equals =>
-        cb(nullish, type, equals),
-      ),
-    ),
-  );
-
 ruleTester.run('prefer-nullish-coalescing', rule, {
   valid: [
-    ...typeValidTest(
-      (type, equals) => `
-declare let x: ${type};
-(x ||${equals} 'foo');
-      `,
-    ),
-    ...nullishTypeTest(
-      (nullish, type, equals) => `
-declare let x: ${type} | ${nullish};
-x ??${equals} 'foo';
-      `,
-    ),
+    `
+declare let x: string;
+x || 'foo';
+    `,
+    `
+declare let x: number;
+x || 'foo';
+    `,
+    `
+declare let x: boolean;
+x || 'foo';
+    `,
+    `
+declare let x: object;
+x || 'foo';
+    `,
+    `
+declare let x: string;
+x ||= 'foo';
+    `,
+    `
+declare let x: number;
+x ||= 'foo';
+    `,
+    `
+declare let x: boolean;
+x ||= 'foo';
+    `,
+    `
+declare let x: object;
+x ||= 'foo';
+    `,
+    `
+declare let x: string | null | undefined;
+x ?? 'foo';
+    `,
+    `
+declare let x: string | null | undefined;
+x ??= 'foo';
+    `,
+    `
+declare let x: number | null | undefined;
+x ?? 'foo';
+    `,
+    `
+declare let x: number | null | undefined;
+x ??= 'foo';
+    `,
+    `
+declare let x: boolean | null | undefined;
+x ?? 'foo';
+    `,
+    `
+declare let x: boolean | null | undefined;
+x ??= 'foo';
+    `,
+    `
+declare let x: object | null | undefined;
+x ?? 'foo';
+    `,
+    `
+declare let x: object | null | undefined;
+x ??= 'foo';
+    `,
 
     {
       code: 'x !== undefined && x !== null ? x : y;',
       options: [{ ignoreTernaryTests: true }],
     },
 
-    ...[
-      'x !== undefined && x !== null ? "foo" : "bar";',
-      'x !== null && x !== undefined && x !== 5 ? x : y',
-      'x === null || x === undefined || x === 5 ? x : y',
-      'x === undefined && x !== null ? x : y;',
-      'x === undefined && x === null ? x : y;',
-      'x !== undefined && x === null ? x : y;',
-      'x === undefined || x !== null ? x : y;',
-      'x === undefined || x === null ? x : y;',
-      'x !== undefined || x === null ? x : y;',
-      'x !== undefined || x === null ? y : x;',
-      'x === null || x === null ? y : x;',
-      'x === undefined || x === undefined ? y : x;',
-      'x == null ? x : y;',
-      'undefined == null ? x : y;',
-      'undefined != z ? x : y;',
-      'x == undefined ? x : y;',
-      'x != null ? y : x;',
-      'x != undefined ? y : x;',
-      'null == x ? x : y;',
-      'undefined == x ? x : y;',
-      'null != x ? y : x;',
-      'undefined != x ? y : x;',
-      `
+    {
+      code: "x !== undefined && x !== null ? 'foo' : 'bar';",
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x !== null && x !== undefined && x !== 5 ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x === null || x === undefined || x === 5 ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x === undefined && x !== null ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x === undefined && x === null ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x !== undefined && x === null ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x === undefined || x !== null ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x === undefined || x === null ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x !== undefined || x === null ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x !== undefined || x === null ? y : x;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x === null || x === null ? y : x;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x === undefined || x === undefined ? y : x;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x == null ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'undefined == null ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'undefined != z ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x == undefined ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x != null ? y : x;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'x != undefined ? y : x;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'null == x ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'undefined == x ? x : y;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'null != x ? y : x;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: 'undefined != x ? y : x;',
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: number | undefined;
 x !== 15 && x !== undefined ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: number | undefined;
 x !== undefined && x !== 15 ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: number | undefined;
 15 !== x && undefined !== x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: number | undefined;
 undefined !== x && 15 !== x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: number | undefined;
 15 !== x && x !== undefined ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: number | undefined;
 undefined !== x && x !== 15 ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: string | undefined;
 x !== 'foo' && x !== undefined ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 function test(value: number | undefined): number {
   return value !== foo() && value !== undefined ? value : 1;
 }
       `,
-      `
-const test = (value: boolean | undefined): boolean => value !== undefined && value !== false ? value : false;
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+const test = (value: boolean | undefined): boolean =>
+  value !== undefined && value !== false ? value : false;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: string;
 x === null ? x : y;
       `,
-      `
-declare let x: string | undefined;
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+declare let x: string | undefined | null;
 x === null ? x : y;
       `,
-      `
-declare let x: string | null;
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+declare let x: string | undefined | null;
 x === undefined ? x : y;
       `,
-      `
-declare let x: string | undefined | null;
-x !== undefined ? x : y;
-      `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: string | undefined | null;
 x !== null ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+declare let x: string | undefined | null;
+x !== undefined ? x : y;
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: any;
 x === null ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: unknown;
 x === null ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: string;
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: string;
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: string | object;
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: string | object;
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: number;
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: number;
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: bigint;
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: bigint;
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: boolean;
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: boolean;
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: object;
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: object;
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: string[];
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: string[];
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: Function;
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: Function;
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: () => string;
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: () => string;
 !x ? y : x;
       `,
-      `
-declare let x: () => string | null;
-x ? x : y;
-      `,
-      `
-declare let x: () => string | null;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: () => string | undefined;
-!x ? y : x;
-      `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: () => string | null | undefined;
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: () => string | null | undefined;
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: () => string | null;
 x() ? x() : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: () => string | null;
 !x() ? y : x();
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 const a = 'foo';
 declare let x: (a: string | null) => string | null;
 x(a) ? x(a) : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 const a = 'foo';
 declare let x: (a: string | null) => string | null;
 !x(a) ? y : x(a);
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: string };
 x.n ? x.n : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: string };
 !x.n ? y : x.n;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: string | object };
 x.n ? x.n : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: string | object };
 !x.n ? y : x.n;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: number };
 x.n ? x.n : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: number };
 !x.n ? y : x.n;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: bigint };
 x.n ? x.n : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: bigint };
 !x.n ? y : x.n;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: boolean };
 x.n ? x.n : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: boolean };
 !x.n ? y : x.n;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: object };
 x ? x : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: object };
 !x ? y : x;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: string[] };
 x.n ? x.n : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: string[] };
 !x.n ? y : x.n;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: Function };
 x.n ? x.n : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: Function };
 !x.n ? y : x.n;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: () => string };
 x.n ? x.n : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: () => string };
 !x.n ? y : x.n;
       `,
-      `
-declare let x: { n: () => string | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: () => string | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: () => string | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: () => string | undefined };
-!x.n ? y : x.n;
-      `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: () => string | null | undefined };
 x.n ? x.n : y;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: { n: () => string | null | undefined };
 !x.n ? y : x.n;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let foo: string;
 declare function makeFoo(): string;
 
@@ -373,7 +601,10 @@ function lazyInitialize() {
   }
 }
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 
@@ -383,7 +614,10 @@ function lazyInitialize() {
   }
 }
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 
@@ -393,7 +627,10 @@ function lazyInitialize() {
   }
 }
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 
@@ -404,7 +641,10 @@ function lazyInitialize() {
   }
 }
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 
@@ -416,7 +656,10 @@ function lazyInitialize() {
   }
 }
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 
@@ -428,7 +671,10 @@ function lazyInitialize() {
   }
 }
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let foo: { a: string } | null;
 declare function makeFoo(): { a: string };
 function shadowed() {
@@ -437,7 +683,10 @@ function shadowed() {
   }
 }
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let foo: { foo: string } | null;
 declare function makeFoo(): { foo: { foo: string } };
 function weirdDestructuringAssignment() {
@@ -446,70 +695,85 @@ function weirdDestructuringAssignment() {
   }
 }
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare const nullOrObject: null | { a: string };
 
-const test = nullOrObject !== undefined && null !== null
-  ? nullOrObject
-  : 42;
+const test = nullOrObject !== undefined && null !== null ? nullOrObject : 42;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare const nullOrObject: null | { a: string };
 
-const test = nullOrObject !== undefined && null != null
-  ? nullOrObject
-  : 42;
+const test = nullOrObject !== undefined && null != null ? nullOrObject : 42;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare const nullOrObject: null | { a: string };
 
-const test = nullOrObject !== undefined && null != undefined
-  ? nullOrObject
-  : 42;
+const test =
+  nullOrObject !== undefined && null != undefined ? nullOrObject : 42;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare const nullOrObject: null | { a: string };
 
-const test = nullOrObject === undefined || null === null
-  ? 42
-  : nullOrObject;
+const test = nullOrObject === undefined || null === null ? 42 : nullOrObject;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare const nullOrObject: null | { a: string };
 
-const test = nullOrObject === undefined || null == null
-  ? 42
-  : nullOrObject;
+const test = nullOrObject === undefined || null == null ? 42 : nullOrObject;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare const nullOrObject: null | { a: string };
 
-const test = nullOrObject === undefined || null == undefined
-  ? 42
-  : nullOrObject;
+const test =
+  nullOrObject === undefined || null == undefined ? 42 : nullOrObject;
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 const a = 'b';
-declare let x: { a: string, b: string } | null
+declare let x: { a: string; b: string } | null;
 
-x?.a != null ? x[a] : 'foo'
+x?.a != null ? x[a] : 'foo';
       `,
-      `
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 const a = 'b';
-declare let x: { a: string, b: string } | null
+declare let x: { a: string; b: string } | null;
 
-x?.[a] != null ? x.a : 'foo'
+x?.[a] != null ? x.a : 'foo';
       `,
-      `
-declare let x: { a: string } | null
-declare let y: { a: string } | null
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+declare let x: { a: string } | null;
+declare let y: { a: string } | null;
 
-x?.a ? y?.a : 'foo'
+x?.a ? y?.a : 'foo';
       `,
-    ].map(code => ({
-      code,
-      options: [{ ignoreTernaryTests: false }] as const,
-    })),
+      options: [{ ignoreTernaryTests: false }],
+    },
     {
       code: `
 declare let foo: { a: string } | null;
@@ -536,151 +800,630 @@ function lazyInitialize() {
     },
 
     // ignoreConditionalTests
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-(x ||${equals} 'foo') ? null : null;
-      `,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-if ((x ||${equals} 'foo')) {}
-      `,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-do {} while ((x ||${equals} 'foo'))
-      `,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-for (;(x ||${equals} 'foo');) {}
-      `,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
-      code: `
-declare let x: ${type} | ${nullish};
-while ((x ||${equals} 'foo')) {}
-      `,
-    })),
+    `
+declare let x: string | null | undefined;
+x || 'foo' ? null : null;
+    `,
+    `
+declare let x: string | null | undefined;
+(x ||= 'foo') ? null : null;
+    `,
+    `
+declare let x: number | null | undefined;
+x || 'foo' ? null : null;
+    `,
+    `
+declare let x: number | null | undefined;
+(x ||= 'foo') ? null : null;
+    `,
+    `
+declare let x: boolean | null | undefined;
+x || 'foo' ? null : null;
+    `,
+    `
+declare let x: boolean | null | undefined;
+(x ||= 'foo') ? null : null;
+    `,
+    `
+declare let x: object | null | undefined;
+x || 'foo' ? null : null;
+    `,
+    `
+declare let x: object | null | undefined;
+(x ||= 'foo') ? null : null;
+    `,
+    `
+declare let x: string | null | undefined;
+if (x || 'foo') {
+}
+    `,
+    `
+declare let x: string | null | undefined;
+if ((x ||= 'foo')) {
+}
+    `,
+    `
+declare let x: number | null | undefined;
+if (x || 'foo') {
+}
+    `,
+    `
+declare let x: number | null | undefined;
+if ((x ||= 'foo')) {
+}
+    `,
+    `
+declare let x: boolean | null | undefined;
+if (x || 'foo') {
+}
+    `,
+    `
+declare let x: boolean | null | undefined;
+if ((x ||= 'foo')) {
+}
+    `,
+    `
+declare let x: object | null | undefined;
+if (x || 'foo') {
+}
+    `,
+    `
+declare let x: object | null | undefined;
+if ((x ||= 'foo')) {
+}
+    `,
+    `
+declare let x: string | null | undefined;
+do {} while (x || 'foo');
+    `,
+    `
+declare let x: string | null | undefined;
+do {} while ((x ||= 'foo'));
+    `,
+    `
+declare let x: number | null | undefined;
+do {} while (x || 'foo');
+    `,
+    `
+declare let x: number | null | undefined;
+do {} while ((x ||= 'foo'));
+    `,
+    `
+declare let x: boolean | null | undefined;
+do {} while (x || 'foo');
+    `,
+    `
+declare let x: boolean | null | undefined;
+do {} while ((x ||= 'foo'));
+    `,
+    `
+declare let x: object | null | undefined;
+do {} while (x || 'foo');
+    `,
+    `
+declare let x: object | null | undefined;
+do {} while ((x ||= 'foo'));
+    `,
+    `
+declare let x: string | null | undefined;
+for (; x || 'foo'; ) {}
+    `,
+    `
+declare let x: string | null | undefined;
+for (; (x ||= 'foo'); ) {}
+    `,
+    `
+declare let x: number | null | undefined;
+for (; x || 'foo'; ) {}
+    `,
+    `
+declare let x: number | null | undefined;
+for (; (x ||= 'foo'); ) {}
+    `,
+    `
+declare let x: boolean | null | undefined;
+for (; x || 'foo'; ) {}
+    `,
+    `
+declare let x: boolean | null | undefined;
+for (; (x ||= 'foo'); ) {}
+    `,
+    `
+declare let x: object | null | undefined;
+for (; x || 'foo'; ) {}
+    `,
+    `
+declare let x: object | null | undefined;
+for (; (x ||= 'foo'); ) {}
+    `,
+    `
+declare let x: string | null | undefined;
+while (x || 'foo') {}
+    `,
+    `
+declare let x: string | null | undefined;
+while ((x ||= 'foo')) {}
+    `,
+    `
+declare let x: number | null | undefined;
+while (x || 'foo') {}
+    `,
+    `
+declare let x: number | null | undefined;
+while ((x ||= 'foo')) {}
+    `,
+    `
+declare let x: boolean | null | undefined;
+while (x || 'foo') {}
+    `,
+    `
+declare let x: boolean | null | undefined;
+while ((x ||= 'foo')) {}
+    `,
+    `
+declare let x: object | null | undefined;
+while (x || 'foo') {}
+    `,
+    `
+declare let x: object | null | undefined;
+while ((x ||= 'foo')) {}
+    `,
 
     // ignoreMixedLogicalExpressions
-    ...nullishTypeTest((nullish, type) => ({
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-a || b && c;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a || (b && c);
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...nullishTypeTest((nullish, type) => ({
+    },
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a || b || c && d;
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+a || (b && c);
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...nullishTypeTest((nullish, type) => ({
+    },
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a && b || c || d;
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+a || (b && c);
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+    },
+    {
       code: `
-declare let x: ${type} | undefined;
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+a || (b && c);
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    },
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+a || b || (c && d);
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    },
+    {
+      code: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+a || b || (c && d);
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+a || b || (c && d);
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+a || b || (c && d);
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    },
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a && b) || c || d;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    },
+    {
+      code: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+(a && b) || c || d;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+(a && b) || c || d;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+(a && b) || c || d;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    },
+
+    // ignorePrimitives
+    {
+      code: `
+declare let x: string | undefined;
 x || y;
       `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      options: [{ ignorePrimitives: { string: true } }],
+    },
+    {
       code: `
-declare let x: ${type} | undefined;
+declare let x: number | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { number: true } }],
+    },
+    {
+      code: `
+declare let x: boolean | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { boolean: true } }],
+    },
+    {
+      code: `
+declare let x: bigint | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { bigint: true } }],
+    },
+    {
+      code: `
+declare let x: string | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+    },
+    {
       code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
-x || y;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
+declare let x: number | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+    },
+    {
       code: `
-declare let x: ${type} | undefined;
+declare let x: boolean | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: bigint | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (string & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { string: true } }],
+    },
+    {
+      code: `
+declare let x: (number & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { number: true } }],
+    },
+    {
+      code: `
+declare let x: (boolean & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { boolean: true } }],
+    },
+    {
+      code: `
+declare let x: (bigint & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { bigint: true } }],
+    },
+    {
+      code: `
+declare let x: (string & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (number & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (boolean & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (bigint & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: string | undefined;
 x ? x : y;
       `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      options: [{ ignorePrimitives: { string: true } }],
+    },
+    {
       code: `
-declare let x: ${type} | undefined;
+declare let x: number | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { number: true } }],
+    },
+    {
+      code: `
+declare let x: boolean | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { boolean: true } }],
+    },
+    {
+      code: `
+declare let x: bigint | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { bigint: true } }],
+    },
+    {
+      code: `
+declare let x: string | undefined;
 !x ? y : x;
       `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      options: [{ ignorePrimitives: { string: true } }],
+    },
+    {
       code: `
-declare let x: ${type} | undefined;
+declare let x: number | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { number: true } }],
+    },
+    {
+      code: `
+declare let x: boolean | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { boolean: true } }],
+    },
+    {
+      code: `
+declare let x: bigint | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { bigint: true } }],
+    },
+    {
+      code: `
+declare let x: string | undefined;
 x ? x : y;
       `,
       options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+    },
+    {
       code: `
-declare let x: ${type} | undefined;
-!x ? y : x;
-      `,
-      options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
-x ? x : y;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
-!x ? y : x;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
+declare let x: number | undefined;
 x ? x : y;
       `,
       options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+    },
+    {
       code: `
-declare let x: (${type} & { __brand?: any }) | undefined;
+declare let x: boolean | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: bigint | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: string | undefined;
 !x ? y : x;
       `,
       options: [{ ignorePrimitives: true }],
-    })),
+    },
+    {
+      code: `
+declare let x: number | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: boolean | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: bigint | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (string & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { string: true } }],
+    },
+    {
+      code: `
+declare let x: (number & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { number: true } }],
+    },
+    {
+      code: `
+declare let x: (boolean & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { boolean: true } }],
+    },
+    {
+      code: `
+declare let x: (bigint & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { bigint: true } }],
+    },
+    {
+      code: `
+declare let x: (string & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { string: true } }],
+    },
+    {
+      code: `
+declare let x: (number & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { number: true } }],
+    },
+    {
+      code: `
+declare let x: (boolean & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { boolean: true } }],
+    },
+    {
+      code: `
+declare let x: (bigint & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { bigint: true } }],
+    },
+    {
+      code: `
+declare let x: (string & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (number & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (boolean & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (bigint & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (string & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (number & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (boolean & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
+    {
+      code: `
+declare let x: (bigint & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    },
     `
       declare let x: never;
       declare let y: number;
@@ -1510,15 +2253,15 @@ const b = a || 'bar';
   ],
 
   invalid: [
-    ...nullishTypeTest((nullish, type, equals) => ({
+    {
       code: `
-declare let x: ${type} | ${nullish};
-(x ||${equals} 'foo');
+declare let x: string | null | undefined;
+x || 'foo';
       `,
       errors: [
         {
-          column: 4,
-          endColumn: 6 + equals.length,
+          column: 3,
+          endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -1526,109 +2269,2102 @@ declare let x: ${type} | ${nullish};
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-(x ??${equals} 'foo');
+declare let x: string | null | undefined;
+x ?? 'foo';
       `,
             },
           ],
         },
       ],
       output: null,
-    })),
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+x ||= 'foo';
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+x ??= 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+x || 'foo';
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+x ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+x ||= 'foo';
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+x ??= 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+x || 'foo';
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+x ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+x ||= 'foo';
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+x ??= 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+x || 'foo';
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+x ?? 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+x ||= 'foo';
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+x ??= 'foo';
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
 
-    ...[
-      'x !== undefined && x !== null ? x : y;',
-      'x !== null && x !== undefined ? x : y;',
-      'x === undefined || x === null ? y : x;',
-      'x === null || x === undefined ? y : x;',
-      'undefined !== x && x !== null ? x : y;',
-      'null !== x && x !== undefined ? x : y;',
-      'undefined === x || x === null ? y : x;',
-      'null === x || x === undefined ? y : x;',
-      'x !== undefined && null !== x ? x : y;',
-      'x !== null && undefined !== x ? x : y;',
-      'x === undefined || null === x ? y : x;',
-      'x === null || undefined === x ? y : x;',
-      'undefined !== x && null !== x ? x : y;',
-      'null !== x && undefined !== x ? x : y;',
-      'undefined === x || null === x ? y : x;',
-      'null === x || undefined === x ? y : x;',
-      'x != undefined && x != null ? x : y;',
-      'x == undefined || x == null ? y : x;',
-      'x != undefined && x !== null ? x : y;',
-      'x == undefined || x === null ? y : x;',
-      'x !== undefined && x != null ? x : y;',
-      'undefined != x ? x : y;',
-      'null != x ? x : y;',
-      'undefined == x ? y : x;',
-      'null == x ? y : x;',
-      'x != undefined ? x : y;',
-      'x != null ? x : y;',
-      'x == undefined  ? y : x;',
-      'x == null ? y : x;',
-    ].flatMap(code => [
-      {
-        code,
-        errors: [
-          {
-            column: 1,
-            endColumn: code.length,
-            endLine: 1,
-            line: 1,
-            messageId: 'preferNullishOverTernary' as const,
-            suggestions: [
-              {
-                messageId: 'suggestNullish' as const,
-                output: 'x ?? y;',
-              },
-            ],
-          },
-        ],
-        options: [{ ignoreTernaryTests: false }] as const,
-        output: null,
-      },
-      {
-        code: code.replaceAll('x', 'x.z[1][this[this.o]]["3"][a.b.c]'),
-        errors: [
-          {
-            column: 1,
-            endColumn: code.replaceAll('x', 'x.z[1][this[this.o]]["3"][a.b.c]')
-              .length,
-            endLine: 1,
-            line: 1,
-            messageId: 'preferNullishOverTernary' as const,
-            suggestions: [
-              {
-                messageId: 'suggestNullish' as const,
-                output: 'x.z[1][this[this.o]]["3"][a.b.c] ?? y;',
-              },
-            ],
-          },
-        ],
-        options: [{ ignoreTernaryTests: false }] as const,
-        output: null,
-      },
-      {
-        code: code.replaceAll('y', '(z = y)'),
-        errors: [
-          {
-            column: 1,
-            endColumn: code.replaceAll('y', '(z = y)').length,
-            endLine: 1,
-            line: 1,
-            messageId: 'preferNullishOverTernary' as const,
-            suggestions: [
-              {
-                messageId: 'suggestNullish' as const,
-                output: 'x ?? (z = y);',
-              },
-            ],
-          },
-        ],
-        options: [{ ignoreTernaryTests: false }] as const,
-        output: null,
-      },
-    ]),
+    {
+      code: 'x !== undefined && x !== null ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] !== undefined &&
+x.z[1][this[this.o]]['3'][a.b.c] !== null
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== undefined && x !== null ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== null && x !== undefined ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] !== null &&
+x.z[1][this[this.o]]['3'][a.b.c] !== undefined
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== null && x !== undefined ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x === undefined || x === null ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] === undefined ||
+x.z[1][this[this.o]]['3'][a.b.c] === null
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x === undefined || x === null ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x === null || x === undefined ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] === null ||
+x.z[1][this[this.o]]['3'][a.b.c] === undefined
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x === null || x === undefined ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined !== x && x !== null ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+undefined !== x.z[1][this[this.o]]['3'][a.b.c] &&
+x.z[1][this[this.o]]['3'][a.b.c] !== null
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined !== x && x !== null ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null !== x && x !== undefined ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+null !== x.z[1][this[this.o]]['3'][a.b.c] &&
+x.z[1][this[this.o]]['3'][a.b.c] !== undefined
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null !== x && x !== undefined ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined === x || x === null ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+undefined === x.z[1][this[this.o]]['3'][a.b.c] ||
+x.z[1][this[this.o]]['3'][a.b.c] === null
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined === x || x === null ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null === x || x === undefined ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+null === x.z[1][this[this.o]]['3'][a.b.c] ||
+x.z[1][this[this.o]]['3'][a.b.c] === undefined
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null === x || x === undefined ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== undefined && null !== x ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] !== undefined &&
+null !== x.z[1][this[this.o]]['3'][a.b.c]
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== undefined && null !== x ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== null && undefined !== x ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] !== null &&
+undefined !== x.z[1][this[this.o]]['3'][a.b.c]
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== null && undefined !== x ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x === undefined || null === x ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] === undefined ||
+null === x.z[1][this[this.o]]['3'][a.b.c]
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x === undefined || null === x ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x === null || undefined === x ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] === null ||
+undefined === x.z[1][this[this.o]]['3'][a.b.c]
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x === null || undefined === x ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined !== x && null !== x ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+undefined !== x.z[1][this[this.o]]['3'][a.b.c] &&
+null !== x.z[1][this[this.o]]['3'][a.b.c]
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined !== x && null !== x ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null !== x && undefined !== x ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+null !== x.z[1][this[this.o]]['3'][a.b.c] &&
+undefined !== x.z[1][this[this.o]]['3'][a.b.c]
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null !== x && undefined !== x ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined === x || null === x ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+undefined === x.z[1][this[this.o]]['3'][a.b.c] ||
+null === x.z[1][this[this.o]]['3'][a.b.c]
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined === x || null === x ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null === x || undefined === x ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+null === x.z[1][this[this.o]]['3'][a.b.c] ||
+undefined === x.z[1][this[this.o]]['3'][a.b.c]
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null === x || undefined === x ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x != undefined && x != null ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] != undefined &&
+x.z[1][this[this.o]]['3'][a.b.c] != null
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x != undefined && x != null ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x == undefined || x == null ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] == undefined ||
+x.z[1][this[this.o]]['3'][a.b.c] == null
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x == undefined || x == null ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x != undefined && x !== null ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] != undefined &&
+x.z[1][this[this.o]]['3'][a.b.c] !== null
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x != undefined && x !== null ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x == undefined || x === null ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] == undefined ||
+x.z[1][this[this.o]]['3'][a.b.c] === null
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x == undefined || x === null ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== undefined && x != null ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] !== undefined &&
+x.z[1][this[this.o]]['3'][a.b.c] != null
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x !== undefined && x != null ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined != x ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+undefined != x.z[1][this[this.o]]['3'][a.b.c]
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined != x ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null != x ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: "null != x.z[1][this[this.o]]['3'][a.b.c] ? x.z[1][this[this.o]]['3'][a.b.c] : y;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 80,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x.z[1][this[this.o]]['3'][a.b.c] ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null != x ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined == x ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+undefined == x.z[1][this[this.o]]['3'][a.b.c]
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'undefined == x ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null == x ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: "null == x.z[1][this[this.o]]['3'][a.b.c] ? y : x.z[1][this[this.o]]['3'][a.b.c];",
+      errors: [
+        {
+          column: 1,
+          endColumn: 80,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x.z[1][this[this.o]]['3'][a.b.c] ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'null == x ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x != undefined ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] != undefined
+  ? x.z[1][this[this.o]]['3'][a.b.c]
+  : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x != undefined ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x != null ? x : y;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: "x.z[1][this[this.o]]['3'][a.b.c] != null ? x.z[1][this[this.o]]['3'][a.b.c] : y;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 80,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x.z[1][this[this.o]]['3'][a.b.c] ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x != null ? x : (z = y);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x == undefined ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+x.z[1][this[this.o]]['3'][a.b.c] == undefined
+  ? y
+  : x.z[1][this[this.o]]['3'][a.b.c];
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+x.z[1][this[this.o]]['3'][a.b.c] ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x == undefined ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x == null ? y : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: "x.z[1][this[this.o]]['3'][a.b.c] == null ? y : x.z[1][this[this.o]]['3'][a.b.c];",
+      errors: [
+        {
+          column: 1,
+          endColumn: 80,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x.z[1][this[this.o]]['3'][a.b.c] ?? y;`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: 'x == null ? (z = y) : x;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `x ?? (z = y);`,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
 
     {
       code: 'this != undefined ? this : y;',
@@ -1651,825 +4387,1543 @@ declare let x: ${type} | ${nullish};
       output: null,
     },
 
-    ...[
-      `
-declare let x: string | undefined;
-x !== undefined ? x : y;
-      `,
-      `
-declare let x: string | undefined;
-undefined !== x ? x : y;
-      `,
-      `
-declare let x: string | undefined;
-x === undefined ? y : x;
-      `,
-      `
-declare let x: string | undefined;
-undefined === x ? y : x;
-      `,
-      `
-declare let x: string | null;
-x !== null ? x : y;
-      `,
-      `
-declare let x: string | null;
-null !== x ? x : y;
-      `,
-      `
-declare let x: string | null;
-x === null ? y : x;
-      `,
-      `
-declare let x: string | null;
-null === x ? y : x;
-      `,
-      `
-declare let x: string | null;
-x ? x : y;
-      `,
-      `
-declare let x: string | null;
-!x ? y : x;
-      `,
-      `
-declare let x: string | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: string | undefined;
-!x ? y : x;
-      `,
-      `
+    {
+      code: `
 declare let x: string | null | undefined;
 x ? x : y;
       `,
-      `
-declare let x: string | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: string | object | null;
-x ? x : y;
-      `,
-      `
-declare let x: string | object | null;
-!x ? y : x;
-      `,
-      `
-declare let x: string | object | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: string | object | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: string | object | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: string | object | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: number | null;
-x ? x : y;
-      `,
-      `
-declare let x: number | null;
-!x ? y : x;
-      `,
-      `
-declare let x: number | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: number | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: number | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: number | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: bigint | null;
-x ? x : y;
-      `,
-      `
-declare let x: bigint | null;
-!x ? y : x;
-      `,
-      `
-declare let x: bigint | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: bigint | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: bigint | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: bigint | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: boolean | null;
-x ? x : y;
-      `,
-      `
-declare let x: boolean | null;
-!x ? y : x;
-      `,
-      `
-declare let x: boolean | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: boolean | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: boolean | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: boolean | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: string[] | null;
-x ? x : y;
-      `,
-      `
-declare let x: string[] | null;
-!x ? y : x;
-      `,
-      `
-declare let x: string[] | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: string[] | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: string[] | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: string[] | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: object | null;
-x ? x : y;
-      `,
-      `
-declare let x: object | null;
-!x ? y : x;
-      `,
-      `
-declare let x: object | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: object | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: object | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: object | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: Function | null;
-x ? x : y;
-      `,
-      `
-declare let x: Function | null;
-!x ? y : x;
-      `,
-      `
-declare let x: Function | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: Function | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: Function | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: Function | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: (() => string) | null;
-x ? x : y;
-      `,
-      `
-declare let x: (() => string) | null;
-!x ? y : x;
-      `,
-      `
-declare let x: (() => string) | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: (() => string) | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: (() => string) | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: (() => string) | null | undefined;
-!x ? y : x;
-      `,
-    ].map(code => ({
-      code,
       errors: [
         {
           column: 1,
-          endColumn: code.split('\n')[2].length,
+          endColumn: 10,
           endLine: 3,
           line: 3,
-          messageId: 'preferNullishOverTernary' as const,
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
-              messageId: 'suggestNullish' as const,
+              messageId: 'suggestNullish',
               output: `
-${code.split('\n')[1]}
+declare let x: string | null | undefined;
 x ?? y;
       `,
             },
           ],
         },
       ],
-      options: [{ ignoreTernaryTests: false }] as const,
+      options: [{ ignoreTernaryTests: false }],
       output: null,
-    })),
-
-    ...[
-      `
-declare let x: { n: string | null };
-x.n ? x.n : y;
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+!x ? y : x;
       `,
-      `
-declare let x: { n: string | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: string | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: string | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string | null | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: string | object | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string | object | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: string | object | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string | object | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: string | object | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string | object | null | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: number | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: number | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: number | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: number | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: number | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: number | null | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: bigint | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: bigint | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: bigint | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: bigint | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: bigint | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: bigint | null | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: boolean | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: boolean | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: boolean | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: boolean | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: boolean | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: boolean | null | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: string[] | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string[] | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: string[] | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string[] | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: string[] | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: string[] | null | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: object | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: object | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: object | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: object | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: object | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: object | null | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: Function | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: Function | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: Function | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: Function | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: Function | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: Function | null | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: (() => string) | null };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: (() => string) | null };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: (() => string) | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: (() => string) | undefined };
-!x.n ? y : x.n;
-      `,
-      `
-declare let x: { n: (() => string) | null | undefined };
-x.n ? x.n : y;
-      `,
-      `
-declare let x: { n: (() => string) | null | undefined };
-!x.n ? y : x.n;
-      `,
-    ].map(code => ({
-      code,
       errors: [
         {
           column: 1,
-          endColumn: code.split('\n')[2].length,
+          endColumn: 11,
           endLine: 3,
           line: 3,
-          messageId: 'preferNullishOverTernary' as const,
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
-              messageId: 'suggestNullish' as const,
+              messageId: 'suggestNullish',
               output: `
-${code.split('\n')[1]}
+declare let x: string | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+
+    {
+      code: `
+declare let x: { n: string | null | undefined };
+x.n ? x.n : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n: string | null | undefined };
 x.n ?? y;
       `,
             },
           ],
         },
       ],
-      options: [{ ignoreTernaryTests: false }] as const,
+      options: [{ ignoreTernaryTests: false }],
       output: null,
-    })),
-
-    ...[
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a ? x?.n?.a : y;
+    },
+    {
+      code: `
+declare let x: { n: string | null | undefined };
+!x.n ? y : x.n;
       `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a !== undefined ? x?.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a !== undefined ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a !== undefined ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a != undefined ? x?.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a != undefined ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a != undefined ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a != null ? x?.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a != null ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x.n?.a != null ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
-      `,
-    ].map(code => ({
-      code,
       errors: [
         {
           column: 1,
-          endColumn: code.split('\n')[2].length,
+          endColumn: 15,
           endLine: 3,
           line: 3,
-          messageId: 'preferNullishOverTernary' as const,
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
-              messageId: 'suggestNullish' as const,
+              messageId: 'suggestNullish',
               output: `
-${code.split('\n')[1]}
+declare let x: { n: string | null | undefined };
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n: number | null | undefined };
+x.n ? x.n : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n: number | null | undefined };
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n: number | null | undefined };
+!x.n ? y : x.n;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n: number | null | undefined };
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n: boolean | null | undefined };
+x.n ? x.n : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n: boolean | null | undefined };
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n: boolean | null | undefined };
+!x.n ? y : x.n;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n: boolean | null | undefined };
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n: object | null | undefined };
+x.n ? x.n : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n: object | null | undefined };
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n: object | null | undefined };
+!x.n ? y : x.n;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n: object | null | undefined };
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
 x.n?.a ?? y;
       `,
             },
           ],
         },
       ],
-      options: [{ ignoreTernaryTests: false }] as const,
+      options: [{ ignoreTernaryTests: false }],
       output: null,
-    })),
-    ...[
-      `
+    },
+    {
+      code: `
 declare let x: { n?: { a?: string } };
-x?.n?.a ? x?.n?.a : y;
+x.n?.a ? x?.n.a : y;
       `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a ? x.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a !== undefined ? x?.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a !== undefined ? x.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a !== undefined ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a !== undefined ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a != undefined ? x?.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a != undefined ? x.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a != undefined ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a != undefined ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a != null ? x?.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a != null ? x.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a != null ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string } };
-x?.n?.a != null ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x?.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x?.n?.a !== undefined && x.n.a !== null ? x.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x?.n?.a !== undefined && x.n.a !== null ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x?.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x?.n?.a !== undefined && x.n.a !== null ? (x?.n)?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x?.n?.a !== undefined && x.n.a !== null ? (x.n)?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x?.n?.a !== undefined && x.n.a !== null ? (x?.n).a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-x?.n?.a !== undefined && x.n.a !== null ? (x.n).a : y;
-      `,
-    ].map(code => ({
-      code,
       errors: [
         {
           column: 1,
-          endColumn: code.split('\n')[2].length,
+          endColumn: 20,
           endLine: 3,
           line: 3,
-          messageId: 'preferNullishOverTernary' as const,
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
-              messageId: 'suggestNullish' as const,
+              messageId: 'suggestNullish',
               output: `
-${code.split('\n')[1]}
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a !== undefined ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a !== undefined ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a !== undefined ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a != undefined ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a != undefined ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a != undefined ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a != null ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a != null ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x.n?.a != null ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 53,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 51,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
 x?.n?.a ?? y;
       `,
             },
           ],
         },
       ],
-      options: [{ ignoreTernaryTests: false }] as const,
+      options: [{ ignoreTernaryTests: false }],
       output: null,
-    })),
-    ...[
-      `
-declare let x: { n?: { a?: string | null } };
-(x?.n)?.a ? x?.n?.a : y;
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x.n?.a : y;
       `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x?.n)?.a ? x.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x?.n)?.a ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x?.n)?.a ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x?.n)?.a ? (x?.n)?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x?.n)?.a ? (x.n)?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x?.n)?.a ? (x?.n).a : y;
-      `,
-    ].map(code => ({
-      code,
       errors: [
         {
           column: 1,
-          endColumn: code.split('\n')[2].length,
+          endColumn: 21,
           endLine: 3,
           line: 3,
-          messageId: 'preferNullishOverTernary' as const,
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
-              messageId: 'suggestNullish' as const,
+              messageId: 'suggestNullish',
               output: `
-${code.split('\n')[1]}
-(x?.n)?.a ?? y;
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
       `,
             },
           ],
         },
       ],
-      options: [{ ignoreTernaryTests: false }] as const,
+      options: [{ ignoreTernaryTests: false }],
       output: null,
-    })),
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 54,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 53,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 53,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 52,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ? x?.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ? x.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
 
-    ...[
-      `
+    {
+      code: `
 declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? x?.n?.a : y;
+x.n?.a ? x?.n?.a : y;
       `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? x.n?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? x?.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? x.n.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? (x?.n)?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? (x.n)?.a : y;
-      `,
-      `
-declare let x: { n?: { a?: string | null } };
-(x.n)?.a ? (x?.n).a : y;
-      `,
-    ].map(code => ({
-      code,
       errors: [
         {
           column: 1,
-          endColumn: code.split('\n')[2].length,
+          endColumn: 21,
           endLine: 3,
           line: 3,
-          messageId: 'preferNullishOverTernary' as const,
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
-              messageId: 'suggestNullish' as const,
+              messageId: 'suggestNullish',
               output: `
-${code.split('\n')[1]}
-(x.n)?.a ?? y;
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
       `,
             },
           ],
         },
       ],
-      options: [{ ignoreTernaryTests: false }] as const,
+      options: [{ ignoreTernaryTests: false }],
       output: null,
-    })),
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ? x.n?.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ? x?.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ? x.n.a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ? (x?.n).a : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: { n?: { a?: string | null } };
+x.n?.a ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
 
     // noStrictNullCheck
     {
@@ -2494,15 +5948,41 @@ if (x) {
     },
 
     // ignoreConditionalTests
-    ...nullishTypeTest((nullish, type, equals) => ({
+    {
       code: `
-declare let x: ${type} | ${nullish};
-(x ||${equals} 'foo') ? null : null;
+declare let x: string | null | undefined;
+x || 'foo' ? null : null;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+x ?? 'foo' ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+(x ||= 'foo') ? null : null;
       `,
       errors: [
         {
           column: 4,
-          endColumn: 6 + equals.length,
+          endColumn: 7,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -2510,8 +5990,8 @@ declare let x: ${type} | ${nullish};
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-(x ??${equals} 'foo') ? null : null;
+declare let x: string | null | undefined;
+(x ??= 'foo') ? null : null;
       `,
             },
           ],
@@ -2519,16 +5999,201 @@ declare let x: ${type} | ${nullish};
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-if ((x ||${equals} 'foo')) {}
+declare let x: number | null | undefined;
+x || 'foo' ? null : null;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+x ?? 'foo' ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+(x ||= 'foo') ? null : null;
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+(x ??= 'foo') ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+x || 'foo' ? null : null;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+x ?? 'foo' ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+(x ||= 'foo') ? null : null;
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+(x ??= 'foo') ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+x || 'foo' ? null : null;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+x ?? 'foo' ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+(x ||= 'foo') ? null : null;
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+(x ??= 'foo') ? null : null;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if (x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+if (x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if ((x ||= 'foo')) {
+}
       `,
       errors: [
         {
           column: 8,
-          endColumn: 10 + equals.length,
+          endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -2536,8 +6201,9 @@ if ((x ||${equals} 'foo')) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-if ((x ??${equals} 'foo')) {}
+declare let x: string | null | undefined;
+if ((x ??= 'foo')) {
+}
       `,
             },
           ],
@@ -2545,16 +6211,210 @@ if ((x ??${equals} 'foo')) {}
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-do {} while ((x ||${equals} 'foo'))
+declare let x: number | null | undefined;
+if (x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if (x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+if ((x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if ((x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if ((x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if ((x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if ((x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if ((x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+do {} while (x || 'foo');
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+do {} while (x ?? 'foo');
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+do {} while ((x ||= 'foo'));
       `,
       errors: [
         {
           column: 17,
-          endColumn: 19 + equals.length,
+          endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -2562,8 +6422,8 @@ do {} while ((x ||${equals} 'foo'))
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-do {} while ((x ??${equals} 'foo'))
+declare let x: string | null | undefined;
+do {} while ((x ??= 'foo'));
       `,
             },
           ],
@@ -2571,16 +6431,172 @@ do {} while ((x ??${equals} 'foo'))
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-for (;(x ||${equals} 'foo');) {}
+declare let x: number | null | undefined;
+do {} while (x || 'foo');
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+do {} while (x ?? 'foo');
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+do {} while ((x ||= 'foo'));
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+do {} while ((x ??= 'foo'));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+do {} while (x || 'foo');
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+do {} while (x ?? 'foo');
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+do {} while ((x ||= 'foo'));
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+do {} while ((x ??= 'foo'));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+do {} while (x || 'foo');
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+do {} while (x ?? 'foo');
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+do {} while ((x ||= 'foo'));
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+do {} while ((x ??= 'foo'));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+for (; x || 'foo'; ) {}
       `,
       errors: [
         {
           column: 10,
-          endColumn: 12 + equals.length,
+          endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -2588,8 +6604,8 @@ for (;(x ||${equals} 'foo');) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-for (;(x ??${equals} 'foo');) {}
+declare let x: string | null | undefined;
+for (; x ?? 'foo'; ) {}
       `,
             },
           ],
@@ -2597,16 +6613,16 @@ for (;(x ??${equals} 'foo');) {}
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-while ((x ||${equals} 'foo')) {}
+declare let x: string | null | undefined;
+for (; (x ||= 'foo'); ) {}
       `,
       errors: [
         {
           column: 11,
-          endColumn: 13 + equals.length,
+          endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -2614,8 +6630,8 @@ while ((x ||${equals} 'foo')) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-while ((x ??${equals} 'foo')) {}
+declare let x: string | null | undefined;
+for (; (x ??= 'foo'); ) {}
       `,
             },
           ],
@@ -2623,15 +6639,379 @@ while ((x ??${equals} 'foo')) {}
       ],
       options: [{ ignoreConditionalTests: false }],
       output: null,
-    })),
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+for (; x || 'foo'; ) {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+for (; x ?? 'foo'; ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+for (; (x ||= 'foo'); ) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+for (; (x ??= 'foo'); ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+for (; x || 'foo'; ) {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+for (; x ?? 'foo'; ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+for (; (x ||= 'foo'); ) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+for (; (x ??= 'foo'); ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+for (; x || 'foo'; ) {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+for (; x ?? 'foo'; ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+for (; (x ||= 'foo'); ) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+for (; (x ??= 'foo'); ) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+while (x || 'foo') {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+while (x ?? 'foo') {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+while ((x ||= 'foo')) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+while ((x ??= 'foo')) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+while (x || 'foo') {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+while (x ?? 'foo') {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+while ((x ||= 'foo')) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+while ((x ??= 'foo')) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+while (x || 'foo') {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+while (x ?? 'foo') {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+while ((x ||= 'foo')) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+while ((x ??= 'foo')) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+while (x || 'foo') {}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+while (x ?? 'foo') {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+while ((x ||= 'foo')) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+while ((x ??= 'foo')) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    },
 
     // ignoreMixedLogicalExpressions
-    ...nullishTypeTest((nullish, type) => ({
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-a || b && c;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a || (b && c);
       `,
       errors: [
         {
@@ -2644,24 +7024,115 @@ a || b && c;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-a ?? b && c;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+a ?? (b && c);
       `,
             },
           ],
         },
       ],
       options: [{ ignoreMixedLogicalExpressions: false }],
-    })),
-    ...nullishTypeTest((nullish, type) => ({
+      output: null,
+    },
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a || b || c && d;
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+a || (b && c);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+a ?? (b && c);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+a || (b && c);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+a ?? (b && c);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+a || (b && c);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+a ?? (b && c);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+a || b || (c && d);
       `,
       errors: [
         {
@@ -2674,11 +7145,11 @@ a || b || c && d;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-(a ?? b) || c && d;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a ?? b) || (c && d);
       `,
             },
           ],
@@ -2693,28 +7164,48 @@ declare let d: ${type} | ${nullish};
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a || b ?? c && d;
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+a || b ?? (c && d);
       `,
             },
           ],
         },
       ],
       options: [{ ignoreMixedLogicalExpressions: false }],
-    })),
-    ...nullishTypeTest((nullish, type) => ({
+      output: null,
+    },
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a && b || c || d;
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+a || b || (c && d);
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+(a ?? b) || (c && d);
+      `,
+            },
+          ],
+        },
+        {
           column: 8,
           endColumn: 10,
           endLine: 6,
@@ -2724,18 +7215,31 @@ a && b || c || d;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a && (b ?? c) || d;
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+a || b ?? (c && d);
       `,
             },
           ],
         },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+a || b || (c && d);
+      `,
+      errors: [
         {
-          column: 13,
-          endColumn: 15,
+          column: 3,
+          endColumn: 5,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
@@ -2743,29 +7247,332 @@ a && (b ?? c) || d;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type} | ${nullish};
-declare let c: ${type} | ${nullish};
-declare let d: ${type} | ${nullish};
-a && b || c ?? d;
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+(a ?? b) || (c && d);
+      `,
+            },
+          ],
+        },
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+a || b ?? (c && d);
       `,
             },
           ],
         },
       ],
       options: [{ ignoreMixedLogicalExpressions: false }],
-    })),
+      output: null,
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+a || b || (c && d);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+(a ?? b) || (c && d);
+      `,
+            },
+          ],
+        },
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+a || b ?? (c && d);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a && b) || c || d;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a && (b) ?? c) || d;
+      `,
+            },
+          ],
+        },
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: string | null | undefined;
+declare let b: string | null | undefined;
+declare let c: string | null | undefined;
+declare let d: string | null | undefined;
+(a && b) || c ?? d;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+(a && b) || c || d;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+(a && (b) ?? c) || d;
+      `,
+            },
+          ],
+        },
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number | null | undefined;
+declare let c: number | null | undefined;
+declare let d: number | null | undefined;
+(a && b) || c ?? d;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+(a && b) || c || d;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+(a && (b) ?? c) || d;
+      `,
+            },
+          ],
+        },
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean | null | undefined;
+declare let c: boolean | null | undefined;
+declare let d: boolean | null | undefined;
+(a && b) || c ?? d;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+(a && b) || c || d;
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+(a && (b) ?? c) || d;
+      `,
+            },
+          ],
+        },
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 6,
+          line: 6,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object | null | undefined;
+declare let c: object | null | undefined;
+declare let d: object | null | undefined;
+(a && b) || c ?? d;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreMixedLogicalExpressions: false }],
+      output: null,
+    },
 
     // should not false positive for functions inside conditional tests
-    ...nullishTypeTest((nullish, type, equals) => ({
+    {
       code: `
-declare let x: ${type} | ${nullish};
-if (() => (x ||${equals} 'foo')) {}
+declare let x: string | null | undefined;
+if (() => x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+if (() => x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if (() => (x ||= 'foo')) {
+}
       `,
       errors: [
         {
           column: 14,
-          endColumn: 16 + equals.length,
+          endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -2773,24 +7580,26 @@ if (() => (x ||${equals} 'foo')) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-if (() => (x ??${equals} 'foo')) {}
+declare let x: string | null | undefined;
+if (() => (x ??= 'foo')) {
+}
       `,
             },
           ],
         },
       ],
       output: null,
-    })),
-    ...nullishTypeTest((nullish, type, equals) => ({
+    },
+    {
       code: `
-declare let x: ${type} | ${nullish};
-if (function weird() { return (x ||${equals} 'foo') }) {}
+declare let x: number | null | undefined;
+if (() => x || 'foo') {
+}
       `,
       errors: [
         {
-          column: 34,
-          endColumn: 36 + equals.length,
+          column: 13,
+          endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -2798,21 +7607,437 @@ if (function weird() { return (x ||${equals} 'foo') }) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare let x: ${type} | ${nullish};
-if (function weird() { return (x ??${equals} 'foo') }) {}
+declare let x: number | null | undefined;
+if (() => x ?? 'foo') {
+}
       `,
             },
           ],
         },
       ],
       output: null,
-    })),
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1290
-    ...nullishTypeTest((nullish, type) => ({
+    },
+    {
       code: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type};
-declare let c: ${type};
+declare let x: number | null | undefined;
+if (() => (x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if (() => (x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (() => x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (() => x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (() => (x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (() => (x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (() => x || 'foo') {
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (() => x ?? 'foo') {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (() => (x ||= 'foo')) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (() => (x ??= 'foo')) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if (
+  function weird() {
+    return x || 'foo';
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+if (
+  function weird() {
+    return x ?? 'foo';
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+if (
+  function weird() {
+    return (x ||= 'foo');
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+if (
+  function weird() {
+    return (x ??= 'foo');
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+if (
+  function weird() {
+    return x || 'foo';
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if (
+  function weird() {
+    return x ?? 'foo';
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+if (
+  function weird() {
+    return (x ||= 'foo');
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+if (
+  function weird() {
+    return (x ??= 'foo');
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (
+  function weird() {
+    return x || 'foo';
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (
+  function weird() {
+    return x ?? 'foo';
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+if (
+  function weird() {
+    return (x ||= 'foo');
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+if (
+  function weird() {
+    return (x ??= 'foo');
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (
+  function weird() {
+    return x || 'foo';
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (
+  function weird() {
+    return x ?? 'foo';
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+if (
+  function weird() {
+    return (x ||= 'foo');
+  }
+) {
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+if (
+  function weird() {
+    return (x ??= 'foo');
+  }
+) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1290
+    {
+      code: `
+declare let a: string | null | undefined;
+declare let b: string;
+declare let c: string;
 a || b || c;
       `,
       errors: [
@@ -2826,9 +8051,9 @@ a || b || c;
             {
               messageId: 'suggestNullish',
               output: `
-declare let a: ${type} | ${nullish};
-declare let b: ${type};
-declare let c: ${type};
+declare let a: string | null | undefined;
+declare let b: string;
+declare let c: string;
 (a ?? b) || c;
       `,
             },
@@ -2836,7 +8061,94 @@ declare let c: ${type};
         },
       ],
       output: null,
-    })),
+    },
+    {
+      code: `
+declare let a: number | null | undefined;
+declare let b: number;
+declare let c: number;
+a || b || c;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: number | null | undefined;
+declare let b: number;
+declare let c: number;
+(a ?? b) || c;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let a: boolean | null | undefined;
+declare let b: boolean;
+declare let c: boolean;
+a || b || c;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: boolean | null | undefined;
+declare let b: boolean;
+declare let c: boolean;
+(a ?? b) || c;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let a: object | null | undefined;
+declare let b: object;
+declare let c: object;
+a || b || c;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let a: object | null | undefined;
+declare let b: object;
+declare let c: object;
+(a ?? b) || c;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
     // default for missing option
     {
       code: `

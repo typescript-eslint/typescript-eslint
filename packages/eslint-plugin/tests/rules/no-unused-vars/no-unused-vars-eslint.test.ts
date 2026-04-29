@@ -5,6 +5,8 @@
 // We try not to change this file, as every modification is added maintenance burden
 /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors, @typescript-eslint/internal/no-dynamic-tests */
 
+// cspell:ignore fooz
+
 import type { TestCaseError } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
 
