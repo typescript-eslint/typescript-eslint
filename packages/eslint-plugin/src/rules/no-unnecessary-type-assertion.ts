@@ -403,6 +403,16 @@ export default createRule<Options, MessageIds>({
         return true;
       }
 
+      uncast = checker.getNonNullableType(uncast);
+      cast = checker.getNonNullableType(cast);
+
+      if (
+        !hasSameProperties(uncast, cast) ||
+        !haveSameTypeArguments(uncast, cast)
+      ) {
+        return false;
+      }
+
       return uncast.getProperties().every(prop => {
         const name = prop.getEscapedName();
         const castProp = cast.getProperty(name as string);

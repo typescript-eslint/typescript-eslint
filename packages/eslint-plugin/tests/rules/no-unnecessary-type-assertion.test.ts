@@ -894,6 +894,17 @@ declare const diff: Update;
 const diffWithAction = diff as UpdateAction & Update;
 diffWithAction.Document = { action: 'update', ...orgDoc.Document! };
     `,
+    `
+type CompletionEntryData = {
+  name: string;
+};
+
+declare const entry: { data: CompletionEntryData | undefined };
+const data = entry.data as
+  | (CompletionEntryData & { extra?: string })
+  | undefined;
+data!.extra = 'value';
+    `,
   ],
 
   invalid: [
