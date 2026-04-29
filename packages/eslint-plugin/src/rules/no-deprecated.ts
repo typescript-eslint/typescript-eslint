@@ -135,7 +135,8 @@ export default createRule<Options, MessageIds>({
             // const baz = { foo: bar }; -- bar IS NOT a declaration.
             return parent.parent.type === AST_NODE_TYPES.ObjectPattern;
           }
-
+          // const { foo: bar } = baz; -- foo IS NOT a declaration.
+          // const baz = { foo: bar }; -- foo IS a declaration.
           return parent.parent.type === AST_NODE_TYPES.ObjectExpression;
 
         case AST_NODE_TYPES.AssignmentPattern:
