@@ -317,15 +317,17 @@ export default createRule<Options, MessageIds>({
       return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
     }
 
-    // `NonInferrableType` is an internal object flag used for auto/evolving
-    // `any` types and is intentionally not exposed in TypeScript's d.ts.
-    const nonInferrableTypeObjectFlag = 1 << 18;
-
     function isNonInferrableAnyType(type: ts.Type): boolean {
       return (
         isTypeFlagSet(type, ts.TypeFlags.Any) &&
-        ((type as ts.ObjectType).objectFlags & nonInferrableTypeObjectFlag) !==
-          0
+        tsutils.isObjectFlagSet(
+          type as ts.ObjectType,
+          (
+            ts.ObjectFlags as typeof ts.ObjectFlags & {
+              NonInferrableType: ts.ObjectFlags;
+            }
+          ).NonInferrableType,
+        )
       );
     }
 
@@ -905,18 +907,12 @@ export default createRule<Options, MessageIds>({
             contextualType,
             ts.TypeFlags.Any,
           );
-          const contextualTypeIsNonInferrableAny =
-            isNonInferrableAnyType(contextualType);
-
-          const isCallArgument =
-            (node.parent.type === AST_NODE_TYPES.CallExpression ||
-              node.parent.type === AST_NODE_TYPES.NewExpression) &&
-            node.parent.arguments.includes(node);
-
           const anyInvolvedInContextualCheck = contextualTypeIsAny
-            ? isCallArgument &&
+            ? (node.parent.type === AST_NODE_TYPES.CallExpression ||
+                node.parent.type === AST_NODE_TYPES.NewExpression) &&
+              node.parent.arguments.includes(node) &&
               !containsAny(castType) &&
-              !contextualTypeIsNonInferrableAny
+              !isNonInferrableAnyType(contextualType)
             : !containsAny(contextualType);
 
           const isNullishLiteralToUnion =
