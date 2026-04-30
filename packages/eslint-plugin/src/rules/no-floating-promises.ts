@@ -249,7 +249,7 @@ export default createRule<Options, MessageId>({
 
       const type = getTypeAtLocation(checker, tsNode);
 
-      /* v8 ignore if -- should never happen, just a safeguard  */
+      /* v8 ignore if -- @preserve should never happen, just a safeguard  */
       if (type == null) {
         return false;
       }
@@ -426,7 +426,7 @@ export default createRule<Options, MessageId>({
     function isPromiseLike(node: ts.Node, type?: ts.Type): boolean {
       type ??= getTypeAtLocation(checker, node);
 
-      /* v8 ignore if -- should never happen, just a safeguard  */
+      /* v8 ignore if -- @preserve should never happen, just a safeguard  */
       if (type == null) {
         return false;
       }
