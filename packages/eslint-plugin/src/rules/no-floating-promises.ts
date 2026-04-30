@@ -245,10 +245,9 @@ export default createRule<Options, MessageId>({
         return false;
       }
 
-      const type = getTypeAtLocation(
-        services.program.getTypeChecker(),
-        services.esTreeNodeToTSNodeMap.get(node.callee),
-      );
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node.callee);
+
+      const type = getTypeAtLocation(checker, tsNode);
 
       if (type == null) {
         return false;
@@ -285,10 +284,10 @@ export default createRule<Options, MessageId>({
     }
 
     function isValidRejectionHandler(rejectionHandler: TSESTree.Node): boolean {
-      return !!getTypeAtLocation(
-        services.program.getTypeChecker(),
-        services.esTreeNodeToTSNodeMap.get(rejectionHandler),
-      )?.getCallSignatures().length;
+      const checker = services.program.getTypeChecker();
+      const node = services.esTreeNodeToTSNodeMap.get(rejectionHandler);
+
+      return !!getTypeAtLocation(checker, node)?.getCallSignatures().length;
     }
 
     function isUnhandledPromise(
