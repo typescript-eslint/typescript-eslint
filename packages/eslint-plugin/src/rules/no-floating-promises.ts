@@ -245,7 +245,14 @@ export default createRule<Options, MessageId>({
         return false;
       }
 
-      const type = services.getTypeAtLocation(node.callee);
+      const type = getTypeAtLocation(
+        services.program.getTypeChecker(),
+        services.esTreeNodeToTSNodeMap.get(node.callee),
+      );
+
+      if (type == null) {
+        return false;
+      }
 
       if (
         valueMatchesSomeSpecifier(
@@ -278,14 +285,10 @@ export default createRule<Options, MessageId>({
     }
 
     function isValidRejectionHandler(rejectionHandler: TSESTree.Node): boolean {
-      return (
-        services.program
-          .getTypeChecker()
-          .getTypeAtLocation(
-            services.esTreeNodeToTSNodeMap.get(rejectionHandler),
-          )
-          .getCallSignatures().length > 0
-      );
+      return !!getTypeAtLocation(
+        services.program.getTypeChecker(),
+        services.esTreeNodeToTSNodeMap.get(rejectionHandler),
+      )?.getCallSignatures().length;
     }
 
     function isUnhandledPromise(
@@ -394,7 +397,12 @@ export default createRule<Options, MessageId>({
     }
 
     function isPromiseArray(node: ts.Node): boolean {
-      const type = checker.getTypeAtLocation(node);
+      const type = getTypeAtLocation(checker, node);
+
+      if (type == null) {
+        return false;
+      }
+
       for (const ty of tsutils
         .unionConstituents(type)
         .map(t => checker.getApparentType(t))) {
@@ -417,7 +425,11 @@ export default createRule<Options, MessageId>({
     }
 
     function isPromiseLike(node: ts.Node, type?: ts.Type): boolean {
-      type ??= checker.getTypeAtLocation(node);
+      type ??= getTypeAtLocation(checker, node);
+
+      if (type == null) {
+        return false;
+      }
 
       // The highest priority is to allow anything allowlisted
       if (
@@ -502,4 +514,16 @@ function isFunctionParam(
     }
   }
   return false;
+}
+
+function getTypeAtLocation(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+): ts.Type | undefined {
+  try {
+    return checker.getTypeAtLocation(node);
+  } catch {
+    // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/11947
+    return undefined;
+  }
 }
