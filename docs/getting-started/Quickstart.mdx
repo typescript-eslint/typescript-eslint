@@ -114,6 +114,24 @@ export default defineConfig(
 
 You can read more about these in our [shared configurations docs](../users/Shared_Configurations.mdx).
 
+### JavaScript-Only Projects
+
+If your project contains only JavaScript files (no TypeScript), you can still use typescript-eslint rules that don't require type information.
+
+```js title="eslint.config.mjs"
+// @ts-check
+
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig({
+  files: ['**/*.{js,jsx,mjs,cjs}'],
+  extends: [tseslint.configs.recommended],
+});
+```
+
+Rules that require type information (such as [`no-floating-promises`](../rules/no-floating-promises.mdx)) will not be available without a `tsconfig.json`. See [Typed Linting](./Typed_Linting.mdx) for setup instructions.
+
 ### Typed Linting
 
 We also provide a plethora of powerful rules that utilize the power of TypeScript's type information.
