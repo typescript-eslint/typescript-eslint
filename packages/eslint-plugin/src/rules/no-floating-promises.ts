@@ -284,10 +284,9 @@ export default createRule<Options, MessageId>({
     }
 
     function isValidRejectionHandler(rejectionHandler: TSESTree.Node): boolean {
-      const checker = services.program.getTypeChecker();
-      const node = services.esTreeNodeToTSNodeMap.get(rejectionHandler);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(rejectionHandler);
 
-      return !!getTypeAtLocation(checker, node)?.getCallSignatures().length;
+      return !!getTypeAtLocation(checker, tsNode)?.getCallSignatures().length;
     }
 
     function isUnhandledPromise(
