@@ -887,6 +887,33 @@ myAsyncFunction();
         },
       ],
     },
+
+    // This code makes TypeScript type checker to crash with infinite recursion
+    //
+    // See:
+    //  https://github.com/typescript-eslint/typescript-eslint/issues/11947
+    //  https://github.com/microsoft/TypeScript/issues/63441
+    `
+      interface CustomNode<P> {
+        getNextNode: () => CustomNode<P>;
+      }
+
+      declare const createNode: () => {
+        getNextNode: <T>() => CustomNode<T>;
+      };
+
+      function wrapNode<T>(getNode: () => CustomNode<T>) {
+        return getNode;
+      }
+
+      (async () => {
+        wrapNode(() => {
+          const node = createNode();
+
+          return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
+        });
+      })().catch(() => {});
+    `,
   ],
 
   invalid: [
