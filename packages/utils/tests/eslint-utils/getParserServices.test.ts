@@ -20,11 +20,10 @@ const defaults = {
 
 const createMockRuleContext = (
   overrides: Partial<UnknownRuleContext> = {},
-): UnknownRuleContext =>
-  ({
-    ...defaults,
-    ...overrides,
-  }) as unknown as UnknownRuleContext;
+): UnknownRuleContext => ({
+  ...defaults,
+  ...overrides,
+});
 
 const requiresParserServicesMessageTemplate = (parser = '\\S*'): string =>
   'You have used a rule which requires type information, .+\n' +

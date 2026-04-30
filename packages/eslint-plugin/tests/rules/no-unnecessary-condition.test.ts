@@ -1,12 +1,5 @@
-import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
-
 import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
-
-import type {
-  MessageId,
-  Options,
-} from '../../src/rules/no-unnecessary-condition';
 
 import rule from '../../src/rules/no-unnecessary-condition';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
@@ -25,20 +18,6 @@ const optionsWithNoUncheckedIndexedAccess = {
   projectService: false,
   tsconfigRootDir: rootDir,
 };
-
-const necessaryConditionTest = (condition: string): string => `
-declare const b1: ${condition};
-declare const b2: boolean;
-const t1 = b1 && b2;
-`;
-
-const unnecessaryConditionTest = (
-  condition: string,
-  messageId: MessageId,
-): InvalidTestCase<MessageId, Options> => ({
-  code: necessaryConditionTest(condition),
-  errors: [{ column: 12, line: 4, messageId }],
-});
 
 ruleTester.run('no-unnecessary-condition', rule, {
   valid: [
@@ -73,50 +52,162 @@ const result1 = foo() === undefined;
 const result2 = foo() == null;
     `,
     `
+declare function foo(): number | void;
+foo() ?? 1;
+    `,
+    `
 declare const bigInt: 0n | 1n;
 if (bigInt) {
 }
     `,
-    necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
-    necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
-    necessaryConditionTest('0 | boolean'), // boolean and falsy literal
-    necessaryConditionTest('boolean | object'), // boolean and always-truthy type
-    necessaryConditionTest('false | object'), // always truthy type and falsy literal
+    // Truthy literal and falsy literal
+    `
+declare const b1: false | 5;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    // boolean and truthy literal
+    `
+declare const b1: boolean | 'foo';
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    // boolean and falsy literal
+    `
+declare const b1: 0 | boolean;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    // boolean and always-truthy type
+    `
+declare const b1: boolean | object;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    // always truthy type and falsy literal
+    `
+declare const b1: false | object;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
     // always falsy type and always truthy type
-    necessaryConditionTest('null | object'),
-    necessaryConditionTest('undefined | true'),
-    necessaryConditionTest('void | true'),
+    `
+declare const b1: null | object;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: undefined | true;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: void | true;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
     // "branded" type
-    necessaryConditionTest('string & {}'),
-    necessaryConditionTest('string & { __brand: string }'),
-    necessaryConditionTest('number & { __brand: string }'),
-    necessaryConditionTest('boolean & { __brand: string }'),
-    necessaryConditionTest('bigint & { __brand: string }'),
-    necessaryConditionTest('string & {} & { __brand: string }'),
-    necessaryConditionTest(
-      'string & { __brandA: string } & { __brandB: string }',
-    ),
-    necessaryConditionTest('string & { __brand: string } | number'),
-    necessaryConditionTest('(string | number) & { __brand: string }'),
-    necessaryConditionTest('string & ({ __brand: string } | number)'),
-    necessaryConditionTest('("" | "foo") & { __brand: string }'),
-    necessaryConditionTest(
-      '(string & { __brandA: string }) | (number & { __brandB: string })',
-    ),
-    necessaryConditionTest(
-      '((string & { __brandA: string }) | (number & { __brandB: string }) & ("" | "foo"))',
-    ),
-    necessaryConditionTest(
-      '{ __brandA: string} & (({ __brandB: string } & string) | ({ __brandC: string } & number))',
-    ),
-    necessaryConditionTest(
-      '(string | number) & ("foo" | 123 | { __brandA: string })',
-    ),
+    `
+declare const b1: string & {};
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: string & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: number & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: boolean & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: bigint & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: string & {} & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: string & { __brandA: string } & { __brandB: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: (string & { __brand: string }) | number;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: (string | number) & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: string & ({ __brand: string } | number);
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: ('' | 'foo') & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1:
+  | (string & { __brandA: string })
+  | (number & { __brandB: string });
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1:
+  | (string & { __brandA: string })
+  | ((number & { __brandB: string }) & ('' | 'foo'));
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: { __brandA: string } & (
+  | ({ __brandB: string } & string)
+  | ({ __brandC: string } & number)
+);
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    `
+declare const b1: (string | number) & ('foo' | 123 | { __brandA: string });
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
 
-    necessaryConditionTest('string & string'),
+    `
+declare const b1: string & string;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
 
-    necessaryConditionTest('any'), // any
-    necessaryConditionTest('unknown'), // unknown
+    // any
+    `
+declare const b1: any;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
+    // unknown
+    `
+declare const b1: unknown;
+declare const b2: boolean;
+const t1 = b1 && b2;
+    `,
 
     // Generic type params
     `
@@ -1254,15 +1345,161 @@ switch (b1) {
       ],
     },
     // Ensure that it's complaining about the right things
-    unnecessaryConditionTest('object', 'alwaysTruthy'),
-    unnecessaryConditionTest('object | true', 'alwaysTruthy'),
-    unnecessaryConditionTest('"" | false', 'alwaysFalsy'), // Two falsy literals
-    unnecessaryConditionTest('"always truthy"', 'alwaysTruthy'),
-    unnecessaryConditionTest(`undefined`, 'alwaysFalsy'),
-    unnecessaryConditionTest('null', 'alwaysFalsy'),
-    unnecessaryConditionTest('void', 'alwaysFalsy'),
-    unnecessaryConditionTest('never', 'never'),
-    unnecessaryConditionTest('string & number', 'never'),
+    {
+      code: `
+declare const b1: object;
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: object | true;
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      output: null,
+    },
+    // Two falsy literals
+    {
+      code: `
+declare const b1: '' | false;
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      output: null,
+    },
+
+    {
+      code: `
+declare const b1: 'always truthy';
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: undefined;
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: null;
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: void;
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: never;
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'never',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: string & number;
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'never',
+        },
+      ],
+      output: null,
+    },
     // More complex logical expressions
     {
       code: `
@@ -3599,36 +3836,171 @@ if (isNarrower(w)) {
     },
 
     // "branded" types
-    unnecessaryConditionTest('"" & {}', 'alwaysFalsy'),
-    unnecessaryConditionTest('"" & { __brand: string }', 'alwaysFalsy'),
-    unnecessaryConditionTest(
-      '("" | false) & { __brand: string }',
-      'alwaysFalsy',
-    ),
-    unnecessaryConditionTest(
-      '((string & { __brandA: string }) | (number & { __brandB: string })) & ""',
-      'alwaysFalsy',
-    ),
-    unnecessaryConditionTest(
-      '("foo" | "bar") & { __brand: string }',
-      'alwaysTruthy',
-    ),
-    unnecessaryConditionTest(
-      '(123 | true) & { __brand: string }',
-      'alwaysTruthy',
-    ),
-    unnecessaryConditionTest(
-      '(string | number) & ("foo" | 123) & { __brand: string }',
-      'alwaysTruthy',
-    ),
-    unnecessaryConditionTest(
-      '((string & { __brandA: string }) | (number & { __brandB: string })) & "foo"',
-      'alwaysTruthy',
-    ),
-    unnecessaryConditionTest(
-      '((string & { __brandA: string }) | (number & { __brandB: string })) & ("foo" | 123)',
-      'alwaysTruthy',
-    ),
+    {
+      code: `
+declare const b1: '' & {};
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: '' & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: ('' | false) & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: (
+  | (string & { __brandA: string })
+  | (number & { __brandB: string })
+) &
+  '';
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: ('foo' | 'bar') & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: (123 | true) & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: (string | number) & ('foo' | 123) & { __brand: string };
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: (
+  | (string & { __brandA: string })
+  | (number & { __brandB: string })
+) &
+  'foo';
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const b1: (
+  | (string & { __brandA: string })
+  | (number & { __brandB: string })
+) &
+  ('foo' | 123);
+declare const b2: boolean;
+const t1 = b1 && b2;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      output: null,
+    },
     {
       code: `
 type A = {
