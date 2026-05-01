@@ -245,14 +245,7 @@ export default createRule<Options, MessageId>({
         return false;
       }
 
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node.callee);
-
-      const type = getTypeAtLocation(checker, tsNode);
-
-      /* v8 ignore if -- @preserve should never happen, just a safeguard  */
-      if (type == null) {
-        return false;
-      }
+      const type = services.getTypeAtLocation(node.callee);
 
       if (
         valueMatchesSomeSpecifier(
@@ -285,9 +278,14 @@ export default createRule<Options, MessageId>({
     }
 
     function isValidRejectionHandler(rejectionHandler: TSESTree.Node): boolean {
-      const tsNode = services.esTreeNodeToTSNodeMap.get(rejectionHandler);
-
-      return !!getTypeAtLocation(checker, tsNode)?.getCallSignatures().length;
+      return (
+        services.program
+          .getTypeChecker()
+          .getTypeAtLocation(
+            services.esTreeNodeToTSNodeMap.get(rejectionHandler),
+          )
+          .getCallSignatures().length > 0
+      );
     }
 
     function isUnhandledPromise(
@@ -424,12 +422,7 @@ export default createRule<Options, MessageId>({
     }
 
     function isPromiseLike(node: ts.Node, type?: ts.Type): boolean {
-      type ??= getTypeAtLocation(checker, node);
-
-      /* v8 ignore if -- @preserve should never happen, just a safeguard  */
-      if (type == null) {
-        return false;
-      }
+      type ??= checker.getTypeAtLocation(node);
 
       // The highest priority is to allow anything allowlisted
       if (
