@@ -119,15 +119,15 @@ export default createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const type = getConstrainedTypeAtLocation(services, node);
-        if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
-          // not a void expression
-          return;
-        }
-
         const invalidAncestor = findInvalidAncestor(node);
         if (invalidAncestor == null) {
           // void expression is in valid position
+          return;
+        }
+
+        const type = getConstrainedTypeAtLocation(services, node);
+        if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+          // not a void expression
           return;
         }
 
