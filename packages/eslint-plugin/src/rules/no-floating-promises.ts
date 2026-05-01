@@ -512,11 +512,11 @@ function isFunctionParam(
 function getTypeAtLocation(
   checker: ts.TypeChecker,
   node: ts.Node,
-): ts.Type | undefined {
+): ts.Type | null {
   try {
     return checker.getTypeAtLocation(node);
   } catch {
     // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/11947
-    return undefined;
+    return null;
   }
 }
