@@ -2,16 +2,6 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-extraneous-class';
 
-const empty = {
-  messageId: 'empty' as const,
-};
-const onlyStatic = {
-  messageId: 'onlyStatic' as const,
-};
-const onlyConstructor = {
-  messageId: 'onlyConstructor' as const,
-};
-
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-extraneous-class', rule, {
@@ -130,7 +120,11 @@ abstract class Foo {
   invalid: [
     {
       code: 'class Foo {}',
-      errors: [empty],
+      errors: [
+        {
+          messageId: 'empty',
+        },
+      ],
     },
     {
       code: `
@@ -149,7 +143,14 @@ export class Bar {
   }
 }
       `,
-      errors: [onlyStatic, onlyStatic],
+      errors: [
+        {
+          messageId: 'onlyStatic',
+        },
+        {
+          messageId: 'onlyStatic',
+        },
+      ],
     },
     {
       code: `
@@ -157,7 +158,11 @@ class Foo {
   constructor() {}
 }
       `,
-      errors: [onlyConstructor],
+      errors: [
+        {
+          messageId: 'onlyConstructor',
+        },
+      ],
     },
     {
       code: `
@@ -171,7 +176,14 @@ export class AClass {
   }
 }
       `,
-      errors: [onlyStatic, empty],
+      errors: [
+        {
+          messageId: 'onlyStatic',
+        },
+        {
+          messageId: 'empty',
+        },
+      ],
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/170
@@ -180,7 +192,11 @@ export default class {
   static hello() {}
 }
       `,
-      errors: [onlyStatic],
+      errors: [
+        {
+          messageId: 'onlyStatic',
+        },
+      ],
     },
     {
       code: `
@@ -216,7 +232,11 @@ class Foo {
       code: `
 abstract class Foo {}
       `,
-      errors: [empty],
+      errors: [
+        {
+          messageId: 'empty',
+        },
+      ],
     },
     {
       code: `
@@ -224,7 +244,11 @@ abstract class Foo {
   static property: string;
 }
       `,
-      errors: [onlyStatic],
+      errors: [
+        {
+          messageId: 'onlyStatic',
+        },
+      ],
     },
     {
       code: `
@@ -232,7 +256,11 @@ abstract class Foo {
   constructor() {}
 }
       `,
-      errors: [onlyConstructor],
+      errors: [
+        {
+          messageId: 'onlyConstructor',
+        },
+      ],
     },
     {
       code: `
@@ -240,7 +268,11 @@ class Foo {
   static accessor prop: string;
 }
       `,
-      errors: [onlyStatic],
+      errors: [
+        {
+          messageId: 'onlyStatic',
+        },
+      ],
     },
     {
       code: `
@@ -248,7 +280,11 @@ abstract class Foo {
   static accessor prop: string;
 }
       `,
-      errors: [onlyStatic],
+      errors: [
+        {
+          messageId: 'onlyStatic',
+        },
+      ],
     },
   ],
 });

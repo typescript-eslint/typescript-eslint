@@ -498,15 +498,19 @@ ruleTester.run('no-unsafe-enum-comparison', rule, {
       errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
-      code:
-        'enum Fruit { Apple, Banana, Cherry }' +
-        `enum Fruit2 {
+      code: `
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+enum Fruit2 {
   Apple2,
   Banana2,
   Cherry2,
 }
-      Fruit.Apple === Fruit2.Apple2;
-        `,
+Fruit.Apple === Fruit2.Apple2;
+      `,
       errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
@@ -526,16 +530,20 @@ ruleTester.run('no-unsafe-enum-comparison', rule, {
       errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
-      code:
-        'enum Fruit { Apple, Banana, Cherry }' +
-        `enum Fruit2 {
+      code: `
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+enum Fruit2 {
   Apple2,
   Banana2,
   Cherry2,
 }
-      const fruit = Fruit.Apple;
-      fruit === Fruit2.Apple2;
-        `,
+const fruit = Fruit.Apple;
+fruit === Fruit2.Apple2;
+      `,
       errors: [{ messageId: 'mismatchedCondition' }],
     },
     {

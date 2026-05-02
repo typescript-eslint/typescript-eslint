@@ -614,6 +614,19 @@ export default createRule<Options, MessageIds>({
       return assignmentParent.type !== AST_NODE_TYPES.ExpressionStatement;
     }
 
+    function isRightHandSideOfLogicalAssignment(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
+      return (
+        parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        parent.right === node &&
+        (parent.operator === '&&=' ||
+          parent.operator === '||=' ||
+          parent.operator === '??=')
+      );
+    }
+
     function isInGenericContext(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
@@ -700,6 +713,7 @@ export default createRule<Options, MessageIds>({
         isInDestructuringDeclaration(node) ||
         isPropertyInProblematicContext(node) ||
         isAssignmentInNonStatementContext(node) ||
+        isRightHandSideOfLogicalAssignment(node) ||
         isArgumentToOverloadedFunction(node)
       ) {
         return true;
