@@ -21,6 +21,11 @@ function bar(x: never) {
   void x;
 }
     `,
+    // ChainExpression wrapping a call still produces a value to discard.
+    `
+declare const box: { method(): string } | undefined;
+void box?.method();
+    `,
   ],
   invalid: [
     {
@@ -150,6 +155,24 @@ function bar(x: number) {
   x;
   return 2;
 }
+      `,
+    },
+    {
+      // ChainExpression wrapping a member access — recurse and report.
+      code: `
+declare const box: { value: string } | undefined;
+void box?.value;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string } | undefined;
+box?.value;
       `,
     },
   ],
