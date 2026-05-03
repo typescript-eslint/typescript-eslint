@@ -1,3 +1,25 @@
+## 8.59.1 (2026-04-27)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] fix crash "TypeError: checker.getTypeArguments is not a function" ([#12246](https://github.com/typescript-eslint/typescript-eslint/pull/12246))
+- **eslint-plugin:** [no-unnecessary-type-assertion] preserve index signatures in undefined unions ([#12257](https://github.com/typescript-eslint/typescript-eslint/pull/12257))
+- **eslint-plugin:** [no-unnecessary-type-assertion] preserve phantom type arguments in generic inference ([#12269](https://github.com/typescript-eslint/typescript-eslint/pull/12269))
+- **eslint-plugin:** [no-unnecessary-type-assertion] avoid false positive in logical assignment assertions ([#12278](https://github.com/typescript-eslint/typescript-eslint/pull/12278))
+- **eslint-plugin:** [no-unnecessary-type-arguments] handle instantiation expressions ([#12220](https://github.com/typescript-eslint/typescript-eslint/pull/12220))
+- **eslint-plugin:** [no-unnecessary-condition] treat void as nullish in no-unnecessary-condition ([#12241](https://github.com/typescript-eslint/typescript-eslint/pull/12241))
+
+### ❤️ Thank You
+
+- anasm266 @anasm266
+- Anshika Jain @Anshikakalpana
+- Ulrich Stark
+- yugo innami @nami8824
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.59.0 (2026-04-20)
 
 ### 🚀 Features
