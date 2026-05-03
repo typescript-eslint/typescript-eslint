@@ -7,6 +7,12 @@ function foo() {}
 void foo();
 ~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a return value is being ignored
 
+declare const box: { value: string };
+void box;
+~~~~~~~~ void operator shouldn't be used on { value: string; }; it should convey that a return value is being ignored
+void box.value;
+~~~~~~~~~~~~~~ void operator shouldn't be used on string; it should convey that a return value is being ignored
+
 Correct
 
 (() => {})();
@@ -15,7 +21,6 @@ function foo() {}
 foo(); // nothing to discard
 
 function bar(x: number) {
-  void x; // discarding a number
-  return 2;
+  return x + 1;
 }
 void bar(1); // discarding a number

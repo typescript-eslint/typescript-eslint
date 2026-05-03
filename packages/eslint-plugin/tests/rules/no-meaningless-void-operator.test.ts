@@ -11,8 +11,7 @@ ruleTester.run('no-meaningless-void-operator', rule, {
 function foo() {}
 foo(); // nothing to discard
 
-function bar(x: number) {
-  void x;
+function bar(): number {
   return 2;
 }
 void bar(); // discarding a number
@@ -128,6 +127,29 @@ void box.value;
       output: `
 declare const box: { value: { toUpperCase(): string } };
 box.value;
+      `,
+    },
+    {
+      // `void` on a parameter to silence unused-variable warnings is exactly
+      // the anti-pattern issue #12214 calls out — flag it.
+      code: `
+function bar(x: number) {
+  void x;
+  return 2;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+function bar(x: number) {
+  x;
+  return 2;
+}
       `,
     },
   ],
