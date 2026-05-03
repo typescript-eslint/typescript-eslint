@@ -883,6 +883,41 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    // \`as const\` on an object literal preserves \`readonly\` and tuple-ness;
+    // contextual typing alone wouldn't replicate that, so removing it would
+    // change the type. Keep it valid.
+    {
+      code: `
+type Config = { readonly kind: 'a'; readonly nested: readonly [1, 2] };
+const config: Config = { kind: 'a', nested: [1, 2] } as const;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    // \`as const\` widens to a primitive without context — keep valid.
+    {
+      code: `
+declare function f(x: string): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    // Contextual type contains a non-literal member — removing \`as const\`
+    // could widen. Keep valid.
+    {
+      code: `
+declare function f(x: string | 'a'): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    // \`any\` contextual type — removing the assertion is risky. Keep valid.
+    {
+      code: `
+declare function f(x: any): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
   ],
 
   invalid: [
@@ -1873,6 +1908,75 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    // Contextually unnecessary const assertion: object property typed as a
+    // literal union — contextual typing alone preserves the literal.
+    {
+      code: `
+type Recipient = { kind: 'a' | 'b' };
+const r: Recipient = { kind: 'a' as const };
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+type Recipient = { kind: 'a' | 'b' };
+const r: Recipient = { kind: 'a' };
+      `,
+    },
+    // Same situation, array of typed objects.
+    {
+      code: `
+type Recipient = { kind: 'a' | 'b' };
+const rs: Recipient[] = [{ kind: 'a' as const }, { kind: 'b' as const }];
+      `,
+      errors: [
+        { messageId: 'contextuallyUnnecessary' },
+        { messageId: 'contextuallyUnnecessary' },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+type Recipient = { kind: 'a' | 'b' };
+const rs: Recipient[] = [{ kind: 'a' }, { kind: 'b' }];
+      `,
+    },
+    // Function argument whose parameter type is a literal union.
+    {
+      code: `
+declare function f(x: 'a' | 'b'): void;
+f('a' as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: 'a' | 'b'): void;
+f('a');
+      `,
+    },
+    // Numeric literal narrowed by a literal-union parameter type.
+    {
+      code: `
+declare function f(x: 1 | 2 | 3): void;
+f(1 as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: 1 | 2 | 3): void;
+f(1);
+      `,
+    },
+    // Boolean literal with a boolean-literal contextual type.
+    {
+      code: `
+declare function f(x: true): void;
+f(true as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: true): void;
+f(true);
       `,
     },
     {

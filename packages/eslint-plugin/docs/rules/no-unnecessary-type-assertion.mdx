@@ -79,6 +79,13 @@ With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { checkLiteral
 const foo = 'foo' as const;
 ```
 
+`as const` on a literal is also flagged when the surrounding context already narrows to a literal (or union of literals) that accepts the asserted value — contextual typing alone preserves the literal-ness, so the assertion adds nothing:
+
+```ts option='{ "checkLiteralConstAssertions": true }' showPlaygroundButton
+type Recipient = { kind: 'a' | 'b' };
+const r: Recipient = { kind: 'a' as const };
+```
+
 See [#8721 False positives for "as const" assertions (issue comment)](https://github.com/typescript-eslint/typescript-eslint/issues/8721#issuecomment-2145291966) for more information on this option.
 
 ### `typesToIgnore`

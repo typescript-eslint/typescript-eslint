@@ -878,6 +878,37 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        // Contextually-unnecessary const assertions on literal types: when
+        // the surrounding context already narrows to a literal (or literal
+        // union) that accepts the asserted value, contextual typing alone
+        // would preserve the literal — `as const` adds nothing. Gated on
+        // `checkLiteralConstAssertions` for parity with the
+        // explicitly-unnecessary case above.
+        if (
+          options.checkLiteralConstAssertions &&
+          typeAnnotationIsConstAssertion &&
+          castTypeIsLiteral
+        ) {
+          const constAssertionTsNode = services.esTreeNodeToTSNodeMap.get(node);
+          const constAssertionContextualType =
+            checker.getContextualType(constAssertionTsNode);
+          if (
+            constAssertionContextualType &&
+            !isTypeFlagSet(constAssertionContextualType, ts.TypeFlags.Any) &&
+            tsutils
+              .unionConstituents(constAssertionContextualType)
+              .every(part => isTypeLiteral(part)) &&
+            checker.isTypeAssignableTo(castType, constAssertionContextualType)
+          ) {
+            context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
+              fix: createAssertionFixer(node),
+            });
+            return;
+          }
+        }
+
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
         const castIsAny =
