@@ -78,5 +78,57 @@ function bar(x: never) {
       options: [{ checkNever: true }],
       output: null,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12214
+    {
+      code: `
+declare const box: { value: string };
+void box;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string };
+box;
+      `,
+    },
+    {
+      code: `
+declare const box: { value: string };
+void box.value;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string };
+box.value;
+      `,
+    },
+    {
+      code: `
+declare const box: { value: { toUpperCase(): string } };
+void box.value;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: { toUpperCase(): string } };
+box.value;
+      `,
+    },
   ],
 });
