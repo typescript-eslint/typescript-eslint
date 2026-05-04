@@ -710,6 +710,28 @@ exists('/foo');
       const key = null;
       const c = a[key as any];
     `,
+    `
+      interface Foo {
+        /** @deprecated */
+        deprecatedProperty: string;
+        notDeprecatedProperty: string;
+      }
+
+      declare const a: Foo;
+      const { notDeprecatedProperty: deprecatedProperty } = a;
+    `,
+    `
+      interface Foo {
+        /** @deprecated */
+        deprecatedProperty: string;
+        notDeprecatedProperty: string;
+      }
+      
+      declare const a: { foo: Foo };
+      const {
+        foo: { notDeprecatedProperty: deprecatedProperty },
+      } = a;
+    `,
   ],
   invalid: [
     {
