@@ -193,6 +193,7 @@ export default {
         '@docusaurus/useBaseUrl',
         '@docusaurus/BrowserOnly',
         '@generated/docusaurus.config',
+        '^@site/.*',
         '^@theme/.*',
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
