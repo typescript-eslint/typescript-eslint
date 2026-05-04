@@ -25,7 +25,7 @@ describe('parser', () => {
     const code = 'const valid = true;';
     expect(() => {
       parseForESLint(code, null);
-    }).not.toThrowError();
+    }).not.toThrow();
   });
 
   it('parseAndGenerateServices() should be called with options', () => {

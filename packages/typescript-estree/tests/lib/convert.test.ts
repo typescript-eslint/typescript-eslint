@@ -91,7 +91,7 @@ describe('convert', () => {
         errorOnUnknownASTType: true,
       });
 
-      expect(() => instance['deeplyCopy'](ast)).toThrowError(
+      expect(() => instance['deeplyCopy'](ast)).toThrow(
         'Unknown AST_NODE_TYPE: "TSSourceFile"',
       );
     });
@@ -252,7 +252,7 @@ describe('convert', () => {
       const ast = convertCode(code);
 
       const instance = new Converter(ast);
-      expect(() => instance.convertProgram()).toThrowError(
+      expect(() => instance.convertProgram()).toThrow(
         'JSDoc types can only be used inside documentation comments.',
       );
     });
@@ -266,7 +266,7 @@ describe('convert', () => {
 
       const instance = new Converter(ast);
 
-      expect(() => instance.convertProgram()).toThrowError(
+      expect(() => instance.convertProgram()).toThrow(
         'A variable declaration list must have at least one variable declarator.',
       );
     });
@@ -278,7 +278,7 @@ describe('convert', () => {
         allowInvalidAST: true,
       });
 
-      expect(() => instance.convertProgram()).not.toThrowError();
+      expect(() => instance.convertProgram()).not.toThrow();
     });
   });
 

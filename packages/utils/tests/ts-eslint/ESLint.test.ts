@@ -18,7 +18,7 @@ describe('ESLint v10+', () => {
       expect(() => {
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         new ESLint.LegacyESLint();
-      }).toThrowError(
+      }).toThrow(
         'LegacyESLint is not available with the current version of ESLint.',
       );
     });
@@ -38,7 +38,7 @@ describe('ESLint v10+', () => {
       await expect(async () =>
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         ESLint.LegacyESLint.outputFixes([]),
-      ).rejects.toThrowError(
+      ).rejects.toThrow(
         'LegacyESLint is not available with the current version of ESLint.',
       );
     });
@@ -56,7 +56,7 @@ describe('ESLint v10+', () => {
           usedDeprecatedRules: [],
           warningCount: 0,
         }),
-      ).toThrowError(
+      ).toThrow(
         'LegacyESLint is not available with the current version of ESLint.',
       );
     });

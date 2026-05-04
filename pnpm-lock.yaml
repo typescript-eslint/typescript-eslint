@@ -150,8 +150,8 @@ importers:
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
       '@vitest/eslint-plugin':
-        specifier: 1.6.5
-        version: 1.6.5(eslint@10.2.1(jiti@2.6.1))(typescript@6.0.2)(vitest@4.1.5)
+        specifier: 1.6.16
+        version: 1.6.16(@typescript-eslint/eslint-plugin@packages+eslint-plugin)(eslint@10.2.1(jiti@2.6.1))(typescript@6.0.2)(vitest@4.1.5)
       console-fail-test:
         specifier: ^0.6.1
         version: 0.6.1
@@ -4073,14 +4073,17 @@ packages:
       '@vitest/browser':
         optional: true
 
-  '@vitest/eslint-plugin@1.6.5':
-    resolution: {integrity: sha512-+wKYGmvXQJjq58qBx/AwiZr5bFfMiWBdgHViSQoFW/+wl5MQhJeOGP/3HM7GO7W1+AoiW9Gcyy2Hdwcao4LnfQ==}
+  '@vitest/eslint-plugin@1.6.16':
+    resolution: {integrity: sha512-2pBN1F1JXq6zTSaYC58CMJa7pGxXIRsLfOioeZM4cPE3pRdSh1ySTSoHPQlOTEF5WgoVzWZQxhGQ3ygT78hOVg==}
     engines: {node: '>=18'}
     peerDependencies:
+      '@typescript-eslint/eslint-plugin': '*'
       eslint: '>=8.57.0'
       typescript: 6.0.2
       vitest: '*'
     peerDependenciesMeta:
+      '@typescript-eslint/eslint-plugin':
+        optional: true
       typescript:
         optional: true
       vitest:
@@ -13507,12 +13510,13 @@ snapshots:
       tinyrainbow: 3.1.0
       vitest: 4.1.5(@types/node@22.19.8)(@vitest/coverage-v8@4.1.5)(vite@7.3.0(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.3))
 
-  '@vitest/eslint-plugin@1.6.5(eslint@10.2.1(jiti@2.6.1))(typescript@6.0.2)(vitest@4.1.5)':
+  '@vitest/eslint-plugin@1.6.16(@typescript-eslint/eslint-plugin@packages+eslint-plugin)(eslint@10.2.1(jiti@2.6.1))(typescript@6.0.2)(vitest@4.1.5)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.59.0
       '@typescript-eslint/utils': 8.59.0(eslint@10.2.1(jiti@2.6.1))(typescript@6.0.2)
       eslint: 10.2.1(jiti@2.6.1)
     optionalDependencies:
+      '@typescript-eslint/eslint-plugin': link:packages/eslint-plugin
       typescript: 6.0.2
       vitest: 4.1.5(@types/node@22.19.8)(@vitest/coverage-v8@4.1.5)(vite@7.3.0(@types/node@22.19.8)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.21.0)(yaml@2.8.3))
     transitivePeerDependencies:
