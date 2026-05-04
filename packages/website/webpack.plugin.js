@@ -6,9 +6,18 @@ const path = require('node:path');
 module.exports = function (/*context, options*/) {
   return {
     configureWebpack() {
-      return {
+      /** @type {import('webpack').Configuration} */
+      const config = {
         externals: {
           typescript: 'window.ts',
+        },
+        module: {
+          rules: [
+            {
+              resourceQuery: /raw/,
+              type: 'asset/source',
+            },
+          ],
         },
         plugins: [
           new rspack.DefinePlugin({
@@ -34,6 +43,8 @@ module.exports = function (/*context, options*/) {
           }),
         ],
       };
+
+      return config;
     },
     name: 'webpack-custom-plugin',
   };
