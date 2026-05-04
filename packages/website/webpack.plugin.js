@@ -6,8 +6,7 @@ const path = require('node:path');
 module.exports = function (/*context, options*/) {
   return {
     configureWebpack() {
-      /** @type {import('webpack').Configuration} */
-      const config = {
+      return {
         externals: {
           typescript: 'window.ts',
         },
@@ -43,8 +42,6 @@ module.exports = function (/*context, options*/) {
           }),
         ],
       };
-
-      return config;
     },
     name: 'webpack-custom-plugin',
   };
