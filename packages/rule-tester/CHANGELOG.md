@@ -1,3 +1,17 @@
+## 8.59.2 (2026-05-04)
+
+### 🩹 Fixes
+
+- **rule-tester:** add TypeScript as a peer dependency ([#12288](https://github.com/typescript-eslint/typescript-eslint/pull/12288))
+
+### ❤️ Thank You
+
+- Dariusz Czajkowski
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.59.1 (2026-04-27)
 
 This was a version bump only for rule-tester to align it with other projects, there were no code changes.
