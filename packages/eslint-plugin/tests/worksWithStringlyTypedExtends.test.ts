@@ -12,7 +12,7 @@ describe("The plugin object should work with eslint defineConfig's stringly type
           ts: plugin,
         },
       });
-    }).not.toThrowError();
+    }).not.toThrow();
   });
 
   it('should not error when implicitly referencing the flat version', () => {
@@ -24,6 +24,6 @@ describe("The plugin object should work with eslint defineConfig's stringly type
           ts: plugin,
         },
       });
-    }).not.toThrowError();
+    }).not.toThrow();
   });
 });

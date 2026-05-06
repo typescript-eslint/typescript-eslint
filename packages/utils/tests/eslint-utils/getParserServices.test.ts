@@ -48,7 +48,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex('@typescript-eslint[\\/]parser[\\/]dist[\\/]index\\.js'),
     );
   });
@@ -73,7 +73,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex('custom-parser'),
     );
   });
@@ -91,7 +91,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex('\\(unknown\\)'),
     );
   });
@@ -112,7 +112,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex('\\(unknown\\)'),
     );
   });
@@ -128,7 +128,7 @@ describe(ESLintUtils.getParserServices, () => {
         },
       },
     });
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       unknownParserErrorRegex(),
     );
   });
@@ -144,7 +144,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex(),
     );
   });
@@ -160,7 +160,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex(),
     );
   });
