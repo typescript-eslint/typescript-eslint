@@ -1286,7 +1286,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           'Error is missing expected location properties: line, column',
         );
       });
@@ -1303,7 +1303,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           'Error is missing expected location properties: line, column, endLine, endColumn',
         );
       });
@@ -1322,7 +1322,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError('Error is missing expected location properties: line');
+        ).toThrow('Error is missing expected location properties: line');
       });
 
       it('should fail if column is missing', () => {
@@ -1339,7 +1339,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError('Error is missing expected location properties: column');
+        ).toThrow('Error is missing expected location properties: column');
       });
 
       it('should fail if endLine is missing', () => {
@@ -1356,9 +1356,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
-          'Error is missing expected location properties: endLine',
-        );
+        ).toThrow('Error is missing expected location properties: endLine');
       });
 
       it('should fail if endColumn is missing', () => {
@@ -1375,9 +1373,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
-          'Error is missing expected location properties: endColumn',
-        );
+        ).toThrow('Error is missing expected location properties: endColumn');
       });
 
       it('should pass for error without end location', () => {
@@ -1638,7 +1634,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           "Error should specify the 'data' property as the referenced message has placeholders.",
         );
         expect(() =>
@@ -1659,7 +1655,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           "Error should specify the 'data' property as the referenced message has placeholders.",
         );
       });
@@ -1687,7 +1683,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           "Error Suggestion at index 0: Suggestion should specify the 'data' property as the referenced message has placeholders.",
         );
         expect(() =>
@@ -1711,7 +1707,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           "Error Suggestion at index 0: Suggestion should specify the 'data' property as the referenced message has placeholders.",
         );
       });
@@ -1831,7 +1827,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           "Error should specify the 'data' property as the referenced message has placeholders.",
         );
         expect(() =>
@@ -1852,7 +1848,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           "Error should specify the 'data' property as the referenced message has placeholders.",
         );
       });
@@ -2045,7 +2041,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           "Error Suggestion at index 0: Suggestion should specify the 'data' property as the referenced message has placeholders.",
         );
         expect(() =>
@@ -2069,7 +2065,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
             valid: [],
           }),
-        ).toThrowError(
+        ).toThrow(
           "Error Suggestion at index 0: Suggestion should specify the 'data' property as the referenced message has placeholders.",
         );
       });
