@@ -18,7 +18,7 @@ jobs:
       # Uses the GitHub Compare API instead of checkout, so no fork code ever
       # touches the runner.
       - name: Detect force-push and comment
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           BEFORE_SHA: ${{ github.event.before }}
           AFTER_SHA: ${{ github.event.pull_request.head.sha }}
@@ -26,14 +26,6 @@ jobs:
           script: |
             const before = process.env.BEFORE_SHA;
             const after = process.env.AFTER_SHA;
-
-            console.log('before', before);
-            console.log('after', after);
-
-            // First push to the PR returns a before SHA of all zeros
-            if (before === '0000000000000000000000000000000000000000') {
-              return;
-            }
 
             const { data } = await github.rest.repos.compareCommitsWithBasehead({
               owner: context.repo.owner,
@@ -50,12 +42,12 @@ jobs:
             const author = context.payload.pull_request.user.login;
 
             const lines = [
-              `Hi @${author}, thanks for the update!`,
-              '',
+              `Hi @${author}, thanks for the update!\n\n`,
+
               'Just a quick heads-up: please try to avoid force-pushing moving forward.',
               'Rewriting history makes it harder for us to track incremental changes',
-              'between reviews.',
-              '',
+              'between reviews.\n\n',
+
               'Since we squash merge anyway, there is no need to keep the commit',
               'history "clean" on this branch. Standard pushes are much preferred!',
             ];
@@ -64,5 +56,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: lines.join('\n'),
+              body: lines.join(''),
             });
