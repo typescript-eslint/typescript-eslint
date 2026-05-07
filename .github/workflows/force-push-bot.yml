@@ -48,11 +48,11 @@ jobs:
             const lines = [
               `Hi @${author}, thanks for the update!\n\n`,
 
-              'Just a quick heads-up: please try to avoid force-pushing moving forward.',
-              'Rewriting history makes it harder for us to track incremental changes',
+              'Just a quick heads-up: please try to avoid force-pushing moving forward. ',
+              'Rewriting history makes it harder for us to track incremental changes ',
               'between reviews.\n\n',
 
-              'Since we squash merge anyway, there is no need to keep the commit',
+              'Since we squash merge anyway, there is no need to keep the commit ',
               'history "clean" on this branch. Standard pushes are much preferred!',
             ];
 
