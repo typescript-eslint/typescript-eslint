@@ -14,7 +14,7 @@
   "files.trimTrailingWhitespace": true,
 
   // typescript auto-format settings
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "js/ts.preferences.importModuleSpecifier": "project-relative",
   "js/ts.preferences.quoteStyle": "single",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
