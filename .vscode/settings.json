@@ -15,10 +15,8 @@
 
   // typescript auto-format settings
   "typescript.tsdk": "node_modules/typescript/lib",
-  "js.preferences.importModuleSpecifier": "project-relative",
-  "ts.preferences.importModuleSpecifier": "project-relative",
-  "js.preferences.quoteStyle": "single",
-  "ts.preferences.quoteStyle": "single",
+  "js/ts.preferences.importModuleSpecifier": "project-relative",
+  "js/ts.preferences.quoteStyle": "single",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "nxConsole.generateAiAgentRules": true,
 }
