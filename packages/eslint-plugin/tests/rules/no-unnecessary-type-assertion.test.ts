@@ -942,6 +942,15 @@ const g: Greeting = \`hello \${'world' as const}\`;
       `,
       options: [{ checkLiteralConstAssertions: true }],
     },
+    {
+      code: `
+class Container<T> {
+  constructor(public value: T) {}
+}
+const c = new Container('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
   ],
 
   invalid: [

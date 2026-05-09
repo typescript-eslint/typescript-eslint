@@ -287,9 +287,6 @@ export default createRule<Options, MessageIds>({
       ) {
         return false;
       }
-      if (!parent.arguments.includes(node)) {
-        return false;
-      }
       const calleeTsNode = services.esTreeNodeToTSNodeMap.get(parent.callee);
       const calleeType = checker.getTypeAtLocation(calleeTsNode);
       const signatures =
