@@ -883,6 +883,65 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    {
+      code: `
+type Config = { readonly kind: 'a'; readonly nested: readonly [1, 2] };
+const config: Config = { kind: 'a', nested: [1, 2] } as const;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f(x: string): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f(x: string | 'a'): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f(x: any): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    // Generic inference without a target annotation: removing `as const`
+    // would let T widen to string, so the rule must stay quiet.
+    {
+      code: `
+declare function id<T>(x: T): T;
+const r = id('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function arrayOf<T>(...items: T[]): T[];
+const a = arrayOf('a' as const, 'b' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function box<T>(v: T): { value: T };
+const b = box('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    // Template literal substitution slot has contextual type `string`.
+    {
+      code: `
+type Greeting = \`hello \${string}\`;
+const g: Greeting = \`hello \${'world' as const}\`;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
   ],
 
   invalid: [
@@ -1873,6 +1932,83 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+type Recipient = { kind: 'a' | 'b' };
+const r: Recipient = { kind: 'a' as const };
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+type Recipient = { kind: 'a' | 'b' };
+const r: Recipient = { kind: 'a' };
+      `,
+    },
+    {
+      code: `
+type Recipient = { kind: 'a' | 'b' };
+const rs: Recipient[] = [{ kind: 'a' as const }, { kind: 'b' as const }];
+      `,
+      errors: [
+        { messageId: 'contextuallyUnnecessary' },
+        { messageId: 'contextuallyUnnecessary' },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+type Recipient = { kind: 'a' | 'b' };
+const rs: Recipient[] = [{ kind: 'a' }, { kind: 'b' }];
+      `,
+    },
+    {
+      code: `
+declare function f(x: 'a' | 'b'): void;
+f('a' as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: 'a' | 'b'): void;
+f('a');
+      `,
+    },
+    {
+      code: `
+declare function f(x: 1 | 2 | 3): void;
+f(1 as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: 1 | 2 | 3): void;
+f(1);
+      `,
+    },
+    {
+      code: `
+declare function f(x: true): void;
+f(true as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: true): void;
+f(true);
+      `,
+    },
+    // Method receiver pins the type parameter, so the call's signature has
+    // no free type parameters and the rule can safely fire.
+    {
+      code: `
+const arr: ('a' | 'b')[] = [];
+arr.push('a' as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+const arr: ('a' | 'b')[] = [];
+arr.push('a');
       `,
     },
     {

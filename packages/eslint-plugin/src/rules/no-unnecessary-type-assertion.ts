@@ -273,6 +273,32 @@ export default createRule<Options, MessageIds>({
       return type.isLiteral() || tsutils.isBooleanLiteralType(type);
     }
 
+    // Asserts in arg position of a generic call can drive type-parameter
+    // inference (e.g. `id<T>('a' as const)` pins T to `'a'` instead of
+    // widening to `string`), so removing the assertion isn't safe even when
+    // the resolved contextual type looks like a literal.
+    function isArgumentOfGenericCall(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const parent = node.parent;
+      if (
+        parent.type !== AST_NODE_TYPES.CallExpression &&
+        parent.type !== AST_NODE_TYPES.NewExpression
+      ) {
+        return false;
+      }
+      if (!parent.arguments.includes(node)) {
+        return false;
+      }
+      const calleeTsNode = services.esTreeNodeToTSNodeMap.get(parent.callee);
+      const calleeType = checker.getTypeAtLocation(calleeTsNode);
+      const signatures =
+        parent.type === AST_NODE_TYPES.NewExpression
+          ? calleeType.getConstructSignatures()
+          : calleeType.getCallSignatures();
+      return signatures.some(s => !!s.typeParameters?.length);
+    }
+
     function hasIndexSignature(type: ts.Type): boolean {
       return tsutils
         .unionConstituents(type)
@@ -879,6 +905,30 @@ export default createRule<Options, MessageIds>({
         }
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
+
+        if (
+          options.checkLiteralConstAssertions &&
+          typeAnnotationIsConstAssertion &&
+          castTypeIsLiteral &&
+          !isArgumentOfGenericCall(node)
+        ) {
+          const contextual = checker.getContextualType(originalNode);
+          if (
+            contextual &&
+            !isTypeFlagSet(contextual, ts.TypeFlags.Any) &&
+            tsutils
+              .unionConstituents(contextual)
+              .every(part => isTypeLiteral(part)) &&
+            checker.isTypeAssignableTo(castType, contextual)
+          ) {
+            context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
+              fix: createAssertionFixer(node),
+            });
+            return;
+          }
+        }
 
         const castIsAny =
           isTypeFlagSet(castType, ts.TypeFlags.Any) &&
