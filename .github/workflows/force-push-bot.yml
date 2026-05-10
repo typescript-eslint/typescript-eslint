@@ -28,6 +28,17 @@ jobs:
           AFTER_SHA: ${{ github.event.pull_request.head.sha }}
         with:
           script: |
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              per_page: 1,
+            });
+
+            if (reviews.length === 0) {
+              return;
+            }
+
             const before = process.env.BEFORE_SHA;
             const after = process.env.AFTER_SHA;
 
