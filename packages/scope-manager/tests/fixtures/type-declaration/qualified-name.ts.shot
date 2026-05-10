@@ -9,16 +9,7 @@ ScopeManager {
         },
       ],
       name: "T",
-      references: [
-        Reference$1 {
-          identifier: Identifier<"T">,
-          isRead: true,
-          isTypeReference: true,
-          isValueReference: false,
-          isWrite: false,
-          resolved: Variable$2,
-        },
-      ],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
@@ -40,7 +31,14 @@ ScopeManager {
       block: Program$3,
       isStrict: false,
       references: [
-        Reference$1,
+        Reference$1 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: null,
+        },
       ],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,

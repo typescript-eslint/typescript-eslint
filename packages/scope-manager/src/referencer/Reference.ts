@@ -22,6 +22,7 @@ const generator = createIdGenerator();
 export enum ReferenceTypeFlag {
   Value = 0x1,
   Type = 0x2,
+  TypeQualifiedName = 0x4,
 }
 
 /**
@@ -103,6 +104,13 @@ export class Reference {
    */
   public get isTypeReference(): boolean {
     return (this.#referenceType & ReferenceTypeFlag.Type) !== 0;
+  }
+
+  /**
+   * True if this reference is the left-hand side of a qualified type name
+   */
+  public get isTypeQualifiedNameReference(): boolean {
+    return (this.#referenceType & ReferenceTypeFlag.TypeQualifiedName) !== 0;
   }
 
   /**
