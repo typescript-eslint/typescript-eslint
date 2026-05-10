@@ -25,13 +25,33 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
+    Variable$4 {
+      defs: [
+        TypeDefinition$3 {
+          name: Identifier<"C">,
+          node: TSInterfaceDeclaration$3,
+        },
+      ],
+      name: "C",
+      references: [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
   ],
   scopes: [
     GlobalScope$1 {
-      block: Program$3,
+      block: Program$4,
       isStrict: false,
       references: [
         Reference$1 {
+          identifier: Identifier<"T">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: null,
+        },
+        Reference$2 {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,
@@ -44,6 +64,7 @@ ScopeManager {
         "const" => ImplicitGlobalConstTypeVariable,
         "T" => Variable$2,
         "A" => Variable$3,
+        "C" => Variable$4,
       },
       type: "global",
       upper: null,
@@ -51,6 +72,7 @@ ScopeManager {
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
+        Variable$4,
       ],
     },
   ],
