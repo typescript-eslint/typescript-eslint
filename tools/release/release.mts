@@ -94,7 +94,7 @@ if (options.dryRun) {
   console.log(
     '⚠️ NOTE: Applying canary version to package.json files so that dry-run publishing produces useful output...',
   );
-  execaSync('pnpm exec', ['tsx', 'tools/release/apply-canary-version.mts']);
+  execaSync('node', ['tools/release/apply-canary-version.mts']);
   console.log(
     '✅ Applied canary version to package.json files so that dry-run publishing produces useful output\n',
   );

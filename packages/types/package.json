@@ -39,7 +39,7 @@
   "scripts": {
     "build": "pnpm exec nx build",
     "clean": "rimraf dist/ src/generated/ coverage/",
-    "copy-ast-spec": "tsx ./tools/copy-ast-spec.mts",
+    "copy-ast-spec": "node ./tools/copy-ast-spec.mts",
     "format": "pnpm -w run format",
     "generate-lib": "pnpm -w exec nx run scope-manager:generate-lib",
     "lint": "pnpm -w exec nx lint",
@@ -50,7 +50,6 @@
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
-    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
@@ -77,7 +76,7 @@
       },
       "copy-ast-spec": {
         "cache": false,
-        "command": "tsx tools/copy-ast-spec.mts",
+        "command": "node tools/copy-ast-spec.mts",
         "dependsOn": [
           "ast-spec:build"
         ],

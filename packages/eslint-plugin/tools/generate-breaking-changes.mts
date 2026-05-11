@@ -2,7 +2,7 @@ import type { TypeScriptESLintRules } from '@typescript-eslint/eslint-plugin/use
 
 import { markdownTable } from 'markdown-table';
 
-import rulesImport from '../src/rules/index.js';
+import rulesImport from '../dist/rules/index.js';
 
 // Annotate which rules are new since the last version
 async function getNewRulesAsOfMajorVersion(

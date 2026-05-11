@@ -63,9 +63,6 @@ catalogs:
     rimraf:
       specifier: ^5.0.10
       version: 5.0.10
-    tsx:
-      specifier: ^4.7.2
-      version: 4.21.0
     vitest:
       specifier: ^4.0.18
       version: 4.1.5
@@ -221,9 +218,6 @@ importers:
       semver:
         specifier: 7.7.3
         version: 7.7.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.21.0
       typescript:
         specifier: 6.0.2
         version: 6.0.2
@@ -375,9 +369,6 @@ importers:
       title-case:
         specifier: ^4.3.2
         version: 4.3.2
-      tsx:
-        specifier: 'catalog:'
-        version: 4.21.0
       typescript:
         specifier: 6.0.2
         version: 6.0.2
@@ -678,9 +669,6 @@ importers:
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
-      tsx:
-        specifier: 'catalog:'
-        version: 4.21.0
       typescript:
         specifier: 6.0.2
         version: 6.0.2
@@ -1004,9 +992,6 @@ importers:
       stylelint-order:
         specifier: ^7.0.1
         version: 7.0.1(stylelint@16.26.1(typescript@6.0.2))
-      tsx:
-        specifier: 'catalog:'
-        version: 4.21.0
       unified:
         specifier: ^11.0.5
         version: 11.0.5
@@ -1053,9 +1038,6 @@ importers:
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
-      tsx:
-        specifier: 'catalog:'
-        version: 4.21.0
 
 packages:
 
@@ -19562,6 +19544,7 @@ snapshots:
       get-tsconfig: 4.13.6
     optionalDependencies:
       fsevents: 2.3.3
+    optional: true
 
   type-check@0.4.0:
     dependencies:

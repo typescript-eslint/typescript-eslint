@@ -51,7 +51,7 @@
     "build": "pnpm -w exec nx build",
     "clean": "rimraf dist/ coverage/",
     "format": "pnpm -w run format",
-    "generate-breaking-changes": "tsx tools/generate-breaking-changes.mts",
+    "generate-breaking-changes": "node tools/generate-breaking-changes.mts",
     "generate-configs": "pnpm -w run generate-configs",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
@@ -86,7 +86,6 @@
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "title-case": "^4.3.2",
-    "tsx": "catalog:",
     "typescript": "catalog:",
     "unist-util-visit": "^5.0.0",
     "vitest": "catalog:"
@@ -107,7 +106,7 @@
     ],
     "targets": {
       "generate-breaking-changes": {
-        "command": "tsx tools/generate-breaking-changes.mts",
+        "command": "node tools/generate-breaking-changes.mts",
         "options": {
           "cwd": "{projectRoot}"
         },

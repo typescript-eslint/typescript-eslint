@@ -13,6 +13,7 @@
     "typings",
     "tools/**/*.ts",
     "tools/**/*.mts",
+    "tools/**/*.mjs",
     "eslint.config.mjs",
     "knip.ts",
     ".github/**/*.js",

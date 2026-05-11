@@ -49,7 +49,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  PRIMARY_NODE_VERSION: 20
+  PRIMARY_NODE_VERSION: 24
 
 # Minimal permissions by default
 permissions:
@@ -213,7 +213,7 @@ jobs:
         uses: ./.github/actions/prepare-build
 
       - name: Calculate and apply canary version
-        run: pnpm exec tsx tools/release/apply-canary-version.mts
+        run: node tools/release/apply-canary-version.mts
         env:
           # Use the validated override major version from the validate job, if set
           OVERRIDE_MAJOR_VERSION: ${{ needs.validate.outputs.override_major_version }}

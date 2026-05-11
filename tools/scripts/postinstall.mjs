@@ -21,6 +21,7 @@ const $ = $_config({
  */
 
 if (process.env.SKIP_POSTINSTALL || process.env.MEND_HOSTED === 'true') {
+  // eslint-disable-next-line no-console
   console.log(
     '\nSkipping postinstall script because $SKIP_POSTINSTALL is set...\n',
   );

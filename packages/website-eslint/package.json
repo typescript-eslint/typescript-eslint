@@ -48,8 +48,7 @@
     "esbuild": "~0.28.0",
     "eslint": "catalog:",
     "esquery": "catalog:",
-    "rimraf": "catalog:",
-    "tsx": "catalog:"
+    "rimraf": "catalog:"
   },
   "nx": {
     "name": "website-eslint",
@@ -58,7 +57,7 @@
     ],
     "targets": {
       "build": {
-        "command": "tsx build.mts",
+        "command": "node build.mts",
         "dependsOn": [
           "types:copy-ast-spec"
         ],
