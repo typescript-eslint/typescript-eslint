@@ -208,6 +208,7 @@
     "tsconfigs",
     "tseslint",
     "tsgo",
+    "tsjs",
     "tsserverlibrary",
     "tsvfs",
     "twoslash",
