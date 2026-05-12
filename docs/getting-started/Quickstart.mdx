@@ -49,7 +49,10 @@ This code will enable our [recommended configuration](../users/Shared_Configurat
 #### Details
 
 - `defineConfig(...)` is an optional helper function built in to current versions of ESLint. See [the ESLint configuration docs](https://eslint.org/docs/latest/use/configure/configuration-files) for more detail.
-- `files`/`extends`: this setup is an optional feature of `defineConfig(...)` that restricts the `extends` config to JS and TS files. We recommend this in order to avoid issues if you enable ESLint to run on other file types, but it's entirely optional.
+- `files`/`extends`: this setup is an optional feature of `defineConfig(...)` that restricts the `extends` configs to JS and TS files, and can be modified to suite your project's needs.
+  We recommend this in order to avoid issues if you enable ESLint to run on other file types such as CSS or Markdown files, but it's entirely optional.
+  To enable linting for all standard JS and TS file extensions, consider using `files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}']`.
+  See the [Framework FAQs](../troubleshooting/faqs/Frameworks.mdx) to use typescript-eslint on file types other than those.
 - `'@eslint/js'` / `js.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
 - `tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
