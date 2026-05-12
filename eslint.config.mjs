@@ -23,6 +23,8 @@ import tseslint from 'typescript-eslint';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
+const allTsJs = '**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}';
+
 const restrictNamedDeclarations = {
   message:
     'Prefer a named export (e.g. `export const ...`) over an object export (e.g. `export { ... }`).',
@@ -65,14 +67,16 @@ export default defineConfig(
   },
   includeIgnoreFile(path.join(import.meta.dirname, '.gitignore')),
 
-  eslintCommentsPlugin.recommended,
-  js.configs.recommended,
-  tseslint.configs.strictTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
-  jsdocPlugin.configs['flat/recommended-typescript-error'],
-
   {
     name: 'base-config',
+    files: [allTsJs],
+    extends: [
+      eslintCommentsPlugin.recommended,
+      js.configs.recommended,
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+      jsdocPlugin.configs['flat/recommended-typescript-error'],
+    ],
     languageOptions: {
       globals: {
         ...globals.es2020,
