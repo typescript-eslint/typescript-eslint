@@ -382,8 +382,9 @@ function getReportDescriptor(
   // so we need to make sure that there is at least one operand that includes
   // `undefined`, or else we're going to change the final type - which is
   // unsafe and might cause downstream type errors.
-  else if (
-    lastChain ||
+  else if (lastChain) {
+    useSuggestionFixer = true;
+  } else if (
     lastOperand.comparisonType === NullishComparisonType.EqualNullOrUndefined ||
     lastOperand.comparisonType ===
       NullishComparisonType.NotEqualNullOrUndefined ||
