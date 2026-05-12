@@ -23,7 +23,7 @@ import tseslint from 'typescript-eslint';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-const allTsJs = '**/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}';
+const allTsJs = '**/*.{js,cjs,mjs,jsx,ts,cts,mts,mtx}';
 
 const restrictNamedDeclarations = {
   message:

@@ -42,7 +42,7 @@ import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig({
-  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  files: ['**/*.{js,ts}'],
   extends: [js.configs.recommended, tseslint.configs.recommended],
 });
 ```
@@ -317,7 +317,7 @@ export default defineConfig(
     },
   },
   {
-    files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+    files: ['**/*.{js,ts}'],
     extends: [js.configs.recommended],
     languageOptions: {
       parser: tseslint.parser,

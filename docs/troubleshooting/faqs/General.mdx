@@ -37,7 +37,7 @@ Some examples
 
 ```js title="eslint.config.mjs"
 export default defineConfig({
-  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  files: ['**/*.{js,ts}'],
   // ... the rest of your typescript config ...
   rules: {
     // turns a rule on with no configuration (i.e. uses the default configuration)
@@ -244,7 +244,7 @@ import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig({
-  files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
+  files: ['**/*.{js,ts}'],
   extends: [
     tseslint.configs.recommendedTypeCheckedOnly,
     {
