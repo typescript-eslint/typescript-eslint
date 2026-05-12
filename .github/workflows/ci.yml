@@ -46,7 +46,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -61,7 +63,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -78,7 +82,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -100,7 +106,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -122,7 +130,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -144,7 +154,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -162,7 +174,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -198,9 +212,10 @@ jobs:
           ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -223,7 +238,7 @@ jobs:
 
       - name: Store coverage for uploading
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
           path: packages/${{ matrix.package.name }}/coverage/lcov.info
@@ -261,9 +276,10 @@ jobs:
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -286,7 +302,7 @@ jobs:
 
       - name: Store coverage for uploading
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
           path: packages/${{ matrix.package.name }}/coverage/lcov.info
@@ -306,9 +322,10 @@ jobs:
       COLLECT_COVERAGE: false,
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -328,15 +345,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
 
       - name: Download coverage reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           path: coverage
 
       - name: Publish code coverage report
-        uses: codecov/codecov-action@v5.5.2
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/**/lcov.info
