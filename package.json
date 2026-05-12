@@ -53,7 +53,7 @@
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "devDependencies": {
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
     "@eslint/compat": "^2.0.2",
     "@eslint/config-helpers": "^0.5.2",
     "@eslint/eslintrc": "^3.3.3",
