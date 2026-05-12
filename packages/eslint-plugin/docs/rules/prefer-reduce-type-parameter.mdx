@@ -33,8 +33,8 @@ It will suggest instead pass the asserted type to `Array#reduce` as a generic ty
 [1, 2, 3].reduce((arr, num) => arr.concat(num * 2), [] as number[]);
 
 ['a', 'b'].reduce(
-  (accum, name) => ({
-    ...accum,
+  (accumulator, name) => ({
+    ...accumulator,
     [name]: true,
   }),
   {} as Record<string, boolean>,
@@ -48,8 +48,8 @@ It will suggest instead pass the asserted type to `Array#reduce` as a generic ty
 [1, 2, 3].reduce<number[]>((arr, num) => arr.concat(num * 2), []);
 
 ['a', 'b'].reduce<Record<string, boolean>>(
-  (accum, name) => ({
-    ...accum,
+  (accumulator, name) => ({
+    ...accumulator,
     [name]: true,
   }),
   {},
@@ -63,4 +63,4 @@ It will suggest instead pass the asserted type to `Array#reduce` as a generic ty
 
 This rule can sometimes be difficult to work around when creating objects using a `.reduce`.
 See [[prefer-reduce-type-parameter] unfixable reporting #3440](https://github.com/typescript-eslint/typescript-eslint/issues/3440) for more details.
-You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments) for those specific situations instead of completely disabling this rule.

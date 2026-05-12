@@ -160,7 +160,7 @@ describe('all.ts', () => {
 });
 
 describe('disable-type-checked.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: tseslint.configs.disableTypeChecked.rules,
   });
 
@@ -174,7 +174,7 @@ describe('disable-type-checked.ts', () => {
 });
 
 describe('recommended.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: tseslint.configs.recommended[2]?.rules,
   });
 
@@ -200,7 +200,7 @@ describe('recommended.ts', () => {
 });
 
 describe('recommended-type-checked.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: tseslint.configs.recommendedTypeChecked[2]?.rules,
   });
 
@@ -222,7 +222,7 @@ describe('recommended-type-checked.ts', () => {
 });
 
 describe('recommended-type-checked-only.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules:
       tseslint.configs.recommendedTypeCheckedOnly[2]?.rules,
   });
@@ -249,7 +249,7 @@ describe('recommended-type-checked-only.ts', () => {
 });
 
 describe('strict.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: tseslint.configs.strict[2]?.rules,
   });
 
@@ -276,7 +276,7 @@ describe('strict.ts', () => {
 });
 
 describe('strict-type-checked.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: tseslint.configs.strictTypeChecked[2]?.rules,
   });
 
@@ -298,7 +298,7 @@ describe('strict-type-checked.ts', () => {
 });
 
 describe('strict-type-checked-only.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: tseslint.configs.strictTypeCheckedOnly[2]?.rules,
   });
 
@@ -325,7 +325,7 @@ describe('strict-type-checked-only.ts', () => {
 });
 
 describe('stylistic.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: tseslint.configs.stylistic[2]?.rules,
   });
 
@@ -351,7 +351,7 @@ describe('stylistic.ts', () => {
 });
 
 describe('stylistic-type-checked.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: tseslint.configs.stylisticTypeChecked[2]?.rules,
   });
 
@@ -376,7 +376,7 @@ describe('stylistic-type-checked.ts', () => {
 });
 
 describe('stylistic-type-checked-only.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: tseslint.configs.stylisticTypeCheckedOnly[2]?.rules,
   });
 

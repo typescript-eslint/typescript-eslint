@@ -39,7 +39,7 @@ export function maybeGetESLintCoreRule<R extends RuleId>(
   ruleId: R,
 ): RuleMap[R] | null {
   try {
-    return getESLintCoreRule<R>(ruleId);
+    return getESLintCoreRule(ruleId);
   } catch {
     return null;
   }

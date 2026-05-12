@@ -39,12 +39,12 @@ We recommend getting started by using the default ESLint setup with our shared c
 ```js title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommended,
 );
 ```
@@ -184,11 +184,11 @@ Additionally, if you provide invalid values, it can trigger informative TypeScri
 ```ts title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  eslint.configs.recommended,
+  js.configs.recommended,
   tseslint.configs.recommended,
   {
     /*... */
@@ -203,12 +203,12 @@ export default tseslint.config(
 ```ts title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
 export default [
-  eslint.configs.recommended,
+  js.configs.recommended,
   ...tseslint.configs.recommended,
   {
     /*... */
@@ -235,7 +235,7 @@ This allows you to more easily extend shared configs for specific file patterns 
 export default tseslint.config({
   files: ['**/*.ts'],
   extends: [
-    eslint.configs.recommended,
+    js.configs.recommended,
     tseslint.configs.recommended,
   ],
   rules: {
@@ -248,7 +248,7 @@ export default tseslint.config({
 
 export default [
   ...[
-    eslint.configs.recommended,
+    js.configs.recommended,
     ...tseslint.configs.recommended,
   ].map(conf => ({
     ...conf,
@@ -367,7 +367,7 @@ You can declare our plugin and parser in your config via this package, for examp
 ```js title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import jestPlugin from 'eslint-plugin-jest';
 import tseslint from 'typescript-eslint';
@@ -412,7 +412,7 @@ This config:
 ```js title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import jestPlugin from 'eslint-plugin-jest';
 import tseslint from 'typescript-eslint';
@@ -422,7 +422,7 @@ export default defineConfig(
     // config with just ignores is the replacement for `.eslintignore`
     ignores: ['**/build/**', '**/dist/**', 'src/some/file/to/ignore.ts'],
   },
-  eslint.configs.recommended,
+  js.configs.recommended,
   {
     plugins: {
       '@typescript-eslint': tseslint.plugin,

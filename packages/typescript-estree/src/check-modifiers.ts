@@ -78,6 +78,8 @@ function nodeCanBeDecorated(node: TSNode): boolean {
       }
 
       // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: false`
+      // parent is already a ClassLike subtype; defensive check
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (ts.isClassLike(parent) && !hasAbstractModifier(node)) {
         return true;
       }
