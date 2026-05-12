@@ -1,8 +1,6 @@
 name: GitHub Actions Security Analysis
 
-on:
-  pull_request:
-    branches: ['**']
+on: pull_request
 
 permissions: {}
 
