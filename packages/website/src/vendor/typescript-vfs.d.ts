@@ -8,14 +8,14 @@
  *          pnpm run generate-website-dts     *
  **********************************************/
 
-import type * as TS from 'typescript';
-type System = TS.System;
-type CompilerOptions = TS.CompilerOptions;
-type CustomTransformers = TS.CustomTransformers;
-type LanguageServiceHost = TS.LanguageServiceHost;
-type CompilerHost = TS.CompilerHost;
-type SourceFile = TS.SourceFile;
-type TS = typeof TS;
+import type * as ts from 'typescript';
+type System = ts.System;
+type CompilerOptions = ts.CompilerOptions;
+type CustomTransformers = ts.CustomTransformers;
+type LanguageServiceHost = ts.LanguageServiceHost;
+type CompilerHost = ts.CompilerHost;
+type SourceFile = ts.SourceFile;
+type TS = typeof ts;
 type FetchLike = (url: string) => Promise<{
   json(): Promise<any>;
   text(): Promise<string>;
@@ -27,13 +27,13 @@ interface LocalStorageLike {
 }
 export interface VirtualTypeScriptEnvironment {
   sys: System;
-  languageService: TS.LanguageService;
-  getSourceFile: (fileName: string) => TS.SourceFile | undefined;
+  languageService: ts.LanguageService;
+  getSourceFile: (fileName: string) => ts.SourceFile | undefined;
   createFile: (fileName: string, content: string) => void;
   updateFile: (
     fileName: string,
     content: string,
-    replaceTextSpan?: TS.TextSpan,
+    replaceTextSpan?: ts.TextSpan,
   ) => void;
   deleteFile: (fileName: string) => void;
 }
@@ -75,7 +75,7 @@ export declare const knownLibFilesForCompilerOptions: (
  */
 export declare const createDefaultMapFromNodeModules: (
   _compilerOptions: CompilerOptions,
-  _ts?: typeof TS,
+  _ts?: typeof ts,
   tsLibDirectory?: string,
 ) => Map<string, string>;
 /**
@@ -155,7 +155,7 @@ export declare function createVirtualLanguageServiceHost(
   customTransformers?: CustomTransformers,
 ): {
   languageServiceHost: LanguageServiceHost;
-  updateFile: (sourceFile: TS.SourceFile) => void;
-  deleteFile: (sourceFile: TS.SourceFile) => void;
+  updateFile: (sourceFile: ts.SourceFile) => void;
+  deleteFile: (sourceFile: ts.SourceFile) => void;
 };
 export {};

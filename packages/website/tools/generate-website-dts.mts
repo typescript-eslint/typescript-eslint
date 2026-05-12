@@ -60,7 +60,7 @@ ${text.replace(regex, safeName)}`;
 function processFiles(text: string): string {
   let result = text;
   result = injectImports(result, 'monaco-editor', 'MonacoEditor');
-  result = injectImports(result, 'typescript', 'TS');
+  result = injectImports(result, 'typescript', 'ts');
   result = replaceImports(result, './vendor/lzstring.min', 'lz-string');
   result = replaceImports(
     result,
