@@ -259,22 +259,28 @@ for (let i of {}) {
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
-      code: [
-        'let result = {};',
-        'for (const score in scores) {',
-        '  const letters = scores[score];',
-        "  letters.split('').forEach(letter => {",
-        '    result[letter] = score;',
-        '  });',
-        '}',
-        'result.__default = 6;',
-      ].join('\n'),
+      code: `
+let result = {};
+for (const score in scores) {
+  const letters = scores[score];
+  letters.split('').forEach(letter => {
+    result[letter] = score;
+  });
+}
+result.__default = 6;
+      `,
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
-      code: ['while (true) {', '    (function() { a; });', '}', 'let a;'].join(
-        '\n',
-      ),
+      code: `
+while (true) {
+  (function () {
+    a;
+  });
+  (', ');
+}
+let a;
+      `,
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     /*

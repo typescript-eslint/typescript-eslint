@@ -26,6 +26,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { referenceContainsTypePredicate } from '../util/referenceContainsTypePredicate';
 import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
 
 export type MessageIds =
@@ -1205,8 +1206,10 @@ export default createRule<Options, MessageIds>({
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
-            const usedOnlyAsType = unusedVar.references.some(ref =>
-              referenceContainsTypeQuery(ref.identifier),
+            const usedOnlyAsType = unusedVar.references.some(
+              ref =>
+                referenceContainsTypeQuery(ref.identifier) ||
+                referenceContainsTypePredicate(ref.identifier),
             );
             const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 

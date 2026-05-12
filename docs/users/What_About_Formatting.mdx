@@ -49,7 +49,7 @@ Using this config by adding it to the end of your config:
 ```js title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import someOtherConfig from 'eslint-config-other-configuration-that-enables-formatting-rules';
 import prettierConfig from 'eslint-config-prettier';
@@ -59,7 +59,7 @@ export default defineConfig(
   {
     files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
     extends: [
-      eslint.configs.recommended,
+      js.configs.recommended,
       tseslint.configs.recommended,
       someOtherConfig,
     ],

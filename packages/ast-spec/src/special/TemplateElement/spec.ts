@@ -5,7 +5,7 @@ export interface TemplateElement extends BaseNode {
   type: AST_NODE_TYPES.TemplateElement;
   tail: boolean;
   value: {
-    cooked: string;
+    cooked: string | null;
     raw: string;
   };
 }

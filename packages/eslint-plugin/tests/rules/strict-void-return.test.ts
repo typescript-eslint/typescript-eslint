@@ -213,8 +213,23 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: `
+        declare function foo(cb: () => void): void;
+        declare function foo(cb: () => boolean): void;
+        foo(() => false);
+      `,
+    },
+    {
+      code: `
         declare function foo(cb: () => Promise<void>): void;
         declare function foo(cb: () => void): void;
+        foo(async () => {});
+      `,
+    },
+    {
+      code: `
+        declare function foo(fn: () => void);
+        declare function foo(fn: () => Promise<void>);
+        
         foo(async () => {});
       `,
     },
@@ -920,6 +935,31 @@ ruleTester.run('strict-void-return', rule, {
         }
       `,
     },
+    {
+      code: `
+        declare function f<T extends void>(arg: T, cb: () => T): void;
+        declare function f<T extends string>(arg: T, cb: () => T): void;
+
+        f('test', () => 'test');
+        f(undefined, () => {});
+      `,
+    },
+    {
+      code: `
+        interface HookFunction<T extends void | Hook = void> {
+          (fn: () => void): T;
+          (fn: () => Promise<void>): T;
+        }
+        
+        class Hook {}
+        
+        declare var beforeEach: HookFunction<Hook>;
+        
+        beforeEach(() => {});
+        
+        beforeEach(async () => {});
+      `,
+    },
   ],
   invalid: [
     {
@@ -1089,6 +1129,20 @@ ruleTester.run('strict-void-return', rule, {
           column: 22,
           line: 4,
           messageId: 'asyncFunc',
+        },
+      ],
+    },
+    {
+      code: `
+        declare function f<T extends void>(arg: T, cb: () => T): void;
+
+        f(undefined, () => 'test');
+      `,
+      errors: [
+        {
+          column: 28,
+          line: 4,
+          messageId: 'nonVoidReturn',
         },
       ],
     },

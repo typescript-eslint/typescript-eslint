@@ -20,13 +20,13 @@ See [Getting Started > Quickstart](../getting-started/Quickstart.mdx) first to s
 ```js title="eslint.config.mjs"
 // @ts-check
 
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig({
   files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
-  extends: [eslint.configs.recommended, tseslint.configs.recommended],
+  extends: [js.configs.recommended, tseslint.configs.recommended],
 });
 ```
 
@@ -41,7 +41,7 @@ If your project does not enable [typed linting](../getting-started/Typed_Linting
 export default defineConfig({
   files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
   extends: [
-    eslint.configs.recommended,
+    js.configs.recommended,
     // Added lines start
     tseslint.configs.recommended,
     tseslint.configs.stylistic,
@@ -84,7 +84,7 @@ export default defineConfig(
   {
     files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
     extends: [
-      eslint.configs.recommended,
+      js.configs.recommended,
       // Added lines start
       tseslint.configs.recommendedTypeChecked,
       tseslint.configs.stylisticTypeChecked,
@@ -395,10 +395,7 @@ If you use type-aware rules from other plugins, you will need to manually disabl
 export default defineConfig(
   {
     files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
-    extends: [
-      eslint.configs.recommended,
-      tseslint.configs.recommendedTypeChecked,
-    ],
+    extends: [js.configs.recommended, tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -461,7 +458,7 @@ Additionally, it enables rules that promote using the more modern constructs Typ
 export default defineConfig({
   files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
   extends: [
-    eslint.configs.recommended,
+    js.configs.recommended,
     // Add this line
     tseslint.configs.eslintRecommended,
   ],

@@ -39,7 +39,7 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
               lang: 'js',
               meta: 'title="eslint.config.mjs"',
               type: 'code',
-              value: `export default tseslint.config({
+              value: `export default defineConfig({
   rules: ${getRulesString(extendsBaseRuleName, page.file.stem, true)}
 });`,
             },

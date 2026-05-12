@@ -523,8 +523,58 @@ function getReportDescriptor(
 
   const reportRange = getReportRange(chain, node.range, sourceCode);
 
-  const fix: ReportFixFunction = fixer =>
-    fixer.replaceTextRange(reportRange, newCode);
+  const fix: ReportFixFunction = fixer => {
+    let unclosedParens = 0;
+
+    const tokensInRange = sourceCode.getTokens(node, {
+      filter: token =>
+        token.range[0] >= reportRange[0] && token.range[1] <= reportRange[1],
+    });
+
+    for (const token of tokensInRange) {
+      if (isOpeningParenToken(token)) {
+        unclosedParens++;
+      } else if (isClosingParenToken(token)) {
+        unclosedParens--;
+      }
+    }
+
+    if (unclosedParens > 0 && reportRange[1] < node.range[1]) {
+      const openParensOutsideRange: number[] = [];
+      const unmatchedCloseParens: number[] = [];
+
+      const tokensOutRange = sourceCode.getTokens(node, {
+        filter: token => token.range[1] > reportRange[1],
+      });
+
+      for (const token of tokensOutRange) {
+        if (isOpeningParenToken(token)) {
+          openParensOutsideRange.push(token.range[0]);
+        }
+        if (isClosingParenToken(token)) {
+          if (openParensOutsideRange.length > 0) {
+            openParensOutsideRange.pop();
+          } else {
+            unmatchedCloseParens.push(token.range[0]);
+          }
+        }
+      }
+
+      let leftCode = sourceCode.getText(node);
+      unmatchedCloseParens.reverse();
+      for (const unmatchedParenIndex of unmatchedCloseParens) {
+        leftCode =
+          leftCode.slice(0, unmatchedParenIndex) +
+          leftCode.slice(unmatchedParenIndex + 1);
+      }
+
+      leftCode = leftCode.slice(reportRange[1]);
+
+      return fixer.replaceTextRange(node.range, newCode + leftCode);
+    }
+
+    return fixer.replaceTextRange(reportRange, newCode);
+  };
 
   return {
     loc: {

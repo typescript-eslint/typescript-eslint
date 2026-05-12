@@ -97,7 +97,7 @@ function ConfigEditor({
   options,
   values,
 }: ConfigEditorProps): React.JSX.Element {
-  const [filter, setFilter] = useState<string>('');
+  const [filter, setFilter] = useState('');
 
   const filteredOptions = useMemo(() => {
     return filterConfig(options, filter);
