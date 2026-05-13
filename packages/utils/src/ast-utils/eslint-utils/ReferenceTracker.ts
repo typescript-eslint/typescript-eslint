@@ -69,7 +69,7 @@ namespace ReferenceTracker {
   export type CALL = ReferenceTrackerStatic['CALL'];
   export type CONSTRUCT = ReferenceTrackerStatic['CONSTRUCT'];
   export type ESM = ReferenceTrackerStatic['ESM'];
-  export type ReferenceType = CALL | CONSTRUCT | READ;
+  export type ReferenceType = symbol;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export type TraceMap<T = any> = Record<string, TraceMapElement<T>>;
   export interface TraceMapElement<T> {
