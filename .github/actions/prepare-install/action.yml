@@ -34,6 +34,8 @@ runs:
       uses: pnpm/action-setup@v4
       with:
         cache: true
+        package_json_file: ${{ inputs.working-directory }}/package.json
+        cache_dependency_path: ${{ inputs.working-directory }}/pnpm-lock.yaml
 
     - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@v4

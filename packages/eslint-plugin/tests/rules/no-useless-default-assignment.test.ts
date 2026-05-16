@@ -303,6 +303,24 @@ ruleTester.run('no-useless-default-assignment', rule, {
       }
     `,
     `
+      type FetchFn<TParams> =
+        Partial<TParams> extends TParams
+          ? (params?: TParams) => void
+          : (params: TParams) => void;
+
+      function createFetcher<TParams>() {
+        type Params = TParams;
+
+        const fn: FetchFn<TParams> = (
+          params: Partial<Params> = {} as Partial<Params>,
+        ) => {
+          console.log(params);
+        };
+
+        return fn;
+      }
+    `,
+    `
       interface Foos {
         bar?: number;
       }

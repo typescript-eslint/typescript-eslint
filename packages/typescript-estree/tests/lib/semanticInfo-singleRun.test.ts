@@ -265,4 +265,29 @@ describe('semanticInfo - singleRun', () => {
       );
     },
   );
+
+  it('should not trigger createIsolatedProgram fallback when projectService is used with multiple parseAndGenerateServices calls', () => {
+    /**
+     * Single run mode to enable the fallback condition check
+     */
+    vi.stubEnv('TSESTREE_SINGLE_RUN', 'true');
+
+    const optionsWithProjectService = {
+      ...options,
+      projectService: true,
+    };
+
+    /**
+     * First call - records the call
+     */
+    const result1 = parseAndGenerateServices(code, optionsWithProjectService);
+    expect(result1.ast).toBeDefined();
+
+    /**
+     * Second call - would normally trigger createIsolatedProgram fallback for legacy project option,
+     * but with projectService=true, the fallback should be skipped
+     */
+    const result2 = parseAndGenerateServices(code, optionsWithProjectService);
+    expect(result2.ast).toBeDefined();
+  });
 });

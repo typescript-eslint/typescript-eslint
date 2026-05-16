@@ -67,7 +67,65 @@ ruleTester.run('naming-convention', rule, {
         declare const boolean_camelCase15: false | null | undefined;
         declare const boolean_camelCase16: true | false | null | undefined;
       `,
-      errors: Array(19).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
       languageOptions: { parserOptions },
       options: [
         {
@@ -107,7 +165,20 @@ ruleTester.run('naming-convention', rule, {
           | null
           | undefined;
       `,
-      errors: Array(4).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
       languageOptions: { parserOptions },
       options: [
         {
@@ -138,7 +209,32 @@ ruleTester.run('naming-convention', rule, {
           | null
           | undefined;
       `,
-      errors: Array(8).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
       languageOptions: { parserOptions },
       options: [
         {
@@ -452,7 +548,17 @@ ruleTester.run('naming-convention', rule, {
           Myfoo: string;
         }
       `,
-      errors: Array(3).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+        {
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
       languageOptions: { parserOptions },
       options: [
         {
@@ -537,7 +643,26 @@ ruleTester.run('naming-convention', rule, {
         export interface PascalCaseInterface {}
         export type PascalCaseType = {};
       `,
-      errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['snake_case'],
@@ -592,7 +717,26 @@ ruleTester.run('naming-convention', rule, {
           PascalCaseType,
         };
       `,
-      errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         { format: ['snake_case'], selector: 'default' },
         {
@@ -633,7 +777,17 @@ ruleTester.run('naming-convention', rule, {
         function PascalCaseFunction() {}
         declare function PascalCaseDeclaredFunction();
       `,
-      errors: Array(3).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         { format: ['snake_case'], selector: 'default' },
         {
@@ -656,7 +810,14 @@ ruleTester.run('naming-convention', rule, {
         const { ignored: IgnoredDueToModifiers2 = 3 } = {};
         const IgnoredDueToModifiers3 = 1;
       `,
-      errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['PascalCase'],
@@ -679,7 +840,14 @@ ruleTester.run('naming-convention', rule, {
           IgnoredDueToModifiers2,
         ) {}
       `,
-      errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['PascalCase'],
@@ -806,7 +974,29 @@ ruleTester.run('naming-convention', rule, {
           UnusedTypeParam,
         > = {};
       `,
-      errors: Array(7).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['PascalCase'],
@@ -849,7 +1039,47 @@ ruleTester.run('naming-convention', rule, {
           'a a',
         }
       `,
-      errors: Array(13).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['snake_case'],
@@ -878,7 +1108,26 @@ ruleTester.run('naming-convention', rule, {
         }
       `,
       // 6, not 7 because 'foo' is valid
-      errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
     },
     {
       code: `

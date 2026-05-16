@@ -88,11 +88,20 @@ import { es2024_promise } from './es2024.promise';
 import { es2024_regexp } from './es2024.regexp';
 import { es2024_sharedmemory } from './es2024.sharedmemory';
 import { es2024_string } from './es2024.string';
+import { es2025 } from './es2025';
+import { es2025_collection } from './es2025.collection';
+import { es2025_float16 } from './es2025.float16';
+import { es2025_full } from './es2025.full';
+import { es2025_intl } from './es2025.intl';
+import { es2025_iterator } from './es2025.iterator';
+import { es2025_promise } from './es2025.promise';
+import { es2025_regexp } from './es2025.regexp';
 import { esnext } from './esnext';
 import { esnext_array } from './esnext.array';
 import { esnext_asynciterable } from './esnext.asynciterable';
 import { esnext_bigint } from './esnext.bigint';
 import { esnext_collection } from './esnext.collection';
+import { esnext_date } from './esnext.date';
 import { esnext_decorators } from './esnext.decorators';
 import { esnext_disposable } from './esnext.disposable';
 import { esnext_error } from './esnext.error';
@@ -106,6 +115,8 @@ import { esnext_regexp } from './esnext.regexp';
 import { esnext_sharedmemory } from './esnext.sharedmemory';
 import { esnext_string } from './esnext.string';
 import { esnext_symbol } from './esnext.symbol';
+import { esnext_temporal } from './esnext.temporal';
+import { esnext_typedarrays } from './esnext.typedarrays';
 import { esnext_weakref } from './esnext.weakref';
 import { lib as libBase } from './lib';
 import { scripthost } from './scripthost';
@@ -131,6 +142,7 @@ export const lib: ReadonlyMap<string, LibDefinition> = new Map<
   ['es2022', es2022],
   ['es2023', es2023],
   ['es2024', es2024],
+  ['es2025', es2025],
   ['esnext', esnext],
   ['dom', dom],
   ['dom.iterable', dom_iterable],
@@ -196,23 +208,32 @@ export const lib: ReadonlyMap<string, LibDefinition> = new Map<
   ['es2024.regexp', es2024_regexp],
   ['es2024.sharedmemory', es2024_sharedmemory],
   ['es2024.string', es2024_string],
-  ['esnext.array', esnext_array],
-  ['esnext.collection', esnext_collection],
-  ['esnext.symbol', esnext_symbol],
+  ['es2025.collection', es2025_collection],
+  ['es2025.float16', es2025_float16],
+  ['es2025.intl', es2025_intl],
+  ['es2025.iterator', es2025_iterator],
+  ['es2025.promise', es2025_promise],
+  ['es2025.regexp', es2025_regexp],
   ['esnext.asynciterable', esnext_asynciterable],
-  ['esnext.intl', esnext_intl],
-  ['esnext.disposable', esnext_disposable],
+  ['esnext.symbol', esnext_symbol],
   ['esnext.bigint', esnext_bigint],
-  ['esnext.string', esnext_string],
-  ['esnext.promise', esnext_promise],
   ['esnext.weakref', esnext_weakref],
-  ['esnext.decorators', esnext_decorators],
   ['esnext.object', esnext_object],
   ['esnext.regexp', esnext_regexp],
-  ['esnext.iterator', esnext_iterator],
+  ['esnext.string', esnext_string],
   ['esnext.float16', esnext_float16],
+  ['esnext.iterator', esnext_iterator],
+  ['esnext.promise', esnext_promise],
+  ['esnext.array', esnext_array],
+  ['esnext.collection', esnext_collection],
+  ['esnext.date', esnext_date],
+  ['esnext.decorators', esnext_decorators],
+  ['esnext.disposable', esnext_disposable],
   ['esnext.error', esnext_error],
+  ['esnext.intl', esnext_intl],
   ['esnext.sharedmemory', esnext_sharedmemory],
+  ['esnext.temporal', esnext_temporal],
+  ['esnext.typedarrays', esnext_typedarrays],
   ['decorators', decorators],
   ['decorators.legacy', decorators_legacy],
   ['es2016.full', es2016_full],
@@ -224,6 +245,7 @@ export const lib: ReadonlyMap<string, LibDefinition> = new Map<
   ['es2022.full', es2022_full],
   ['es2023.full', es2023_full],
   ['es2024.full', es2024_full],
+  ['es2025.full', es2025_full],
   ['esnext.full', esnext_full],
   ['lib', libBase],
 ]);

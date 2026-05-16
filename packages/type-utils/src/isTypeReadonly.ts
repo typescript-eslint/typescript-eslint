@@ -231,6 +231,23 @@ function isTypeReadonlyRecurser(
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 
+  // If the type has an alias symbol, check it against the allow list first
+  if (type.aliasSymbol && options.allow) {
+    const aliasSymbol = type.aliasSymbol;
+    const aliasMatches = options.allow.some(specifier => {
+      const specifierName =
+        typeof specifier === 'string' ? specifier : specifier.name;
+      const names = Array.isArray(specifierName)
+        ? specifierName
+        : [specifierName];
+      return names.includes(aliasSymbol.getName());
+    });
+
+    if (aliasMatches) {
+      return Readonlyness.Readonly;
+    }
+  }
+
   if (typeMatchesSomeSpecifier(type, options.allow, program)) {
     return Readonlyness.Readonly;
   }

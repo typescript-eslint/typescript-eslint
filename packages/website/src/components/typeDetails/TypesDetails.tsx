@@ -24,7 +24,7 @@ export function TypesDetails({
   typeChecker,
   value,
 }: TypesDetailsProps): React.JSX.Element {
-  const [selectedNode, setSelectedNode] = useState<ts.Node>(value);
+  const [selectedNode, setSelectedNode] = useState(value);
 
   useEffect(() => {
     if (cursorPosition) {
