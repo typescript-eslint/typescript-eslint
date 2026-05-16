@@ -9,7 +9,9 @@ export function useHistorySelector<T>(
   selector: HistorySelector<T>,
   getServerSnapshot: () => T,
 ): T {
+  // by default H.History<LocationState = unknown>
   const history = useHistory();
+
   return useSyncExternalStore(
     history.listen,
     () => selector(history),

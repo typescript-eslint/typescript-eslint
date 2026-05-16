@@ -127,8 +127,8 @@ export default createRule<Options, MessageIds>({
               .getNonNullableType();
             const indexInfos = checker.getIndexInfosOfType(objectType);
             if (
-              indexInfos.some(
-                info => info.keyType.flags & ts.TypeFlags.StringLike,
+              indexInfos.some(info =>
+                tsutils.isTypeFlagSet(info.keyType, ts.TypeFlags.StringLike),
               )
             ) {
               return;

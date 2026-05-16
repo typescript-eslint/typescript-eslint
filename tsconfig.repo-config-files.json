@@ -4,7 +4,10 @@
     "outDir": "./dist",
     "allowJs": true,
     "allowImportingTsExtensions": true,
-    "erasableSyntaxOnly": true
+    "erasableSyntaxOnly": true,
+    "paths": {
+      "@site/*": ["./packages/website/*"]
+    }
   },
   "include": [
     "typings",
@@ -12,7 +15,8 @@
     "tools/**/*.mts",
     "eslint.config.mjs",
     "knip.ts",
-    ".github/**/*.js"
+    ".github/**/*.js",
+    "package/website"
   ],
   "references": [
     {
@@ -20,6 +24,9 @@
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./packages/website"
     }
   ]
 }

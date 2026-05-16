@@ -398,6 +398,32 @@ import { String } from 'foo';
 String({});
     `,
     `
+class Foo {
+  toString(): string;
+  toString(options: { verbose: boolean }): string;
+  toString(options?: { verbose: boolean }) {
+    return 'Hello, world!';
+  }
+}
+'' + new Foo();
+    `,
+    `
+class Foo {
+  toString(prefix?: string): string {
+    return (prefix ?? '') + 'Hello, world!';
+  }
+}
+'' + new Foo();
+    `,
+    `
+declare module 'guid' {
+  export function toString(id: number): string;
+  export function toString(id: number, format: string): string;
+}
+import * as GUID from 'guid';
+GUID.toString(123);
+    `,
+    `
 ['foo', 'bar'].join('');
     `,
 
@@ -2424,6 +2450,24 @@ a.toString();
           data: {
             certainty: 'will',
             name: 'd',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    // Covers the `!declarations?.length` branch — mapped types have
+    // no declarations for their synthesized properties.
+    {
+      code: `
+        type Mapped = { [K in 'toString']: () => string };
+        declare const x: Mapped;
+        '' + x;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'x',
           },
           messageId: 'baseToString',
         },

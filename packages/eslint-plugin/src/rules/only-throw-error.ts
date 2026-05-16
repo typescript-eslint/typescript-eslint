@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import { isThenableType } from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -153,7 +154,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (type.flags & ts.TypeFlags.Undefined) {
+      if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined)) {
         context.report({ node, messageId: 'undef' });
         return;
       }

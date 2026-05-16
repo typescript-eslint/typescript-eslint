@@ -213,13 +213,13 @@ jobs:
         uses: ./.github/actions/prepare-build
 
       - name: Calculate and apply canary version
-        run: yarn tsx tools/release/apply-canary-version.mts
+        run: pnpm exec tsx tools/release/apply-canary-version.mts
         env:
           # Use the validated override major version from the validate job, if set
           OVERRIDE_MAJOR_VERSION: ${{ needs.validate.outputs.override_major_version }}
 
       - name: Publish canary packages
-        run: yarn nx release publish --tag canary --verbose --dry-run=${{ needs.validate.outputs.dry_run }} --first-release=${{ needs.validate.outputs.first_release }}
+        run: pnpm exec nx release publish --tag canary --verbose --dry-run=${{ needs.validate.outputs.dry_run }} --first-release=${{ needs.validate.outputs.first_release }}
         env:
           # Enable npm provenance
           NPM_CONFIG_PROVENANCE: true
@@ -266,7 +266,7 @@ jobs:
           git config --global user.name "typescript-eslint[bot]"
 
       - name: Run stable release
-        run: yarn release --dry-run=${{ needs.validate.outputs.dry_run }} --force-release-without-changes=${{ needs.validate.outputs.force_release_without_changes }} --first-release=${{ needs.validate.outputs.first_release }} --verbose
+        run: pnpm run release --dry-run=${{ needs.validate.outputs.dry_run }} --force-release-without-changes=${{ needs.validate.outputs.force_release_without_changes }} --first-release=${{ needs.validate.outputs.first_release }} --verbose
         env:
           # Enable npm provenance
           NPM_CONFIG_PROVENANCE: true

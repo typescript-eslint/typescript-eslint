@@ -10,7 +10,15 @@ module.exports = class CustomChangelogRenderer extends (
 ) {
   async render() {
     const defaultChangelog = await super.render();
-    // Append our custom messaging to the generated changelog entry
-    return `${defaultChangelog}\n\nYou can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.`;
+    const version = this.changelogEntryVersion;
+    const githubLink = version
+      ? `See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}) for more information.`
+      : `See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases) for more information.`;
+    // Append custom messaging to the generated changelog entry
+    return (
+      `${defaultChangelog}\n\n` +
+      `${githubLink}\n\n` +
+      `You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.`
+    );
   }
 };

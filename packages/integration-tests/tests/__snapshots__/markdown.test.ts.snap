@@ -16,7 +16,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 9,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
-        "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
         "suggestions": [
@@ -43,7 +42,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 28,
         "message": "Unexpected any. Specify a different type.",
         "messageId": "unexpectedAny",
-        "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
         "suggestions": [
@@ -78,7 +76,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 29,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
-        "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
         "suggestions": [
@@ -105,7 +102,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 46,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
-        "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
         "suggestions": [
@@ -132,7 +128,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 54,
         "message": "Unexpected any. Specify a different type.",
         "messageId": "unexpectedAny",
-        "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
         "suggestions": [
@@ -167,7 +162,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 55,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
-        "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
         "suggestions": [
@@ -194,7 +188,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 63,
         "message": "Unexpected any. Specify a different type.",
         "messageId": "unexpectedAny",
-        "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
         "suggestions": [
@@ -229,7 +222,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 64,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
-        "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
         "suggestions": [
@@ -256,7 +248,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 72,
         "message": "Unexpected any. Specify a different type.",
         "messageId": "unexpectedAny",
-        "nodeType": "TSAnyKeyword",
         "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
         "suggestions": [
@@ -291,7 +282,6 @@ exports[`markdown > eslint > should work successfully 1`] = `
         "line": 73,
         "message": "Unexpected console statement.",
         "messageId": "unexpected",
-        "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
         "suggestions": [

@@ -1,7 +1,7 @@
 // @ts-check
 
 import { FlatCompat } from '@eslint/eslintrc';
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import stylisticPlugin from '@stylistic/eslint-plugin';
 import vitestPlugin from '@vitest/eslint-plugin';
 import deprecationPlugin from 'eslint-plugin-deprecation';
@@ -29,7 +29,7 @@ export default tseslint.config(
       ['vitest']: vitestPlugin,
     },
   },
-  eslint.configs.recommended,
+  js.configs.recommended,
   ...tseslint.configs.recommended,
   stylisticPlugin.configs['recommended-flat'],
 );
@@ -46,7 +46,7 @@ function _otherCases() {
     },
   });
   tseslint.config(
-    eslint.configs.recommended,
+    js.configs.recommended,
     ...tseslint.configs.recommended,
     stylisticPlugin.configs['recommended-flat'],
     vitestPlugin.configs.recommended,

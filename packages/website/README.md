@@ -7,13 +7,13 @@ This website is built using [Docusaurus](https://docusaurus.io/), a modern stati
 ## Installation
 
 ```console
-yarn install
+pnpm install
 ```
 
 ## Local Development
 
 ```console
-yarn start
+pnpm run start
 ```
 
 This command starts a local development server and open up a browser window. Most changes are reflected live without having to restart the server.
@@ -21,7 +21,7 @@ This command starts a local development server and open up a browser window. Mos
 ## Build
 
 ```console
-yarn build
+pnpm run build
 ```
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.

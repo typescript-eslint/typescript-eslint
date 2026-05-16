@@ -1,4 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > expression > ObjectExpression > _error_ > property-modifier-static > TSESTree - Error`]
-NO ERROR
+TSError
+> 1 | ({static property: 1})
+    |   ^^^^^^ 'static' modifier cannot be used here.
+  2 |

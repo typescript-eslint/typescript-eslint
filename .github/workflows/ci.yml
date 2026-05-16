@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
-  PRIMARY_NODE_VERSION: 20
+  PRIMARY_NODE_VERSION: 24
   # Value will be controlled via GitHub environment (called "main") secret, will be read-write for main branch, read-only for other branches
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
@@ -151,10 +151,10 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - run: yarn nx run generate-configs
+      - run: pnpm exec nx run generate-configs
       - run: git status --porcelain
       - if: failure()
-        run: echo "Outdated result detected from yarn generate-configs. Please check in any file changes."
+        run: echo "Outdated result detected from pnpm run generate-configs. Please check in any file changes."
 
   lint_without_build:
     name: Lint without build
@@ -175,7 +175,7 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
       - name: Run Check
-        run: yarn ${{ matrix.lint-task }}
+        run: pnpm run ${{ matrix.lint-task }}
 
   lint_with_build:
     name: Lint with build
@@ -199,7 +199,7 @@ jobs:
         uses: ./.github/actions/prepare-build
 
       - name: Run Check
-        run: yarn ${{ matrix.lint-task }}
+        run: pnpm ${{ matrix.lint-task }}
         env:
           ESLINT_USE_FLAT_CONFIG: true
 
@@ -218,7 +218,7 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - name: Run stylelint check
-        run: yarn stylelint
+        run: pnpm run stylelint
         working-directory: packages/website
 
   integration_tests:
@@ -239,11 +239,12 @@ jobs:
         uses: ./.github/actions/prepare-build
 
       - name: Run integration tests
-        run: yarn test-integration
+        run: pnpm run test-integration
         env:
           CI: true
 
-  unit_tests:
+  plugin_unit_tests:
+    # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build, affected]
@@ -256,7 +257,7 @@ jobs:
             node-version: 18
         os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [18, 20]
+        node-version: [18, 24]
         package: ${{ fromJson(needs.affected.outputs.unit_tests_packages) }}
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
@@ -273,25 +274,25 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      # collect coverage on the primary node version
-      # we don't collect coverage on other node versions so they run faster
-      - name: Run unit tests with coverage for ${{ matrix.package }}
-        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: yarn nx run ${{ matrix.package }}:test -- --coverage
+      # collect coverage on just linux
+      # we don't collect coverage on other OSs so that they run faster
+      - name: Run unit tests with coverage for ${{ matrix.package.name }}
+        if: matrix.os == 'ubuntu-latest'
+        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
         env:
           CI: true
-      - name: Run unit tests for ${{ matrix.package }}
-        if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: yarn nx test ${{ matrix.package }}
+      - name: Run unit tests for ${{ matrix.package.name }}
+        if: matrix.os != 'ubuntu-latest'
+        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
         env:
           CI: true
 
       - name: Store coverage for uploading
-        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.package }}-coverage
-          path: packages/${{ matrix.package }}/coverage/lcov.info
+          name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
+          path: packages/${{ matrix.package.name }}/coverage/lcov.info
           # Sadly 1 day is the minimum
           retention-days: 1
 
@@ -319,7 +320,7 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
-        run: yarn nx test ${{ matrix.package }} --coverage=false
+        run: pnpm exec nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
@@ -327,7 +328,7 @@ jobs:
   upload_coverage:
     name: Upload Codecov Coverage
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [unit_tests]
+    needs: [unit_tests, plugin_unit_tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

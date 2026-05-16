@@ -314,32 +314,38 @@ a
       `,
     },
     {
-      code:
-        'getResource()\n' +
-        '    .then(function(){})\n' +
-        '    ["catch"](function(){})\n' +
-        '    .then(function(){})\n' +
-        '    ["catch"](function(){});',
+      code: `
+getResource()
+  .then(function () {})
+  ['catch'](function () {})
+  .then(function () {})
+  ['catch'](function () {});
+      `,
       errors: [
         {
-          column: 6,
-          data: { key: q('catch') },
-          line: 3,
+          column: 4,
+          data: {
+            key: '"catch"',
+          },
+          line: 4,
           messageId: 'useDot',
         },
         {
-          column: 6,
-          data: { key: q('catch') },
-          line: 5,
+          column: 4,
+          data: {
+            key: '"catch"',
+          },
+          line: 6,
           messageId: 'useDot',
         },
       ],
-      output:
-        'getResource()\n' +
-        '    .then(function(){})\n' +
-        '    .catch(function(){})\n' +
-        '    .then(function(){})\n' +
-        '    .catch(function(){});',
+      output: `
+getResource()
+  .then(function () {})
+  .catch(function () {})
+  .then(function () {})
+  .catch(function () {});
+      `,
     },
     {
       code: noFormat`

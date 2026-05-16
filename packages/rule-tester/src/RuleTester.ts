@@ -432,6 +432,7 @@ export class RuleTester extends TestFramework {
       create(context): RuleListener {
         freezeDeeply(context.options);
         freezeDeeply(context.settings);
+        // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8
         freezeDeeply(context.parserOptions);
 
         return (typeof rule === 'function' ? rule : rule.create)(context);
@@ -576,7 +577,7 @@ export class RuleTester extends TestFramework {
                   ruleName,
                   rule,
                   // no need to pass no infer type parameter down to private methods
-                  invalid as InvalidTestCase<MessageIds, Options>,
+                  invalid,
                   seenInvalidTestCases,
                 );
               } finally {
@@ -734,6 +735,7 @@ export class RuleTester extends TestFramework {
       } catch (err) {
         throw new Error(
           `Schema for rule ${ruleName} is invalid: ${(err as Error).message}`,
+          { cause: err },
         );
       }
     }

@@ -20,11 +20,10 @@ const defaults = {
 
 const createMockRuleContext = (
   overrides: Partial<UnknownRuleContext> = {},
-): UnknownRuleContext =>
-  ({
-    ...defaults,
-    ...overrides,
-  }) as unknown as UnknownRuleContext;
+): UnknownRuleContext => ({
+  ...defaults,
+  ...overrides,
+});
 
 const requiresParserServicesMessageTemplate = (parser = '\\S*'): string =>
   'You have used a rule which requires type information, .+\n' +
@@ -49,7 +48,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex('@typescript-eslint[\\/]parser[\\/]dist[\\/]index\\.js'),
     );
   });
@@ -62,6 +61,7 @@ describe(ESLintUtils.getParserServices, () => {
             name: 'custom-parser',
           },
         } as FlatConfig.Parser,
+        parserOptions: {},
       },
       parserPath: undefined,
       sourceCode: {
@@ -73,14 +73,14 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex('custom-parser'),
     );
   });
 
   it('throws a standard error with an unknown parser when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is missing', () => {
     const context = createMockRuleContext({
-      languageOptions: {},
+      languageOptions: { parserOptions: {} },
       parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
@@ -91,7 +91,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex('\\(unknown\\)'),
     );
   });
@@ -100,6 +100,7 @@ describe(ESLintUtils.getParserServices, () => {
     const context = createMockRuleContext({
       languageOptions: {
         parser: {} as FlatConfig.Parser,
+        parserOptions: {},
       },
       parserPath: undefined,
       sourceCode: {
@@ -111,7 +112,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex('\\(unknown\\)'),
     );
   });
@@ -127,7 +128,7 @@ describe(ESLintUtils.getParserServices, () => {
         },
       },
     });
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       unknownParserErrorRegex(),
     );
   });
@@ -143,7 +144,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex(),
     );
   });
@@ -159,7 +160,7 @@ describe(ESLintUtils.getParserServices, () => {
       },
     });
 
-    expect(() => ESLintUtils.getParserServices(context)).toThrowError(
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
       baseErrorRegex(),
     );
   });

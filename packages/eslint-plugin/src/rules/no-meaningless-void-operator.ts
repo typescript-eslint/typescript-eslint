@@ -61,8 +61,11 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
         const argType = services.getTypeAtLocation(node.argument);
         const unionParts = tsutils.unionConstituents(argType);
         if (
-          unionParts.every(
-            part => part.flags & (ts.TypeFlags.Void | ts.TypeFlags.Undefined),
+          unionParts.every(part =>
+            tsutils.isTypeFlagSet(
+              part,
+              ts.TypeFlags.Void | ts.TypeFlags.Undefined,
+            ),
           )
         ) {
           context.report({
@@ -73,10 +76,11 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           });
         } else if (
           checkNever &&
-          unionParts.every(
-            part =>
-              part.flags &
-              (ts.TypeFlags.Void | ts.TypeFlags.Undefined | ts.TypeFlags.Never),
+          unionParts.every(part =>
+            tsutils.isTypeFlagSet(
+              part,
+              ts.TypeFlags.Void | ts.TypeFlags.Undefined | ts.TypeFlags.Never,
+            ),
           )
         ) {
           context.report({

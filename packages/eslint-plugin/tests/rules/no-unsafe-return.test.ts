@@ -136,6 +136,14 @@ function foo(): Set<number> {
         return Promise.resolve(x as any);
       }
     `,
+    `
+      type Wrapper<T> = { inner: T };
+      type Extractor<D extends Wrapper<any>> = D extends Wrapper<infer V> ? V : never;
+      const fn =
+        <D extends Wrapper<any>>(foo: Extractor<D>) =>
+        () =>
+          foo;
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/2109
     `
       function test(): Map<string, string> {

@@ -15,6 +15,7 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
+import yaml from 'yaml';
 
 import rootPackageJson from '../../../package.json';
 
@@ -26,7 +27,8 @@ interface PackageJSON {
   private?: boolean;
 }
 
-const PACKAGES_DIR = path.resolve(__dirname, '..', '..');
+const ROOT_DIR = path.resolve(__dirname, '..', '..', '..');
+const PACKAGES_DIR = path.resolve(ROOT_DIR, 'packages');
 
 const INTEGRATION_TEST_DIR = path.join(
   os.tmpdir() || os.homedir(),
@@ -40,7 +42,7 @@ export const FIXTURES_DESTINATION_DIR = path.join(
   FIXTURES_DIR_BASENAME,
 );
 
-const YARN_RC_CONTENT = 'nodeLinker: node-modules\n\nenableGlobalCache: true\n';
+const NPMRC_CONTENT = 'node-linker=hoisted\n';
 
 const FIXTURES_DIR = path.join(__dirname, '..', FIXTURES_DIR_BASENAME);
 
@@ -107,18 +109,16 @@ export const setup = async (project: TestProject): Promise<void> => {
     ).filter(e => e != null),
   );
 
+  const PNPM_CATALOG = await getPnpmCatalog();
+
   const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
     ...tseslintPackages,
-    eslint: rootPackageJson.devDependencies.eslint,
-    typescript: rootPackageJson.devDependencies.typescript,
-    vitest: rootPackageJson.devDependencies.vitest,
+    eslint: PNPM_CATALOG.eslint,
+    typescript: PNPM_CATALOG.typescript,
+    vitest: PNPM_CATALOG.vitest,
   };
 
   const temp = await fs.mkdtemp(path.join(INTEGRATION_TEST_DIR, 'temp'), {
-    encoding: 'utf-8',
-  });
-
-  await fs.writeFile(path.join(temp, '.yarnrc.yml'), YARN_RC_CONTENT, {
     encoding: 'utf-8',
   });
 
@@ -128,8 +128,10 @@ export const setup = async (project: TestProject): Promise<void> => {
       {
         devDependencies: BASE_DEPENDENCIES,
         packageManager: rootPackageJson.packageManager,
+        pnpm: {
+          overrides: tseslintPackages,
+        },
         private: true,
-        resolutions: tseslintPackages,
       },
       null,
       2,
@@ -137,13 +139,17 @@ export const setup = async (project: TestProject): Promise<void> => {
     { encoding: 'utf-8' },
   );
 
-  // We install the tarballs here once so that yarn can cache them globally.
+  await fs.writeFile(path.join(temp, '.npmrc'), NPMRC_CONTENT, {
+    encoding: 'utf-8',
+  });
+
+  // We install the tarballs here once so that pnpm can cache them globally.
   // This solves 2 problems:
   // 1. Tests can be run concurrently because they won't be trying to install
   //    the same tarballs at the same time.
-  // 2. Installing the tarballs for each test becomes much faster as Yarn can
-  //    grab them from the global cache folder.
-  await execFile('yarn', ['install', '--no-immutable'], {
+  // 2. Installing the tarballs for each test becomes much faster as pnpm can
+  //    reuse them from its global content-addressable store.
+  await execFile('pnpm', ['install', '--no-frozen-lockfile'], {
     cwd: temp,
     shell: true,
   });
@@ -177,8 +183,8 @@ export const setup = async (project: TestProject): Promise<void> => {
             packageManager: rootPackageJson.packageManager,
 
             // ensure everything uses the locally packed versions instead of the NPM versions
-            resolutions: {
-              ...tseslintPackages,
+            pnpm: {
+              overrides: tseslintPackages,
             },
           },
           null,
@@ -187,15 +193,13 @@ export const setup = async (project: TestProject): Promise<void> => {
         { encoding: 'utf-8' },
       );
 
-      await fs.writeFile(
-        path.join(testFolder, '.yarnrc.yml'),
-        YARN_RC_CONTENT,
-        { encoding: 'utf-8' },
-      );
+      await fs.writeFile(path.join(testFolder, '.npmrc'), NPMRC_CONTENT, {
+        encoding: 'utf-8',
+      });
 
       const { stderr, stdout } = await execFile(
-        'yarn',
-        ['install', '--no-immutable'],
+        'pnpm',
+        ['install', '--no-frozen-lockfile'],
         {
           cwd: testFolder,
           shell: true,
@@ -222,3 +226,26 @@ export const teardown = async (): Promise<void> => {
     await fs.rm(INTEGRATION_TEST_DIR, { recursive: true });
   }
 };
+
+interface PnpmWorkspace {
+  catalog: Record<string, string>;
+}
+
+async function getPnpmCatalog() {
+  const pnpmWorkspace = await fs.readFile(
+    path.join(ROOT_DIR, 'pnpm-workspace.yaml'),
+    { encoding: 'utf-8' },
+  );
+
+  const parsed: PnpmWorkspace = yaml.parse(pnpmWorkspace);
+
+  const expectedPackages = ['eslint', 'typescript', 'vitest'];
+
+  for (const packageName of expectedPackages) {
+    if (!(packageName in parsed.catalog)) {
+      throw new Error(`Package ${packageName} not found in pnpm catalog`);
+    }
+  }
+
+  return parsed.catalog;
+}

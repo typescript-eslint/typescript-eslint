@@ -5,14 +5,12 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "allowJs": true,
-    "esModuleInterop": true,
     "jsx": "react",
     "resolveJsonModule": true,
     "paths": {
       "@site/*": ["./*"]
     },
-    "lib": ["DOM", "ES2023"],
-    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
+    "lib": ["DOM", "ES2023"]
   },
   "include": [
     "src",

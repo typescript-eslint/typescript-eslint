@@ -1,3 +1,163 @@
+## 8.59.3 (2026-05-11)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.3) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.59.2 (2026-05-04)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.59.1 (2026-04-27)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.59.0 (2026-04-20)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] report more cases based on assignability ([#11789](https://github.com/typescript-eslint/typescript-eslint/pull/11789))
+
+### ❤️ Thank You
+
+- Ulrich Stark
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.58.2 (2026-04-13)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-condition] use assignability checks in checkTypePredicates ([#12147](https://github.com/typescript-eslint/typescript-eslint/pull/12147))
+- remove tsbuildinfo cache file from published packages ([#12187](https://github.com/typescript-eslint/typescript-eslint/pull/12187))
+
+### ❤️ Thank You
+
+- Abhijeet Singh @cseas
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.58.1 (2026-04-08)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.58.0 (2026-03-30)
+
+### 🚀 Features
+
+- support TypeScript 6 ([#12124](https://github.com/typescript-eslint/typescript-eslint/pull/12124))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.57.2 (2026-03-23)
+
+### 🩹 Fixes
+
+- **typescript-estree:** skip createIsolatedProgram fallback for projectService ([#12066](https://github.com/typescript-eslint/typescript-eslint/pull/12066), [#12065](https://github.com/typescript-eslint/typescript-eslint/issues/12065))
+
+### ❤️ Thank You
+
+- Claude Opus 4.6
+- RyoheiYamamoto
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.57.1 (2026-03-16)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.57.0 (2026-03-09)
+
+### 🩹 Fixes
+
+- **typescript-estree:** if the template literal is tagged and the text has an invalid escape, `cooked` will be `null` ([#11355](https://github.com/typescript-eslint/typescript-eslint/pull/11355))
+- **typescript-estree:** switch back to use `ts.getModifiers()` ([#12034](https://github.com/typescript-eslint/typescript-eslint/pull/12034))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- fisker Cheung @fisker
+- James Henry @JamesHenry
+- Kirk Waiblinger @kirkwaiblinger
+- Younsang Na @nayounsang
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.57.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.56.1 (2026-02-23)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.56.0 (2026-02-16)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.56.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.55.0 (2026-02-09)
+
+### 🩹 Fixes
+
+- **typescript-estree:** forbid invalid modifier in object expression ([#11931](https://github.com/typescript-eslint/typescript-eslint/pull/11931))
+
+### ❤️ Thank You
+
+- fisker Cheung @fisker
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.55.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.54.0 (2026-01-26)
+
+### 🚀 Features
+
+- **typescript-estree:** add shortcut methods to ParserServicesWithTypeInformation ([#11965](https://github.com/typescript-eslint/typescript-eslint/pull/11965), [#11955](https://github.com/typescript-eslint/typescript-eslint/issues/11955))
+
+### ❤️ Thank You
+
+- MinJae @Ju-MINJAE
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.53.1 (2026-01-19)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.

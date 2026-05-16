@@ -177,10 +177,17 @@ export function isBuiltinSymbolLikeRecurser(
   const symbol = type.getSymbol();
   if (
     symbol &&
-    symbol.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Interface)
+    tsutils.isSymbolFlagSet(
+      symbol,
+      ts.SymbolFlags.Class | ts.SymbolFlags.Interface,
+    )
   ) {
     const checker = program.getTypeChecker();
-    for (const baseType of checker.getBaseTypes(type as ts.InterfaceType)) {
+    const declaredType = checker.getDeclaredTypeOfSymbol(symbol);
+
+    for (const baseType of checker.getBaseTypes(
+      declaredType as ts.InterfaceType,
+    )) {
       if (isBuiltinSymbolLikeRecurser(program, baseType, predicate)) {
         return true;
       }
