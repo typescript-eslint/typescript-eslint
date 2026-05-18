@@ -1,3 +1,27 @@
+## 8.59.3 (2026-05-11)
+
+This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.3) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.59.2 (2026-05-04)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] object destructuring values should be treated as declarations ([#12292](https://github.com/typescript-eslint/typescript-eslint/pull/12292))
+- **eslint-plugin:** [no-unsafe-type-assertion] handle crash on recursive template literal types ([#12150](https://github.com/typescript-eslint/typescript-eslint/pull/12150))
+
+### ❤️ Thank You
+
+- Dima Barabash
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.59.1 (2026-04-27)
 
 ### 🩹 Fixes
