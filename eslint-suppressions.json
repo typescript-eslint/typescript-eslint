@@ -1,32 +1,7 @@
 {
-  "packages/eslint-plugin/tests/rules/dot-notation.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-this-alias.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 14
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-template-expression.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 9
-    }
-  },
   "packages/eslint-plugin/tests/rules/prefer-optional-chain/prefer-optional-chain.test.ts": {
     "@typescript-eslint/internal/no-dynamic-tests": {
       "count": 17
-    }
-  },
-  "packages/eslint-plugin/tests/rules/sort-type-constituents.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 4
     }
   }
 }

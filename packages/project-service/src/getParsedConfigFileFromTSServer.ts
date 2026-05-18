@@ -14,6 +14,7 @@ export function getParsedConfigFileFromTSServer(
     if (throwOnFailure) {
       throw new Error(
         `Could not read Project Service default project '${defaultProject}': ${(error as Error).message}`,
+        { cause: error },
       );
     }
   }

@@ -392,7 +392,7 @@ describe(RuleTester, () => {
         invalid: [],
         valid: ['// eslint-disable-next-line'],
       });
-    }).not.toThrowError();
+    }).not.toThrow();
   });
 
   it('throws an error if you attempt to set the parser to ts-eslint at the test level', () => {
@@ -1153,7 +1153,7 @@ describe('RuleTester - hooks', () => {
           ],
           valid: [],
         }),
-      ).toThrowError('Something happened');
+      ).toThrow('Something happened');
       expect(() =>
         ruleTester.run('no-foo', noFooRule, {
           invalid: [],
@@ -1164,7 +1164,7 @@ describe('RuleTester - hooks', () => {
             },
           ],
         }),
-      ).toThrowError('Something happened');
+      ).toThrow('Something happened');
     },
   );
 
@@ -1181,9 +1181,7 @@ describe('RuleTester - hooks', () => {
             },
           ],
         }),
-      ).toThrowError(
-        `Optional test case property '${hookName}' must be a function`,
-      );
+      ).toThrow(`Optional test case property '${hookName}' must be a function`);
       expect(() =>
         ruleTester.run('no-foo', noFooRule, {
           invalid: [
@@ -1195,9 +1193,7 @@ describe('RuleTester - hooks', () => {
           ],
           valid: [],
         }),
-      ).toThrowError(
-        `Optional test case property '${hookName}' must be a function`,
-      );
+      ).toThrow(`Optional test case property '${hookName}' must be a function`);
     },
   );
 
@@ -1215,7 +1211,7 @@ describe('RuleTester - hooks', () => {
           },
         ],
       }),
-    ).toThrowError();
+    ).toThrow();
     expect(hookBefore).toHaveBeenCalledOnce();
     expect(hookAfter).toHaveBeenCalledOnce();
     expect(() =>
@@ -1230,7 +1226,7 @@ describe('RuleTester - hooks', () => {
         ],
         valid: [],
       }),
-    ).toThrowError();
+    ).toThrow();
     expect(hookBefore).toHaveBeenCalledTimes(2);
     expect(hookAfter).toHaveBeenCalledTimes(2);
   });
@@ -1250,7 +1246,7 @@ describe('RuleTester - hooks', () => {
           },
         ],
       }),
-    ).toThrowError(/parsing error/);
+    ).toThrow(/parsing error/);
     expect(hookBefore).toHaveBeenCalledOnce();
     expect(hookAfter).toHaveBeenCalledOnce();
     expect(() =>
@@ -1265,7 +1261,7 @@ describe('RuleTester - hooks', () => {
         ],
         valid: [],
       }),
-    ).toThrowError(/parsing error/);
+    ).toThrow(/parsing error/);
     expect(hookBefore).toHaveBeenCalledTimes(2);
     expect(hookAfter).toHaveBeenCalledTimes(2);
   });
@@ -1287,7 +1283,7 @@ describe('RuleTester - hooks', () => {
           },
         ],
       }),
-    ).toThrowError('Something happened in before()');
+    ).toThrow('Something happened in before()');
     expect(hookBefore).toHaveBeenCalledOnce();
     expect(hookAfter).toHaveBeenCalledOnce();
     expect(() =>
@@ -1302,7 +1298,7 @@ describe('RuleTester - hooks', () => {
         ],
         valid: [],
       }),
-    ).toThrowError('Something happened in before()');
+    ).toThrow('Something happened in before()');
     expect(hookBefore).toHaveBeenCalledTimes(2);
     expect(hookAfter).toHaveBeenCalledTimes(2);
   });
@@ -1347,7 +1343,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('passes with null output', () => {
@@ -1362,7 +1358,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('throws with string output', () => {
@@ -1377,7 +1373,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).toThrowError('Expected autofix to be suggested.');
+      }).toThrow('Expected autofix to be suggested.');
     });
 
     it('throws with array output', () => {
@@ -1392,7 +1388,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).toThrowError('Expected autofix to be suggested.');
+      }).toThrow('Expected autofix to be suggested.');
     });
   });
 
@@ -1433,7 +1429,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('passes with correct array output', () => {
@@ -1448,7 +1444,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('throws with no output', () => {
@@ -1462,7 +1458,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).toThrowError("The rule fixed the code. Please add 'output' property.");
+      }).toThrow("The rule fixed the code. Please add 'output' property.");
     });
 
     it('throws with null output', () => {
@@ -1477,7 +1473,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).toThrowError('Expected no autofixes to be suggested.');
+      }).toThrow('Expected no autofixes to be suggested.');
     });
 
     it('throws with incorrect array output', () => {
@@ -1492,7 +1488,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).toThrowError('Outputs do not match.');
+      }).toThrow('Outputs do not match.');
     });
 
     it('throws with incorrect string output', () => {
@@ -1507,7 +1503,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).toThrowError('Output is incorrect.');
+      }).toThrow('Output is incorrect.');
     });
   });
 
@@ -1555,7 +1551,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('throws with string output', () => {
@@ -1570,7 +1566,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).toThrowError(
+      }).toThrow(
         'Multiple autofixes are required due to overlapping fix ranges - please use the array form of output to declare all of the expected autofix passes.',
       );
     });
@@ -1587,7 +1583,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).toThrowError('Outputs do not match.');
+      }).toThrow('Outputs do not match.');
     });
 
     it('throws with incorrectly ordered array output', () => {
@@ -1602,7 +1598,7 @@ describe('RuleTester - multipass fixer', () => {
           ],
           valid: [],
         });
-      }).toThrowError('Outputs do not match.');
+      }).toThrow('Outputs do not match.');
     });
   });
 });
@@ -1656,7 +1652,7 @@ describe('RuleTester - run types', () => {
           invalid: [],
           valid: [{ code: 'test', options: [{ flag: 'bar' }] }],
         }),
-      ).not.toThrowError();
+      ).not.toThrow();
 
       expect(() =>
         ruleTester.run('my-rule', ruleModule, {
@@ -1674,7 +1670,7 @@ describe('RuleTester - run types', () => {
           ],
           valid: [],
         }),
-      ).not.toThrowError();
+      ).not.toThrow();
     });
 
     it('should throw both runtime and type error when `options` or `messageId` are not assignable to rule inferred types', () => {
@@ -1699,7 +1695,7 @@ describe('RuleTester - run types', () => {
             { code: 'test', options: [{ flag: 'bar2' }] },
           ],
         }),
-      ).toThrowError();
+      ).toThrow();
     });
   });
 
@@ -1749,6 +1745,6 @@ describe('RuleTester - run types', () => {
           generateIncompatibleValidTestCase(),
         ],
       }),
-    ).not.toThrowError();
+    ).not.toThrow();
   });
 });
