@@ -461,7 +461,9 @@ arr.findIndex(isNotNil);
     `
 declare function isNotNil<T>(value: T | null | undefined): value is T;
 interface Observable<T> {
-  pipe<S extends T>(op: (source: Observable<T>) => Observable<S>): Observable<S>;
+  pipe<S extends T>(
+    op: (source: Observable<T>) => Observable<S>,
+  ): Observable<S>;
 }
 declare function filter<T, S extends T>(
   predicate: (value: T) => value is S,
@@ -500,6 +502,67 @@ declare function isString(value: unknown): value is string;
 function f<T>(arr: T[]) {
   arr.filter(isString);
 }
+    `,
+    // SpreadElement as first argument to array predicate method — should not report
+    `
+declare const predicates: [(x: number | null) => boolean];
+[1, null, 2].filter(...predicates);
+    `,
+    // Type guard passed to function with non-callable param type — should not report
+    `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare function acceptsObject(callback: {}): void;
+acceptsObject(isNotNil);
+    `,
+    // Type guard passed as extra argument beyond declared params — should not report
+    `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare function noParams(): void;
+// @ts-expect-error - testing extra argument handling
+noParams(isNotNil);
+    `,
+    // Generic type guard with incompatible constraint entering Step 4 fallback —
+    // should not report because generic callbacks can't be safely checked
+    `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare function process(
+  arr: string[],
+  callback: (value: string) => unknown,
+): string[];
+declare function process<S extends string>(
+  arr: string[],
+  callback: (value: string) => value is S,
+): S[];
+declare const arr: string[];
+process(arr, isNotNil);
+    `,
+    // Callback with mixed overloads (one type guard, one not) in Step 4 fallback —
+    // should not report because not all signatures are type predicates
+    `
+declare function myCheck(value: string): value is string;
+declare function myCheck(value: number): boolean;
+declare function process(
+  arr: string[],
+  callback: (value: string) => unknown,
+): string[];
+declare function process<S extends string>(
+  arr: string[],
+  callback: (value: string) => value is S,
+): S[];
+declare const arr: string[];
+process(arr, myCheck);
+    `,
+    // Callback in Step 4 fallback where resolved element type is `any` —
+    // should not report because we can't reason about `any`
+    `
+declare function myGuard(value: unknown): value is string;
+declare function process(arr: any[], callback: (value: any) => any): any[];
+declare function process<S>(
+  arr: any[],
+  callback: (value: any) => value is S,
+): S[];
+declare const arr: any[];
+process(arr, myGuard);
     `,
 
     // Ignores non-array methods of the same name
@@ -2333,7 +2396,9 @@ arr.filter(isNumber);
       code: `
 declare function isNotNil<T>(value: T | null | undefined): value is T;
 interface Observable<T> {
-  pipe<S extends T>(op: (source: Observable<T>) => Observable<S>): Observable<S>;
+  pipe<S extends T>(
+    op: (source: Observable<T>) => Observable<S>,
+  ): Observable<S>;
 }
 declare function filter<T, S extends T>(
   predicate: (value: T) => value is S,
@@ -2341,17 +2406,15 @@ declare function filter<T, S extends T>(
 declare const obs: Observable<string>;
 obs.pipe(filter(isNotNil));
       `,
-      errors: [{ column: 17, line: 10, messageId: 'alwaysTruthyFunc' }],
+      errors: [{ column: 17, line: 12, messageId: 'alwaysTruthyFunc' }],
     },
     {
       code: `
 declare function isString(value: unknown): value is string;
-declare function filter(
-  predicate: (value: string) => value is string,
-): void;
+declare function filter(predicate: (value: string) => value is string): void;
 filter(isString);
       `,
-      errors: [{ column: 8, line: 6, messageId: 'alwaysTruthyFunc' }],
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthyFunc' }],
     },
     // Type guard at non-first argument position — unnecessary
     {
@@ -2382,6 +2445,25 @@ declare const arr: string[];
 arr.filter(isNil);
       `,
       errors: [{ column: 12, line: 4, messageId: 'alwaysFalsyFunc' }],
+    },
+    // No-overlap detection via Step 4 fallback: callee has a short-param overload
+    // (covers the branch where callbackIndex >= params.length in callee sig check)
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare function myFilter(arr: number[]): number[];
+declare function myFilter<S extends number>(
+  arr: number[],
+  predicate: (value: number) => value is S,
+): S[];
+declare function myFilter(
+  arr: number[],
+  predicate: (value: number) => boolean,
+): number[];
+declare const arr: number[];
+myFilter(arr, isString);
+      `,
+      errors: [{ column: 15, line: 13, messageId: 'alwaysFalsyFunc' }],
     },
 
     // Indexing cases

@@ -636,10 +636,11 @@ export default createRule<Options, MessageId>({
         return 'indeterminate';
       }
 
+      const predicateType = predicate.type;
       const hasOverlap = elementConstituents.some(
         constituent =>
-          checker.isTypeAssignableTo(constituent, predicate.type!) ||
-          checker.isTypeAssignableTo(predicate.type!, constituent),
+          checker.isTypeAssignableTo(constituent, predicateType) ||
+          checker.isTypeAssignableTo(predicateType, constituent),
       );
 
       if (!hasOverlap) {
@@ -698,9 +699,7 @@ export default createRule<Options, MessageId>({
 
       // Find which parameter of the outer function corresponds to our callback.
       // This supports type guards at any argument position (not just the first).
-      const callbackIndex = callNode.arguments.indexOf(
-        callback as TSESTree.CallExpressionArgument,
-      );
+      const callbackIndex = callNode.arguments.indexOf(callback);
       if (callbackIndex === -1) {
         return 'has-type-predicate';
       }
@@ -734,12 +733,9 @@ export default createRule<Options, MessageId>({
         }
 
         // Get the element type (= the parameter that the predicate guards).
-        const elementParam = sig.getParameters()[predicate.parameterIndex];
-        if (!elementParam) {
-          return 'has-type-predicate';
-        }
-
-        const elementType = checker.getTypeOfSymbol(elementParam);
+        const elementType = checker.getTypeOfSymbol(
+          sig.getParameters()[predicate.parameterIndex],
+        );
 
         // If element type is `any` or `unknown`, the condition is always
         // necessary — we can't reason about what values might appear.
@@ -816,12 +812,9 @@ export default createRule<Options, MessageId>({
           return 'has-type-predicate';
         }
 
-        const guardedParam =
-          firstResolvedSig.getParameters()[predicate.parameterIndex];
-        if (!guardedParam) {
-          return 'has-type-predicate';
-        }
-        const elementType = checker.getTypeOfSymbol(guardedParam);
+        const elementType = checker.getTypeOfSymbol(
+          firstResolvedSig.getParameters()[predicate.parameterIndex],
+        );
         if (isTypeAnyType(elementType) || isTypeUnknownType(elementType)) {
           return 'has-type-predicate';
         }
