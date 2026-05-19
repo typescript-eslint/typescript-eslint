@@ -394,7 +394,12 @@ export default createRule<Options, MessageId>({
     }
 
     function isPromiseArray(node: ts.Node): boolean {
-      const type = checker.getTypeAtLocation(node);
+      const type = getTypeAtLocation(checker, node);
+
+      if (type == null) {
+        return false;
+      }
+
       for (const ty of tsutils
         .unionConstituents(type)
         .map(t => checker.getApparentType(t))) {
@@ -502,4 +507,16 @@ function isFunctionParam(
     }
   }
   return false;
+}
+
+function getTypeAtLocation(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+): ts.Type | null {
+  try {
+    return checker.getTypeAtLocation(node);
+  } catch {
+    // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/11947
+    return null;
+  }
 }
