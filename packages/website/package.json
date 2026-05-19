@@ -103,7 +103,8 @@
   "nx": {
     "name": "website",
     "includedScripts": [
-      "clean"
+      "clean",
+      "generate-website-dts"
     ],
     "targets": {
       "build": {

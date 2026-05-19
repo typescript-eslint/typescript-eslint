@@ -27,4 +27,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get action 'github/accessibility-alt-text-bot'
-        uses: github/accessibility-alt-text-bot@v1.7.1
+        uses: github/accessibility-alt-text-bot@531a7430c6930a39cae5a0aab2d165284468060f # v1.7.1

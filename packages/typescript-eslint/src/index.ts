@@ -231,3 +231,11 @@ export {
   type InfiniteDepthConfigWithExtends,
   type ConfigArray,
 } from './config-helper';
+
+// https://github.com/typescript-eslint/typescript-eslint/issues/12134
+export type {
+  CompatibleConfig,
+  CompatibleConfigArray,
+  CompatibleParser,
+  CompatiblePlugin,
+} from './compatibility-types';
