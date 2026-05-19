@@ -1,3 +1,17 @@
+## 8.59.4 (2026-05-18)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] stack overflow when using recursive types ([#12294](https://github.com/typescript-eslint/typescript-eslint/pull/12294))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.4) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.59.3 (2026-05-11)
 
 This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.

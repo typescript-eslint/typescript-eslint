@@ -1,3 +1,21 @@
+## 8.59.4 (2026-05-18)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] stack overflow when using recursive types ([#12294](https://github.com/typescript-eslint/typescript-eslint/pull/12294))
+- **project-service:** throw error cause in `getParsedConfigFileFromTSServer` ([#12321](https://github.com/typescript-eslint/typescript-eslint/pull/12321))
+- **typescript-eslint:** export Compatible* types from typescript-eslint to resolve pnpm TS error ([#12340](https://github.com/typescript-eslint/typescript-eslint/pull/12340))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Kirk Waiblinger @kirkwaiblinger
+- lumir
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.4) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.59.3 (2026-05-11)
 
 This was a version bump only, there were no code changes.
