@@ -67,9 +67,10 @@ jobs:
       project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -95,7 +96,7 @@ jobs:
       # so we're creating the whole matrix dynamically instead.
       - name: Filter affected packages for test matrices
         id: filter
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
           script: |
             const affected = ${{ steps.affected.outputs.affected }};
@@ -270,9 +271,6 @@ jobs:
             { name: 'eslint-plugin', params: '--shard=3/4' },
             { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
-    env:
-      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
-      COLLECT_COVERAGE: false
     steps:
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -340,14 +338,16 @@ jobs:
       # we don't collect coverage on other OSs so that they run faster
       - name: Run unit tests with coverage for ${{ matrix.package }}
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package }} -- --coverage
+        run: pnpm exec nx test "$PACKAGE" -- --coverage
         env:
           CI: true
+          PACKAGE: ${{ matrix.package }}
       - name: Run unit tests for ${{ matrix.package }}
         if: matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package }}
+        run: pnpm exec nx test "$PACKAGE"
         env:
           CI: true
+          PACKAGE: ${{ matrix.package }}
 
       - name: Store coverage for uploading
         if: matrix.os == 'ubuntu-latest'
@@ -383,10 +383,11 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
-        run: pnpm exec nx test ${{ matrix.package }} --coverage=false
+        run: pnpm exec nx test "$PACKAGE" --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
+          PACKAGE: ${{ matrix.package }}
 
   upload_coverage:
     name: Upload Codecov Coverage
