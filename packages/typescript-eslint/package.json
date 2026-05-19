@@ -47,7 +47,8 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "workspace:*",
@@ -81,6 +82,12 @@
         "command": "eslint"
       },
       "typecheck": {
+        "outputs": [
+          "{workspaceRoot}/dist",
+          "{projectRoot}/dist"
+        ]
+      },
+      "typecheck:tsgo": {
         "outputs": [
           "{workspaceRoot}/dist",
           "{projectRoot}/dist"

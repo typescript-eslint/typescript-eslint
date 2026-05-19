@@ -44,7 +44,8 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "peerDependencies": {
     "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
@@ -79,7 +80,7 @@
       "lint": {
         "command": "eslint"
       },
-      "typecheck": {}
+      "typecheck:tsgo": {}
     }
   }
 }

@@ -5,7 +5,9 @@
       "plugin": "@nx/js/typescript",
       "exclude": ["packages/integration-tests/fixtures/**"],
       "options": {
-        "typecheck": false,
+        "typecheck": {
+          "targetName": "typecheck"
+        },
         "build": {
           "targetName": "build",
           "configName": "tsconfig.build.json"
@@ -43,10 +45,10 @@
     }
   },
   "targetDefaults": {
-    "typecheck": {
+    "typecheck:tsgo": {
       "cache": true,
       "executor": "nx:run-commands",
-      "dependsOn": ["build", "^typecheck"],
+      "dependsOn": ["build", "^typecheck:tsgo"],
       "options": {
         "command": "tsgo --build --emitDeclarationOnly",
         "cwd": "{projectRoot}"

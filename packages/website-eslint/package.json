@@ -31,7 +31,8 @@
     "clean": "rimraf dist/",
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@typescript-eslint/tsconfig-utils": "workspace:*"
@@ -40,9 +41,9 @@
     "@eslint/js": "catalog:",
     "@typescript-eslint/eslint-plugin": "workspace:*",
     "@typescript-eslint/parser": "workspace:*",
-    "@typescript-eslint/type-utils": "workspace:*",
     "@typescript-eslint/scope-manager": "workspace:*",
     "@typescript-eslint/tsconfig-utils": "workspace:*",
+    "@typescript-eslint/type-utils": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
     "@typescript/native-preview": "catalog:",
@@ -75,7 +76,7 @@
       "lint": {
         "command": "eslint"
       },
-      "typecheck": {}
+      "typecheck:tsgo": {}
     }
   }
 }

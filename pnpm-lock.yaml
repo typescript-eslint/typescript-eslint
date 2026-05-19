@@ -25,8 +25,8 @@ catalogs:
       specifier: ^18.3.21
       version: 18.3.21
     '@typescript/native-preview':
-      specifier: 7.0.0-dev.20260317.1
-      version: 7.0.0-dev.20260317.1
+      specifier: 7.0.0-dev.20260518.1
+      version: 7.0.0-dev.20260518.1
     '@vitest/coverage-v8':
       specifier: ^4.0.18
       version: 4.1.5
@@ -151,7 +151,7 @@ importers:
         version: link:packages/utils
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -274,7 +274,7 @@ importers:
         version: link:../typescript-estree
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -350,7 +350,7 @@ importers:
         version: link:../rule-tester
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -423,7 +423,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -441,7 +441,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -475,7 +475,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -509,7 +509,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -537,7 +537,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -586,7 +586,7 @@ importers:
         version: 4.6.9
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -617,7 +617,7 @@ importers:
         version: link:../typescript-estree
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -644,7 +644,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -686,7 +686,7 @@ importers:
         version: link:../parser
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -710,7 +710,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -747,7 +747,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -796,7 +796,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -836,7 +836,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -864,7 +864,7 @@ importers:
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
@@ -1027,7 +1027,7 @@ importers:
         version: link:../utils
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       history:
         specifier: ^4.10.1
         version: 4.10.1
@@ -1100,7 +1100,7 @@ importers:
         version: link:../visitor-keys
       '@typescript/native-preview':
         specifier: 'catalog:'
-        version: 7.0.0-dev.20260317.1
+        version: 7.0.0-dev.20260518.1
       esbuild:
         specifier: ~0.28.0
         version: 0.28.0
@@ -4117,43 +4117,51 @@ packages:
     resolution: {integrity: sha512-/uejZt4dSere1bx12WLlPfv8GktzcaDtuJ7s42/HEZ5zGj9oxRaD4bj7qwSunXkf+pbAhFt2zjpHYUiT5lHf0Q==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260317.1':
-    resolution: {integrity: sha512-E63cwlaAKeOXGcSaTcuVKdfGQJoms/vSMZH8lYsvxU6el3X96LdbXVcAIqbqwDfPJt7rQ6gw/OOGO45BlTlxSw==}
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260518.1':
+    resolution: {integrity: sha512-5n6xnR8jsDjrjHkf30hVVzby/cTusPrc0f6S3hQLrTdACC9JejsrHMHV1rRu55gSAIZhhBY0pqvG3/VKB9J0tA==}
+    engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [darwin]
 
-  '@typescript/native-preview-darwin-x64@7.0.0-dev.20260317.1':
-    resolution: {integrity: sha512-cy9kmUiwJmANoz1tOc22HYXqyz92tvNrI9eP/q8LAa5LGega5OlTqAbuSiEc4C9OUL/4EvCJuIYmOk5PFME0tQ==}
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20260518.1':
+    resolution: {integrity: sha512-zO1lq7F6QskMZOfyQGpvnJF+DtbWtraMF/1srgtu86Yoc3MvRAnidX3R5S6l10d+r153WL0T4A8aMfZNhv2SAQ==}
+    engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [darwin]
 
-  '@typescript/native-preview-linux-arm64@7.0.0-dev.20260317.1':
-    resolution: {integrity: sha512-YeRI5O4z5H7JgBCb2tTaZSEEEpojjBxac5DQ1NEm3wwjSSWhHadCaq/mDLq8yWDQo9JK0Yuj3Vb0NK3/P7F9Sw==}
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20260518.1':
+    resolution: {integrity: sha512-V/nLg3BtptWuRJnFUM2wACfZqtkqwC461eb07VabOWTkTEP+ouB7bUWapx6sbb023FiUIk3C3BPK5icjDM7GxA==}
+    engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [linux]
 
-  '@typescript/native-preview-linux-arm@7.0.0-dev.20260317.1':
-    resolution: {integrity: sha512-Q6vKYOej5FoPfYzvNsUdeE4GWWKxUg9wzo2fJxgV50ZQeITEDvSpG1PxS1019kFbe3KSAoIIzSmhP/4EIie7Kg==}
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20260518.1':
+    resolution: {integrity: sha512-u2XUYrpqqBoYa+sb80pNURIy7OqIj1sBNecJb3+cGVxKdeBOMT2p7yPlg6ozuZnurAeUSuGwMWt5eekG0QRYVQ==}
+    engines: {node: '>=16.20.0'}
     cpu: [arm]
     os: [linux]
 
-  '@typescript/native-preview-linux-x64@7.0.0-dev.20260317.1':
-    resolution: {integrity: sha512-PJN4JbWrVeJ8WyWbRWVdyUHUUSL9zKqywwroXdqIDgxUO2B09bSUCCs9DFJNHXQ5NqWND/WeVPgpYfnQ95S21Q==}
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20260518.1':
+    resolution: {integrity: sha512-NpG2X1kViy7YRpw54GTanHuoH/hwLywuVvFDnoAitR7zDCGJ7OP2YMyCLMrVJX+aCjz4NPrYqROf9OfdwRyNIw==}
+    engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [linux]
 
-  '@typescript/native-preview-win32-arm64@7.0.0-dev.20260317.1':
-    resolution: {integrity: sha512-Obv+ZTK0NVfv1E/KlTz7G5EyPbE8zNA1qeT59CyoWHl0Mi2iq3njs5dRIfcRbgGDZkSI8wJ+4C4JGfUyZZGZkA==}
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20260518.1':
+    resolution: {integrity: sha512-Y7NTZd5yD/FxQLVxQdlK9MdXEsVQFgSOMu24p32kHthFJeVT81TYeMCr6qg0dKWCgOHGEcZtgN3jdmBz0OdaTg==}
+    engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [win32]
 
-  '@typescript/native-preview-win32-x64@7.0.0-dev.20260317.1':
-    resolution: {integrity: sha512-Trt8E1nphVXaicVcXpsyiVArT6Zf+blhqGP/MPx9YEBlp1nuzxFpu1kj7A75r+6js4vIdoKieK215Q4J358qUw==}
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20260518.1':
+    resolution: {integrity: sha512-bFtq+ynOjZ3zqJSSm0wMFxlstXHoxGhT+dXnj5HihmuGGjrRM5PoNbPZVnpJ4xqAwvx8KHWZchZnpAr+yPgekA==}
+    engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [win32]
 
-  '@typescript/native-preview@7.0.0-dev.20260317.1':
-    resolution: {integrity: sha512-HmYNuhDoN9OHfsSHuSRvYJobHAHDVubLvSGSrjfNL6C34fVlPkPDi+iA53LcN1pVX5J30kajcKC7Snm13xmuKA==}
+  '@typescript/native-preview@7.0.0-dev.20260518.1':
+    resolution: {integrity: sha512-aJq3XQBPkL91U0YWPQ4WUzFpfzLmfwWt5tmtzdXaIiPZisqFVeG/uw+2b4e/uL/YhPAQt9OHG0UEIGLNfoiFwA==}
+    engines: {node: '>=16.20.0'}
     hasBin: true
 
   '@uiw/react-shields@2.0.2':
@@ -13593,36 +13601,36 @@ snapshots:
       '@typescript-eslint/types': 8.59.0
       eslint-visitor-keys: 5.0.1
 
-  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260317.1':
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260518.1':
     optional: true
 
-  '@typescript/native-preview-darwin-x64@7.0.0-dev.20260317.1':
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20260518.1':
     optional: true
 
-  '@typescript/native-preview-linux-arm64@7.0.0-dev.20260317.1':
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20260518.1':
     optional: true
 
-  '@typescript/native-preview-linux-arm@7.0.0-dev.20260317.1':
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20260518.1':
     optional: true
 
-  '@typescript/native-preview-linux-x64@7.0.0-dev.20260317.1':
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20260518.1':
     optional: true
 
-  '@typescript/native-preview-win32-arm64@7.0.0-dev.20260317.1':
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20260518.1':
     optional: true
 
-  '@typescript/native-preview-win32-x64@7.0.0-dev.20260317.1':
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20260518.1':
     optional: true
 
-  '@typescript/native-preview@7.0.0-dev.20260317.1':
+  '@typescript/native-preview@7.0.0-dev.20260518.1':
     optionalDependencies:
-      '@typescript/native-preview-darwin-arm64': 7.0.0-dev.20260317.1
-      '@typescript/native-preview-darwin-x64': 7.0.0-dev.20260317.1
-      '@typescript/native-preview-linux-arm': 7.0.0-dev.20260317.1
-      '@typescript/native-preview-linux-arm64': 7.0.0-dev.20260317.1
-      '@typescript/native-preview-linux-x64': 7.0.0-dev.20260317.1
-      '@typescript/native-preview-win32-arm64': 7.0.0-dev.20260317.1
-      '@typescript/native-preview-win32-x64': 7.0.0-dev.20260317.1
+      '@typescript/native-preview-darwin-arm64': 7.0.0-dev.20260518.1
+      '@typescript/native-preview-darwin-x64': 7.0.0-dev.20260518.1
+      '@typescript/native-preview-linux-arm': 7.0.0-dev.20260518.1
+      '@typescript/native-preview-linux-arm64': 7.0.0-dev.20260518.1
+      '@typescript/native-preview-linux-x64': 7.0.0-dev.20260518.1
+      '@typescript/native-preview-win32-arm64': 7.0.0-dev.20260518.1
+      '@typescript/native-preview-win32-x64': 7.0.0-dev.20260518.1
 
   '@uiw/react-shields@2.0.2(@babel/runtime@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:

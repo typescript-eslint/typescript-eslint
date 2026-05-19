@@ -55,7 +55,8 @@
     "generate-configs": "pnpm -w run generate-configs",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",
@@ -119,7 +120,7 @@
       "lint": {
         "command": "eslint"
       },
-      "typecheck": {}
+      "typecheck:tsgo": {}
     }
   }
 }
