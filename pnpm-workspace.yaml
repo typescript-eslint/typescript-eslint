@@ -26,8 +26,6 @@ catalog:
   vitest: ^4.0.18
   yaml: ^2.8.2
 
-catalogMode: strict
-
 # The typescript version range is very loose, allowing pnpm to install 5.8.2,
 # which is the version that's being used by `@microsoft/api-extractor`, so we
 # override it.
