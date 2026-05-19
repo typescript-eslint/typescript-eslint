@@ -7,7 +7,7 @@ settings:
 catalogs:
   default:
     '@eslint/js':
-      specifier: ^10.0.0
+      specifier: ^10.0.1
       version: 10.0.1
     '@types/babel__code-frame':
       specifier: ^7.0.6
