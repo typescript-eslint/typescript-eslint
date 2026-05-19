@@ -62,7 +62,7 @@ jobs:
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     outputs:
-      plugin_unit_tests_packages: ${{ steps.filter.outputs.plugin_unit_tests_packages }}
+      is_plugin_affected: ${{ steps.filter.outputs.is_plugin_affected }}
       unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
       project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
     steps:
@@ -79,12 +79,17 @@ jobs:
         run: |
           # Fetch base ref history so NX can determine affected projects
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --depth=1 origin ${{ github.base_ref }}
+            git fetch --depth=1 origin "$BASE_REF"
+            BASE="origin/$BASE_REF"
+          else
+            BASE="HEAD~1"
           fi
 
-          affected=$(yarn nx show projects --affected --json --base=origin/${{ github.base_ref }} 2>/dev/null || echo '[]')
+          affected=$(pnpm exec nx show projects --affected --withTarget=test --json --base="$BASE" 2>/dev/null || echo '[]')
 
-          echo "affected=$affected" >> $GITHUB_OUTPUT
+          echo "affected=$affected" >> "$GITHUB_OUTPUT"
+        env:
+          BASE_REF: ${{ github.base_ref }}
 
       # We want to skip non-affected packages, but GH Actions doesn't support `contains(affected, matrix.package)` in `if` conditions,
       # so we're creating the whole matrix dynamically instead.
@@ -95,43 +100,16 @@ jobs:
           script: |
             const affected = ${{ steps.affected.outputs.affected }};
 
-            const pluginShards = [
-              { name: 'eslint-plugin', params: '--shard=1/4' },
-              { name: 'eslint-plugin', params: '--shard=2/4' },
-              { name: 'eslint-plugin', params: '--shard=3/4' },
-              { name: 'eslint-plugin', params: '--shard=4/4' },
-            ];
+            // Packages that should also be tested with the project service enabled.
+            const projectServicePackages = ['eslint-plugin-internal', 'typescript-estree'];
 
-            const unitTestsPackages = [
-              'ast-spec',
-              'eslint-plugin-internal',
-              'parser',
-              'project-service',
-              'rule-schema-to-typescript-types',
-              'rule-tester',
-              'scope-manager',
-              'tsconfig-utils',
-              'type-utils',
-              'typescript-eslint',
-              'typescript-estree',
-              'utils',
-              'visitor-keys',
-            ];
+            // `eslint-plugin` runs in its own sharded job; gate it with a boolean.
+            const isPluginAffected = affected.includes('eslint-plugin');
 
-            const projectServicePackages = [
-              'eslint-plugin-internal',
-              'typescript-estree',
-            ];
+            const affectedUnitTests = affected.filter((pkg) => pkg !== 'eslint-plugin');
+            const affectedProjectService = projectServicePackages.filter((pkg) => affected.includes(pkg));
 
-            const affectedPluginShards = affected.includes('eslint-plugin') ? pluginShards : [];
-
-            const affectedUnitTests = unitTestsPackages
-              .filter(pkg => affected.includes(pkg))
-              .map(name => ({ name, params: '' }));
-
-              const affectedProjectService = projectServicePackages.filter(pkg => affected.includes(pkg));
-
-            core.setOutput('plugin_unit_tests_packages', JSON.stringify(affectedPluginShards));
+            core.setOutput('is_plugin_affected', isPluginAffected);
             core.setOutput('unit_tests_packages', JSON.stringify(affectedUnitTests));
             core.setOutput('project_service_packages', JSON.stringify(affectedProjectService));
 
@@ -275,7 +253,7 @@ jobs:
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build, affected]
-    if: ${{ needs.affected.outputs.plugin_unit_tests_packages != '[]' && needs.affected.outputs.plugin_unit_tests_packages != '' }}
+    if: ${{ needs.affected.outputs.is_plugin_affected == 'true' }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -285,7 +263,13 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 24]
-        package: ${{ fromJson(needs.affected.outputs.plugin_unit_tests_packages) }}
+        package:
+          [
+            { name: 'eslint-plugin', params: '--shard=1/4' },
+            { name: 'eslint-plugin', params: '--shard=2/4' },
+            { name: 'eslint-plugin', params: '--shard=3/4' },
+            { name: 'eslint-plugin', params: '--shard=4/4' },
+          ]
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
@@ -354,14 +338,14 @@ jobs:
 
       # collect coverage on just linux
       # we don't collect coverage on other OSs so that they run faster
-      - name: Run unit tests with coverage for ${{ matrix.package.name }}
+      - name: Run unit tests with coverage for ${{ matrix.package }}
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
+        run: pnpm exec nx test ${{ matrix.package }} -- --coverage
         env:
           CI: true
-      - name: Run unit tests for ${{ matrix.package.name }}
+      - name: Run unit tests for ${{ matrix.package }}
         if: matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
+        run: pnpm exec nx test ${{ matrix.package }}
         env:
           CI: true
 
@@ -369,8 +353,8 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
-          path: packages/${{ matrix.package.name }}/coverage/lcov.info
+          name: ${{ matrix.package }}-coverage-${{ strategy.job-index }}
+          path: packages/${{ matrix.package }}/coverage/lcov.info
           # Sadly 1 day is the minimum
           retention-days: 1
 
