@@ -10,6 +10,14 @@ module.exports = function (/*context, options*/) {
         externals: {
           typescript: 'window.ts',
         },
+        module: {
+          rules: [
+            {
+              resourceQuery: /raw/,
+              type: 'asset/source',
+            },
+          ],
+        },
         plugins: [
           new rspack.DefinePlugin({
             'process.env.ESLINT_VERSION': JSON.stringify(
