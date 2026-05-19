@@ -411,97 +411,91 @@ declare const test: <T extends boolean>() => T;
     `
 [1, null].filter(1 as never);
     `,
-    // Type guard callback that is necessary (array has nullable elements)
-    `
+    // Type guard callback that is necessary — array has nullable elements.
+    {
+      code: `
 declare function isNotNil<T>(value: T | null | undefined): value is T;
-[1, null, undefined].filter(isNotNil);
-    `,
-    `
+declare const arr: (string | null)[];
+arr.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // Type guard callback that is necessary — predicate narrows a subtype.
+    {
+      code: `
 declare function isString(value: unknown): value is string;
 declare const arr: (string | number)[];
 arr.filter(isString);
-    `,
-    // Type guard isNil that is necessary (array has non-nullable elements mixed with null)
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // Same code without `checkTypePredicates` — not reported.
     `
-declare function isNil(value: unknown): value is null | undefined;
-declare const arr: (string | null)[];
-arr.filter(isNil);
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.filter(isNotNil);
     `,
-    // Type guard callback on any[]/unknown[] — can't determine, should not report
-    `
+    // No overlap between element and predicate type is out of scope here.
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: number[];
+arr.filter(isString);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // `any[]` / `unknown[]` — can't determine, not reported.
+    {
+      code: `
 declare function isNotNil<T>(value: T | null | undefined): value is T;
 declare const arr: any[];
 arr.filter(isNotNil);
-    `,
-    `
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
 declare function isString(value: unknown): value is string;
 declare const arr: unknown[];
 arr.filter(isString);
-    `,
-    // Type guard callback that is necessary (predicate narrows a subtype)
-    `
-declare function isNumber(value: unknown): value is number;
-declare const arr: (string | number)[];
-arr.filter(isNumber);
-    `,
-    // Type guard with `some`/`findIndex` — these methods lack type-guard overloads
-    // so the resolved signature won't expose a predicate; should not report.
-    `
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // `some` / `findIndex` lack type-guard overloads — not reported.
+    {
+      code: `
 declare function isNotNil<T>(value: T | null | undefined): value is T;
 declare const arr: string[];
 arr.some(isNotNil);
-    `,
-    `
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
 declare function isNotNil<T>(value: T | null | undefined): value is T;
 declare const arr: string[];
 arr.findIndex(isNotNil);
-    `,
-    // Type guard callback passed to non-array predicate-accepting functions
-    // (e.g., RxJS-style filter) — necessary case (type has nullable elements)
-    `
-declare function isNotNil<T>(value: T | null | undefined): value is T;
-interface Observable<T> {
-  pipe<S extends T>(op: (source: Observable<T>) => Observable<S>): Observable<S>;
-}
-declare function filter<T, S extends T>(
-  predicate: (value: T) => value is S,
-): (source: Observable<T>) => Observable<S>;
-declare const obs: Observable<string | null>;
-obs.pipe(filter(isNotNil));
-    `,
-    // Type guard passed to a function that does NOT expect a type predicate callback
-    // (resolved callback param won't have a type predicate — should not report)
-    `
-declare function isNotNil<T>(value: T | null | undefined): value is T;
-declare function registerCallback(fn: (value: string) => boolean): void;
-registerCallback(isNotNil);
-    `,
-    // Type guard at non-first argument position — necessary case
-    `
-declare function isString(value: unknown): value is string;
-declare function filterWith<T, S extends T>(
-  source: T[],
-  predicate: (value: T) => value is S,
-): S[];
-declare const arr: (string | number)[];
-filterWith(arr, isString);
-    `,
-    // Type guard passed to non-predicate API (map, forEach) — should not report
-    `
-declare function isString(value: unknown): value is string;
-declare const arr: number[];
-arr.map(isString);
-arr.forEach(isString);
-    `,
-    // Type guard with generic element type (type parameter) — should not report
-    // because T could be instantiated with any type at runtime
-    `
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // Generic element type — not reported, could be instantiated with anything.
+    {
+      code: `
 declare function isString(value: unknown): value is string;
 function f<T>(arr: T[]) {
   arr.filter(isString);
 }
-    `,
-
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // Spread callback — not reported.
+    {
+      code: `
+declare const predicates: [(x: number | null) => boolean];
+[1, null, 2].filter(...predicates);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
     // Ignores non-array methods of the same name
     `
 const notArray = {
@@ -2275,14 +2269,16 @@ declare const test: <T extends true>() => T;
       `,
       errors: [{ column: 18, line: 4, messageId: 'alwaysTruthyFunc' }],
     },
-    // Type guard callbacks that are unnecessary (element type already satisfies predicate)
+    // Type guard callbacks passed directly whose element type already
+    // satisfies the predicate, e.g. `arr.filter(isNotNil)`.
     {
       code: `
 declare function isNotNil<T>(value: T | null | undefined): value is T;
 declare const arr: string[];
 arr.filter(isNotNil);
       `,
-      errors: [{ column: 12, line: 4, messageId: 'alwaysTruthyFunc' }],
+      errors: [{ column: 12, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -2290,7 +2286,8 @@ declare function isString(value: unknown): value is string;
 declare const arr: string[];
 arr.filter(isString);
       `,
-      errors: [{ column: 12, line: 4, messageId: 'alwaysTruthyFunc' }],
+      errors: [{ column: 12, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -2298,92 +2295,27 @@ declare function isNotNil<T>(value: T | null | undefined): value is T;
 declare const arr: number[];
 arr.find(isNotNil);
       `,
-      errors: [{ column: 10, line: 4, messageId: 'alwaysTruthyFunc' }],
+      errors: [{ column: 10, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
     },
-    // Type guard callback with `every` (has type-guard overload)
     {
       code: `
 declare function isString(value: unknown): value is string;
 declare const arr: string[];
 arr.every(isString);
       `,
-      errors: [{ column: 11, line: 4, messageId: 'alwaysTruthyFunc' }],
+      errors: [{ column: 11, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
     },
-    // Type guard callback that always fails (predicate type resolves to `never`)
-    {
-      code: `
-declare function isNonNullable<T>(value: T): value is NonNullable<T>;
-declare const arr: null[];
-arr.filter(isNonNullable);
-      `,
-      errors: [{ column: 12, line: 4, messageId: 'alwaysFalsyFunc' }],
-    },
-    // Non-generic type guard on a matching type
     {
       code: `
 declare function isNumber(value: unknown): value is number;
 declare const arr: number[];
 arr.filter(isNumber);
       `,
-      errors: [{ column: 12, line: 4, messageId: 'alwaysTruthyFunc' }],
+      errors: [{ column: 12, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
     },
-    // Type guard callback passed to non-array predicate-accepting functions
-    // (e.g., RxJS-style filter operator with pipe providing contextual typing)
-    {
-      code: `
-declare function isNotNil<T>(value: T | null | undefined): value is T;
-interface Observable<T> {
-  pipe<S extends T>(op: (source: Observable<T>) => Observable<S>): Observable<S>;
-}
-declare function filter<T, S extends T>(
-  predicate: (value: T) => value is S,
-): (source: Observable<T>) => Observable<S>;
-declare const obs: Observable<string>;
-obs.pipe(filter(isNotNil));
-      `,
-      errors: [{ column: 17, line: 10, messageId: 'alwaysTruthyFunc' }],
-    },
-    {
-      code: `
-declare function isString(value: unknown): value is string;
-declare function filter(
-  predicate: (value: string) => value is string,
-): void;
-filter(isString);
-      `,
-      errors: [{ column: 8, line: 6, messageId: 'alwaysTruthyFunc' }],
-    },
-    // Type guard at non-first argument position — unnecessary
-    {
-      code: `
-declare function isNotNil<T>(value: T | null | undefined): value is T;
-declare function filterWith<T, S extends T>(
-  source: T[],
-  predicate: (value: T) => value is S,
-): S[];
-declare const arr: string[];
-filterWith(arr, isNotNil);
-      `,
-      errors: [{ column: 17, line: 8, messageId: 'alwaysTruthyFunc' }],
-    },
-    // No-overlap detection: type guard can never be satisfied
-    {
-      code: `
-declare function isString(value: unknown): value is string;
-declare const arr: number[];
-arr.filter(isString);
-      `,
-      errors: [{ column: 12, line: 4, messageId: 'alwaysFalsyFunc' }],
-    },
-    {
-      code: `
-declare function isNil(value: unknown): value is null | undefined;
-declare const arr: string[];
-arr.filter(isNil);
-      `,
-      errors: [{ column: 12, line: 4, messageId: 'alwaysFalsyFunc' }],
-    },
-
     // Indexing cases
     {
       // This is an error because 'dict' doesn't represent

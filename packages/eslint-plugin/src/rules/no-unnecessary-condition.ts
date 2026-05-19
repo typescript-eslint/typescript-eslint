@@ -576,266 +576,61 @@ export default createRule<Options, MessageId>({
       checkNode(node.test);
     }
 
-    type TypeGuardCallbackResult =
-      | 'always-falsy'
-      | 'always-truthy'
-      | 'has-type-predicate'
-      | 'no-type-predicate';
-
     /**
-     * Checks if a type predicate is a regular type guard (`value is T`).
+     * Reports an array predicate callback passed as a direct type guard
+     * reference (e.g. `arr.filter(isNotNil)`) when the array element type
+     * already satisfies the predicate, making the guard unnecessary.
      */
-    function isTypeGuardPredicate(
-      predicate: ts.TypePredicate | undefined,
-    ): predicate is ts.TypePredicate & {
-      kind: ts.TypePredicateKind.Identifier;
-      parameterIndex: number;
-    } {
-      if (predicate == null) {
+    function reportIfUnnecessaryTypeGuardCallback(
+      node: TSESTree.CallExpression,
+      callback: TSESTree.CallExpressionArgument,
+    ): boolean {
+      if (callback.type === AST_NODE_TYPES.SpreadElement) {
         return false;
       }
-      return predicate.kind === ts.TypePredicateKind.Identifier;
-    }
 
-    /**
-     * Determines whether the type predicate for a given resolved signature
-     * is always satisfied or never satisfied by the element type.
-     *
-     * Handles predicates of the form `value is T` (Identifier with type).
-     * Checks elementType ⊆ predicateType for always-truthy, and no-overlap
-     * for always-falsy.
-     */
-    function checkPredicateAgainstElementType(
-      predicate: ts.TypePredicate,
-      elementType: ts.Type,
-    ): 'always-falsy' | 'always-truthy' | 'indeterminate' {
-      if (predicate.type == null) {
-        return 'indeterminate';
+      const predicateParameter = services
+        .getResolvedSignature(node)
+        ?.getParameters()[0];
+      if (predicateParameter == null) {
+        return false;
       }
 
-      // Always truthy: element type already satisfies the predicate
-      if (checker.isTypeAssignableTo(elementType, predicate.type)) {
-        return 'always-truthy';
+      const predicateSignatures = tsutils.getCallSignaturesOfType(
+        checker.getTypeOfSymbol(predicateParameter),
+      );
+      if (predicateSignatures.length !== 1) {
+        return false;
       }
 
-      // Always falsy: no overlap between element type and predicate type.
-      // Check that no union constituent of the element type could match.
-      if (isTypeFlagSet(predicate.type, ts.TypeFlags.Never)) {
-        return 'always-falsy';
+      const predicateSignature = predicateSignatures[0];
+      const predicate = checker.getTypePredicateOfSignature(predicateSignature);
+      if (predicate?.kind !== ts.TypePredicateKind.Identifier) {
+        return false;
       }
 
-      const elementConstituents = tsutils.unionConstituents(elementType);
-
-      // If any constituent is a type parameter (generic), we can't determine
-      // overlap — it could be instantiated with any type at runtime.
+      // The predicate parameter's narrowed type `S` is constrained to a subtype
+      // of the element type, so the guard is unnecessary exactly when the
+      // element type is already assignable to it.
+      const elementType = checker.getTypeOfSymbol(
+        predicateSignature.getParameters()[predicate.parameterIndex],
+      );
       if (
-        elementConstituents.some(t =>
-          isTypeFlagSet(t, ts.TypeFlags.TypeParameter),
-        )
+        tsutils.isTypeFlagSet(
+          elementType,
+          ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+        ) ||
+        !checker.isTypeAssignableTo(elementType, predicate.type)
       ) {
-        return 'indeterminate';
+        return false;
       }
 
-      const hasOverlap = elementConstituents.some(
-        constituent =>
-          checker.isTypeAssignableTo(constituent, predicate.type!) ||
-          checker.isTypeAssignableTo(predicate.type!, constituent),
-      );
-
-      if (!hasOverlap) {
-        return 'always-falsy';
-      }
-
-      return 'indeterminate';
-    }
-
-    /**
-     * Determines whether a directly-passed type guard callback is unnecessary.
-     *
-     * For example, in `string[].filter(isNotNil)`:
-     * - `isNotNil<T>(x: T | null | undefined): x is T` with T=string
-     * - Element type: `string`, predicate type: `string`
-     * - `string` is assignable to `string` → always truthy → filter is unnecessary
-     *
-     * @returns
-     *  - `'always-truthy'`: predicate is always satisfied (e.g., filtering non-null from string[])
-     *  - `'always-falsy'`: predicate can never be satisfied (e.g., predicate type is `never`)
-     *  - `'has-type-predicate'`: callback is a type guard, but result is indeterminate
-     *  - `'no-type-predicate'`: callback is not a type guard function
-     */
-    function getTypeGuardCallbackResult(
-      callback: TSESTree.Expression,
-      callNode: TSESTree.CallExpression,
-    ): TypeGuardCallbackResult {
-      // Step 1: Check if the actual callback is a type guard (has `value is T`).
-      // We inspect the callback's own type (not what the caller expects) to avoid
-      // false positives: when `1 as any` is passed, TypeScript may resolve a
-      // type-guard overload, but `1 as any` is clearly not a type guard function.
-      const actualCallbackType = getConstrainedTypeAtLocation(
-        services,
-        callback,
-      );
-      const actualCallbackSigs =
-        tsutils.getCallSignaturesOfType(actualCallbackType);
-
-      const isTypeGuardFunction = actualCallbackSigs.some(sig =>
-        isTypeGuardPredicate(checker.getTypePredicateOfSignature(sig)),
-      );
-
-      if (!isTypeGuardFunction) {
-        return 'no-type-predicate';
-      }
-
-      // Step 2: Get the resolved (instantiated) signature of the outer call.
-      // When TypeScript resolves `string[].filter(isNotNil)`, it picks the
-      // type-guard overload and instantiates all generics. The callback parameter
-      // type in this resolved signature has concrete types, e.g.:
-      //   `(value: string, index: number, array: string[]) => value is string`
-      const resolvedCallerSignature = services.getResolvedSignature(callNode);
-      if (!resolvedCallerSignature) {
-        return 'has-type-predicate';
-      }
-
-      // Find which parameter of the outer function corresponds to our callback.
-      // This supports type guards at any argument position (not just the first).
-      const callbackIndex = callNode.arguments.indexOf(
-        callback as TSESTree.CallExpressionArgument,
-      );
-      if (callbackIndex === -1) {
-        return 'has-type-predicate';
-      }
-
-      const callerParams = resolvedCallerSignature.getParameters();
-      if (callbackIndex >= callerParams.length) {
-        return 'has-type-predicate';
-      }
-
-      const callbackParamSymbol = callerParams[callbackIndex];
-      const resolvedCallbackType = checker.getTypeOfSymbol(callbackParamSymbol);
-      const resolvedCallbackSigs = resolvedCallbackType.getCallSignatures();
-
-      if (resolvedCallbackSigs.length === 0) {
-        return 'has-type-predicate';
-      }
-
-      // Step 3: For each resolved signature, check if the type predicate is
-      // always satisfied or never satisfied. We require ALL signatures to agree.
-      let allAlwaysTruthy = true;
-      let allAlwaysFalsy = true;
-      let resolvedHasTypeGuards = true;
-
-      for (const sig of resolvedCallbackSigs) {
-        const predicate = checker.getTypePredicateOfSignature(sig);
-
-        // If any resolved signature lacks a relevant predicate, try fallback.
-        if (!isTypeGuardPredicate(predicate)) {
-          resolvedHasTypeGuards = false;
-          break;
-        }
-
-        // Get the element type (= the parameter that the predicate guards).
-        const elementParam = sig.getParameters()[predicate.parameterIndex];
-        if (!elementParam) {
-          return 'has-type-predicate';
-        }
-
-        const elementType = checker.getTypeOfSymbol(elementParam);
-
-        // If element type is `any` or `unknown`, the condition is always
-        // necessary — we can't reason about what values might appear.
-        if (isTypeAnyType(elementType) || isTypeUnknownType(elementType)) {
-          return 'has-type-predicate';
-        }
-
-        const result = checkPredicateAgainstElementType(predicate, elementType);
-
-        if (result !== 'always-truthy') {
-          allAlwaysTruthy = false;
-        }
-        if (result !== 'always-falsy') {
-          allAlwaysFalsy = false;
-        }
-      }
-
-      if (resolvedHasTypeGuards) {
-        if (allAlwaysTruthy) {
-          return 'always-truthy';
-        }
-        if (allAlwaysFalsy) {
-          return 'always-falsy';
-        }
-        return 'has-type-predicate';
-      }
-
-      // Step 4 (fallback): The resolved callback signatures don't have type
-      // predicates — TypeScript picked a non-type-guard overload (e.g., because
-      // there's no overlap). Fall back to using the actual callback's own
-      // predicate type. Only works for non-generic callbacks with concrete types.
-      //
-      // Guard: Only apply this fallback if the callee function actually has at
-      // least one overload that expects a type predicate at this parameter
-      // position. Otherwise we'd false-positive on APIs like map/forEach that
-      // never consume callbacks as predicates.
-      const calleeType = getConstrainedTypeAtLocation(
-        services,
-        callNode.callee,
-      );
-      const calleeSigs = tsutils.getCallSignaturesOfType(calleeType);
-      const calleeExpectsTypeGuardAtIndex = calleeSigs.some(sig => {
-        const params = sig.getParameters();
-        if (callbackIndex >= params.length) {
-          return false;
-        }
-        const paramType = checker.getTypeOfSymbol(params[callbackIndex]);
-        return paramType
-          .getCallSignatures()
-          .some(paramSig =>
-            isTypeGuardPredicate(checker.getTypePredicateOfSignature(paramSig)),
-          );
+      context.report({
+        node: callback,
+        messageId: 'typeGuardAlreadyIsType',
+        data: { typeGuardOrAssertionFunction: 'type guard' },
       });
-
-      if (!calleeExpectsTypeGuardAtIndex) {
-        return 'has-type-predicate';
-      }
-
-      const hasTypeParams = actualCallbackSigs.some(
-        sig => (sig.getTypeParameters()?.length ?? 0) > 0,
-      );
-      if (hasTypeParams) {
-        return 'has-type-predicate';
-      }
-
-      // Use the actual callback's predicate type for overlap check.
-      // For each signature, get the element type from the parameter that the
-      // predicate guards (using parameterIndex, not hard-coded 0).
-      const firstResolvedSig = resolvedCallbackSigs[0];
-      let fallbackAllFalsy = true;
-      for (const sig of actualCallbackSigs) {
-        const predicate = checker.getTypePredicateOfSignature(sig);
-        if (!isTypeGuardPredicate(predicate)) {
-          return 'has-type-predicate';
-        }
-
-        const guardedParam =
-          firstResolvedSig.getParameters()[predicate.parameterIndex];
-        if (!guardedParam) {
-          return 'has-type-predicate';
-        }
-        const elementType = checker.getTypeOfSymbol(guardedParam);
-        if (isTypeAnyType(elementType) || isTypeUnknownType(elementType)) {
-          return 'has-type-predicate';
-        }
-
-        const result = checkPredicateAgainstElementType(predicate, elementType);
-        if (result !== 'always-falsy') {
-          fallbackAllFalsy = false;
-        }
-      }
-
-      if (fallbackAllFalsy) {
-        return 'always-falsy';
-      }
-      return 'has-type-predicate';
+      return true;
     }
 
     function checkCallExpression(node: TSESTree.CallExpression): void {
@@ -893,65 +688,6 @@ export default createRule<Options, MessageId>({
         }
       }
 
-      // Check type guard callbacks passed as direct references.
-      // This works for ANY function accepting a type guard callback:
-      // array methods (filter, find, every), RxJS operators, custom utils, etc.
-      //
-      // Background: `fn(x => isNotNil(x))` is caught by `checkTypePredicates`
-      // because `isNotNil(x)` is a CallExpression that triggers
-      // `findTypeGuardAssertedArgument`. But when passed directly (`fn(isNotNil)`),
-      // there is no inner call expression — we must handle it here.
-      //
-      // Strategy:
-      // 1. Verify the actual callback is a type guard (has `x is T` predicates).
-      //    This avoids false positives when non-type-guard values like `1 as any`
-      //    are passed — TypeScript may still resolve a type-guard overload.
-      // 2. Use the *resolved* (instantiated) signature of the outer call.
-      //    TypeScript instantiates generics, giving us concrete types to compare
-      //    (e.g., `(value: string) => value is string`).
-      // 3. Compare: if elementType ⊆ predicateType → always truthy (unnecessary).
-      //            if no overlap → always falsy (dead code).
-      let handledAsTypeGuard = false;
-      for (const argument of node.arguments) {
-        // Only direct function references (identifiers or member expressions)
-        // can be type guard callbacks. Skip literals, arrow functions, etc.
-        // to avoid expensive type-checking work on every argument.
-        if (
-          argument.type !== AST_NODE_TYPES.Identifier &&
-          argument.type !== AST_NODE_TYPES.MemberExpression
-        ) {
-          continue;
-        }
-
-        const typeGuardResult = getTypeGuardCallbackResult(argument, node);
-
-        if (typeGuardResult === 'always-truthy') {
-          return context.report({
-            node: argument,
-            messageId: 'alwaysTruthyFunc',
-          });
-        }
-
-        if (typeGuardResult === 'always-falsy') {
-          return context.report({
-            node: argument,
-            messageId: 'alwaysFalsyFunc',
-          });
-        }
-
-        if (
-          typeGuardResult === 'has-type-predicate' &&
-          argument === node.arguments[0]
-        ) {
-          // The first argument (the predicate callback in array methods) is a
-          // type guard whose result is indeterminate. Skip the return type
-          // analysis below for it (boolean is both possibly truthy and falsy).
-          // Only set this for arguments[0] to avoid suppressing the analysis
-          // when a type guard happens to be in a non-predicate position (e.g. thisArg).
-          handledAsTypeGuard = true;
-        }
-      }
-
       // If this is something like arr.filter(x => /*condition*/), check `condition`
       if (
         isArrayMethodCallWithPredicate(context, services, node) &&
@@ -982,14 +718,13 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
 
-        // SpreadElement can't be a type guard or a meaningful callback to analyze.
-        if (callback.type === AST_NODE_TYPES.SpreadElement) {
-          return;
-        }
-
-        // If already handled as a type predicate reference above, skip the
-        // return type analysis (boolean is always both truthy and falsy).
-        if (handledAsTypeGuard) {
+        // A type guard passed directly, e.g. `arr.filter(isNotNil)`, is
+        // unnecessary when the element type already satisfies it — the same
+        // situation the inline form `arr.filter(x => isNotNil(x))` flags.
+        if (
+          checkTypePredicates &&
+          reportIfUnnecessaryTypeGuardCallback(node, callback)
+        ) {
           return;
         }
 
