@@ -18,5 +18,5 @@
   "js/ts.preferences.importModuleSpecifier": "project-relative",
   "js/ts.preferences.quoteStyle": "single",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "nxConsole.generateAiAgentRules": true
+  "nxConsole.generateAiAgentRules": true,
 }
