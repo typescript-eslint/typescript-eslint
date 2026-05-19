@@ -707,6 +707,15 @@ export default createRule<Options, MessageIds>({
         );
       }
 
+      /**
+       * Interpolated template literals can be widened to `string` while contextual
+       * typing still accepts them, so the assertion may be required.
+       * @see https://github.com/typescript-eslint/typescript-eslint/issues/12276
+       */
+      if (isTemplateLiteralWithExpressions(node.expression)) {
+        return true;
+      }
+
       if (
         SKIP_PARENT_TYPES.has(node.parent.type) ||
         node.expression.type === AST_NODE_TYPES.ArrayExpression ||
@@ -912,7 +921,6 @@ export default createRule<Options, MessageIds>({
 
           const isContextuallyUnnecessary =
             !typeAnnotationIsConstAssertion &&
-            !isTemplateLiteralWithExpressions(node.expression) &&
             !containsAny(uncastType) &&
             anyInvolvedInContextualCheck &&
             !hasPhantomTypeArgumentMismatch(node, uncastType, contextualType) &&

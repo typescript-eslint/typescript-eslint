@@ -2398,6 +2398,24 @@ declare function update<T extends string>(value: T): void;
 update('hi');
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12276
+    {
+      code: `
+declare function fn(param: string): void;
+declare const name: string;
+fn(\`hello \${name}\` as string);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare function fn(param: string): void;
+declare const name: string;
+fn(\`hello \${name}\`);
+      `,
+    },
     {
       code: `
 declare function fn(x: string[]): void;
