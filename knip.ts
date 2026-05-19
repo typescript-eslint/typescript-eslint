@@ -24,10 +24,8 @@ export default {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignore: ['tools/scripts/generate-sponsors.mts'],
-
       ignoreDependencies: [
         '@nx/workspace',
-        '@eslint/eslintrc',
         '@eslint/config-helpers',
         '@typescript/native-preview',
       ],
@@ -164,9 +162,6 @@ export default {
         'typings/*',
       ],
       ignoreDependencies: [
-        // used in MDX docs
-        'raw-loader',
-
         // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
         'esquery',
 
@@ -182,7 +177,6 @@ export default {
         '^@theme/.*',
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
-        'typedoc-plugin-markdown',
         'prismjs',
       ],
     },
@@ -202,9 +196,6 @@ export default {
       ignoreDependencies: [
         // virtual module
         'vt',
-        '@typescript-eslint/tsconfig-utils',
-        '@typescript-eslint/type-utils',
-        '@typescript-eslint/tsconfig-utils',
       ],
     },
     'tools/dummypkg': {},
