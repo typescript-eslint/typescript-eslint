@@ -58,7 +58,6 @@
     "reading-time": "^1.5.0",
     "semver": "^7.7.3",
     "typedoc": "^0.28.15",
-    "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "catalog:",
     "zod": "^3.25.76"
   },
@@ -80,7 +79,6 @@
     "mdast-util-mdx": "catalog:",
     "monaco-editor": "~0.54.0",
     "prismjs": "1.30.0",
-    "raw-loader": "^4.0.2",
     "rimraf": "catalog:",
     "stylelint": "^16.26.1",
     "stylelint-config-recommended": "^16.0.0",
@@ -105,7 +103,8 @@
   "nx": {
     "name": "website",
     "includedScripts": [
-      "clean"
+      "clean",
+      "generate-website-dts"
     ],
     "targets": {
       "build": {

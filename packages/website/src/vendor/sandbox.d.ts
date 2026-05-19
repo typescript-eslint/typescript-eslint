@@ -8,7 +8,7 @@
  *          pnpm run generate-website-dts     *
  **********************************************/
 
-import type * as ts from 'typescript';
+import type * as TS from 'typescript';
 import type * as MonacoEditor from 'monaco-editor';
 type TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;
 import type lzstring from 'lz-string';
@@ -91,7 +91,7 @@ export declare function defaultPlaygroundSettings(): {
 export declare const createTypeScriptSandbox: (
   partialConfig: Partial<SandboxConfig>,
   monaco: Monaco,
-  ts: typeof ts,
+  ts: typeof TS,
 ) => {
   /** The same config you passed in */
   config:
@@ -183,7 +183,7 @@ export declare const createTypeScriptSandbox: (
   getEmitResult: (
     emitOnlyDtsFiles?: boolean,
     forceDtsEmit?: boolean,
-  ) => Promise<ts.EmitOutput>;
+  ) => Promise<TS.EmitOutput>;
   /** Gets just the JavaScript for your sandbox, will transpile if in TS only */
   getRunnableJS: () => Promise<string>;
   /** Gets the DTS output of the main code in the editor */
@@ -197,9 +197,9 @@ export declare const createTypeScriptSandbox: (
   /** Shortcut for setting the model's text content which would update the editor */
   setText: (text: string) => void;
   /** Gets the AST of the current text in monaco - uses `createTSProgram`, so the performance caveat applies there too */
-  getAST: () => Promise<ts.SourceFile>;
+  getAST: () => Promise<TS.SourceFile>;
   /** The module you get from require("typescript") */
-  ts: typeof ts;
+  ts: typeof TS;
   /** Create a new Program, a TypeScript data model which represents the entire project. As well as some of the
    * primitive objects you would normally need to do work with the files.
    *
@@ -214,17 +214,17 @@ export declare const createTypeScriptSandbox: (
    * when the monaco model changes.
    */
   setupTSVFS: (fsMapAdditions?: Map<string, string>) => Promise<{
-    program: ts.Program;
-    system: ts.System;
+    program: TS.Program;
+    system: TS.System;
     host: {
-      compilerHost: ts.CompilerHost;
-      updateFile: (sourceFile: ts.SourceFile) => boolean;
-      deleteFile: (sourceFile: ts.SourceFile) => boolean;
+      compilerHost: TS.CompilerHost;
+      updateFile: (sourceFile: TS.SourceFile) => boolean;
+      deleteFile: (sourceFile: TS.SourceFile) => boolean;
     };
     fsMap: Map<string, string>;
   }>;
   /** Uses the above call setupTSVFS, but only returns the program */
-  createTSProgram: () => Promise<ts.Program>;
+  createTSProgram: () => Promise<TS.Program>;
   /** The Sandbox's default compiler options  */
   compilerDefaults: {
     [x: string]: MonacoEditor.languages.typescript.CompilerOptionsValue;
