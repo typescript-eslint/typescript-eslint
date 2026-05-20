@@ -2,6 +2,7 @@
 
 exports[`AST Fixtures > List fixtures with AST differences`]
 [
+  "declaration/ClassDeclaration/fixtures/extends-parenthesized-type-param/fixture.ts",
   "declaration/ClassDeclaration/fixtures/extends-type-param/fixture.ts",
   "declaration/ClassDeclaration/fixtures/implements-many/fixture.ts",
   "declaration/ClassDeclaration/fixtures/implements-one/fixture.ts",

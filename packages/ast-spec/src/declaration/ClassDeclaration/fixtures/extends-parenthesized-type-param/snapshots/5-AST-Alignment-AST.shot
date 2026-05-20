@@ -1,0 +1,117 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ClassDeclaration > extends-parenthesized-type-param > AST Alignment - AST`]
+Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [32, 34],
+          loc: {
+            start: { column: 32, line: 1 },
+            end: { column: 34, line: 1 },
+          },
+        },
+        declare: false,
+        decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+          decorators: Array [],
+          name: 'Foo',
+          optional: false,
+
+          range: [6, 9],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 9, line: 1 },
+          },
+        },
+        implements: Array [],
+-       superClass: TSInstantiationExpression {
+-         type: 'TSInstantiationExpression',
+-         expression: Identifier {
+-           type: 'Identifier',
+-           decorators: Array [],
+-           name: 'Set',
+-           optional: false,
++       superClass: Identifier {
++         type: 'Identifier',
++         decorators: Array [],
++         name: 'Set',
++         optional: false,
+
+-           range: [19, 22],
+-           loc: {
+-             start: { column: 19, line: 1 },
+-             end: { column: 22, line: 1 },
+-           },
++         range: [19, 22],
++         loc: {
++           start: { column: 19, line: 1 },
++           end: { column: 22, line: 1 },
+          },
+-         typeArguments: TSTypeParameterInstantiation {
+-           type: 'TSTypeParameterInstantiation',
+-           params: Array [
+-             TSStringKeyword {
+-               type: 'TSStringKeyword',
++       },
++       superTypeParameters: TSTypeParameterInstantiation {
++         type: 'TSTypeParameterInstantiation',
++         params: Array [
++           TSStringKeyword {
++             type: 'TSStringKeyword',
+
+-               range: [23, 29],
+-               loc: {
+-                 start: { column: 23, line: 1 },
+-                 end: { column: 29, line: 1 },
+-               },
++             range: [23, 29],
++             loc: {
++               start: { column: 23, line: 1 },
++               end: { column: 29, line: 1 },
+              },
+-           ],
+-
+-           range: [22, 30],
+-           loc: {
+-             start: { column: 22, line: 1 },
+-             end: { column: 30, line: 1 },
+            },
+-         },
++         ],
+
+-         range: [19, 30],
++         range: [22, 30],
+          loc: {
+-           start: { column: 19, line: 1 },
++           start: { column: 22, line: 1 },
+            end: { column: 30, line: 1 },
+          },
+        },
+
+        range: [0, 34],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 34, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 35],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }

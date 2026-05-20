@@ -1,0 +1,77 @@
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [],
+
+        range: [38, 40],
+        loc: {
+          start: { column: 38, line: 1 },
+          end: { column: 40, line: 1 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [6, 9],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 9, line: 1 },
+        },
+      },
+      implements: [],
+      superClass: TSSatisfiesExpression {
+        type: "TSSatisfiesExpression",
+        expression: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "Set",
+          optional: false,
+
+          range: [19, 22],
+          loc: {
+            start: { column: 19, line: 1 },
+            end: { column: 22, line: 1 },
+          },
+        },
+        typeAnnotation: TSAnyKeyword {
+          type: "TSAnyKeyword",
+
+          range: [33, 36],
+          loc: {
+            start: { column: 33, line: 1 },
+            end: { column: 36, line: 1 },
+          },
+        },
+
+        range: [19, 36],
+        loc: {
+          start: { column: 19, line: 1 },
+          end: { column: 36, line: 1 },
+        },
+      },
+
+      range: [0, 40],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 40, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 41],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
