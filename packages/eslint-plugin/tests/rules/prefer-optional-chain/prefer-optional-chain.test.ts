@@ -3522,6 +3522,20 @@ const baz = foo?.bar;
         declare const x: void | (() => void);
         x && x();
       `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      // `x === undefined || x.y === null` must NOT become `x?.y === null`:
+      // when x is undefined, `undefined?.y === null` is false (strict equality),
+      // but the original `x === undefined` guard returned true.
+      `
+        declare const foo: { bar: number | null } | undefined;
+        if (foo === undefined || foo.bar === null) {
+        }
+      `,
+      `
+        declare const foo: { bar: { baz: number | null } | undefined };
+        if (foo.bar === undefined || foo.bar.baz === null) {
+        }
+      `,
     ],
   });
 });

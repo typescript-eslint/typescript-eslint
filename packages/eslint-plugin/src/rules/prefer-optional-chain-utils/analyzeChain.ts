@@ -805,8 +805,26 @@ export function analyzeChain(
         validatedOperands[validatedOperands.length - 1].comparedName,
       );
       if (comparisonResult === NodeComparisonResult.Subset) {
-        // the operands are comparable, so we can continue searching
-        subChain.push(currentOperand);
+        const chainSeed = subChain.flat()[0];
+        if (
+          operator === '||' &&
+          currentOperand.comparisonType ===
+            NullishComparisonType.StrictEqualNull &&
+          chainSeed?.comparisonType ===
+            NullishComparisonType.StrictEqualUndefined
+        ) {
+          // For OR chains with a `=== undefined` seed, extending the chain
+          // with a `=== null` subset changes semantics: when the parent is
+          // undefined, `parent?.child` returns `undefined`, and
+          // `undefined === null` is false (strict), but the original
+          // `parent === undefined` guard was true.
+          // e.g. `foo === undefined || foo.bar === null` must NOT merge to
+          // `foo?.bar === null`.
+          maybeReportThenReset(validatedOperands);
+        } else {
+          // the operands are comparable, so we can continue searching
+          subChain.push(currentOperand);
+        }
       } else if (comparisonResult === NodeComparisonResult.Invalid) {
         maybeReportThenReset(validatedOperands);
       } else {
