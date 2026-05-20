@@ -1184,6 +1184,97 @@ describe('RuleTester - AssertionOptions', () => {
 
   const ruleTester = new RuleTester();
 
+  describe('AssertionOptions shape', () => {
+    it('should accept unset options', () => {
+      ruleTester.run('assertion-rule', assertionRule, {
+        invalid: [
+          {
+            code: 'noEnd',
+            errors: [{ messageId: 'noEnd' }],
+          },
+        ],
+        valid: [],
+      });
+    });
+
+    it('should accept empty options', () => {
+      ruleTester.run('assertion-rule', assertionRule, {
+        assertionOptions: {},
+        invalid: [
+          {
+            code: 'noEnd',
+            errors: [{ messageId: 'noEnd' }],
+          },
+        ],
+        valid: [],
+      });
+    });
+
+    describe('requireLocation type', () => {
+      it('should throw error if not boolean', () => {
+        expect(() => {
+          ruleTester.run('assertion-rule', assertionRule, {
+            assertionOptions: {
+              // @ts-expect-error Verifying a wrongly typed option
+              requireLocation: 'true',
+            },
+            invalid: [
+              {
+                code: 'noEnd',
+                errors: [{ messageId: 'noEnd' }],
+              },
+            ],
+            valid: [],
+          });
+        }).toThrow(
+          'The assertion option `requireLocation` should be of type boolean',
+        );
+      });
+    });
+
+    describe('requireData type', () => {
+      it('should throw error if not boolean nor string', () => {
+        expect(() => {
+          ruleTester.run('assertion-rule', assertionRule, {
+            assertionOptions: {
+              // @ts-expect-error Verifying a wrongly typed option
+              requireData: 8,
+            },
+            invalid: [
+              {
+                code: 'noEnd',
+                errors: [{ messageId: 'noEnd' }],
+              },
+            ],
+            valid: [],
+          });
+        }).toThrow(
+          "The assertion option `requireData` should be of type boolean | 'error' | 'suggestion'",
+        );
+      });
+
+      it('should throw error if incorrect string', () => {
+        expect(() => {
+          ruleTester.run('assertion-rule', assertionRule, {
+            assertionOptions: {
+              // @ts-expect-error Verifying a wrongly typed option
+              requireData: 'foo',
+            },
+            invalid: [
+              {
+                code: 'noEnd',
+                errors: [{ messageId: 'noEnd' }],
+              },
+            ],
+            valid: [],
+          });
+        }).toThrow(
+          "The assertion option `requireData` should be of type boolean | 'error' | 'suggestion'",
+        );
+      });
+    });
+  });
+
   describe('requireLocation', () => {
     describe('unset', () => {
       it('should allow shorthand', () => {

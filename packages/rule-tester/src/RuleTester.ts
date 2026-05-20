@@ -461,6 +461,39 @@ export class RuleTester extends TestFramework {
   }
 
   /**
+   * Verifies that the assertion options are valid
+   * @throws {Error} if the options aren't the correct type
+   */
+  private verifyAssertionOptions(
+    assertionOption: AssertionOptions | undefined,
+  ): void {
+    if (assertionOption == null) {
+      return;
+    }
+
+    const dataOption = assertionOption.requireData;
+
+    if (
+      dataOption != null &&
+      typeof dataOption !== 'boolean' &&
+      dataOption !== 'error' &&
+      dataOption !== 'suggestion'
+    ) {
+      throw new Error(
+        "The assertion option `requireData` should be of type boolean | 'error' | 'suggestion'",
+      );
+    }
+
+    const locationOption = assertionOption.requireLocation;
+
+    if (locationOption != null && typeof locationOption !== 'boolean') {
+      throw new Error(
+        'The assertion option `requireLocation` should be of type boolean',
+      );
+    }
+  }
+
+  /**
    * Adds a new rule test to execute.
    */
   run<MessageIds extends string, Options extends readonly unknown[]>(
@@ -468,6 +501,8 @@ export class RuleTester extends TestFramework {
     rule: RuleModule<MessageIds, Options>,
     test: RunTests<TSUtils.NoInfer<MessageIds>, TSUtils.NoInfer<Options>>,
   ): void {
+    this.verifyAssertionOptions(test.assertionOptions);
+
     const constructor = this.constructor as typeof RuleTester;
 
     if (
