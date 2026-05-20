@@ -3536,6 +3536,14 @@ const baz = foo?.bar;
         if (foo.bar === undefined || foo.bar.baz === null) {
         }
       `,
+      // Mid-chain `=== undefined` guard: a.b === undefined is not the seed,
+      // but it still poisons the downstream `=== null` extension.
+      // `a.b === undefined || a.b.c === null` must NOT become `a.b?.c === null`.
+      `
+        declare const a: { b: { c: number | null } | undefined } | null | undefined;
+        if (a === null || a.b === undefined || a.b.c === null) {
+        }
+      `,
     ],
   });
 });

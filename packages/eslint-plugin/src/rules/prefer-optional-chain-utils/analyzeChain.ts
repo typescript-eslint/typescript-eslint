@@ -805,21 +805,30 @@ export function analyzeChain(
         validatedOperands[validatedOperands.length - 1].comparedName,
       );
       if (comparisonResult === NodeComparisonResult.Subset) {
-        const chainSeed = subChain.flat()[0];
         if (
           operator === '||' &&
           currentOperand.comparisonType ===
             NullishComparisonType.StrictEqualNull &&
-          chainSeed?.comparisonType ===
-            NullishComparisonType.StrictEqualUndefined
+          // A paired [=== null, === undefined] operand is semantically safe
+          // because it merges to `== null`. Only a lone `=== null` can
+          // produce a broken strict-equality check in the merged chain.
+          validatedOperands.length === 1 &&
+          subChain
+            .flat()
+            .some(
+              op =>
+                op.comparisonType ===
+                NullishComparisonType.StrictEqualUndefined,
+            )
         ) {
-          // For OR chains with a `=== undefined` seed, extending the chain
-          // with a `=== null` subset changes semantics: when the parent is
-          // undefined, `parent?.child` returns `undefined`, and
-          // `undefined === null` is false (strict), but the original
-          // `parent === undefined` guard was true.
+          // For OR chains that contain a `=== undefined` guard anywhere,
+          // extending the chain with a lone `=== null` subset changes
+          // semantics: when the guarded node is undefined, `node?.child`
+          // returns `undefined`, and `undefined === null` is false (strict),
+          // but the original `=== undefined` guard was true.
           // e.g. `foo === undefined || foo.bar === null` must NOT merge to
-          // `foo?.bar === null`.
+          // `foo?.bar === null`, and neither should a mid-chain form like
+          // `a == null || a.b === undefined || a.b.c === null`.
           maybeReportThenReset(validatedOperands);
         } else {
           // the operands are comparable, so we can continue searching
