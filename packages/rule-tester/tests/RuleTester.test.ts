@@ -1277,7 +1277,7 @@ describe('RuleTester - AssertionOptions', () => {
 
   describe('requireLocation', () => {
     describe('unset', () => {
-      it('should allow shorthand', () => {
+      it('should allow no location specified', () => {
         ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: {},
           invalid: [
@@ -1290,7 +1290,7 @@ describe('RuleTester - AssertionOptions', () => {
         });
       });
 
-      it('should allow longhand', () => {
+      it('should allow location specified', () => {
         ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: {},
           invalid: [
@@ -1321,7 +1321,7 @@ describe('RuleTester - AssertionOptions', () => {
     });
 
     describe('false', () => {
-      it('should allow shorthand', () => {
+      it('should allow no location specified', () => {
         ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireLocation: false },
           invalid: [
@@ -1334,7 +1334,7 @@ describe('RuleTester - AssertionOptions', () => {
         });
       });
 
-      it('should allow longhand', () => {
+      it('should allow location specified', () => {
         ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireLocation: false },
           invalid: [
