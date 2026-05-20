@@ -1,21 +1,34 @@
 Incorrect
 
+declare const box: { value: string };
+
+void box;
+~~~~~~~~ void operator shouldn't be used on { value: string; }; it should convey that a Promise-like value is intentionally not awaited
+void box.value;
+~~~~~~~~~~~~~~ void operator shouldn't be used on string; it should convey that a Promise-like value is intentionally not awaited
+void box.value.toUpperCase();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~ void operator shouldn't be used on string; it should convey that a Promise-like value is intentionally not awaited
+
 void (() => {})();
-~~~~~~~~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a return value is being ignored
+~~~~~~~~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a Promise-like value is intentionally not awaited
 
 function foo() {}
 void foo();
-~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a return value is being ignored
+~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a Promise-like value is intentionally not awaited
+
+declare function returnsString(): string;
+void returnsString();
+~~~~~~~~~~~~~~~~~~~~ void operator shouldn't be used on string; it should convey that a Promise-like value is intentionally not awaited
 
 Correct
+
+declare const box: { value: string };
+
+box;
+box.value;
+box.value.toUpperCase();
 
 (() => {})();
 
 function foo() {}
 foo(); // nothing to discard
-
-function bar(x: number) {
-  void x; // discarding a number
-  return 2;
-}
-void bar(1); // discarding a number

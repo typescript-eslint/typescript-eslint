@@ -1,5 +1,5 @@
 ---
-description: 'Disallow the `void` operator except when used to discard a value.'
+description: 'Disallow the `void` operator except when used to ignore a Promise-like value.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,12 +10,13 @@ import TabItem from '@theme/TabItem';
 > See **https://typescript-eslint.io/rules/no-meaningless-void-operator** for documentation.
 
 `void` in TypeScript refers to a function return that is meant to be ignored.
-The `void` operator is a useful tool to convey the programmer's intent to discard a value.
+The `void` operator is a useful tool to convey the programmer's intent to intentionally not await a Promise-like value.
 For example, it is recommended as one way of suppressing [`@typescript-eslint/no-floating-promises`](./no-floating-promises.mdx) instead of adding `.catch()` to a promise.
 
-This rule helps an authors catch API changes where previously a value was being discarded at a call site, but the callee changed so it no longer returns a value.
-When combined with [no-unused-expressions](https://eslint.org/docs/rules/no-unused-expressions), it also helps _readers_ of the code by ensuring consistency: a statement that looks like `void foo();` is **always** discarding a return value, and a statement that looks like `foo();` is **never** discarding a return value.
+This rule helps authors catch API changes where async work was previously being marked as intentionally not awaited at a call site, but the callee changed so it no longer returns a Promise-like value.
+When combined with [no-unused-expressions](https://eslint.org/docs/rules/no-unused-expressions), it also helps _readers_ of the code by ensuring consistency: a statement that looks like `void foo();` is **always** marking a possibly async result as intentionally not awaited, and a statement that looks like `foo();` is **never** doing so.
 This rule reports on any `void` operator whose argument is already of type `void` or `undefined`.
+It also reports on `void` expression statements whose argument is not possibly Promise-like.
 
 ## Examples
 
@@ -25,26 +26,35 @@ This rule reports on any `void` operator whose argument is already of type `void
 <TabItem value="❌ Incorrect">
 
 ```ts
+declare const box: { value: string };
+
+void box;
+void box.value;
+void box.value.toUpperCase();
+
 void (() => {})();
 
 function foo() {}
 void foo();
+
+declare function returnsString(): string;
+void returnsString();
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts
+declare const box: { value: string };
+
+box;
+box.value;
+box.value.toUpperCase();
+
 (() => {})();
 
 function foo() {}
 foo(); // nothing to discard
-
-function bar(x: number) {
-  void x; // discarding a number
-  return 2;
-}
-void bar(1); // discarding a number
 ```
 
 </TabItem>
