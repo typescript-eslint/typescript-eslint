@@ -1278,7 +1278,7 @@ describe('RuleTester - AssertionOptions', () => {
   describe('requireLocation', () => {
     describe('unset', () => {
       it('should allow shorthand', () => {
-        ruleTester.run('position-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: {},
           invalid: [
             {
@@ -1291,7 +1291,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow longhand', () => {
-        ruleTester.run('position-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: {},
           invalid: [
             {
@@ -1322,7 +1322,7 @@ describe('RuleTester - AssertionOptions', () => {
 
     describe('false', () => {
       it('should allow shorthand', () => {
-        ruleTester.run('position-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireLocation: false },
           invalid: [
             {
@@ -1335,7 +1335,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow longhand', () => {
-        ruleTester.run('position-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireLocation: false },
           invalid: [
             {
@@ -1367,7 +1367,7 @@ describe('RuleTester - AssertionOptions', () => {
     describe('true', () => {
       it('should fail if all location properties are missing - no end', () => {
         expect(() =>
-          ruleTester.run('position-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireLocation: true },
             invalid: [
               {
@@ -1384,7 +1384,7 @@ describe('RuleTester - AssertionOptions', () => {
 
       it('should fail if all location properties are missing - with end', () => {
         expect(() =>
-          ruleTester.run('position-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireLocation: true },
             invalid: [
               {
@@ -1401,7 +1401,7 @@ describe('RuleTester - AssertionOptions', () => {
 
       it('should fail if line is missing', () => {
         expect(() =>
-          ruleTester.run('position-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireLocation: true },
             invalid: [
               {
@@ -1418,7 +1418,7 @@ describe('RuleTester - AssertionOptions', () => {
 
       it('should fail if column is missing', () => {
         expect(() =>
-          ruleTester.run('position-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireLocation: true },
             invalid: [
               {
@@ -1435,7 +1435,7 @@ describe('RuleTester - AssertionOptions', () => {
 
       it('should fail if endLine is missing', () => {
         expect(() =>
-          ruleTester.run('position-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireLocation: true },
             invalid: [
               {
@@ -1452,7 +1452,7 @@ describe('RuleTester - AssertionOptions', () => {
 
       it('should fail if endColumn is missing', () => {
         expect(() =>
-          ruleTester.run('position-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireLocation: true },
             invalid: [
               {
@@ -1468,7 +1468,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should pass for error without end location', () => {
-        ruleTester.run('position-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireLocation: true },
           invalid: [
             {
@@ -1485,7 +1485,7 @@ describe('RuleTester - AssertionOptions', () => {
   describe('requireData', () => {
     describe('unset', () => {
       it('should allow not setting data for errors', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: {},
           invalid: [
             {
@@ -1516,7 +1516,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow not setting data for suggestions', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: {},
           invalid: [
             {
@@ -1549,7 +1549,7 @@ describe('RuleTester - AssertionOptions', () => {
 
     describe('false', () => {
       it('should allow not setting data for errors', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: false },
           invalid: [
             {
@@ -1580,7 +1580,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow not setting data for suggestions', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: false },
           invalid: [
             {
@@ -1613,7 +1613,7 @@ describe('RuleTester - AssertionOptions', () => {
 
     describe('true', () => {
       it('should allow not specifying data for error messages without placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: true },
           invalid: [
             {
@@ -1626,7 +1626,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow specifying error data when there are placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: true },
           invalid: [
             {
@@ -1663,7 +1663,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow specifying suggestion data when there are placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: true },
           invalid: [
             {
@@ -1704,7 +1704,7 @@ describe('RuleTester - AssertionOptions', () => {
 
       it('should disallow not specifying error data when there are placeholders', () => {
         expect(() =>
-          ruleTester.run('data-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireData: true },
             invalid: [
               {
@@ -1729,7 +1729,7 @@ describe('RuleTester - AssertionOptions', () => {
           "Error should specify the 'data' property as the referenced message has placeholders.",
         );
         expect(() =>
-          ruleTester.run('data-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireData: true },
             invalid: [
               {
@@ -1753,7 +1753,7 @@ describe('RuleTester - AssertionOptions', () => {
 
       it('should disallow not specifying suggestion data when there are placeholders', () => {
         expect(() =>
-          ruleTester.run('data-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireData: true },
             invalid: [
               {
@@ -1778,7 +1778,7 @@ describe('RuleTester - AssertionOptions', () => {
           "Error Suggestion at index 0: Suggestion should specify the 'data' property as the referenced message has placeholders.",
         );
         expect(() =>
-          ruleTester.run('data-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireData: true },
             invalid: [
               {
@@ -1806,7 +1806,7 @@ describe('RuleTester - AssertionOptions', () => {
 
     describe('error', () => {
       it('should allow not specifying data for error messages without placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: 'error' },
           invalid: [
             {
@@ -1819,7 +1819,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow specifying error data when there are placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: 'error' },
           invalid: [
             {
@@ -1856,7 +1856,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow specifying suggestion data when there are placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: 'error' },
           invalid: [
             {
@@ -1897,7 +1897,7 @@ describe('RuleTester - AssertionOptions', () => {
 
       it('should disallow not specifying error data when there are placeholders', () => {
         expect(() =>
-          ruleTester.run('data-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireData: 'error' },
             invalid: [
               {
@@ -1922,7 +1922,7 @@ describe('RuleTester - AssertionOptions', () => {
           "Error should specify the 'data' property as the referenced message has placeholders.",
         );
         expect(() =>
-          ruleTester.run('data-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireData: true },
             invalid: [
               {
@@ -1945,7 +1945,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow not specifying suggestion data when there are placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: 'error' },
           invalid: [
             {
@@ -1985,7 +1985,7 @@ describe('RuleTester - AssertionOptions', () => {
 
     describe('suggestion', () => {
       it('should allow not specifying data for error messages without placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: 'suggestion' },
           invalid: [
             {
@@ -1998,7 +1998,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow specifying error data when there are placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: 'suggestion' },
           invalid: [
             {
@@ -2035,7 +2035,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow specifying suggestion data when there are placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: 'suggestion' },
           invalid: [
             {
@@ -2075,7 +2075,7 @@ describe('RuleTester - AssertionOptions', () => {
       });
 
       it('should allow not specifying error data when there are placeholders', () => {
-        ruleTester.run('data-rule', assertionRule, {
+        ruleTester.run('assertion-rule', assertionRule, {
           assertionOptions: { requireData: 'suggestion' },
           invalid: [
             {
@@ -2111,7 +2111,7 @@ describe('RuleTester - AssertionOptions', () => {
 
       it('should disallow not specifying suggestion data when there are placeholders', () => {
         expect(() =>
-          ruleTester.run('data-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireData: 'suggestion' },
             invalid: [
               {
@@ -2136,7 +2136,7 @@ describe('RuleTester - AssertionOptions', () => {
           "Error Suggestion at index 0: Suggestion should specify the 'data' property as the referenced message has placeholders.",
         );
         expect(() =>
-          ruleTester.run('data-rule', assertionRule, {
+          ruleTester.run('assertion-rule', assertionRule, {
             assertionOptions: { requireData: 'suggestion' },
             invalid: [
               {
