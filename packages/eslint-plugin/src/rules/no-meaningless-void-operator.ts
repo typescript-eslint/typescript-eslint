@@ -1,10 +1,10 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule } from '../util';
+import { Awaitable, createRule, needsToBeAwaited } from '../util';
 
 export type Options = [
   {
@@ -18,7 +18,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
     type: 'suggestion',
     docs: {
       description:
-        'Disallow the `void` operator except when used to discard a value',
+        'Disallow the `void` operator except when used to ignore a Promise-like value',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
@@ -26,7 +26,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
     hasSuggestions: true,
     messages: {
       meaninglessVoidOperator:
-        "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",
+        "void operator shouldn't be used on {{type}}; it should convey that a Promise-like value is intentionally not awaited",
       removeVoid: "Remove 'void'",
     },
     schema: [
@@ -59,14 +59,29 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
         };
 
         const argType = services.getTypeAtLocation(node.argument);
+        const tsNode = services.esTreeNodeToTSNodeMap.get(node.argument);
         const unionParts = tsutils.unionConstituents(argType);
+        const isVoidOrUndefined = unionParts.every(part =>
+          tsutils.isTypeFlagSet(
+            part,
+            ts.TypeFlags.Void | ts.TypeFlags.Undefined,
+          ),
+        );
+        const isNeverOrVoidOrUndefined = unionParts.every(part =>
+          tsutils.isTypeFlagSet(
+            part,
+            ts.TypeFlags.Void | ts.TypeFlags.Undefined | ts.TypeFlags.Never,
+          ),
+        );
+
         if (
-          unionParts.every(part =>
-            tsutils.isTypeFlagSet(
-              part,
-              ts.TypeFlags.Void | ts.TypeFlags.Undefined,
-            ),
-          )
+          isVoidOrUndefined ||
+          (!isNeverOrVoidOrUndefined &&
+            node.parent.type === AST_NODE_TYPES.ExpressionStatement &&
+            unionParts.every(
+              part =>
+                needsToBeAwaited(checker, tsNode, part) === Awaitable.Never,
+            ))
         ) {
           context.report({
             node,
@@ -74,15 +89,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
             data: { type: checker.typeToString(argType) },
             fix,
           });
-        } else if (
-          checkNever &&
-          unionParts.every(part =>
-            tsutils.isTypeFlagSet(
-              part,
-              ts.TypeFlags.Void | ts.TypeFlags.Undefined | ts.TypeFlags.Never,
-            ),
-          )
-        ) {
+        } else if (checkNever && isNeverOrVoidOrUndefined) {
           context.report({
             node,
             messageId: 'meaninglessVoidOperator',

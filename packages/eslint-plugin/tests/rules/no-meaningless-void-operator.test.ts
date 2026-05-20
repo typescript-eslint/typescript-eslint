@@ -11,11 +11,13 @@ ruleTester.run('no-meaningless-void-operator', rule, {
 function foo() {}
 foo(); // nothing to discard
 
-function bar(x: number) {
-  void x;
+async function bar() {
   return 2;
 }
-void bar(); // discarding a number
+void bar(); // intentionally not awaited
+
+declare const promise: Promise<string>;
+void promise; // intentionally not awaited
     `,
     `
 function bar(x: never) {
@@ -50,6 +52,67 @@ void foo();
       output: `
 function foo() {}
 foo();
+      `,
+    },
+    {
+      code: `
+declare const box: { value: string };
+
+void box;
+void box.value;
+void box.value.toUpperCase();
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+        {
+          column: 1,
+          line: 5,
+          messageId: 'meaninglessVoidOperator',
+        },
+        {
+          column: 1,
+          line: 6,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string };
+
+box;
+box.value;
+box.value.toUpperCase();
+      `,
+    },
+    {
+      code: `
+function bar(x: number) {
+  void x;
+  return 2;
+}
+void bar(); // not an async result
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+        {
+          column: 1,
+          line: 6,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+function bar(x: number) {
+  x;
+  return 2;
+}
+bar(); // not an async result
       `,
     },
     {
