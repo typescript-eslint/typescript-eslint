@@ -345,6 +345,13 @@ function bar(items: string[]) {
 declare const myString: 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
+    {
+      code: `
+declare const myString: 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
 declare const myString: 'foo';
