@@ -129,12 +129,14 @@ export default createRule<Options, MessageIds>({
         case AST_NODE_TYPES.Property:
           // foo in "const { foo } = bar" will be processed twice, as parent.key
           // and parent.value. The second is treated as a declaration.
-          if (parent.shorthand && parent.value === node) {
+
+          if (parent.value === node) {
+            // const { foo: bar } = baz; -- bar IS a declaration.
+            // const baz = { foo: bar }; -- bar IS NOT a declaration.
             return parent.parent.type === AST_NODE_TYPES.ObjectPattern;
           }
-          if (parent.value === node) {
-            return false;
-          }
+          // const { foo: bar } = baz; -- foo IS NOT a declaration.
+          // const baz = { foo: bar }; -- foo IS a declaration.
           return parent.parent.type === AST_NODE_TYPES.ObjectExpression;
 
         case AST_NODE_TYPES.AssignmentPattern:
@@ -416,7 +418,8 @@ export default createRule<Options, MessageIds>({
 
         const propertyName = propertyType.isStringLiteral()
           ? propertyType.value
-          : String(propertyType.value as number);
+          : // eslint-disable-next-line @typescript-eslint/no-base-to-string
+            String(propertyType.value);
 
         const property = objectType.getProperty(propertyName);
 

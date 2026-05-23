@@ -1,3 +1,69 @@
+## 8.59.4 (2026-05-18)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.4) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.59.3 (2026-05-11)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.3) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.59.2 (2026-05-04)
+
+### 🩹 Fixes
+
+- **rule-tester:** add TypeScript as a peer dependency ([#12288](https://github.com/typescript-eslint/typescript-eslint/pull/12288))
+
+### ❤️ Thank You
+
+- Dariusz Czajkowski
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.59.1 (2026-04-27)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.59.0 (2026-04-20)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] report more cases based on assignability ([#11789](https://github.com/typescript-eslint/typescript-eslint/pull/11789))
+
+### ❤️ Thank You
+
+- Ulrich Stark
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.59.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.58.2 (2026-04-13)
+
+### 🩹 Fixes
+
+- remove tsbuildinfo cache file from published packages ([#12187](https://github.com/typescript-eslint/typescript-eslint/pull/12187))
+
+### ❤️ Thank You
+
+- Abhijeet Singh @cseas
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.58.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.58.1 (2026-04-08)
 
 This was a version bump only for rule-tester to align it with other projects, there were no code changes.

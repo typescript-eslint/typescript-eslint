@@ -148,6 +148,8 @@ export default createRule<Options, MessageId>({
         const paramIndex = parent.params.indexOf(node);
         if (paramIndex !== -1) {
           const tsFunc = services.esTreeNodeToTSNodeMap.get(parent);
+          // tsFunc is already a FunctionLike subtype; defensive runtime check
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           if (ts.isFunctionLike(tsFunc)) {
             const contextualType = checker.getContextualType(
               tsFunc as ts.Expression,

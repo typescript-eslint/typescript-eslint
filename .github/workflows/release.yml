@@ -2,7 +2,7 @@ name: Release
 
 on:
   # Triggered by completed CI runs (we check for successful status in the validate job) on main branch for canary releases
-  workflow_run:
+  workflow_run: # zizmor: ignore[dangerous-triggers] Safe - actor is validated against a whitelist.
     workflows: ['CI']
     types: [completed]
     branches: [main]
@@ -81,6 +81,7 @@ jobs:
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
           INPUT_FORCE_RELEASE: ${{ inputs.force_release_without_changes }}
           INPUT_FIRST_RELEASE: ${{ inputs.first_release }}
+          ACTOR: ${{ github.actor }}
         run: |
           SHOULD_RELEASE="false"
 
@@ -115,7 +116,6 @@ jobs:
           # Security: For manual triggers, only allow core maintainers to run releases
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             ALLOWED_ACTORS=("JamesHenry" "bradzacher" "JoshuaKGoldberg")
-            ACTOR="${{ github.actor }}"
             IS_ALLOWED="false"
 
             for allowed in "${ALLOWED_ACTORS[@]}"; do
@@ -194,10 +194,11 @@ jobs:
       id-token: write # Required for trusted publishing
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           # We need the full history for version calculation
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Install dependencies
         uses: ./.github/actions/prepare-install
@@ -219,8 +220,10 @@ jobs:
           OVERRIDE_MAJOR_VERSION: ${{ needs.validate.outputs.override_major_version }}
 
       - name: Publish canary packages
-        run: pnpm exec nx release publish --tag canary --verbose --dry-run=${{ needs.validate.outputs.dry_run }} --first-release=${{ needs.validate.outputs.first_release }}
+        run: pnpm exec nx release publish --tag canary --verbose --dry-run="$DRY_RUN" --first-release="$FIRST_RELEASE"
         env:
+          DRY_RUN: ${{ needs.validate.outputs.dry_run }}
+          FIRST_RELEASE: ${{ needs.validate.outputs.first_release }}
           # Enable npm provenance
           NPM_CONFIG_PROVENANCE: true
           # Disable distributed execution here for predictability
@@ -239,7 +242,8 @@ jobs:
       id-token: write # Required for trusted publishing
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        # zizmor: ignore[artipacked] Need persisted token for push permissions.
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           # Need full history for changelog generation
           fetch-depth: 0
@@ -266,8 +270,11 @@ jobs:
           git config --global user.name "typescript-eslint[bot]"
 
       - name: Run stable release
-        run: pnpm run release --dry-run=${{ needs.validate.outputs.dry_run }} --force-release-without-changes=${{ needs.validate.outputs.force_release_without_changes }} --first-release=${{ needs.validate.outputs.first_release }} --verbose
+        run: pnpm run release --dry-run="$DRY_RUN" --force-release-without-changes="$FORCE_RELEASE_WITHOUT_CHANGES" --first-release="$FIRST_RELEASE" --verbose
         env:
+          DRY_RUN: ${{ needs.validate.outputs.dry_run }}
+          FORCE_RELEASE_WITHOUT_CHANGES: ${{ needs.validate.outputs.force_release_without_changes }}
+          FIRST_RELEASE: ${{ needs.validate.outputs.first_release }}
           # Enable npm provenance
           NPM_CONFIG_PROVENANCE: true
           # Disable distributed execution here for predictability

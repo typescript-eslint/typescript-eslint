@@ -48,6 +48,8 @@ This code will enable our [recommended configuration](../users/Shared_Configurat
 
 #### Details
 
+- [`// @ts-check` enables TypeScript](https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html#ts-check) to typecheck the config file, which improves editor support and can help catch errors when authoring your ESLint config.
+  It's also fine to leave this off if it causes problems with your TypeScript setup.
 - `defineConfig(...)` is an optional helper function built in to current versions of ESLint. See [the ESLint configuration docs](https://eslint.org/docs/latest/use/configure/configuration-files) for more detail.
 - `'@eslint/js'` / `js.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
 - `tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
