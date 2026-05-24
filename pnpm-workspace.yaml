@@ -1,6 +1,13 @@
 packages:
   - packages/*
 
+# Security: only allow specific packages to run lifecycle scripts
+# This prevents supply chain attacks from malicious postinstall scripts
+onlyBuiltDependencies:
+  - '@swc/core'
+  - esbuild
+  - nx
+
 catalog:
   '@eslint/js': ^10.0.0
   '@types/babel__code-frame': ^7.0.6
