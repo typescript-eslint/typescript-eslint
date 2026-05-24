@@ -248,6 +248,7 @@ import tseslint from 'typescript-eslint';
 export default defineConfig(
   tseslint.configs.recommendedTypeCheckedOnly,
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
         projectService: true,
