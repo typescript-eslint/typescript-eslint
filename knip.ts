@@ -3,10 +3,10 @@ import type { KnipConfig } from 'knip';
 export default {
   rules: {
     binaries: 'off',
-    classMembers: 'off',
     duplicates: 'off',
     enumMembers: 'off',
     exports: 'off',
+    namespaceMembers: 'off',
     nsExports: 'off',
     nsTypes: 'off',
     types: 'off',
@@ -23,18 +23,14 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: ['tools/scripts/generate-sponsors.mts'],
+
       ignoreDependencies: [
         '@nx/workspace',
         '@eslint/config-helpers',
         '@typescript/native-preview',
       ],
 
-      project: [
-        'tools/scripts/**/*.mts',
-        '!tools/scripts/typings/typescript.d.ts',
-        '!typings/*.d.ts',
-      ],
+      project: ['tools/scripts/**/*.mts', '!typings/*.d.ts'],
     },
     'packages/ast-spec': {
       ignore: [
@@ -57,7 +53,6 @@ export default {
     },
 
     'packages/eslint-plugin': {
-      ignore: ['typings/eslint-rules.d.ts', 'typings/typescript.d.ts'],
       ignoreDependencies: ['@types/react'],
 
       project: ['src/**/*.ts!', 'tools/**/*.mts'],
@@ -88,6 +83,14 @@ export default {
       },
     },
 
+    'packages/project-service': {
+      entry: ['src/index.ts'],
+    },
+
+    'packages/rule-schema-to-typescript-types': {
+      entry: ['src/index.ts'],
+    },
+
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
     },
@@ -104,6 +107,11 @@ export default {
         ],
       },
     },
+
+    'packages/tsconfig-utils': {
+      entry: ['src/index.ts'],
+    },
+
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
 
@@ -121,6 +129,10 @@ export default {
 
     'packages/types': {
       project: ['src/**/*.ts!', '!src/generated/**/*.ts'],
+    },
+
+    'packages/typescript-eslint': {
+      entry: ['src/index.ts'],
     },
 
     'packages/typescript-estree': {
@@ -142,6 +154,11 @@ export default {
         'typings/eslint-community-eslint-utils.d.ts',
       ],
     },
+
+    'packages/visitor-keys': {
+      entry: ['src/index.ts'],
+    },
+
     'packages/website': {
       entry: [
         'docusaurus.config.mts',
