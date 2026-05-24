@@ -1331,3 +1331,67 @@ if (false) {
     },
   ],
 });
+
+// Tests for ECMAScript line terminators (fixes #12353)
+ruleTester.run('ban-ts-comment with non-LF line terminators', rule, {
+  valid: [],
+  invalid: [
+    {
+      // CR line terminator
+      code: noFormat`/* first line\r * @ts-expect-error */`,
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
+        },
+      ],
+      options: [{ 'ts-expect-error': true }],
+    },
+    {
+      // Line Separator (U+2028)
+      code: '/* first line\u2028 * @ts-expect-error */',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
+        },
+      ],
+      options: [{ 'ts-expect-error': true }],
+    },
+    {
+      // Paragraph Separator (U+2029)
+      code: '/* first line\u2029 * @ts-expect-error */',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
+        },
+      ],
+      options: [{ 'ts-expect-error': true }],
+    },
+    {
+      // CRLF line terminator
+      code: noFormat`/* first line\r\n * @ts-ignore */`,
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'tsIgnoreInsteadOfExpectError',
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '/* first line\r\n * @ts-expect-error */',
+            },
+          ],
+        },
+      ],
+      options: [{ 'ts-ignore': true }],
+    },
+  ],
+});

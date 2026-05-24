@@ -192,7 +192,8 @@ export default createRule<Options, MessageIds>({
         );
       }
 
-      const commentLines = comment.value.split('\n');
+      // Split on all ECMAScript line terminators (LF, CR, CRLF, LS, PS)
+      const commentLines = comment.value.split(/\r?\n|\r|\u2028|\u2029/);
       return execDirectiveRegEx(
         commentDirectiveRegExMultiLine,
         commentLines[commentLines.length - 1],

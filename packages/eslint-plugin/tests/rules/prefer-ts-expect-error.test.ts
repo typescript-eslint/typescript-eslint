@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-ts-expect-error';
 
@@ -148,6 +148,55 @@ if (false) {
 /*
 // @ts-expect-error in a block with single line comments */
       `,
+    },
+    // Tests for ECMAScript line terminators (fixes #12353)
+    {
+      // CR line terminator
+      code: noFormat`/* first line\r * @ts-ignore */`,
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* first line\r * @ts-expect-error */',
+    },
+    {
+      // Line Separator (U+2028)
+      code: '/* first line\u2028 * @ts-ignore */',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* first line\u2028 * @ts-expect-error */',
+    },
+    {
+      // Paragraph Separator (U+2029)
+      code: '/* first line\u2029 * @ts-ignore */',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* first line\u2029 * @ts-expect-error */',
+    },
+    {
+      // CRLF line terminator
+      code: noFormat`/* first line\r\n * @ts-ignore */`,
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* first line\r\n * @ts-expect-error */',
     },
   ],
 });

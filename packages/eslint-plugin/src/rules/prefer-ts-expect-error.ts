@@ -49,7 +49,8 @@ export default createRule<[], MessageIds>({
       }
 
       // For multiline comments - we look at only the last line.
-      const commentlines = comment.value.split('\n');
+      // Split on all ECMAScript line terminators (LF, CR, CRLF, LS, PS)
+      const commentlines = comment.value.split(/\r?\n|\r|\u2028|\u2029/);
       return commentlines[commentlines.length - 1];
     }
 
