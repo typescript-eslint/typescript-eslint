@@ -1,7 +1,7 @@
 // @ts-check
 
 import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments/configs';
-import { fixupPluginRules, includeIgnoreFile } from '@eslint/compat';
+import { fixupPluginRules } from '@eslint/compat';
 import js from '@eslint/js';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
 import vitestPlugin from '@vitest/eslint-plugin';
@@ -15,7 +15,7 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import regexpPlugin from 'eslint-plugin-regexp';
 import unicornPlugin from 'eslint-plugin-unicorn';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, includeIgnoreFile } from 'eslint/config';
 import globals from 'globals';
 import path from 'node:path';
 import url from 'node:url';
@@ -63,7 +63,9 @@ export default defineConfig(
     name: 'global-ignores',
     ignores: ['**/fixtures/**', 'packages/website/src/vendor/'],
   },
-  includeIgnoreFile(path.join(import.meta.dirname, '.gitignore')),
+  includeIgnoreFile(path.join(import.meta.dirname, '.gitignore'), {
+    gitignoreResolution: true,
+  }),
 
   eslintCommentsPlugin.recommended,
   js.configs.recommended,
@@ -553,20 +555,6 @@ export default defineConfig(
             },
           ],
           groups: ['first', 'unknown'],
-        },
-      ],
-    },
-  },
-  {
-    name: 'ast-spec',
-    files: ['packages/ast-spec/**/*.?(m|c)ts?(x)'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          name: '@typescript-eslint/typescript-estree',
-          message:
-            'To prevent nx build errors, all `typescript-estree` imports should be done via `packages/ast-spec/tests/util/parsers/typescript-estree-import.ts`.',
         },
       ],
     },

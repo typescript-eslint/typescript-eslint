@@ -5,7 +5,7 @@ on:
   # WARNING: Using pull_request_target here because we want to validate PRs on forks
   # pull_request_target can be UNSAFE because it runs in the TARGET repo context (not fork context).
   # DO NOT CHECK OUT THE REPO IN THIS WORKFLOW
-  pull_request_target:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] See warning above.
     types:
       - opened
       - edited
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check PR title and body
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |

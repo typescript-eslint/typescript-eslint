@@ -154,6 +154,10 @@ export default util.createRule<Options, MessageId>({
     function checkFunctionCallNode(
       callNode: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
+      if (callNode.arguments.length === 0) {
+        return;
+      }
+
       const callTsNode = parserServices.esTreeNodeToTSNodeMap.get(callNode);
 
       const funcType = checker.getTypeAtLocation(callTsNode.expression);
