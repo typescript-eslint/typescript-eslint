@@ -1,0 +1,75 @@
+name: Force Push Bot
+on:
+  # WARNING: Using pull_request_target here because we need write permissions to comment on fork PRs.
+  #
+  # NEVER EVER execute any code from the fork (including checkout, install, scripts, etc.)
+  pull_request_target:
+    types: [synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  check-force-push:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      # Uses the GitHub Compare API instead of checkout, so no fork code ever
+      # touches the runner.
+      - name: Detect force-push and comment
+        uses: actions/github-script@v9
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.event.pull_request.head.sha }}
+        with:
+          script: |
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              per_page: 1,
+            });
+
+            if (reviews.length === 0) {
+              return;
+            }
+
+            const before = process.env.BEFORE_SHA;
+            const after = process.env.AFTER_SHA;
+
+            const { data } = await github.rest.repos.compareCommitsWithBasehead({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              basehead: `${before}...${after}`,
+            });
+
+            const isForcePush = data.status === 'behind' || data.status === 'diverged';
+
+            if (!isForcePush) {
+              return;
+            }
+
+            const author = context.payload.pull_request.user.login;
+
+            const lines = [
+              `Hi @${author}, thanks for the update!\n\n`,
+
+              'Just a quick heads-up: please try to avoid force-pushing moving forward. ',
+              'Rewriting history makes it harder for us to track incremental changes ',
+              'between reviews.\n\n',
+
+              'Since we squash merge anyway, there is no need to keep the commit ',
+              'history "clean" on this branch. Standard pushes are much preferred!',
+            ];
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: lines.join(''),
+            });
