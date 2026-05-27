@@ -4,7 +4,7 @@ on:
   #
   # NEVER EVER execute any code from the fork (including checkout, install, scripts, etc.)
   pull_request_target:
-    types: [synchronize]
+    types: [synchronize] # zizmor: ignore[dangerous-triggers] See warning above.
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -22,7 +22,7 @@ jobs:
       # Uses the GitHub Compare API instead of checkout, so no fork code ever
       # touches the runner.
       - name: Detect force-push and comment
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           BEFORE_SHA: ${{ github.event.before }}
           AFTER_SHA: ${{ github.event.pull_request.head.sha }}
