@@ -559,20 +559,6 @@ export default defineConfig(
       ],
     },
   },
-  {
-    name: 'ast-spec',
-    files: ['packages/ast-spec/**/*.?(m|c)ts?(x)'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          name: '@typescript-eslint/typescript-estree',
-          message:
-            'To prevent nx build errors, all `typescript-estree` imports should be done via `packages/ast-spec/tests/util/parsers/typescript-estree-import.ts`.',
-        },
-      ],
-    },
-  },
 
   //
   // website linting

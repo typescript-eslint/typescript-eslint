@@ -392,8 +392,8 @@ export default createRule<Options, MessageIds>({
         if (getTypeName(checker, leftType) === 'string') {
           checkExpression(node.right, rightType);
         } else if (
-          getTypeName(checker, rightType) === 'string' &&
-          node.left.type !== AST_NODE_TYPES.PrivateIdentifier
+          node.left.type !== AST_NODE_TYPES.PrivateIdentifier &&
+          getTypeName(checker, rightType) === 'string'
         ) {
           checkExpression(node.left, leftType);
         }

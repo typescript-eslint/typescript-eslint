@@ -2,7 +2,7 @@ packages:
   - packages/*
 
 catalog:
-  '@eslint/js': ^10.0.0
+  '@eslint/js': ^10.0.1
   '@types/babel__code-frame': ^7.0.6
   '@types/mdast': ^4.0.4
   '@types/natural-compare': ^1.4.3

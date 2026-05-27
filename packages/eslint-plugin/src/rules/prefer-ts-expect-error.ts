@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { RuleFix, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 
-import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { AST_TOKEN_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
@@ -49,7 +49,7 @@ export default createRule<[], MessageIds>({
       }
 
       // For multiline comments - we look at only the last line.
-      const commentlines = comment.value.split('\n');
+      const commentlines = comment.value.split(ASTUtils.LINEBREAK_MATCHER);
       return commentlines[commentlines.length - 1];
     }
 
