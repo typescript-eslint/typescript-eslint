@@ -515,9 +515,7 @@ export default createRule<Options, MessageIds>({
       let initializerNode: TSESTree.Node | null | undefined;
 
       if (outerIdentifier.parent.type === AST_NODE_TYPES.VariableDeclarator) {
-        initializerNode = (
-          outerIdentifier.parent as TSESTree.VariableDeclarator
-        ).init;
+        initializerNode = outerIdentifier.parent.init;
       } else if (
         outerIdentifier.parent.type === AST_NODE_TYPES.AssignmentPattern
       ) {
