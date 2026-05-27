@@ -44,9 +44,11 @@
     "generate-lib": "pnpm -w exec nx run scope-manager:generate-lib",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
@@ -94,7 +96,8 @@
           "typescript-eslint:build",
           "eslint-plugin-internal:build"
         ]
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }

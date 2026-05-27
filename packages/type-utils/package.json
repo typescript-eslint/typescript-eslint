@@ -41,7 +41,8 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@typescript-eslint/types": "workspace:*",
@@ -57,6 +58,7 @@
   "devDependencies": {
     "@types/babel__code-frame": "catalog:",
     "@typescript-eslint/parser": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "ajv": "catalog:",
     "eslint": "catalog:",
@@ -76,7 +78,8 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }
