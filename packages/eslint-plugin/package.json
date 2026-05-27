@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.59.4",
+  "version": "8.60.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -55,7 +55,8 @@
     "generate-configs": "pnpm -w run generate-configs",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",
@@ -74,6 +75,7 @@
     "@types/react": "catalog:",
     "@typescript-eslint/rule-schema-to-typescript-types": "workspace:*",
     "@typescript-eslint/rule-tester": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "ajv": "catalog:",
     "eslint": "catalog:",
@@ -117,7 +119,8 @@
       },
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }
