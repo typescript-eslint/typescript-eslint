@@ -287,7 +287,6 @@ export default createRule<Options, MessageIds>({
 
     function isArgumentOfGenericCallWithUnsafeInference(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
-      contextualType: ts.Type,
     ): boolean {
       const parent = node.parent;
       if (
@@ -992,7 +991,7 @@ export default createRule<Options, MessageIds>({
             contextual &&
             !isTypeFlagSet(contextual, ts.TypeFlags.Any) &&
             !isTypeFlagSet(contextual, ts.TypeFlags.Unknown) &&
-            !isArgumentOfGenericCallWithUnsafeInference(node, contextual) &&
+            !isArgumentOfGenericCallWithUnsafeInference(node) &&
             !isSubstitutionOfGenericTaggedTemplate(node) &&
             !isConstAssertionPropertyInProblematicContext(node, contextual) &&
             isContextuallyLiteralConstAssertionType(castType, contextual) &&
