@@ -462,35 +462,84 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
-     * Checks if a variable is inside the initializer of scopeVar.
+     * Finds the uppermost expression node that can evaluate to the given one,
+     * unwrapping through LogicalExpression and non-test ConditionalExpression branches.
+     * @param node The node to unwrap.
+     * @returns The topmost unwrapped node.
+     */
+    function unwrapExpression(node: TSESTree.Node): TSESTree.Node {
+      const { parent } = node;
+      if (
+        parent?.type === AST_NODE_TYPES.LogicalExpression ||
+        (parent?.type === AST_NODE_TYPES.ConditionalExpression &&
+          parent.test !== node)
+      ) {
+        return unwrapExpression(parent);
+      }
+      return node;
+    }
+
+    /**
+     * Checks if a variable is the name of a function or class expression that is
+     * directly assigned (or transparently through `||`/`?:`) as the initializer
+     * of scopeVar.
      *
-     * To avoid reporting at declarations such as `var a = function a() {};`.
-     * But it should report `var a = function(a) {};` or `var a = function() { function a() {} };`.
+     * Allows `var a = function a() {}` but reports `var a = wrap(function a() {})`.
      * @param variable The variable to check.
      * @param scopeVar The scope variable to look for.
-     * @returns Whether or not the variable is inside initializer of scopeVar.
+     * @returns Whether or not the variable is the direct initializer name of scopeVar.
      */
     function isOnInitializer(
       variable: TSESLint.Scope.Variable,
       scopeVar: TSESLint.Scope.Variable,
     ): boolean {
-      const outerScope = scopeVar.scope;
       const outerDef = scopeVar.defs.at(0);
-      const outer = outerDef?.parent?.range;
-      const innerScope = variable.scope;
       const innerDef = variable.defs.at(0);
-      const inner = innerDef?.name.range;
 
-      return !!(
-        outer &&
-        inner &&
-        outer[0] < inner[0] &&
-        inner[1] < outer[1] &&
-        ((innerDef.type === DefinitionType.FunctionName &&
-          innerDef.node.type === AST_NODE_TYPES.FunctionExpression) ||
-          innerDef.node.type === AST_NODE_TYPES.ClassExpression) &&
-        outerScope === innerScope.upper
-      );
+      if (!outerDef || !innerDef) {
+        return false;
+      }
+
+      if (
+        !(
+          (innerDef.type === DefinitionType.FunctionName &&
+            innerDef.node.type === AST_NODE_TYPES.FunctionExpression) ||
+          (innerDef.type === DefinitionType.ClassName &&
+            innerDef.node.type === AST_NODE_TYPES.ClassExpression)
+        )
+      ) {
+        return false;
+      }
+
+      const outerIdentifier = outerDef.name;
+      let initializerNode: TSESTree.Node | null | undefined;
+
+      if (outerIdentifier.parent.type === AST_NODE_TYPES.VariableDeclarator) {
+        initializerNode = (
+          outerIdentifier.parent as TSESTree.VariableDeclarator
+        ).init;
+      } else if (
+        outerIdentifier.parent.type === AST_NODE_TYPES.AssignmentPattern
+      ) {
+        initializerNode = outerIdentifier.parent.right;
+      }
+
+      if (!initializerNode) {
+        return false;
+      }
+
+      const nodeToCheck = innerDef.node;
+
+      if (
+        !(
+          initializerNode.range[0] <= nodeToCheck.range[0] &&
+          nodeToCheck.range[1] <= initializerNode.range[1]
+        )
+      ) {
+        return false;
+      }
+
+      return initializerNode === unwrapExpression(nodeToCheck);
     }
 
     /**
