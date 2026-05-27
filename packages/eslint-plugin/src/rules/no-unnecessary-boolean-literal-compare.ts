@@ -249,11 +249,7 @@ export default createRule<Options, MessageIds>({
         parent = currentNode.parent;
       }
 
-      if (parent == null) {
-        return false;
-      }
-
-      switch (parent.type) {
+      switch (parent?.type) {
         case AST_NODE_TYPES.ConditionalExpression:
         case AST_NODE_TYPES.DoWhileStatement:
         case AST_NODE_TYPES.ForStatement:

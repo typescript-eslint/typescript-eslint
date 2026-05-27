@@ -317,6 +317,104 @@ function test(a?: boolean): boolean {
     {
       code: `
         declare const x: boolean | undefined;
+
+        while (x === true) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const x: boolean | undefined;
+
+        while (x) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const x: boolean | undefined;
+
+        do {
+        } while (x === true);
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const x: boolean | undefined;
+
+        do {
+        } while (x);
+      `,
+    },
+    {
+      code: `
+        declare const x: boolean | undefined;
+
+        for (; x === true; ) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const x: boolean | undefined;
+
+        for (; x; ) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const x: boolean | undefined;
+
+        const value = x === true ? 'true' : 'false';
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const x: boolean | undefined;
+
+        const value = x ? 'true' : 'false';
+      `,
+    },
+    {
+      code: `
+        declare const condition: boolean;
+        declare const x: boolean | undefined;
+
+        const value = condition ? x === true : false;
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const condition: boolean;
+        declare const x: boolean | undefined;
+
+        const value = condition ? x ?? false : false;
+      `,
+    },
+    {
+      code: `
+        declare const x: boolean | undefined;
         declare const other: boolean;
 
         if (other && x === true) {
@@ -359,6 +457,26 @@ function test(a?: boolean): boolean {
     {
       code: `
         declare const x: boolean | undefined;
+        declare const other: boolean;
+
+        const value: boolean = (x && other) === true;
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const x: boolean | undefined;
+        declare const other: boolean;
+
+        const value: boolean = (x && other) ?? false;
+      `,
+    },
+    {
+      code: `
+        declare const x: boolean | undefined;
 
         const value: boolean = true === x;
       `,
@@ -379,6 +497,24 @@ function test(a?: boolean): boolean {
         declare const x: boolean | undefined;
 
         const value: boolean = x !== true;
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueNegated',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const x: boolean | undefined;
+
+        const value: boolean = !x;
+      `,
+    },
+    {
+      code: `
+        declare const x: boolean | undefined;
+
+        const value: boolean = x != true;
       `,
       errors: [
         {
