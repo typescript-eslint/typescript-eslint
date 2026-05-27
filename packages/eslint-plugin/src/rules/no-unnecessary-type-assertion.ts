@@ -273,12 +273,21 @@ export default createRule<Options, MessageIds>({
       return type.isLiteral() || tsutils.isBooleanLiteralType(type);
     }
 
-    // Asserts in arg position of a generic call can drive type-parameter
-    // inference (e.g. `id<T>('a' as const)` pins T to `'a'` instead of
-    // widening to `string`), so removing the assertion isn't safe even when
-    // the resolved contextual type looks like a literal.
-    function isArgumentOfGenericCall(
+    function isContextuallyLiteralConstAssertionType(
+      castType: ts.Type,
+      contextualType: ts.Type,
+    ): boolean {
+      return tsutils.unionConstituents(contextualType).every(part => {
+        return (
+          isTypeLiteral(part) ||
+          (checker.isTupleType(castType) && checker.isTupleType(part))
+        );
+      });
+    }
+
+    function isArgumentOfGenericCallWithUnsafeInference(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      contextualType: ts.Type,
     ): boolean {
       const parent = node.parent;
       if (
@@ -293,7 +302,73 @@ export default createRule<Options, MessageIds>({
         parent.type === AST_NODE_TYPES.NewExpression
           ? calleeType.getConstructSignatures()
           : calleeType.getCallSignatures();
-      return signatures.some(s => !!s.typeParameters?.length);
+      if (!signatures.some(signatureHasTypeParams)) {
+        return false;
+      }
+
+      if (signatures.length > 1) {
+        return true;
+      }
+
+      if (parent.type === AST_NODE_TYPES.NewExpression) {
+        const callTsNode = services.esTreeNodeToTSNodeMap.get(parent);
+        const callContextualType = checker.getContextualType(callTsNode);
+        if (callContextualType && !containsTypeVariable(callContextualType)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function isSubstitutionOfGenericTaggedTemplate(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      if (
+        node.parent.type !== AST_NODE_TYPES.TemplateLiteral ||
+        node.parent.parent.type !== AST_NODE_TYPES.TaggedTemplateExpression
+      ) {
+        return false;
+      }
+
+      const tagTsNode = services.esTreeNodeToTSNodeMap.get(
+        node.parent.parent.tag,
+      );
+      const tagType = checker.getTypeAtLocation(tagTsNode);
+      return tagType.getCallSignatures().some(signatureHasTypeParams);
+    }
+
+    function isConstAssertionPropertyInProblematicContext(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      contextualType: ts.Type,
+    ): boolean {
+      const { parent } = node;
+      if (parent.type !== AST_NODE_TYPES.Property || parent.value !== node) {
+        return false;
+      }
+
+      const objectExpr = parent.parent;
+      if (objectExpr.type !== AST_NODE_TYPES.ObjectExpression) {
+        return false;
+      }
+
+      const objectParent = objectExpr.parent;
+      if (
+        objectParent.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+        (objectParent.type === AST_NODE_TYPES.CallExpression &&
+          objectParent.parent.type === AST_NODE_TYPES.TSSatisfiesExpression)
+      ) {
+        return true;
+      }
+
+      const objectTsNode = services.esTreeNodeToTSNodeMap.get(objectExpr);
+      if (!checker.getContextualType(objectTsNode)?.isUnion()) {
+        return false;
+      }
+
+      return !tsutils
+        .unionConstituents(contextualType)
+        .every(part => isTypeLiteral(part));
     }
 
     function hasIndexSignature(type: ts.Type): boolean {
@@ -352,6 +427,10 @@ export default createRule<Options, MessageIds>({
 
     function hasTypeParams(sig: ts.Signature): boolean {
       return (sig.getTypeParameters()?.length ?? 0) > 0;
+    }
+
+    function signatureHasTypeParams(sig: ts.Signature): boolean {
+      return hasTypeParams(sig) || !!sig.typeParameters?.length;
     }
 
     function genericsMismatch(uncast: ts.Type, contextual: ts.Type): boolean {
@@ -906,16 +985,17 @@ export default createRule<Options, MessageIds>({
         if (
           options.checkLiteralConstAssertions &&
           typeAnnotationIsConstAssertion &&
-          castTypeIsLiteral &&
-          !isArgumentOfGenericCall(node)
+          (castTypeIsLiteral || checker.isTupleType(castType))
         ) {
           const contextual = checker.getContextualType(originalNode);
           if (
             contextual &&
             !isTypeFlagSet(contextual, ts.TypeFlags.Any) &&
-            tsutils
-              .unionConstituents(contextual)
-              .every(part => isTypeLiteral(part)) &&
+            !isTypeFlagSet(contextual, ts.TypeFlags.Unknown) &&
+            !isArgumentOfGenericCallWithUnsafeInference(node, contextual) &&
+            !isSubstitutionOfGenericTaggedTemplate(node) &&
+            !isConstAssertionPropertyInProblematicContext(node, contextual) &&
+            isContextuallyLiteralConstAssertionType(castType, contextual) &&
             checker.isTypeAssignableTo(castType, contextual)
           ) {
             context.report({
