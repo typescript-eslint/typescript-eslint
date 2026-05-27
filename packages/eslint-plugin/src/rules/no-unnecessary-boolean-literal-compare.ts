@@ -236,6 +236,52 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isInConditionalTest(node: TSESTree.Node): boolean {
+      let currentNode = node;
+      let parent = currentNode.parent;
+
+      while (
+        parent != null &&
+        (parent.type === AST_NODE_TYPES.LogicalExpression ||
+          nodeIsUnaryNegation(parent))
+      ) {
+        currentNode = parent;
+        parent = currentNode.parent;
+      }
+
+      if (parent == null) {
+        return false;
+      }
+
+      switch (parent.type) {
+        case AST_NODE_TYPES.ConditionalExpression:
+        case AST_NODE_TYPES.DoWhileStatement:
+        case AST_NODE_TYPES.ForStatement:
+        case AST_NODE_TYPES.IfStatement:
+        case AST_NODE_TYPES.WhileStatement:
+          return parent.test === currentNode;
+
+        default:
+          return false;
+      }
+    }
+
+    function getNullishCoalescedFalseText(
+      comparison: BooleanComparisonWithTypeInformation,
+      mutatedNode: TSESTree.Node,
+    ): string {
+      const expressionText = context.sourceCode.getText(comparison.expression);
+      const coalescedText = `${
+        isStrongPrecedenceNode(comparison.expression)
+          ? expressionText
+          : `(${expressionText})`
+      } ?? false`;
+
+      return mutatedNode.parent?.type === AST_NODE_TYPES.LogicalExpression
+        ? `(${coalescedText})`
+        : coalescedText;
+    }
+
     return {
       BinaryExpression(node): void {
         const comparison = getBooleanComparison(node);
@@ -280,6 +326,21 @@ export default createRule<Options, MessageIds>({
               comparison.negated !== comparison.literalBooleanInComparison;
 
             const mutatedNode = isUnaryNegation ? node.parent : node;
+
+            const isBareExpressionFix = shouldNegate !== isUnaryNegation;
+
+            if (
+              comparison.expressionIsNullableBoolean &&
+              comparison.literalBooleanInComparison &&
+              isBareExpressionFix &&
+              !isInConditionalTest(node)
+            ) {
+              yield fixer.replaceText(
+                mutatedNode,
+                getNullishCoalescedFalseText(comparison, mutatedNode),
+              );
+              return;
+            }
 
             yield fixer.replaceText(
               mutatedNode,
