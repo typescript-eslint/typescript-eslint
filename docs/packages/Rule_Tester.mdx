@@ -300,6 +300,29 @@ import InvalidTestCase from '../../packages/rule-tester/src/types/InvalidTestCas
 
 <CodeBlock language="ts">{InvalidTestCase}</CodeBlock>
 
+### Assertion options
+
+import AssertionOptions from '../../packages/rule-tester/src/types/AssertionOptions.ts?raw';
+
+<CodeBlock language="ts">{AssertionOptions}</CodeBlock>
+
+Pass `assertionOptions` alongside `valid` and `invalid` to enforce stricter test case requirements:
+
+```ts
+ruleTester.run('my-rule', rule, {
+  assertionOptions: {
+    requireData: true,
+    requireLocation: true,
+  },
+  valid: [
+    /* ... */
+  ],
+  invalid: [
+    /* ... */
+  ],
+});
+```
+
 ## Static Properties
 
 Each of the following properties may be assigned to as static members of the `RuleTester` class.
