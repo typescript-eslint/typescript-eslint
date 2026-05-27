@@ -277,9 +277,7 @@ describe(createProjectService, () => {
 
   it('uses watchFile from custom host', () => {
     const watchFile = (): ts.FileWatcher => ({
-      close() {
-        void 0;
-      },
+      close() {},
     });
     const { service } = createProjectService({
       host: {
