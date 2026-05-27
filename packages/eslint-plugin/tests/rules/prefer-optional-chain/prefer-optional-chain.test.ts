@@ -1618,8 +1618,130 @@ describe('chain ending with comparison', () => {
         errors: [{ messageId: 'preferOptionalChain' }],
         output: 'foo?.bar == 0',
       },
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      {
+        code: `
+          declare const foo: { bar: number | undefined } | null;
+          foo === null || foo.bar === undefined;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const foo: { bar: number | undefined } | null;
+          foo?.bar === undefined;
+        `,
+      },
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      {
+        code: `
+          declare const foo: { bar: number | null } | undefined;
+          foo === undefined || foo.bar !== null;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const foo: { bar: number | null } | undefined;
+          foo?.bar !== null;
+        `,
+      },
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      {
+        code: `
+          declare const foo: { bar: number | null } | null;
+          foo !== null && foo.bar === null;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const foo: { bar: number | null } | null;
+          foo?.bar === null;
+        `,
+      },
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      {
+        code: `
+          declare const foo: { bar: number | undefined } | undefined;
+          foo !== undefined && foo.bar !== undefined;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const foo: { bar: number | undefined } | undefined;
+          foo?.bar !== undefined;
+        `,
+      },
+      {
+        code: `
+          declare const foo: { bar: { baz: number | undefined } | undefined } | undefined;
+          foo !== undefined && foo.bar !== undefined && foo.bar.baz !== undefined;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const foo: { bar: { baz: number | undefined } | undefined } | undefined;
+          foo?.bar?.baz !== undefined;
+        `,
+      },
+      {
+        code: `
+          declare const foo: { bar: { baz: number | undefined } | undefined } | undefined;
+          foo === undefined || foo.bar === undefined || foo.bar.baz === undefined;
+        `,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        output: `
+          declare const foo: { bar: { baz: number | undefined } | undefined } | undefined;
+          foo?.bar?.baz === undefined;
+        `,
+      },
     ],
     valid: [
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      `
+        declare const foo: { bar: number | null } | undefined;
+        foo === undefined || foo.bar === null;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      `
+        declare const foo: { bar: number | null } | null;
+        foo === null || foo.bar === null;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      `
+        declare const foo: { bar: number | null } | undefined;
+        foo !== undefined && foo.bar !== null;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      `
+        declare const foo: { bar: number | null } | null;
+        foo !== null && foo.bar !== null;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      `
+        declare const foo: { bar: number | undefined } | null;
+        foo === null || foo.bar !== undefined;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      `
+        declare const foo: { bar: number | null } | undefined;
+        foo === undefined || foo.bar != null;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      `
+        declare const foo: { bar: number | undefined } | null;
+        foo !== null && foo.bar === undefined;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+      `
+        declare const foo: { bar: number | null } | undefined;
+        foo !== undefined && foo.bar == null;
+      `,
+      `
+        declare const foo: { bar: { baz: number | null } | null } | null;
+        foo !== null && foo.bar !== null && foo.bar.baz !== null;
+      `,
+      `
+        declare const foo: { bar: { baz: number | null } | null } | undefined;
+        foo !== undefined && foo.bar !== null && foo.bar.baz !== null;
+      `,
+      `
+        declare const foo: { bar: { baz: number | null } | null } | null | undefined;
+        !foo || foo.bar === null || foo.bar.baz === null;
+      `,
       'foo && foo.bar == undeclaredVar;',
       'foo && foo.bar == null;',
       'foo && foo.bar == undefined;',
@@ -2658,102 +2780,6 @@ describe('hand-crafted cases', () => {
           null != foo &&
             'undefined' !== typeof foo.bar &&
             null !== foo.bar &&
-            null !== foo.bar.baz &&
-            'undefined' !== typeof foo.bar.baz;
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
-          null !== foo?.bar?.baz &&
-            'undefined' !== typeof foo.bar.baz;
-        `,
-              },
-            ],
-          },
-        ],
-        output: null,
-      },
-      {
-        code: `
-          foo != null &&
-            typeof foo.bar !== 'undefined' &&
-            foo.bar !== null &&
-            foo.bar.baz !== null &&
-            typeof foo.bar.baz !== 'undefined';
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
-          foo?.bar?.baz !== null &&
-            typeof foo.bar.baz !== 'undefined';
-        `,
-              },
-            ],
-          },
-        ],
-        output: null,
-      },
-      {
-        code: `
-          null != foo &&
-            'undefined' !== typeof foo.bar &&
-            null !== foo.bar &&
-            null !== foo.bar.baz &&
-            undefined !== foo.bar.baz;
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
-          null !== foo?.bar?.baz &&
-            undefined !== foo.bar.baz;
-        `,
-              },
-            ],
-          },
-        ],
-        output: null,
-      },
-      {
-        code: `
-          foo != null &&
-            typeof foo.bar !== 'undefined' &&
-            foo.bar !== null &&
-            foo.bar.baz !== null &&
-            foo.bar.baz !== undefined;
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
-          foo?.bar?.baz !== null &&
-            foo.bar.baz !== undefined;
-        `,
-              },
-            ],
-          },
-        ],
-        output: null,
-      },
-      {
-        code: `
-          null != foo &&
-            'undefined' !== typeof foo.bar &&
-            null !== foo.bar &&
             undefined !== foo.bar.baz &&
             null !== foo.bar.baz;
         `,
@@ -3373,6 +3399,34 @@ const baz = foo?.bar;
         declare const foo: { bar: string | null } | null;
         foo != null && foo.bar !== null;
       `,
+      `
+        null != foo &&
+          'undefined' !== typeof foo.bar &&
+          null !== foo.bar &&
+          null !== foo.bar.baz &&
+          'undefined' !== typeof foo.bar.baz;
+      `,
+      `
+        foo != null &&
+          typeof foo.bar !== 'undefined' &&
+          foo.bar !== null &&
+          foo.bar.baz !== null &&
+          typeof foo.bar.baz !== 'undefined';
+      `,
+      `
+        null != foo &&
+          'undefined' !== typeof foo.bar &&
+          null !== foo.bar &&
+          null !== foo.bar.baz &&
+          undefined !== foo.bar.baz;
+      `,
+      `
+        foo != null &&
+          typeof foo.bar !== 'undefined' &&
+          foo.bar !== null &&
+          foo.bar.baz !== null &&
+          foo.bar.baz !== undefined;
+      `,
       {
         code: `
           declare const x: string;
@@ -3674,16 +3728,18 @@ describe('base cases', () => {
     describe('strict nullish equality checks', () => {
       describe('=== null', () => {
         ruleTester.run('prefer-optional-chain', rule, {
+          invalid: [],
           // with the `| null | undefined` type - `=== null` doesn't cover the
           // `undefined` case - so optional chaining is not a valid conversion
-          valid: BaseCases({
-            mutateCode: c => c.replaceAll('||', '=== null ||'),
-            mutateOutput: identity,
-            operator: '||',
-          }),
-          // but if the type is just `| null` - then it covers the cases and is
-          // a valid conversion
-          invalid: [
+          valid: [
+            ...BaseCases({
+              mutateCode: c => c.replaceAll('||', '=== null ||'),
+              mutateOutput: identity,
+              operator: '||',
+            }),
+            // Ending the chain with `=== null` is unsafe even when the
+            // narrowed type is only `| null`, because optional chaining
+            // short-circuits to `undefined`.
             ...BaseCases({
               mutateCode: c =>
                 c
