@@ -44,7 +44,8 @@
     "generate-lib": "pnpm -w exec nx generate-lib repo",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@typescript-eslint/types": "workspace:*",
@@ -52,6 +53,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/typescript-estree": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/pretty-format": "catalog:",
     "eslint": "catalog:",
@@ -73,7 +75,8 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }

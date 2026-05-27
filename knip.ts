@@ -24,7 +24,11 @@ export default {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
 
-      ignoreDependencies: ['@nx/workspace', '@eslint/config-helpers'],
+      ignoreDependencies: [
+        '@nx/workspace',
+        '@eslint/config-helpers',
+        '@typescript/native-preview',
+      ],
 
       project: ['tools/scripts/**/*.mts', '!typings/*.d.ts'],
     },
