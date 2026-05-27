@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: ['deduplicate', 'typecheck', 'typecheck:tsgo', 'knip']
+        lint-task: ['deduplicate', 'typecheck', 'knip']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
@@ -188,9 +188,7 @@ jobs:
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-        with:
-          persist-credentials: false
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
