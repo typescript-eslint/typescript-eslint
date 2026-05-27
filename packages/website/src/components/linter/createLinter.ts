@@ -163,17 +163,23 @@ export function createLinter(
     try {
       const file = system.readFile(fileName) ?? '{}';
       const parsed = parseESLintRC(file);
+      const nextExtendedConfig: FlatConfig.ConfigArray = [];
+
       eslintRulesConfig.rules = parsed.rules;
       for (const extendsName of parsed.extends) {
         const maybeConfig = configs.get(extendsName);
         if (maybeConfig) {
           if (Array.isArray(maybeConfig)) {
-            eslintExtendedConfig.push(...maybeConfig);
+            nextExtendedConfig.push(...maybeConfig);
           } else {
-            eslintExtendedConfig.push(maybeConfig);
+            nextExtendedConfig.push(maybeConfig);
           }
         }
       }
+
+      eslintExtendedConfig.length = 0;
+      eslintExtendedConfig.push(...nextExtendedConfig);
+
       console.log('[Editor] Updating', fileName, [
         eslintLanguageConfig,
         ...eslintExtendedConfig,
