@@ -155,7 +155,7 @@ Sometimes it's desirable to test your rule against multiple versions of a depend
 With backwards-compatibility testing there comes a complication in that some tests may not be compatible with an older version of a dependency.
 For example - if you're testing against an older version of TypeScript, certain features might cause a parser error!
 
-import DependencyConstraint from '../../packages/rule-tester/src/types/DependencyConstraint.ts?raw';
+import DependencyConstraint from '!!../../packages/rule-tester/src/types/DependencyConstraint.ts?raw';
 
 <CodeBlock language="ts">{DependencyConstraint}</CodeBlock>
 
@@ -284,25 +284,25 @@ RuleTester.itOnly = test.it.only;
 
 ### `RuleTester` constructor options
 
-import RuleTesterConfig from '../../packages/rule-tester/src/types/RuleTesterConfig.ts?raw';
+import RuleTesterConfig from '!!../../packages/rule-tester/src/types/RuleTesterConfig.ts?raw';
 
 <CodeBlock language="ts">{RuleTesterConfig}</CodeBlock>
 
 ### Valid test case options
 
-import ValidTestCase from '../../packages/rule-tester/src/types/ValidTestCase.ts?raw';
+import ValidTestCase from '!!../../packages/rule-tester/src/types/ValidTestCase.ts?raw';
 
 <CodeBlock language="ts">{ValidTestCase}</CodeBlock>
 
 ### Invalid test case options
 
-import InvalidTestCase from '../../packages/rule-tester/src/types/InvalidTestCase.ts?raw';
+import InvalidTestCase from '!!../../packages/rule-tester/src/types/InvalidTestCase.ts?raw';
 
 <CodeBlock language="ts">{InvalidTestCase}</CodeBlock>
 
 ### Assertion options
 
-import AssertionOptions from '../../packages/rule-tester/src/types/AssertionOptions.ts?raw';
+import AssertionOptions from '!!../../packages/rule-tester/src/types/AssertionOptions.ts?raw';
 
 <CodeBlock language="ts">{AssertionOptions}</CodeBlock>
 
