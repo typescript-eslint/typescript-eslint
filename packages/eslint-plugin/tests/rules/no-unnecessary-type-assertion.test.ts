@@ -883,7 +883,6 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12270
     `
 type UntypedUpdate = Record<string, unknown> & {
   Document?: {
@@ -917,6 +916,19 @@ const data = entry.data as
   | (CompletionEntryData & { extra?: string })
   | undefined;
 data!.extra = 'value';
+    `,
+    `
+type A = { a?: { b?: { c?: string } } };
+type B = { a?: { b?: { d?: string } } };
+declare const x: A;
+const y = x as B & A;
+    `,
+    `
+type A = { __outer?: { x?: string; y?: string } };
+type B = { __outer?: { x?: string; z?: string } };
+declare const a: A;
+const b = a as B;
+b.__outer = { x: 'val', z: 'extra' };
     `,
   ],
 

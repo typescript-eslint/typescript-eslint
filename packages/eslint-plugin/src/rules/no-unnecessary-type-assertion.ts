@@ -259,11 +259,7 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      if (
-        !hasSameProperties(uncast, cast) ||
-        !haveSameTypeArguments(uncast, cast) ||
-        !hasSameNestedObjectProperties(uncast, cast)
-      ) {
+      if (!hasSameNestedObjectProperties(uncast, cast)) {
         return false;
       }
 
@@ -413,11 +409,16 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
+      const castProps = new Map(
+        cast
+          .getProperties()
+          .map(prop => [prop.getEscapedName(), prop] as const),
+      );
+
       return uncast.getProperties().every(prop => {
-        const name = prop.getEscapedName();
-        const castProp = cast.getProperty(name as string);
+        const castProp = castProps.get(prop.getEscapedName());
         if (!castProp) {
-          return true;
+          return false;
         }
 
         const uncastPropType = checker.getNonNullableType(
@@ -434,8 +435,6 @@ export default createRule<Options, MessageIds>({
         return (
           hasIndexSignature(uncastPropType) ===
             hasIndexSignature(castPropType) &&
-          hasSameProperties(uncastPropType, castPropType) &&
-          haveSameTypeArguments(uncastPropType, castPropType) &&
           hasSameNestedObjectProperties(uncastPropType, castPropType, seen)
         );
       });
