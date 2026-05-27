@@ -27,23 +27,7 @@ const PRIMITIVE_TYPE_FLAGS =
   ts.TypeFlags.BigIntLike |
   ts.TypeFlags.ESSymbolLike;
 
-function isClearlyMeaninglessMemberAccess(
-  node: TSESTree.MemberExpression,
-  services: ParserServicesWithTypeInformation,
-  program: ts.Program,
-): boolean {
-  if (!isClearlyMeaninglessExpression(node.object, services, program)) {
-    return false;
-  }
-
-  if (!node.computed) {
-    return true;
-  }
-
-  return isClearlyMeaninglessExpression(node.property, services, program);
-}
-
-function isClearlyMeaninglessExpression(
+function isPure(
   node: TSESTree.Expression,
   services: ParserServicesWithTypeInformation,
   program: ts.Program,
@@ -54,7 +38,7 @@ function isClearlyMeaninglessExpression(
     case AST_NODE_TYPES.TSInstantiationExpression:
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSTypeAssertion:
-      return isClearlyMeaninglessExpression(node.expression, services, program);
+      return isPure(node.expression, services, program);
 
     case AST_NODE_TYPES.Identifier:
     case AST_NODE_TYPES.Literal:
@@ -62,18 +46,21 @@ function isClearlyMeaninglessExpression(
       return true;
 
     case AST_NODE_TYPES.MemberExpression:
-      return isClearlyMeaninglessMemberAccess(node, services, program);
+      return (
+        isPure(node.object, services, program) &&
+        (!node.computed || isPure(node.property, services, program))
+      );
 
     case AST_NODE_TYPES.CallExpression:
-      return isSideEffectFreeMethodCallOnPrimitive(node, services, program);
+      return isPureCall(node, services, program);
 
     default:
       return false;
   }
 }
 
-function isSideEffectFreeMethodCallOnPrimitive(
-  node: TSESTree.CallExpression,
+function isPureCall(
+  node: Pick<TSESTree.CallExpression, 'callee' | 'arguments'>,
   services: ParserServicesWithTypeInformation,
   program: ts.Program,
 ): boolean {
@@ -87,11 +74,10 @@ function isSideEffectFreeMethodCallOnPrimitive(
   }
 
   const { object, property } = callee;
-  if (property.type !== AST_NODE_TYPES.Identifier) {
-    return false;
-  }
-
-  if (!isClearlyMeaninglessExpression(object, services, program)) {
+  if (
+    property.type !== AST_NODE_TYPES.Identifier ||
+    !isPure(object, services, program)
+  ) {
     return false;
   }
 
@@ -106,7 +92,7 @@ function isSideEffectFreeMethodCallOnPrimitive(
 
   const propertySymbol = services.getSymbolAtLocation(property);
   return (
-    propertySymbol != null &&
+    propertySymbol !== undefined &&
     isSymbolFromDefaultLibrary(program, propertySymbol)
   );
 }
@@ -141,8 +127,8 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
         },
       },
     ],
+    defaultOptions: [{ checkNever: false }],
   },
-  defaultOptions: [{ checkNever: false }],
 
   create(context, [{ checkNever }]) {
     const services = ESLintUtils.getParserServices(context);
@@ -151,7 +137,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
 
     return {
       'UnaryExpression[operator="void"]'(node: TSESTree.UnaryExpression): void {
-        const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
+        const fix = (fixer: TSESLint.RuleFixer) => {
           return fixer.removeRange([
             context.sourceCode.getTokens(node)[0].range[0],
             context.sourceCode.getTokens(node)[1].range[0],
@@ -196,7 +182,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           return;
         }
 
-        if (!isClearlyMeaninglessExpression(node.argument, services, program)) {
+        if (!isPure(node.argument, services, program)) {
           return;
         }
 
