@@ -317,9 +317,8 @@ function test(a?: boolean): boolean {
     {
       code: `
         declare const x: boolean | undefined;
-
-        while (x === true) {
-        }
+        
+        while (x === true) {}
       `,
       errors: [
         {
@@ -337,9 +336,8 @@ function test(a?: boolean): boolean {
     {
       code: `
         declare const x: boolean | undefined;
-
-        do {
-        } while (x === true);
+        
+        do {} while (x === true);
       `,
       errors: [
         {
@@ -357,9 +355,8 @@ function test(a?: boolean): boolean {
     {
       code: `
         declare const x: boolean | undefined;
-
-        for (; x === true; ) {
-        }
+        
+        for (; x === true; ) {}
       `,
       errors: [
         {
