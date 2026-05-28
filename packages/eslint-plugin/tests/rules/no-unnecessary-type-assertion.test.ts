@@ -2409,7 +2409,7 @@ update('hi');
     {
       code: `
 declare function fn(param: string): void;
-declare const name: string;
+declare const name_: string;
 fn(\`hello \${name}\` as string);
       `,
       errors: [
@@ -2419,7 +2419,7 @@ fn(\`hello \${name}\` as string);
       ],
       output: `
 declare function fn(param: string): void;
-declare const name: string;
+declare const name_: string;
 fn(\`hello \${name}\`);
       `,
     },
