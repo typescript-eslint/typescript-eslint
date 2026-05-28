@@ -536,5 +536,22 @@ for (const value of this.array) {
 }
       `,
     },
+    {
+      code: `
+    const value = 1;
+    const value1 = 2;
+    for (let i = 0; i < arr.length; i++) {
+      console.log(arr[i]);
+    }
+      `,
+      errors: [{ messageId: 'preferForOf' }],
+      output: `
+    const value = 1;
+    const value1 = 2;
+    for (const value2 of arr) {
+      console.log(value2);
+    }
+      `,
+    },
   ],
 });

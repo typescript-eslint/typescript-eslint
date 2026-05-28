@@ -23,23 +23,31 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     function getSafeName(base: string, scope: TSESLint.Scope.Scope): string {
-      const declared = new Set<string>();
+      const declared = new Map<string, number>();
 
       let current: TSESLint.Scope.Scope | null = scope;
+
       while (current) {
         for (const variable of current.variables) {
-          declared.add(variable.name);
+          declared.set(variable.name, 1);
         }
+
         current = current.upper;
       }
 
-      let name = base;
-      let i = 1;
-      while (declared.has(name)) {
-        name = `${base}${i++}`;
+      if (!declared.has(base)) {
+        return base;
       }
 
-      return name;
+      let suffix = 1;
+      let candidate = `${base}${suffix}`;
+
+      while (declared.has(candidate)) {
+        suffix++;
+        candidate = `${base}${suffix}`;
+      }
+
+      return candidate;
     }
 
     function isSingleVariableDeclaration(
@@ -201,14 +209,12 @@ export default createRule({
                   continue;
                 }
 
-                const parent = id.parent;
-
                 if (
-                  parent.type === AST_NODE_TYPES.MemberExpression &&
-                  parent.property === id &&
-                  parent.computed
+                  id.parent.type === AST_NODE_TYPES.MemberExpression &&
+                  id.parent.property === id &&
+                  id.parent.computed
                 ) {
-                  fixes.push(fixer.replaceText(parent, elementName));
+                  fixes.push(fixer.replaceText(id.parent, elementName));
                 }
               }
 
