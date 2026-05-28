@@ -1,3 +1,22 @@
+## 8.60.0 (2026-05-25)
+
+### 🚀 Features
+
+- **rule-tester:** added updates of RuleTester from upstream ([#12291](https://github.com/typescript-eslint/typescript-eslint/pull/12291))
+
+### 🩹 Fixes
+
+- playground TS version selector is not working ([#12326](https://github.com/typescript-eslint/typescript-eslint/pull/12326), [#12325](https://github.com/typescript-eslint/typescript-eslint/issues/12325))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Vinccool96
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.60.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.59.4 (2026-05-18)
 
 ### 🩹 Fixes

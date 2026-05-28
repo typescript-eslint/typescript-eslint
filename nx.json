@@ -45,6 +45,16 @@
     }
   },
   "targetDefaults": {
+    "typecheck:tsgo": {
+      "cache": true,
+      "executor": "nx:run-commands",
+      "dependsOn": ["build", "^typecheck:tsgo"],
+      "options": {
+        "command": "tsgo --build --emitDeclarationOnly",
+        "cwd": "{projectRoot}"
+      },
+      "outputs": ["{projectRoot}/dist"]
+    },
     "lint": {
       "cache": false,
       "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],

@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: ['deduplicate', 'lint', 'typecheck', 'knip']
+        lint-task: ['deduplicate', 'typecheck', 'typecheck:tsgo', 'knip']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
@@ -142,8 +142,60 @@ jobs:
 
       - name: Run Check
         run: pnpm ${{ matrix.lint-task }}
-        env:
-          ESLINT_USE_FLAT_CONFIG: true
+
+  # Note -- intentionally use the same name as lint_with_build just so everything looks uniform in the checks section
+  lint_with_build_eslint:
+    name: Lint with build
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    # because we lint with our own tooling, we need to build
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - shard: '1/4'
+            args: '--concurrency=auto'
+            projects:
+              - eslint-plugin
+
+          - shard: '2/4'
+            args: ''
+            projects:
+              - ast-spec
+              - utils
+              - scope-manager
+              - eslint-plugin-internal
+
+          - shard: '3/4'
+            args: ''
+            projects:
+              - typescript-estree
+              - types
+              - website
+              - rule-tester
+              - visitor-keys
+
+          - shard: '4/4'
+            args: ''
+            projects:
+              - parser
+              - type-utils
+              - rule-schema-to-typescript-types
+              - typescript-eslint
+              - repo
+              - website-eslint
+              - integration-tests
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - uses: ./.github/actions/prepare-build
+      - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} ${{ matrix.args }}
 
   stylelint:
     name: Stylelint
