@@ -102,6 +102,26 @@ baz<Bar>();
     },
     {
       code: `
+import type * as T from 'a.js';
+
+class Bar<T> implements T.Foo {}
+new Bar();
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'T',
+          },
+          line: 4,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
 import { Nullable } from 'nullable';
 const a: string = 'hello';
 console.log(a);
@@ -2160,6 +2180,15 @@ export class B {
 interface Base {}
 class Thing implements Base {}
 new Thing();
+    `,
+    `
+import type * as T from 'a.js';
+
+export class Bar<T> implements T.Foo {
+  someMethod(value: T): void {
+    console.log(value);
+  }
+}
     `,
     `
 interface Base {}
