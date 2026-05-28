@@ -45,7 +45,9 @@ function isAlwaysNullish(type: ts.Type): boolean {
  * `any` or `unknown` to be nullable.
  */
 function isPossiblyNullish(type: ts.Type): boolean {
-  return tsutils.unionConstituents(type).some(isNullishType);
+  return tsutils
+    .unionConstituents(type)
+    .some(t => isNullishType(t) || isTypeFlagSet(t, ts.TypeFlags.Void));
 }
 
 function toStaticValue(

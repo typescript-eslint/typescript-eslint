@@ -1,13 +1,22 @@
 packages:
   - packages/*
 
+minimumReleaseAge: 10080 # 7 days in minutes, matches renovate
+blockExoticSubdeps: true
+
+trustPolicy: 'no-downgrade'
+trustPolicyExclude:
+  - detect-port@1.6.1
+  - semver@6.3.1
+
 catalog:
-  '@eslint/js': ^10.0.0
+  '@eslint/js': ^10.0.1
   '@types/babel__code-frame': ^7.0.6
   '@types/mdast': ^4.0.4
   '@types/natural-compare': ^1.4.3
-  '@types/node': ^22.19.3
+  '@types/node': ^24.1.0
   '@types/react': ^18.3.21
+  '@typescript/native-preview': 7.0.0-dev.20260518.1
   '@vitest/coverage-v8': ^4.0.18
   '@vitest/pretty-format': ^4.0.18
   '@vitest/utils': ^4.0.18
@@ -26,10 +35,9 @@ catalog:
   vitest: ^4.0.18
   yaml: ^2.8.2
 
-catalogMode: strict
-
 # The typescript version range is very loose, allowing pnpm to install 5.8.2,
 # which is the version that's being used by `@microsoft/api-extractor`, so we
 # override it.
 overrides:
   typescript: 6.0.2
+

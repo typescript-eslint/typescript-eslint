@@ -290,11 +290,6 @@ export default createRule<Options, MessageIds>({
         | TSESTree.LogicalExpression;
       testNode: TSESTree.Node;
     }): boolean {
-      const testType = parserServices.getTypeAtLocation(testNode);
-      if (!isTypeEligibleForPreferNullish(testType)) {
-        return false;
-      }
-
       if (ignoreConditionalTests === true && isConditionalTest(node)) {
         return false;
       }
@@ -307,6 +302,11 @@ export default createRule<Options, MessageIds>({
           node.parent.type === AST_NODE_TYPES.CallExpression
         )
       ) {
+        return false;
+      }
+
+      const testType = parserServices.getTypeAtLocation(testNode);
+      if (!isTypeEligibleForPreferNullish(testType)) {
         return false;
       }
 

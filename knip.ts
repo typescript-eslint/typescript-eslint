@@ -3,10 +3,10 @@ import type { KnipConfig } from 'knip';
 export default {
   rules: {
     binaries: 'off',
-    classMembers: 'off',
     duplicates: 'off',
     enumMembers: 'off',
     exports: 'off',
+    namespaceMembers: 'off',
     nsExports: 'off',
     nsTypes: 'off',
     types: 'off',
@@ -23,27 +23,16 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: ['tools/scripts/generate-sponsors.mts'],
 
       ignoreDependencies: [
         '@nx/workspace',
-        '@eslint/eslintrc',
         '@eslint/config-helpers',
+        '@typescript/native-preview',
       ],
 
-      project: [
-        'tools/scripts/**/*.mts',
-        '!tools/scripts/typings/typescript.d.ts',
-        '!typings/*.d.ts',
-      ],
+      project: ['tools/scripts/**/*.mts', '!typings/*.d.ts'],
     },
     'packages/ast-spec': {
-      ignore: [
-        // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
-        // You can check a more detailed explanation in this file
-        'tests/util/parsers/typescript-estree-import.ts',
-      ],
-
       project: ['src/**/*.ts', 'tests/util/**/*.ts', '!src/**/fixtures/**'],
 
       vitest: {
@@ -58,7 +47,6 @@ export default {
     },
 
     'packages/eslint-plugin': {
-      ignore: ['typings/eslint-rules.d.ts', 'typings/typescript.d.ts'],
       ignoreDependencies: ['@types/react'],
 
       project: ['src/**/*.ts!', 'tools/**/*.mts'],
@@ -89,6 +77,14 @@ export default {
       },
     },
 
+    'packages/project-service': {
+      entry: ['src/index.ts'],
+    },
+
+    'packages/rule-schema-to-typescript-types': {
+      entry: ['src/index.ts'],
+    },
+
     'packages/rule-tester': {
       ignore: ['typings/eslint.d.ts'],
     },
@@ -105,6 +101,11 @@ export default {
         ],
       },
     },
+
+    'packages/tsconfig-utils': {
+      entry: ['src/index.ts'],
+    },
+
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
 
@@ -122,6 +123,10 @@ export default {
 
     'packages/types': {
       project: ['src/**/*.ts!', '!src/generated/**/*.ts'],
+    },
+
+    'packages/typescript-eslint': {
+      entry: ['src/index.ts'],
     },
 
     'packages/typescript-estree': {
@@ -143,6 +148,11 @@ export default {
         'typings/eslint-community-eslint-utils.d.ts',
       ],
     },
+
+    'packages/visitor-keys': {
+      entry: ['src/index.ts'],
+    },
+
     'packages/website': {
       entry: [
         'docusaurus.config.mts',
@@ -163,9 +173,6 @@ export default {
         'typings/*',
       ],
       ignoreDependencies: [
-        // used in MDX docs
-        'raw-loader',
-
         // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
         'esquery',
 
@@ -181,7 +188,6 @@ export default {
         '^@theme/.*',
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
-        'typedoc-plugin-markdown',
         'prismjs',
       ],
     },
@@ -201,9 +207,6 @@ export default {
       ignoreDependencies: [
         // virtual module
         'vt',
-        '@typescript-eslint/tsconfig-utils',
-        '@typescript-eslint/type-utils',
-        '@typescript-eslint/tsconfig-utils',
       ],
     },
     'tools/dummypkg': {},

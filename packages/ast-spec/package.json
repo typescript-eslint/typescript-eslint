@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "8.59.0",
+  "version": "8.60.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -37,7 +37,8 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "funding": {
     "type": "opencollective",
@@ -52,6 +53,7 @@
     "@types/babel__code-frame": "catalog:",
     "@types/babel__core": "^7.20.5",
     "@typescript-eslint/typescript-estree": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/pretty-format": "catalog:",
     "@vitest/utils": "catalog:",
@@ -85,6 +87,15 @@
         "command": "eslint"
       },
       "typecheck": {
+        "outputs": [
+          "{workspaceRoot}/dist",
+          "{projectRoot}/dist"
+        ],
+        "dependsOn": [
+          "typescript-estree:build"
+        ]
+      },
+      "typecheck:tsgo": {
         "outputs": [
           "{workspaceRoot}/dist",
           "{projectRoot}/dist"

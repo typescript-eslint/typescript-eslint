@@ -22,6 +22,7 @@ import type {
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createEventsBinder } from '../lib/createEventsBinder';
 import { parseESLintRC, parseTSConfig } from '../lib/parseConfig';
+import { fileTypes } from '../options';
 import { defaultEslintLanguageConfig } from './config';
 import { createParser } from './createParser';
 
@@ -66,7 +67,7 @@ export function createLinter(
   );
 
   const eslintLanguageConfig: FlatConfig.Config = {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: fileTypes.map(extension => `**/*${extension}`),
     languageOptions: {
       ...defaultEslintLanguageConfig,
       parser,
@@ -121,7 +122,7 @@ export function createLinter(
       const lintMessage: Linter.LintMessage = {
         column: 1,
         line: 1,
-        message: String(e instanceof Error ? e.stack : e),
+        message: String(e instanceof Error ? `${e.message}\n\n${e.stack}` : e),
         ruleId: '',
         severity: 2,
         source: 'eslint',
