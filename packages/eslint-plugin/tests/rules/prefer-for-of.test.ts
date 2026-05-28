@@ -538,14 +538,22 @@ for (const value of this.array) {
     },
     {
       code: `
-for (let i = 0; i < arr.length; i++) {
-  console.log(arr[i]);
+function test() {
+  const value = 1;
+  const value1 = 2;
+  for (let i = 0; i < arr.length; i++) {
+    console.log(arr[i]);
+  }
 }
       `,
       errors: [{ messageId: 'preferForOf' }],
       output: `
-for (const value2 of arr) {
-  console.log(value2);
+function test() {
+  const value = 1;
+  const value1 = 2;
+  for (const value2 of arr) {
+    console.log(value2);
+  }
 }
       `,
     },
