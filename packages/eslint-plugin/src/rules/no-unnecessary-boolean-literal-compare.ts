@@ -8,6 +8,7 @@ import {
   createRule,
   getConstraintInfo,
   getParserServices,
+  isConditionalTest,
   isStrongPrecedenceNode,
 } from '../util';
 
@@ -236,32 +237,6 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isInConditionalTest(node: TSESTree.Node): boolean {
-      let currentNode = node;
-      let parent = currentNode.parent;
-
-      while (
-        parent != null &&
-        (parent.type === AST_NODE_TYPES.LogicalExpression ||
-          nodeIsUnaryNegation(parent))
-      ) {
-        currentNode = parent;
-        parent = currentNode.parent;
-      }
-
-      switch (parent?.type) {
-        case AST_NODE_TYPES.ConditionalExpression:
-        case AST_NODE_TYPES.DoWhileStatement:
-        case AST_NODE_TYPES.ForStatement:
-        case AST_NODE_TYPES.IfStatement:
-        case AST_NODE_TYPES.WhileStatement:
-          return parent.test === currentNode;
-
-        default:
-          return false;
-      }
-    }
-
     function getNullishCoalescedFalseText(
       comparison: BooleanComparisonWithTypeInformation,
       mutatedNode: TSESTree.Node,
@@ -329,7 +304,7 @@ export default createRule<Options, MessageIds>({
               comparison.expressionIsNullableBoolean &&
               comparison.literalBooleanInComparison &&
               isBareExpressionFix &&
-              !isInConditionalTest(node)
+              !isConditionalTest(node)
             ) {
               yield fixer.replaceText(
                 mutatedNode,
