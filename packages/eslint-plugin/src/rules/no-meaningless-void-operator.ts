@@ -83,8 +83,8 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
         },
       },
     ],
-    defaultOptions: [{ checkNever: false }],
   },
+  defaultOptions: [{ checkNever: false }],
 
   create(context, [{ checkNever }]) {
     const services = ESLintUtils.getParserServices(context);
