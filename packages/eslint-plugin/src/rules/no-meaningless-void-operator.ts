@@ -1,18 +1,10 @@
-import type {
-  ParserServicesWithTypeInformation,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import {
-  createRule,
-  getConstrainedTypeAtLocation,
-  isSymbolFromDefaultLibrary,
-} from '../util';
+import { createRule } from '../util';
 
 export type Options = [
   {
@@ -20,25 +12,14 @@ export type Options = [
   },
 ];
 
-const PRIMITIVE_TYPE_FLAGS =
-  ts.TypeFlags.StringLike |
-  ts.TypeFlags.NumberLike |
-  ts.TypeFlags.BooleanLike |
-  ts.TypeFlags.BigIntLike |
-  ts.TypeFlags.ESSymbolLike;
-
-function isPure(
-  node: TSESTree.Expression,
-  services: ParserServicesWithTypeInformation,
-  program: ts.Program,
-): boolean {
+function isPure(node: TSESTree.Expression): boolean {
   switch (node.type) {
     case AST_NODE_TYPES.ChainExpression:
     case AST_NODE_TYPES.TSAsExpression:
     case AST_NODE_TYPES.TSInstantiationExpression:
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSTypeAssertion:
-      return isPure(node.expression, services, program);
+      return isPure(node.expression);
 
     case AST_NODE_TYPES.Identifier:
     case AST_NODE_TYPES.Literal:
@@ -46,13 +27,10 @@ function isPure(
       return true;
 
     case AST_NODE_TYPES.MemberExpression:
-      return (
-        isPure(node.object, services, program) &&
-        (!node.computed || isPure(node.property, services, program))
-      );
+      return isPure(node.object) && (!node.computed || isPure(node.property));
 
     case AST_NODE_TYPES.CallExpression:
-      return isPureCall(node, services, program);
+      return isPureCall(node);
 
     default:
       return false;
@@ -60,9 +38,7 @@ function isPure(
 }
 
 function isPureCall(
-  node: Pick<TSESTree.CallExpression, 'callee' | 'arguments'>,
-  services: ParserServicesWithTypeInformation,
-  program: ts.Program,
+  node: Pick<TSESTree.CallExpression, 'arguments' | 'callee'>,
 ): boolean {
   const { callee } = node;
   if (
@@ -74,27 +50,7 @@ function isPureCall(
   }
 
   const { object, property } = callee;
-  if (
-    property.type !== AST_NODE_TYPES.Identifier ||
-    !isPure(object, services, program)
-  ) {
-    return false;
-  }
-
-  const objectType = getConstrainedTypeAtLocation(services, object);
-  if (
-    !tsutils
-      .unionConstituents(objectType)
-      .every(part => tsutils.isTypeFlagSet(part, PRIMITIVE_TYPE_FLAGS))
-  ) {
-    return false;
-  }
-
-  const propertySymbol = services.getSymbolAtLocation(property);
-  return (
-    propertySymbol !== undefined &&
-    isSymbolFromDefaultLibrary(program, propertySymbol)
-  );
+  return property.type === AST_NODE_TYPES.Identifier && isPure(object);
 }
 
 export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
@@ -182,7 +138,12 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           return;
         }
 
-        if (!isPure(node.argument, services, program)) {
+        const tsNode = services.esTreeNodeToTSNodeMap.get(node.argument);
+        if (tsutils.isThenableType(checker, tsNode, argType)) {
+          return;
+        }
+
+        if (!isPure(node.argument)) {
           return;
         }
 

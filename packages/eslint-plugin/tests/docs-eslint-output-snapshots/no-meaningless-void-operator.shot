@@ -15,6 +15,10 @@ void box.value;
 void box.value.toUpperCase();
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ void operator shouldn't be used on string; it should convey that a return value is being ignored
 
+declare const obj: { getValue(): string };
+void obj.getValue();
+~~~~~~~~~~~~~~~~~~~ void operator shouldn't be used on string; it should convey that a return value is being ignored
+
 Correct
 
 (() => {})();

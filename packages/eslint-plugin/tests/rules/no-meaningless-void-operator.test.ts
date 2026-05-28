@@ -29,8 +29,8 @@ void getStr();
 void Promise.resolve();
     `,
     `
-declare const obj: { method(): string };
-void obj.method();
+declare const promise: Promise<number>;
+void promise;
     `,
     `
 declare const obj: Record<string, number>;
@@ -48,10 +48,6 @@ void str.normalize('NFC');
     `
 declare const str: string;
 void str['toUpperCase']();
-    `,
-    `
-declare const someObj: { toString(): string };
-void someObj.toString();
     `,
     `
 class Foo {
@@ -323,6 +319,57 @@ void (<string>x);
       code: `
 declare const s: symbol;
 void s.toString();
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  getValue: () => string;
+}
+declare const box: Box;
+void box.getValue();
+void box.getValue().toUpperCase();
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 6,
+          messageId: 'meaninglessVoidOperator',
+        },
+        {
+          column: 1,
+          line: 7,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const obj: { method(): string };
+void obj.method();
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const someObj: { toString(): string };
+void someObj.toString();
       `,
       errors: [
         {

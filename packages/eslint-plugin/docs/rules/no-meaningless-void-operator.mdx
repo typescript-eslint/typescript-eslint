@@ -19,8 +19,6 @@ This rule reports on any `void` operator whose argument is already of type `void
 
 ## Examples
 
-## Examples
-
 <Tabs>
 <TabItem value="❌ Incorrect">
 
@@ -34,6 +32,9 @@ declare const box: { value: string };
 void box;
 void box.value;
 void box.value.toUpperCase();
+
+declare const obj: { getValue(): string };
+void obj.getValue();
 ```
 
 </TabItem>
