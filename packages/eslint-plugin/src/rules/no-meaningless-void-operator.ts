@@ -12,14 +12,14 @@ export type Options = [
   },
 ];
 
-function isPure(node: TSESTree.Expression): boolean {
+function isClearlyMeaninglessExpression(node: TSESTree.Expression): boolean {
   switch (node.type) {
     case AST_NODE_TYPES.ChainExpression:
     case AST_NODE_TYPES.TSAsExpression:
     case AST_NODE_TYPES.TSInstantiationExpression:
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSTypeAssertion:
-      return isPure(node.expression);
+      return isClearlyMeaninglessExpression(node.expression);
 
     case AST_NODE_TYPES.Identifier:
     case AST_NODE_TYPES.Literal:
@@ -27,30 +27,23 @@ function isPure(node: TSESTree.Expression): boolean {
       return true;
 
     case AST_NODE_TYPES.MemberExpression:
-      return isPure(node.object) && (!node.computed || isPure(node.property));
+      return (
+        isClearlyMeaninglessExpression(node.object) &&
+        (!node.computed || isClearlyMeaninglessExpression(node.property))
+      );
 
     case AST_NODE_TYPES.CallExpression:
-      return isPureCall(node);
+      if (
+        node.arguments.length > 0 ||
+        node.callee.type !== AST_NODE_TYPES.MemberExpression
+      ) {
+        return false;
+      }
+      return isClearlyMeaninglessExpression(node.callee);
 
     default:
       return false;
   }
-}
-
-function isPureCall(
-  node: Pick<TSESTree.CallExpression, 'arguments' | 'callee'>,
-): boolean {
-  const { callee } = node;
-  if (
-    node.arguments.length > 0 ||
-    callee.type !== AST_NODE_TYPES.MemberExpression ||
-    callee.computed
-  ) {
-    return false;
-  }
-
-  const { object, property } = callee;
-  return property.type === AST_NODE_TYPES.Identifier && isPure(object);
 }
 
 export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
@@ -143,7 +136,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           return;
         }
 
-        if (!isPure(node.argument)) {
+        if (!isClearlyMeaninglessExpression(node.argument)) {
           return;
         }
 

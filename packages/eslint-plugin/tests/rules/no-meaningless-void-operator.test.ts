@@ -47,20 +47,6 @@ void str.normalize('NFC');
     `,
     `
 declare const str: string;
-void str['toUpperCase']();
-    `,
-    `
-class Foo {
-  #method() {
-    return 'hello';
-  }
-  bar() {
-    void this.#method();
-  }
-}
-    `,
-    `
-declare const str: string;
 void \`\${str}\`;
     `,
   ],
@@ -168,6 +154,20 @@ void box.value.toUpperCase();
       code: `
 declare const str: string;
 void str.toUpperCase?.();
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const str: string;
+void str['toUpperCase']();
       `,
       errors: [
         {
@@ -375,6 +375,26 @@ void someObj.toString();
         {
           column: 1,
           line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class Foo {
+  #method() {
+    return 'hello';
+  }
+  bar() {
+    void this.#method();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 7,
           messageId: 'meaninglessVoidOperator',
         },
       ],
