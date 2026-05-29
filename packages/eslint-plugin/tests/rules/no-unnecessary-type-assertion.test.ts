@@ -883,9 +883,112 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12271
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+};
+
+function example1(valueStr: string) {
+  const color = +valueStr as Color;
+  values[color] = 'updated';
+}
+
+function example2(valueStr: string) {
+  const color: Color = +valueStr;
+  values[color] = 'updated';
+}
+
+function update3(valueStr: string) {
+  values[+valueStr as Color] = 'updated';
+}
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+};
+
+function example1(valueStr: string) {
+  const color = +valueStr as Color;
+  values[color] = 'updated';
+}
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+};
+
+function example2(valueStr: string) {
+  const color: Color = +valueStr;
+  values[color] = 'updated';
+}
+    `,
   ],
 
   invalid: [
+    // https://github.com/typescript-eslint/typescript-eslint/pull/12272#pullrequestreview-4170959967
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+};
+
+function update(valueStr: string) {
+  function subUpdate(color: Color) {
+    values[color] = 'updated';
+  }
+  subUpdate(+valueStr as Color);
+}
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+};
+
+function update(valueStr: string) {
+  function subUpdate(color: Color) {
+    values[color] = 'updated';
+  }
+  subUpdate(+valueStr);
+}
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [{ column: 13, line: 1, messageId: 'unnecessaryAssertion' }],
