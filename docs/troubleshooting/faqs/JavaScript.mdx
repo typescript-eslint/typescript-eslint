@@ -22,3 +22,19 @@ No.
 
 Source TypeScript files have all the content of output JavaScript files, plus type annotations.
 There's no benefit to also linting output JavaScript files.
+
+## Can I use typed linting with JSDoc-typed JavaScript?
+
+Yes.
+Our [typed linting](../../getting-started/Typed_Linting.mdx) rules work by asking TypeScript for type information, and TypeScript can infer types for `.js` files from [JSDoc type annotations](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html).
+That means typed rules can run on a JavaScript codebase the same way they run on TypeScript, with two things to set up:
+
+- Make sure your `.js` files are part of the TypeScript program used for linting.
+  TSConfigs don't include `.js` files by default, so you'll need [`allowJs`](https://www.typescriptlang.org/tsconfig/#allowJs) (or [`checkJs`](https://www.typescriptlang.org/tsconfig/#checkJs)) enabled and the files covered by your tsconfig's `include`.
+  See [Typed Linting](../typed-linting/index.mdx) for the full setup and troubleshooting steps.
+- Make sure your `.js` files are linted by the TypeScript-aware config.
+  If you turned off TypeScript rules for JavaScript files (see [the first FAQ above](#one-of-my-lint-rules-isnt-working-correctly-on-a-pure-javascript-file)), typed rules won't run on them.
+
+One sharp edge to be aware of: the [`no-unsafe-*`](/rules/no-unsafe-assignment) rules report on values typed as `any`.
+JSDoc inference tends to produce `any` in more places than authored TypeScript does (for example, untyped parameters or values coming from untyped dependencies), so these rules can be noisier on JSDoc-typed code.
+For most of them you can narrow the value first with a JSDoc type assertion (`/** @type {T} */ (value)`), but support for JSDoc assertions is still limited (see [#1682](https://github.com/typescript-eslint/typescript-eslint/issues/1682)), and [`no-unsafe-assignment`](/rules/no-unsafe-assignment) in particular generally can't be satisfied this way — so a disable comment is often the pragmatic option there while you add types.
