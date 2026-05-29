@@ -3,7 +3,6 @@ id: dependency-versions
 title: Dependency Versions
 ---
 
-import rootPackageJson from '../../package.json';
 import eslintPluginPackageJson from '../../packages/eslint-plugin/package.json';
 
 ## ESLint
@@ -34,7 +33,7 @@ Support for specific Current status releases are considered periodically.
 <blockquote>
   <p>
     The version range of TypeScript currently supported is{' '}
-    <code>{rootPackageJson.devDependencies.typescript}</code>.
+    <code>{eslintPluginPackageJson.peerDependencies.typescript}</code>.
   </p>
 </blockquote>
 
