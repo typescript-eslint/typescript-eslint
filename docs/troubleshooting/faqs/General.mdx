@@ -66,6 +66,39 @@ module.exports = {
 </TabItem>
 </Tabs>
 
+## Can I use typescript-eslint rules in a JavaScript-only project?
+
+Yes.
+Several of our rules are useful even in a project that contains no TypeScript files — for example, [`no-deprecated`](/rules/no-deprecated) (which flags usages of `@deprecated` code) and [`naming-convention`](/rules/naming-convention).
+
+Most of those rules require [type information](../../getting-started/Typed_Linting.mdx), so you'll need to register our parser and plugin for your JavaScript files and enable type-aware linting for them.
+TypeScript can produce type information for JavaScript files, so this works even without any `.ts` files:
+
+```js title="eslint.config.mjs"
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig({
+  files: ['**/*.js', '**/*.jsx'],
+  plugins: {
+    '@typescript-eslint': tseslint.plugin,
+  },
+  languageOptions: {
+    parser: tseslint.parser,
+    parserOptions: {
+      projectService: true,
+    },
+  },
+  rules: {
+    '@typescript-eslint/no-deprecated': 'error',
+  },
+});
+```
+
+:::note
+For TypeScript to read your JavaScript files, your `tsconfig.json` must have [`allowJs`](https://www.typescriptlang.org/tsconfig/#allowJs) enabled.
+:::
+
 ## How can I ban `<specific language feature>`?
 
 ESLint core contains the rule [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax).
