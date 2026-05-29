@@ -66,6 +66,36 @@ module.exports = {
 </TabItem>
 </Tabs>
 
+## How should I structure my config for projects with non-JS/TS files?
+
+Projects often lint more than just JavaScript and TypeScript — for example linting `package.json` with [`eslint-plugin-package-json`](https://www.npmjs.com/package/eslint-plugin-package-json), or Markdown, CSS, and so on.
+When that happens it can be tempting to enable the JS/TS rules globally and then turn them back off for the other file types.
+We instead recommend scoping each set of rules to the files it applies to with [`files`](https://eslint.org/docs/latest/use/configure/configuration-files#specifying-files-and-ignores), so that each config block only ever runs on the files it's meant for:
+
+```js title="eslint.config.mjs"
+import js from '@eslint/js';
+import packageJson from 'eslint-plugin-package-json/configs/recommended';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  {
+    files: ['**/*.{js,ts}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
+  },
+  {
+    files: ['**/package.json'],
+    extends: [packageJson],
+  },
+);
+```
+
+This keeps each tool's rules targeted, avoids having to remember which rules to disable on which files, and makes it clear at a glance what runs where.
+
 ## How can I ban `<specific language feature>`?
 
 ESLint core contains the rule [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax).
