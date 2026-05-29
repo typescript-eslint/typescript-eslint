@@ -190,6 +190,12 @@ function assertIsString(value: unknown): asserts value is string {
 assertIsString(s); // Unnecessary; s is always a string.
 ```
 
+:::note
+This option assumes that type predicates are valid, meaning the asserted type holds _if and only if_ the type guard returns `true` (or, for assertion functions, _if and only if_ the function returns rather than throwing).
+This is a requirement of a well-formed type predicate in TypeScript, but TypeScript does not enforce it: a function annotated as returning `x is T` is free to return `true` even when `x` is not a `T` at runtime.
+If a type predicate is written more loosely than the value it inspects — for example, a runtime validator deliberately re-checking a value the type system already considers narrow — then the check is not truly unnecessary, and this option may report a false positive on it.
+:::
+
 Whether this option makes sense for your project may vary.
 Some projects may intentionally use type predicates to ensure that runtime values do indeed match the types according to TypeScript, especially in test code.
 Often, it makes sense to use eslint-disable comments in these cases, with a comment indicating why the condition should be checked at runtime, despite appearing unnecessary.
