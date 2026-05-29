@@ -46,6 +46,24 @@ You can enable the setting by prepending your ESLint command like:
 NODE_OPTIONS=--max-semi-space-size=256 eslint <rest of your command>
 ```
 
+## Out of Memory
+
+Typed linting holds TypeScript's program and type information in memory while ESLint runs.
+On large projects, or projects with especially large or complex types, that can be enough to exhaust Node's default heap and crash the process with an out-of-memory (OOM) error such as `FATAL ERROR: ... JavaScript heap out of memory`.
+
+The same things that make type checking slow tend to make it memory-hungry, so the investigation steps under [Slow TypeScript Types](#slow-typescript-types) apply here too.
+In particular, [Performance Tracing](https://github.com/microsoft/TypeScript/wiki/Performance#performance-tracing) and the TypeScript Wiki's notes on [writing easy-to-compile code](https://github.com/microsoft/TypeScript/wiki/Performance#writing-easy-to-compile-code) can help you find and simplify the types that are consuming the most memory.
+Reducing the number of files included in typed linting (see [Wide includes in your `tsconfig`](#wide-includes-in-your-tsconfig)) also lowers peak memory usage.
+
+If your project is simply large enough that it needs more memory than Node allows by default, you can raise the heap limit with the [`--max-old-space-size` option](https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-mib).
+For example, to allow up to 8 GB:
+
+```bash
+NODE_OPTIONS=--max-old-space-size=8192 eslint <rest of your command>
+```
+
+Raising the heap limit treats the symptom rather than the cause: if memory usage keeps growing, it's worth investigating your types and includes as above rather than continually increasing the limit.
+
 ## Wide includes in your `tsconfig`
 
 When using type-aware linting, you provide us with one or more tsconfigs.
