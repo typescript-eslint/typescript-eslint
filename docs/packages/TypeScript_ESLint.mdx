@@ -49,6 +49,55 @@ export default defineConfig({
 
 This config file exports a flat config that enables both the [core ESLint recommended config](https://www.npmjs.com/package/@eslint/js) and [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
+### Customizing rules on top of a shared config
+
+To use a shared config _and_ change a few rules, list the shared config in `extends` and put your overrides in a `rules` object on the same config block.
+The rules you set there take precedence over the ones the shared config enables:
+
+```js title="eslint.config.mjs"
+// @ts-check
+
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [js.configs.recommended, tseslint.configs.recommended],
+  rules: {
+    // override a rule that the shared config already turns on
+    '@typescript-eslint/no-explicit-any': 'off',
+    // turn on an additional rule that the shared config leaves off
+    '@typescript-eslint/array-type': 'error',
+  },
+});
+```
+
+If the rule you want to add requires [type information](../getting-started/Typed_Linting.mdx) (such as [`no-floating-promises`](/rules/no-floating-promises)), extend a type-checked shared config and configure `languageOptions.parserOptions` so the rule can access the type checker.
+Otherwise the rule will error with a message like _"You have used a rule which requires type information"_:
+
+```js title="eslint.config.mjs"
+// @ts-check
+
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [js.configs.recommended, tseslint.configs.recommendedTypeChecked],
+  languageOptions: {
+    parserOptions: {
+      projectService: true,
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+  rules: {
+    '@typescript-eslint/no-floating-promises': 'error',
+  },
+});
+```
+
 ### `config(...)` (deprecated)
 
 :::danger
