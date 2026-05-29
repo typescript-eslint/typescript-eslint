@@ -33,6 +33,15 @@ The command to put instead of that `#` comment, depends on the local downstream 
 - [Yarn v1 / classic](https://classic.yarnpkg.com/lang/en/docs/cli/link/ 'Yarn v1 / classic docs'): `yarn link`
 - [Yarn v2 / v3 / berry](https://yarnpkg.com/cli/link 'Yarn v2 / v3 / berry docs'): _skip this step altogether_
 
+:::note
+This command runs from the `typescript-eslint` repository, but the package manager it uses must match the **downstream** repository — that's where the global symlinks need to be registered.
+The `typescript-eslint` repository pins its own package manager with the [`packageManager`](https://nodejs.org/api/packages.html#packagemanager) field in `package.json`, which [Corepack](https://nodejs.org/api/corepack.html) enforces.
+If the downstream repository uses a different package manager, you may see an error such as `This project is configured to use yarn`, or a later `yarn link` in the downstream repository may fail with `No registered package found`.
+
+To work around this, run the global link command in an environment that uses the downstream repository's package manager — for example, by temporarily switching the pinned version with `yarn set version <version>` (Yarn) or by removing the `packageManager` field from `package.json` for the duration of the link.
+Remember to revert that change before committing.
+:::
+
 Additionally, if you haven't yet built the typescript-eslint repository, do so now:
 
 ```shell
