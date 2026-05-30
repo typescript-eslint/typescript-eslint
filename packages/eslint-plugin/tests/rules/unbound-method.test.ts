@@ -2849,5 +2849,78 @@ const f = objectLiteral.f;
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11683
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+class Bar {
+  bazz = 1;
+}
+declare const union: Foo | Bar;
+const unbound = union.bazz;
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+class Bar {
+  bazz = 1;
+}
+class Baz {
+  bazz = 'str';
+}
+declare const union: Foo | Bar | Baz;
+const unbound = union.bazz;
+      `,
+      errors: [
+        {
+          line: 12,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = 1;
+}
+declare const union: Foo | Bar;
+const unbound = union.unbound;
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound() {}
+}
+declare const intersection: Foo & { other: number };
+const unbound = intersection.unbound;
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
   ],
 });
