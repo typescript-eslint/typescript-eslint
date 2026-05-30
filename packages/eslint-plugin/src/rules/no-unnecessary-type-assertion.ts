@@ -703,7 +703,8 @@ export default createRule<Options, MessageIds>({
       if (castIsAny) {
         return (
           node.parent.type === AST_NODE_TYPES.LogicalExpression ||
-          isInGenericContext(node)
+          isInGenericContext(node) ||
+          isPropertyInProblematicContext(node)
         );
       }
 
