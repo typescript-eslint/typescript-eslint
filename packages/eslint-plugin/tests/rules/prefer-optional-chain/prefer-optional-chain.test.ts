@@ -696,73 +696,181 @@ describe('chain ending with comparison', () => {
     invalid: [
       {
         code: 'foo && foo.bar == 0;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == 0;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar == 0;` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar == 1;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == 1;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar == 1;` },
+            ],
+          },
+        ],
       },
       {
         code: "foo && foo.bar == '123';",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == '123';`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar == '123';`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar == {};',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == {};`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar == {};` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar == false;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == false;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar == false;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar == true;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == true;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar == true;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar === 0;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === 0;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar === 0;` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar === 1;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === 1;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar === 1;` },
+            ],
+          },
+        ],
       },
       {
         code: "foo && foo.bar === '123';",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === '123';`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === '123';`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar === {};',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === {};`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar === {};` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar === false;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === false;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === false;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar === true;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === true;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === true;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar === null;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === null;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === null;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar !== undefined;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== undefined;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== undefined;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo && foo.bar != undefined;',
@@ -776,73 +884,181 @@ describe('chain ending with comparison', () => {
       },
       {
         code: 'foo != null && foo.bar == 0;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == 0;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar == 0;` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar == 1;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == 1;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar == 1;` },
+            ],
+          },
+        ],
       },
       {
         code: "foo != null && foo.bar == '123';",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == '123';`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar == '123';`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar == {};',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == {};`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar == {};` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar == false;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == false;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar == false;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar == true;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar == true;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar == true;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar === 0;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === 0;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar === 0;` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar === 1;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === 1;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar === 1;` },
+            ],
+          },
+        ],
       },
       {
         code: "foo != null && foo.bar === '123';",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === '123';`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === '123';`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar === {};',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === {};`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar === {};` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar === false;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === false;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === false;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar === true;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === true;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === true;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar === null;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === null;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === null;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar !== undefined;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== undefined;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== undefined;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && foo.bar != undefined;',
@@ -878,38 +1094,92 @@ describe('chain ending with comparison', () => {
       },
       {
         code: '!foo || foo.bar != 0;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != 0;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar != 0;` },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar != 1;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != 1;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar != 1;` },
+            ],
+          },
+        ],
       },
       {
         code: "!foo || foo.bar != '123';",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != '123';`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar != '123';`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar != {};',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != {};`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar != {};` },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar != false;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != false;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar != false;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar != true;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != true;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar != true;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar === undefined;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === undefined;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === undefined;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar == undefined;',
@@ -923,73 +1193,181 @@ describe('chain ending with comparison', () => {
       },
       {
         code: '!foo || foo.bar !== 0;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== 0;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar !== 0;` },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar !== 1;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== 1;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar !== 1;` },
+            ],
+          },
+        ],
       },
       {
         code: "!foo || foo.bar !== '123';",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== '123';`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== '123';`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar !== {};',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== {};`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar !== {};` },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar !== false;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== false;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== false;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar !== true;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== true;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== true;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: '!foo || foo.bar !== null;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== null;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== null;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar != 0;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != 0;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar != 0;` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar != 1;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != 1;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar != 1;` },
+            ],
+          },
+        ],
       },
       {
         code: "foo == null || foo.bar != '123';",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != '123';`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar != '123';`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar != {};',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != {};`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar != {};` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar != false;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != false;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar != false;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar != true;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar != true;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar != true;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar === undefined;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar === undefined;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar === undefined;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar == undefined;',
@@ -1003,38 +1381,92 @@ describe('chain ending with comparison', () => {
       },
       {
         code: 'foo == null || foo.bar !== 0;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== 0;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar !== 0;` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar !== 1;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== 1;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar !== 1;` },
+            ],
+          },
+        ],
       },
       {
         code: "foo == null || foo.bar !== '123';",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== '123';`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== '123';`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar !== {};',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== {};`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: `foo?.bar !== {};` },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar !== false;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== false;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== false;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar !== true;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== true;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== true;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo == null || foo.bar !== null;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `foo?.bar !== null;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `foo?.bar !== null;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1074,143 +1506,260 @@ describe('chain ending with comparison', () => {
           declare const foo: { bar: number };
           !foo || foo.bar !== 0;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== 0;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar !== 1;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== 1;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar !== '123';
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== '123';
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar !== {};
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== {};
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar !== false;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== false;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar !== true;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== true;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar !== null;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== null;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar != 0;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar != 0;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar != 1;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar != 1;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar != '123';
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar != '123';
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar != {};
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar != {};
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar != false;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar != false;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           !foo || foo.bar != true;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar != true;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1250,93 +1799,183 @@ describe('chain ending with comparison', () => {
           declare const foo: { bar: number };
           foo == null || foo.bar !== 0;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== 0;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           foo == null || foo.bar !== 1;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== 1;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           foo == null || foo.bar !== '123';
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== '123';
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           foo == null || foo.bar !== {};
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== {};
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           foo == null || foo.bar !== false;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== false;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           foo == null || foo.bar !== true;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== true;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: { bar: number };
           foo == null || foo.bar !== null;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const foo: { bar: number };
           foo?.bar !== null;
         `,
+              },
+            ],
+          },
+        ],
       },
       // yoda case
       {
         code: "foo != null && null != foo.bar && '123' == foo.bar.baz;",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `'123' == foo?.bar?.baz;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `'123' == foo?.bar?.baz;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: "foo != null && null != foo.bar && '123' === foo.bar.baz;",
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `'123' === foo?.bar?.baz;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `'123' === foo?.bar?.baz;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: 'foo != null && null != foo.bar && undefined !== foo.bar.baz;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `undefined !== foo?.bar?.baz;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `undefined !== foo?.bar?.baz;`,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1344,12 +1983,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a != null && a.b === foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: 3 };
           a?.b === foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1357,12 +2005,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a != null && a.b() === foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: 3 };
           a?.b() === foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1370,12 +2027,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a != null && a.b == foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: 3 };
           a?.b == foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1383,12 +2049,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a != null && a.b() == foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: 3 };
           a?.b() == foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1396,12 +2071,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: undefined };
           a != null && a.b !== foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: undefined };
           a?.b !== foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1409,12 +2093,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: undefined };
           a != null && a.b() != foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: undefined };
           a?.b() != foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1422,12 +2115,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a === null || a.b !== foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: 3 };
           a?.b !== foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1435,12 +2137,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a === null || a.b() != foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: 3 };
           a?.b() != foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1448,12 +2159,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: undefined };
           a === null || a.b == foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: undefined };
           a?.b == foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1461,12 +2181,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: undefined };
           a === null || a.b() === foo.three;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: undefined };
           a?.b() === foo.three;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1474,12 +2203,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a != null && foo.three === a.b;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: 3 };
           foo.three === a?.b;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1487,12 +2225,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a != null && foo.three === a.b();
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: 3 };
           foo.three === a?.b();
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1500,12 +2247,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a != null && foo.three == a.b;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: 3 };
           foo.three == a?.b;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1513,12 +2269,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a != null && foo.three == a.b();
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: 3 };
           foo.three == a?.b();
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1526,12 +2291,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: undefined };
           a != null && foo.three !== a.b;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: undefined };
           foo.three !== a?.b;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1539,12 +2313,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: undefined };
           a != null && foo.three != a.b();
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: undefined };
           foo.three != a?.b();
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1552,12 +2335,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a == null || foo.three !== a.b;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: 3 };
           foo.three !== a?.b;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1566,13 +2358,22 @@ describe('chain ending with comparison', () => {
           declare const b: Branch;
           !a || b.id !== a.id;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           type Branch = { id: string } & { name: string };
           declare const a: Branch | null;
           declare const b: Branch;
           b.id !== a?.id;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1580,12 +2381,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: 3 };
           a == null || foo.three != a.b();
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: 3 };
           foo.three != a?.b();
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1593,12 +2403,21 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: undefined };
           a == null || foo.three == a.b;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: number } | null;
           declare const foo: { three: undefined };
           foo.three == a?.b;
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1606,17 +2425,32 @@ describe('chain ending with comparison', () => {
           declare const foo: { three: undefined };
           a == null || foo.three === a.b();
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           declare const a: { b: () => number } | null;
           declare const foo: { three: undefined };
           foo.three === a?.b();
         `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: noFormat`foo && (foo.bar == 0)`,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        output: 'foo?.bar == 0',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              { messageId: 'optionalChainSuggest', output: 'foo?.bar == 0' },
+            ],
+          },
+        ],
       },
     ],
     valid: [
@@ -2247,8 +3081,17 @@ describe('hand-crafted cases', () => {
       // case with inconsistent checks should "break" the chain
       {
         code: 'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: 'foo?.bar?.baz !== undefined && foo.bar.baz.buzz;',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: 'foo?.bar?.baz !== undefined && foo.bar.baz.buzz;',
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -2257,11 +3100,20 @@ describe('hand-crafted cases', () => {
             foo.bar.baz.qux !== undefined &&
             foo.bar.baz.qux.buzz;
         `,
-        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           foo.bar?.baz?.qux !== undefined &&
             foo.bar.baz.qux.buzz;
         `,
+              },
+            ],
+          },
+        ],
       },
       // ensure essential whitespace isn't removed
       {
@@ -3616,8 +4468,13 @@ describe('base cases', () => {
                   foo.bar().baz.buzz !== undefined &&
                   foo.bar().baz.buzz();
               `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `
                 declare const foo: {
                   bar: () =>
                     | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
@@ -3629,17 +4486,30 @@ describe('base cases', () => {
                   foo.bar().baz.buzz !== undefined &&
                   foo.bar().baz.buzz();
               `,
+                    },
+                  ],
+                },
+              ],
             },
             {
               code: `
                 declare const foo: { bar: () => { baz: number } | null | undefined };
                 foo.bar !== undefined && foo.bar?.() !== undefined && foo.bar?.().baz;
               `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `
                 declare const foo: { bar: () => { baz: number } | null | undefined };
                 foo.bar?.() !== undefined && foo.bar?.().baz;
               `,
+                    },
+                  ],
+                },
+              ],
             },
           ],
         });
@@ -3754,8 +4624,13 @@ describe('base cases', () => {
                   foo.bar().baz.buzz === undefined ||
                   foo.bar().baz.buzz();
               `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `
                 declare const foo: {
                   bar: () =>
                     | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
@@ -3767,17 +4642,30 @@ describe('base cases', () => {
                   foo.bar().baz.buzz === undefined ||
                   foo.bar().baz.buzz();
               `,
+                    },
+                  ],
+                },
+              ],
             },
             {
               code: `
                 declare const foo: { bar: () => { baz: number } | null | undefined };
                 foo.bar === undefined || foo.bar?.() === undefined || foo.bar?.().baz;
               `,
-              errors: [{ messageId: 'preferOptionalChain' }],
-              output: `
+              errors: [
+                {
+                  messageId: 'preferOptionalChain',
+                  suggestions: [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output: `
                 declare const foo: { bar: () => { baz: number } | null | undefined };
                 foo.bar?.() === undefined || foo.bar?.().baz;
               `,
+                    },
+                  ],
+                },
+              ],
             },
           ],
         });
