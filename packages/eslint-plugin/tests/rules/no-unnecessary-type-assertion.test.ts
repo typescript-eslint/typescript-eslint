@@ -883,9 +883,109 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    `
+type UntypedUpdate = Record<string, unknown> & {
+  Document?: {
+    Form?: string;
+    unid: string;
+  };
+};
+type Update = UntypedUpdate & {
+  Document?: {
+    className: string;
+  };
+};
+type UpdateAction = {
+  Document?: {
+    action?: 'update';
+  };
+};
+
+declare const orgDoc: Update;
+declare const diff: Update;
+const diffWithAction = diff as UpdateAction & Update;
+diffWithAction.Document = { action: 'update', ...orgDoc.Document! };
+    `,
+    `
+type CompletionEntryData = {
+  name: string;
+};
+
+declare const entry: { data: CompletionEntryData | undefined };
+const data = entry.data as
+  | (CompletionEntryData & { extra?: string })
+  | undefined;
+data!.extra = 'value';
+    `,
+    `
+type A = { a?: { b?: { c?: string } } };
+type B = { a?: { b?: { d?: string } } };
+declare const x: A;
+const y = x as B & A;
+    `,
+    `
+type A = { __outer?: { x?: string; y?: string } };
+type B = { __outer?: { x?: string; z?: string } };
+declare const a: A;
+const b = a as B;
+b.__outer = { x: 'val', z: 'extra' };
+    `,
   ],
 
   invalid: [
+    {
+      code: `
+type SourceNode = {
+  child?: SourceNode;
+  value: string;
+};
+type EquivalentNode = {
+  child?: EquivalentNode;
+  value: string;
+};
+type AnotherEquivalentNode = {
+  child?: AnotherEquivalentNode;
+  value: string;
+};
+type Update = {
+  first?: SourceNode;
+  second?: SourceNode;
+};
+type SameUpdate = {
+  first?: EquivalentNode;
+  second?: AnotherEquivalentNode;
+};
+
+declare const diff: Update;
+const same = diff as SameUpdate;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: `
+type SourceNode = {
+  child?: SourceNode;
+  value: string;
+};
+type EquivalentNode = {
+  child?: EquivalentNode;
+  value: string;
+};
+type AnotherEquivalentNode = {
+  child?: AnotherEquivalentNode;
+  value: string;
+};
+type Update = {
+  first?: SourceNode;
+  second?: SourceNode;
+};
+type SameUpdate = {
+  first?: EquivalentNode;
+  second?: AnotherEquivalentNode;
+};
+
+declare const diff: Update;
+const same = diff;
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [{ column: 13, line: 1, messageId: 'unnecessaryAssertion' }],
