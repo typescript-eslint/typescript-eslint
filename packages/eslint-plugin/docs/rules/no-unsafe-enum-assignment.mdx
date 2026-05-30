@@ -1,0 +1,75 @@
+---
+description: 'Disallow assigning non-enum values to enum typed locations.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-enum-assignment** for documentation.
+
+TypeScript allows some assignments of literal values into enum-typed locations that are convenient but easy to misuse.
+That includes assigning plain `number` values into numeric enums and plain `string` values into string enums.
+
+Those assignments make enums behave more like bags of primitive values than named constants.
+That weakens refactoring safety and makes it easier to accidentally depend on enum implementation details.
+
+This rule reports assignments, arguments, returns, JSX props, and assertions where an enum-typed location receives a non-enum value of the same primitive kind.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+enum Fruit {
+  Apple,
+}
+
+const fruit: Fruit = 0;
+
+function takesFruit(value: Fruit) {}
+takesFruit(0);
+
+function getFruit(): Fruit {
+  return 0;
+}
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+const vegetable = 'asparagus' as const;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+enum Fruit {
+  Apple,
+}
+
+const fruit: Fruit = Fruit.Apple;
+
+function takesFruit(value: Fruit) {}
+takesFruit(Fruit.Apple);
+
+function getFruit(): Fruit {
+  return Fruit.Apple;
+}
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+const vegetable: Vegetable = Vegetable.Asparagus;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If your codebase intentionally treats enums as interchangeable with their underlying primitive values, this rule may be too strict.
