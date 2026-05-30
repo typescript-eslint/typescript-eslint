@@ -8,6 +8,7 @@ import {
   createRule,
   getConstraintInfo,
   getParserServices,
+  isConditionalTest,
   isStrongPrecedenceNode,
 } from '../util';
 
@@ -236,6 +237,22 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function getNullishCoalescedFalseText(
+      comparison: BooleanComparisonWithTypeInformation,
+      mutatedNode: TSESTree.Node,
+    ): string {
+      const expressionText = context.sourceCode.getText(comparison.expression);
+      const coalescedText = `${
+        isStrongPrecedenceNode(comparison.expression)
+          ? expressionText
+          : `(${expressionText})`
+      } ?? false`;
+
+      return mutatedNode.parent?.type === AST_NODE_TYPES.LogicalExpression
+        ? `(${coalescedText})`
+        : coalescedText;
+    }
+
     return {
       BinaryExpression(node): void {
         const comparison = getBooleanComparison(node);
@@ -280,6 +297,21 @@ export default createRule<Options, MessageIds>({
               comparison.negated !== comparison.literalBooleanInComparison;
 
             const mutatedNode = isUnaryNegation ? node.parent : node;
+
+            const isBareExpressionFix = shouldNegate !== isUnaryNegation;
+
+            if (
+              comparison.expressionIsNullableBoolean &&
+              comparison.literalBooleanInComparison &&
+              isBareExpressionFix &&
+              !isConditionalTest(node)
+            ) {
+              yield fixer.replaceText(
+                mutatedNode,
+                getNullishCoalescedFalseText(comparison, mutatedNode),
+              );
+              return;
+            }
 
             yield fixer.replaceText(
               mutatedNode,
