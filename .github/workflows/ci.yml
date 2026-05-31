@@ -322,8 +322,8 @@ jobs:
           - utils
           - visitor-keys
 
-        # Packages that have no platform-specific runtime behavior, or we don't
-        # care about OS-specific behavior, so skipping them on Windows to have less jobs to run.
+        # Packages that have no (or we don't care about their) platform-specific,
+        # runtime behavior, so skipping them on Windows to have less jobs to run.
         exclude:
           - os: windows-latest
             package: ast-spec
