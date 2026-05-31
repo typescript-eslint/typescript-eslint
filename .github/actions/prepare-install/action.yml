@@ -43,6 +43,20 @@ runs:
         node-version: ${{ inputs.node-version }}
         registry-url: ${{ inputs.registry-url }}
 
+    # Cache the fully-linked node_modules so `pnpm install` becomes a fast
+    # no-op verify instead of re-linking the whole workspace. The linking step
+    # is the dominant cost of install on Windows runners (~51s median vs ~15s
+    # on Linux), so we only pay the restore cost where it wins. On Linux the
+    # fresh install is already as fast as restoring the large node_modules tree.
+    - name: Restore node_modules
+      if: runner.os == 'Windows'
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: |
+          ${{ inputs.working-directory }}/node_modules
+          ${{ inputs.working-directory }}/packages/*/node_modules
+        key: ${{ runner.os }}-node-modules-${{ inputs.node-version }}-${{ hashFiles(format('{0}/pnpm-lock.yaml', inputs.working-directory)) }}
+
     - name: Install dependencies
       shell: bash
       working-directory: ${{ inputs.working-directory }}

@@ -6,6 +6,19 @@ description: 'Prepares the repo for a job by running the build'
 runs:
   using: 'composite'
   steps:
+    # Warm the Nx project graph so the first `nx` invocation in the job skips
+    # rebuilding the graph from scratch. Nx revalidates against current file
+    # hashes, so a stale restore is safe (worst case: no speedup). Only on
+    # Windows, where cold graph construction spikes; on Linux it is already
+    # fast enough that the restore cost cancels the gain.
+    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      if: runner.os == 'Windows'
+      with:
+        path: .nx/workspace-data
+        key: ${{ runner.os }}-nx-${{ hashFiles('pnpm-lock.yaml', 'nx.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nx-
+
     - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       id: build-cache
       with:
