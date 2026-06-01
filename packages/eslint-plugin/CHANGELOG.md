@@ -1,3 +1,19 @@
+## 8.60.1 (2026-06-01)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-shadow] correct rule to match ESLint v10 handling ([#12182](https://github.com/typescript-eslint/typescript-eslint/pull/12182))
+- **eslint-plugin:** respect ECMAScript line terminators in ts-comment rules ([#12352](https://github.com/typescript-eslint/typescript-eslint/pull/12352))
+
+### ❤️ Thank You
+
+- lumir
+- Nevette Bailey @nevette-bailey
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.60.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.60.0 (2026-05-25)
 
 This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.
