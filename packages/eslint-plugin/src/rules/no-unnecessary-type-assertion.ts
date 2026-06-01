@@ -781,6 +781,16 @@ export default createRule<Options, MessageIds>({
             ),
             NullThrowsReasons.MissingToken('>', 'type annotation'),
           );
+          if (
+            node.expression.type === AST_NODE_TYPES.ObjectExpression &&
+            node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+            node.parent.body === node
+          ) {
+            return fixer.replaceText(
+              node,
+              `(${context.sourceCode.getText(node.expression)})`,
+            );
+          }
           return fixer.removeRange([
             openingAngleBracket.range[0],
             closingAngleBracket.range[1],

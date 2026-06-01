@@ -2626,5 +2626,14 @@ fn1(() => {
 });
       `,
     },
+    {
+      code: '[].map(() => <{ a: false; b: false }>{ a: false, b: false });',
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: noFormat`[].map(() => ({ a: false, b: false }));`,
+    },
   ],
 });
