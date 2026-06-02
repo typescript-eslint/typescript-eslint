@@ -196,6 +196,34 @@ describe('convert', () => {
     checkMaps(ast);
   });
 
+  it('converts assignment expressions', () => {
+    const ast = convertCode('value = 1');
+
+    const instance = new Converter(ast);
+    const program = instance.convertProgram();
+    const statement = program.body[0];
+
+    if (statement.type !== AST_NODE_TYPES.ExpressionStatement) {
+      throw new Error('Expected an expression statement');
+    }
+
+    expect(statement.expression.type).toBe(AST_NODE_TYPES.AssignmentExpression);
+  });
+
+  it('converts binary expressions with non-binary left operands', () => {
+    const ast = convertCode('value + 1');
+
+    const instance = new Converter(ast);
+    const program = instance.convertProgram();
+    const statement = program.body[0];
+
+    if (statement.type !== AST_NODE_TYPES.ExpressionStatement) {
+      throw new Error('Expected an expression statement');
+    }
+
+    expect(statement.expression.type).toBe(AST_NODE_TYPES.BinaryExpression);
+  });
+
   it('converts long left-associative binary expressions without overflowing the call stack', () => {
     const expressionCount = 6_000;
     const ast = convertCode(

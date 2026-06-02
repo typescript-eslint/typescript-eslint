@@ -328,7 +328,6 @@ export class Converter {
   ): TSESTree.Expression {
     if (
       expressionType.type === AST_NODE_TYPES.AssignmentExpression ||
-      isComma(node.operatorToken) ||
       !ts.isBinaryExpression(node.left)
     ) {
       return this.converter(
