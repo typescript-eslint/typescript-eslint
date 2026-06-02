@@ -352,18 +352,20 @@ describe(parser.parseAndGenerateServices, () => {
     });
   });
 
-  it('should parse long left-associative binary expressions without overflowing the call stack', () => {
+  it('should generate services for long left-associative binary expressions without overflowing the call stack', () => {
     const expressionCount = 6_000;
-    const ast = parser.parse(
+    const { ast } = parser.parseAndGenerateServices(
       Array.from(
         { length: expressionCount },
         (_, index) => `value${index}`,
       ).join(' + '),
+      {},
     );
     const statement = ast.body[0];
 
+    expect(statement.type).toBe(parser.AST_NODE_TYPES.ExpressionStatement);
     if (statement.type !== parser.AST_NODE_TYPES.ExpressionStatement) {
-      throw new Error('Expected an expression statement');
+      return;
     }
 
     let expression = statement.expression;
@@ -371,13 +373,21 @@ describe(parser.parseAndGenerateServices, () => {
 
     while (expression.type === parser.AST_NODE_TYPES.BinaryExpression) {
       binaryExpressionCount += 1;
-      if (expression.left.type === parser.AST_NODE_TYPES.PrivateIdentifier) {
-        throw new Error('Expected a public expression');
+      const { left } = expression;
+
+      expect(left.type).not.toBe(parser.AST_NODE_TYPES.PrivateIdentifier);
+      if (left.type === parser.AST_NODE_TYPES.PrivateIdentifier) {
+        return;
       }
-      expression = expression.left;
+
+      expression = left;
     }
 
     expect(binaryExpressionCount).toBe(expressionCount - 1);
+    expect(expression).toMatchObject({
+      name: 'value0',
+      type: parser.AST_NODE_TYPES.Identifier,
+    });
   });
 
   describe('ESM parsing', () => {

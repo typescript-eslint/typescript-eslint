@@ -49,34 +49,34 @@ class SimpleTraverser {
   }
 
   traverse(node: unknown, parent: TSESTree.Node | undefined): void {
-    const worklist: { node: unknown; parent: TSESTree.Node | undefined }[] = [
-      { node, parent },
-    ];
+    const nodeStack: unknown[] = [node];
+    const parentStack: (TSESTree.Node | undefined)[] = [parent];
 
-    while (worklist.length > 0) {
-      const item = worklist.pop();
+    while (nodeStack.length > 0) {
+      const currentNode = nodeStack.pop();
+      const currentParent = parentStack.pop();
 
-      if (!item || !isValidNode(item.node)) {
+      if (!isValidNode(currentNode)) {
         continue;
       }
 
       if (this.setParentPointers) {
-        item.node.parent = item.parent;
+        currentNode.parent = currentParent;
       }
 
       if ('enter' in this.selectors) {
-        this.selectors.enter(item.node, item.parent);
-      } else if (item.node.type in this.selectors.visitors) {
-        this.selectors.visitors[item.node.type](item.node, item.parent);
+        this.selectors.enter(currentNode, currentParent);
+      } else if (currentNode.type in this.selectors.visitors) {
+        this.selectors.visitors[currentNode.type](currentNode, currentParent);
       }
 
-      const keys = getVisitorKeysForNode(this.allVisitorKeys, item.node);
+      const keys = getVisitorKeysForNode(this.allVisitorKeys, currentNode);
       if (keys.length < 1) {
         continue;
       }
 
       for (let keyIndex = keys.length - 1; keyIndex >= 0; keyIndex -= 1) {
-        const childOrChildren = item.node[keys[keyIndex]];
+        const childOrChildren = currentNode[keys[keyIndex]];
 
         if (Array.isArray(childOrChildren)) {
           for (
@@ -84,13 +84,12 @@ class SimpleTraverser {
             childIndex >= 0;
             childIndex -= 1
           ) {
-            worklist.push({
-              node: childOrChildren[childIndex],
-              parent: item.node,
-            });
+            nodeStack.push(childOrChildren[childIndex]);
+            parentStack.push(currentNode);
           }
         } else {
-          worklist.push({ node: childOrChildren, parent: item.node });
+          nodeStack.push(childOrChildren);
+          parentStack.push(currentNode);
         }
       }
     }
