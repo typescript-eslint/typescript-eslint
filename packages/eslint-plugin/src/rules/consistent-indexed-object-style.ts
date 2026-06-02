@@ -45,6 +45,14 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['record'],
   create(context, [mode]) {
+    // The fixers rebuild the type from the text of a few sub-nodes, which would
+    // silently drop any comments that sit between those sub-nodes. To avoid
+    // deleting code, we withhold the fix when the node to be replaced contains
+    // comments.
+    function hasComments(node: TSESTree.Node): boolean {
+      return context.sourceCode.getCommentsInside(node).length > 0;
+    }
+
     function checkMembers(
       members: TSESTree.TypeElement[],
       node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
@@ -92,18 +100,19 @@ export default createRule<Options, MessageIds>({
       context.report({
         node,
         messageId: 'preferRecord',
-        fix: safeFix
-          ? (fixer): TSESLint.RuleFix => {
-              const key = context.sourceCode.getText(keyType.typeAnnotation);
-              const value = context.sourceCode.getText(
-                valueType.typeAnnotation,
-              );
-              const record = member.readonly
-                ? `Readonly<Record<${key}, ${value}>>`
-                : `Record<${key}, ${value}>`;
-              return fixer.replaceText(node, `${prefix}${record}${postfix}`);
-            }
-          : null,
+        fix:
+          safeFix && !hasComments(node)
+            ? (fixer): TSESLint.RuleFix => {
+                const key = context.sourceCode.getText(keyType.typeAnnotation);
+                const value = context.sourceCode.getText(
+                  valueType.typeAnnotation,
+                );
+                const record = member.readonly
+                  ? `Readonly<Record<${key}, ${value}>>`
+                  : `Record<${key}, ${value}>`;
+                return fixer.replaceText(node, `${prefix}${record}${postfix}`);
+              }
+            : null,
       });
     }
 
@@ -134,7 +143,11 @@ export default createRule<Options, MessageIds>({
             node,
             messageId: 'preferIndexSignature',
             ...getFixOrSuggest({
-              fixOrSuggest: shouldFix ? 'fix' : 'suggest',
+              fixOrSuggest: hasComments(node)
+                ? 'none'
+                : shouldFix
+                  ? 'fix'
+                  : 'suggest',
               suggestion: {
                 messageId: 'preferIndexSignatureSuggestion',
                 fix: fixer => {
@@ -218,7 +231,7 @@ export default createRule<Options, MessageIds>({
           }
 
           // There's no builtin Mutable<T> type, so we can't autofix it really.
-          const canFix = node.readonly !== '-';
+          const canFix = node.readonly !== '-' && !hasComments(node);
 
           context.report({
             node,

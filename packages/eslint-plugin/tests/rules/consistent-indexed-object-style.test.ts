@@ -969,5 +969,62 @@ type Foo = {
 type Foo = Record<string, any>;
       `,
     },
+
+    // Comments inside the type would be dropped by the fixer, so it is withheld.
+    {
+      code: 'type Foo = { [key: string]: /* preserve me */ number };',
+      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  // preserve me
+  [key: string]: number;
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: null,
+    },
+    {
+      code: `
+type Foo = {
+  // preserve me
+  [Key in 'a' | 'b']: number;
+};
+      `,
+      errors: [{ column: 12, line: 2, messageId: 'preferRecord' }],
+      output: null,
+    },
+    {
+      // reproduction of https://github.com/typescript-eslint/typescript-eslint/issues/10577
+      code: noFormat`
+type Test = {
+  // 1
+  [Key in // 2
+    | 'a' // 3
+    | 'b' // 4
+    | 'c' // 5
+    | 'd' // 6
+  ]: string; // 7
+  // 8
+};
+      `,
+      errors: [{ column: 13, line: 2, messageId: 'preferRecord' }],
+      output: null,
+    },
+    {
+      // index-signature mode: comment would be dropped, so no fix or suggestion
+      code: 'type Foo = Record<string, /* preserve me */ number>;',
+      errors: [
+        {
+          column: 12,
+          line: 1,
+          messageId: 'preferIndexSignature',
+          suggestions: [],
+        },
+      ],
+      options: ['index-signature'],
+    },
   ],
 });
