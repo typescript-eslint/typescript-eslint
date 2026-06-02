@@ -265,7 +265,7 @@ async function getPnpmCatalog() {
 }
 
 // Using the root pnpm-workspace.yaml content but without the catalog, overrides, and packages,
-// so its contains only pnpm's settings without the monorepo-related stuff.
+// so it contains only pnpm's settings without the monorepo-related stuff.
 async function getPnpmWorkspaceContent(): Promise<string> {
   const pnpmWorkspace = await fs.readFile(
     path.join(ROOT_DIR, 'pnpm-workspace.yaml'),
