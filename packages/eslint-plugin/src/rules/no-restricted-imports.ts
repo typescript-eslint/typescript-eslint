@@ -357,6 +357,7 @@ export default createRule<Options, MessageIds>({
           const synthesizedImport: TSESTree.ImportDeclaration = {
             ...node,
             type: AST_NODE_TYPES.ImportDeclaration,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated -- required for compatibility with the deprecated import assertions AST shape
             assertions: [],
             attributes: [],
             source: node.moduleReference.expression,

@@ -333,6 +333,42 @@ export default createRule<Options, MessageIds>({
       return getJsDocDeprecation(symbol);
     }
 
+    function getObjectPropertyDeprecation(
+      objectExpression: TSESTree.ObjectExpression,
+      propertyName: string,
+    ): string | undefined {
+      const contextualType = services.getContextualType(objectExpression);
+      if (!contextualType) {
+        return undefined;
+      }
+
+      const symbol = contextualType.getProperty(propertyName);
+
+      return getJsDocDeprecation(symbol);
+    }
+
+    function isObjectExpressionAssignment(
+      node: TSESTree.ObjectExpression,
+    ): boolean {
+      switch (node.parent.type) {
+        case AST_NODE_TYPES.AssignmentExpression:
+          return node.parent.right === node;
+
+        case AST_NODE_TYPES.Property:
+          return (
+            node.parent.value === node &&
+            node.parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
+            isObjectExpressionAssignment(node.parent.parent)
+          );
+
+        case AST_NODE_TYPES.VariableDeclarator:
+          return node.parent.init === node;
+
+        default:
+          return false;
+      }
+    }
+
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
@@ -372,6 +408,40 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
+      if (
+        node.parent.type === AST_NODE_TYPES.Property &&
+        node.parent.key === node &&
+        node.parent.value !== node &&
+        !node.parent.computed &&
+        node.parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
+        isObjectExpressionAssignment(node.parent.parent) &&
+        node.type !== AST_NODE_TYPES.Super
+      ) {
+        const reason = getObjectPropertyDeprecation(
+          node.parent.parent,
+          node.name,
+        );
+
+        if (reason != null) {
+          const name = getReportedNodeName(node);
+
+          context.report({
+            ...(reason
+              ? {
+                  messageId: 'deprecatedWithReason',
+                  data: { name, reason },
+                }
+              : {
+                  messageId: 'deprecated',
+                  data: { name },
+                }),
+            node,
+          });
+        }
+
+        return;
+      }
+
       if (isDeclaration(node) || isInsideImport(node)) {
         return;
       }

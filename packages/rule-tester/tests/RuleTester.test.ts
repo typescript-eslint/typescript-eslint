@@ -86,6 +86,7 @@ const NOOP_RULE: RuleModule<'error'> = {
   create() {
     return {};
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing the deprecated top-level defaultOptions API
   defaultOptions: [],
   meta: {
     messages: {
@@ -2180,6 +2181,7 @@ describe('RuleTester - hooks', () => {
         },
       };
     },
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing the deprecated top-level defaultOptions API
     defaultOptions: [],
     meta: {
       messages: {
@@ -2403,6 +2405,7 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
+      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing the deprecated top-level defaultOptions API
       defaultOptions: [],
       meta: {
         messages: {
@@ -2487,6 +2490,7 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
+      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing the deprecated top-level defaultOptions API
       defaultOptions: [],
       meta: {
         fixable: 'code',
@@ -2609,6 +2613,7 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
+      // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing the deprecated top-level defaultOptions API
       defaultOptions: [],
       meta: {
         fixable: 'code',
@@ -2707,6 +2712,7 @@ describe('RuleTester - run types', () => {
         },
       };
     },
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- intentionally testing the deprecated top-level defaultOptions API
     defaultOptions: [],
     meta: {
       messages: {

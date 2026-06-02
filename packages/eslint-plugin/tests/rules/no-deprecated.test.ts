@@ -732,8 +732,95 @@ exists('/foo');
         foo: { notDeprecatedProperty: deprecatedProperty },
       } = a;
     `,
+    `
+      interface Opts {
+        /** @deprecated use newProp instead */
+        old?: string;
+        newProp?: string;
+      }
+
+      const x: Opts = { newProp: 'foo' };
+    `,
+    `
+      const x = { someKey: 'foo' };
+    `,
+    `
+      interface Opts {
+        /** @deprecated use newProp instead */
+        old?: string;
+      }
+
+      function useOpts(opts: Opts): void {
+        opts;
+      }
+
+      useOpts({ old: 'foo' });
+    `,
   ],
   invalid: [
+    {
+      code: `
+        interface Opts {
+          /** @deprecated use newProp instead */
+          old?: string;
+        }
+
+        const x: Opts = { old: 'foo' };
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { name: 'old', reason: 'use newProp instead' },
+          endColumn: 30,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Config {
+          nested: {
+            /** @deprecated */
+            legacyKey?: string;
+          };
+        }
+
+        const c: Config = { nested: { legacyKey: 'bar' } };
+      `,
+      errors: [
+        {
+          column: 39,
+          data: { name: 'legacyKey' },
+          endColumn: 48,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Opts {
+          /** @deprecated use newProp instead */
+          old?: string;
+        }
+
+        let x: Opts;
+        x = { old: 'foo' };
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { name: 'old', reason: 'use newProp instead' },
+          endColumn: 18,
+          endLine: 8,
+          line: 8,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
     {
       code: `
         interface AProps {
