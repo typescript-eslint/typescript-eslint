@@ -347,17 +347,12 @@ export class Converter {
     let currentNode: ts.Expression = node.left;
 
     while (ts.isBinaryExpression(currentNode)) {
-      if (isComma(currentNode.operatorToken)) {
-        break;
-      }
-
       const currentExpressionType = getBinaryExpressionType(
         currentNode.operatorToken,
-      );
-
-      if (currentExpressionType.type === AST_NODE_TYPES.AssignmentExpression) {
-        break;
-      }
+      ) as Exclude<
+        ReturnType<typeof getBinaryExpressionType>,
+        { type: AST_NODE_TYPES.AssignmentExpression }
+      >;
 
       binaryExpressions.push({
         expressionType: currentExpressionType,
@@ -374,12 +369,10 @@ export class Converter {
       const { expressionType: currentExpressionType, node: currentExpression } =
         binaryExpressions[index];
 
-      if (currentExpression !== node) {
-        this.#checkSyntaxError(
-          currentExpression,
-          currentExpression.parent as TSNode,
-        );
-      }
+      this.#checkSyntaxError(
+        currentExpression,
+        currentExpression.parent as TSNode,
+      );
 
       convertedExpression = this.createNode<
         TSESTree.BinaryExpression | TSESTree.LogicalExpression
