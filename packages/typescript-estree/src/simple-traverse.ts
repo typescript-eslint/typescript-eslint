@@ -49,34 +49,49 @@ class SimpleTraverser {
   }
 
   traverse(node: unknown, parent: TSESTree.Node | undefined): void {
-    if (!isValidNode(node)) {
-      return;
-    }
+    const worklist: { node: unknown; parent: TSESTree.Node | undefined }[] = [
+      { node, parent },
+    ];
 
-    if (this.setParentPointers) {
-      node.parent = parent;
-    }
+    while (worklist.length > 0) {
+      const item = worklist.pop();
 
-    if ('enter' in this.selectors) {
-      this.selectors.enter(node, parent);
-    } else if (node.type in this.selectors.visitors) {
-      this.selectors.visitors[node.type](node, parent);
-    }
+      if (!item || !isValidNode(item.node)) {
+        continue;
+      }
 
-    const keys = getVisitorKeysForNode(this.allVisitorKeys, node);
-    if (keys.length < 1) {
-      return;
-    }
+      if (this.setParentPointers) {
+        item.node.parent = item.parent;
+      }
 
-    for (const key of keys) {
-      const childOrChildren = node[key];
+      if ('enter' in this.selectors) {
+        this.selectors.enter(item.node, item.parent);
+      } else if (item.node.type in this.selectors.visitors) {
+        this.selectors.visitors[item.node.type](item.node, item.parent);
+      }
 
-      if (Array.isArray(childOrChildren)) {
-        for (const child of childOrChildren) {
-          this.traverse(child, node);
+      const keys = getVisitorKeysForNode(this.allVisitorKeys, item.node);
+      if (keys.length < 1) {
+        continue;
+      }
+
+      for (let keyIndex = keys.length - 1; keyIndex >= 0; keyIndex -= 1) {
+        const childOrChildren = item.node[keys[keyIndex]];
+
+        if (Array.isArray(childOrChildren)) {
+          for (
+            let childIndex = childOrChildren.length - 1;
+            childIndex >= 0;
+            childIndex -= 1
+          ) {
+            worklist.push({
+              node: childOrChildren[childIndex],
+              parent: item.node,
+            });
+          }
+        } else {
+          worklist.push({ node: childOrChildren, parent: item.node });
         }
-      } else {
-        this.traverse(childOrChildren, node);
       }
     }
   }

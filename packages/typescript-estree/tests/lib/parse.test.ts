@@ -352,6 +352,34 @@ describe(parser.parseAndGenerateServices, () => {
     });
   });
 
+  it('should parse long left-associative binary expressions without overflowing the call stack', () => {
+    const expressionCount = 6_000;
+    const ast = parser.parse(
+      Array.from(
+        { length: expressionCount },
+        (_, index) => `value${index}`,
+      ).join(' + '),
+    );
+    const statement = ast.body[0];
+
+    if (statement.type !== parser.AST_NODE_TYPES.ExpressionStatement) {
+      throw new Error('Expected an expression statement');
+    }
+
+    let expression = statement.expression;
+    let binaryExpressionCount = 0;
+
+    while (expression.type === parser.AST_NODE_TYPES.BinaryExpression) {
+      binaryExpressionCount += 1;
+      if (expression.left.type === parser.AST_NODE_TYPES.PrivateIdentifier) {
+        throw new Error('Expected a public expression');
+      }
+      expression = expression.left;
+    }
+
+    expect(binaryExpressionCount).toBe(expressionCount - 1);
+  });
+
   describe('ESM parsing', () => {
     describe('TLA(Top Level Await)', () => {
       const config: TSESTreeOptions = {

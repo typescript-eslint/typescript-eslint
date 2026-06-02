@@ -321,6 +321,81 @@ export class Converter {
     return children.map(child => this.converter(child, parent, false));
   }
 
+  private convertLeftHandSideOfBinaryExpression(
+    node: ts.BinaryExpression,
+    parent: ts.Node,
+    expressionType: ReturnType<typeof getBinaryExpressionType>,
+  ): TSESTree.Expression {
+    if (
+      expressionType.type === AST_NODE_TYPES.AssignmentExpression ||
+      isComma(node.operatorToken) ||
+      !ts.isBinaryExpression(node.left)
+    ) {
+      return this.converter(
+        node.left,
+        parent,
+        expressionType.type === AST_NODE_TYPES.AssignmentExpression,
+      );
+    }
+
+    const binaryExpressions: {
+      expressionType: Exclude<
+        ReturnType<typeof getBinaryExpressionType>,
+        { type: AST_NODE_TYPES.AssignmentExpression }
+      >;
+      node: ts.BinaryExpression;
+    }[] = [];
+    let currentNode: ts.Expression = node.left;
+
+    while (ts.isBinaryExpression(currentNode)) {
+      if (isComma(currentNode.operatorToken)) {
+        break;
+      }
+
+      const currentExpressionType = getBinaryExpressionType(
+        currentNode.operatorToken,
+      );
+
+      if (currentExpressionType.type === AST_NODE_TYPES.AssignmentExpression) {
+        break;
+      }
+
+      binaryExpressions.push({
+        expressionType: currentExpressionType,
+        node: currentNode,
+      });
+      currentNode = currentNode.left;
+    }
+
+    let convertedExpression = this.convertChild(
+      currentNode,
+    ) as TSESTree.Expression;
+
+    for (let index = binaryExpressions.length - 1; index >= 0; index -= 1) {
+      const { expressionType: currentExpressionType, node: currentExpression } =
+        binaryExpressions[index];
+
+      if (currentExpression !== node) {
+        this.#checkSyntaxError(
+          currentExpression,
+          currentExpression.parent as TSNode,
+        );
+      }
+
+      convertedExpression = this.createNode<
+        TSESTree.BinaryExpression | TSESTree.LogicalExpression
+      >(currentExpression, {
+        ...currentExpressionType,
+        left: convertedExpression,
+        right: this.convertChild(currentExpression.right),
+      });
+
+      this.registerTSNodeInNodeMap(currentExpression, convertedExpression);
+    }
+
+    return convertedExpression;
+  }
+
   /**
    * Converts a TypeScript node into an ESTree node.
    * @param child the child ts.Node
@@ -1824,10 +1899,10 @@ export class Converter {
           | TSESTree.LogicalExpression
         >(node, {
           ...expressionType,
-          left: this.converter(
-            node.left,
+          left: this.convertLeftHandSideOfBinaryExpression(
             node,
-            expressionType.type === AST_NODE_TYPES.AssignmentExpression,
+            node,
+            expressionType,
           ),
           right: this.convertChild(node.right),
         });

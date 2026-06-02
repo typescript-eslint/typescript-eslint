@@ -196,6 +196,37 @@ describe('convert', () => {
     checkMaps(ast);
   });
 
+  it('converts long left-associative binary expressions without overflowing the call stack', () => {
+    const expressionCount = 6_000;
+    const ast = convertCode(
+      Array.from(
+        { length: expressionCount },
+        (_, index) => `value${index}`,
+      ).join(' + '),
+    );
+
+    const instance = new Converter(ast);
+    const program = instance.convertProgram();
+    const statement = program.body[0];
+
+    if (statement.type !== AST_NODE_TYPES.ExpressionStatement) {
+      throw new Error('Expected an expression statement');
+    }
+
+    let expression = statement.expression;
+    let binaryExpressionCount = 0;
+
+    while (expression.type === AST_NODE_TYPES.BinaryExpression) {
+      binaryExpressionCount += 1;
+      if (expression.left.type === AST_NODE_TYPES.PrivateIdentifier) {
+        throw new Error('Expected a public expression');
+      }
+      expression = expression.left;
+    }
+
+    expect(binaryExpressionCount).toBe(expressionCount - 1);
+  });
+
   /* eslint-disable @typescript-eslint/dot-notation */
   describe('createNode', () => {
     it('should correctly create node with range and loc set', () => {
