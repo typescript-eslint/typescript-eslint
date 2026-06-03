@@ -111,6 +111,8 @@ export const setup = async (project: TestProject): Promise<void> => {
 
   const PNPM_CATALOG = await getPnpmCatalog();
 
+  const PNPM_WORKSPACE_CONTENT = await getPnpmWorkspaceContent();
+
   const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
     ...tseslintPackages,
     eslint: PNPM_CATALOG.eslint,
@@ -142,6 +144,12 @@ export const setup = async (project: TestProject): Promise<void> => {
   await fs.writeFile(path.join(temp, '.npmrc'), NPMRC_CONTENT, {
     encoding: 'utf-8',
   });
+
+  await fs.writeFile(
+    path.join(temp, 'pnpm-workspace.yaml'),
+    PNPM_WORKSPACE_CONTENT,
+    { encoding: 'utf-8' },
+  );
 
   // We install the tarballs here once so that pnpm can cache them globally.
   // This solves 2 problems:
@@ -197,6 +205,12 @@ export const setup = async (project: TestProject): Promise<void> => {
         encoding: 'utf-8',
       });
 
+      await fs.writeFile(
+        path.join(testFolder, 'pnpm-workspace.yaml'),
+        PNPM_WORKSPACE_CONTENT,
+        { encoding: 'utf-8' },
+      );
+
       const { stderr, stdout } = await execFile(
         'pnpm',
         ['install', '--no-frozen-lockfile'],
@@ -248,4 +262,21 @@ async function getPnpmCatalog() {
   }
 
   return parsed.catalog;
+}
+
+// Using the root pnpm-workspace.yaml content but without the catalog, overrides, and packages,
+// so it contains only pnpm's settings without the monorepo-related stuff.
+async function getPnpmWorkspaceContent(): Promise<string> {
+  const pnpmWorkspace = await fs.readFile(
+    path.join(ROOT_DIR, 'pnpm-workspace.yaml'),
+    { encoding: 'utf-8' },
+  );
+
+  const parsed = yaml.parse(pnpmWorkspace) as Record<string, unknown>;
+
+  delete parsed.catalog;
+  delete parsed.overrides;
+  delete parsed.packages;
+
+  return yaml.stringify(parsed);
 }
