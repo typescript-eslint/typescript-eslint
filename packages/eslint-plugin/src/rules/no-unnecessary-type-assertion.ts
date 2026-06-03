@@ -1,6 +1,9 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  ReportFixFunction,
+  RuleFix,
+} from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -14,6 +17,7 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
+  isParenthesized,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -781,20 +785,33 @@ export default createRule<Options, MessageIds>({
             ),
             NullThrowsReasons.MissingToken('>', 'type annotation'),
           );
-          if (
+          // Removing the angle-bracketed type can leave a bare object
+          // literal in a position where `{` is parsed as a block (concise
+          // arrow body, or the start of an expression statement). Wrap the
+          // result in parentheses to preserve the original expression
+          // semantics.
+          const needsParens =
             node.expression.type === AST_NODE_TYPES.ObjectExpression &&
-            node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-            node.parent.body === node
-          ) {
-            return fixer.replaceText(
-              node,
-              `(${context.sourceCode.getText(node.expression)})`,
-            );
+            ((node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+              node.parent.body === node) ||
+              node.parent.type === AST_NODE_TYPES.ExpressionStatement) &&
+            !isParenthesized(node, context.sourceCode) &&
+            !isParenthesized(node.expression, context.sourceCode);
+
+          const fixes: RuleFix[] = [];
+          if (needsParens) {
+            fixes.push(fixer.insertTextBefore(node, '('));
           }
-          return fixer.removeRange([
-            openingAngleBracket.range[0],
-            closingAngleBracket.range[1],
-          ]);
+          fixes.push(
+            fixer.removeRange([
+              openingAngleBracket.range[0],
+              closingAngleBracket.range[1],
+            ]),
+          );
+          if (needsParens) {
+            fixes.push(fixer.insertTextAfter(node, ')'));
+          }
+          return fixes;
         }
         const asToken = nullThrows(
           context.sourceCode.getTokenAfter(

@@ -2635,5 +2635,41 @@ fn1(() => {
       ],
       output: noFormat`[].map(() => ({ a: false, b: false }));`,
     },
+    {
+      code: noFormat`[].map(() => /* 1 */ <{ a: false; b: false }> /* 2 */ { a: false, b: false } /* 3 */);`,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: noFormat`[].map(() => /* 1 */ ( /* 2 */ { a: false, b: false }) /* 3 */);`,
+    },
+    {
+      code: noFormat`[].map(() => <{ a: false; b: false }>({ a: false, b: false }));`,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: noFormat`[].map(() => ({ a: false, b: false }));`,
+    },
+    {
+      code: noFormat`[].map(() => (<{ a: false; b: false }>{ a: false, b: false }));`,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: noFormat`[].map(() => ({ a: false, b: false }));`,
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' };",
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: noFormat`({ a: 'foo' });`,
+    },
   ],
 });
