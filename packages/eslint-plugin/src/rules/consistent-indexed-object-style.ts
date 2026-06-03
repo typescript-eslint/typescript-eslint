@@ -15,7 +15,8 @@ import {
 export type MessageIds =
   | 'preferIndexSignature'
   | 'preferIndexSignatureSuggestion'
-  | 'preferRecord';
+  | 'preferRecord'
+  | 'preferRecordSuggestion';
 export type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
@@ -34,6 +35,8 @@ export default createRule<Options, MessageIds>({
       preferIndexSignatureSuggestion:
         'Change into an index signature instead of a record.',
       preferRecord: 'A record is preferred over an index signature.',
+      preferRecordSuggestion:
+        'Change into a record instead of an index signature.',
     },
     schema: [
       {
@@ -45,12 +48,23 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['record'],
   create(context, [mode]) {
-    // The fixers rebuild the type from the text of a few sub-nodes, which would
-    // silently drop any comments that sit between those sub-nodes. To avoid
-    // deleting code, we withhold the fix when the node to be replaced contains
-    // comments.
-    function hasComments(node: TSESTree.Node): boolean {
-      return context.sourceCode.getCommentsInside(node).length > 0;
+    // The fixers rebuild the type from the text of a few sub-nodes, so a
+    // comment inside `node` but outside all of those preserved sub-nodes would
+    // be dropped by the fix. Returns true when at least one such comment exists.
+    function hasUnpreservedComments(
+      node: TSESTree.Node,
+      ...preserved: (TSESTree.Node | undefined)[]
+    ): boolean {
+      return context.sourceCode
+        .getCommentsInside(node)
+        .some(comment =>
+          preserved.every(
+            target =>
+              target == null ||
+              comment.range[0] < target.range[0] ||
+              comment.range[1] > target.range[1],
+          ),
+        );
     }
 
     function checkMembers(
@@ -100,19 +114,30 @@ export default createRule<Options, MessageIds>({
       context.report({
         node,
         messageId: 'preferRecord',
-        fix:
-          safeFix && !hasComments(node)
-            ? (fixer): TSESLint.RuleFix => {
-                const key = context.sourceCode.getText(keyType.typeAnnotation);
-                const value = context.sourceCode.getText(
+        ...getFixOrSuggest({
+          fixOrSuggest: !safeFix
+            ? 'none'
+            : hasUnpreservedComments(
+                  node,
+                  keyType.typeAnnotation,
                   valueType.typeAnnotation,
-                );
-                const record = member.readonly
-                  ? `Readonly<Record<${key}, ${value}>>`
-                  : `Record<${key}, ${value}>`;
-                return fixer.replaceText(node, `${prefix}${record}${postfix}`);
-              }
-            : null,
+                )
+              ? 'suggest'
+              : 'fix',
+          suggestion: {
+            messageId: 'preferRecordSuggestion',
+            fix: (fixer): TSESLint.RuleFix => {
+              const key = context.sourceCode.getText(keyType.typeAnnotation);
+              const value = context.sourceCode.getText(
+                valueType.typeAnnotation,
+              );
+              const record = member.readonly
+                ? `Readonly<Record<${key}, ${value}>>`
+                : `Record<${key}, ${value}>`;
+              return fixer.replaceText(node, `${prefix}${record}${postfix}`);
+            },
+          },
+        }),
       });
     }
 
@@ -143,9 +168,8 @@ export default createRule<Options, MessageIds>({
             node,
             messageId: 'preferIndexSignature',
             ...getFixOrSuggest({
-              fixOrSuggest: hasComments(node)
-                ? 'none'
-                : shouldFix
+              fixOrSuggest:
+                shouldFix && !hasUnpreservedComments(node, params[0], params[1])
                   ? 'fix'
                   : 'suggest',
               suggestion: {
@@ -230,32 +254,44 @@ export default createRule<Options, MessageIds>({
             }
           }
 
-          // There's no builtin Mutable<T> type, so we can't autofix it really.
-          const canFix = node.readonly !== '-' && !hasComments(node);
-
           context.report({
             node,
             messageId: 'preferRecord',
-            ...(canFix && {
-              fix: (fixer): ReturnType<ReportFixFunction> => {
-                const keyType = context.sourceCode.getText(constraint);
-                const valueType = node.typeAnnotation
-                  ? context.sourceCode.getText(node.typeAnnotation)
-                  : 'any';
+            ...getFixOrSuggest({
+              // There's no builtin Mutable<T> type, so a `-readonly` mapped
+              // type can't be represented as a Record and is left untouched.
+              fixOrSuggest:
+                node.readonly === '-'
+                  ? 'none'
+                  : hasUnpreservedComments(
+                        node,
+                        constraint,
+                        node.typeAnnotation,
+                      )
+                    ? 'suggest'
+                    : 'fix',
+              suggestion: {
+                messageId: 'preferRecordSuggestion',
+                fix: (fixer): ReturnType<ReportFixFunction> => {
+                  const keyType = context.sourceCode.getText(constraint);
+                  const valueType = node.typeAnnotation
+                    ? context.sourceCode.getText(node.typeAnnotation)
+                    : 'any';
 
-                let recordText = `Record<${keyType}, ${valueType}>`;
+                  let recordText = `Record<${keyType}, ${valueType}>`;
 
-                if (node.optional === '+' || node.optional === true) {
-                  recordText = `Partial<${recordText}>`;
-                } else if (node.optional === '-') {
-                  recordText = `Required<${recordText}>`;
-                }
+                  if (node.optional === '+' || node.optional === true) {
+                    recordText = `Partial<${recordText}>`;
+                  } else if (node.optional === '-') {
+                    recordText = `Required<${recordText}>`;
+                  }
 
-                if (node.readonly === '+' || node.readonly === true) {
-                  recordText = `Readonly<${recordText}>`;
-                }
+                  if (node.readonly === '+' || node.readonly === true) {
+                    recordText = `Readonly<${recordText}>`;
+                  }
 
-                return fixer.replaceText(node, recordText);
+                  return fixer.replaceText(node, recordText);
+                },
               },
             }),
           });

@@ -970,10 +970,23 @@ type Foo = Record<string, any>;
       `,
     },
 
-    // Comments inside the type would be dropped by the fixer, so it is withheld.
+    // A comment outside the sub-nodes the fixer keeps would be dropped, so the
+    // reshape is offered as an opt-in suggestion rather than an autofix.
     {
       code: 'type Foo = { [key: string]: /* preserve me */ number };',
-      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 12,
+          line: 1,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: 'type Foo = Record<string, number>;',
+            },
+          ],
+        },
+      ],
       output: null,
     },
     {
@@ -983,7 +996,21 @@ interface Foo {
   [key: string]: number;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+type Foo = Record<string, number>;
+      `,
+            },
+          ],
+        },
+      ],
       output: null,
     },
     {
@@ -993,7 +1020,21 @@ type Foo = {
   [Key in 'a' | 'b']: number;
 };
       `,
-      errors: [{ column: 12, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 12,
+          line: 2,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+type Foo = Record<'a' | 'b', number>;
+      `,
+            },
+          ],
+        },
+      ],
       output: null,
     },
     {
@@ -1010,18 +1051,40 @@ type Test = {
   // 8
 };
       `,
-      errors: [{ column: 13, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 13,
+          line: 2,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: noFormat`
+type Test = Record<| 'a' // 3
+    | 'b' // 4
+    | 'c' // 5
+    | 'd', string>;
+      `,
+            },
+          ],
+        },
+      ],
       output: null,
     },
     {
-      // index-signature mode: comment would be dropped, so no fix or suggestion
+      // index-signature mode: a dropped comment makes the reshape a suggestion.
       code: 'type Foo = Record<string, /* preserve me */ number>;',
       errors: [
         {
           column: 12,
           line: 1,
           messageId: 'preferIndexSignature',
-          suggestions: [],
+          suggestions: [
+            {
+              messageId: 'preferIndexSignatureSuggestion',
+              output: 'type Foo = { [key: string]: number };',
+            },
+          ],
         },
       ],
       options: ['index-signature'],
