@@ -1740,11 +1740,21 @@ export class Converter {
             prefix: node.kind === SyntaxKind.PrefixUnaryExpression,
           });
         }
+        const isPrefixUnaryExpression =
+          node.kind === SyntaxKind.PrefixUnaryExpression;
+        if (!isPrefixUnaryExpression) {
+          this.#throwError(
+            node,
+            `Unexpected PrefixUnaryExpression with operator ${operator}`,
+          );
+        }
         return this.createNode<TSESTree.UnaryExpression>(node, {
           type: AST_NODE_TYPES.UnaryExpression,
           argument: this.convertChild(node.operand),
           operator,
-          prefix: node.kind === SyntaxKind.PrefixUnaryExpression,
+          // Guaranteed to be true in a valid AST (and asserted above) but
+          // technically could be false at runtime with allowInvalidAST: true.
+          prefix: isPrefixUnaryExpression as true,
         });
       }
 
