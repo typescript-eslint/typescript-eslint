@@ -216,6 +216,9 @@ describe('convert', () => {
     let esBinaryExpressionCount = 0;
     while (expression.type === AST_NODE_TYPES.BinaryExpression) {
       esBinaryExpressionCount += 1;
+      if (expression.left.type === AST_NODE_TYPES.PrivateIdentifier) {
+        throw new Error('Expected a non-private left expression.');
+      }
       expression = expression.left;
     }
 
