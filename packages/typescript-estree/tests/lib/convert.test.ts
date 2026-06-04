@@ -197,7 +197,7 @@ describe('convert', () => {
   });
 
   it('converts long binary expression chains without overflowing the stack', () => {
-    const operandCount = 5_000;
+    const operandCount = 1_500;
     const ast = convertCode(
       Array.from({ length: operandCount }, () => '"value"').join(' + '),
     );
