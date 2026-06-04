@@ -196,6 +196,42 @@ describe('convert', () => {
     checkMaps(ast);
   });
 
+  it('converts long binary expression chains without overflowing the stack', () => {
+    const operandCount = 5_000;
+    const ast = convertCode(
+      Array.from({ length: operandCount }, () => '"value"').join(' + '),
+    );
+    const instance = new Converter(ast, {
+      shouldPreserveNodeMaps: true,
+    });
+
+    const program = instance.convertProgram();
+    const maps = instance.getASTMaps();
+    const expressionStatement = program.body[0];
+    if (expressionStatement.type !== AST_NODE_TYPES.ExpressionStatement) {
+      throw new Error('Expected an expression statement.');
+    }
+
+    let expression = expressionStatement.expression;
+    let esBinaryExpressionCount = 0;
+    while (expression.type === AST_NODE_TYPES.BinaryExpression) {
+      esBinaryExpressionCount += 1;
+      expression = expression.left;
+    }
+
+    let tsExpression = (ast.statements[0] as ts.ExpressionStatement).expression;
+    let missingMapCount = 0;
+    while (ts.isBinaryExpression(tsExpression)) {
+      if (!maps.tsNodeToESTreeNodeMap.has(tsExpression)) {
+        missingMapCount += 1;
+      }
+      tsExpression = tsExpression.left;
+    }
+
+    expect(esBinaryExpressionCount).toBe(operandCount - 1);
+    expect(missingMapCount).toBe(0);
+  });
+
   /* eslint-disable @typescript-eslint/dot-notation */
   describe('createNode', () => {
     it('should correctly create node with range and loc set', () => {

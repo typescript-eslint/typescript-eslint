@@ -39,6 +39,11 @@ import { AST_NODE_TYPES } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 
+type NonAssignmentBinaryExpressionType = Exclude<
+  ReturnType<typeof getBinaryExpressionType>,
+  { type: AST_NODE_TYPES.AssignmentExpression }
+>;
+
 export interface ConverterOptions {
   allowInvalidAST?: boolean;
   errorOnUnknownASTType?: boolean;
@@ -560,6 +565,82 @@ export class Converter {
     }
 
     return this.convertJSXIdentifier(node);
+  }
+
+  private convertLeftRecursiveBinaryExpression(
+    node: ts.BinaryExpression,
+  ): TSESTree.BinaryExpression | TSESTree.LogicalExpression | null {
+    if (!ts.isBinaryExpression(node.left)) {
+      return null;
+    }
+
+    const chain: ts.BinaryExpression[] = [];
+    let current = node;
+    let leftmostNode: ts.Expression | undefined;
+
+    for (;;) {
+      const expressionType = this.getNonAssignmentBinaryExpressionType(current);
+      if (!expressionType) {
+        return null;
+      }
+
+      if (current !== node) {
+        this.#checkSyntaxError(current, current.parent as TSNode);
+      }
+
+      chain.push(current);
+
+      if (!ts.isBinaryExpression(current.left)) {
+        leftmostNode = current.left;
+        break;
+      }
+
+      if (!this.getNonAssignmentBinaryExpressionType(current.left)) {
+        leftmostNode = current.left;
+        break;
+      }
+
+      current = current.left;
+    }
+
+    if (chain.length < 2 || !leftmostNode) {
+      return null;
+    }
+
+    let left = this.convertChild(leftmostNode) as TSESTree.Expression;
+    for (let i = chain.length - 1; i >= 0; i -= 1) {
+      const chainNode = chain[i];
+      const expressionType =
+        this.getNonAssignmentBinaryExpressionType(chainNode)!;
+
+      const result = this.createNode<
+        TSESTree.BinaryExpression | TSESTree.LogicalExpression
+      >(chainNode, {
+        ...expressionType,
+        left,
+        right: this.convertChild(chainNode.right) as TSESTree.Expression,
+      });
+
+      this.registerTSNodeInNodeMap(chainNode, result);
+      left = result;
+    }
+
+    return left as TSESTree.BinaryExpression | TSESTree.LogicalExpression;
+  }
+
+  private getNonAssignmentBinaryExpressionType(
+    node: ts.BinaryExpression,
+  ): NonAssignmentBinaryExpressionType | null {
+    if (isComma(node.operatorToken)) {
+      return null;
+    }
+
+    const expressionType = getBinaryExpressionType(node.operatorToken);
+    if (expressionType.type === AST_NODE_TYPES.AssignmentExpression) {
+      return null;
+    }
+
+    return expressionType;
   }
 
   /**
@@ -1814,6 +1895,12 @@ export class Converter {
           );
           return result;
         }
+        const leftRecursiveExpression =
+          this.convertLeftRecursiveBinaryExpression(node);
+        if (leftRecursiveExpression) {
+          return leftRecursiveExpression;
+        }
+
         const expressionType = getBinaryExpressionType(node.operatorToken);
         if (
           this.allowPattern &&
