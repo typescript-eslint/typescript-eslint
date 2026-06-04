@@ -216,11 +216,7 @@ describe('convert', () => {
     let esBinaryExpressionCount = 0;
     while (expression.type === AST_NODE_TYPES.BinaryExpression) {
       esBinaryExpressionCount += 1;
-      const leftExpression = expression.left;
-      if (leftExpression.type === AST_NODE_TYPES.PrivateIdentifier) {
-        throw new Error('Expected a non-private left expression.');
-      }
-      expression = leftExpression;
+      expression = expression.left as TSESTree.Expression;
     }
 
     let tsExpression = (ast.statements[0] as ts.ExpressionStatement).expression;
