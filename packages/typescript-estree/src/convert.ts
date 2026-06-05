@@ -573,15 +573,23 @@ export class Converter {
 
   private convertLeftRecursiveBinaryExpression(
     node: ts.BinaryExpression,
-    expressionType: NonAssignmentBinaryExpressionType,
+    expressionType: NonAssignmentBinaryExpressionType | null = this.getNonAssignmentBinaryExpressionType(
+      node,
+    ),
   ): TSESTree.BinaryExpression | TSESTree.LogicalExpression | null {
+    if (!expressionType || !ts.isBinaryExpression(node.left)) {
+      return null;
+    }
+
     const chain: BinaryExpressionChainItem[] = [{ expressionType, node }];
-    let current = node.left;
+    let current: ts.Expression = node.left;
 
     while (ts.isBinaryExpression(current)) {
-      const currentExpressionType = getBinaryExpressionType(
-        current.operatorToken,
-      ) as NonAssignmentBinaryExpressionType;
+      const currentExpressionType =
+        this.getNonAssignmentBinaryExpressionType(current);
+      if (!currentExpressionType) {
+        return null;
+      }
 
       this.#checkSyntaxError(current, current.parent as TSNode);
       chain.push({ expressionType: currentExpressionType, node: current });
@@ -605,6 +613,21 @@ export class Converter {
     }
 
     return left as TSESTree.BinaryExpression | TSESTree.LogicalExpression;
+  }
+
+  private getNonAssignmentBinaryExpressionType(
+    node: ts.BinaryExpression,
+  ): NonAssignmentBinaryExpressionType | null {
+    if (isComma(node.operatorToken)) {
+      return null;
+    }
+
+    const expressionType = getBinaryExpressionType(node.operatorToken);
+    if (expressionType.type === AST_NODE_TYPES.AssignmentExpression) {
+      return null;
+    }
+
+    return expressionType;
   }
 
   /**
