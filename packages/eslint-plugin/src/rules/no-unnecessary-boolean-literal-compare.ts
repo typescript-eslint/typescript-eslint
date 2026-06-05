@@ -231,9 +231,7 @@ export default createRule<Options, MessageIds>({
 
     function nodeIsUnaryNegation(node: TSESTree.Node): boolean {
       return (
-        node.type === AST_NODE_TYPES.UnaryExpression &&
-        node.prefix &&
-        node.operator === '!'
+        node.type === AST_NODE_TYPES.UnaryExpression && node.operator === '!'
       );
     }
 
