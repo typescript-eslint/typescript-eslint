@@ -43,6 +43,10 @@ type NonAssignmentBinaryExpressionType = Exclude<
   ReturnType<typeof getBinaryExpressionType>,
   { type: AST_NODE_TYPES.AssignmentExpression }
 >;
+interface BinaryExpressionChainItem {
+  expressionType: NonAssignmentBinaryExpressionType;
+  node: ts.BinaryExpression;
+}
 
 export interface ConverterOptions {
   allowInvalidAST?: boolean;
@@ -569,49 +573,24 @@ export class Converter {
 
   private convertLeftRecursiveBinaryExpression(
     node: ts.BinaryExpression,
+    expressionType: NonAssignmentBinaryExpressionType,
   ): TSESTree.BinaryExpression | TSESTree.LogicalExpression | null {
-    if (!ts.isBinaryExpression(node.left)) {
-      return null;
-    }
+    const chain: BinaryExpressionChainItem[] = [{ expressionType, node }];
+    let current = node.left;
 
-    const chain: ts.BinaryExpression[] = [];
-    let current = node;
-    let leftmostNode: ts.Expression | undefined;
+    while (ts.isBinaryExpression(current)) {
+      const currentExpressionType = getBinaryExpressionType(
+        current.operatorToken,
+      ) as NonAssignmentBinaryExpressionType;
 
-    for (;;) {
-      const expressionType = this.getNonAssignmentBinaryExpressionType(current);
-      if (!expressionType) {
-        return null;
-      }
-
-      if (current !== node) {
-        this.#checkSyntaxError(current, current.parent as TSNode);
-      }
-
-      chain.push(current);
-
-      if (!ts.isBinaryExpression(current.left)) {
-        leftmostNode = current.left;
-        break;
-      }
-
-      if (!this.getNonAssignmentBinaryExpressionType(current.left)) {
-        leftmostNode = current.left;
-        break;
-      }
-
+      this.#checkSyntaxError(current, current.parent as TSNode);
+      chain.push({ expressionType: currentExpressionType, node: current });
       current = current.left;
     }
 
-    if (chain.length < 2 || !leftmostNode) {
-      return null;
-    }
-
-    let left = this.convertChild(leftmostNode) as TSESTree.Expression;
+    let left = this.convertChild(current) as TSESTree.Expression;
     for (let i = chain.length - 1; i >= 0; i -= 1) {
-      const chainNode = chain[i];
-      const expressionType =
-        this.getNonAssignmentBinaryExpressionType(chainNode)!;
+      const { expressionType, node: chainNode } = chain[i];
 
       const result = this.createNode<
         TSESTree.BinaryExpression | TSESTree.LogicalExpression
@@ -626,21 +605,6 @@ export class Converter {
     }
 
     return left as TSESTree.BinaryExpression | TSESTree.LogicalExpression;
-  }
-
-  private getNonAssignmentBinaryExpressionType(
-    node: ts.BinaryExpression,
-  ): NonAssignmentBinaryExpressionType | null {
-    if (isComma(node.operatorToken)) {
-      return null;
-    }
-
-    const expressionType = getBinaryExpressionType(node.operatorToken);
-    if (expressionType.type === AST_NODE_TYPES.AssignmentExpression) {
-      return null;
-    }
-
-    return expressionType;
   }
 
   /**
@@ -1895,13 +1859,18 @@ export class Converter {
           );
           return result;
         }
-        const leftRecursiveExpression =
-          this.convertLeftRecursiveBinaryExpression(node);
-        if (leftRecursiveExpression) {
-          return leftRecursiveExpression;
+        const expressionType = getBinaryExpressionType(node.operatorToken);
+        if (
+          expressionType.type !== AST_NODE_TYPES.AssignmentExpression &&
+          ts.isBinaryExpression(node.left)
+        ) {
+          const leftRecursiveExpression =
+            this.convertLeftRecursiveBinaryExpression(node, expressionType);
+          if (leftRecursiveExpression) {
+            return leftRecursiveExpression;
+          }
         }
 
-        const expressionType = getBinaryExpressionType(node.operatorToken);
         if (
           this.allowPattern &&
           expressionType.type === AST_NODE_TYPES.AssignmentExpression
