@@ -370,6 +370,27 @@ jobs:
         # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version
         node-version: [24]
         package: ${{ fromJson(needs['affected-for-tests'].outputs.unit_tests_packages) }}
+
+        # Packages that have no (or we don't care about their) platform-specific,
+        # runtime behavior, so skipping them on Windows to have less jobs to run.
+        exclude:
+          - os: windows-latest
+            package: ast-spec
+
+          - os: windows-latest
+            package: eslint-plugin-internal
+
+          - os: windows-latest
+            package: rule-schema-to-typescript-types
+
+          - os: windows-latest
+            package: scope-manager
+
+          - os: windows-latest
+            package: utils
+
+          - os: windows-latest
+            package: visitor-keys
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
