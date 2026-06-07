@@ -6,7 +6,7 @@ import type { BlockStatement } from '../../statement/BlockStatement/spec';
 import type { Expression } from '../../unions/Expression';
 import type { Parameter } from '../../unions/Parameter';
 
-export interface ArrowFunctionExpression extends BaseNode {
+interface ArrowFunctionExpressionBase extends BaseNode {
   type: AST_NODE_TYPES.ArrowFunctionExpression;
   async: boolean;
   body: BlockStatement | Expression;
@@ -17,3 +17,17 @@ export interface ArrowFunctionExpression extends BaseNode {
   returnType: TSTypeAnnotation | undefined;
   typeParameters: TSTypeParameterDeclaration | undefined;
 }
+
+export interface ArrowFunctionExpressionWithExpressionBody extends ArrowFunctionExpressionBase {
+  body: Expression;
+  expression: true;
+}
+
+export interface ArrowFunctionExpressionWithBlockBody extends ArrowFunctionExpressionBase {
+  body: BlockStatement;
+  expression: false;
+}
+
+export type ArrowFunctionExpression =
+  | ArrowFunctionExpressionWithBlockBody
+  | ArrowFunctionExpressionWithExpressionBody;
