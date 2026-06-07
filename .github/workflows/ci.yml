@@ -54,6 +54,66 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
+  affected-for-tests:
+    name: Determine Affected Projects for Tests
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [install]
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    outputs:
+      is_plugin_affected: ${{ steps.filter.outputs.is_plugin_affected }}
+      unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
+      project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Get affected projects
+        id: affected
+        run: |
+          # Fetch base ref history so NX can determine affected projects
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --depth=1 origin "$BASE_REF"
+            BASE="origin/$BASE_REF"
+          else
+            BASE="HEAD~1"
+          fi
+
+          affected=$(pnpm exec nx show projects --affected --withTarget=test --json --base="$BASE" 2>/dev/null || echo '[]')
+
+          echo "affected=$affected" >> "$GITHUB_OUTPUT"
+        env:
+          BASE_REF: ${{ github.base_ref }}
+
+      # We want to skip non-affected packages, but GH Actions doesn't support `contains(affected, matrix.package)` in `if` conditions,
+      # so we're creating the whole matrix dynamically instead.
+      - name: Filter affected packages for test matrices
+        id: filter
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const affected = ${{ steps.affected.outputs.affected }};
+
+            // Packages that should also be tested with the project service enabled.
+            const projectServicePackages = ['eslint-plugin-internal', 'typescript-estree'];
+
+            // `eslint-plugin` runs in its own sharded job; gate it with a boolean.
+            const isPluginAffected = affected.includes('eslint-plugin');
+
+            const affectedUnitTests = affected.filter((pkg) => pkg !== 'eslint-plugin');
+            const affectedProjectService = projectServicePackages.filter((pkg) => affected.includes(pkg));
+
+            core.setOutput('is_plugin_affected', isPluginAffected);
+            core.setOutput('unit_tests_packages', JSON.stringify(affectedUnitTests));
+            core.setOutput('project_service_packages', JSON.stringify(affectedProjectService));
+
   build:
     name: Build All Packages
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
@@ -245,7 +305,8 @@ jobs:
     # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected-for-tests]
+    if: ${{ needs['affected-for-tests'].outputs.is_plugin_affected == 'true' }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -300,27 +361,15 @@ jobs:
   unit_tests:
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected-for-tests]
+    if: ${{ needs['affected-for-tests'].outputs.unit_tests_packages != '[]' && needs['affected-for-tests'].outputs.unit_tests_packages != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
         # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version
         node-version: [24]
-        package:
-          - ast-spec
-          - eslint-plugin-internal
-          - parser
-          - project-service
-          - rule-schema-to-typescript-types
-          - rule-tester
-          - scope-manager
-          - tsconfig-utils
-          - type-utils
-          - typescript-eslint
-          - typescript-estree
-          - utils
-          - visitor-keys
+        package: ${{ fromJson(needs['affected-for-tests'].outputs.unit_tests_packages) }}
 
         # Packages that have no (or we don't care about their) platform-specific,
         # runtime behavior, so skipping them on Windows to have less jobs to run.
@@ -362,14 +411,16 @@ jobs:
       # we don't collect coverage on other OSs so that they run faster
       - name: Run unit tests with coverage for ${{ matrix.package }}
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package }} -- --coverage
+        run: pnpm exec nx test "$PACKAGE" -- --coverage
         env:
           CI: true
+          PACKAGE: ${{ matrix.package }}
       - name: Run unit tests for ${{ matrix.package }}
         if: matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package }}
+        run: pnpm exec nx test "$PACKAGE"
         env:
           CI: true
+          PACKAGE: ${{ matrix.package }}
 
       - name: Store coverage for uploading
         if: matrix.os == 'ubuntu-latest'
@@ -383,11 +434,12 @@ jobs:
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected-for-tests]
+    if: ${{ needs['affected-for-tests'].outputs.project_service_packages != '[]' && needs['affected-for-tests'].outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['eslint-plugin-internal', 'typescript-estree']
+        package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,
@@ -404,10 +456,11 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
-        run: pnpm exec nx test ${{ matrix.package }} --coverage=false
+        run: pnpm exec nx test "$PACKAGE" --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
+          PACKAGE: ${{ matrix.package }}
 
   upload_coverage:
     name: Upload Codecov Coverage
