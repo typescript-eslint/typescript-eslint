@@ -1,3 +1,4 @@
+import { ASTUtils } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
 
 import type { SchemaAST, TupleAST } from './types.js';
@@ -22,7 +23,7 @@ function printComment({
 
   const commentLines: string[] = [];
   for (const line of commentLinesIn) {
-    commentLines.push(...line.split('\n'));
+    commentLines.push(...line.split(ASTUtils.LINEBREAK_MATCHER));
   }
 
   if (commentLines.length === 1) {
