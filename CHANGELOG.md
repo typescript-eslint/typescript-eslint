@@ -1,3 +1,23 @@
+## 8.61.0 (2026-06-08)
+
+### 🚀 Features
+
+- **ast-spec:** change type of `UnaryExpression.prefix` to always `true` ([#12372](https://github.com/typescript-eslint/typescript-eslint/pull/12372))
+- **ast-spec:** tighten types of `ArrowFunction`, `YieldExpression`, `TSTypePredicate` ([#12373](https://github.com/typescript-eslint/typescript-eslint/pull/12373))
+
+### 🩹 Fixes
+
+- **rule-schema-to-typescript-types:** respect ECMAScript line terminators ([#12374](https://github.com/typescript-eslint/typescript-eslint/pull/12374))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- lumir
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.61.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.60.1 (2026-06-01)
 
 ### 🩹 Fixes
