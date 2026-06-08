@@ -30,7 +30,7 @@ export type Options = [
 
 interface BooleanComparison {
   expression: TSESTree.Expression | TSESTree.PrivateIdentifier;
-  booleanLiteral: 'true' | 'false';
+  booleanLiteral: 'false' | 'true';
   negated: boolean;
 }
 
@@ -220,8 +220,8 @@ export default createRule<Options, MessageIds>({
         const negated = !comparisonType.isPositive;
 
         return {
-          expression,
           booleanLiteral,
+          expression,
           negated,
         };
       }
@@ -358,7 +358,8 @@ function getEqualsKind(operator: string): EqualsKind | undefined {
 }
 
 function booleanXor(arg0: boolean, ...args: boolean[]) {
-  return args.reduce((acc, curr) => acc !== curr, Boolean(arg0));
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-conversion
+  return args.reduce((acc, curr) => acc !== Boolean(curr), Boolean(arg0));
 }
 
 function parenthesize(text: string) {
