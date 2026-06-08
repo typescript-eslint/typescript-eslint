@@ -288,7 +288,8 @@ export default createRule<Options, MessageIds>({
               comparison.expression,
             );
 
-            // preserve truth table for cases when falsiness have opposite truth values
+            // In maybeNullish === false, nullish values have the same truth table
+            // as `true`.
             if (
               comparison.expressionIsNullableBoolean &&
               comparison.booleanLiteral === 'false'
