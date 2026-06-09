@@ -2633,7 +2633,7 @@ fn1(() => {
           messageId: 'contextuallyUnnecessary',
         },
       ],
-      output: noFormat`[].map(() => ({ a: false, b: false }));`,
+      output: `[].map(() => ({ a: false, b: false }));`,
     },
     {
       code: noFormat`[].map(() => /* 1 */ <{ a: false; b: false }> /* 2 */ { a: false, b: false } /* 3 */);`,
@@ -2642,7 +2642,7 @@ fn1(() => {
           messageId: 'contextuallyUnnecessary',
         },
       ],
-      output: noFormat`[].map(() => /* 1 */ ( /* 2 */ { a: false, b: false }) /* 3 */);`,
+      output: `[].map(() => /* 1 */ ( /* 2 */ { a: false, b: false }) /* 3 */);`,
     },
     {
       code: noFormat`[].map(() => <{ a: false; b: false }>({ a: false, b: false }));`,
@@ -2651,7 +2651,7 @@ fn1(() => {
           messageId: 'contextuallyUnnecessary',
         },
       ],
-      output: noFormat`[].map(() => ({ a: false, b: false }));`,
+      output: `[].map(() => ({ a: false, b: false }));`,
     },
     {
       code: noFormat`[].map(() => (<{ a: false; b: false }>{ a: false, b: false }));`,
@@ -2660,7 +2660,7 @@ fn1(() => {
           messageId: 'contextuallyUnnecessary',
         },
       ],
-      output: noFormat`[].map(() => ({ a: false, b: false }));`,
+      output: `[].map(() => ({ a: false, b: false }));`,
     },
     {
       code: "<{ a: string }>{ a: 'foo' };",
@@ -2669,7 +2669,7 @@ fn1(() => {
           messageId: 'unnecessaryAssertion',
         },
       ],
-      output: noFormat`({ a: 'foo' });`,
+      output: `({ a: 'foo' });`,
     },
   ],
 });
