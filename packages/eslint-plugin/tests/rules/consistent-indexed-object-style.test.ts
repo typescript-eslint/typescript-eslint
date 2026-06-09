@@ -1059,7 +1059,7 @@ type Test = {
           suggestions: [
             {
               messageId: 'preferRecordSuggestion',
-              output: noFormat`
+              output: `
 type Test = Record<| 'a' // 3
     | 'b' // 4
     | 'c' // 5
