@@ -107,8 +107,7 @@ export { A };
         'export type { Type1 as "🍎" } from \'./consistent-type-exports\';',
     },
     {
-      code: `
-export { Type1, value1 } from './consistent-type-exports';`,
+      code: "export { Type1, value1 } from './consistent-type-exports';",
       errors: [
         {
           column: 1,
@@ -116,8 +115,7 @@ export { Type1, value1 } from './consistent-type-exports';`,
           messageId: 'singleExportIsType',
         },
       ],
-      output: `
-export type { Type1 } from './consistent-type-exports';
+      output: `export type { Type1 } from './consistent-type-exports';
 export { value1 } from './consistent-type-exports';`,
     },
     {
