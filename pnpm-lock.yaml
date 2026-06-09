@@ -928,6 +928,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      docusaurus-plugin-copy-page-button:
+        specifier: ^0.8.0
+        version: 0.8.0(@docusaurus/core@3.7.0(@docusaurus/faster@3.9.2(@docusaurus/types@3.9.2(@swc/core@1.15.8(@swc/helpers@0.5.17))(acorn@8.16.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@swc/helpers@0.5.17))(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@rspack/core@1.7.4(@swc/helpers@0.5.17))(@swc/core@1.15.8(@swc/helpers@0.5.17))(acorn@8.16.0)(eslint@10.4.0(jiti@2.7.0))(lightningcss@1.31.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@6.0.2))(react@18.3.1)
       docusaurus-plugin-typedoc:
         specifier: ^1.4.2
         version: 1.4.2(typedoc-plugin-markdown@4.11.0(typedoc@0.28.15(typescript@6.0.2)))
@@ -5436,6 +5439,13 @@ packages:
   doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
     engines: {node: '>=0.10.0'}
+
+  docusaurus-plugin-copy-page-button@0.8.0:
+    resolution: {integrity: sha512-WsdA9yDlOevHuKiHMq/aZJvLViyYmlyYEPtYaIvL09qScZLu27Lyx7ABycgYz10t389nnz7NcfSKD3ghMs62fg==}
+    engines: {node: '>=18.0'}
+    peerDependencies:
+      '@docusaurus/core': ^3.0.0
+      react: ^18.0.0 || ^19.0.0
 
   docusaurus-plugin-typedoc@1.4.2:
     resolution: {integrity: sha512-1qerRejLSYxEWdyVPLDMMeKFPLA/37yZAsdwJy9ThHFQR78+v3b5spSbk67VHGLr2mAn4FVHu0aGJ6p7iWotSg==}
@@ -15100,6 +15110,11 @@ snapshots:
   doctrine@2.1.0:
     dependencies:
       esutils: 2.0.3
+
+  docusaurus-plugin-copy-page-button@0.8.0(@docusaurus/core@3.7.0(@docusaurus/faster@3.9.2(@docusaurus/types@3.9.2(@swc/core@1.15.8(@swc/helpers@0.5.17))(acorn@8.16.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@swc/helpers@0.5.17))(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@rspack/core@1.7.4(@swc/helpers@0.5.17))(@swc/core@1.15.8(@swc/helpers@0.5.17))(acorn@8.16.0)(eslint@10.4.0(jiti@2.7.0))(lightningcss@1.31.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@6.0.2))(react@18.3.1):
+    dependencies:
+      '@docusaurus/core': 3.7.0(@docusaurus/faster@3.9.2(@docusaurus/types@3.9.2(@swc/core@1.15.8(@swc/helpers@0.5.17))(acorn@8.16.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@swc/helpers@0.5.17))(@mdx-js/react@3.1.0(@types/react@18.3.21)(react@18.3.1))(@rspack/core@1.7.4(@swc/helpers@0.5.17))(@swc/core@1.15.8(@swc/helpers@0.5.17))(acorn@8.16.0)(eslint@10.4.0(jiti@2.7.0))(lightningcss@1.31.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@6.0.2)
+      react: 18.3.1
 
   docusaurus-plugin-typedoc@1.4.2(typedoc-plugin-markdown@4.11.0(typedoc@0.28.15(typescript@6.0.2))):
     dependencies:

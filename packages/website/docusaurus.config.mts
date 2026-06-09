@@ -409,6 +409,7 @@ const config: Config = {
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
     ['@docusaurus/plugin-pwa', pluginPwaOptions],
     ['@docusaurus/plugin-client-redirects', redirects],
+    'docusaurus-plugin-copy-page-button',
   ],
   presets: [['classic', presetClassicOptions]],
   projectName: 'typescript-eslint',

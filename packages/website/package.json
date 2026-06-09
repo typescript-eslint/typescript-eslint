@@ -43,6 +43,7 @@
     "@uiw/react-shields": "2.0.2",
     "acorn": "^8.16.0",
     "clsx": "^2.1.1",
+    "docusaurus-plugin-copy-page-button": "^0.8.0",
     "docusaurus-plugin-typedoc": "^1.4.2",
     "eslint": "*",
     "gray-matter": "^4.0.3",
