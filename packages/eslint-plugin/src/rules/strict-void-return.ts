@@ -499,14 +499,7 @@ export default util.createRule<Options, MessageId>({
         }),
         util.NullThrowsReasons.MissingToken('async keyword', funcNode.type),
       );
-      const afterAsyncToken = util.nullThrows(
-        sourceCode.getTokenAfter(asyncToken),
-        util.NullThrowsReasons.MissingToken(
-          'token after async keyword',
-          funcNode.type,
-        ),
-      );
-      return fixer.removeRange([asyncToken.range[0], afterAsyncToken.range[0]]);
+      return fixer.remove(asyncToken);
     }
   },
 });

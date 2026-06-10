@@ -1003,7 +1003,7 @@ ruleTester.run('strict-void-return', rule, {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
         declare function foo(cb: () => void): void;
-        foo(() => { (async () => (((Promise.resolve(true)))))(); });
+        foo( () => { (async () => (((Promise.resolve(true)))))(); });
       `,
             },
           ],
@@ -1111,7 +1111,7 @@ ruleTester.run('strict-void-return', rule, {
         type AnyFunc = (...args: unknown[]) => unknown;
         declare function foo<F extends AnyFunc>(cb: F): void;
         foo(async () => ({}));
-        foo<() => void>(() => { (async () => ({}))(); });
+        foo<() => void>( () => { (async () => ({}))(); });
       `,
             },
           ],
@@ -1153,7 +1153,7 @@ ruleTester.run('strict-void-return', rule, {
         declare function foo<T extends {}>(arg: T, cb: () => T): void;
         declare function foo(arg: any, cb: () => void): void;
 
-        foo(null, () => { (async () => {})(); });
+        foo(null,  () => { (async () => {})(); });
       `,
             },
           ],
@@ -1179,7 +1179,7 @@ ruleTester.run('strict-void-return', rule, {
               output: `
         declare function foo(cb: () => void): void;
         declare function foo(cb: () => any): void;
-        foo(() => { (async () => {
+        foo( () => { (async () => {
           return Math.random();
         })(); });
       `,
@@ -1205,7 +1205,7 @@ ruleTester.run('strict-void-return', rule, {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
         declare function foo(cb: () => void): void;
-        foo(function () { (async () => {
+        foo( function () { (async () => {
           return -Math.random();
         })(); });
       `,
@@ -1339,7 +1339,7 @@ ruleTester.run('strict-void-return', rule, {
         declare const Foo: {
           new (cb: () => void): void;
         };
-        new Foo(() => { (async () => {})(); });
+        new Foo( () => { (async () => {})(); });
       `,
             },
           ],
@@ -1416,7 +1416,7 @@ ruleTester.run('strict-void-return', rule, {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
         declare function foo(cb: () => void): void;
-        foo(() => { (async () => {
+        foo( () => { (async () => {
           try {
             await Promise.resolve();
           } catch {
@@ -1617,7 +1617,7 @@ ruleTester.run('strict-void-return', rule, {
               output: `
         declare function foo(x: null, cb: () => void): void;
         declare function foo(x: unknown, cb: () => any): void;
-        foo({}, () => { (async () => {})(); });
+        foo({},  () => { (async () => {})(); });
       `,
             },
           ],
@@ -1641,7 +1641,7 @@ ruleTester.run('strict-void-return', rule, {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
         const arr = [1, 2];
-        arr.forEach(x => { (async () => {
+        arr.forEach( x => { (async () => {
           console.log(x);
         })(); });
       `,
@@ -1663,7 +1663,7 @@ ruleTester.run('strict-void-return', rule, {
             {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
-        [1, 2].forEach(x => { (async () => console.log(x))(); });
+        [1, 2].forEach( x => { (async () => console.log(x))(); });
       `,
             },
           ],
@@ -1710,7 +1710,7 @@ ruleTester.run('strict-void-return', rule, {
             {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
-        const foo: () => void = () => { (async () => Promise.resolve(true))(); };
+        const foo: () => void =  () => { (async () => Promise.resolve(true))(); };
       `,
             },
           ],
@@ -1778,7 +1778,7 @@ ruleTester.run('strict-void-return', rule, {
             {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
-        const cb: () => void = (): void => { (async () => {
+        const cb: () => void =  (): void => { (async () => {
           try {
             return Promise.resolve(1);
           } catch {}
@@ -1799,7 +1799,7 @@ ruleTester.run('strict-void-return', rule, {
           suggestions: [
             {
               messageId: 'suggestWrapInAsyncIIFE',
-              output: `const cb: () => void = (): void => { (async () => Promise.resolve(1))(); };`,
+              output: `const cb: () => void =  (): void => { (async () => Promise.resolve(1))(); };`,
             },
           ],
         },
@@ -1822,7 +1822,7 @@ ruleTester.run('strict-void-return', rule, {
             {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
-        const foo: () => void = () => { (async () => {
+        const foo: () => void =  () => { (async () => {
           try {
             return 1;
           } catch {}
@@ -1851,7 +1851,7 @@ ruleTester.run('strict-void-return', rule, {
             {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
-        const foo: () => void = (): void => { (async () => {
+        const foo: () => void =  (): void => { (async () => {
           try {
             await Promise.resolve();
           } finally {
@@ -1883,7 +1883,7 @@ ruleTester.run('strict-void-return', rule, {
             {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
-        const foo: () => void = () => { (async () => {
+        const foo: () => void =  () => { (async () => {
           try {
             await Promise.resolve();
           } catch (err) {
@@ -2000,7 +2000,7 @@ ruleTester.run('strict-void-return', rule, {
             {
               messageId: 'suggestWrapInAsyncIIFE',
               output: `
-        const foo: ((arg: number) => void) | ((arg: string) => void) = () => { (async () => {
+        const foo: ((arg: number) => void) | ((arg: string) => void) =  () => { (async () => {
           return 1;
         })(); };
       `,
@@ -2173,7 +2173,7 @@ ruleTester.run('strict-void-return', rule, {
               output: `
         type Cb = () => void;
         declare function Foo(props: { cb: Cb; s: string }): unknown;
-        return <Foo cb={function () { (async () => {})(); }} s="!@#jp2gmd" />;
+        return <Foo cb={ function () { (async () => {})(); }} s="!@#jp2gmd" />;
       `,
             },
           ],
@@ -2357,7 +2357,7 @@ ruleTester.run('strict-void-return', rule, {
               output: `
         declare let foo: { cb: (() => void) | number };
         foo = {
-          cb: () => { (async () => {
+          cb:  () => { (async () => {
             if (maybe) {
               return 'asd';
             }
@@ -2437,7 +2437,7 @@ ruleTester.run('strict-void-return', rule, {
             function* () {
               yield 1;
             },
-            () => { (async () => {
+             () => { (async () => {
               await 1;
             })(); },
             null,
@@ -2688,7 +2688,7 @@ ruleTester.run('strict-void-return', rule, {
           abstract cb(): void;
         }
         class Bar extends Foo {
-          cb() { (async () => {})(); }
+           cb() { (async () => {})(); }
         }
       `,
             },
@@ -2772,6 +2772,40 @@ ruleTester.run('strict-void-return', rule, {
           cb(): void;
         }
         class Bar implements Foo {
+          async /* important comment */ cb(): Promise<string> {
+            return Promise.resolve('siema');
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 6,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        interface Foo {
+          cb(): void;
+        }
+        class Bar implements Foo {
+           /* important comment */ cb(): void { (async () => {
+            return Promise.resolve('siema');
+          })(); }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          cb(): void;
+        }
+        class Bar implements Foo {
           async cb(): Promise<string> {
             return Promise.resolve('siema');
           }
@@ -2790,7 +2824,7 @@ ruleTester.run('strict-void-return', rule, {
           cb(): void;
         }
         class Bar implements Foo {
-          cb(): void { (async () => {
+           cb(): void { (async () => {
             return Promise.resolve('siema');
           })(); }
         }
@@ -2828,7 +2862,7 @@ ruleTester.run('strict-void-return', rule, {
           cb(): void;
         }
         class Bar implements Foo {
-          cb() { (async () => {
+           cb() { (async () => {
             try {
               return { a: ['asdf', 1234] };
             } catch {
@@ -2894,7 +2928,7 @@ ruleTester.run('strict-void-return', rule, {
           cb2: () => void;
         }
         class Bar implements Foo1, Foo2 {
-          cb1() { (async () => {})(); }
+           cb1() { (async () => {})(); }
           async *cb2() {}
         }
       `,
@@ -2946,7 +2980,7 @@ ruleTester.run('strict-void-return', rule, {
           cb3() {}
         }
         class Bar extends Baz implements Foo1, Foo2 {
-          cb1() { (async () => {})(); }
+           cb1() { (async () => {})(); }
           async *cb2() {}
           cb3() {
             return Math.random();
@@ -3033,7 +3067,7 @@ ruleTester.run('strict-void-return', rule, {
           cb2: () => void;
         }
         class Bar implements Foo2 {
-          cb1() { (async () => {})(); }
+           cb1() { (async () => {})(); }
           async *cb2() {}
         }
       `,
@@ -3119,7 +3153,7 @@ ruleTester.run('strict-void-return', rule, {
               output: `
         declare function foo(cb: () => () => void): void;
         foo(function () {
-          return () => { (async () => {})(); };
+          return  () => { (async () => {})(); };
         });
       `,
             },
