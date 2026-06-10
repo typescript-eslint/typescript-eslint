@@ -394,29 +394,16 @@ export default util.createRule<Options, MessageId>({
 
       if (funcNode.async) {
         // The provided function is an async function.
-
-        if (
-          funcNode.body.type === AST_NODE_TYPES.BlockStatement &&
-          funcNode.body.body.length > 0
-        ) {
-          // This function has a block body.
-          // Suggest wrapping its body in an async IIFE.
-          return context.report({
-            loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `asyncFunc`,
-            suggest: [
-              {
-                messageId: 'suggestWrapInAsyncIIFE',
-                fix: fixer => wrapFuncInAsyncIIFEFix(fixer, funcNode),
-              },
-            ],
-          });
-        }
-
-        // Async functions aren't allowed.
+        // Suggest wrapping its body in an async IIFE.
         return context.report({
           loc: util.getFunctionHeadLoc(funcNode, sourceCode),
           messageId: `asyncFunc`,
+          suggest: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              fix: fixer => wrapFuncInAsyncIIFEFix(fixer, funcNode),
+            },
+          ],
         });
       }
 
@@ -479,7 +466,7 @@ export default util.createRule<Options, MessageId>({
 
     /**
      * Wraps function body in an inner async IIFE which allows the outer function to be non-async and return void.
-     * The passed function node must be an async function with a block body.
+     * The passed function node must be an async function.
      */
     function* wrapFuncInAsyncIIFEFix(
       fixer: TSESLint.RuleFixer,
@@ -491,9 +478,10 @@ export default util.createRule<Options, MessageId>({
       if (funcNode.returnType != null) {
         yield fixer.replaceText(funcNode.returnType.typeAnnotation, 'void');
       }
+      const bodyRange = util.getRangeWithParens(funcNode.body, sourceCode);
       // Wrap body in async IIFE
-      yield fixer.insertTextBefore(funcNode.body, '{ (async () => ');
-      yield fixer.insertTextAfter(funcNode.body, ')(); }');
+      yield fixer.insertTextBeforeRange(bodyRange, '{ (async () => ');
+      yield fixer.insertTextAfterRange(bodyRange, ')(); }');
     }
 
     function removeAsyncKeywordFix(

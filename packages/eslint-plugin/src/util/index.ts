@@ -8,6 +8,7 @@ export * from './getBaseTypesOfClassMember';
 export * from './getFixOrSuggest';
 export * from './getFunctionHeadLoc';
 export * from './getOperatorPrecedence';
+export * from './getRangeWithParens';
 export * from './getStaticStringValue';
 export * from './getStringLength';
 export * from './getTextWithParentheses';
