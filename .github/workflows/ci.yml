@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
-  PRIMARY_NODE_VERSION: 20
+  PRIMARY_NODE_VERSION: 24
   # Value will be controlled via GitHub environment (called "main") secret, will be read-write for main branch, read-only for other branches
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
@@ -46,11 +46,73 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+  affected-for-tests:
+    name: Determine Affected Projects for Tests
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [install]
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    outputs:
+      is_plugin_affected: ${{ steps.filter.outputs.is_plugin_affected }}
+      unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
+      project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Get affected projects
+        id: affected
+        run: |
+          # Fetch base ref history so NX can determine affected projects
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --depth=1 origin "$BASE_REF"
+            BASE="origin/$BASE_REF"
+          else
+            BASE="HEAD~1"
+          fi
+
+          affected=$(pnpm exec nx show projects --affected --withTarget=test --json --base="$BASE" 2>/dev/null || echo '[]')
+
+          echo "affected=$affected" >> "$GITHUB_OUTPUT"
+        env:
+          BASE_REF: ${{ github.base_ref }}
+
+      # We want to skip non-affected packages, but GH Actions doesn't support `contains(affected, matrix.package)` in `if` conditions,
+      # so we're creating the whole matrix dynamically instead.
+      - name: Filter affected packages for test matrices
+        id: filter
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const affected = ${{ steps.affected.outputs.affected }};
+
+            // Packages that should also be tested with the project service enabled.
+            const projectServicePackages = ['eslint-plugin-internal', 'typescript-estree'];
+
+            // `eslint-plugin` runs in its own sharded job; gate it with a boolean.
+            const isPluginAffected = affected.includes('eslint-plugin');
+
+            const affectedUnitTests = affected.filter((pkg) => pkg !== 'eslint-plugin');
+            const affectedProjectService = projectServicePackages.filter((pkg) => affected.includes(pkg));
+
+            core.setOutput('is_plugin_affected', isPluginAffected);
+            core.setOutput('unit_tests_packages', JSON.stringify(affectedUnitTests));
+            core.setOutput('project_service_packages', JSON.stringify(affectedProjectService));
 
   build:
     name: Build All Packages
@@ -61,7 +123,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -78,7 +142,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -100,7 +166,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -117,12 +185,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: ['deduplicate', 'lint', 'typecheck', 'knip']
+        lint-task: ['deduplicate', 'typecheck', 'typecheck:tsgo', 'knip']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -132,8 +202,60 @@ jobs:
 
       - name: Run Check
         run: pnpm ${{ matrix.lint-task }}
-        env:
-          ESLINT_USE_FLAT_CONFIG: true
+
+  # Note -- intentionally use the same name as lint_with_build just so everything looks uniform in the checks section
+  lint_with_build_eslint:
+    name: Lint with build
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    # because we lint with our own tooling, we need to build
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - shard: '1/4'
+            args: '--concurrency=auto'
+            projects:
+              - eslint-plugin
+
+          - shard: '2/4'
+            args: ''
+            projects:
+              - ast-spec
+              - utils
+              - scope-manager
+              - eslint-plugin-internal
+
+          - shard: '3/4'
+            args: ''
+            projects:
+              - typescript-estree
+              - types
+              - website
+              - rule-tester
+              - visitor-keys
+
+          - shard: '4/4'
+            args: ''
+            projects:
+              - parser
+              - type-utils
+              - rule-schema-to-typescript-types
+              - typescript-eslint
+              - repo
+              - website-eslint
+              - integration-tests
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - uses: ./.github/actions/prepare-build
+      - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} ${{ matrix.args }}
 
   stylelint:
     name: Stylelint
@@ -144,7 +266,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -162,7 +286,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -175,10 +301,12 @@ jobs:
         env:
           CI: true
 
-  unit_tests:
+  plugin_unit_tests:
+    # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected-for-tests]
+    if: ${{ needs['affected-for-tests'].outputs.is_plugin_affected == 'true' }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -187,32 +315,20 @@ jobs:
             node-version: 18
         os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [18, 20]
+        node-version: [18, 24]
         package:
           [
-            'ast-spec',
-            'eslint-plugin',
-            'eslint-plugin-internal',
-            'parser',
-            'project-service',
-            'rule-schema-to-typescript-types',
-            'rule-tester',
-            'scope-manager',
-            'tsconfig-utils',
-            'type-utils',
-            'typescript-eslint',
-            'typescript-estree',
-            'utils',
-            'visitor-keys',
+            { name: 'eslint-plugin', params: '--shard=1/4' },
+            { name: 'eslint-plugin', params: '--shard=2/4' },
+            { name: 'eslint-plugin', params: '--shard=3/4' },
+            { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
-    env:
-      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
-      COLLECT_COVERAGE: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -220,24 +336,97 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      # collect coverage on the primary node version
-      # we don't collect coverage on other node versions so they run faster
-      - name: Run unit tests with coverage for ${{ matrix.package }}
+      # collect coverage on just the primary node version and on linux
+      # we don't collect coverage on the old node versions or other OSs so that they run faster
+      - name: Run unit tests with coverage for ${{ matrix.package.name }}
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx run ${{ matrix.package }}:test -- --coverage
+        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
         env:
           CI: true
-      - name: Run unit tests for ${{ matrix.package }}
+      - name: Run unit tests for ${{ matrix.package.name }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package }}
+        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
         env:
           CI: true
 
       - name: Store coverage for uploading
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ${{ matrix.package }}-coverage
+          name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
+          path: packages/${{ matrix.package.name }}/coverage/lcov.info
+          # Sadly 1 day is the minimum
+          retention-days: 1
+
+  unit_tests:
+    name: Run Unit Tests
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build, affected-for-tests]
+    if: ${{ needs['affected-for-tests'].outputs.unit_tests_packages != '[]' && needs['affected-for-tests'].outputs.unit_tests_packages != '' }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version
+        node-version: [24]
+        package: ${{ fromJson(needs['affected-for-tests'].outputs.unit_tests_packages) }}
+
+        # Packages that have no (or we don't care about their) platform-specific,
+        # runtime behavior, so skipping them on Windows to have less jobs to run.
+        exclude:
+          - os: windows-latest
+            package: ast-spec
+
+          - os: windows-latest
+            package: eslint-plugin-internal
+
+          - os: windows-latest
+            package: rule-schema-to-typescript-types
+
+          - os: windows-latest
+            package: scope-manager
+
+          - os: windows-latest
+            package: utils
+
+          - os: windows-latest
+            package: visitor-keys
+    env:
+      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
+      COLLECT_COVERAGE: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      # collect coverage on just linux
+      # we don't collect coverage on other OSs so that they run faster
+      - name: Run unit tests with coverage for ${{ matrix.package }}
+        if: matrix.os == 'ubuntu-latest'
+        run: pnpm exec nx test "$PACKAGE" -- --coverage
+        env:
+          CI: true
+          PACKAGE: ${{ matrix.package }}
+      - name: Run unit tests for ${{ matrix.package }}
+        if: matrix.os != 'ubuntu-latest'
+        run: pnpm exec nx test "$PACKAGE"
+        env:
+          CI: true
+          PACKAGE: ${{ matrix.package }}
+
+      - name: Store coverage for uploading
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ matrix.package }}-coverage-${{ strategy.job-index }}
           path: packages/${{ matrix.package }}/coverage/lcov.info
           # Sadly 1 day is the minimum
           retention-days: 1
@@ -245,19 +434,21 @@ jobs:
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected-for-tests]
+    if: ${{ needs['affected-for-tests'].outputs.project_service_packages != '[]' && needs['affected-for-tests'].outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['eslint-plugin-internal', 'typescript-estree']
+        package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -265,27 +456,30 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
-        run: pnpm exec nx test ${{ matrix.package }} --coverage=false
+        run: pnpm exec nx test "$PACKAGE" --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
+          PACKAGE: ${{ matrix.package }}
 
   upload_coverage:
     name: Upload Codecov Coverage
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [unit_tests]
+    needs: [unit_tests, plugin_unit_tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
 
       - name: Download coverage reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           path: coverage
 
       - name: Publish code coverage report
-        uses: codecov/codecov-action@v5.5.2
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/**/lcov.info

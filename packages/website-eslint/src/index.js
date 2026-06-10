@@ -8,7 +8,7 @@ This is so that esbuild can properly tree-shake and only include the necessary c
 This saves us having to mock unnecessary things and reduces our bundle size.
 */
 
-import eslintJs from '@eslint/js';
+import js from '@eslint/js';
 import * as plugin from '@typescript-eslint/eslint-plugin';
 import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
 import { analyze } from '@typescript-eslint/scope-manager';
@@ -35,7 +35,7 @@ exports.createLinter = function () {
 /** @type {Record<string, unknown>} */
 const configs = {};
 
-for (const [name, value] of Object.entries(eslintJs.configs)) {
+for (const [name, value] of Object.entries(js.configs)) {
   configs[`js/${name}`] = value;
 }
 

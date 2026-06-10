@@ -15,6 +15,7 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
+import yaml from 'yaml';
 
 import rootPackageJson from '../../../package.json';
 
@@ -26,7 +27,8 @@ interface PackageJSON {
   private?: boolean;
 }
 
-const PACKAGES_DIR = path.resolve(__dirname, '..', '..');
+const ROOT_DIR = path.resolve(__dirname, '..', '..', '..');
+const PACKAGES_DIR = path.resolve(ROOT_DIR, 'packages');
 
 const INTEGRATION_TEST_DIR = path.join(
   os.tmpdir() || os.homedir(),
@@ -107,11 +109,15 @@ export const setup = async (project: TestProject): Promise<void> => {
     ).filter(e => e != null),
   );
 
+  const PNPM_CATALOG = await getPnpmCatalog();
+
+  const PNPM_WORKSPACE_CONTENT = await getPnpmWorkspaceContent();
+
   const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
     ...tseslintPackages,
-    eslint: rootPackageJson.devDependencies.eslint,
-    typescript: rootPackageJson.devDependencies.typescript,
-    vitest: rootPackageJson.devDependencies.vitest,
+    eslint: PNPM_CATALOG.eslint,
+    typescript: PNPM_CATALOG.typescript,
+    vitest: PNPM_CATALOG.vitest,
   };
 
   const temp = await fs.mkdtemp(path.join(INTEGRATION_TEST_DIR, 'temp'), {
@@ -138,6 +144,12 @@ export const setup = async (project: TestProject): Promise<void> => {
   await fs.writeFile(path.join(temp, '.npmrc'), NPMRC_CONTENT, {
     encoding: 'utf-8',
   });
+
+  await fs.writeFile(
+    path.join(temp, 'pnpm-workspace.yaml'),
+    PNPM_WORKSPACE_CONTENT,
+    { encoding: 'utf-8' },
+  );
 
   // We install the tarballs here once so that pnpm can cache them globally.
   // This solves 2 problems:
@@ -193,6 +205,12 @@ export const setup = async (project: TestProject): Promise<void> => {
         encoding: 'utf-8',
       });
 
+      await fs.writeFile(
+        path.join(testFolder, 'pnpm-workspace.yaml'),
+        PNPM_WORKSPACE_CONTENT,
+        { encoding: 'utf-8' },
+      );
+
       const { stderr, stdout } = await execFile(
         'pnpm',
         ['install', '--no-frozen-lockfile'],
@@ -222,3 +240,43 @@ export const teardown = async (): Promise<void> => {
     await fs.rm(INTEGRATION_TEST_DIR, { recursive: true });
   }
 };
+
+interface PnpmWorkspace {
+  catalog: Record<string, string>;
+}
+
+async function getPnpmCatalog() {
+  const pnpmWorkspace = await fs.readFile(
+    path.join(ROOT_DIR, 'pnpm-workspace.yaml'),
+    { encoding: 'utf-8' },
+  );
+
+  const parsed: PnpmWorkspace = yaml.parse(pnpmWorkspace);
+
+  const expectedPackages = ['eslint', 'typescript', 'vitest'];
+
+  for (const packageName of expectedPackages) {
+    if (!(packageName in parsed.catalog)) {
+      throw new Error(`Package ${packageName} not found in pnpm catalog`);
+    }
+  }
+
+  return parsed.catalog;
+}
+
+// Using the root pnpm-workspace.yaml content but without the catalog, overrides, and packages,
+// so it contains only pnpm's settings without the monorepo-related stuff.
+async function getPnpmWorkspaceContent(): Promise<string> {
+  const pnpmWorkspace = await fs.readFile(
+    path.join(ROOT_DIR, 'pnpm-workspace.yaml'),
+    { encoding: 'utf-8' },
+  );
+
+  const parsed = yaml.parse(pnpmWorkspace) as Record<string, unknown>;
+
+  delete parsed.catalog;
+  delete parsed.overrides;
+  delete parsed.packages;
+
+  return yaml.stringify(parsed);
+}

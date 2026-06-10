@@ -1,10 +1,21 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
-import type { UnaryExpressionBase } from '../../base/UnaryExpressionBase';
+import type { BaseNode } from '../../base/BaseNode';
+import type { Expression } from '../../unions/Expression';
+
+interface UnaryExpressionBase extends BaseNode {
+  type: AST_NODE_TYPES.UnaryExpression;
+  argument: Expression;
+  operator: string;
+  /**
+   * @deprecated The `prefix` property is always `true` and is only present for historical reasons.
+   * See https://github.com/estree/estree/pull/118.
+   */
+  prefix: true;
+}
 
 interface UnaryExpressionSpecific<
   T extends string,
 > extends UnaryExpressionBase {
-  type: AST_NODE_TYPES.UnaryExpression;
   operator: T;
 }
 

@@ -76,6 +76,8 @@ export const formatTestNames: Readonly<
 };
 
 const REPLACE_REGEX = /%/g;
+
+// cSpell:ignore gnored
 // filter to not match `[iI]gnored`
 const IGNORED_FILTER = {
   match: false,

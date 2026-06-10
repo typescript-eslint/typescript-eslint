@@ -15,14 +15,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   maybe_prettier_update:
-    # Only run if it was the renovate bot that triggered the workflow (otherwise we'll create a loop)
-    if: contains('["renovate[bot]"]', github.actor) == true
+    # Only run if it was the renovate bot that opened the PR (otherwise we'll create a loop)
+    if: github.event.pull_request.user.login == 'renovate[bot]'
     name: Run prettier formatting if required
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           persist-credentials: false
@@ -32,11 +35,12 @@ jobs:
         run: |
           git diff HEAD~1 -G"prettier" --exit-code package.json && echo "prettier unchanged" || echo "::set-output name=was-changed::true"
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
         if: ${{ steps.prettier-package-check.outputs.was-changed == 'true' }}
         name: Install pnpm
         with:
           run_install: false
+          cache: true
 
       - name: Run prettier formatting if prettier was changed and commit the results
         if: ${{ steps.prettier-package-check.outputs.was-changed == 'true' }}

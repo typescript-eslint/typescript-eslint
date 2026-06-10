@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { AST_TOKEN_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule, getStringLength, nullThrows } from '../util';
 
@@ -192,7 +192,7 @@ export default createRule<Options, MessageIds>({
         );
       }
 
-      const commentLines = comment.value.split('\n');
+      const commentLines = comment.value.split(ASTUtils.LINEBREAK_MATCHER);
       return execDirectiveRegEx(
         commentDirectiveRegExMultiLine,
         commentLines[commentLines.length - 1],

@@ -29,9 +29,11 @@ import type {
   RuleTesterConfig,
   RunTests,
   SuggestionOutput,
+  TestCaseError,
   TesterConfigWithDefaults,
   ValidTestCase,
 } from './types';
+import type { AssertionOptions } from './types/AssertionOptions';
 
 import { TestFramework } from './TestFramework';
 import { ajvBuilder } from './utils/ajv';
@@ -459,6 +461,39 @@ export class RuleTester extends TestFramework {
   }
 
   /**
+   * Verifies that the assertion options are valid
+   * @throws {Error} if the options aren't the correct type
+   */
+  private verifyAssertionOptions(
+    assertionOption: AssertionOptions | undefined,
+  ): void {
+    if (assertionOption == null) {
+      return;
+    }
+
+    const dataOption = assertionOption.requireData;
+
+    if (
+      dataOption != null &&
+      typeof dataOption !== 'boolean' &&
+      dataOption !== 'error' &&
+      dataOption !== 'suggestion'
+    ) {
+      throw new Error(
+        "The assertion option `requireData` should be of type boolean | 'error' | 'suggestion'",
+      );
+    }
+
+    const locationOption = assertionOption.requireLocation;
+
+    if (locationOption != null && typeof locationOption !== 'boolean') {
+      throw new Error(
+        'The assertion option `requireLocation` should be of type boolean',
+      );
+    }
+  }
+
+  /**
    * Adds a new rule test to execute.
    */
   run<MessageIds extends string, Options extends readonly unknown[]>(
@@ -466,6 +501,8 @@ export class RuleTester extends TestFramework {
     rule: RuleModule<MessageIds, Options>,
     test: RunTests<TSUtils.NoInfer<MessageIds>, TSUtils.NoInfer<Options>>,
   ): void {
+    this.verifyAssertionOptions(test.assertionOptions);
+
     const constructor = this.constructor as typeof RuleTester;
 
     if (
@@ -577,8 +614,9 @@ export class RuleTester extends TestFramework {
                   ruleName,
                   rule,
                   // no need to pass no infer type parameter down to private methods
-                  invalid as InvalidTestCase<MessageIds, Options>,
+                  invalid,
                   seenInvalidTestCases,
+                  test.assertionOptions,
                 );
               } finally {
                 this.#runHook(invalid, 'after');
@@ -897,6 +935,7 @@ export class RuleTester extends TestFramework {
     rule: RuleModule<MessageIds, Options>,
     item: InvalidTestCase<MessageIds, Options>,
     seenInvalidTestCases: Set<string>,
+    assertionOptions: AssertionOptions = {},
   ): void {
     assert.ok(
       typeof item.code === 'string',
@@ -984,6 +1023,8 @@ export class RuleTester extends TestFramework {
       );
 
       const hasMessageOfThisRule = messages.some(m => m.ruleId === ruleName);
+
+      const { requireData = false, requireLocation = false } = assertionOptions;
 
       // console.log({ messages });
       for (let i = 0, l = item.errors.length; i < l; i++) {
@@ -1078,6 +1119,16 @@ export class RuleTester extends TestFramework {
                 rehydratedMessage,
                 `Hydrated message "${rehydratedMessage}" does not match "${message.message}"`,
               );
+            } else {
+              const requiresDataProperty =
+                requireData === true || requireData === 'error';
+              const hasPlaceholders =
+                getMessagePlaceholders(rule.meta.messages[error.messageId])
+                  .length > 0;
+              assert.ok(
+                !requiresDataProperty || !hasPlaceholders,
+                `Error should specify the 'data' property as the referenced message has placeholders.`,
+              );
             }
           } else {
             assert.fail(
@@ -1114,6 +1165,22 @@ export class RuleTester extends TestFramework {
               message.endColumn,
               error.endColumn,
               `Error endColumn should be ${error.endColumn}`,
+            );
+          }
+
+          if (requireLocation) {
+            const locationProperties: (keyof Pick<
+              TestCaseError<MessageIds>,
+              'column' | 'endColumn' | 'endLine' | 'line'
+            >)[] = ['line', 'column', 'endLine', 'endColumn'];
+
+            const missingKeys = locationProperties.filter(
+              key =>
+                !hasOwnProperty(error, key) && hasOwnProperty(message, key),
+            );
+            assert.ok(
+              missingKeys.length === 0,
+              `Error is missing expected location properties: ${missingKeys.join(', ')}`,
             );
           }
 
@@ -1210,10 +1277,13 @@ export class RuleTester extends TestFramework {
                         `${suggestionPrefix} messageId should be '${expectedSuggestion.messageId}' but got '${actualSuggestion.messageId}' instead.`,
                       );
 
+                      const rawSuggestionMessage =
+                        rule.meta.messages[expectedSuggestion.messageId];
+
                       const unsubstitutedPlaceholders =
                         getUnsubstitutedMessagePlaceholders(
                           actualSuggestion.desc,
-                          rule.meta.messages[expectedSuggestion.messageId],
+                          rawSuggestionMessage,
                           expectedSuggestion.data,
                         );
 
@@ -1234,6 +1304,16 @@ export class RuleTester extends TestFramework {
                           actualSuggestion.desc,
                           rehydratedDesc,
                           `${suggestionPrefix} Hydrated test desc "${rehydratedDesc}" does not match received desc "${actualSuggestion.desc}".`,
+                        );
+                      } else {
+                        const requiresDataProperty =
+                          requireData === true || requireData === 'suggestion';
+                        const hasPlaceholders =
+                          getMessagePlaceholders(rawSuggestionMessage).length >
+                          0;
+                        assert.ok(
+                          !requiresDataProperty || !hasPlaceholders,
+                          `${suggestionPrefix} Suggestion should specify the 'data' property as the referenced message has placeholders.`,
                         );
                       }
                     } else if (hasOwnProperty(expectedSuggestion, 'data')) {

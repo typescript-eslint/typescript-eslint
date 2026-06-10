@@ -2,16 +2,6 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-this-alias';
 
-const idError = {
-  messageId: 'thisAssignment' as const,
-};
-const destructureError = {
-  messageId: 'thisDestructure' as const,
-};
-const arrayDestructureError = {
-  messageId: 'thisDestructure' as const,
-};
-
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-this-alias', rule, {
@@ -50,7 +40,7 @@ declare module 'foo' {
   invalid: [
     {
       code: 'const self = this;',
-      errors: [idError],
+      errors: [{ messageId: 'thisAssignment' }],
       options: [
         {
           allowDestructuring: true,
@@ -59,18 +49,18 @@ declare module 'foo' {
     },
     {
       code: 'const self = this;',
-      errors: [idError],
+      errors: [{ messageId: 'thisAssignment' }],
     },
     {
       code: `
 let that;
 that = this;
       `,
-      errors: [idError],
+      errors: [{ messageId: 'thisAssignment' }],
     },
     {
       code: 'const { props, state } = this;',
-      errors: [destructureError],
+      errors: [{ messageId: 'thisDestructure' }],
       options: [
         {
           allowDestructuring: false,
@@ -88,7 +78,11 @@ const testLambda = () => {
   const inLambda = this;
 };
       `,
-      errors: [idError, idError, idError],
+      errors: [
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisAssignment' },
+      ],
     },
     {
       code: `
@@ -112,13 +106,13 @@ class TestClass {
 }
       `,
       errors: [
-        idError,
-        idError,
-        idError,
-        destructureError,
-        destructureError,
-        arrayDestructureError,
-        arrayDestructureError,
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisAssignment' },
+        { messageId: 'thisDestructure' },
+        { messageId: 'thisDestructure' },
+        { messageId: 'thisDestructure' },
+        { messageId: 'thisDestructure' },
       ],
       options: [
         {

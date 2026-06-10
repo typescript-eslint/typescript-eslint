@@ -10,7 +10,6 @@ import type { PlaygroundSystem, RegisterFile } from '../linter/types';
 import type { RuleDetails } from '../types';
 import type { CommonEditorProps } from './types';
 
-import rootPackageJson from '../../../../../package.json';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createEventsBinder } from '../lib/createEventsBinder';
 import { createFileSystem } from '../linter/bridge';
@@ -57,6 +56,7 @@ export const useSandboxServices = (
             domID: editorEmbedId,
             monacoSettings: {
               autoIndent: 'full',
+              fixedOverflowWidgets: true,
               fontSize: 13,
               formatOnPaste: true,
               formatOnType: true,
@@ -132,7 +132,7 @@ export const useSandboxServices = (
             ]),
           ]
             .filter(item =>
-              semverSatisfies(item, rootPackageJson.devDependencies.typescript),
+              semverSatisfies(item, process.env.SUPPORTED_TYPESCRIPT_VERSIONS),
             )
             .sort((a, b) => b.localeCompare(a)),
         );

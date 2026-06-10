@@ -85,7 +85,7 @@ export async function insertNewRuleReferences(
               lang: 'js',
               meta: 'title="eslint.config.mjs"',
               type: 'code',
-              value: `export default tseslint.config(${eslintConfig});`,
+              value: `export default defineConfig(${eslintConfig});`,
             },
           ],
           name: 'TabItem',

@@ -51,6 +51,103 @@ describe(schemaToTypes, () => {
     `);
   });
 
+  it('returns a multiline comment when the schema description contains CRLF line terminators', () => {
+    const actual = schemaToTypes([
+      {
+        description: 'My schema items.\r\nMore details.\r\nEven more details.',
+        items: { type: 'string' },
+        type: 'array',
+      },
+    ]);
+
+    expect(actual).toMatchInlineSnapshot(`
+      "type Options = [/**
+       * My schema items.
+       * More details.
+       * Even more details.
+       */
+      string[]]"
+    `);
+  });
+
+  it('returns a multiline comment when the schema description contains CR line terminators', () => {
+    const actual = schemaToTypes([
+      {
+        description: 'My schema items.\rMore details.\rEven more details.',
+        items: { type: 'string' },
+        type: 'array',
+      },
+    ]);
+
+    expect(actual).toMatchInlineSnapshot(`
+      "type Options = [/**
+       * My schema items.
+       * More details.
+       * Even more details.
+       */
+      string[]]"
+    `);
+  });
+
+  it('returns a multiline comment when the schema description contains LF line terminators', () => {
+    const actual = schemaToTypes([
+      {
+        description: 'My schema items.\nMore details.\nEven more details.',
+        items: { type: 'string' },
+        type: 'array',
+      },
+    ]);
+
+    expect(actual).toMatchInlineSnapshot(`
+      "type Options = [/**
+       * My schema items.
+       * More details.
+       * Even more details.
+       */
+      string[]]"
+    `);
+  });
+
+  it('returns a multiline comment when the schema description contains LS line terminators', () => {
+    const actual = schemaToTypes([
+      {
+        description:
+          'My schema items.\u2028More details.\u2028Even more details.',
+        items: { type: 'string' },
+        type: 'array',
+      },
+    ]);
+
+    expect(actual).toMatchInlineSnapshot(`
+      "type Options = [/**
+       * My schema items.
+       * More details.
+       * Even more details.
+       */
+      string[]]"
+    `);
+  });
+
+  it('returns a multiline comment when the schema description contains PS line terminators', () => {
+    const actual = schemaToTypes([
+      {
+        description:
+          'My schema items.\u2029More details.\u2029Even more details.',
+        items: { type: 'string' },
+        type: 'array',
+      },
+    ]);
+
+    expect(actual).toMatchInlineSnapshot(`
+      "type Options = [/**
+       * My schema items.
+       * More details.
+       * Even more details.
+       */
+      string[]]"
+    `);
+  });
+
   it('factors in one $ref property when a $defs property exists at the top level', () => {
     const actual = schemaToTypes([
       {

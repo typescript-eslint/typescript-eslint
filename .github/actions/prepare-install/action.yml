@@ -28,15 +28,18 @@ runs:
     - name: echo github.ref
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-      run: echo ${{ github.ref }}
+      run: echo "$GITHUB_REF"
 
     - name: Install pnpm
-      uses: pnpm/action-setup@v4
+      uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      with:
+        cache: true
+        package_json_file: ${{ inputs.working-directory }}/package.json
+        cache_dependency_path: ${{ inputs.working-directory }}/pnpm-lock.yaml
 
     - name: Use Node.js ${{ inputs.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
       with:
-        cache: 'pnpm'
         node-version: ${{ inputs.node-version }}
         registry-url: ${{ inputs.registry-url }}
 

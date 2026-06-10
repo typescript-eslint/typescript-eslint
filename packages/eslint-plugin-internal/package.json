@@ -20,7 +20,8 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@prettier/sync": "^0.6.1",
@@ -28,13 +29,14 @@
     "@typescript-eslint/scope-manager": "workspace:*",
     "@typescript-eslint/type-utils": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
-    "prettier": "3.8.0"
+    "prettier": "catalog:"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "*",
-    "rimraf": "*",
-    "vitest": "^4.0.18"
+    "@typescript/native-preview": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "rimraf": "catalog:",
+    "vitest": "catalog:"
   },
   "nx": {
     "name": "eslint-plugin-internal",
@@ -44,7 +46,8 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }

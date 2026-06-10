@@ -335,6 +335,68 @@ if (false) {
       options: [{ 'ts-expect-error': true }],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- intentionally testing a CRLF(`\r\n`) in the comment
+      code: '/* not on the last line\r\n * @ts-expect-error */',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
+        },
+      ],
+      options: [{ 'ts-expect-error': true }],
+    },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- intentionally testing a CR(`\r`) in the comment
+      code: '/* not on the last line\r * @ts-expect-error */',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
+        },
+      ],
+      options: [{ 'ts-expect-error': true }],
+    },
+    {
+      code: '/* not on the last line\n * @ts-expect-error */',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
+        },
+      ],
+      options: [{ 'ts-expect-error': true }],
+    },
+    {
+      code: '/* not on the last line\u2028 * @ts-expect-error */',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
+        },
+      ],
+      options: [{ 'ts-expect-error': true }],
+    },
+    {
+      code: '/* not on the last line\u2029 * @ts-expect-error */',
+      errors: [
+        {
+          column: 1,
+          data: { directive: 'expect-error' },
+          line: 1,
+          messageId: 'tsDirectiveComment',
+        },
+      ],
+      options: [{ 'ts-expect-error': true }],
+    },
+    {
       code: '// @ts-expect-error',
       errors: [
         {

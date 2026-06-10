@@ -2,6 +2,8 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
+import type { TypeOrValueSpecifier } from '../util';
+
 import {
   createRule,
   getParserServices,
@@ -15,12 +17,15 @@ import {
   isReadonlyErrorLike,
   isStaticMemberAccessOfValue,
   skipChainExpression,
+  typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
 
 export type Options = [
   {
+    allow?: TypeOrValueSpecifier[];
     allowEmptyReject?: boolean;
     allowThrowingAny?: boolean;
     allowThrowingUnknown?: boolean;
@@ -45,6 +50,11 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          allow: {
+            ...typeOrValueSpecifiersSchema,
+            description:
+              'Type specifiers that can be used as Promise rejection reasons.',
+          },
           allowEmptyReject: {
             type: 'boolean',
             description:
@@ -66,6 +76,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      allow: [],
       allowEmptyReject: false,
       allowThrowingAny: false,
       allowThrowingUnknown: false,
@@ -78,6 +89,10 @@ export default createRule<Options, MessageIds>({
       const argument = callExpression.arguments.at(0);
       if (argument) {
         const type = services.getTypeAtLocation(argument);
+
+        if (typeMatchesSomeSpecifier(type, options.allow, services.program)) {
+          return;
+        }
 
         if (options.allowThrowingAny && isTypeAnyType(type)) {
           return;

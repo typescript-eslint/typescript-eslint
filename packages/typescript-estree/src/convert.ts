@@ -92,6 +92,16 @@ export class Converter {
     checkSyntaxError(node, parent, this.allowPattern);
   }
 
+  #isValidEscape(text: string): boolean {
+    if (/\\[xu]/.test(text)) {
+      const hasInvalidUnicodeEscape = /\\u(?![0-9a-fA-F]{4}|{)/.test(text);
+      const hasInvalidHexEscape = /\\x(?![0-9a-fA-F]{2})/.test(text);
+
+      return !hasInvalidUnicodeEscape && !hasInvalidHexEscape;
+    }
+    return true;
+  }
+
   #throwError(
     node: number | ts.Node | TSESTree.Range,
     message: string,
@@ -1348,7 +1358,12 @@ export class Converter {
 
       // Template Literals
 
-      case SyntaxKind.NoSubstitutionTemplateLiteral:
+      case SyntaxKind.NoSubstitutionTemplateLiteral: {
+        const rawText = this.ast.text.slice(
+          node.getStart(this.ast) + 1,
+          node.end - 1,
+        );
+
         return this.createNode<TSESTree.TemplateLiteral>(node, {
           type: AST_NODE_TYPES.TemplateLiteral,
           expressions: [],
@@ -1357,15 +1372,17 @@ export class Converter {
               type: AST_NODE_TYPES.TemplateElement,
               tail: true,
               value: {
-                cooked: node.text,
-                raw: this.ast.text.slice(
-                  node.getStart(this.ast) + 1,
-                  node.end - 1,
-                ),
+                cooked:
+                  node.parent.kind === SyntaxKind.TaggedTemplateExpression &&
+                  !this.#isValidEscape(rawText)
+                    ? null
+                    : node.text,
+                raw: rawText,
               },
             }),
           ],
         });
+      }
 
       case SyntaxKind.TemplateExpression: {
         const result = this.createNode<TSESTree.TemplateLiteral>(node, {
@@ -1398,15 +1415,23 @@ export class Converter {
       case SyntaxKind.TemplateMiddle:
       case SyntaxKind.TemplateTail: {
         const tail = node.kind === SyntaxKind.TemplateTail;
+        const rawText = this.ast.text.slice(
+          node.getStart(this.ast) + 1,
+          node.end - (tail ? 1 : 2),
+        );
+        const isTagged =
+          node.kind === SyntaxKind.TemplateHead
+            ? node.parent.parent.kind === SyntaxKind.TaggedTemplateExpression
+            : node.parent.parent.parent.kind ===
+              SyntaxKind.TaggedTemplateExpression;
+
         return this.createNode<TSESTree.TemplateElement>(node, {
           type: AST_NODE_TYPES.TemplateElement,
           tail,
           value: {
-            cooked: node.text,
-            raw: this.ast.text.slice(
-              node.getStart(this.ast) + 1,
-              node.end - (tail ? 1 : 2),
-            ),
+            cooked:
+              isTagged && !this.#isValidEscape(rawText) ? null : node.text,
+            raw: rawText,
           },
         });
       }
@@ -1715,11 +1740,21 @@ export class Converter {
             prefix: node.kind === SyntaxKind.PrefixUnaryExpression,
           });
         }
+        const isPrefixUnaryExpression =
+          node.kind === SyntaxKind.PrefixUnaryExpression;
+        if (!isPrefixUnaryExpression) {
+          this.#throwError(
+            node,
+            `Unexpected PrefixUnaryExpression with operator ${operator}`,
+          );
+        }
         return this.createNode<TSESTree.UnaryExpression>(node, {
           type: AST_NODE_TYPES.UnaryExpression,
           argument: this.convertChild(node.operand),
           operator,
-          prefix: node.kind === SyntaxKind.PrefixUnaryExpression,
+          // Guaranteed to be true in a valid AST (and asserted above) but
+          // technically could be false at runtime with allowInvalidAST: true.
+          prefix: isPrefixUnaryExpression as true,
         });
       }
 
@@ -1899,7 +1934,7 @@ export class Converter {
           type: AST_NODE_TYPES.MetaProperty,
           meta: this.createNode<TSESTree.Identifier>(
             // TODO: do we really want to convert it to Token?
-            node.getFirstToken()! as ts.Token<typeof node.keywordToken>,
+            node.getFirstToken()!,
             {
               type: AST_NODE_TYPES.Identifier,
               decorators: [],
@@ -2675,12 +2710,9 @@ export class Converter {
         if (node.literal.kind === SyntaxKind.NullKeyword) {
           // 4.0 started nesting null types inside a LiteralType node
           // but our AST is designed around the old way of null being a keyword
-          return this.createNode<TSESTree.TSNullKeyword>(
-            node.literal as ts.NullLiteral,
-            {
-              type: AST_NODE_TYPES.TSNullKeyword,
-            },
-          );
+          return this.createNode<TSESTree.TSNullKeyword>(node.literal, {
+            type: AST_NODE_TYPES.TSNullKeyword,
+          });
         }
 
         return this.createNode<TSESTree.TSLiteralType>(node, {
@@ -2971,15 +3003,12 @@ export class Converter {
       result.loc = getLocFor(result.range, this.ast);
 
       if (declarationIsDefault) {
-        return this.createNode<TSESTree.ExportDefaultDeclaration>(
-          node as Exclude<typeof node, ts.ImportEqualsDeclaration>,
-          {
-            type: AST_NODE_TYPES.ExportDefaultDeclaration,
-            range: [exportKeyword.getStart(this.ast), result.range[1]],
-            declaration: result as TSESTree.DefaultExportDeclarations,
-            exportKind: 'value',
-          },
-        );
+        return this.createNode<TSESTree.ExportDefaultDeclaration>(node, {
+          type: AST_NODE_TYPES.ExportDefaultDeclaration,
+          range: [exportKeyword.getStart(this.ast), result.range[1]],
+          declaration: result as TSESTree.DefaultExportDeclarations,
+          exportKind: 'value',
+        });
       }
       const isType =
         result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||

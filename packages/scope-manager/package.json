@@ -1,10 +1,10 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.56.1",
+  "version": "8.61.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
-    "!*.tsbuildinfo",
+    "!**/*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
@@ -44,7 +44,8 @@
     "generate-lib": "pnpm -w exec nx generate-lib repo",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@typescript-eslint/types": "workspace:*",
@@ -52,13 +53,14 @@
   },
   "devDependencies": {
     "@typescript-eslint/typescript-estree": "workspace:*",
-    "@vitest/coverage-v8": "^4.0.18",
-    "@vitest/pretty-format": "^4.0.18",
-    "eslint": "*",
-    "glob": "*",
-    "rimraf": "*",
-    "typescript": "*",
-    "vitest": "^4.0.18"
+    "@typescript/native-preview": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "@vitest/pretty-format": "catalog:",
+    "eslint": "catalog:",
+    "glob": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "funding": {
     "type": "opencollective",
@@ -73,7 +75,8 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }

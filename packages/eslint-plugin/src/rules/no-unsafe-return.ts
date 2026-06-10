@@ -53,6 +53,11 @@ export default createRule({
       returnNode: TSESTree.Node,
       reportingNode: TSESTree.Node = returnNode,
     ): void {
+      const functionNode = getParentFunctionNode(returnNode);
+      /* istanbul ignore if */ if (!functionNode) {
+        return;
+      }
+
       const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
       const type = checker.getTypeAtLocation(tsNode);
 
@@ -62,13 +67,13 @@ export default createRule({
         services.program,
         tsNode,
       );
-      const functionNode = getParentFunctionNode(returnNode);
-      /* istanbul ignore if */ if (!functionNode) {
-        return;
-      }
 
       // function has an explicit return type, so ensure it's a safe return
-      const returnNodeType = getConstrainedTypeAtLocation(services, returnNode);
+      const returnNodeType = services.getTypeAtLocation(returnNode);
+      const constrainedReturnNodeType = getConstrainedTypeAtLocation(
+        services,
+        returnNode,
+      );
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
 
       // function expressions will not have their return type modified based on receiver typing
@@ -149,7 +154,9 @@ export default createRule({
         }
 
         let messageId: 'unsafeReturn' | 'unsafeReturnThis' = 'unsafeReturn';
-        const isErrorType = tsutils.isIntrinsicErrorType(returnNodeType);
+        const isErrorType = tsutils.isIntrinsicErrorType(
+          constrainedReturnNodeType,
+        );
 
         if (!isNoImplicitThis) {
           // `return this`
