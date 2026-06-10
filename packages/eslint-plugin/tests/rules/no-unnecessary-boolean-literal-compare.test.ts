@@ -403,7 +403,7 @@ function test(a?: boolean): boolean {
         declare const condition: boolean;
         declare const x: boolean | undefined;
 
-        const value = condition ? x ?? false : false;
+        const value = condition ? (x ?? false) : false;
       `,
     },
     {
@@ -538,6 +538,24 @@ function test(a?: boolean): boolean {
         declare const x: boolean | undefined;
 
         const value: boolean = !x;
+      `,
+    },
+    {
+      code: `
+        declare const x: boolean | undefined;
+
+        const value: boolean = !(x !== true);
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueNegated',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const x: boolean | undefined;
+
+        const value: boolean = x ?? false;
       `,
     },
     {

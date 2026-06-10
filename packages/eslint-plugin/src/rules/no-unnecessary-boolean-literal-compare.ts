@@ -8,6 +8,7 @@ import {
   createRule,
   getConstraintInfo,
   getParserServices,
+  getWrappingFixer,
   isConditionalTest,
   isStrongPrecedenceNode,
 } from '../util';
@@ -235,22 +236,6 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function getNullishCoalescedFalseText(
-      comparison: BooleanComparisonWithTypeInformation,
-      mutatedNode: TSESTree.Node,
-    ): string {
-      const expressionText = context.sourceCode.getText(comparison.expression);
-      const coalescedText = `${
-        isStrongPrecedenceNode(comparison.expression)
-          ? expressionText
-          : `(${expressionText})`
-      } ?? false`;
-
-      return mutatedNode.parent?.type === AST_NODE_TYPES.LogicalExpression
-        ? `(${coalescedText})`
-        : coalescedText;
-    }
-
     return {
       BinaryExpression(node): void {
         const comparison = getBooleanComparison(node);
@@ -296,18 +281,21 @@ export default createRule<Options, MessageIds>({
 
             const mutatedNode = isUnaryNegation ? node.parent : node;
 
-            const isBareExpressionFix = shouldNegate !== isUnaryNegation;
+            const fixWouldReturnExpressionDirectly =
+              shouldNegate !== isUnaryNegation;
 
             if (
               comparison.expressionIsNullableBoolean &&
               comparison.literalBooleanInComparison &&
-              isBareExpressionFix &&
+              fixWouldReturnExpressionDirectly &&
               !isConditionalTest(node)
             ) {
-              yield fixer.replaceText(
-                mutatedNode,
-                getNullishCoalescedFalseText(comparison, mutatedNode),
-              );
+              yield getWrappingFixer({
+                node: mutatedNode,
+                innerNode: comparison.expression,
+                sourceCode: context.sourceCode,
+                wrap: code => `${code} ?? false`,
+              })(fixer);
               return;
             }
 
