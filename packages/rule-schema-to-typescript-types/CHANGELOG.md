@@ -1,3 +1,17 @@
+## 8.61.0 (2026-06-08)
+
+### 🩹 Fixes
+
+- **rule-schema-to-typescript-types:** respect ECMAScript line terminators ([#12374](https://github.com/typescript-eslint/typescript-eslint/pull/12374))
+
+### ❤️ Thank You
+
+- lumir
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.61.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.60.1 (2026-06-01)
 
 This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
