@@ -8,6 +8,10 @@ body:
   - type: markdown
     attributes:
       value: |
+        If you used AI while preparing this issue, please read and follow our [AI Contribution Policy](https://typescript-eslint.io/contributing/ai-policy/).
+  - type: markdown
+    attributes:
+      value: |
         An isolated reproduction is one we can clone locally and get running without other projects or existing knowledge of your project. If we cannot reproduce your bug quickly with the provided steps, we may not be able to take action on this issue. Help us to help you!
   - type: checkboxes
     id: preliminary-checks

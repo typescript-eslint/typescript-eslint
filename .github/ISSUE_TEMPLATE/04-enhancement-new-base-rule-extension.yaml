@@ -7,6 +7,10 @@ labels:
   - triage
 body:
   - type: markdown
+    attributes:
+      value: |
+        If you used AI while preparing this issue, please read and follow our [AI Contribution Policy](https://typescript-eslint.io/contributing/ai-policy/).
+  - type: markdown
     id: preamble
     attributes:
       value: |
