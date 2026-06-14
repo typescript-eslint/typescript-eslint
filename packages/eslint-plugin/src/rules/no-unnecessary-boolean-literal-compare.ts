@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getConstraintInfo,
+  getMovedNodeCode,
   getParserServices,
   isStrongPrecedenceNode,
 } from '../util';
@@ -278,11 +279,13 @@ export default createRule<Options, MessageIds>({
               comparison.negated !== comparison.literalBooleanInComparison;
 
             const mutatedNode = isUnaryNegation ? node.parent : node;
+            const replacementText = getMovedNodeCode({
+              destinationNode: mutatedNode,
+              nodeToMove: comparison.expression,
+              sourceCode: context.sourceCode,
+            });
 
-            yield fixer.replaceText(
-              mutatedNode,
-              context.sourceCode.getText(comparison.expression),
-            );
+            yield fixer.replaceText(mutatedNode, replacementText);
 
             // if `isUnaryNegation === literalBooleanInComparison === !negated` is true - negate the expression
             if (shouldNegate === isUnaryNegation) {

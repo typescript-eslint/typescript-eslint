@@ -441,6 +441,27 @@ function test(a?: boolean): boolean {
     },
     {
       code: `
+        declare const a: boolean;
+        declare const b: boolean;
+        declare const c: boolean;
+        if ((a || b) === true && c) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const a: boolean;
+        declare const b: boolean;
+        declare const c: boolean;
+        if ((a || b) && c) {
+        }
+      `,
+    },
+    {
+      code: `
         declare const varBoolean: boolean;
         if (!(varBoolean === false)) {
         }
