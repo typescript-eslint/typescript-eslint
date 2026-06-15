@@ -1092,6 +1092,18 @@ Promise.reject(3).finally(async () => {});
 const f = 'finally';
 Promise.reject(3)[f](async () => {});
     `,
+    `
+using a = {
+  [Symbol.dispose]() {},
+};
+    `,
+    `
+async function test() {
+  await using b = {
+    async [Symbol.asyncDispose]() {},
+  };
+}
+    `,
   ],
 
   invalid: [
@@ -2656,6 +2668,48 @@ const a: A = {
           endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+interface Disposable {
+  [Symbol.dispose](): void;
+}
+
+const a = {
+  async [Symbol.dispose]() {},
+};
+const b: Disposable = a;
+      `,
+      errors: [
+        {
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+using c = {
+  async [Symbol.dispose]() {},
+};
+      `,
+      errors: [
+        {
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+const d = {
+  async [Symbol.dispose]() {},
+};
+using e = d;
+      `,
+      errors: [
+        {
+          messageId: 'voidReturnVariable',
         },
       ],
     },
