@@ -4,6 +4,8 @@
   display: flex;
   flex-direction: column;
   max-width: var(--square-size);
+  display: grid;
+  grid-template-rows: var(--square-size) auto 20px;
 }
 
 .profilePhoto {
