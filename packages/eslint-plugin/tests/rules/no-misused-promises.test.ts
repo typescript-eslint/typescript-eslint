@@ -1104,6 +1104,11 @@ async function test() {
   };
 }
     `,
+    `
+using c = {
+  async [Symbol.asyncDispose]() {},
+};
+    `,
   ],
 
   invalid: [
