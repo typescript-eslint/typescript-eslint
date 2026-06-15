@@ -101,7 +101,7 @@
   },
   "packages/eslint-plugin/tests/rules/consistent-indexed-object-style.test.ts": {
     "eslint-plugin/require-test-error-positions": {
-      "count": 49
+      "count": 54
     }
   },
   "packages/eslint-plugin/tests/rules/consistent-type-assertions.test.ts": {
