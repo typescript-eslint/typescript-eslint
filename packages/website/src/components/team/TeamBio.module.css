@@ -1,8 +1,8 @@
 .teamBio {
   --square-size: 9rem;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: var(--square-size) auto 20px;
   max-width: var(--square-size);
 }
 
