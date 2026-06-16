@@ -1,3 +1,25 @@
+## 8.61.1 (2026-06-15)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-template-expression] respect ECMAScript line terminators ([#12388](https://github.com/typescript-eslint/typescript-eslint/pull/12388))
+- **eslint-plugin:** [no-unnecessary-boolean-literal-compare] fix precedence bug in autofix ([#12413](https://github.com/typescript-eslint/typescript-eslint/pull/12413))
+- **eslint-plugin:** [no-unnecessary-type-assertion] wrap object literal in parens when removing TSTypeAssertion in arrow body ([#12394](https://github.com/typescript-eslint/typescript-eslint/pull/12394), [#12393](https://github.com/typescript-eslint/typescript-eslint/issues/12393))
+- **eslint-plugin:** [no-unnecessary-type-assertion] avoid false positive for template literal expressions ([#12281](https://github.com/typescript-eslint/typescript-eslint/pull/12281))
+- **eslint-plugin:** [consistent-indexed-object-style] do not remove comments when fixing ([#12396](https://github.com/typescript-eslint/typescript-eslint/pull/12396), [#10577](https://github.com/typescript-eslint/typescript-eslint/issues/10577))
+
+### ❤️ Thank You
+
+- Anas @anasm266
+- Deftera @Deftera186
+- Kirk Waiblinger @kirkwaiblinger
+- lumir
+- Sarath Francis @sarathfrancis90
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.61.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.61.0 (2026-06-08)
 
 ### 🚀 Features

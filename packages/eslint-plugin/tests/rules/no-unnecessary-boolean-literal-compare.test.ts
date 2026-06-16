@@ -950,5 +950,24 @@ function foo(): boolean {}
         },
       ],
     },
+    {
+      code: `
+declare const a: boolean;
+declare const b: boolean;
+declare const c: boolean;
+(a || b) === true && c;
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+declare const a: boolean;
+declare const b: boolean;
+declare const c: boolean;
+(a || b) && c;
+      `,
+    },
   ],
 });

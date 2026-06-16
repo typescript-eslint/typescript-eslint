@@ -345,6 +345,13 @@ function bar(items: string[]) {
 declare const myString: 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
+    {
+      code: `
+declare const myString: 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
 declare const myString: 'foo';
@@ -353,6 +360,16 @@ const templateLiteral = <const>\`\${myString}-somethingElse\`;
     `
 const myString = 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12276
+    `
+type ValuePath = 'values' | \`values.\${string}\`;
+
+declare function apply(paths: ValuePath[]): void;
+
+export function update(ids: string[]) {
+  apply(ids.map(id => \`values.\${id}\` as ValuePath));
+}
     `,
     'let a = `a` as const;',
     {
@@ -2388,6 +2405,24 @@ declare function update<T extends string>(value: T): void;
 update('hi');
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12276
+    {
+      code: `
+declare function fn(param: string): void;
+declare const name_: string;
+fn(\`hello \${name_}\` as string);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare function fn(param: string): void;
+declare const name_: string;
+fn(\`hello \${name_}\`);
+      `,
+    },
     {
       code: `
 declare function fn(x: string[]): void;
@@ -2625,6 +2660,51 @@ fn1(() => {
   fn2('hi');
 });
       `,
+    },
+    {
+      code: '[].map(() => <{ a: false; b: false }>{ a: false, b: false });',
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `[].map(() => ({ a: false, b: false }));`,
+    },
+    {
+      code: noFormat`[].map(() => /* 1 */ <{ a: false; b: false }> /* 2 */ { a: false, b: false } /* 3 */);`,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `[].map(() => /* 1 */ ( /* 2 */ { a: false, b: false }) /* 3 */);`,
+    },
+    {
+      code: noFormat`[].map(() => <{ a: false; b: false }>({ a: false, b: false }));`,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `[].map(() => ({ a: false, b: false }));`,
+    },
+    {
+      code: noFormat`[].map(() => (<{ a: false; b: false }>{ a: false, b: false }));`,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `[].map(() => ({ a: false, b: false }));`,
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' };",
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `({ a: 'foo' });`,
     },
   ],
 });

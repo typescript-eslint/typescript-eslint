@@ -8,9 +8,9 @@ import {
   createRule,
   getConstraintInfo,
   getParserServices,
-  getWrappingFixer,
   isConditionalTest,
   isStrongPrecedenceNode,
+  isWeakPrecedenceParent,
 } from '../util';
 
 export type MessageIds =
@@ -31,7 +31,7 @@ export type Options = [
 
 interface BooleanComparison {
   expression: TSESTree.Expression | TSESTree.PrivateIdentifier;
-  literalBooleanInComparison: boolean;
+  booleanLiteral: 'false' | 'true';
   negated: boolean;
 }
 
@@ -217,12 +217,12 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
-        const { value: literalBooleanInComparison } = against;
+        const booleanLiteral = against.value ? 'true' : 'false';
         const negated = !comparisonType.isPositive;
 
         return {
+          booleanLiteral,
           expression,
-          literalBooleanInComparison,
           negated,
         };
       }
@@ -245,13 +245,13 @@ export default createRule<Options, MessageIds>({
 
         if (comparison.expressionIsNullableBoolean) {
           if (
-            comparison.literalBooleanInComparison &&
+            comparison.booleanLiteral === 'true' &&
             options.allowComparingNullableBooleansToTrue
           ) {
             return;
           }
           if (
-            !comparison.literalBooleanInComparison &&
+            comparison.booleanLiteral === 'false' &&
             options.allowComparingNullableBooleansToFalse
           ) {
             return;
@@ -261,7 +261,7 @@ export default createRule<Options, MessageIds>({
         context.report({
           node,
           messageId: comparison.expressionIsNullableBoolean
-            ? comparison.literalBooleanInComparison
+            ? comparison.booleanLiteral === 'true'
               ? comparison.negated
                 ? 'comparingNullableToTrueNegated'
                 : 'comparingNullableToTrueDirect'
@@ -269,61 +269,66 @@ export default createRule<Options, MessageIds>({
             : comparison.negated
               ? 'negated'
               : 'direct',
-          *fix(fixer) {
-            // 1. isUnaryNegation - parent negation
-            // 2. literalBooleanInComparison - is compared to literal boolean
-            // 3. negated - is expression negated
+          fix(fixer) {
+            const isWrappedInUnaryNegation = nodeIsUnaryNegation(node.parent);
+            const mutatedNode = isWrappedInUnaryNegation ? node.parent : node;
 
-            const isUnaryNegation = nodeIsUnaryNegation(node.parent);
-
-            const shouldNegate =
-              comparison.negated !== comparison.literalBooleanInComparison;
-
-            const mutatedNode = isUnaryNegation ? node.parent : node;
-
-            const fixWouldReturnExpressionDirectly =
-              shouldNegate !== isUnaryNegation;
-
-            if (
-              comparison.expressionIsNullableBoolean &&
-              comparison.literalBooleanInComparison &&
-              fixWouldReturnExpressionDirectly &&
-              !isConditionalTest(node)
-            ) {
-              yield getWrappingFixer({
-                node: mutatedNode,
-                innerNode: comparison.expression,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} ?? false`,
-              })(fixer);
-              return;
-            }
-
-            yield fixer.replaceText(
-              mutatedNode,
-              context.sourceCode.getText(comparison.expression),
+            // Whether the truth table of the overall expression being replaced
+            // is negated, _ignoring the nullish cases_.
+            const isOverallNegated = booleanXor(
+              isWrappedInUnaryNegation,
+              comparison.negated,
+              comparison.booleanLiteral === 'false',
             );
 
-            // if `isUnaryNegation === literalBooleanInComparison === !negated` is true - negate the expression
-            if (shouldNegate === isUnaryNegation) {
-              yield fixer.insertTextBefore(mutatedNode, '!');
+            // we'll build up the replacement text from the compared expression outwards.
+            let replacementText = context.sourceCode.getText(
+              comparison.expression,
+            );
+            let mayNeedParentheses = !isStrongPrecedenceNode(
+              comparison.expression,
+            );
 
-              // if the expression `exp` is not a strong precedence node, wrap it in parentheses
-              if (!isStrongPrecedenceNode(comparison.expression)) {
-                yield fixer.insertTextBefore(mutatedNode, '(');
-                yield fixer.insertTextAfter(mutatedNode, ')');
+            const fixWouldReturnExpressionDirectly =
+              !isOverallNegated && comparison.expressionIsNullableBoolean;
+
+            if (
+              fixWouldReturnExpressionDirectly &&
+              !isConditionalTest(mutatedNode)
+            ) {
+              if (mayNeedParentheses) {
+                replacementText = parenthesize(replacementText);
+              }
+              replacementText = `${replacementText} ?? false`;
+              mayNeedParentheses = true;
+            } else {
+              // In maybeNullish === false, nullish values have the same truth table
+              // as `true`.
+              if (
+                comparison.expressionIsNullableBoolean &&
+                comparison.booleanLiteral === 'false'
+              ) {
+                if (mayNeedParentheses) {
+                  replacementText = parenthesize(replacementText);
+                }
+                replacementText = `${replacementText} ?? true`;
+                mayNeedParentheses = true;
+              }
+
+              if (isOverallNegated) {
+                if (mayNeedParentheses) {
+                  replacementText = parenthesize(replacementText);
+                }
+                replacementText = `!${replacementText}`;
+                mayNeedParentheses = false;
               }
             }
 
-            // if the expression `exp` is nullable, and we're not comparing to `true`, insert `?? true`
-            if (
-              comparison.expressionIsNullableBoolean &&
-              !comparison.literalBooleanInComparison
-            ) {
-              // provide the default `true`
-              yield fixer.insertTextBefore(mutatedNode, '(');
-              yield fixer.insertTextAfter(mutatedNode, ' ?? true)');
+            if (mayNeedParentheses && isWeakPrecedenceParent(mutatedNode)) {
+              replacementText = parenthesize(replacementText);
             }
+
+            return fixer.replaceText(mutatedNode, replacementText);
           },
         });
       },
@@ -365,4 +370,13 @@ function getEqualsKind(operator: string): EqualsKind | undefined {
     default:
       return undefined;
   }
+}
+
+function booleanXor(arg0: boolean, ...args: boolean[]) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-conversion
+  return args.reduce((acc, curr) => acc !== Boolean(curr), Boolean(arg0));
+}
+
+function parenthesize(text: string) {
+  return `(${text})`;
 }
