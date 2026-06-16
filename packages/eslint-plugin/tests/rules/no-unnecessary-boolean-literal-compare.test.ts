@@ -471,6 +471,26 @@ function test(a?: boolean): boolean {
     {
       code: `
         declare const x: boolean | undefined;
+        declare const other: boolean;
+
+        const value: boolean = (x && other) === false;
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToFalse',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+      output: `
+        declare const x: boolean | undefined;
+        declare const other: boolean;
+
+        const value: boolean = !((x && other) ?? true);
+      `,
+    },
+    {
+      code: `
+        declare const x: boolean | undefined;
 
         const value: boolean = true === x;
       `,
