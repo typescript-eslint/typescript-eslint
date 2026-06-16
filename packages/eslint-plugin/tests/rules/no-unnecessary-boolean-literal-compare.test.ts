@@ -969,5 +969,39 @@ declare const c: boolean;
 (a || b) && c;
       `,
     },
+    {
+      code: `
+        declare const x: boolean | undefined;
+        x === true;
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const x: boolean | undefined;
+        x ?? false;
+      `,
+    },
+    {
+      code: `
+        declare const x: boolean | undefined;
+        declare const y: boolean | undefined;
+        (x || y) === true;
+      `,
+      errors: [
+        {
+          messageId: 'comparingNullableToTrueDirect',
+        },
+      ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+      output: `
+        declare const x: boolean | undefined;
+        declare const y: boolean | undefined;
+        (x || y) ?? false;
+      `,
+    },
   ],
 });
