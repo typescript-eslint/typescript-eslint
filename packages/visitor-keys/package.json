@@ -43,7 +43,8 @@
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
     "@typescript-eslint/types": "workspace:*",
@@ -70,7 +71,8 @@
       "lint": {
         "command": "eslint"
       },
-      "typecheck:tsgo": {}
+      "typecheck:tsgo": {},
+      "attw-check": {}
     }
   }
 }

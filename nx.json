@@ -70,6 +70,15 @@
         "config": "vitest.config.mts"
       },
       "outputs": ["{projectRoot}/coverage"]
+    },
+    "attw-check": {
+      "cache": false,
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec attw --pack {projectRoot}",
+        "cwd": "{workspaceRoot}"
+      }
     }
   },
   "namedInputs": {
