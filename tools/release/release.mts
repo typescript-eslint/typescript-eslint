@@ -6,12 +6,6 @@ import {
 } from 'nx/release/index.js';
 import yargs from 'yargs';
 
-if (process.env.CI !== 'true') {
-  throw new Error(
-    'Releases cannot be run outside of CI, we use trusted publishing which requires an authenticated GitHub Actions environment',
-  );
-}
-
 const options = await yargs(process.argv.slice(2))
   .version(false)
   .option('version', {
@@ -44,6 +38,12 @@ const options = await yargs(process.argv.slice(2))
     type: 'boolean',
   })
   .parseAsync();
+
+if (process.env.CI !== 'true' && !options.dryRun) {
+  throw new Error(
+    'Releases cannot be run outside of CI, we use trusted publishing which requires an authenticated GitHub Actions environment',
+  );
+}
 
 const { projectsVersionData, workspaceVersion } = await releaseVersion({
   specifier: options.version,
@@ -94,7 +94,7 @@ if (options.dryRun) {
   console.log(
     '⚠️ NOTE: Applying canary version to package.json files so that dry-run publishing produces useful output...',
   );
-  execaSync('pnpm exec', ['tsx', 'tools/release/apply-canary-version.mts']);
+  execaSync('pnpm', ['exec', 'tsx', 'tools/release/apply-canary-version.mts']);
   console.log(
     '✅ Applied canary version to package.json files so that dry-run publishing produces useful output\n',
   );
