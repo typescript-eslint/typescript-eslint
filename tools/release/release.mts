@@ -112,7 +112,9 @@ if (options.dryRun) {
     '⚠️ NOTE: Reverting temporary package.json changes related to dry-run publishing...',
   );
   execaSync('git', [
-    'checkout',
+    'restore',
+    '--staged',
+    '--worktree',
     'packages/**/package.json',
     'package.json',
     'pnpm-lock.yaml',
