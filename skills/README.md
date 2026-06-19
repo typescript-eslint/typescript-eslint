@@ -10,7 +10,7 @@ Each skill lives in its own directory with a `SKILL.md` file:
 skills/<name>/SKILL.md
 ```
 
-`SKILL.md` uses YAML frontmatter with a `name` and a `description` (what the
+`SKILL.md` uses YAML front matter with a `name` and a `description` (what the
 skill does and when to use it), followed by the guidance in Markdown. This is
 the portable format used by tools such as
 [Vercel's skills package](https://github.com/vercel-labs/skills) and Claude Code.
