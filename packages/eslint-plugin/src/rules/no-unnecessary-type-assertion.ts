@@ -1,5 +1,5 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type {
   ReportFixFunction,
   RuleFix,
@@ -22,6 +22,53 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+
+/**
+ * Determines whether `node` sits at the left edge of an `ExpressionStatement` —
+ * i.e. whether it contributes the statement's leading token. Removing an
+ * angle-bracket assertion around an object literal in such a position would
+ * leave a leading `{`, which is parsed as a block rather than an object literal,
+ * so the fixer must wrap the result in parentheses. This walks up through the
+ * "left edge" parents (the operand positions that keep `node` leading) until it
+ * reaches the `ExpressionStatement`. If any node along the way is already
+ * parenthesized, the leading `{` is protected and no extra parentheses are
+ * needed.
+ */
+function isAtExpressionStatementStart(
+  node: TSESTree.Node,
+  sourceCode: Readonly<TSESLint.SourceCode>,
+): boolean {
+  let current: TSESTree.Node = node;
+  for (let parent = current.parent; parent; parent = current.parent) {
+    if (isParenthesized(current, sourceCode)) {
+      return false;
+    }
+    switch (parent.type) {
+      case AST_NODE_TYPES.ExpressionStatement:
+        return parent.expression === current;
+      case AST_NODE_TYPES.BinaryExpression:
+      case AST_NODE_TYPES.LogicalExpression:
+        if (parent.left !== current) {
+          return false;
+        }
+        break;
+      case AST_NODE_TYPES.ConditionalExpression:
+        if (parent.test !== current) {
+          return false;
+        }
+        break;
+      case AST_NODE_TYPES.SequenceExpression:
+        if (parent.expressions[0] !== current) {
+          return false;
+        }
+        break;
+      default:
+        return false;
+    }
+    current = parent;
+  }
+  return false;
+}
 
 export type Options = [
   {
@@ -803,7 +850,7 @@ export default createRule<Options, MessageIds>({
             node.expression.type === AST_NODE_TYPES.ObjectExpression &&
             ((node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
               node.parent.body === node) ||
-              node.parent.type === AST_NODE_TYPES.ExpressionStatement) &&
+              isAtExpressionStatementStart(node, context.sourceCode)) &&
             !isParenthesized(node, context.sourceCode) &&
             !isParenthesized(node.expression, context.sourceCode);
 
