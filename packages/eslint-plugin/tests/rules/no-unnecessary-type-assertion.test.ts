@@ -2706,5 +2706,31 @@ fn1(() => {
       ],
       output: `({ a: 'foo' });`,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12418
+    // An object-literal assertion at the left edge of a larger expression
+    // statement must be parenthesized so the leading `{` is not parsed as a
+    // block.
+    {
+      code: "<{ a: string }>{ a: 'foo' } + 1;",
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: "({ a: 'foo' }) + 1;",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } && true;",
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: "({ a: 'foo' }) && true;",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } ? 1 : 2;",
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: "({ a: 'foo' }) ? 1 : 2;",
+    },
+    {
+      // Already protected by the outer parentheses, so the fixer must not add
+      // another pair around the object literal.
+      code: "(<{ a: string }>{ a: 'foo' }, 1);",
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: "({ a: 'foo' }, 1);",
+    },
   ],
 });
