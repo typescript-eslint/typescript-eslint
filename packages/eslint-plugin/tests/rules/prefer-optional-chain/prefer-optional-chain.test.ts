@@ -5862,11 +5862,312 @@ foo.bar?.()?.baz && bing.bong;
         ruleTester.run('prefer-optional-chain', rule, {
           // with the `| null | undefined` type - `!== null` doesn't cover the
           // `undefined` case - so optional chaining is not a valid conversion
-          valid: BaseCases({
-            mutateCode: c => c.replaceAll('&&', '!== null &&'),
-            mutateOutput: identity,
-            operator: '&&',
-          }),
+          valid: [
+            {
+              code: `
+declare const foo: { bar: number } | null | undefined;
+foo !== null && foo.bar;
+              `,
+            },
+            {
+              code: `
+declare const foo: { bar: { baz: number } | null | undefined };
+foo.bar !== null && foo.bar.baz;
+              `,
+            },
+            {
+              code: `
+declare const foo: (() => number) | null | undefined;
+foo !== null && foo();
+              `,
+            },
+            {
+              code: `
+declare const foo: { bar: (() => number) | null | undefined };
+foo.bar !== null && foo.bar();
+              `,
+            },
+            {
+              code: `
+declare const foo:
+  | { bar: { baz: { buzz: number } | null | undefined } | null | undefined }
+  | null
+  | undefined;
+foo !== null && foo.bar !== null && foo.bar.baz !== null && foo.bar.baz.buzz;
+              `,
+            },
+            {
+              code: `
+declare const foo: {
+  bar: { baz: { buzz: number } | null | undefined } | null | undefined;
+};
+foo.bar !== null && foo.bar.baz !== null && foo.bar.baz.buzz;
+              `,
+            },
+            {
+              code: `
+declare const foo:
+  | { bar: { baz: { buzz: number } } | null | undefined }
+  | null
+  | undefined;
+foo !== null && foo.bar !== null && foo.bar.baz.buzz;
+              `,
+            },
+            {
+              code: `
+declare const foo: { bar: { baz: { buzz: number } } | null | undefined };
+foo.bar !== null && foo.bar.baz.buzz;
+              `,
+            },
+            {
+              code: `
+declare const foo:
+  | { bar: { baz: { buzz: number } | null | undefined } | null | undefined }
+  | null
+  | undefined;
+foo !== null &&
+  foo.bar !== null &&
+  foo.bar.baz !== null &&
+  foo.bar.baz !== null &&
+  foo.bar.baz.buzz;
+              `,
+            },
+            {
+              code: `
+declare const foo:
+  | { bar: { baz: { buzz: number } | null | undefined } | null | undefined }
+  | null
+  | undefined;
+foo.bar !== null &&
+  foo.bar.baz !== null &&
+  foo.bar.baz !== null &&
+  foo.bar.baz.buzz;
+              `,
+            },
+            {
+              code: `
+declare const bar: string;
+declare const foo:
+  | {
+      [k: string]:
+        | { baz: { buzz: number } | null | undefined }
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
+foo !== null && foo[bar] !== null && foo[bar].baz !== null && foo[bar].baz.buzz;
+              `,
+            },
+            {
+              code: `
+declare const bar: string;
+declare const foo:
+  | {
+      [k: string]:
+        | { baz: { buzz: number } | null | undefined }
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
+foo !== null && foo[bar].baz !== null && foo[bar].baz.buzz;
+              `,
+            },
+            {
+              code: `
+declare const bar: { baz: string };
+declare const foo:
+  | { [k: string]: { buzz: number } | null | undefined }
+  | null
+  | undefined;
+foo !== null && foo[bar.baz] !== null && foo[bar.baz].buzz;
+              `,
+            },
+            {
+              code: `
+declare const foo:
+  | {
+      bar:
+        | { baz: { buzz: () => number } | null | undefined }
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
+foo !== null && foo.bar !== null && foo.bar.baz !== null && foo.bar.baz.buzz();
+              `,
+            },
+            {
+              code: `
+declare const foo:
+  | {
+      bar:
+        | {
+            baz: { buzz: (() => number) | null | undefined } | null | undefined;
+          }
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
+foo !== null &&
+  foo.bar !== null &&
+  foo.bar.baz !== null &&
+  foo.bar.baz.buzz !== null &&
+  foo.bar.baz.buzz();
+              `,
+            },
+            {
+              code: `
+declare const foo: {
+  bar:
+    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
+    | null
+    | undefined;
+};
+foo.bar !== null &&
+  foo.bar.baz !== null &&
+  foo.bar.baz.buzz !== null &&
+  foo.bar.baz.buzz();
+              `,
+            },
+            {
+              code: `
+declare const foo:
+  | { bar: { baz: { buzz: () => number } } | null | undefined }
+  | null
+  | undefined;
+foo !== null && foo.bar !== null && foo.bar.baz.buzz();
+              `,
+            },
+            {
+              code: `
+declare const foo: { bar: { baz: { buzz: () => number } } | null | undefined };
+foo.bar !== null && foo.bar.baz.buzz();
+              `,
+            },
+            {
+              code: `
+declare const foo:
+  | {
+      bar:
+        | { baz: { buzz: (() => number) | null | undefined } }
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
+foo !== null &&
+  foo.bar !== null &&
+  foo.bar.baz.buzz !== null &&
+  foo.bar.baz.buzz();
+              `,
+            },
+            {
+              code: `
+declare const foo: {
+  bar: () =>
+    | { baz: { buzz: (() => number) | null | undefined } | null | undefined }
+    | null
+    | undefined;
+};
+foo.bar !== null &&
+  foo.bar() !== null &&
+  foo.bar().baz !== null &&
+  foo.bar().baz.buzz !== null &&
+  foo.bar().baz.buzz();
+              `,
+            },
+            {
+              code: `
+declare const buzz: string;
+declare const foo:
+  | {
+      bar:
+        | { baz: { [k: string]: () => number } | null | undefined }
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
+foo !== null && foo.bar !== null && foo.bar.baz !== null && foo.bar.baz[buzz]();
+              `,
+            },
+            {
+              code: `
+declare const buzz: string;
+declare const foo:
+  | {
+      bar:
+        | {
+            baz:
+              | { [k: string]: (() => number) | null | undefined }
+              | null
+              | undefined;
+          }
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
+foo !== null &&
+  foo.bar !== null &&
+  foo.bar.baz !== null &&
+  foo.bar.baz[buzz] !== null &&
+  foo.bar.baz[buzz]();
+              `,
+            },
+            {
+              code: `
+declare const buzz: string;
+declare const foo:
+  | {
+      bar:
+        | {
+            baz:
+              | { [k: string]: (() => number) | null | undefined }
+              | null
+              | undefined;
+          }
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
+foo !== null &&
+  foo?.bar !== null &&
+  foo?.bar.baz !== null &&
+  foo?.bar.baz[buzz] !== null &&
+  foo?.bar.baz[buzz]();
+              `,
+            },
+            {
+              code: `
+declare const buzz: string;
+declare const foo:
+  | { bar: { baz: { [k: string]: number } | null | undefined } }
+  | null
+  | undefined;
+foo !== null && foo?.bar.baz !== null && foo?.bar.baz[buzz];
+              `,
+            },
+            {
+              code: `
+declare const foo:
+  | (() => { bar: number } | null | undefined)
+  | null
+  | undefined;
+foo !== null && foo?.() !== null && foo?.().bar;
+              `,
+            },
+            {
+              code: `
+declare const foo: { bar: () => { baz: number } | null | undefined };
+foo.bar !== null && foo.bar?.() !== null && foo.bar?.().baz;
+              `,
+            },
+          ],
           // but if the type is just `| null` - then it covers the cases and is
           // a valid conversion
           invalid: [
