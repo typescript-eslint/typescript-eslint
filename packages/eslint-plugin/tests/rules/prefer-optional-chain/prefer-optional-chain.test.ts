@@ -6926,12 +6926,14 @@ foo.bar?.()?.baz;
 
       describe('!= null', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          invalid: BaseCases({
-            mutateCode: c => c.replaceAll('&&', '!= null &&'),
-            mutateOutput: identity,
-            operator: '&&',
-            useSuggestionFixer: true,
-          }),
+          invalid: [
+            ...BaseCases({
+              mutateCode: c => c.replaceAll('&&', '!= null &&'),
+              mutateOutput: identity,
+              operator: '&&',
+              useSuggestionFixer: true,
+            }),
+          ],
           valid: [],
         });
       });
@@ -7292,12 +7294,14 @@ foo !== undefined && foo?.() !== undefined && foo?.().bar;
 
       describe('!= undefined', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          invalid: BaseCases({
-            mutateCode: c => c.replaceAll('&&', '!= undefined &&'),
-            mutateOutput: identity,
-            operator: '&&',
-            useSuggestionFixer: true,
-          }),
+          invalid: [
+            ...BaseCases({
+              mutateCode: c => c.replaceAll('&&', '!= undefined &&'),
+              mutateOutput: identity,
+              operator: '&&',
+              useSuggestionFixer: true,
+            }),
+          ],
           valid: [],
         });
       });
@@ -7307,11 +7311,13 @@ foo !== undefined && foo?.() !== undefined && foo?.().bar;
   describe('or', () => {
     describe('boolean', () => {
       ruleTester.run('prefer-optional-chain', rule, {
-        invalid: BaseCases({
-          mutateCode: c => `!${c.replaceAll('||', '|| !')}`,
-          mutateOutput: c => `!${c}`,
-          operator: '||',
-        }),
+        invalid: [
+          ...BaseCases({
+            mutateCode: c => `!${c.replaceAll('||', '|| !')}`,
+            mutateOutput: c => `!${c}`,
+            operator: '||',
+          }),
+        ],
         valid: [],
       });
     });
@@ -7648,16 +7654,18 @@ foo.bar === null || foo.bar?.() === null || foo.bar?.().baz;
 
       describe('== null', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          invalid: BaseCases({
-            mutateCode: c =>
-              c
-                .replaceAll('||', '== null ||')
-                // SEE TODO AT THE BOTTOM OF THE RULE
-                // We need to ensure the final operand is also a "valid" `||` check
-                .replace(/;$/, ' == null;'),
-            mutateOutput: c => c.replace(/;$/, ' == null;'),
-            operator: '||',
-          }),
+          invalid: [
+            ...BaseCases({
+              mutateCode: c =>
+                c
+                  .replaceAll('||', '== null ||')
+                  // SEE TODO AT THE BOTTOM OF THE RULE
+                  // We need to ensure the final operand is also a "valid" `||` check
+                  .replace(/;$/, ' == null;'),
+              mutateOutput: c => c.replace(/;$/, ' == null;'),
+              operator: '||',
+            }),
+          ],
           valid: [],
         });
       });
@@ -8022,16 +8030,18 @@ foo === undefined || foo?.() === undefined || foo?.().bar;
 
       describe('== undefined', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          invalid: BaseCases({
-            mutateCode: c =>
-              c
-                .replaceAll('||', '== undefined ||')
-                // SEE TODO AT THE BOTTOM OF THE RULE
-                // We need to ensure the final operand is also a "valid" `||` check
-                .replace(/;$/, ' == undefined;'),
-            mutateOutput: c => c.replace(/;$/, ' == undefined;'),
-            operator: '||',
-          }),
+          invalid: [
+            ...BaseCases({
+              mutateCode: c =>
+                c
+                  .replaceAll('||', '== undefined ||')
+                  // SEE TODO AT THE BOTTOM OF THE RULE
+                  // We need to ensure the final operand is also a "valid" `||` check
+                  .replace(/;$/, ' == undefined;'),
+              mutateOutput: c => c.replace(/;$/, ' == undefined;'),
+              operator: '||',
+            }),
+          ],
           valid: [],
         });
       });
@@ -8042,24 +8052,26 @@ foo === undefined || foo?.() === undefined || foo?.().bar;
     ruleTester.run('prefer-optional-chain', rule, {
       valid: [],
       // One base case does not match the mutator, so we have to dedupe it
-      invalid: dedupeTestCases(
-        // it should ignore whitespace in the expressions
-        BaseCases({
-          mutateCode: c => c.replaceAll('.', '.      '),
-          operator: '&&',
-          // note - the rule will use raw text for computed expressions - so we
-          //        need to ensure that the spacing for the computed member
-          //        expressions is retained for correct fixer matching
-          mutateOutput: c =>
-            c.replaceAll(/(\[.+])/g, m => m.replaceAll('.', '.      ')),
-        }),
-        BaseCases({
-          mutateCode: c => c.replaceAll('.', '.\n'),
-          mutateOutput: c =>
-            c.replaceAll(/(\[.+])/g, m => m.replaceAll('.', '.\n')),
-          operator: '&&',
-        }),
-      ),
+      invalid: [
+        ...dedupeTestCases(
+          // it should ignore whitespace in the expressions
+          BaseCases({
+            mutateCode: c => c.replaceAll('.', '.      '),
+            operator: '&&',
+            // note - the rule will use raw text for computed expressions - so we
+            //        need to ensure that the spacing for the computed member
+            //        expressions is retained for correct fixer matching
+            mutateOutput: c =>
+              c.replaceAll(/(\[.+])/g, m => m.replaceAll('.', '.      ')),
+          }),
+          BaseCases({
+            mutateCode: c => c.replaceAll('.', '.\n'),
+            mutateOutput: c =>
+              c.replaceAll(/(\[.+])/g, m => m.replaceAll('.', '.\n')),
+            operator: '&&',
+          }),
+        ),
+      ],
     });
   });
 });
