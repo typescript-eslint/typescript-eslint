@@ -63,10 +63,7 @@
         "command": "eslint"
       },
       "typecheck:tsgo": {},
-      "attw-check": {
-        "dependsOn": ["build"],
-        "command": "attw --pack {projectRoot} --profile esm-only"
-      }
+      "attw-check": {}
     }
   }
 }
