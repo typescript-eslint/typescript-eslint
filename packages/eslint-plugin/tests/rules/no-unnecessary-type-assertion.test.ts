@@ -2746,7 +2746,7 @@ fn1(() => {
       output: "({ a: 'foo' }) ? 1 : 2;",
     },
     {
-      code: "<{ a: string }>{ a: 'foo' }, foo();",
+      code: noFormat`<{ a: string }>{ a: 'foo' }, foo();`,
       errors: [
         {
           column: 1,
