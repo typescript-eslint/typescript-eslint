@@ -1,5 +1,5 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type {
   ReportFixFunction,
   RuleFix,
@@ -22,6 +22,29 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+
+function isAtExpressionStatementStart(
+  node: TSESTree.Node,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  let current: TSESTree.Node = node;
+  while (
+    current.parent != null &&
+    current.parent.type !== AST_NODE_TYPES.ExpressionStatement
+  ) {
+    if (
+      isParenthesized(current, sourceCode) ||
+      current.parent.range[0] !== current.range[0]
+    ) {
+      return false;
+    }
+    current = current.parent;
+  }
+  return (
+    current.parent?.type === AST_NODE_TYPES.ExpressionStatement &&
+    !isParenthesized(current, sourceCode)
+  );
+}
 
 export type Options = [
   {
@@ -796,14 +819,14 @@ export default createRule<Options, MessageIds>({
           );
           // Removing the angle-bracketed type can leave a bare object
           // literal in a position where `{` is parsed as a block (concise
-          // arrow body, or the start of an expression statement). Wrap the
+          // arrow body, or the left edge of an expression statement). Wrap the
           // result in parentheses to preserve the original expression
           // semantics.
           const needsParens =
             node.expression.type === AST_NODE_TYPES.ObjectExpression &&
             ((node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
               node.parent.body === node) ||
-              node.parent.type === AST_NODE_TYPES.ExpressionStatement) &&
+              isAtExpressionStatementStart(node, context.sourceCode)) &&
             !isParenthesized(node, context.sourceCode) &&
             !isParenthesized(node.expression, context.sourceCode);
 
