@@ -4,10 +4,7 @@
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
