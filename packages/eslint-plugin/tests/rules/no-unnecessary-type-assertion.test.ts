@@ -900,6 +900,118 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    {
+      code: `
+type Config = { readonly kind: 'a'; readonly nested: readonly [1, 2] };
+const config: Config = { kind: 'a', nested: [1, 2] } as const;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f(x: string): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f(x: string | 'a'): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f(x: any): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function f(x: unknown): void;
+f('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function id<T>(x: T): T;
+const r = id('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function arrayOf<T>(...items: T[]): T[];
+const a = arrayOf('a' as const, 'b' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function box<T>(v: T): { value: T };
+const b = box('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function id<T extends 'a' | 'b'>(x: T): T;
+const r = id('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+type Greeting = \`hello \${string}\`;
+const g: Greeting = \`hello \${'world' as const}\`;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+class Container<T> {
+  constructor(public value: T) {}
+}
+const c = new Container('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function example(x: 'a' | 'b'): void;
+declare function example<T>(value: T): T;
+example('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+declare function tag<T>(parts: TemplateStringsArray, ...substitutions: T[]): T;
+const example = tag\`prefix \${'a' as const}\`;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+class K {
+  m<T>(x: T): T {
+    return x;
+  }
+}
+new K().m('a' as const);
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
+    {
+      code: `
+type Recipient = { kind: 'a' | 'b' };
+const example = { kind: 'a' as const } satisfies Recipient;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
   ],
 
   invalid: [
@@ -1890,6 +2002,221 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+type Recipient = { kind: 'a' | 'b' };
+const r: Recipient = { kind: 'a' as const };
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+type Recipient = { kind: 'a' | 'b' };
+const r: Recipient = { kind: 'a' };
+      `,
+    },
+    {
+      code: `
+type Recipient = { kind: 'a' | 'b' };
+const rs: Recipient[] = [{ kind: 'a' as const }, { kind: 'b' as const }];
+      `,
+      errors: [
+        { messageId: 'contextuallyUnnecessary' },
+        { messageId: 'contextuallyUnnecessary' },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+type Recipient = { kind: 'a' | 'b' };
+const rs: Recipient[] = [{ kind: 'a' }, { kind: 'b' }];
+      `,
+    },
+    {
+      code: `
+declare function f(x: 'a' | 'b'): void;
+f('a' as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: 'a' | 'b'): void;
+f('a');
+      `,
+    },
+    {
+      code: `
+declare function f(x: 1 | 2 | 3): void;
+f(1 as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: 1 | 2 | 3): void;
+f(1);
+      `,
+    },
+    {
+      code: `
+declare function f(x: true): void;
+f(true as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: true): void;
+f(true);
+      `,
+    },
+    {
+      code: `
+const arr: ('a' | 'b')[] = [];
+arr.push('a' as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+const arr: ('a' | 'b')[] = [];
+arr.push('a');
+      `,
+    },
+    {
+      code: `
+class Container<T> {
+  constructor(public value: T) {}
+}
+const c: Container<'a' | 'b'> = new Container('a' as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+class Container<T> {
+  constructor(public value: T) {}
+}
+const c: Container<'a' | 'b'> = new Container('a');
+      `,
+    },
+    {
+      code: `
+declare function f(x: readonly [1, 2]): void;
+f([1, 2] as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare function f(x: readonly [1, 2]): void;
+f([1, 2]);
+      `,
+    },
+    {
+      code: `
+function example(): 'a' | 'b' {
+  return 'a' as const;
+}
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+function example(): 'a' | 'b' {
+  return 'a';
+}
+      `,
+    },
+    {
+      code: `
+const example: () => 'a' | 'b' = () => 'a' as const;
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+const example: () => 'a' | 'b' = () => 'a';
+      `,
+    },
+    {
+      code: `
+const example: ('a' | 'b')[] = ['a' as const];
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+const example: ('a' | 'b')[] = ['a'];
+      `,
+    },
+    {
+      code: `
+const t: ['a' | 'b', 'c' | 'd'] = ['a' as const, 'c' as const];
+      `,
+      errors: [
+        { messageId: 'contextuallyUnnecessary' },
+        { messageId: 'contextuallyUnnecessary' },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+const t: ['a' | 'b', 'c' | 'd'] = ['a', 'c'];
+      `,
+    },
+    {
+      code: `
+function example(x: 'a' | 'b' = 'a' as const) {}
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+function example(x: 'a' | 'b' = 'a') {}
+      `,
+    },
+    {
+      code: `
+declare const value: boolean;
+const example: 'a' | 'b' = value ? ('a' as const) : ('b' as const);
+      `,
+      errors: [
+        { messageId: 'contextuallyUnnecessary' },
+        { messageId: 'contextuallyUnnecessary' },
+      ],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+declare const value: boolean;
+const example: 'a' | 'b' = value ? ('a') : ('b');
+      `,
+    },
+    {
+      code: `
+type Example = { outer: { inner: 'a' | 'b' } };
+const example: Example = { outer: { inner: 'a' as const } };
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+type Example = { outer: { inner: 'a' | 'b' } };
+const example: Example = { outer: { inner: 'a' } };
+      `,
+    },
+    {
+      code: `
+type Example = { kind: 'a'; value: number } | { kind: 'b'; value: string };
+const example: Example = { kind: 'a' as const, value: 1 };
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+type Example = { kind: 'a'; value: number } | { kind: 'b'; value: string };
+const example: Example = { kind: 'a', value: 1 };
+      `,
+    },
+    {
+      code: `
+class Example {
+  constructor(value: 'a' | 'b') {}
+}
+new Example('a' as const);
+      `,
+      errors: [{ messageId: 'contextuallyUnnecessary' }],
+      options: [{ checkLiteralConstAssertions: true }],
+      output: `
+class Example {
+  constructor(value: 'a' | 'b') {}
+}
+new Example('a');
       `,
     },
     {
