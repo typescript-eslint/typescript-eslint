@@ -2839,5 +2839,18 @@ fn1(() => {
       ],
       output: '(class Clazz {}.length);',
     },
+    {
+      code: 'const foo = () => <number>{ lol: 123 as number }.lol + 54321;',
+      errors: [
+        {
+          column: 19,
+          endColumn: 53,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: 'const foo = () => ({ lol: 123 as number }.lol) + 54321;',
+    },
   ],
 });
