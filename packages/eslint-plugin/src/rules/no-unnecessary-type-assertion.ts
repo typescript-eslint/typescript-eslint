@@ -23,27 +23,47 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-function isAtExpressionStatementStart(
+function isAtExpressionStatementStart(node: TSESTree.Node): boolean {
+  let current: TSESTree.Node = node;
+  while (true) {
+    const { parent } = current;
+    if (parent == null) {
+      return false;
+    }
+    if (parent.range[0] !== current.range[0]) {
+      return false;
+    }
+    if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
+      return true;
+    }
+    current = parent;
+  }
+}
+
+function isAtArrowFunctionBodyStart(
   node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
 ): boolean {
   let current: TSESTree.Node = node;
-  while (
-    current.parent != null &&
-    current.parent.type !== AST_NODE_TYPES.ExpressionStatement
-  ) {
-    if (
-      isParenthesized(current, sourceCode) ||
-      current.parent.range[0] !== current.range[0]
-    ) {
+  while (true) {
+    if (isParenthesized(current, sourceCode)) {
       return false;
     }
-    current = current.parent;
+    const { parent } = current;
+    if (parent == null) {
+      return false;
+    }
+    if (
+      parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+      parent.body === current
+    ) {
+      return true;
+    }
+    if (parent.range[0] !== current.range[0]) {
+      return false;
+    }
+    current = parent;
   }
-  return (
-    current.parent?.type === AST_NODE_TYPES.ExpressionStatement &&
-    !isParenthesized(current, sourceCode)
-  );
 }
 
 export type Options = [
@@ -818,22 +838,24 @@ export default createRule<Options, MessageIds>({
             NullThrowsReasons.MissingToken('>', 'type annotation'),
           );
           // Removing the angle brackets leaves the asserted operand at the
-          // assertion's position. If its first token is `{`, `function`, or
-          // `class` and the assertion is at the left edge of an expression
-          // statement (or is a concise arrow body), that token would lead the
-          // statement and be parsed as a block / function or class declaration.
-          // Wrap the operand in parentheses to keep it an expression.
-          const firstOperandToken =
-            context.sourceCode.getTokenAfter(closingAngleBracket);
+          // assertion's position, so its first token leads whatever the
+          // assertion led. A leading `{`/`function`/`class` at the start of an
+          // expression statement is parsed as a block / function or class
+          // declaration, and a leading `{` at the start of a concise arrow body
+          // is parsed as a block body. In those positions the operand must be
+          // wrapped in parentheses to stay an expression.
+          const firstOperandToken = nullThrows(
+            context.sourceCode.getTokenAfter(closingAngleBracket),
+            NullThrowsReasons.MissingToken('operand', 'type assertion'),
+          );
+          const breaksExpressionStatement =
+            ['{', 'function', 'class'].includes(firstOperandToken.value) &&
+            isAtExpressionStatementStart(node);
+          const breaksArrowFunctionBody =
+            firstOperandToken.value === '{' &&
+            isAtArrowFunctionBodyStart(node, context.sourceCode);
           const needsParens =
-            firstOperandToken != null &&
-            (firstOperandToken.value === '{' ||
-              firstOperandToken.value === 'function' ||
-              firstOperandToken.value === 'class') &&
-            ((node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-              node.parent.body === node) ||
-              isAtExpressionStatementStart(node, context.sourceCode)) &&
-            !isParenthesized(node, context.sourceCode);
+            breaksExpressionStatement || breaksArrowFunctionBody;
 
           const fixes: RuleFix[] = [];
           if (needsParens) {
