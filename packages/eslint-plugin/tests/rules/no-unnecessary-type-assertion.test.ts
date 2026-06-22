@@ -2797,5 +2797,47 @@ fn1(() => {
       ],
       output: "1 + { a: 'foo' };",
     },
+    // The assertion binds looser than member access, so its operand can be a
+    // member expression whose leading token is `{`, `function`, or `class` —
+    // each of which leads the statement after the fix and must be wrapped.
+    {
+      code: '<number>{ lol: 32 as number }.lol;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: '({ lol: 32 as number }.lol);',
+    },
+    {
+      code: '<number>function Fun() {}.length;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: '(function Fun() {}.length);',
+    },
+    {
+      code: '<number>class Clazz {}.length;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: '(class Clazz {}.length);',
+    },
   ],
 });
