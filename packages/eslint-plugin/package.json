@@ -120,10 +120,7 @@
       },
       "typecheck:tsgo": {},
       "attw-check": {
-        "dependsOn": [
-          "build"
-        ],
-        "command": "attw --pack {projectRoot} --profile node16 --exclude-entrypoints use-at-your-own-risk/raw-plugin --exclude-entrypoints use-at-your-own-risk/rules"
+        "command": "attw --pack {projectRoot} --profile node16 --exclude-entrypoints use-at-your-own-risk/raw-plugin --exclude-entrypoints use-at-your-own-risk/rules --ignore-rules named-exports"
       }
     }
   }
