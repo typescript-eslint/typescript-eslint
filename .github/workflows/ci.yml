@@ -203,6 +203,28 @@ jobs:
       - name: Run Check
         run: pnpm ${{ matrix.lint-task }}
 
+  attw:
+    name: Are The Types Wrong?
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build]
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Run Check
+        run: pnpm attw-check
+
   # Note -- intentionally use the same name as lint_with_build just so everything looks uniform in the checks section
   lint_with_build_eslint:
     name: Lint with build
