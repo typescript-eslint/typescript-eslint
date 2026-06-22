@@ -2706,5 +2706,96 @@ fn1(() => {
       ],
       output: `({ a: 'foo' });`,
     },
+    {
+      code: "<{ a: string }>{ a: 'foo' } + 1;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) + 1;",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } && true;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) && true;",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } ? 1 : 2;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) ? 1 : 2;",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' }, foo();",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }), foo();",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } + 1 + 2;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) + 1 + 2;",
+    },
+    {
+      code: "(<{ a: string }>{ a: 'foo' }, 1);",
+      errors: [
+        {
+          column: 2,
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }, 1);",
+    },
+    {
+      code: "1 + <{ a: string }>{ a: 'foo' };",
+      errors: [
+        {
+          column: 5,
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "1 + { a: 'foo' };",
+    },
   ],
 });
