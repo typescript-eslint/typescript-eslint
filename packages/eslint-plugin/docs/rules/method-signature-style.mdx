@@ -36,10 +36,14 @@ See the reasoning behind that in the [TypeScript PR for the compiler option](htt
 
 ## Options
 
-This rule accepts one string option:
+This rule accepts a string option to select the signature style to enforce:
 
 - `"property"`: Enforce using property signature for functions. Use this to enforce maximum correctness together with TypeScript's strict mode.
 - `"method"`: Enforce using method signature for functions. Use this if you aren't using TypeScript's strict mode and prefer this style.
+
+It also accepts an options object:
+
+- `convertReadonly` _(default: `false`)_: When enforcing the `method` style, also convert `readonly` function-typed properties to method signatures. Since there is no `readonly` method signature, this drops the `readonly` modifier. When `false`, such properties are left unchanged because they have no method-shorthand equivalent.
 
 ### `property`
 
@@ -113,6 +117,34 @@ interface T1 {
 type T2 = {
   func(arg: boolean): void;
 };
+```
+
+</TabItem>
+</Tabs>
+
+### `convertReadonly`
+
+There is no syntax for a `readonly` method signature, so by default `readonly` function-typed properties are left untouched in `method` mode.
+Set `convertReadonly` to `true` to convert them anyway, dropping the `readonly` modifier.
+
+Examples of code with `{ "convertReadonly": true }`.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='"method", { "convertReadonly": true }'
+interface Example {
+  readonly func: (arg: string) => number;
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='"method", { "convertReadonly": true }'
+interface Example {
+  func(arg: string): number;
+}
 ```
 
 </TabItem>

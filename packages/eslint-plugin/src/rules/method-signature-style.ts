@@ -12,7 +12,12 @@ import {
   nullThrows,
 } from '../util';
 
-export type Options = [('method' | 'property')?];
+export type Options = [
+  ('method' | 'property')?,
+  {
+    convertReadonly?: boolean;
+  }?,
+];
 export type MessageIds = 'errorMethod' | 'errorProperty';
 
 export default createRule<Options, MessageIds>({
@@ -35,11 +40,24 @@ export default createRule<Options, MessageIds>({
         description: 'The method signature style to enforce using.',
         enum: ['property', 'method'],
       },
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          convertReadonly: {
+            type: 'boolean',
+            description:
+              'Whether to also convert `readonly` function-typed properties to method signatures, dropping the `readonly` modifier. Only applies when enforcing the `method` style.',
+          },
+        },
+      },
     ],
   },
-  defaultOptions: ['property'],
+  defaultOptions: ['property', { convertReadonly: false }],
 
-  create(context, [mode]) {
+  create(context, [mode, options]) {
+    const convertReadonly = options?.convertReadonly ?? false;
+
     function getMethodKey(
       node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
     ): string {
@@ -49,9 +67,6 @@ export default createRule<Options, MessageIds>({
       }
       if (node.optional) {
         key = `${key}?`;
-      }
-      if (node.readonly) {
-        key = `readonly ${key}`;
       }
       return key;
     }
@@ -227,6 +242,14 @@ export default createRule<Options, MessageIds>({
         TSPropertySignature(propertyNode): void {
           const typeNode = propertyNode.typeAnnotation?.typeAnnotation;
           if (typeNode?.type !== AST_NODE_TYPES.TSFunctionType) {
+            return;
+          }
+
+          // There is no syntax for a `readonly` method signature. By default a
+          // `readonly` function-typed property is therefore left as-is (it has
+          // no method-shorthand equivalent); the `convertReadonly` option opts
+          // in to converting it anyway, dropping the `readonly` modifier.
+          if (propertyNode.readonly && !convertReadonly) {
             return;
           }
 

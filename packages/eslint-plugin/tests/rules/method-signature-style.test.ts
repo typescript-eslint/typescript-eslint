@@ -111,6 +111,34 @@ interface Test {
       `,
       options: ['method'],
     },
+    {
+      // there is no syntax for a `readonly` method signature, so a `readonly`
+      // function-typed property has no method-shorthand equivalent
+      code: 'type Test = { readonly f: (a: string) => number };',
+      options: ['method'],
+    },
+    {
+      code: 'type Test = { readonly f?: <T>(a?: T) => T };',
+      options: ['method'],
+    },
+    {
+      code: "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
+      options: ['method'],
+    },
+    {
+      code: `
+        interface Test {
+          readonly f: (a: string) => number;
+        }
+      `,
+      options: ['method'],
+    },
+    {
+      // `convertReadonly: false` (the default) leaves `readonly` function-typed
+      // properties untouched in `method` mode
+      code: 'type Test = { readonly f: (a: string) => number };',
+      options: ['method', { convertReadonly: false }],
+    },
     `
       interface Test {
         get f(): number;
@@ -345,6 +373,59 @@ interface Test {
       output: `
         type Test = { ['f']?<T>(a: T, b: T): T };
       `,
+    },
+    {
+      // `convertReadonly: true` opts in to converting `readonly` function-typed
+      // properties, dropping the `readonly` modifier (there is no `readonly`
+      // method signature)
+      code: `
+        interface Test {
+          readonly f: (a: string) => number;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method', { convertReadonly: true }],
+      output: `
+        interface Test {
+          f(a: string): number;
+        }
+      `,
+    },
+    {
+      code: 'type Test = { readonly f?: <T>(a?: T) => T };',
+      errors: [
+        {
+          column: 15,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method', { convertReadonly: true }],
+      output: 'type Test = { f?<T>(a?: T): T };',
+    },
+    {
+      code: "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
+      errors: [
+        {
+          column: 15,
+          endColumn: 52,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method', { convertReadonly: true }],
+      output: "type Test = { ['f']?<T>(a: T, b: T): T };",
     },
     {
       code: noFormat`
