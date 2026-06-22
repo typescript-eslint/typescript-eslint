@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/project-service",
-  "version": "8.61.1",
+  "version": "8.62.0",
   "description": "Standalone TypeScript project service wrapper for linting.",
   "files": [
     "dist",
