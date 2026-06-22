@@ -26,6 +26,20 @@ import { fileTypes } from '../options';
 import { defaultEslintLanguageConfig } from './config';
 import { createParser } from './createParser';
 
+const TYPESCRIPT_ESLINT_BASE_CONFIG_NAME = 'typescript-eslint/base';
+
+function appendExtendedConfig(
+  eslintExtendedConfig: FlatConfig.ConfigArray,
+  maybeConfig: FlatConfig.Config | FlatConfig.ConfigArray,
+): void {
+  const configs = Array.isArray(maybeConfig) ? maybeConfig : [maybeConfig];
+  eslintExtendedConfig.push(
+    ...configs.filter(config => {
+      return config.name !== TYPESCRIPT_ESLINT_BASE_CONFIG_NAME;
+    }),
+  );
+}
+
 export interface CreateLinter {
   configs: string[];
   onLint(cb: LinterOnLint): () => void;
@@ -163,15 +177,12 @@ export function createLinter(
     try {
       const file = system.readFile(fileName) ?? '{}';
       const parsed = parseESLintRC(file);
+      eslintExtendedConfig.length = 0;
       eslintRulesConfig.rules = parsed.rules;
       for (const extendsName of parsed.extends) {
         const maybeConfig = configs.get(extendsName);
         if (maybeConfig) {
-          if (Array.isArray(maybeConfig)) {
-            eslintExtendedConfig.push(...maybeConfig);
-          } else {
-            eslintExtendedConfig.push(maybeConfig);
-          }
+          appendExtendedConfig(eslintExtendedConfig, maybeConfig);
         }
       }
       console.log('[Editor] Updating', fileName, [

@@ -41,6 +41,7 @@ for (const [name, value] of Object.entries(js.configs)) {
 
 for (const [name, value] of Object.entries(rawPlugin.flatConfigs)) {
   configs[`@typescript-eslint/${name}`] = value;
+  configs[`plugin:@typescript-eslint/${name.replace(/^flat\//, '')}`] = value;
 }
 
 exports.configs = configs;
