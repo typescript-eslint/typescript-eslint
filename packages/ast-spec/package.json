@@ -13,10 +13,7 @@
   },
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "repository": {
     "type": "git",

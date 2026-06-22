@@ -4,9 +4,7 @@
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {

@@ -4,9 +4,7 @@
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {

@@ -7,10 +7,7 @@
     "!**/*.tsbuildinfo",
     "index.d.ts",
     "raw-plugin.d.ts",
-    "rules.d.ts",
-    "package.json",
-    "./README.md",
-    "LICENSE"
+    "rules.d.ts"
   ],
   "type": "commonjs",
   "exports": {
