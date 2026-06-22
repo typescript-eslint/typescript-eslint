@@ -817,18 +817,23 @@ export default createRule<Options, MessageIds>({
             ),
             NullThrowsReasons.MissingToken('>', 'type annotation'),
           );
-          // Removing the angle-bracketed type can leave a bare object
-          // literal in a position where `{` is parsed as a block (concise
-          // arrow body, or the left edge of an expression statement). Wrap the
-          // result in parentheses to preserve the original expression
-          // semantics.
+          // Removing the angle brackets leaves the asserted operand at the
+          // assertion's position. If its first token is `{`, `function`, or
+          // `class` and the assertion is at the left edge of an expression
+          // statement (or is a concise arrow body), that token would lead the
+          // statement and be parsed as a block / function or class declaration.
+          // Wrap the operand in parentheses to keep it an expression.
+          const firstOperandToken =
+            context.sourceCode.getTokenAfter(closingAngleBracket);
           const needsParens =
-            node.expression.type === AST_NODE_TYPES.ObjectExpression &&
+            firstOperandToken != null &&
+            (firstOperandToken.value === '{' ||
+              firstOperandToken.value === 'function' ||
+              firstOperandToken.value === 'class') &&
             ((node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
               node.parent.body === node) ||
               isAtExpressionStatementStart(node, context.sourceCode)) &&
-            !isParenthesized(node, context.sourceCode) &&
-            !isParenthesized(node.expression, context.sourceCode);
+            !isParenthesized(node, context.sourceCode);
 
           const fixes: RuleFix[] = [];
           if (needsParens) {
