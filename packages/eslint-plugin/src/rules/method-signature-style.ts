@@ -13,10 +13,10 @@ import {
 } from '../util';
 
 export type Options = [
-  ('method' | 'property')?,
+  'method' | 'property',
   {
     convertReadonly?: boolean;
-  }?,
+  },
 ];
 export type MessageIds = 'errorMethod' | 'errorProperty';
 
@@ -55,9 +55,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['property', { convertReadonly: false }],
 
-  create(context, [mode, options]) {
-    const convertReadonly = options?.convertReadonly ?? false;
-
+  create(context, [mode, { convertReadonly }]) {
     function getMethodKey(
       node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
     ): string {
