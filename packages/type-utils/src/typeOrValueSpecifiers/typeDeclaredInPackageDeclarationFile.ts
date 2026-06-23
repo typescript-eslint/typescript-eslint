@@ -28,6 +28,38 @@ function typeDeclaredInDeclareModule(
   );
 }
 
+/**
+ * Extracts the bare package name from a module specifier that may include
+ * subpath segments (e.g. `@angular/common/http` → `@angular/common`,
+ * `lodash/fp` → `lodash`).
+ */
+function extractPackageName(moduleSpecifier: string): string {
+  if (moduleSpecifier.startsWith('@')) {
+    // Scoped package: keep the first two segments.
+    return moduleSpecifier.split('/').slice(0, 2).join('/');
+  }
+  // Unscoped package: keep only the first segment.
+  return moduleSpecifier.split('/')[0];
+}
+
+/**
+ * Derives the package name from the `node_modules` portion of a file path.
+ * Returns `undefined` when the path does not contain a `node_modules` segment.
+ *
+ * This is used alongside `program.sourceFileToPackageName` to cover packages
+ * that re-export symbols through dynamically-named internal chunk files
+ * (e.g. Angular 19.2.5+ hashed files) where the TS compiler map may lack an
+ * entry.
+ */
+function packageNameFromFilePath(filePath: string): string | undefined {
+  const normalized = filePath.replaceAll('\\', '/');
+  const marker = '/node_modules/';
+  const idx = normalized.lastIndexOf(marker);
+  // eslint-disable-next-line curly
+  /* istanbul ignore if */ if (idx === -1) return undefined;
+  return extractPackageName(normalized.slice(idx + marker.length));
+}
+
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
@@ -36,14 +68,31 @@ function typeDeclaredInDeclarationFile(
   // Handle scoped packages: if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
   return declarationFiles.some(declaration => {
-    const packageIdName = program.sourceFileToPackageName.get(declaration.path);
-    return (
-      packageIdName != null &&
-      matcher.test(packageIdName) &&
-      program.isSourceFileFromExternalLibrary(declaration)
-    );
+    if (!program.isSourceFileFromExternalLibrary(declaration)) {
+      return false;
+    }
+
+    // Consult both TypeScript's own package-name map and the file-system path.
+    // Using both covers packages that re-export via dynamically-named internal
+    // files (e.g. Angular 19.2.5+ hashed chunks) where the TS map may have no
+    // entry for the declaration file.
+    const candidateNames = [
+      program.sourceFileToPackageName.get(declaration.path),
+      packageNameFromFilePath(declaration.path),
+    ];
+
+    return candidateNames.some(packageIdName => {
+      if (packageIdName == null) {
+        return false;
+      }
+      const extracted = extractPackageName(packageIdName);
+      return (
+        extracted === packageName ||
+        extracted === typesPackageName ||
+        extracted === `@types/${typesPackageName}`
+      );
+    });
   });
 }
 

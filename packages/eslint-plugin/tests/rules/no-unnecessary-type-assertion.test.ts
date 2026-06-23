@@ -900,6 +900,26 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12277
+    // `as any` in a property of a spread object passed to a discriminated-union
+    // parameter is necessary — TypeScript cannot narrow two union values.
+    `
+interface OptionsA {
+  foo: string;
+}
+interface OptionsB {
+  bar: number;
+}
+type AnyObject =
+  | { type: 'a'; options?: OptionsA }
+  | { type: 'b'; options?: OptionsB };
+declare const obj1: AnyObject;
+declare const obj2: AnyObject;
+declare function use(obj: AnyObject): void;
+if (obj1.type === obj2.type) {
+  use({ ...obj1, options: obj2.options as any });
+}
+    `,
   ],
 
   invalid: [
