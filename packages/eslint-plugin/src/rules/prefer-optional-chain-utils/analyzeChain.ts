@@ -134,12 +134,14 @@ type OperandAnalyzer = (
   operand: ValidOperand,
   index: number,
   chain: readonly ValidOperand[],
+  hasLastChainOperand: boolean,
 ) => readonly [ValidOperand, ValidOperand] | readonly [ValidOperand] | null;
 const analyzeAndChainOperand: OperandAnalyzer = (
   parserServices,
   operand,
   index,
   chain,
+  hasLastChainOperand,
 ) => {
   switch (operand.comparisonType) {
     case NullishComparisonType.Boolean:
@@ -158,16 +160,13 @@ const analyzeAndChainOperand: OperandAnalyzer = (
         return [operand, nextOperand];
       }
       if (
-        nextOperand &&
+        (nextOperand || hasLastChainOperand) &&
         !includesType(
           parserServices,
           operand.comparedName,
           ts.TypeFlags.Undefined,
         )
       ) {
-        // we know the next operand is not an `undefined` check and that this
-        // operand includes `undefined` - which means that making this an
-        // optional chain would change the runtime behavior of the expression
         return [operand];
       }
       return null;
@@ -205,6 +204,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
   operand,
   index,
   chain,
+  _hasLastChainOperand,
 ) => {
   switch (operand.comparisonType) {
     case NullishComparisonType.NotBoolean:
@@ -264,6 +264,84 @@ const analyzeOrChainOperand: OperandAnalyzer = (
       return null;
   }
 };
+
+const nullishShortCircuitFlags: Record<
+  '&&' | '||',
+  Partial<Record<NullishComparisonType, ts.TypeFlags>>
+> = {
+  '&&': {
+    [NullishComparisonType.Boolean]: ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+    [NullishComparisonType.NotEqualNullOrUndefined]:
+      ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+    [NullishComparisonType.NotStrictEqualNull]: ts.TypeFlags.Null,
+    [NullishComparisonType.NotStrictEqualUndefined]: ts.TypeFlags.Undefined,
+  },
+  '||': {
+    [NullishComparisonType.EqualNullOrUndefined]:
+      ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+    [NullishComparisonType.NotBoolean]:
+      ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+    [NullishComparisonType.StrictEqualNull]: ts.TypeFlags.Null,
+    [NullishComparisonType.StrictEqualUndefined]: ts.TypeFlags.Undefined,
+  },
+};
+
+function getNullishShortCircuitFlags(
+  operator: '&&' | '||',
+  operand: ValidOperand,
+): ts.TypeFlags | undefined {
+  return nullishShortCircuitFlags[operator][operand.comparisonType];
+}
+
+function getComparisonResultForUndefined(
+  comparisonType: NullishComparisonType,
+): boolean {
+  switch (comparisonType) {
+    case NullishComparisonType.EqualNullOrUndefined:
+    case NullishComparisonType.NotBoolean:
+    case NullishComparisonType.NotStrictEqualNull:
+    case NullishComparisonType.StrictEqualUndefined:
+      return true;
+
+    case NullishComparisonType.Boolean:
+    case NullishComparisonType.NotEqualNullOrUndefined:
+    case NullishComparisonType.NotStrictEqualUndefined:
+    case NullishComparisonType.StrictEqualNull:
+      return false;
+  }
+}
+
+function isSafeToReportChain(
+  parserServices: ParserServicesWithTypeInformation,
+  operator: '&&' | '||',
+  subChain: ValidOperand[],
+  lastChain: LastChainOperandForReport | ValidOperand | undefined,
+): boolean {
+  const lastOperand = lastChain ?? subChain.at(-1);
+  if (!lastOperand || 'comparisonValue' in lastOperand) {
+    return true;
+  }
+
+  const expectedResultForShortCircuit = operator === '||';
+  if (
+    getComparisonResultForUndefined(lastOperand.comparisonType) ===
+    expectedResultForShortCircuit
+  ) {
+    return true;
+  }
+
+  const operandsThatBecomeOptional = lastChain
+    ? subChain
+    : subChain.slice(0, -1);
+  return !operandsThatBecomeOptional.some(operand => {
+    const shortCircuitFlags = getNullishShortCircuitFlags(operator, operand);
+
+    return (
+      shortCircuitFlags != null &&
+      includesType(parserServices, operand.comparedName, shortCircuitFlags)
+    );
+  });
+}
 
 const resolveOperandSubset = (
   previousOperand: ValidOperand,
@@ -726,21 +804,27 @@ export function analyzeChain(
       const maybeNullishNodes = lastChain
         ? subChainFlat.map(({ node }) => node)
         : subChainFlat.slice(0, -1).map(({ node }) => node);
-      checkNullishAndReport(
-        context,
-        parserServices,
-        options,
-        maybeNullishNodes,
-        getReportDescriptor(
-          context.sourceCode,
+      // Optional chaining short-circuits to `undefined`; keep reporting only
+      // when that preserves the earlier operands' short-circuit result.
+      if (
+        isSafeToReportChain(parserServices, operator, subChainFlat, lastChain)
+      ) {
+        checkNullishAndReport(
+          context,
           parserServices,
-          node,
-          operator,
           options,
-          subChainFlat,
-          lastChain,
-        ),
-      );
+          maybeNullishNodes,
+          getReportDescriptor(
+            context.sourceCode,
+            parserServices,
+            node,
+            operator,
+            options,
+            subChainFlat,
+            lastChain,
+          ),
+        );
+      }
     }
 
     // we've reached the end of a chain of logical expressions
@@ -763,7 +847,13 @@ export function analyzeChain(
     const lastOperand = subChain.flat().at(-1);
     const operand = chain[i];
 
-    const validatedOperands = analyzeOperand(parserServices, operand, i, chain);
+    const validatedOperands = analyzeOperand(
+      parserServices,
+      operand,
+      i,
+      chain,
+      lastChainOperand != null,
+    );
     if (!validatedOperands) {
       // TODO - #7170
       // check if the name is a superset/equal - if it is, then it likely
