@@ -28,6 +28,18 @@ function typeDeclaredInDeclareModule(
   );
 }
 
+/**
+ * Extracts the bare package name from a module specifier that may include
+ * subpath segments (e.g. `@angular/common/http` → `@angular/common`,
+ * `lodash/fp` → `lodash`).
+ */
+function extractPackageName(moduleSpecifier: string): string {
+  if (moduleSpecifier.startsWith('@')) {
+    return moduleSpecifier.split('/').slice(0, 2).join('/');
+  }
+  return moduleSpecifier.split('/')[0];
+}
+
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
@@ -36,13 +48,19 @@ function typeDeclaredInDeclarationFile(
   // Handle scoped packages: if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
   return declarationFiles.some(declaration => {
+    if (!program.isSourceFileFromExternalLibrary(declaration)) {
+      return false;
+    }
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
+    if (packageIdName == null) {
+      return false;
+    }
+    const extracted = extractPackageName(packageIdName);
     return (
-      packageIdName != null &&
-      matcher.test(packageIdName) &&
-      program.isSourceFileFromExternalLibrary(declaration)
+      extracted === packageName ||
+      extracted === typesPackageName ||
+      extracted === `@types/${typesPackageName}`
     );
   });
 }
