@@ -13,6 +13,7 @@ export default createRule({
         'Enforce the use of `for-of` loop over the standard `for` loop where possible',
       recommended: 'stylistic',
     },
+    fixable: 'code',
     messages: {
       preferForOf:
         'Expected a `for-of` loop instead of a `for` loop with this simple iteration.',
@@ -21,6 +22,34 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    function getSafeName(base: string, scope: TSESLint.Scope.Scope): string {
+      const declared = new Map<string, number>();
+
+      let current: TSESLint.Scope.Scope | null = scope;
+
+      while (current) {
+        for (const variable of current.variables) {
+          declared.set(variable.name, 1);
+        }
+
+        current = current.upper;
+      }
+
+      if (!declared.has(base)) {
+        return base;
+      }
+
+      let suffix = 1;
+      let candidate = `${base}${suffix}`;
+
+      while (declared.has(candidate)) {
+        suffix++;
+        candidate = `${base}${suffix}`;
+      }
+
+      return candidate;
+    }
+
     function isSingleVariableDeclaration(
       node: TSESTree.Node | null,
     ): node is TSESTree.VariableDeclaration {
@@ -159,6 +188,38 @@ export default createRule({
           context.report({
             node,
             messageId: 'preferForOf',
+            fix(fixer) {
+              const sourceCode = context.sourceCode;
+              const arrayText = sourceCode.getText(arrayExpression);
+              const scope = sourceCode.getScope(node);
+              const elementName = getSafeName('value', scope);
+              const fixes: TSESLint.RuleFix[] = [];
+
+              fixes.push(
+                fixer.replaceTextRange(
+                  [node.range[0], node.body.range[0]],
+                  `for (const ${elementName} of ${arrayText}) `,
+                ),
+              );
+
+              for (const reference of indexVar.references) {
+                const id = reference.identifier;
+
+                if (!contains(node.body, id)) {
+                  continue;
+                }
+
+                if (
+                  id.parent.type === AST_NODE_TYPES.MemberExpression &&
+                  id.parent.property === id &&
+                  id.parent.computed
+                ) {
+                  fixes.push(fixer.replaceText(id.parent, elementName));
+                }
+              }
+
+              return fixes;
+            },
           });
         }
       },
