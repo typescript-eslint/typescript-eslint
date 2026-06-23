@@ -439,6 +439,37 @@ describe('TypeOrValueSpecifier', () => {
     );
 
     it.for([
+      // `package` must match along package-name boundaries: a value that is
+      // only a partial prefix of the importing package must not match.
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: 'sem' },
+      ],
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: 'semve' },
+      ],
+      [
+        'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: 'Node', package: 'type' },
+      ],
+      // A partial path component of a scoped package must not match either.
+      [
+        'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
+        {
+          from: 'package',
+          name: 'BabelCodeFrameOptions',
+          package: '@babel/code',
+        },
+      ],
+    ] as const satisfies [string, TypeOrValueSpecifier][])(
+      "doesn't match a package specifier that is only a partial prefix: %s\n\t%s",
+      ([code, typeOrValueSpecifier], { expect }) => {
+        expect(code).not.toMatchSpecifier(typeOrValueSpecifier);
+      },
+    );
+
+    it.for([
       [
         `
           type Other = { __otherBrand: true };
