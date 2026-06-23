@@ -6,6 +6,16 @@
     "description": "The method signature style to enforce using.",
     "enum": ["method", "property"],
     "type": "string"
+  },
+  {
+    "additionalProperties": false,
+    "properties": {
+      "convertReadonly": {
+        "description": "Whether to also convert `readonly` function-typed properties to method signatures, dropping the `readonly` modifier. Only applies when enforcing the `method` style.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
   }
 ]
 
@@ -13,8 +23,14 @@
 # TYPES:
 
 type Options = [
-  /** The method signature style to enforce using. */
-  | 'property'
-  /** The method signature style to enforce using. */
-  | 'method',
+  (
+    /** The method signature style to enforce using. */
+    | 'property'
+    /** The method signature style to enforce using. */
+    | 'method'
+  ),
+  {
+    /** Whether to also convert `readonly` function-typed properties to method signatures, dropping the `readonly` modifier. Only applies when enforcing the `method` style. */
+    convertReadonly?: boolean;
+  },
 ];

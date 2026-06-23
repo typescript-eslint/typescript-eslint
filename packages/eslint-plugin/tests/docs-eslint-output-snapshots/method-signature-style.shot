@@ -55,3 +55,18 @@ interface T1 {
 type T2 = {
   func(arg: boolean): void;
 };
+
+Incorrect
+Options: "method", { "convertReadonly": true }
+
+interface Example {
+  readonly func: (arg: string) => number;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Function property signature is forbidden. Use a method shorthand instead.
+}
+
+Correct
+Options: "method", { "convertReadonly": true }
+
+interface Example {
+  func(arg: string): number;
+}
