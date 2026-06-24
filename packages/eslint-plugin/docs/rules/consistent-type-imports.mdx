@@ -121,7 +121,7 @@ This rule and `verbatimModuleSyntax` overlap in some situations, but there are a
 | Failures detected | Does not fail `tsc` build; can be auto-fixed with `--fix` | Fails `tsc` build; cannot be auto-fixed on the command-line |
 | `import { type T } from 'T';` | TypeScript will emit nothing (it "elides" the import) | TypeScript emits `import {} from 'T'` |
 
-Because there are some differences, using both this rule and `verbatimModuleSyntax` at the same time can lead to duplicate reports on the same import.
+Because they have slightly different goals, using both this rule and `verbatimModuleSyntax` at the same time can lead to conflicting and/or duplicate reports on the same import.
 For example, TypeScript may report that a type must be imported using `import type`, and this rule may also report that the import should use your configured style.
 If you want ESLint autofixes and style enforcement for explicit `import type`, keep this rule enabled.
 If TypeScript's diagnostics are sufficient for your project, you can disable this rule to avoid duplicate reports.
