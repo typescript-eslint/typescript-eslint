@@ -17,6 +17,10 @@ body:
   - type: markdown
     attributes:
       value: |
+        If you used AI assistance to prepare this issue, please review and follow the [AI Contribution Policy](https://typescript-eslint.io/contributing/ai-policy/).
+  - type: markdown
+    attributes:
+      value: |
         If your request is for help, not documentation, please ask on [StackOverflow](https://stackoverflow.com/questions/tagged/typescript-eslint)
   - type: textarea
     attributes:

@@ -22,6 +22,10 @@ body:
   - type: markdown
     attributes:
       value: |
+        If you used AI assistance to prepare this issue, please review and follow the [AI Contribution Policy](https://typescript-eslint.io/contributing/ai-policy/).
+  - type: markdown
+    attributes:
+      value: |
         **All typescript-eslint bug reports need an isolated reproduction** we can clone locally and get running without other projects or existing knowledge of your project.
         If you can't provide one, your report will likely be closed without action.
   - type: markdown
