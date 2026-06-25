@@ -1,3 +1,21 @@
+## 8.62.0 (2026-06-22)
+
+### 🚀 Features
+
+- remove redundant package.json "files" ([#12444](https://github.com/typescript-eslint/typescript-eslint/pull/12444))
+
+### 🩹 Fixes
+
+- add "files" to rule-schema-to-typescript-types ([#12441](https://github.com/typescript-eslint/typescript-eslint/pull/12441))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.62.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.61.1 (2026-06-15)
 
 ### 🩹 Fixes

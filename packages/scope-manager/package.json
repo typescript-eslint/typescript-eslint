@@ -1,13 +1,10 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.61.1",
+  "version": "8.62.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
