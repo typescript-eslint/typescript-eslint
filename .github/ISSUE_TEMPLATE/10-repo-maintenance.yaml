@@ -9,6 +9,10 @@ body:
     attributes:
       value: |
         This issue form is specifically for work done in this repository. Only use it if you are suggesting a change to repository tooling. Don't use it for work in any other repository.
+  - type: markdown
+    attributes:
+      value: |
+        If you used AI assistance to prepare this issue, please review and follow the [AI Contribution Policy](https://typescript-eslint.io/contributing/ai-policy/).
   - type: textarea
     attributes:
       label: Suggestion
