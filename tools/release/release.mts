@@ -1,10 +1,10 @@
 import { execaSync } from 'execa';
+import { parseArgs } from 'node:util';
 import {
   releaseChangelog,
   releasePublish,
   releaseVersion,
 } from 'nx/release/index.js';
-import yargs from 'yargs';
 
 if (process.env.CI !== 'true') {
   throw new Error(
@@ -12,38 +12,45 @@ if (process.env.CI !== 'true') {
   );
 }
 
-const options = await yargs(process.argv.slice(2))
-  .version(false)
-  .option('version', {
-    description:
-      'Explicit version specifier to use, if overriding conventional commits',
-    type: 'string',
-  })
-  .option('dryRun', {
-    alias: 'd',
-    default: true,
-    description:
-      'Whether to perform a dry-run of the release process, defaults to true',
-    type: 'boolean',
-  })
-  .option('forceReleaseWithoutChanges', {
-    default: false,
-    description:
-      'Whether to do a release regardless of if there have been changes',
-    type: 'boolean',
-  })
-  .option('verbose', {
-    default: false,
-    description: 'Whether or not to enable verbose logging, defaults to false',
-    type: 'boolean',
-  })
-  .option('firstRelease', {
-    default: false,
-    description:
-      'Whether or not one of more of the packages are being released for the first time',
-    type: 'boolean',
-  })
-  .parseAsync();
+const { values } = parseArgs({
+  args: process.argv.slice(2),
+  options: {
+    // Whether to perform a dry-run of the release process, defaults to true
+    'dry-run': {
+      default: 'true',
+      short: 'd',
+      type: 'string',
+    },
+    // Whether or not one of more of the packages are being released for the first time
+    'first-release': {
+      default: 'false',
+      type: 'string',
+    },
+    // Whether to do a release regardless of if there have been changes
+    'force-release-without-changes': {
+      default: 'false',
+      type: 'string',
+    },
+    // Whether or not to enable verbose logging, defaults to false
+    verbose: {
+      default: false,
+      type: 'boolean',
+    },
+    // Explicit version specifier to use, if overriding conventional commits
+    version: {
+      type: 'string',
+    },
+  },
+});
+
+const options = {
+  dryRun: values['dry-run'] === 'true',
+  firstRelease: values['first-release'] === 'true',
+  forceReleaseWithoutChanges:
+    values['force-release-without-changes'] === 'true',
+  verbose: values.verbose,
+  version: values.version,
+};
 
 const { projectsVersionData, workspaceVersion } = await releaseVersion({
   specifier: options.version,
