@@ -8,6 +8,7 @@ import {
   createRule,
   getConstraintInfo,
   getParserServices,
+  isConditionalTest,
   isStrongPrecedenceNode,
   isWeakPrecedenceParent,
 } from '../util';
@@ -288,25 +289,39 @@ export default createRule<Options, MessageIds>({
               comparison.expression,
             );
 
-            // In maybeNullish === false, nullish values have the same truth table
-            // as `true`.
+            const fixWouldReturnExpressionDirectly =
+              !isOverallNegated && comparison.expressionIsNullableBoolean;
+
             if (
-              comparison.expressionIsNullableBoolean &&
-              comparison.booleanLiteral === 'false'
+              fixWouldReturnExpressionDirectly &&
+              !isConditionalTest(mutatedNode)
             ) {
               if (mayNeedParentheses) {
                 replacementText = parenthesize(replacementText);
               }
-              replacementText = `${replacementText} ?? true`;
+              replacementText = `${replacementText} ?? false`;
               mayNeedParentheses = true;
-            }
-
-            if (isOverallNegated) {
-              if (mayNeedParentheses) {
-                replacementText = parenthesize(replacementText);
+            } else {
+              // In maybeNullish === false, nullish values have the same truth table
+              // as `true`.
+              if (
+                comparison.expressionIsNullableBoolean &&
+                comparison.booleanLiteral === 'false'
+              ) {
+                if (mayNeedParentheses) {
+                  replacementText = parenthesize(replacementText);
+                }
+                replacementText = `${replacementText} ?? true`;
+                mayNeedParentheses = true;
               }
-              replacementText = `!${replacementText}`;
-              mayNeedParentheses = false;
+
+              if (isOverallNegated) {
+                if (mayNeedParentheses) {
+                  replacementText = parenthesize(replacementText);
+                }
+                replacementText = `!${replacementText}`;
+                mayNeedParentheses = false;
+              }
             }
 
             if (mayNeedParentheses && isWeakPrecedenceParent(mutatedNode)) {
