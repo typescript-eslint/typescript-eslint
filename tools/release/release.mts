@@ -1,10 +1,10 @@
 import { execaSync } from 'execa';
+import { parseArgs } from 'node:util';
 import {
   releaseChangelog,
   releasePublish,
   releaseVersion,
 } from 'nx/release/index.js';
-import yargs from 'yargs';
 
 if (process.env.CI !== 'true') {
   throw new Error(
@@ -12,38 +12,31 @@ if (process.env.CI !== 'true') {
   );
 }
 
-const options = await yargs(process.argv.slice(2))
-  .version(false)
-  .option('version', {
-    description:
-      'Explicit version specifier to use, if overriding conventional commits',
-    type: 'string',
-  })
-  .option('dryRun', {
-    alias: 'd',
-    default: true,
-    description:
-      'Whether to perform a dry-run of the release process, defaults to true',
-    type: 'boolean',
-  })
-  .option('forceReleaseWithoutChanges', {
-    default: false,
-    description:
-      'Whether to do a release regardless of if there have been changes',
-    type: 'boolean',
-  })
-  .option('verbose', {
-    default: false,
-    description: 'Whether or not to enable verbose logging, defaults to false',
-    type: 'boolean',
-  })
-  .option('firstRelease', {
-    default: false,
-    description:
-      'Whether or not one of more of the packages are being released for the first time',
-    type: 'boolean',
-  })
-  .parseAsync();
+const { values: options } = parseArgs({
+  args: process.argv.slice(2),
+  options: {
+    dryRun: {
+      default: true,
+      short: 'd',
+      type: 'boolean',
+    },
+    firstRelease: {
+      default: false,
+      type: 'boolean',
+    },
+    forceReleaseWithoutChanges: {
+      default: false,
+      type: 'boolean',
+    },
+    verbose: {
+      default: false,
+      type: 'boolean',
+    },
+    version: {
+      type: 'string',
+    },
+  },
+});
 
 const { projectsVersionData, workspaceVersion } = await releaseVersion({
   specifier: options.version,
