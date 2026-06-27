@@ -155,7 +155,9 @@ while (thisIsTrue) {
 
 ### `checkTypePredicates`
 
-{/* insert option description */}
+When `true`, this option also checks conditions involving TypeScript type predicates (`value is T`) and assertion signatures (`asserts value is T`).
+
+This option assumes that type predicates and assertion functions are implemented correctly. Like TypeScript itself, this rule trusts their declared types and does not verify that their runtime implementation matches those declarations.
 
 Example of additional incorrect code with `{ checkTypePredicates: true }`:
 
