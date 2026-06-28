@@ -235,6 +235,87 @@ ruleTester.run('test', rule, {
         },
       ],
     },
+    // noFormat not allowed on non-code fields (e.g. output)
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: 'var x = 1;',
+      errors: [{ messageId: 'error' }],
+      output: noFormat\`var x = 1;\`,
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          messageId: 'noFormatNotAllowedHere',
+        },
+      ],
+      output: `
+ruleTester.run('test', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: 'var x = 1;',
+      errors: [{ messageId: 'error' }],
+      output: \`var x = 1;\`,
+    },
+  ],
+});
+      `,
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: 'var x = 1;',
+      errors: [
+        {
+          messageId: 'error',
+          suggestions: [
+            {
+              messageId: 'suggestion',
+              output: noFormat\`var x = 1;\`,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          messageId: 'noFormatNotAllowedHere',
+        },
+      ],
+      output: `
+ruleTester.run('test', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: 'var x = 1;',
+      errors: [
+        {
+          messageId: 'error',
+          suggestions: [
+            {
+              messageId: 'suggestion',
+              output: \`var x = 1;\`,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
+      `,
+    },
   ],
   valid: [
     {
@@ -277,6 +358,14 @@ ruleTester.run('test', rule, {
     {
       code: `
 ruleTester.run('test', rule, {
+  valid: [{ code: noFormat\`const x = 1;\` }],
+  invalid: [],
+});
+      `,
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
   code: "import type { ValueOf } from './utils';",
   filename: path.resolve(
     PACKAGES_DIR,
@@ -285,5 +374,23 @@ ruleTester.run('test', rule, {
 });
       `,
     },
+    `
+ruleTester.run('test', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: 'x.y!;',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: undefined,
+        },
+      ],
+    },
+  ],
+});
+    `,
   ],
 });
