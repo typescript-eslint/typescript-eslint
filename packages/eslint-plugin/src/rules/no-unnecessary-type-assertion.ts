@@ -1,5 +1,5 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type {
   ReportFixFunction,
   RuleFix,
@@ -22,6 +22,49 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+
+function isAtExpressionStatementStart(node: TSESTree.Node): boolean {
+  let current: TSESTree.Node = node;
+  while (true) {
+    const { parent } = current;
+    if (parent == null) {
+      return false;
+    }
+    if (parent.range[0] !== current.range[0]) {
+      return false;
+    }
+    if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
+      return true;
+    }
+    current = parent;
+  }
+}
+
+function isAtArrowFunctionBodyStart(
+  node: TSESTree.Node,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  let current: TSESTree.Node = node;
+  while (true) {
+    if (isParenthesized(current, sourceCode)) {
+      return false;
+    }
+    const { parent } = current;
+    if (parent == null) {
+      return false;
+    }
+    if (
+      parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+      parent.body === current
+    ) {
+      return true;
+    }
+    if (parent.range[0] !== current.range[0]) {
+      return false;
+    }
+    current = parent;
+  }
+}
 
 export type Options = [
   {
@@ -794,18 +837,25 @@ export default createRule<Options, MessageIds>({
             ),
             NullThrowsReasons.MissingToken('>', 'type annotation'),
           );
-          // Removing the angle-bracketed type can leave a bare object
-          // literal in a position where `{` is parsed as a block (concise
-          // arrow body, or the start of an expression statement). Wrap the
-          // result in parentheses to preserve the original expression
-          // semantics.
+          // Removing the angle brackets leaves the asserted operand at the
+          // assertion's position, so its first token leads whatever the
+          // assertion led. A leading `{`/`function`/`class` at the start of an
+          // expression statement is parsed as a block / function or class
+          // declaration, and a leading `{` at the start of a concise arrow body
+          // is parsed as a block body. In those positions the operand must be
+          // wrapped in parentheses to stay an expression.
+          const firstOperandToken = nullThrows(
+            context.sourceCode.getTokenAfter(closingAngleBracket),
+            NullThrowsReasons.MissingToken('operand', 'type assertion'),
+          );
+          const breaksExpressionStatement =
+            ['{', 'function', 'class'].includes(firstOperandToken.value) &&
+            isAtExpressionStatementStart(node);
+          const breaksArrowFunctionBody =
+            firstOperandToken.value === '{' &&
+            isAtArrowFunctionBodyStart(node, context.sourceCode);
           const needsParens =
-            node.expression.type === AST_NODE_TYPES.ObjectExpression &&
-            ((node.parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-              node.parent.body === node) ||
-              node.parent.type === AST_NODE_TYPES.ExpressionStatement) &&
-            !isParenthesized(node, context.sourceCode) &&
-            !isParenthesized(node.expression, context.sourceCode);
+            breaksExpressionStatement || breaksArrowFunctionBody;
 
           const fixes: RuleFix[] = [];
           if (needsParens) {
