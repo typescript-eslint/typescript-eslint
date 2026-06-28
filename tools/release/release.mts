@@ -12,6 +12,17 @@ if (process.env.CI !== 'true') {
   );
 }
 
+function booleanOption(value: string): boolean {
+  const normalizedValue = value.toLowerCase().trim();
+  const allowedValues = ['', 'true', 'false'];
+
+  if (!allowedValues.includes(normalizedValue)) {
+    throw new Error(`Invalid boolean value: "${value}"`);
+  }
+
+  return normalizedValue !== 'false';
+}
+
 const { values } = parseArgs({
   args: process.argv.slice(2),
   options: {
@@ -44,10 +55,11 @@ const { values } = parseArgs({
 });
 
 const options = {
-  dryRun: values['dry-run'] === 'true',
-  firstRelease: values['first-release'] === 'true',
-  forceReleaseWithoutChanges:
-    values['force-release-without-changes'] === 'true',
+  dryRun: booleanOption(values['dry-run']),
+  firstRelease: booleanOption(values['first-release']),
+  forceReleaseWithoutChanges: booleanOption(
+    values['force-release-without-changes'],
+  ),
   verbose: values.verbose,
   version: values.version,
 };
