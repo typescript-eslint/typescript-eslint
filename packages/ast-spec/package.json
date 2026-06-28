@@ -105,7 +105,8 @@
         "dependsOn": [
           "typecheck"
         ]
-      }
+      },
+      "attw-check": {}
     }
   }
 }
