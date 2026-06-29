@@ -408,6 +408,57 @@ function f(this: void, a: boolean): void;
 function f(this: {}, a: boolean): void;
 function f(this: void | {}, a: boolean): void {}
     `,
+    // Type parameters with different constraints must not be unified, even when
+    // they are named differently.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12143
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+function a<T extends A>(s: T, param: string): string;
+function a<R extends B>(s: R): string;
+function a<T extends A | B>(s: T, param?: string): string {
+  return 'aaa';
+}
+    `,
+    // Type parameters with different constraints must not be unified, even when
+    // they are named the same.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12143
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+function b<T extends A>(s: T, param: string): string;
+function b<T extends B>(s: T): string;
+function b<T extends A | B>(s: T, param?: string): string {
+  return 'aaa';
+}
+    `,
+    // Type parameters with the same constraint but different defaults must not
+    // be unified.
+    `
+function withDefault<T extends string = 'a'>(x: T, param: string): void;
+function withDefault<R extends string = 'b'>(x: R): void;
+function withDefault<T extends string>(x: T, param?: string): void {}
+    `,
+    // A constrained and an unconstrained type parameter must not be unified.
+    `
+function mixed<T extends string>(x: T, param: string): void;
+function mixed<R>(x: R): void;
+function mixed<T extends string>(x: T, param?: string): void {}
+    `,
+    // An unconstrained and a constrained type parameter must not be unified.
+    `
+function mixedReversed<T>(x: T, param: string): void;
+function mixedReversed<R extends string>(x: R): void;
+function mixedReversed<T>(x: T, param?: string): void {}
+    `,
+    // Type parameters from an outer scope are still compared by name, so these
+    // methods cannot be unified.
+    `
+interface I<T, U> {
+  method(x: T, param: string): void;
+  method(x: U): void;
+}
+    `,
   ],
   invalid: [
     {
@@ -1253,6 +1304,136 @@ function f(this: string | number, a: boolean): void {}
           },
           line: 3,
           messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      // Type parameters with the same constraint should be unified even when
+      // they are named differently.
+      // https://github.com/typescript-eslint/typescript-eslint/issues/12143
+      code: `
+function c<T extends string>(s: T, param: string): string;
+function c<R extends string>(s: R): string;
+function c<T extends string>(s: T, param?: string): string {
+  return 'aaa';
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Differently named type parameters that share a constraint are unified
+      // even when nested inside another generic type.
+      code: `
+function nested<T extends string>(x: Array<T>, param: string): void;
+function nested<R extends string>(x: Array<R>): void;
+function nested<T extends string>(x: Array<T>, param?: string): void {}
+      `,
+      errors: [
+        {
+          column: 48,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // The single differing parameter is detected even when another parameter
+      // references a differently named type parameter with the same constraint.
+      code: `
+function single<T extends string>(a: number, x: T): void;
+function single<R extends string>(a: string, x: R): void;
+function single<T extends string>(a: number | string, x: T): void {}
+      `,
+      errors: [
+        {
+          column: 35,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      // Qualified type names are compared by name while the renamed type
+      // parameters are still unified by their constraint.
+      code: `
+function qualified<T extends string>(x: A.B, y: T, z: string): void;
+function qualified<R extends string>(x: A.B, y: R): void;
+function qualified<T extends string>(x: A.B, y: T, z?: string): void {}
+      `,
+      errors: [
+        {
+          column: 52,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Unconstrained type parameters are unified regardless of their names.
+      code: `
+function unconstrained<T>(x: T, param: string): void;
+function unconstrained<R>(x: R): void;
+function unconstrained<T>(x: T, param?: string): void {}
+      `,
+      errors: [
+        {
+          column: 33,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // A parameter referencing multiple differently named type parameters that
+      // share their constraints is still unified.
+      code: `
+function multiRef<T extends string, U extends number>(
+  x: Map<T, U>,
+  param: string,
+): void;
+function multiRef<R extends string, S extends number>(x: Map<R, S>): void;
+function multiRef<T extends string, U extends number>(
+  x: Map<T, U>,
+  param?: string,
+): void {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          line: 4,
+          messageId: 'omittingSingleParameter',
         },
       ],
     },

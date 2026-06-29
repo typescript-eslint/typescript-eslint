@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getKeys } from '@typescript-eslint/visitor-keys';
 
 import type { Equal } from '../util';
 
@@ -206,19 +207,45 @@ export default createRule<Options, MessageIds>({
       b: SignatureDefinition,
       isTypeParameter: IsTypeParameter,
     ): Unify | undefined {
-      if (!signaturesCanBeUnified(a, b, isTypeParameter)) {
+      // Type parameters declared on the overloads themselves are compared by
+      // their constraint rather than by name, so that two overloads using the
+      // same constraint under different type parameter names can still unify.
+      const ownTypeParametersA = getOwnTypeParameterConstraints(a);
+      const ownTypeParametersB = getOwnTypeParameterConstraints(b);
+
+      if (
+        !signaturesCanBeUnified(
+          a,
+          b,
+          isTypeParameter,
+          ownTypeParametersA,
+          ownTypeParametersB,
+        )
+      ) {
         return undefined;
       }
 
       return a.params.length === b.params.length
-        ? signaturesDifferBySingleParameter(a.params, b.params)
-        : signaturesDifferByOptionalOrRestParameter(a, b);
+        ? signaturesDifferBySingleParameter(
+            a.params,
+            b.params,
+            ownTypeParametersA,
+            ownTypeParametersB,
+          )
+        : signaturesDifferByOptionalOrRestParameter(
+            a,
+            b,
+            ownTypeParametersA,
+            ownTypeParametersB,
+          );
     }
 
     function signaturesCanBeUnified(
       a: SignatureDefinition,
       b: SignatureDefinition,
       isTypeParameter: IsTypeParameter,
+      ownTypeParametersA: ReadonlyMap<string, string>,
+      ownTypeParametersB: ReadonlyMap<string, string>,
     ): boolean {
       // Must return the same type.
 
@@ -249,7 +276,12 @@ export default createRule<Options, MessageIds>({
       }
 
       return (
-        typesAreEqual(a.returnType, b.returnType) &&
+        typesAreEqual(
+          a.returnType,
+          b.returnType,
+          ownTypeParametersA,
+          ownTypeParametersB,
+        ) &&
         // Must take the same type parameters.
         // If one uses a type parameter (from outside) and the other doesn't, they shouldn't be joined.
         arraysAreEqual(aTypeParams, bTypeParams, typeParametersAreEqual) &&
@@ -262,6 +294,8 @@ export default createRule<Options, MessageIds>({
     function signaturesDifferBySingleParameter(
       types1: readonly TSESTree.Parameter[],
       types2: readonly TSESTree.Parameter[],
+      ownTypeParameters1: ReadonlyMap<string, string>,
+      ownTypeParameters2: ReadonlyMap<string, string>,
     ): Unify | undefined {
       const firstParam1 = types1[0];
       const firstParam2 = types2[0];
@@ -271,10 +305,16 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
+      const parametersAreEqualConsideringTypeParameters = (
+        p1: TSESTree.Parameter,
+        p2: TSESTree.Parameter,
+      ): boolean =>
+        parametersAreEqual(p1, p2, ownTypeParameters1, ownTypeParameters2);
+
       const index = getIndexOfFirstDifference(
         types1,
         types2,
-        parametersAreEqual,
+        parametersAreEqualConsideringTypeParameters,
       );
       if (index == null) {
         return undefined;
@@ -285,7 +325,7 @@ export default createRule<Options, MessageIds>({
         !arraysAreEqual(
           types1.slice(index + 1),
           types2.slice(index + 1),
-          parametersAreEqual,
+          parametersAreEqualConsideringTypeParameters,
         )
       ) {
         return undefined;
@@ -320,6 +360,8 @@ export default createRule<Options, MessageIds>({
     function signaturesDifferByOptionalOrRestParameter(
       a: SignatureDefinition,
       b: SignatureDefinition,
+      ownTypeParameters1: ReadonlyMap<string, string>,
+      ownTypeParameters2: ReadonlyMap<string, string>,
     ): Unify | undefined {
       const sig1 = a.params;
       const sig2 = b.params;
@@ -361,7 +403,14 @@ export default createRule<Options, MessageIds>({
           ? sig2i.parameter.typeAnnotation
           : sig2i.typeAnnotation;
 
-        if (!typesAreEqual(typeAnnotation1, typeAnnotation2)) {
+        if (
+          !typesAreEqual(
+            typeAnnotation1,
+            typeAnnotation2,
+            ownTypeParameters1,
+            ownTypeParameters2,
+          )
+        ) {
           return undefined;
         }
       }
@@ -438,6 +487,8 @@ export default createRule<Options, MessageIds>({
     function parametersAreEqual(
       a: TSESTree.Parameter,
       b: TSESTree.Parameter,
+      ownTypeParametersA: ReadonlyMap<string, string>,
+      ownTypeParametersB: ReadonlyMap<string, string>,
     ): boolean {
       const typeAnnotationA = isTSParameterProperty(a)
         ? a.parameter.typeAnnotation
@@ -448,7 +499,12 @@ export default createRule<Options, MessageIds>({
 
       return (
         parametersHaveEqualSigils(a, b) &&
-        typesAreEqual(typeAnnotationA, typeAnnotationB)
+        typesAreEqual(
+          typeAnnotationA,
+          typeAnnotationB,
+          ownTypeParametersA,
+          ownTypeParametersB,
+        )
       );
     }
 
@@ -483,30 +539,136 @@ export default createRule<Options, MessageIds>({
       a: TSESTree.TSTypeParameter,
       b: TSESTree.TSTypeParameter,
     ): boolean {
+      // The names are intentionally not compared: two overloads declaring a
+      // type parameter with the same constraint (and default) can be unified
+      // even if those parameters are named differently, e.g. `<T extends string>`
+      // and `<R extends string>`.
       return (
-        a.name.name === b.name.name &&
-        constraintsAreEqual(a.constraint, b.constraint)
+        constraintsAreEqual(a.constraint, b.constraint) &&
+        constraintsAreEqual(a.default, b.default)
       );
     }
 
     function typesAreEqual(
       a: TSESTree.TSTypeAnnotation | undefined,
       b: TSESTree.TSTypeAnnotation | undefined,
+      ownTypeParametersA: ReadonlyMap<string, string>,
+      ownTypeParametersB: ReadonlyMap<string, string>,
     ): boolean {
       return (
         a === b ||
         (a != null &&
           b != null &&
-          context.sourceCode.getText(a.typeAnnotation) ===
-            context.sourceCode.getText(b.typeAnnotation))
+          normalizeTypeText(a.typeAnnotation, ownTypeParametersA) ===
+            normalizeTypeText(b.typeAnnotation, ownTypeParametersB))
       );
+    }
+
+    /**
+     * Maps each type parameter declared on the signature itself to a token
+     * derived from its constraint. References to these parameters are then
+     * compared by constraint instead of by name, while references to type
+     * parameters from an outer scope (absent from the map) keep being compared
+     * by name.
+     */
+    function getOwnTypeParameterConstraints(
+      signature: SignatureDefinition,
+    ): ReadonlyMap<string, string> {
+      const constraints = new Map<string, string>();
+      for (const typeParameter of signature.typeParameters?.params ?? []) {
+        constraints.set(
+          typeParameter.name.name,
+          typeParameter.constraint == null
+            ? ''
+            : context.sourceCode.getText(typeParameter.constraint),
+        );
+      }
+      return constraints;
+    }
+
+    /**
+     * Returns the source text of a type node with every reference to one of the
+     * signature's own type parameters replaced by a token derived from that
+     * parameter's constraint. The token is wrapped in `\0`, which cannot appear
+     * in source code, so it can never collide with an unrelated type that
+     * happens to be spelled like the constraint.
+     */
+    function normalizeTypeText(
+      node: TSESTree.TypeNode,
+      ownTypeParameters: ReadonlyMap<string, string>,
+    ): string {
+      const text = context.sourceCode.getText(node);
+      if (ownTypeParameters.size === 0) {
+        return text;
+      }
+
+      const offset = node.range[0];
+      const replacements: { end: number; start: number; text: string }[] = [];
+      forEachTypeReference(node, reference => {
+        const constraint = ownTypeParameters.get(reference.name);
+        if (constraint != null) {
+          replacements.push({
+            start: reference.range[0] - offset,
+            end: reference.range[1] - offset,
+            text: `\0${constraint}\0`,
+          });
+        }
+      });
+      if (replacements.length === 0) {
+        return text;
+      }
+
+      replacements.sort((x, y) => x.start - y.start);
+      let result = '';
+      let lastIndex = 0;
+      for (const replacement of replacements) {
+        result += text.slice(lastIndex, replacement.start) + replacement.text;
+        lastIndex = replacement.end;
+      }
+      return result + text.slice(lastIndex);
+    }
+
+    /** Calls `callback` for the name of every type reference found within `node`. */
+    function forEachTypeReference(
+      node: TSESTree.Node,
+      callback: (reference: TSESTree.Identifier) => void,
+    ): void {
+      if (
+        node.type === AST_NODE_TYPES.TSTypeReference &&
+        isIdentifier(node.typeName)
+      ) {
+        callback(node.typeName);
+      }
+
+      const properties = node as unknown as Record<string, unknown>;
+      for (const key of getKeys(node)) {
+        const value = properties[key];
+        if (Array.isArray(value)) {
+          for (const child of value as unknown[]) {
+            if (isNode(child)) {
+              forEachTypeReference(child, callback);
+            }
+          }
+        } else if (isNode(value)) {
+          forEachTypeReference(value, callback);
+        }
+      }
+    }
+
+    function isNode(value: unknown): value is TSESTree.Node {
+      return value != null && typeof value === 'object' && 'type' in value;
     }
 
     function constraintsAreEqual(
       a: TSESTree.TypeNode | undefined,
       b: TSESTree.TypeNode | undefined,
     ): boolean {
-      return a === b || (a != null && a.type === b?.type);
+      return (
+        a === b ||
+        (a != null &&
+          b != null &&
+          context.sourceCode.getText(a) === context.sourceCode.getText(b))
+      );
     }
 
     /* Returns the first index where `a` and `b` differ. */
