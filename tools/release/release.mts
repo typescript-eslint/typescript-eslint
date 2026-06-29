@@ -17,36 +17,71 @@ function booleanOption(value: string): boolean {
   return normalizedValue !== 'false';
 }
 
+const optionDescriptions = {
+  'dry-run':
+    'Whether to perform a dry-run of the release process, defaults to true',
+  'first-release':
+    'Whether or not one of more of the packages are being released for the first time',
+  'force-release-without-changes':
+    'Whether to do a release regardless of if there have been changes',
+  help: 'Show help',
+  verbose: 'Whether or not to enable verbose logging, defaults to false',
+  version:
+    'Explicit version specifier to use, if overriding conventional commits',
+};
+
+const parseArgsOptions = {
+  'dry-run': {
+    default: 'true',
+    short: 'd',
+    type: 'string',
+  },
+  'first-release': {
+    default: 'false',
+    type: 'string',
+  },
+  'force-release-without-changes': {
+    default: 'false',
+    type: 'string',
+  },
+  help: {
+    default: false,
+    type: 'boolean',
+  },
+  verbose: {
+    default: false,
+    type: 'boolean',
+  },
+  version: {
+    type: 'string',
+  },
+} as const;
+
+function printHelp(): void {
+  console.log('Options:');
+  for (const [name, config] of Object.entries(parseArgsOptions)) {
+    const short = 'short' in config ? `-${config.short}, ` : '    ';
+    const defaultStr =
+      'default' in config ? ` [default: ${String(config.default)}]` : '';
+    const description =
+      optionDescriptions[name as keyof typeof optionDescriptions];
+
+    console.log(
+      `  ${short}--${name.padEnd(35)} ${description} [${config.type}]${defaultStr}`,
+    );
+  }
+}
+
 const { values } = parseArgs({
   args: process.argv.slice(2),
-  options: {
-    // Whether to perform a dry-run of the release process, defaults to true
-    'dry-run': {
-      default: 'true',
-      short: 'd',
-      type: 'string',
-    },
-    // Whether or not one of more of the packages are being released for the first time
-    'first-release': {
-      default: 'false',
-      type: 'string',
-    },
-    // Whether to do a release regardless of if there have been changes
-    'force-release-without-changes': {
-      default: 'false',
-      type: 'string',
-    },
-    // Whether or not to enable verbose logging, defaults to false
-    verbose: {
-      default: false,
-      type: 'boolean',
-    },
-    // Explicit version specifier to use, if overriding conventional commits
-    version: {
-      type: 'string',
-    },
-  },
+  options: parseArgsOptions,
 });
+
+if (values.help) {
+  printHelp();
+  // eslint-disable-next-line no-process-exit
+  process.exit(0);
+}
 
 const options = {
   dryRun: booleanOption(values['dry-run']),
