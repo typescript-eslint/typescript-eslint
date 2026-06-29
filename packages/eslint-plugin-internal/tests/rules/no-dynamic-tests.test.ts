@@ -25,6 +25,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 11,
+          endColumn: 30,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -40,6 +42,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 13,
+          endColumn: 33,
+          endLine: 4,
           line: 4,
           messageId: 'noDynamicTests',
         },
@@ -56,6 +60,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 11,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -71,6 +77,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 11,
+          endColumn: 45,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -87,6 +95,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 11,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -103,6 +113,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 14,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -119,6 +131,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 11,
+          endColumn: 31,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -135,6 +149,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 11,
+          endColumn: 41,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -151,6 +167,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 11,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -167,6 +185,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 13,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -183,6 +203,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -199,6 +221,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 19,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -214,6 +238,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 22,
+          endColumn: 36,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -230,6 +256,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 10,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'noDynamicTests',
         },
@@ -251,6 +279,10 @@ ruleTester.run('test', rule, {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 23,
+          endLine: 8,
+          line: 8,
           messageId: 'noFormatNotAllowedHere',
         },
       ],
@@ -291,6 +323,10 @@ ruleTester.run('test', rule, {
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 31,
+          endLine: 13,
+          line: 13,
           messageId: 'noFormatNotAllowedHere',
         },
       ],
