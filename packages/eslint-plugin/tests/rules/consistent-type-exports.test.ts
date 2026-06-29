@@ -115,9 +115,8 @@ export { A };
           messageId: 'singleExportIsType',
         },
       ],
-      output:
-        `export type { Type1 } from './consistent-type-exports';\n` +
-        `export { value1 } from './consistent-type-exports';`,
+      output: `export type { Type1 } from './consistent-type-exports';
+export { value1 } from './consistent-type-exports';`,
     },
     {
       code: `

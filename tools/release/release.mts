@@ -6,12 +6,6 @@ import {
   releaseVersion,
 } from 'nx/release/index.js';
 
-if (process.env.CI !== 'true') {
-  throw new Error(
-    'Releases cannot be run outside of CI, we use trusted publishing which requires an authenticated GitHub Actions environment',
-  );
-}
-
 function booleanOption(value: string): boolean {
   const normalizedValue = value.toLowerCase().trim();
   const allowedValues = ['', 'true', 'false'];
@@ -64,6 +58,12 @@ const options = {
   version: values.version,
 };
 
+if (process.env.CI !== 'true' && !options.dryRun) {
+  throw new Error(
+    'Releases cannot be run outside of CI, we use trusted publishing which requires an authenticated GitHub Actions environment',
+  );
+}
+
 const { projectsVersionData, workspaceVersion } = await releaseVersion({
   specifier: options.version,
   // stage package.json updates to be committed later by the changelog command
@@ -113,7 +113,7 @@ if (options.dryRun) {
   console.log(
     '⚠️ NOTE: Applying canary version to package.json files so that dry-run publishing produces useful output...',
   );
-  execaSync('pnpm exec', ['tsx', 'tools/release/apply-canary-version.mts']);
+  execaSync('pnpm', ['exec', 'tsx', 'tools/release/apply-canary-version.mts']);
   console.log(
     '✅ Applied canary version to package.json files so that dry-run publishing produces useful output\n',
   );
@@ -131,7 +131,9 @@ if (options.dryRun) {
     '⚠️ NOTE: Reverting temporary package.json changes related to dry-run publishing...',
   );
   execaSync('git', [
-    'checkout',
+    'restore',
+    '--staged',
+    '--worktree',
     'packages/**/package.json',
     'package.json',
     'pnpm-lock.yaml',
