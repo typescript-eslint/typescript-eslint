@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -12,13 +13,11 @@ import {
   nullThrows,
 } from '../util';
 
-export type Options = [
-  'method' | 'property',
-  {
-    convertReadonly?: boolean;
-  },
-];
-export type MessageIds = 'errorMethod' | 'errorProperty';
+export type Options = [('method' | 'property')?];
+export type MessageIds =
+  | 'convertToMethodSignature'
+  | 'errorMethod'
+  | 'errorProperty';
 
 export default createRule<Options, MessageIds>({
   name: 'method-signature-style',
@@ -28,7 +27,10 @@ export default createRule<Options, MessageIds>({
       description: 'Enforce using a particular method signature syntax',
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
+      convertToMethodSignature:
+        'Convert to a method signature. This removes the `readonly` modifier, allowing the member to be reassigned.',
       errorMethod:
         'Shorthand method signature is forbidden. Use a function property instead.',
       errorProperty:
@@ -40,22 +42,11 @@ export default createRule<Options, MessageIds>({
         description: 'The method signature style to enforce using.',
         enum: ['property', 'method'],
       },
-      {
-        type: 'object',
-        additionalProperties: false,
-        properties: {
-          convertReadonly: {
-            type: 'boolean',
-            description:
-              'Whether to also convert `readonly` function-typed properties to method signatures, dropping the `readonly` modifier. Only applies when enforcing the `method` style.',
-          },
-        },
-      },
     ],
   },
-  defaultOptions: ['property', { convertReadonly: false }],
+  defaultOptions: ['property'],
 
-  create(context, [mode, { convertReadonly }]) {
+  create(context, [mode]) {
     function getMethodKey(
       node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
     ): string {
@@ -243,27 +234,35 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          // There is no syntax for a `readonly` method signature. By default a
-          // `readonly` function-typed property is therefore left as-is (it has
-          // no method-shorthand equivalent); the `convertReadonly` option opts
-          // in to converting it anyway, dropping the `readonly` modifier.
-          if (propertyNode.readonly && !convertReadonly) {
+          const fix: ReportFixFunction = fixer => {
+            const key = getMethodKey(propertyNode);
+            const params = getMethodParams(typeNode);
+            const returnType = getMethodReturnType(typeNode);
+            const delimiter = getDelimiter(propertyNode);
+            return fixer.replaceText(
+              propertyNode,
+              `${key}${params}: ${returnType}${delimiter}`,
+            );
+          };
+
+          // There is no syntax for a `readonly` method signature, so converting
+          // a `readonly` function-typed property drops the `readonly` modifier.
+          // That is a behavioral change (a method may be reassigned, a
+          // `readonly` property may not), so it is offered as a suggestion
+          // rather than applied as an autofix.
+          if (propertyNode.readonly) {
+            context.report({
+              node: propertyNode,
+              messageId: 'errorProperty',
+              suggest: [{ messageId: 'convertToMethodSignature', fix }],
+            });
             return;
           }
 
           context.report({
             node: propertyNode,
             messageId: 'errorProperty',
-            fix: fixer => {
-              const key = getMethodKey(propertyNode);
-              const params = getMethodParams(typeNode);
-              const returnType = getMethodReturnType(typeNode);
-              const delimiter = getDelimiter(propertyNode);
-              return fixer.replaceText(
-                propertyNode,
-                `${key}${params}: ${returnType}${delimiter}`,
-              );
-            },
+            fix,
           });
         },
       }),

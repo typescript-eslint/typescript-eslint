@@ -53,7 +53,7 @@ interface Test {
           f(a: string): number;
         }
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
     {
       code: `
@@ -61,7 +61,7 @@ interface Test {
           ['f'](a: boolean): void;
         }
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
     {
       code: `
@@ -69,7 +69,7 @@ interface Test {
           f<T>(a: T): T;
         }
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
     {
       code: `
@@ -77,7 +77,7 @@ interface Test {
           ['f']<T extends {}>(a: T, b: T): T;
         }
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
     {
       code: `
@@ -85,59 +85,31 @@ interface Test {
           'f!'</* a */ T>(/* b */ x: any /* c */): void;
         }
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
     {
       code: `
         type Test = { f(a: string): number };
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
     {
       code: `
         type Test = { ['f']?(a: boolean): void };
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
     {
       code: `
         type Test = { f?<T>(a?: T): T };
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
     {
       code: `
         type Test = { ['f']?<T>(a: T, b: T): T };
       `,
-      options: ['method', {}],
-    },
-    {
-      // there is no syntax for a `readonly` method signature, so a `readonly`
-      // function-typed property has no method-shorthand equivalent
-      code: 'type Test = { readonly f: (a: string) => number };',
-      options: ['method', {}],
-    },
-    {
-      code: 'type Test = { readonly f?: <T>(a?: T) => T };',
-      options: ['method', {}],
-    },
-    {
-      code: "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
-      options: ['method', {}],
-    },
-    {
-      code: `
-        interface Test {
-          readonly f: (a: string) => number;
-        }
-      `,
-      options: ['method', {}],
-    },
-    {
-      // `convertReadonly: false` (the default) leaves `readonly` function-typed
-      // properties untouched in `method` mode
-      code: 'type Test = { readonly f: (a: string) => number };',
-      options: ['method', { convertReadonly: false }],
+      options: ['method'],
     },
     `
       interface Test {
@@ -153,13 +125,13 @@ interface Test {
       code: `
         type Test = { get f(): number };
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
     {
       code: `
         type Test = { set f(value: number): void };
       `,
-      options: ['method', {}],
+      options: ['method'],
     },
   ],
   invalid: [
@@ -271,7 +243,7 @@ interface Test {
         }
       `,
       errors: [{ messageId: 'errorProperty' }],
-      options: ['method', {}],
+      options: ['method'],
       output: `
         interface Test {
           f(a: string): number;
@@ -285,7 +257,7 @@ interface Test {
         }
       `,
       errors: [{ messageId: 'errorProperty' }],
-      options: ['method', {}],
+      options: ['method'],
       output: `
         interface Test {
           ['f'](a: boolean): void;
@@ -299,7 +271,7 @@ interface Test {
         }
       `,
       errors: [{ messageId: 'errorProperty' }],
-      options: ['method', {}],
+      options: ['method'],
       output: `
         interface Test {
           f<T>(a: T): T;
@@ -313,7 +285,7 @@ interface Test {
         }
       `,
       errors: [{ messageId: 'errorProperty' }],
-      options: ['method', {}],
+      options: ['method'],
       output: `
         interface Test {
           ['f']<T extends {}>(a: T, b: T): T;
@@ -327,7 +299,7 @@ interface Test {
         }
       `,
       errors: [{ messageId: 'errorProperty' }],
-      options: ['method', {}],
+      options: ['method'],
       output: `
         interface Test {
           'f!'</* a */ T>(/* b */ x: any /* c */): void;
@@ -339,7 +311,7 @@ interface Test {
         type Test = { f: (a: string) => number };
       `,
       errors: [{ messageId: 'errorProperty' }],
-      options: ['method', {}],
+      options: ['method'],
       output: `
         type Test = { f(a: string): number };
       `,
@@ -349,7 +321,7 @@ interface Test {
         type Test = { ['f']?: (a: boolean) => void };
       `,
       errors: [{ messageId: 'errorProperty' }],
-      options: ['method', {}],
+      options: ['method'],
       output: `
         type Test = { ['f']?(a: boolean): void };
       `,
@@ -359,7 +331,7 @@ interface Test {
         type Test = { f?: <T>(a?: T) => T };
       `,
       errors: [{ messageId: 'errorProperty' }],
-      options: ['method', {}],
+      options: ['method'],
       output: `
         type Test = { f?<T>(a?: T): T };
       `,
@@ -369,15 +341,75 @@ interface Test {
         type Test = { ['f']?: <T>(a: T, b: T) => T };
       `,
       errors: [{ messageId: 'errorProperty' }],
-      options: ['method', {}],
+      options: ['method'],
       output: `
         type Test = { ['f']?<T>(a: T, b: T): T };
       `,
     },
     {
-      // `convertReadonly: true` opts in to converting `readonly` function-typed
-      // properties, dropping the `readonly` modifier (there is no `readonly`
-      // method signature)
+      // a `readonly` function-typed property is reported, but converting it to a
+      // method drops the `readonly` modifier, so the conversion is offered as a
+      // suggestion rather than an autofix
+      code: 'type Test = { readonly f: (a: string) => number };',
+      errors: [
+        {
+          column: 15,
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: 'type Test = { f(a: string): number };',
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
+      code: 'type Test = { readonly f?: <T>(a?: T) => T };',
+      errors: [
+        {
+          column: 15,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: 'type Test = { f?<T>(a?: T): T };',
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
+      code: "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
+      errors: [
+        {
+          column: 15,
+          endColumn: 52,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: "type Test = { ['f']?<T>(a: T, b: T): T };",
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
       code: `
         interface Test {
           readonly f: (a: string) => number;
@@ -390,42 +422,20 @@ interface Test {
           endLine: 3,
           line: 3,
           messageId: 'errorProperty',
-        },
-      ],
-      options: ['method', { convertReadonly: true }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: `
         interface Test {
           f(a: string): number;
         }
       `,
-    },
-    {
-      code: 'type Test = { readonly f?: <T>(a?: T) => T };',
-      errors: [
-        {
-          column: 15,
-          endColumn: 43,
-          endLine: 1,
-          line: 1,
-          messageId: 'errorProperty',
+            },
+          ],
         },
       ],
-      options: ['method', { convertReadonly: true }],
-      output: 'type Test = { f?<T>(a?: T): T };',
-    },
-    {
-      code: "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
-      errors: [
-        {
-          column: 15,
-          endColumn: 52,
-          endLine: 1,
-          line: 1,
-          messageId: 'errorProperty',
-        },
-      ],
-      options: ['method', { convertReadonly: true }],
-      output: "type Test = { ['f']?<T>(a: T, b: T): T };",
+      options: ['method'],
+      output: null,
     },
     {
       code: noFormat`
@@ -479,7 +489,7 @@ interface Foo {
           messageId: 'errorProperty',
         },
       ],
-      options: ['method', {}],
+      options: ['method'],
       output: `
 interface Foo {
   semi(arg: string): void;
