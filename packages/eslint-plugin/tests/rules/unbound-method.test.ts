@@ -1793,6 +1793,14 @@ class Bar {
 declare const union: Foo | Bar;
 const bound = union.bound;
     `,
+    `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+declare const key: string;
+const bound = foo[key];
+    `,
   ],
   invalid: [
     {
