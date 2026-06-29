@@ -21,10 +21,6 @@ a node runs _before_ the first expensive type lookup.** When a syntactic guard
 can short-circuit the visitor, a type lookup that would have been thrown away
 never happens.
 
-This preference is hard to enforce with a lint rule of our own (the ordering is
-semantically equivalent, so there's nothing "wrong" to flag), which is exactly
-why it's a good fit for an agent skill.
-
 ## When to use
 
 Use this when authoring a new rule in `packages/eslint-plugin/src/rules`, or
