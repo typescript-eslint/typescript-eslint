@@ -22,31 +22,36 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const usedNames = new Set<string>();
+    const nameCounters = new Map<string, number>();
     function getSafeName(base: string, scope: TSESLint.Scope.Scope): string {
-      const declared = new Map<string, number>();
+      const declared = new Set<string>();
 
       let current: TSESLint.Scope.Scope | null = scope;
 
       while (current) {
         for (const variable of current.variables) {
-          declared.set(variable.name, 1);
+          declared.add(variable.name);
         }
 
         current = current.upper;
       }
 
-      if (!declared.has(base)) {
+      if (!declared.has(base) && !usedNames.has(base)) {
+        usedNames.add(base);
         return base;
       }
 
-      let suffix = 1;
+      let suffix = nameCounters.get(base) ?? 1;
       let candidate = `${base}${suffix}`;
 
-      while (declared.has(candidate)) {
+      while (declared.has(candidate) || usedNames.has(candidate)) {
         suffix++;
         candidate = `${base}${suffix}`;
       }
 
+      nameCounters.set(base, suffix + 1);
+      usedNames.add(candidate);
       return candidate;
     }
 
@@ -142,14 +147,13 @@ export default createRule({
       const arrayText = context.sourceCode.getText(arrayExpression);
       return indexVar.references.every(reference => {
         const id = reference.identifier;
-        const node = id.parent;
         return (
           !contains(body, id) ||
-          (node.type === AST_NODE_TYPES.MemberExpression &&
-            node.object.type !== AST_NODE_TYPES.ThisExpression &&
-            node.property === id &&
-            context.sourceCode.getText(node.object) === arrayText &&
-            !isAssignee(node))
+          (id.parent.type === AST_NODE_TYPES.MemberExpression &&
+            id.parent.object.type !== AST_NODE_TYPES.ThisExpression &&
+            id.parent.property === id &&
+            context.sourceCode.getText(id.parent.object) === arrayText &&
+            !isAssignee(id.parent))
         );
       });
     }

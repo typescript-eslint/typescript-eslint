@@ -413,7 +413,7 @@ for (let shadow = 0; shadow < arr.length; shadow++) {
       ],
       output: `
 for (const value of arr) {
-  for (const value of arr) {}
+  for (const value1 of arr) {}
 }
       `,
     },
