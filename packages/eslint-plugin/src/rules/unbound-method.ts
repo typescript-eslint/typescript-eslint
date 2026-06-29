@@ -234,10 +234,6 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (checkIfMethodAndReport(node, services.getSymbolAtLocation(node))) {
-          return;
-        }
-
         if (node.property.type !== AST_NODE_TYPES.Identifier || node.computed) {
           return;
         }
