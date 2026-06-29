@@ -5,8 +5,7 @@ description: Find and apply performance wins in typed lint rules by deferring ex
 
 # Deferring type checks in lint rules
 
-Type-aware rules are the main source of lint slowdowns, because calls into
-TypeScript's checker (`getTypeAtLocation`, `getConstrainedTypeAtLocation`,
+Type-aware rules are the main source of lint slowdowns, because calls into TypeScript's checker (`getTypeAtLocation`, `getConstrainedTypeAtLocation`,
 `checker.getTypeAtLocation`, `getTypeName`, etc.) are far more expensive than
 reading the AST that the parser already produced.
 
