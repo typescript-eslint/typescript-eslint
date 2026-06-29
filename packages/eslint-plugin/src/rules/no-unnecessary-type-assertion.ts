@@ -364,6 +364,20 @@ export default createRule<Options, MessageIds>({
       return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
     }
 
+    function isNonInferrableAnyType(type: ts.Type): boolean {
+      return (
+        isTypeFlagSet(type, ts.TypeFlags.Any) &&
+        tsutils.isObjectFlagSet(
+          type as ts.ObjectType,
+          (
+            ts.ObjectFlags as typeof ts.ObjectFlags & {
+              NonInferrableType: ts.ObjectFlags;
+            }
+          ).NonInferrableType,
+        )
+      );
+    }
+
     function containsTypeVariable(type: ts.Type): boolean {
       return typeContains(type, t =>
         isTypeFlagSet(t, ts.TypeFlags.TypeVariable | ts.TypeFlags.Index),
@@ -979,14 +993,12 @@ export default createRule<Options, MessageIds>({
             contextualType,
             ts.TypeFlags.Any,
           );
-
-          const isCallArgument =
-            (node.parent.type === AST_NODE_TYPES.CallExpression ||
-              node.parent.type === AST_NODE_TYPES.NewExpression) &&
-            node.parent.arguments.includes(node);
-
           const anyInvolvedInContextualCheck = contextualTypeIsAny
-            ? isCallArgument && !containsAny(castType)
+            ? (node.parent.type === AST_NODE_TYPES.CallExpression ||
+                node.parent.type === AST_NODE_TYPES.NewExpression) &&
+              node.parent.arguments.includes(node) &&
+              !containsAny(castType) &&
+              !isNonInferrableAnyType(contextualType)
             : !containsAny(contextualType);
 
           const isNullishLiteralToUnion =

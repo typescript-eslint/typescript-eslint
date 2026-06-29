@@ -900,6 +900,22 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12268
+    `
+function foo() {
+  const arr = [];
+
+  for (let i = 0; i < 1; i++) {
+    arr.push({ x: 1 } as { x: number; y: number });
+  }
+
+  for (let i = 0; i < 1; i++) {
+    arr[i].y = 2;
+  }
+
+  return arr;
+}
+    `,
   ],
 
   invalid: [
