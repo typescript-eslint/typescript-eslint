@@ -28,6 +28,27 @@ function typeDeclaredInDeclareModule(
   );
 }
 
+function packageNameMatches(
+  packageName: string,
+  typesPackageName: string,
+  packageIdName: string,
+): boolean {
+  // A package id name takes one of two forms:
+  //   - `<packageName>/<subpath>` for packages that ship their own types
+  //     (e.g. `typescript/lib/typescript.d.ts`), or
+  //   - `@types/<typesPackageName>/<subpath>` for `@types` packages
+  //     (e.g. `@types/babel__code-frame/index.d.ts`).
+  // The package name must match along path-component boundaries, so that
+  // (for example) `@angular/common` does not match a specifier for
+  // `@angular/common/http` or vice versa.
+  const candidate = packageIdName.startsWith('@types/')
+    ? packageIdName.slice('@types/'.length)
+    : packageIdName;
+  return [packageName, typesPackageName].some(
+    name => candidate === name || candidate.startsWith(`${name}/`),
+  );
+}
+
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
@@ -36,12 +57,11 @@ function typeDeclaredInDeclarationFile(
   // Handle scoped packages: if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
       packageIdName != null &&
-      matcher.test(packageIdName) &&
+      packageNameMatches(packageName, typesPackageName, packageIdName) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
