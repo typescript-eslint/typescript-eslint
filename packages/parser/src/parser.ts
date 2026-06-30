@@ -119,6 +119,7 @@ export function parseForESLint(
 
   const onUnsupportedTypeScriptVersion =
     parserOptions.onUnsupportedTypeScriptVersion ??
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- read for backwards compatibility
     (validateBoolean(parserOptions.warnOnUnsupportedTypeScriptVersion, true)
       ? 'warn'
       : 'ignore');
