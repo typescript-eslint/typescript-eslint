@@ -1,3 +1,5 @@
+import type { ParseArgsConfig } from 'node:util';
+
 import { execaSync } from 'execa';
 import { parseArgs } from 'node:util';
 import {
@@ -16,19 +18,6 @@ function booleanOption(value: string): boolean {
 
   return normalizedValue !== 'false';
 }
-
-const optionDescriptions = {
-  'dry-run':
-    'Whether to perform a dry-run of the release process, defaults to true',
-  'first-release':
-    'Whether or not one of more of the packages are being released for the first time',
-  'force-release-without-changes':
-    'Whether to do a release regardless of if there have been changes',
-  help: 'Show help',
-  verbose: 'Whether or not to enable verbose logging, defaults to false',
-  version:
-    'Explicit version specifier to use, if overriding conventional commits',
-} satisfies Record<keyof typeof parseArgsOptions, string>
 
 const parseArgsOptions = {
   'dry-run': {
@@ -55,7 +44,20 @@ const parseArgsOptions = {
   version: {
     type: 'string',
   },
-} satisfies ParseArgsOptionsConfig;;
+} as const satisfies ParseArgsConfig['options'];
+
+const optionDescriptions: Record<keyof typeof parseArgsOptions, string> = {
+  'dry-run':
+    'Whether to perform a dry-run of the release process, defaults to true',
+  'first-release':
+    'Whether or not one of more of the packages are being released for the first time',
+  'force-release-without-changes':
+    'Whether to do a release regardless of if there have been changes',
+  help: 'Show help',
+  verbose: 'Whether or not to enable verbose logging, defaults to false',
+  version:
+    'Explicit version specifier to use, if overriding conventional commits',
+};
 
 function printHelp(): void {
   console.log('Options:');
@@ -77,20 +79,20 @@ const { values: rawOptions } = parseArgs({
   options: parseArgsOptions,
 });
 
-if (values.help) {
+if (rawOptions.help) {
   printHelp();
   // eslint-disable-next-line no-process-exit
   process.exit(0);
 }
 
 const options = {
-  dryRun: booleanOption(values['dry-run']),
-  firstRelease: booleanOption(values['first-release']),
+  dryRun: booleanOption(rawOptions['dry-run']),
+  firstRelease: booleanOption(rawOptions['first-release']),
   forceReleaseWithoutChanges: booleanOption(
-    values['force-release-without-changes'],
+    rawOptions['force-release-without-changes'],
   ),
-  verbose: values.verbose,
-  version: values.version,
+  verbose: rawOptions.verbose,
+  version: rawOptions.version,
 };
 
 if (process.env.CI !== 'true' && !options.dryRun) {
