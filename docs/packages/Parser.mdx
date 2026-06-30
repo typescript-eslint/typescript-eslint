@@ -448,11 +448,17 @@ parserOptions: {
 }
 ```
 
-### `warnOnUnsupportedTypeScriptVersion`
+### `onUnsupportedTypeScriptVersion`
 
-> Default: `true`.
+> Default: `'warn'`.
 
-This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported. The warning message would look like this:
+This option controls how the parser reacts when you use a version of TypeScript which is not explicitly supported. It accepts one of three values:
+
+- `'warn'`: log a warning to the console (see the message below).
+- `'error'`: log the message and throw, causing the lint run to fail. This is useful in CI to prevent unsupported TypeScript versions from being merged unnoticed (for example by Dependabot or Renovate).
+- `'ignore'`: do nothing.
+
+The message looks like this:
 
 ```plaintext
 =============
@@ -467,6 +473,18 @@ Please only submit bug reports when using the officially supported version.
 
 =============
 ```
+
+### `warnOnUnsupportedTypeScriptVersion`
+
+> Default: `true`.
+
+:::caution Deprecated
+Use [`onUnsupportedTypeScriptVersion`](#onunsupportedtypescriptversion) instead.
+`true` is equivalent to `'warn'` and `false` is equivalent to `'ignore'`.
+If both options are provided, `onUnsupportedTypeScriptVersion` takes precedence.
+:::
+
+This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported.
 
 ## Utilities
 
