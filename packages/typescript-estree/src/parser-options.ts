@@ -92,6 +92,15 @@ interface ParseOptions {
   loggerFn?: ((message: string) => void) | false;
 
   /**
+   * Controls how the parser reacts when run with a TypeScript version that is
+   * not officially supported by typescript-eslint.
+   * - `'warn'` (default): log a warning via {@link loggerFn}.
+   * - `'error'`: throw, regardless of {@link loggerFn}.
+   * - `'ignore'`: do nothing.
+   */
+  onUnsupportedTypeScriptVersion?: 'error' | 'ignore' | 'warn';
+
+  /**
    * Controls whether the `range` property is included on AST nodes.
    * The `range` property is a [number, number] which indicates the start/end index of the node in the file contents.
    * This is similar to the `loc` property, except this is the absolute index.
