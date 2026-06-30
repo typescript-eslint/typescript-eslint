@@ -1,13 +1,10 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "8.61.1",
+  "version": "8.62.1",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {

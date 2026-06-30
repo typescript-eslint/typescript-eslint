@@ -1,3 +1,40 @@
+## 8.62.1 (2026-06-29)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] use suggestion instead of autofix for trailing binary operator ([#12328](https://github.com/typescript-eslint/typescript-eslint/pull/12328))
+- **eslint-plugin:** [no-unnecessary-boolean-literal-compare] preserve boolean result in fixer for nullable true comparisons ([#12365](https://github.com/typescript-eslint/typescript-eslint/pull/12365))
+- **eslint-plugin:** [no-unnecessary-type-assertion] parenthesize object literal at left edge of expression statement ([#12443](https://github.com/typescript-eslint/typescript-eslint/pull/12443), [#12418](https://github.com/typescript-eslint/typescript-eslint/issues/12418))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- mdm317
+- Patrick Aleite
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.62.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.62.0 (2026-06-22)
+
+### 🚀 Features
+
+- remove redundant package.json "files" ([#12444](https://github.com/typescript-eslint/typescript-eslint/pull/12444))
+
+### 🩹 Fixes
+
+- add "files" to rule-schema-to-typescript-types ([#12441](https://github.com/typescript-eslint/typescript-eslint/pull/12441))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.62.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.61.1 (2026-06-15)
 
 ### 🩹 Fixes

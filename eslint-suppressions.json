@@ -4,11 +4,6 @@
       "count": 3
     }
   },
-  "packages/eslint-plugin-internal/tests/rules/no-dynamic-tests.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 14
-    }
-  },
   "packages/eslint-plugin-internal/tests/rules/no-multiple-lines-of-errors.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 3

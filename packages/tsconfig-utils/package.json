@@ -1,13 +1,10 @@
 {
   "name": "@typescript-eslint/tsconfig-utils",
-  "version": "8.61.1",
+  "version": "8.62.1",
   "description": "Utilities for collecting TSConfigs for linting scenarios.",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
