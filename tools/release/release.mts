@@ -28,7 +28,7 @@ const optionDescriptions = {
   verbose: 'Whether or not to enable verbose logging, defaults to false',
   version:
     'Explicit version specifier to use, if overriding conventional commits',
-};
+} satisfies Record<keyof typeof parseArgsOptions, string>
 
 const parseArgsOptions = {
   'dry-run': {
@@ -55,7 +55,7 @@ const parseArgsOptions = {
   version: {
     type: 'string',
   },
-} as const;
+} satisfies ParseArgsOptionsConfig;;
 
 function printHelp(): void {
   console.log('Options:');
@@ -72,7 +72,7 @@ function printHelp(): void {
   }
 }
 
-const { values } = parseArgs({
+const { values: rawOptions } = parseArgs({
   args: process.argv.slice(2),
   options: parseArgsOptions,
 });
