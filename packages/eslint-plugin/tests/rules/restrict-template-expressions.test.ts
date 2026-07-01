@@ -168,6 +168,13 @@ ruleTester.run('restrict-template-expressions', rule, {
     },
     {
       code: `
+        declare const arg: string[][];
+        const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
         declare const arg: [number | undefined, string];
         const msg = \`arg = \${arg}\`;
       `,
@@ -512,6 +519,21 @@ ruleTester.run('restrict-template-expressions', rule, {
         },
       ],
       options: [{ allowArray: true, allowNullish: false }],
+    },
+    {
+      code: `
+        declare const arg: object[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'object[]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true }],
     },
     {
       code: 'const msg = `arg = ${Promise.resolve()}`;',

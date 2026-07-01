@@ -137,6 +137,9 @@ const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
 
 {/* insert option description */}
 
+This option recursively checks array element types.
+For example, `string[]` and `string[][]` are allowed, but `object[]` is still reported.
+
 Examples of additional **correct** code for this rule with `{ allowArray: true }`:
 
 ```ts option='{ "allowArray": true }' showPlaygroundButton
