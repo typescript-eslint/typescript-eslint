@@ -49,6 +49,7 @@ describe('parser', () => {
       comment: true,
       jsx: false,
       loc: true,
+      onUnsupportedTypeScriptVersion: 'warn',
       range: true,
       tokens: true,
       ...config,
@@ -65,13 +66,14 @@ describe('parser', () => {
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       jsx: false,
       loc: true,
+      onUnsupportedTypeScriptVersion: 'warn',
       range: true,
       sourceType: 'script',
       tokens: true,
     });
   });
 
-  it('sets `loggerFn: false` on typescript-estree when provided `warnOnUnsupportedTypeScriptVersion: false`', () => {
+  it('sets `onUnsupportedTypeScriptVersion: ignore` on typescript-estree when provided `warnOnUnsupportedTypeScriptVersion: false`', () => {
     const code = 'const valid = true;';
     const spy = vi.spyOn(typescriptESTree, 'parseAndGenerateServices');
     parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: false });
@@ -81,7 +83,7 @@ describe('parser', () => {
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       jsx: false,
       loc: true,
-      loggerFn: false,
+      onUnsupportedTypeScriptVersion: 'ignore',
       range: true,
       sourceType: 'script',
       tokens: true,
@@ -89,7 +91,7 @@ describe('parser', () => {
     });
   });
 
-  it('sets `loggerFn: false` on typescript-estree when provided `warnOnUnsupportedTypeScriptVersion: true`', () => {
+  it('sets `onUnsupportedTypeScriptVersion: warn` on typescript-estree when provided `warnOnUnsupportedTypeScriptVersion: true`', () => {
     const code = 'const valid = true;';
     const spy = vi.spyOn(typescriptESTree, 'parseAndGenerateServices');
     parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: true });
@@ -99,10 +101,49 @@ describe('parser', () => {
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
       jsx: false,
       loc: true,
+      onUnsupportedTypeScriptVersion: 'warn',
       range: true,
       sourceType: 'script',
       tokens: true,
       warnOnUnsupportedTypeScriptVersion: true,
+    });
+  });
+
+  it('forwards `onUnsupportedTypeScriptVersion` to typescript-estree', () => {
+    const code = 'const valid = true;';
+    const spy = vi.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    parseForESLint(code, { onUnsupportedTypeScriptVersion: 'error' });
+    expect(spy).toHaveBeenCalledExactlyOnceWith(code, {
+      comment: true,
+      ecmaFeatures: {},
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
+      jsx: false,
+      loc: true,
+      onUnsupportedTypeScriptVersion: 'error',
+      range: true,
+      sourceType: 'script',
+      tokens: true,
+    });
+  });
+
+  it('prefers `onUnsupportedTypeScriptVersion` over the deprecated `warnOnUnsupportedTypeScriptVersion`', () => {
+    const code = 'const valid = true;';
+    const spy = vi.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    parseForESLint(code, {
+      onUnsupportedTypeScriptVersion: 'error',
+      warnOnUnsupportedTypeScriptVersion: false,
+    });
+    expect(spy).toHaveBeenCalledExactlyOnceWith(code, {
+      comment: true,
+      ecmaFeatures: {},
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
+      jsx: false,
+      loc: true,
+      onUnsupportedTypeScriptVersion: 'error',
+      range: true,
+      sourceType: 'script',
+      tokens: true,
+      warnOnUnsupportedTypeScriptVersion: false,
     });
   });
 

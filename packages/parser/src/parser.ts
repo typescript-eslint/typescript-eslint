@@ -117,19 +117,17 @@ export function parseForESLint(
     parserOptions.ecmaFeatures = {};
   }
 
-  /**
-   * Allow the user to suppress the warning from typescript-estree if they are using an unsupported
-   * version of TypeScript
-   */
-  const warnOnUnsupportedTypeScriptVersion = validateBoolean(
-    parserOptions.warnOnUnsupportedTypeScriptVersion,
-    true,
-  );
+  const onUnsupportedTypeScriptVersion =
+    parserOptions.onUnsupportedTypeScriptVersion ??
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- read for backwards compatibility
+    (validateBoolean(parserOptions.warnOnUnsupportedTypeScriptVersion, true)
+      ? 'warn'
+      : 'ignore');
 
   const tsestreeOptions = {
     jsx: validateBoolean(parserOptions.ecmaFeatures.jsx),
-    ...(!warnOnUnsupportedTypeScriptVersion && { loggerFn: false }),
     ...parserOptions,
+    onUnsupportedTypeScriptVersion,
     // Override errorOnTypeScriptSyntacticAndSemanticIssues and set it to false to prevent use from user config
     // https://github.com/typescript-eslint/typescript-eslint/issues/8681#issuecomment-2000411834
     errorOnTypeScriptSyntacticAndSemanticIssues: false,

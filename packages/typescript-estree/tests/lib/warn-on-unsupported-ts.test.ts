@@ -53,4 +53,26 @@ describe('Warn on unsupported TypeScript version', () => {
     parser.parse('');
     expect(console.log).not.toHaveBeenCalled();
   });
+
+  it('should throw when `onUnsupportedTypeScriptVersion` is `error`, even on a non TTY process', () => {
+    semverSatisfiesMock.mockReturnValueOnce(false);
+    vi.stubGlobal('process', { ...process, stdout: { isTTY: false } });
+
+    expect(() =>
+      parser.parse('', { onUnsupportedTypeScriptVersion: 'error' }),
+    ).toThrow(
+      'ERROR: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
+    );
+  });
+
+  it('should not warn nor throw when `onUnsupportedTypeScriptVersion` is `ignore`', () => {
+    semverSatisfiesMock.mockReturnValueOnce(false);
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+    vi.stubGlobal('process', { ...process, stdout: { isTTY: true } });
+
+    expect(() =>
+      parser.parse('', { onUnsupportedTypeScriptVersion: 'ignore' }),
+    ).not.toThrow();
+    expect(console.log).not.toHaveBeenCalled();
+  });
 });
