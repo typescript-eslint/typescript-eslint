@@ -9,3 +9,9 @@ joshuakgoldberg:
   name: Josh Goldberg
   title: typescript-eslint Maintainer
   url: https://github.com/JoshuaKGoldberg
+
+kirkwaiblinger:
+  image_url: /img/team/kirkwaiblinger.jpg
+  name: Kirk Waiblinger
+  title: typescript-eslint Committer
+  url: https://github.com/kirkwaiblinger
