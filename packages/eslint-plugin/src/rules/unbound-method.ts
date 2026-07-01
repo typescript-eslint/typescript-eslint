@@ -167,6 +167,24 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function checkUnionConstituentsAndReport(
+      reportNode: TSESTree.Node,
+      propertyName: string,
+      type: ts.Type,
+    ): void {
+      for (const intersectionPart of tsutils
+        .unionConstituents(type)
+        .flatMap(unionPart => tsutils.intersectionConstituents(unionPart))) {
+        const reported = checkIfMethodAndReport(
+          reportNode,
+          intersectionPart.getProperty(propertyName),
+        );
+        if (reported) {
+          break;
+        }
+      }
+    }
+
     function isNativelyBound(
       object: TSESTree.Node,
       property: TSESTree.Node,
@@ -216,7 +234,15 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkIfMethodAndReport(node, services.getSymbolAtLocation(node));
+        if (node.property.type !== AST_NODE_TYPES.Identifier || node.computed) {
+          return;
+        }
+
+        checkUnionConstituentsAndReport(
+          node,
+          node.property.name,
+          services.getTypeAtLocation(node.object),
+        );
       },
       ObjectPattern(node): void {
         if (isNodeInsideTypeDeclaration(node)) {
@@ -260,19 +286,11 @@ export default createRule<Options, MessageIds>({
             }
           }
 
-          for (const intersectionPart of tsutils
-            .unionConstituents(services.getTypeAtLocation(node))
-            .flatMap(unionPart =>
-              tsutils.intersectionConstituents(unionPart),
-            )) {
-            const reported = checkIfMethodAndReport(
-              property.key,
-              intersectionPart.getProperty(property.key.name),
-            );
-            if (reported) {
-              break;
-            }
-          }
+          checkUnionConstituentsAndReport(
+            property.key,
+            property.key.name,
+            services.getTypeAtLocation(node),
+          );
         }
       },
     };

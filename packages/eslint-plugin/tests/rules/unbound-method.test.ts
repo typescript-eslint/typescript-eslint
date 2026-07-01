@@ -1782,6 +1782,25 @@ class OtherClass extends BaseClass {
 const oc = new OtherClass();
 oc.superLogThis();
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11683
+    `
+class Foo {
+  bound = () => {};
+}
+class Bar {
+  bound = 1;
+}
+declare const union: Foo | Bar;
+const bound = union.bound;
+    `,
+    `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+declare const key: string;
+const bound = foo[key];
+    `,
   ],
   invalid: [
     {
@@ -2845,6 +2864,25 @@ const f = objectLiteral.f;
       errors: [
         {
           line: 5,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11683
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+class Bar {
+  bazz = 1;
+}
+declare const union: Foo | Bar;
+const bound = union.bazz;
+      `,
+      errors: [
+        {
+          line: 9,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
