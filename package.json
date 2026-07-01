@@ -67,7 +67,6 @@
     "@types/natural-compare": "catalog:",
     "@types/node": "catalog:",
     "@types/semver": "^7.7.1",
-    "@types/yargs": "^17.0.35",
     "@typescript-eslint/eslint-plugin": "workspace:^",
     "@typescript-eslint/eslint-plugin-internal": "workspace:^",
     "@typescript-eslint/parser": "workspace:^",
@@ -105,8 +104,7 @@
     "typescript": "catalog:",
     "typescript-eslint": "workspace:^",
     "vite": "7.3.0",
-    "vitest": "catalog:",
-    "yargs": "17.7.2"
+    "vitest": "catalog:"
   },
   "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
   "nx": {
