@@ -87,7 +87,7 @@ const errorMessage = 'Found unexpected value: ' + JSON.stringify(o);
 This is useful for types missing `toString()` or `toLocaleString()` (but actually has `toString()` or `toLocaleString()`).
 There are some types missing `toString()` or `toLocaleString()` in old versions of TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
 
-The following patterns are considered correct with the default options `{ ignoredTypeNames: ["RegExp"] }`:
+The following patterns are considered correct with the options `{ ignoredTypeNames: ["RegExp"] }`:
 
 ```ts option='{ "ignoredTypeNames": ["RegExp"] }' showPlaygroundButton
 `${/regex/}`;
