@@ -16,10 +16,8 @@ body:
           required: true
         - label: I have [read the FAQ](https://typescript-eslint.io/linting/troubleshooting) and my problem is not listed.
           required: true
-  - type: markdown
-    attributes:
-      value: |
-        If you used AI assistance to prepare this issue, please review and follow the [AI Contribution Policy](https://typescript-eslint.io/contributing/ai-policy/).
+        - label: If I used AI assistance to prepare this issue, I have reviewed and followed the [AI Contribution Policy](https://typescript-eslint.io/contributing/ai-policy/).
+          required: true
   - type: textarea
     id: description
     attributes:
