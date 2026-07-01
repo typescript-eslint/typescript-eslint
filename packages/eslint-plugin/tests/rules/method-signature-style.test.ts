@@ -347,6 +347,97 @@ interface Test {
       `,
     },
     {
+      // a `readonly` function-typed property is reported, but converting it to a
+      // method drops the `readonly` modifier, so the conversion is offered as a
+      // suggestion rather than an autofix
+      code: 'type Test = { readonly f: (a: string) => number };',
+      errors: [
+        {
+          column: 15,
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: 'type Test = { f(a: string): number };',
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
+      code: 'type Test = { readonly f?: <T>(a?: T) => T };',
+      errors: [
+        {
+          column: 15,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: 'type Test = { f?<T>(a?: T): T };',
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
+      code: "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
+      errors: [
+        {
+          column: 15,
+          endColumn: 52,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: "type Test = { ['f']?<T>(a: T, b: T): T };",
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
+      code: `
+        interface Test {
+          readonly f: (a: string) => number;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: `
+        interface Test {
+          f(a: string): number;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
       code: noFormat`
 interface Foo {
   semi(arg: string): void;
