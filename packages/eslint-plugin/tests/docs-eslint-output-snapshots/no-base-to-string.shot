@@ -47,7 +47,7 @@ const literalWithToString = {
 
 `Value: ${literalWithToString}`;
 
-Options: { "ignoredTypeNames": ["RegExp"] }
+
 
 `${/regex/}`;
 '' + /regex/;
@@ -56,6 +56,10 @@ let value = /regex/;
 value.toString();
 let text = `${value}`;
 String(/regex/);
+
+'' + new Error('error');
+`${new URL('https://example.com')}`;
+String(new URLSearchParams({ key: 'value' }));
 
 Options: { "checkUnknown": true }
 
