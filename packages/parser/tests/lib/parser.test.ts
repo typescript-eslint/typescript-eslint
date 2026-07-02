@@ -126,25 +126,18 @@ describe('parser', () => {
     });
   });
 
-  it('prefers `onUnsupportedTypeScriptVersion` over the deprecated `warnOnUnsupportedTypeScriptVersion`', () => {
+  it('throws when both `onUnsupportedTypeScriptVersion` and the deprecated `warnOnUnsupportedTypeScriptVersion` are provided', () => {
     const code = 'const valid = true;';
     const spy = vi.spyOn(typescriptESTree, 'parseAndGenerateServices');
-    parseForESLint(code, {
-      onUnsupportedTypeScriptVersion: 'error',
-      warnOnUnsupportedTypeScriptVersion: false,
-    });
-    expect(spy).toHaveBeenCalledExactlyOnceWith(code, {
-      comment: true,
-      ecmaFeatures: {},
-      errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      jsx: false,
-      loc: true,
-      onUnsupportedTypeScriptVersion: 'error',
-      range: true,
-      sourceType: 'script',
-      tokens: true,
-      warnOnUnsupportedTypeScriptVersion: false,
-    });
+    expect(() =>
+      parseForESLint(code, {
+        onUnsupportedTypeScriptVersion: 'error',
+        warnOnUnsupportedTypeScriptVersion: false,
+      }),
+    ).toThrow(
+      'Cannot use both the `onUnsupportedTypeScriptVersion` and the deprecated `warnOnUnsupportedTypeScriptVersion` options. Please use only `onUnsupportedTypeScriptVersion`.',
+    );
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it('should call analyze() with inferred analyze options when no analyze options are provided', () => {

@@ -117,6 +117,16 @@ export function parseForESLint(
     parserOptions.ecmaFeatures = {};
   }
 
+  if (
+    parserOptions.onUnsupportedTypeScriptVersion != null &&
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- read for backwards compatibility
+    parserOptions.warnOnUnsupportedTypeScriptVersion != null
+  ) {
+    throw new Error(
+      'Cannot use both the `onUnsupportedTypeScriptVersion` and the deprecated `warnOnUnsupportedTypeScriptVersion` options. Please use only `onUnsupportedTypeScriptVersion`.',
+    );
+  }
+
   const onUnsupportedTypeScriptVersion =
     parserOptions.onUnsupportedTypeScriptVersion ??
     // eslint-disable-next-line @typescript-eslint/no-deprecated -- read for backwards compatibility
