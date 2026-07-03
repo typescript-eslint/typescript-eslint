@@ -118,9 +118,6 @@ type T2 = {
 </TabItem>
 </Tabs>
 
-There is no syntax for a `readonly` method signature, so a `readonly` function-typed property cannot be rewritten to a method without dropping the `readonly` modifier.
-Because that is a behavioral change — a method may be reassigned, whereas a `readonly` property may not — the conversion is offered as an [editor suggestion](https://eslint.org/docs/latest/use/core-concepts/glossary#suggestion) rather than applied automatically by `--fix`.
-
 ## When Not To Use It
 
 If you don't want to enforce a particular style for object/interface function types, and/or if you don't use `strictFunctionTypes`, then you don't need this rule.

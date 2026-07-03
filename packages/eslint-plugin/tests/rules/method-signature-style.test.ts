@@ -347,9 +347,6 @@ interface Test {
       `,
     },
     {
-      // a `readonly` function-typed property is reported, but converting it to a
-      // method drops the `readonly` modifier, so the conversion is offered as a
-      // suggestion rather than an autofix
       code: 'type Test = { readonly f: (a: string) => number };',
       errors: [
         {
