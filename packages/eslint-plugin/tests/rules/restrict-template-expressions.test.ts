@@ -124,7 +124,7 @@ ruleTester.run('restrict-template-expressions', rule, {
     // allowArray
     {
       code: `
-        const arg: string[] = [];
+        const arg = [];
         const msg = \`arg = \${arg}\`;
       `,
       options: [{ allowArray: true }],
@@ -132,16 +132,9 @@ ruleTester.run('restrict-template-expressions', rule, {
     {
       code: `
         const arg = [];
-        const msg = \`arg = \${arg}\`;
-      `,
-      options: [{ allowAny: true, allowArray: true }],
-    },
-    {
-      code: `
-        const arg = [];
         const msg = \`arg = \${arg || 'default'}\`;
       `,
-      options: [{ allowAny: true, allowArray: true }],
+      options: [{ allowArray: true }],
     },
     {
       code: `
@@ -156,14 +149,14 @@ ruleTester.run('restrict-template-expressions', rule, {
         declare const arg: [number, string];
         const msg = \`arg = \${arg}\`;
       `,
-      options: [{ allowArray: true, allowNumber: true }],
+      options: [{ allowArray: true }],
     },
     {
       code: `
         const arg = [1, 'a'] as const;
         const msg = \`arg = \${arg || 'default'}\`;
       `,
-      options: [{ allowArray: true, allowNumber: true }],
+      options: [{ allowArray: true }],
     },
     {
       code: `
@@ -178,11 +171,32 @@ ruleTester.run('restrict-template-expressions', rule, {
         declare const arg: [number | undefined, string];
         const msg = \`arg = \${arg}\`;
       `,
-      options: [{ allowArray: true, allowNullish: true, allowNumber: true }],
+      options: [{ allowArray: true, allowNullish: true }],
     },
     {
       code: `
         declare const arg: string[][];
+        const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
+        declare const arg: never[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowArray: true, allowNever: true }],
+    },
+    {
+      code: `
+        declare const arg: any[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowAny: true, allowArray: true }],
+    },
+    {
+      code: `
+        declare const arg: (HasToString | string)[];
         const msg = \`arg = \${arg}\`;
       `,
       options: [{ allowArray: true }],
@@ -561,6 +575,51 @@ ruleTester.run('restrict-template-expressions', rule, {
         {
           column: 30,
           data: { type: 'object[]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
+        declare const arg: (object | string)[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: '(string | object)[]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
+        declare const arg: object[][];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'object[][]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
+        declare const arg: (object | string)[][];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: '(string | object)[][]' },
           line: 3,
           messageId: 'invalidType',
         },
