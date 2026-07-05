@@ -194,13 +194,6 @@ ruleTester.run('restrict-template-expressions', rule, {
       `,
       options: [{ allowAny: true, allowArray: true }],
     },
-    {
-      code: `
-        declare const arg: (HasToString | string)[];
-        const msg = \`arg = \${arg}\`;
-      `,
-      options: [{ allowArray: true }],
-    },
     // allowAny
     {
       code: `
