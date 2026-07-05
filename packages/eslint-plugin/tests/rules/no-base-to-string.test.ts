@@ -220,6 +220,24 @@ ruleTester.run('no-base-to-string', rule, {
     'String(() => {});',
     'String(function () {});',
     `
+const String = (value: unknown) => 'safe';
+String({});
+    `,
+    `
+const String = (value: unknown) => 'safe';
+function f() {
+  String({});
+}
+    `,
+    `
+function String(value: unknown) {
+  return 'safe';
+}
+function f() {
+  String({});
+}
+    `,
+    `
 function someFunction() {}
 someFunction.toString();
 let text = \`\${someFunction}\`;
