@@ -900,6 +900,30 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12485
+    `
+declare const items: string[] | undefined;
+
+const counts = items?.reduce(
+  (acc, item) => {
+    acc[item] = (acc[item] ?? 0) + 1;
+    return acc;
+  },
+  {} as Record<string, number>,
+);
+    `,
+    `
+declare const o:
+  | {
+      fn<U>(g: (memo: U) => U, initial: U): U;
+      fn<T>(g: (memo: T) => T): T | undefined;
+    }
+  | undefined;
+enum E {
+  A = 1,
+}
+const x: E | undefined = o?.fn(n => n | 0, 0 as E);
+    `,
   ],
 
   invalid: [
@@ -2851,6 +2875,28 @@ fn1(() => {
         },
       ],
       output: 'const foo = () => ({ lol: 123 as number }.lol) + 54321;',
+    },
+    // optional-chained call to a non-overloaded callee: assertions that are
+    // genuinely unnecessary must still be reported
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12485
+    {
+      code: `
+declare const maybeFn: ((arg: string | number) => void) | undefined;
+declare const s: string;
+maybeFn?.(s as string | number);
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare const maybeFn: ((arg: string | number) => void) | undefined;
+declare const s: string;
+maybeFn?.(s);
+      `,
     },
   ],
 });
