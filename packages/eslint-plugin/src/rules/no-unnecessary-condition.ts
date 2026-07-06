@@ -718,9 +718,8 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
 
-        // A type guard passed directly, e.g. `arr.filter(isNotNil)`, is
-        // unnecessary when the element type already satisfies it — the same
-        // situation the inline form `arr.filter(x => isNotNil(x))` flags.
+        // Gated behind `checkTypePredicates`, like the inline form
+        // `arr.filter(x => isNotNil(x))` it mirrors.
         if (
           checkTypePredicates &&
           reportIfUnnecessaryTypeGuardCallback(node, callback)
