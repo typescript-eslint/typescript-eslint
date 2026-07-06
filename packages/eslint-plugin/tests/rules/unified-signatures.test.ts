@@ -167,6 +167,12 @@ interface I<T> {
 function h<K extends string>(x: { [K in 'a' | 'b']: K }, y: string): void;
 function h<J extends string>(x: { [K in 'a' | 'b']: J }): void;
     `,
+    // Mapped type keys shadow same-named signature type parameters in name
+    // remapping too.
+    `
+function h<K extends string>(x: { [K in 'a' | 'b' as K]: K }, y: string): void;
+function h<J extends string>(x: { [K in 'a' | 'b' as K]: J }): void;
+    `,
     // Same name, different scopes
     `
 declare function foo(n: number): number;
@@ -918,6 +924,46 @@ function f<R extends string, S extends number>(x: Map<R, S>): void;
           endColumn: 71,
           endLine: 2,
           line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Conditional types without infer type parameters should still normalize
+      // signature type parameters.
+      code: `
+type Wrapper<T> = T;
+function f<U>(x: string extends Wrapper<U> ? U : never, y: string): void;
+function f<V>(x: string extends Wrapper<V> ? V : never): void;
+      `,
+      errors: [
+        {
+          column: 57,
+          endColumn: 66,
+          endLine: 3,
+          line: 3,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Nested conditional infer type parameters should not shadow the outer
+      // conditional type's true branch.
+      code: `
+function f<U>(
+  x: string extends (number extends infer U ? U : never) ? U : never,
+  y: string,
+): void;
+function f<V>(
+  x: string extends (number extends infer U ? U : never) ? V : never,
+): void;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'omittingSingleParameter',
         },
       ],
