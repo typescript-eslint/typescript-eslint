@@ -30,6 +30,7 @@ type Unify =
  */
 type IsTypeParameter = (typeName: string) => boolean;
 type TypeParameterReplacements = ReadonlyMap<string, string>;
+type TypeParameterNames = ReadonlySet<string>;
 type TypeNodeOrAnnotation = TSESTree.TSTypeAnnotation | TSESTree.TypeNode;
 
 type ScopeNode =
@@ -444,15 +445,8 @@ export default createRule<Options, MessageIds>({
     function getIsTypeParameter(
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): IsTypeParameter {
-      if (typeParameters == null) {
-        return () => false;
-      }
-
-      const set = new Set<string>();
-      for (const t of typeParameters.params) {
-        set.add(t.name.name);
-      }
-      return typeName => set.has(typeName);
+      const typeParameterNames = getTypeParameterNames(typeParameters);
+      return typeName => typeParameterNames.has(typeName);
     }
 
     /** True if any of the outer type parameters are used in a signature. */
@@ -460,33 +454,76 @@ export default createRule<Options, MessageIds>({
       sig: SignatureDefinition,
       isTypeParameter: IsTypeParameter,
     ): boolean {
+      const shadowedTypeParameters = getTypeParameterNames(sig.typeParameters);
+
       return sig.params.some((p: TSESTree.Parameter) =>
         typeContainsTypeParameter(
           isTSParameterProperty(p)
             ? p.parameter.typeAnnotation
             : p.typeAnnotation,
+          shadowedTypeParameters,
         ),
       );
 
       function typeContainsTypeParameter(
-        type?: TSESTree.TSTypeAnnotation | TSESTree.TypeNode,
+        type: TypeNodeOrAnnotation | undefined,
+        shadowedTypeParameters: TypeParameterNames,
       ): boolean {
-        if (!type) {
+        const typeNode = getTypeNode(type);
+        if (typeNode == null) {
           return false;
         }
 
-        if (type.type === AST_NODE_TYPES.TSTypeReference) {
-          const typeName = type.typeName;
-          if (isIdentifier(typeName) && isTypeParameter(typeName.name)) {
-            return true;
-          }
-        }
-
-        return typeContainsTypeParameter(
-          (type as Partial<TSESTree.TSTypeAnnotation>).typeAnnotation ??
-            (type as TSESTree.TSArrayType).elementType,
+        let containsTypeParameter = false;
+        forEachTypeReference(
+          typeNode,
+          reference => {
+            if (isTypeParameter(reference.name)) {
+              containsTypeParameter = true;
+            }
+          },
+          shadowedTypeParameters,
         );
+
+        return containsTypeParameter;
       }
+    }
+
+    function getTypeParameterNames(
+      typeParameters: TSESTree.TSTypeParameterDeclaration | undefined,
+    ): TypeParameterNames {
+      const typeParameterNames = new Set<string>();
+      for (const typeParameter of typeParameters?.params ?? []) {
+        typeParameterNames.add(typeParameter.name.name);
+      }
+      return typeParameterNames;
+    }
+
+    function getNodeTypeParameters(
+      node: TSESTree.Node,
+    ): TSESTree.TSTypeParameterDeclaration | undefined {
+      const typeParameters = (node as { typeParameters?: unknown })
+        .typeParameters;
+      return isNode(typeParameters) &&
+        typeParameters.type === AST_NODE_TYPES.TSTypeParameterDeclaration
+        ? typeParameters
+        : undefined;
+    }
+
+    function shadowTypeParameters(
+      node: TSESTree.Node,
+      shadowedTypeParameters: TypeParameterNames,
+    ): TypeParameterNames {
+      const typeParameters = getNodeTypeParameters(node);
+      if (typeParameters == null) {
+        return shadowedTypeParameters;
+      }
+
+      const nextShadowedTypeParameters = new Set(shadowedTypeParameters);
+      for (const typeParameter of typeParameters.params) {
+        nextShadowedTypeParameters.add(typeParameter.name.name);
+      }
+      return nextShadowedTypeParameters;
     }
 
     function isTSParameterProperty(
@@ -648,14 +685,20 @@ export default createRule<Options, MessageIds>({
     function forEachTypeReference(
       node: TSESTree.Node,
       callback: (reference: TSESTree.Identifier) => void,
+      shadowedTypeParameters: TypeParameterNames = new Set(),
     ): void {
       if (
         node.type === AST_NODE_TYPES.TSTypeReference &&
-        isIdentifier(node.typeName)
+        isIdentifier(node.typeName) &&
+        !shadowedTypeParameters.has(node.typeName.name)
       ) {
         callback(node.typeName);
       }
 
+      const childShadowedTypeParameters = shadowTypeParameters(
+        node,
+        shadowedTypeParameters,
+      );
       const properties = node as unknown as Record<string, unknown>;
       for (const key of getKeys(node)) {
         const value = properties[key];
@@ -663,11 +706,15 @@ export default createRule<Options, MessageIds>({
         if (Array.isArray(value)) {
           for (const child of value) {
             if (isNode(child)) {
-              forEachTypeReference(child, callback);
+              forEachTypeReference(
+                child,
+                callback,
+                childShadowedTypeParameters,
+              );
             }
           }
         } else if (isNode(value)) {
-          forEachTypeReference(value, callback);
+          forEachTypeReference(value, callback, childShadowedTypeParameters);
         }
       }
     }

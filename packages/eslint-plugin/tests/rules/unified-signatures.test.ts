@@ -154,6 +154,14 @@ interface Box<T> {
   f<U extends string>(x: U): void;
 }
     `,
+    // A signature's own type parameters shadow outer type parameters with the
+    // same name.
+    `
+interface I<T> {
+  m<T>(x: T): void;
+  m<U>(x: T): void;
+}
+    `,
     // Same name, different scopes
     `
 declare function foo(n: number): number;
@@ -905,6 +913,42 @@ function f<R extends string, S extends number>(x: Map<R, S>): void;
           endColumn: 71,
           endLine: 2,
           line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Nested type parameters should shadow same-named signature type
+      // parameters when normalizing type references.
+      code: `
+function f<T extends string>(x: <T>(y: T) => T, z: string): void;
+function f<R extends string>(x: <T>(y: T) => T): void;
+      `,
+      errors: [
+        {
+          column: 49,
+          endColumn: 58,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // A signature's own type parameters should not be treated as outer type
+      // parameter references just because they share the same name.
+      code: `
+interface I<T> {
+  f<T extends string>(x: T, y: number): void;
+  f<R extends string>(x: R): void;
+}
+      `,
+      errors: [
+        {
+          column: 29,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
           messageId: 'omittingSingleParameter',
         },
       ],
