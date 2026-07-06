@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -13,7 +14,10 @@ import {
 } from '../util';
 
 export type Options = [('method' | 'property')?];
-export type MessageIds = 'errorMethod' | 'errorProperty';
+export type MessageIds =
+  | 'convertToMethodSignature'
+  | 'errorMethod'
+  | 'errorProperty';
 
 export default createRule<Options, MessageIds>({
   name: 'method-signature-style',
@@ -23,7 +27,10 @@ export default createRule<Options, MessageIds>({
       description: 'Enforce using a particular method signature syntax',
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
+      convertToMethodSignature:
+        'Convert to a method signature. This removes the `readonly` modifier, allowing the member to be reassigned.',
       errorMethod:
         'Shorthand method signature is forbidden. Use a function property instead.',
       errorProperty:
@@ -49,9 +56,6 @@ export default createRule<Options, MessageIds>({
       }
       if (node.optional) {
         key = `${key}?`;
-      }
-      if (node.readonly) {
-        key = `readonly ${key}`;
       }
       return key;
     }
@@ -230,19 +234,35 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          const fix: ReportFixFunction = fixer => {
+            const key = getMethodKey(propertyNode);
+            const params = getMethodParams(typeNode);
+            const returnType = getMethodReturnType(typeNode);
+            const delimiter = getDelimiter(propertyNode);
+            return fixer.replaceText(
+              propertyNode,
+              `${key}${params}: ${returnType}${delimiter}`,
+            );
+          };
+
+          // There is no syntax for a `readonly` method signature, so converting
+          // a `readonly` function-typed property drops the `readonly` modifier.
+          // That is a behavioral change (a method may be reassigned, a
+          // `readonly` property may not), so it is offered as a suggestion
+          // rather than applied as an autofix.
+          if (propertyNode.readonly) {
+            context.report({
+              node: propertyNode,
+              messageId: 'errorProperty',
+              suggest: [{ messageId: 'convertToMethodSignature', fix }],
+            });
+            return;
+          }
+
           context.report({
             node: propertyNode,
             messageId: 'errorProperty',
-            fix: fixer => {
-              const key = getMethodKey(propertyNode);
-              const params = getMethodParams(typeNode);
-              const returnType = getMethodReturnType(typeNode);
-              const delimiter = getDelimiter(propertyNode);
-              return fixer.replaceText(
-                propertyNode,
-                `${key}${params}: ${returnType}${delimiter}`,
-              );
-            },
+            fix,
           });
         },
       }),
