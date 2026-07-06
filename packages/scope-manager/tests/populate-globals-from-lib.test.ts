@@ -11,6 +11,7 @@ const arr: Array<number> = [1, 2, 3];
 const map: Map<string, number> = new Map();
 const set: Set<string> = new Set();
 const promise: Promise<void> = Promise.resolve();
+const symbol: symbol = Symbol('test');
 
 function foo(): void {}
 
@@ -82,26 +83,80 @@ function extractGlobalSnapshot(scopeManager: ScopeManager) {
   });
 }
 
-describe('populateGlobalsFromLib – behavior snapshot', () => {
-  it('es2018 globals snapshot stays stable', () => {
+function getGlobalVariableNames(scopeManager: ScopeManager): string[] {
+  return [...scopeManager.globalScope!.variables.values()]
+    .map(variable => variable.name)
+    .sort((a, b) => a.localeCompare(b));
+}
+
+describe('populateGlobalsFromLib – behavior', () => {
+  const expectedNames = [
+    'arr',
+    'Array',
+    'const',
+    'foo',
+    'map',
+    'Map',
+    'Partial',
+    'promise',
+    'Promise',
+    'Record',
+    'set',
+    'Set',
+    'symbol',
+    'Symbol',
+    'T1',
+    'T2',
+  ];
+
+  it('es2018 materializes only globals whose names appear in the program', () => {
     const result = analyze(ast, { lib: ['es2018'] });
-    const snapshot = extractGlobalSnapshot(result);
 
-    expect(snapshot).toMatchSnapshot();
+    expect(getGlobalVariableNames(result)).toEqual(expectedNames);
   });
 
-  it('esnext.full globals snapshot stays stable', () => {
+  it('esnext.full materializes only globals whose names appear in the program', () => {
     const result = analyze(ast, { lib: ['esnext.full'] });
-    const snapshot = extractGlobalSnapshot(result);
 
-    expect(snapshot).toMatchSnapshot();
+    expect(getGlobalVariableNames(result)).toEqual(expectedNames);
   });
 
-  it('no-lib baseline snapshot stays stable', () => {
+  it('no-lib baseline only contains declared variables plus const', () => {
     const result = analyze(ast, { lib: [] });
-    const snapshot = extractGlobalSnapshot(result);
 
-    expect(snapshot).toMatchSnapshot();
+    expect(getGlobalVariableNames(result)).toEqual([
+      'arr',
+      'const',
+      'foo',
+      'map',
+      'promise',
+      'set',
+      'symbol',
+      'T1',
+      'T2',
+    ]);
+  });
+
+  it('uses comment identifier tokens as candidates', () => {
+    const commentAst = parse('/* global Array */', {
+      comment: true,
+      range: true,
+    });
+    const result = analyze(commentAst, { lib: ['es5'] });
+
+    expect(getGlobalVariableNames(result)).toEqual(['Array', 'const']);
+  });
+
+  it('uses JSX identifiers as candidates', () => {
+    const jsxAst = parse('const element = <Map />;', {
+      jsx: true,
+      range: true,
+    });
+    const result = analyze(jsxAst, { lib: ['es2015.collection'] });
+    const names = getGlobalVariableNames(result);
+
+    expect(names).toContain('Map');
+    expect(names).not.toContain('Set');
   });
 });
 
