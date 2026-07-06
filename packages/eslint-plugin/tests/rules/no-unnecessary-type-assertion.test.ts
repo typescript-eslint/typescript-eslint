@@ -2876,9 +2876,6 @@ fn1(() => {
       ],
       output: 'const foo = () => ({ lol: 123 as number }.lol) + 54321;',
     },
-    // optional-chained call to a non-overloaded callee: assertions that are
-    // genuinely unnecessary must still be reported
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12485
     {
       code: `
 declare const maybeFn: ((arg: string | number) => void) | undefined;
