@@ -78,10 +78,18 @@ export function insertRuleOptions(page: RuleDocsPage): void {
       0,
       // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- I don't know whether this is safe to fix
       defaultValue !== undefined
-        ? `${option.description} Default: \`${JSON.stringify(defaultValue)}\`.`
+        ? `${option.description} Default: \`${formatDefaultValue(defaultValue)}\`.`
         : option.description,
     );
   }
+}
+
+function formatDefaultValue(defaultValue: unknown): string {
+  if (Array.isArray(defaultValue)) {
+    return `[${defaultValue.map(formatDefaultValue).join(', ')}]`;
+  }
+
+  return JSON.stringify(defaultValue, null, 1).replaceAll(/\s+/g, ' ');
 }
 
 const OPTION_COMMENT = `/* insert option description */`;
