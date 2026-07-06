@@ -306,10 +306,7 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      if (
-        !hasSameProperties(uncast, cast) ||
-        !haveSameTypeArguments(uncast, cast)
-      ) {
+      if (!hasSameNestedObjectProperties(uncast, cast)) {
         return false;
       }
 
@@ -413,6 +410,79 @@ export default createRule<Options, MessageIds>({
           castPropNames.has(name) &&
           tsutils.isPropertyReadonlyInType(uncast, name, checker) ===
             tsutils.isPropertyReadonlyInType(cast, name, checker)
+        );
+      });
+    }
+
+    function hasObjectShape(type: ts.Type): boolean {
+      return type.getProperties().length > 0 || hasIndexSignature(type);
+    }
+
+    function hasSeenTypePair(
+      seen: WeakMap<ts.Type, Set<ts.Type>>,
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): boolean {
+      const seenCasts = seen.get(uncast);
+      if (seenCasts?.has(cast)) {
+        return true;
+      }
+
+      if (seenCasts) {
+        seenCasts.add(cast);
+      } else {
+        seen.set(uncast, new Set([cast]));
+      }
+
+      return false;
+    }
+
+    function hasSameNestedObjectProperties(
+      uncast: ts.Type,
+      cast: ts.Type,
+      seen = new WeakMap<ts.Type, Set<ts.Type>>(),
+    ): boolean {
+      if (hasSeenTypePair(seen, uncast, cast)) {
+        return true;
+      }
+
+      uncast = checker.getNonNullableType(uncast);
+      cast = checker.getNonNullableType(cast);
+
+      if (
+        !hasSameProperties(uncast, cast) ||
+        !haveSameTypeArguments(uncast, cast)
+      ) {
+        return false;
+      }
+
+      const castProps = new Map(
+        cast
+          .getProperties()
+          .map(prop => [prop.getEscapedName(), prop] as const),
+      );
+
+      return uncast.getProperties().every(prop => {
+        const castProp = castProps.get(prop.getEscapedName());
+        if (!castProp) {
+          return false;
+        }
+
+        const uncastPropType = checker.getNonNullableType(
+          checker.getTypeOfSymbol(prop),
+        );
+        const castPropType = checker.getNonNullableType(
+          checker.getTypeOfSymbol(castProp),
+        );
+
+        if (!hasObjectShape(uncastPropType) && !hasObjectShape(castPropType)) {
+          return true;
+        }
+
+        return (
+          hasIndexSignature(uncastPropType) ===
+            hasIndexSignature(castPropType) &&
+          hasSameNestedObjectProperties(uncastPropType, castPropType, seen)
         );
       });
     }
