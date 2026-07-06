@@ -162,6 +162,11 @@ interface I<T> {
   m<U>(x: T): void;
 }
     `,
+    // Mapped type keys shadow same-named signature type parameters.
+    `
+function h<K extends string>(x: { [K in 'a' | 'b']: K }, y: string): void;
+function h<J extends string>(x: { [K in 'a' | 'b']: J }): void;
+    `,
     // Same name, different scopes
     `
 declare function foo(n: number): number;
@@ -911,6 +916,40 @@ function f<R extends string, S extends number>(x: Map<R, S>): void;
         {
           column: 62,
           endColumn: 71,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Mapped type keys should shadow same-named signature type parameters
+      // when normalizing type references.
+      code: `
+function f<K extends string>(x: { [K in 'a' | 'b']: K }, y: string): void;
+function f<J extends string>(x: { [K in 'a' | 'b']: K }, y: number): void;
+      `,
+      errors: [
+        {
+          column: 58,
+          endColumn: 67,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      // Conditional infer type parameters should shadow same-named signature type
+      // parameters when normalizing type references.
+      code: `
+function g<U>(x: string extends infer U ? U : never, y: string): void;
+function g<V>(x: string extends infer U ? U : never): void;
+      `,
+      errors: [
+        {
+          column: 54,
+          endColumn: 63,
           endLine: 2,
           line: 2,
           messageId: 'omittingSingleParameter',

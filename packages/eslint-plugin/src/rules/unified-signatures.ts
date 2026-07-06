@@ -526,6 +526,66 @@ export default createRule<Options, MessageIds>({
       return nextShadowedTypeParameters;
     }
 
+    function shadowTypeParameterName(
+      shadowedTypeParameters: TypeParameterNames,
+      typeParameterName: string,
+    ): TypeParameterNames {
+      const nextShadowedTypeParameters = new Set(shadowedTypeParameters);
+      nextShadowedTypeParameters.add(typeParameterName);
+      return nextShadowedTypeParameters;
+    }
+
+    function shadowTypeParameterNames(
+      shadowedTypeParameters: TypeParameterNames,
+      typeParameterNames: TypeParameterNames,
+    ): TypeParameterNames {
+      if (typeParameterNames.size === 0) {
+        return shadowedTypeParameters;
+      }
+
+      const nextShadowedTypeParameters = new Set(shadowedTypeParameters);
+      for (const typeParameterName of typeParameterNames) {
+        nextShadowedTypeParameters.add(typeParameterName);
+      }
+      return nextShadowedTypeParameters;
+    }
+
+    function getInferTypeParameterNames(
+      node: TSESTree.Node,
+    ): TypeParameterNames {
+      const typeParameterNames = new Set<string>();
+
+      visit(node);
+
+      return typeParameterNames;
+
+      function visit(node: TSESTree.Node): void {
+        if (node.type === AST_NODE_TYPES.TSInferType) {
+          typeParameterNames.add(node.typeParameter.name.name);
+          return;
+        }
+
+        if (node.type === AST_NODE_TYPES.TSConditionalType) {
+          return;
+        }
+
+        const properties = node as unknown as Record<string, unknown>;
+        for (const key of getKeys(node)) {
+          const value = properties[key];
+
+          if (Array.isArray(value)) {
+            for (const child of value) {
+              if (isNode(child)) {
+                visit(child);
+              }
+            }
+          } else if (isNode(value)) {
+            visit(value);
+          }
+        }
+      }
+    }
+
     function isTSParameterProperty(
       node: TSESTree.Node,
     ): node is TSESTree.TSParameterProperty {
@@ -687,6 +747,57 @@ export default createRule<Options, MessageIds>({
       callback: (reference: TSESTree.Identifier) => void,
       shadowedTypeParameters: TypeParameterNames = new Set(),
     ): void {
+      if (node.type === AST_NODE_TYPES.TSMappedType) {
+        const mappedTypeShadowedTypeParameters = shadowTypeParameterName(
+          shadowedTypeParameters,
+          node.key.name,
+        );
+
+        forEachTypeReference(node.constraint, callback, shadowedTypeParameters);
+
+        if (node.nameType != null) {
+          forEachTypeReference(
+            node.nameType,
+            callback,
+            mappedTypeShadowedTypeParameters,
+          );
+        }
+        if (node.typeAnnotation != null) {
+          forEachTypeReference(
+            node.typeAnnotation,
+            callback,
+            mappedTypeShadowedTypeParameters,
+          );
+        }
+
+        return;
+      }
+
+      if (node.type === AST_NODE_TYPES.TSConditionalType) {
+        const inferredTypeParameters = getInferTypeParameterNames(
+          node.extendsType,
+        );
+        const inferredShadowedTypeParameters = shadowTypeParameterNames(
+          shadowedTypeParameters,
+          inferredTypeParameters,
+        );
+
+        forEachTypeReference(node.checkType, callback, shadowedTypeParameters);
+        forEachTypeReference(
+          node.extendsType,
+          callback,
+          inferredShadowedTypeParameters,
+        );
+        forEachTypeReference(
+          node.trueType,
+          callback,
+          inferredShadowedTypeParameters,
+        );
+        forEachTypeReference(node.falseType, callback, shadowedTypeParameters);
+
+        return;
+      }
+
       if (
         node.type === AST_NODE_TYPES.TSTypeReference &&
         isIdentifier(node.typeName) &&
