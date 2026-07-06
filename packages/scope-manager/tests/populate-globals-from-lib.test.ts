@@ -1,8 +1,8 @@
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/types';
 import { describe, it, expect } from 'vitest';
 
-import type { ScopeManager } from '../src';
-
-import { analyze } from '../src';
+import { analyze, ScopeManager } from '../src';
+import { Referencer } from '../src/referencer';
 import { parse } from './test-utils';
 
 // Test code that heavily relies on lib-provided globals
@@ -157,6 +157,55 @@ describe('populateGlobalsFromLib – behavior', () => {
 
     expect(names).toContain('Map');
     expect(names).not.toContain('Set');
+  });
+
+  it('uses fallback child keys without traversing parent links', () => {
+    const fallbackAst = parse('/* see Map */', {
+      comment: true,
+      range: true,
+    });
+
+    (fallbackAst as unknown as { body: unknown[] }).body.push({
+      parent: {
+        name: 'WeakMap',
+        type: AST_NODE_TYPES.Identifier,
+      },
+      type: 'TestNode',
+      value: {
+        name: 'Set',
+        type: AST_NODE_TYPES.Identifier,
+      },
+      values: [
+        {
+          name: 'WeakSet',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    });
+    (fallbackAst as unknown as { comments: unknown[] }).comments.unshift(
+      null,
+      { type: AST_TOKEN_TYPES.Block },
+      42,
+    );
+
+    const scopeManager = new ScopeManager({ sourceType: 'script' });
+    const referencer = new Referencer(
+      {
+        jsxFragmentName: null,
+        jsxPragma: 'React',
+        lib: ['es2015.collection'],
+      },
+      scopeManager,
+    );
+
+    referencer.visit(fallbackAst);
+
+    expect(getGlobalVariableNames(scopeManager)).toEqual([
+      'const',
+      'Map',
+      'Set',
+      'WeakSet',
+    ]);
   });
 });
 
