@@ -118,6 +118,42 @@ interface I {
 function f<T extends number>(x: T[]): void;
 function f<T extends string>(x: T): void;
     `,
+    // Type parameters with different constraints must not be unified, even when
+    // they are named differently.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12143
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+function f<T extends A>(x: T, y: string): void;
+function f<R extends B>(x: R): void;
+    `,
+    // Type parameters with different constraints must not be unified, even when
+    // they share a name.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12143
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+function f<T extends A>(x: T, y: string): void;
+function f<T extends B>(x: T): void;
+    `,
+    // Type parameters with different defaults must not be unified.
+    `
+function f<T extends string = 'a'>(x: T, y: string): void;
+function f<R extends string = 'b'>(x: R): void;
+    `,
+    // Type parameters with different defaults must not be unified, even when
+    // they share a name.
+    `
+function f<T extends string = 'a'>(x: T, y: string): void;
+function f<T extends string = 'b'>(x: T): void;
+    `,
+    // Outer type parameters are bindings, not local placeholder names.
+    `
+interface Box<T> {
+  f(x: T, y: string): void;
+  f<U extends string>(x: U): void;
+}
+    `,
     // Same name, different scopes
     `
 declare function foo(n: number): number;
@@ -801,6 +837,75 @@ function f<T>(x: T): void;
           },
           line: 3,
           messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      // Type parameters with the same constraint should be unified even when
+      // they are named differently.
+      // https://github.com/typescript-eslint/typescript-eslint/issues/12143
+      code: `
+function f<T extends string>(x: T, y: string): void;
+function f<R extends string>(x: R): void;
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Differently named type parameters that share a constraint should be
+      // unified when nested in another type.
+      code: `
+function f<T extends string>(x: Array<T>, y: string): void;
+function f<R extends string>(x: Array<R>): void;
+      `,
+      errors: [
+        {
+          column: 43,
+          endColumn: 52,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // A later parameter should still compare equal when it uses a renamed
+      // type parameter with the same constraint.
+      code: `
+function f<T extends string>(x: number, y: T): void;
+function f<R extends string>(x: string, y: R): void;
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      // Multiple renamed type parameters with matching constraints should be
+      // compared by position.
+      code: `
+function f<T extends string, U extends number>(x: Map<T, U>, y: string): void;
+function f<R extends string, S extends number>(x: Map<R, S>): void;
+      `,
+      errors: [
+        {
+          column: 62,
+          endColumn: 71,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
         },
       ],
     },

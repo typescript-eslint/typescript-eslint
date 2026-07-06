@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getKeys } from '@typescript-eslint/visitor-keys';
 
 import type { Equal } from '../util';
 
@@ -28,6 +29,8 @@ type Unify =
  * In: `interface I<T> { m<U>(x: U): T }`, only `T` is an outer type parameter.
  */
 type IsTypeParameter = (typeName: string) => boolean;
+type TypeParameterReplacements = ReadonlyMap<string, string>;
+type TypeNodeOrAnnotation = TSESTree.TSTypeAnnotation | TSESTree.TypeNode;
 
 type ScopeNode =
   | TSESTree.ClassBody
@@ -206,19 +209,42 @@ export default createRule<Options, MessageIds>({
       b: SignatureDefinition,
       isTypeParameter: IsTypeParameter,
     ): Unify | undefined {
-      if (!signaturesCanBeUnified(a, b, isTypeParameter)) {
+      const aTypeParameterReplacements = getTypeParameterReplacements(a);
+      const bTypeParameterReplacements = getTypeParameterReplacements(b);
+
+      if (
+        !signaturesCanBeUnified(
+          a,
+          b,
+          isTypeParameter,
+          aTypeParameterReplacements,
+          bTypeParameterReplacements,
+        )
+      ) {
         return undefined;
       }
 
       return a.params.length === b.params.length
-        ? signaturesDifferBySingleParameter(a.params, b.params)
-        : signaturesDifferByOptionalOrRestParameter(a, b);
+        ? signaturesDifferBySingleParameter(
+            a.params,
+            b.params,
+            aTypeParameterReplacements,
+            bTypeParameterReplacements,
+          )
+        : signaturesDifferByOptionalOrRestParameter(
+            a,
+            b,
+            aTypeParameterReplacements,
+            bTypeParameterReplacements,
+          );
     }
 
     function signaturesCanBeUnified(
       a: SignatureDefinition,
       b: SignatureDefinition,
       isTypeParameter: IsTypeParameter,
+      aTypeParameterReplacements: TypeParameterReplacements,
+      bTypeParameterReplacements: TypeParameterReplacements,
     ): boolean {
       // Must return the same type.
 
@@ -249,10 +275,22 @@ export default createRule<Options, MessageIds>({
       }
 
       return (
-        typesAreEqual(a.returnType, b.returnType) &&
+        typesAreEqual(
+          a.returnType,
+          b.returnType,
+          aTypeParameterReplacements,
+          bTypeParameterReplacements,
+        ) &&
         // Must take the same type parameters.
         // If one uses a type parameter (from outside) and the other doesn't, they shouldn't be joined.
-        arraysAreEqual(aTypeParams, bTypeParams, typeParametersAreEqual) &&
+        arraysAreEqual(aTypeParams, bTypeParams, (aTypeParam, bTypeParam) =>
+          typeParametersAreEqual(
+            aTypeParam,
+            bTypeParam,
+            aTypeParameterReplacements,
+            bTypeParameterReplacements,
+          ),
+        ) &&
         signatureUsesTypeParameter(a, isTypeParameter) ===
           signatureUsesTypeParameter(b, isTypeParameter)
       );
@@ -262,6 +300,8 @@ export default createRule<Options, MessageIds>({
     function signaturesDifferBySingleParameter(
       types1: readonly TSESTree.Parameter[],
       types2: readonly TSESTree.Parameter[],
+      typeParameterReplacements1: TypeParameterReplacements,
+      typeParameterReplacements2: TypeParameterReplacements,
     ): Unify | undefined {
       const firstParam1 = types1[0];
       const firstParam2 = types2[0];
@@ -271,10 +311,21 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
+      const parametersAreEqualWithTypeParameterReplacements = (
+        a: TSESTree.Parameter,
+        b: TSESTree.Parameter,
+      ): boolean =>
+        parametersAreEqual(
+          a,
+          b,
+          typeParameterReplacements1,
+          typeParameterReplacements2,
+        );
+
       const index = getIndexOfFirstDifference(
         types1,
         types2,
-        parametersAreEqual,
+        parametersAreEqualWithTypeParameterReplacements,
       );
       if (index == null) {
         return undefined;
@@ -285,7 +336,7 @@ export default createRule<Options, MessageIds>({
         !arraysAreEqual(
           types1.slice(index + 1),
           types2.slice(index + 1),
-          parametersAreEqual,
+          parametersAreEqualWithTypeParameterReplacements,
         )
       ) {
         return undefined;
@@ -320,6 +371,8 @@ export default createRule<Options, MessageIds>({
     function signaturesDifferByOptionalOrRestParameter(
       a: SignatureDefinition,
       b: SignatureDefinition,
+      typeParameterReplacements1: TypeParameterReplacements,
+      typeParameterReplacements2: TypeParameterReplacements,
     ): Unify | undefined {
       const sig1 = a.params;
       const sig2 = b.params;
@@ -361,7 +414,14 @@ export default createRule<Options, MessageIds>({
           ? sig2i.parameter.typeAnnotation
           : sig2i.typeAnnotation;
 
-        if (!typesAreEqual(typeAnnotation1, typeAnnotation2)) {
+        if (
+          !typesAreEqual(
+            typeAnnotation1,
+            typeAnnotation2,
+            typeParameterReplacements1,
+            typeParameterReplacements2,
+          )
+        ) {
           return undefined;
         }
       }
@@ -438,6 +498,8 @@ export default createRule<Options, MessageIds>({
     function parametersAreEqual(
       a: TSESTree.Parameter,
       b: TSESTree.Parameter,
+      aTypeParameterReplacements: TypeParameterReplacements,
+      bTypeParameterReplacements: TypeParameterReplacements,
     ): boolean {
       const typeAnnotationA = isTSParameterProperty(a)
         ? a.parameter.typeAnnotation
@@ -448,7 +510,12 @@ export default createRule<Options, MessageIds>({
 
       return (
         parametersHaveEqualSigils(a, b) &&
-        typesAreEqual(typeAnnotationA, typeAnnotationB)
+        typesAreEqual(
+          typeAnnotationA,
+          typeAnnotationB,
+          aTypeParameterReplacements,
+          bTypeParameterReplacements,
+        )
       );
     }
 
@@ -482,31 +549,131 @@ export default createRule<Options, MessageIds>({
     function typeParametersAreEqual(
       a: TSESTree.TSTypeParameter,
       b: TSESTree.TSTypeParameter,
+      aTypeParameterReplacements: TypeParameterReplacements,
+      bTypeParameterReplacements: TypeParameterReplacements,
     ): boolean {
       return (
-        a.name.name === b.name.name &&
-        constraintsAreEqual(a.constraint, b.constraint)
+        typesAreEqual(
+          a.constraint,
+          b.constraint,
+          aTypeParameterReplacements,
+          bTypeParameterReplacements,
+        ) &&
+        typesAreEqual(
+          a.default,
+          b.default,
+          aTypeParameterReplacements,
+          bTypeParameterReplacements,
+        )
       );
     }
 
     function typesAreEqual(
-      a: TSESTree.TSTypeAnnotation | undefined,
-      b: TSESTree.TSTypeAnnotation | undefined,
+      a: TypeNodeOrAnnotation | undefined,
+      b: TypeNodeOrAnnotation | undefined,
+      aTypeParameterReplacements: TypeParameterReplacements,
+      bTypeParameterReplacements: TypeParameterReplacements,
     ): boolean {
+      const aTypeNode = getTypeNode(a);
+      const bTypeNode = getTypeNode(b);
+
       return (
-        a === b ||
-        (a != null &&
-          b != null &&
-          context.sourceCode.getText(a.typeAnnotation) ===
-            context.sourceCode.getText(b.typeAnnotation))
+        aTypeNode === bTypeNode ||
+        (aTypeNode != null &&
+          bTypeNode != null &&
+          normalizeTypeText(aTypeNode, aTypeParameterReplacements) ===
+            normalizeTypeText(bTypeNode, bTypeParameterReplacements))
       );
     }
 
-    function constraintsAreEqual(
-      a: TSESTree.TypeNode | undefined,
-      b: TSESTree.TypeNode | undefined,
-    ): boolean {
-      return a === b || (a != null && a.type === b?.type);
+    function getTypeNode(
+      node: TypeNodeOrAnnotation | undefined,
+    ): TSESTree.TypeNode | undefined {
+      return node?.type === AST_NODE_TYPES.TSTypeAnnotation
+        ? node.typeAnnotation
+        : node;
+    }
+
+    function getTypeParameterReplacements(
+      signature: SignatureDefinition,
+    ): TypeParameterReplacements {
+      const replacements = new Map<string, string>();
+      for (const [index, typeParameter] of (
+        signature.typeParameters?.params ?? []
+      ).entries()) {
+        replacements.set(typeParameter.name.name, `\0typeParameter:${index}\0`);
+      }
+      return replacements;
+    }
+
+    function normalizeTypeText(
+      node: TSESTree.TypeNode,
+      typeParameterReplacements: TypeParameterReplacements,
+    ): string {
+      const text = context.sourceCode.getText(node);
+      if (typeParameterReplacements.size === 0) {
+        return text;
+      }
+
+      const offset = node.range[0];
+      const replacements: { end: number; start: number; text: string }[] = [];
+      forEachTypeReference(node, reference => {
+        const replacement = typeParameterReplacements.get(reference.name);
+        if (replacement != null) {
+          replacements.push({
+            start: reference.range[0] - offset,
+            end: reference.range[1] - offset,
+            text: replacement,
+          });
+        }
+      });
+
+      if (replacements.length === 0) {
+        return text;
+      }
+
+      replacements.sort((a, b) => a.start - b.start);
+
+      let result = '';
+      let lastIndex = 0;
+      for (const replacement of replacements) {
+        result += text.slice(lastIndex, replacement.start);
+        result += replacement.text;
+        lastIndex = replacement.end;
+      }
+
+      return result + text.slice(lastIndex);
+    }
+
+    function forEachTypeReference(
+      node: TSESTree.Node,
+      callback: (reference: TSESTree.Identifier) => void,
+    ): void {
+      if (
+        node.type === AST_NODE_TYPES.TSTypeReference &&
+        isIdentifier(node.typeName)
+      ) {
+        callback(node.typeName);
+      }
+
+      const properties = node as unknown as Record<string, unknown>;
+      for (const key of getKeys(node)) {
+        const value = properties[key];
+
+        if (Array.isArray(value)) {
+          for (const child of value) {
+            if (isNode(child)) {
+              forEachTypeReference(child, callback);
+            }
+          }
+        } else if (isNode(value)) {
+          forEachTypeReference(value, callback);
+        }
+      }
+    }
+
+    function isNode(value: unknown): value is TSESTree.Node {
+      return value != null && typeof value === 'object' && 'type' in value;
     }
 
     /* Returns the first index where `a` and `b` differ. */
