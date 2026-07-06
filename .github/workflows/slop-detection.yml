@@ -63,5 +63,4 @@ jobs:
 
             If this was a mistake, please comment with more context or ask a
             maintainer to add the `spam:exempt` label before reopening.
-          max-failures: 4
           lock-pr: false
