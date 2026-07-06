@@ -555,11 +555,9 @@ export default createRule<Options, MessageIds>({
       }
       // An optional-chained callee (`foo?.bar(...)`) types as `<method> | undefined`,
       // and a union exposes no call signatures — strip the nullability first.
-      const calleeType = checker.getNonNullableType(
-        checker.getTypeAtLocation(
-          services.esTreeNodeToTSNodeMap.get(parent.callee),
-        ),
-      );
+      const calleeType = services
+        .getTypeAtLocation(parent.callee)
+        .getNonNullableType();
       const signatures = calleeType.getCallSignatures();
       if (signatures.length <= 1) {
         return false;
