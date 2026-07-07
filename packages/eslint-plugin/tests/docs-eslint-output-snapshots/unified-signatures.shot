@@ -12,7 +12,7 @@ function y(...x: number[]): void;
 
 Correct
 
-function x(x: number | string): void;
+function x(y: number | string): void;
 
 Correct
 
