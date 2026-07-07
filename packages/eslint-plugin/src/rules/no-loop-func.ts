@@ -9,10 +9,8 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 const baseRule: ReturnType<typeof getESLintCoreRule> =
   getESLintCoreRule('no-loop-func');
 
-export type Options = InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
-export type MessageIds = InferMessageIdsTypeFromRule<
-  NonNullable<typeof baseRule>
->;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
   name: 'no-loop-func',
