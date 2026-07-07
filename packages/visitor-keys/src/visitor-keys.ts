@@ -99,13 +99,14 @@ type KeysDefinedInESLintVisitorKeysCore =
 // strictly type the arrays of keys provided to make sure we keep this config in sync with the type defs
 type AdditionalKeys = {
   // optionally allow keys for all nodes defined in `eslint-visitor-keys`
-  readonly [T in KeysDefinedInESLintVisitorKeysCore]?: readonly GetNodeTypeKeys<T>[];
+  readonly [
+    T in KeysDefinedInESLintVisitorKeysCore
+  ]?: readonly GetNodeTypeKeys<T>[];
 } & {
   // require keys for all nodes NOT defined in `eslint-visitor-keys`
-  readonly [T in Exclude<
-    AST_NODE_TYPES,
-    KeysDefinedInESLintVisitorKeysCore
-  >]: readonly GetNodeTypeKeys<T>[];
+  readonly [
+    T in Exclude<AST_NODE_TYPES, KeysDefinedInESLintVisitorKeysCore>
+  ]: readonly GetNodeTypeKeys<T>[];
 };
 
 /*

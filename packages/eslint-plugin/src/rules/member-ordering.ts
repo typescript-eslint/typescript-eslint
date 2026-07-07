@@ -14,9 +14,7 @@ import {
 } from '../util';
 
 export type MessageIds =
-  | 'incorrectGroupOrder'
-  | 'incorrectOrder'
-  | 'incorrectRequiredMembersOrder';
+  'incorrectGroupOrder' | 'incorrectOrder' | 'incorrectRequiredMembersOrder';
 
 type ReadonlyType = 'readonly-field' | 'readonly-signature';
 

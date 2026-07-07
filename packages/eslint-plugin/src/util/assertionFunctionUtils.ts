@@ -96,13 +96,11 @@ export function findTypeGuardAssertedArgument(
   }
 
   const { kind, parameterIndex, type } = typePredicateInfo;
-  if (
-    !(
-      (kind === ts.TypePredicateKind.AssertsIdentifier ||
-        kind === ts.TypePredicateKind.Identifier) &&
-      type != null
-    )
-  ) {
+  if (!(
+    (kind === ts.TypePredicateKind.AssertsIdentifier ||
+      kind === ts.TypePredicateKind.Identifier) &&
+    type != null
+  )) {
     return undefined;
   }
 

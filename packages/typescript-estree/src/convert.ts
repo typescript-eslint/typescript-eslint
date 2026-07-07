@@ -2964,8 +2964,7 @@ export class Converter {
    */
   private fixExports<
     T extends
-      | TSESTree.DefaultExportDeclarations
-      | TSESTree.NamedExportDeclarations,
+      TSESTree.DefaultExportDeclarations | TSESTree.NamedExportDeclarations,
   >(
     node:
       | ts.ClassDeclaration

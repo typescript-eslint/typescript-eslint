@@ -5,14 +5,10 @@ import type { PrivateIdentifier } from '../special/PrivateIdentifier/spec';
 import type { Expression } from '../unions/Expression';
 
 export type PropertyName =
-  | ClassPropertyNameNonComputed
-  | PropertyNameComputed
-  | PropertyNameNonComputed;
+  ClassPropertyNameNonComputed | PropertyNameComputed | PropertyNameNonComputed;
 export type PropertyNameComputed = Expression;
 export type PropertyNameNonComputed =
-  | Identifier
-  | NumberLiteral
-  | StringLiteral;
+  Identifier | NumberLiteral | StringLiteral;
 export type ClassPropertyNameNonComputed =
   | PrivateIdentifier
   // only class properties can have private identifiers as their names

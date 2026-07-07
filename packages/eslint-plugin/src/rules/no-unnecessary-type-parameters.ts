@@ -368,8 +368,7 @@ function collectTypeParameterUsageCounts(
 
     if (tsutils.isTypeParameter(type)) {
       const declaration = type.getSymbol()?.getDeclarations()?.[0] as
-        | ts.TypeParameterDeclaration
-        | undefined;
+        ts.TypeParameterDeclaration | undefined;
 
       if (declaration) {
         incrementIdentifierCount(declaration.name, assumeMultipleUses);

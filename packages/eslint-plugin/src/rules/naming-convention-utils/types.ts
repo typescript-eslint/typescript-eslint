@@ -31,8 +31,7 @@ export interface Selector {
   prefix?: string[];
   // selector options
   selector:
-    | IndividualAndMetaSelectorsString
-    | IndividualAndMetaSelectorsString[];
+    IndividualAndMetaSelectorsString | IndividualAndMetaSelectorsString[];
   suffix?: string[];
   trailingUnderscore?: UnderscoreOptionsString;
   types?: TypeModifiersString[];

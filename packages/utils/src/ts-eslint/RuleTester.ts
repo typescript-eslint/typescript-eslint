@@ -218,8 +218,7 @@ declare class RuleTesterBase {
   defineRule<MessageIds extends string, Options extends readonly unknown[]>(
     name: string,
     rule:
-      | RuleCreateFunction<MessageIds, Options>
-      | RuleModule<MessageIds, Options>,
+      RuleCreateFunction<MessageIds, Options> | RuleModule<MessageIds, Options>,
   ): void;
 }
 

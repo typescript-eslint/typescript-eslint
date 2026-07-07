@@ -13,13 +13,10 @@ type RuleNode =
   | TSESTree.TSTypeLiteral;
 
 type Member =
-  | TSESTree.ClassElement
-  | TSESTree.ProgramStatement
-  | TSESTree.TypeElement;
+  TSESTree.ClassElement | TSESTree.ProgramStatement | TSESTree.TypeElement;
 
 type MemberDeclaration =
-  | TSESTree.DefaultExportDeclarations
-  | TSESTree.NamedExportDeclarations;
+  TSESTree.DefaultExportDeclarations | TSESTree.NamedExportDeclarations;
 
 export default createRule({
   name: 'adjacent-overload-signatures',

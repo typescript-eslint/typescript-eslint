@@ -264,5 +264,4 @@ export interface ParserServicesWithoutTypeInformation
   program: null;
 }
 export type ParserServices =
-  | ParserServicesWithoutTypeInformation
-  | ParserServicesWithTypeInformation;
+  ParserServicesWithoutTypeInformation | ParserServicesWithTypeInformation;

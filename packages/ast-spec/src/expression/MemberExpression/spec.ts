@@ -24,5 +24,4 @@ export interface MemberExpressionNonComputedName extends MemberExpressionBase {
 }
 
 export type MemberExpression =
-  | MemberExpressionComputedName
-  | MemberExpressionNonComputedName;
+  MemberExpressionComputedName | MemberExpressionNonComputedName;
