@@ -52,6 +52,22 @@ for (let i = 0; i < 10; i += 1) {
   someArray = someArray.filter((item: MyType) => !!item);
 }
     `,
+    `
+declare function getResource(): Disposable;
+for (let i = 0; i < 3; i++) {
+  using resource = getResource();
+  const fn = () => resource;
+}
+    `,
+    `
+declare function getResource(): AsyncDisposable;
+async function f() {
+  for (let i = 0; i < 3; i++) {
+    await using resource = getResource();
+    const fn = () => resource;
+  }
+}
+    `,
   ],
   invalid: [],
 });
