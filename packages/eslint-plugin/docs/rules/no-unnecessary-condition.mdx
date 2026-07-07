@@ -157,23 +157,6 @@ while (thisIsTrue) {
 
 {/* insert option description */}
 
-:::note
-This option assumes that type predicates accurately describe their runtime behavior.
-
-For a type predicate such as `isString(value): value is string`, TypeScript's
-control-flow analysis assumes that the function returns `true` if and only if
-`value` has the asserted type. If a predicate performs additional runtime checks
-that are not represented in its return type, this option may report conditions
-that are still meaningful at runtime.
-
-For assertion functions such as `assertIsString(value): asserts value is string`,
-TypeScript similarly assumes that the value has the asserted type whenever the
-function returns normally. If an assertion function's runtime behavior does not
-match its declared assertion type, this option may produce unexpected reports.
-Consider disabling this option or suppressing the rule for cases where the
-assertion function intentionally performs additional runtime checks.
-:::
-
 Example of additional incorrect code with `{ checkTypePredicates: true }`:
 
 ```ts option='{ "checkTypePredicates": true }' showPlaygroundButton
@@ -211,6 +194,14 @@ Whether this option makes sense for your project may vary.
 Some projects may intentionally use type predicates to ensure that runtime values do indeed match the types according to TypeScript, especially in test code.
 Often, it makes sense to use eslint-disable comments in these cases, with a comment indicating why the condition should be checked at runtime, despite appearing unnecessary.
 However, in some contexts, it may be more appropriate to keep this option disabled entirely.
+
+:::note
+This option assumes that type predicates accurately describe their runtime behavior.
+
+For a type predicate such as `isString(value): value is string`, TypeScript's control-flow analysis assumes that the function returns `true` if and only if `value` has the asserted type. If a predicate performs additional runtime checks that are not represented in its return type, this option may report conditions that are still meaningful at runtime.
+
+For assertion functions such as `assertIsString(value): asserts value is string`, TypeScript similarly assumes that the value has the asserted type whenever the function returns normally.
+:::
 
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
 
