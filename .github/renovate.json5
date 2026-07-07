@@ -36,6 +36,11 @@
       description: 'Label GHA ecosystem PRs appropriately.',
       matchManagers: ['github-actions'],
     },
+    {
+      description: 'Use range strategy "bump" for dev dependencies.',
+      matchDepTypes: ['devDependencies'],
+      rangeStrategy: 'bump',
+    },
   ],
 
   // We've found enabling patch updates on all dependencies is a lot of noise.
