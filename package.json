@@ -58,10 +58,10 @@
     "@eslint/compat": "^2.0.2",
     "@eslint/config-helpers": "^0.6.0",
     "@eslint/js": "catalog:",
-    "@nx/devkit": "22.3.3",
-    "@nx/js": "22.3.3",
-    "@nx/vitest": "22.3.3",
-    "@nx/workspace": "22.3.3",
+    "@nx/devkit": "22.7.6",
+    "@nx/js": "22.7.6",
+    "@nx/vitest": "22.7.6",
+    "@nx/workspace": "22.7.6",
     "@swc/core": "^1.15.8",
     "@types/debug": "^4.1.12",
     "@types/natural-compare": "catalog:",
@@ -96,7 +96,7 @@
     "knip": "6.23.0",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.49.0",
-    "nx": "22.3.3",
+    "nx": "22.7.6",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "semver": "7.8.0",
@@ -106,7 +106,7 @@
     "vite": "7.3.0",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
+  "packageManager": "pnpm@10.34.4+sha512.8768be55200ae3f2226b6527fcca2687e14bc4e5f12d7721a0f25da3df47915177058648db4177baf348120fa0ba2752d8d8d93f6beaf1fe64ae18da8de961af",
   "nx": {
     "name": "repo",
     "includedScripts": [

@@ -1,3 +1,27 @@
+## 8.63.0 (2026-07-06)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-misused-promises] detect async usage of a sync dispose usage ([#12426](https://github.com/typescript-eslint/typescript-eslint/pull/12426))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-base-to-string] don't flag a shadowed String() call ([#12492](https://github.com/typescript-eslint/typescript-eslint/pull/12492))
+- **eslint-plugin:** [no-unnecessary-type-assertion] handle optional-chained calls to overloaded functions ([#12491](https://github.com/typescript-eslint/typescript-eslint/pull/12491), [#12485](https://github.com/typescript-eslint/typescript-eslint/issues/12485))
+- **eslint-plugin:** [method-signature-style] suggest converting readonly function properties instead of emitting invalid syntax ([#12447](https://github.com/typescript-eslint/typescript-eslint/pull/12447), [#12446](https://github.com/typescript-eslint/typescript-eslint/issues/12446))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Kristjan @KristjanTammekivi
+- Michael Naumov @mnaoumov
+- Serhii Leniv @Serhii-Leniv
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.63.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.62.1 (2026-06-29)
 
 ### 🩹 Fixes
