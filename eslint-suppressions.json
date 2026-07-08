@@ -29,11 +29,6 @@
       "count": 6
     }
   },
-  "packages/eslint-plugin-internal/tests/rules/plugin-test-formatting.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 14
-    }
-  },
   "packages/eslint-plugin-internal/tests/rules/prefer-ast-types-enum.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 3
