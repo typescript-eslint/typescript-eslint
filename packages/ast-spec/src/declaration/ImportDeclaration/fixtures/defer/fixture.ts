@@ -1,1 +1,1 @@
-import * as mod from 'mod';
+import defer * as mod from 'mod';
