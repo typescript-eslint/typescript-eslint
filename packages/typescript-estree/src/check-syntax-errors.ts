@@ -366,10 +366,7 @@ export function checkSyntaxError(
     case SyntaxKind.ImportDeclaration: {
       const { importClause } = node;
       if (
-        // TODO swap to `phaseModifier` once we add support for `import defer`
-        // https://github.com/estree/estree/issues/328
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        importClause?.isTypeOnly &&
+        importClause?.phaseModifier === SyntaxKind.TypeKeyword &&
         importClause.name &&
         importClause.namedBindings
       ) {
