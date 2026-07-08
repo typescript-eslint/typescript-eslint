@@ -106,7 +106,7 @@
   },
   "packages/eslint-plugin/tests/rules/consistent-type-imports.test.ts": {
     "eslint-plugin/require-test-error-positions": {
-      "count": 89
+      "count": 88
     }
   },
   "packages/eslint-plugin/tests/rules/default-param-last.test.ts": {
