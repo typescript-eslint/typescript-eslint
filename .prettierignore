@@ -16,10 +16,10 @@ packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
 # https://github.com/prettier/prettier/issues/17405
 packages/ast-spec/src/type/TSImportType/fixtures/type-import-type-with-trailing-comma-in-import-attributes/fixture.ts
 
-# TODO - remove this once prettier fixed it
-# https://github.com/prettier/prettier/pull/18551
-packages/ast-spec/src/statement/ForStatement/fixtures/await-using/fixture.ts
-packages/ast-spec/src/statement/ForStatement/fixtures/using/fixture.ts
+# TODO - remove this once prettier supports `import defer`
+# https://github.com/prettier/prettier/issues/18180
+packages/scope-manager/tests/fixtures/import/defer.ts
+packages/ast-spec/src/declaration/ImportDeclaration/fixtures/defer/fixture.ts
 
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
