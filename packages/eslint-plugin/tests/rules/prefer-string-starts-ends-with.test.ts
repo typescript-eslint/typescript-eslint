@@ -302,8 +302,12 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       `,
       options: [{ allowSingleElementEquality: 'always' }],
     },
-    '/foo\\$/.test(s);',
-    '/foo\\\\\\$/.test(s);',
+    "/foo\\$/.test('string');",
+    "/foo\\\\\\$/.test('string');",
+    "/beforeAnchor$afterAnchor/.test('string');",
+    "/beforeDollarSign\\$afterDollarSign/.test('string');",
+    "/beforeAnchor\\\\$afterAnchor/.test('string');",
+    '/[$]/.test(string);',
   ],
   invalid: [
     // String indexing.
@@ -1183,9 +1187,14 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       `,
     },
     {
-      code: '/foo\\\\$/.test(s);',
+      code: "/foo$/.test('string');",
       errors: [{ messageId: 'preferEndsWith' }],
-      output: 's.endsWith("foo\\\\");',
+      output: '\'string\'.endsWith("foo");',
+    },
+    {
+      code: "/foo\\\\$/.test('string');",
+      errors: [{ messageId: 'preferEndsWith' }],
+      output: '\'string\'.endsWith("foo\\\\");',
     },
   ],
 });

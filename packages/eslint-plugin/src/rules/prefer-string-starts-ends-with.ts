@@ -294,7 +294,7 @@ export default createRule<Options, MessageIds>({
       const { flags, source } = evaluated.value;
       const isStartsWith = source.startsWith('^');
       // ends with a $ preceded by an even number of backslashes (or zero)
-      const isEndsWith = /(?<!\\)(?:\\\\)*\$/.test(source);
+      const isEndsWith = /(?<!\\)(?:\\\\)*\$$/.test(source);
       if (
         isStartsWith === isEndsWith ||
         flags.includes('i') ||
