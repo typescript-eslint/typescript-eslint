@@ -1243,6 +1243,78 @@ const test: InvalidTestCase<'', []> = {
 };
       `,
     },
+    {
+      // ensure output has enough escaping for `code` with a 'quoted string'.
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // The user types "'\\\\'"
+        // meaning the code they are testing is '\\' (which is missing a semicolon for prettier formatting)
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`"'\\\\'"`
+      },
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`"'\\\\';"`
+      },
+    },
+  ],
+});
+      `,
+    },
+    {
+      // ensure output has enough escaping for `code` with a `template string`.
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: \`
+${
+  // The user types `'\\\\'` (but multiline)
+  // meaning the code they are testing is '\\' (which is missing a semicolon for prettier formatting)
+  // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+  String.raw`'\\\\'`
+}
+      \`,
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: \`
+${
+  // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+  String.raw`'\\\\;'`
+}
+      \`,
+    },
+  ],
+});
+      `,
+    },
   ],
   valid: [
     // sanity check for valid tests non-object style
@@ -1423,5 +1495,21 @@ const test = [
   errors: [],
 }));
     `,
+    {
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // The user types "'\\\\';"
+        // meaning the code they are testing is '\\';
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`"'\\\\';"`
+      },
+    },
+  ],
+});
+      `,
+    },
   ],
 });
