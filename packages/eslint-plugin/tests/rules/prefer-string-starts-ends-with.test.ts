@@ -302,6 +302,8 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
       `,
       options: [{ allowSingleElementEquality: 'always' }],
     },
+    '/foo\\$/.test(s);',
+    '/foo\\\\\\$/.test(s);',
   ],
   invalid: [
     // String indexing.
@@ -1179,6 +1181,11 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.startsWith(needle);
         }
       `,
+    },
+    {
+      code: '/foo\\\\$/.test(s);',
+      errors: [{ messageId: 'preferEndsWith' }],
+      output: 's.endsWith("foo\\\\");',
     },
   ],
 });
