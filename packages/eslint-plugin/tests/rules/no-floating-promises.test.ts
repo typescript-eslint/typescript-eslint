@@ -336,17 +336,17 @@ void doSomething();
     // ignoreIIFE
     {
       code: `
-        (async () => {
-          await something();
-        })();
+(async () => {
+  await something();
+})();
       `,
       options: [{ ignoreIIFE: true }],
     },
     {
       code: `
-        (async () => {
-          something();
-        })();
+(async () => {
+  something();
+})();
       `,
       options: [{ ignoreIIFE: true }],
     },
@@ -356,28 +356,28 @@ void doSomething();
     },
     {
       code: `
-        function foo() {
-          (async function bar() {})();
-        }
+function foo() {
+  (async function bar() {})();
+}
       `,
       options: [{ ignoreIIFE: true }],
     },
     {
       code: `
-        const foo = () =>
-          new Promise(res => {
-            (async function () {
-              await res(1);
-            })();
-          });
+const foo = () =>
+  new Promise(res => {
+    (async function () {
+      await res(1);
+    })();
+  });
       `,
       options: [{ ignoreIIFE: true }],
     },
     {
       code: `
-        (async function () {
-          await res(1);
-        })();
+(async function () {
+  await res(1);
+})();
       `,
       options: [{ ignoreIIFE: true }],
     },
@@ -689,9 +689,9 @@ myTag\`abc\`;
     },
     {
       code: `
-        declare function it(...args: unknown[]): Promise<void>;
+declare function it(...args: unknown[]): Promise<void>;
 
-        it('...', () => {});
+it('...', () => {});
       `,
       options: [
         {
@@ -785,10 +785,10 @@ promise().then(() => {});
 
     {
       code: `
-        declare module 'abc' {
-          export function it(name: string, action: () => void): void;
-        }
-        it('...', () => {});
+declare module 'abc' {
+  export function it(name: string, action: () => void): void;
+}
+it('...', () => {});
       `,
       options: [
         {
@@ -800,11 +800,11 @@ promise().then(() => {});
     },
     {
       code: `
-        declare module 'abc' {
-          export function it(name: string, action: () => void): void;
-        }
+declare module 'abc' {
+  export function it(name: string, action: () => void): void;
+}
 
-        it('...', () => {});
+it('...', () => {});
       `,
       options: [
         {
@@ -818,9 +818,9 @@ promise().then(() => {});
       // TODO: Skipped pending resolution of https://github.com/typescript-eslint/typescript-eslint/issues/11504
       skip: true,
       code: `
-        import { it } from 'node:test';
+import { it } from 'node:test';
 
-        it('...', () => {});
+it('...', () => {});
       `,
       options: [
         {
@@ -894,25 +894,25 @@ myAsyncFunction();
     //  https://github.com/typescript-eslint/typescript-eslint/issues/11947
     //  https://github.com/microsoft/TypeScript/issues/63441
     `
-      interface CustomNode<P> {
-        getNextNode: () => CustomNode<P>;
-      }
+interface CustomNode<P> {
+  getNextNode: () => CustomNode<P>;
+}
 
-      declare const createNode: () => {
-        getNextNode: <T>() => CustomNode<T>;
-      };
+declare const createNode: () => {
+  getNextNode: <T>() => CustomNode<T>;
+};
 
-      function wrapNode<T>(getNode: () => CustomNode<T>) {
-        return getNode;
-      }
+function wrapNode<T>(getNode: () => CustomNode<T>) {
+  return getNode;
+}
 
-      (async () => {
-        wrapNode(() => {
-          const node = createNode();
+(async () => {
+  wrapNode(() => {
+    const node = createNode();
 
-          return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
-        });
-      })().catch(() => {});
+    return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
+  });
+})().catch(() => {});
     `,
   ],
 
@@ -3077,9 +3077,9 @@ async function test() {
     },
     {
       code: `
-        (async () => {
-          await something();
-        })();
+(async () => {
+  await something();
+})();
       `,
       errors: [
         {
@@ -3089,17 +3089,17 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        void (async () => {
-          await something();
-        })();
+void (async () => {
+  await something();
+})();
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        await (async () => {
-          await something();
-        })();
+await (async () => {
+  await something();
+})();
       `,
             },
           ],
@@ -3108,9 +3108,9 @@ async function test() {
     },
     {
       code: `
-        (async () => {
-          something();
-        })();
+(async () => {
+  something();
+})();
       `,
       errors: [
         {
@@ -3120,17 +3120,17 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        void (async () => {
-          something();
-        })();
+void (async () => {
+  something();
+})();
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        await (async () => {
-          something();
-        })();
+await (async () => {
+  something();
+})();
       `,
             },
           ],
@@ -3158,9 +3158,9 @@ async function test() {
     },
     {
       code: `
-        function foo() {
-          (async function bar() {})();
-        }
+function foo() {
+  (async function bar() {})();
+}
       `,
       errors: [
         {
@@ -3170,17 +3170,17 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        function foo() {
-          void (async function bar() {})();
-        }
+function foo() {
+  void (async function bar() {})();
+}
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        function foo() {
-          await (async function bar() {})();
-        }
+function foo() {
+  await (async function bar() {})();
+}
       `,
             },
           ],
@@ -3189,12 +3189,12 @@ async function test() {
     },
     {
       code: `
-        const foo = () =>
-          new Promise(res => {
-            (async function () {
-              await res(1);
-            })();
-          });
+const foo = () =>
+  new Promise(res => {
+    (async function () {
+      await res(1);
+    })();
+  });
       `,
       errors: [
         {
@@ -3204,23 +3204,23 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        const foo = () =>
-          new Promise(res => {
-            void (async function () {
-              await res(1);
-            })();
-          });
+const foo = () =>
+  new Promise(res => {
+    void (async function () {
+      await res(1);
+    })();
+  });
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        const foo = () =>
-          new Promise(res => {
-            await (async function () {
-              await res(1);
-            })();
-          });
+const foo = () =>
+  new Promise(res => {
+    await (async function () {
+      await res(1);
+    })();
+  });
       `,
             },
           ],
@@ -3229,9 +3229,9 @@ async function test() {
     },
     {
       code: `
-        (async function () {
-          await res(1);
-        })();
+(async function () {
+  await res(1);
+})();
       `,
       errors: [
         {
@@ -3241,17 +3241,17 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        void (async function () {
-          await res(1);
-        })();
+void (async function () {
+  await res(1);
+})();
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        await (async function () {
-          await res(1);
-        })();
+await (async function () {
+  await res(1);
+})();
       `,
             },
           ],
@@ -3260,9 +3260,9 @@ async function test() {
     },
     {
       code: `
-        (async function () {
-          Promise.resolve();
-        })();
+(async function () {
+  Promise.resolve();
+})();
       `,
       errors: [
         {
@@ -3272,17 +3272,17 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        (async function () {
-          void Promise.resolve();
-        })();
+(async function () {
+  void Promise.resolve();
+})();
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        (async function () {
-          await Promise.resolve();
-        })();
+(async function () {
+  await Promise.resolve();
+})();
       `,
             },
           ],
@@ -4786,17 +4786,17 @@ cursed();
     },
     {
       code: `
-        declare const arrayOrPromiseTuple:
-          | Array<number>
-          | [number, number, Promise<unknown>, string];
-        arrayOrPromiseTuple;
+declare const arrayOrPromiseTuple:
+  | Array<number>
+  | [number, number, Promise<unknown>, string];
+arrayOrPromiseTuple;
       `,
       errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
     },
     {
       code: `
-        declare const okArrayOrPromiseArray: Array<number> | Array<Promise<unknown>>;
-        okArrayOrPromiseArray;
+declare const okArrayOrPromiseArray: Array<number> | Array<Promise<unknown>>;
+okArrayOrPromiseArray;
       `,
       errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
     },
@@ -5072,9 +5072,9 @@ await myTag\`abc\`;
     },
     {
       code: `
-        declare function unsafe(...args: unknown[]): Promise<void>;
+declare function unsafe(...args: unknown[]): Promise<void>;
 
-        unsafe('...', () => {});
+unsafe('...', () => {});
       `,
       errors: [
         {
@@ -5085,17 +5085,17 @@ await myTag\`abc\`;
             {
               messageId: 'floatingFixVoid',
               output: `
-        declare function unsafe(...args: unknown[]): Promise<void>;
+declare function unsafe(...args: unknown[]): Promise<void>;
 
-        void unsafe('...', () => {});
+void unsafe('...', () => {});
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        declare function unsafe(...args: unknown[]): Promise<void>;
+declare function unsafe(...args: unknown[]): Promise<void>;
 
-        await unsafe('...', () => {});
+await unsafe('...', () => {});
       `,
             },
           ],
@@ -5118,9 +5118,9 @@ await myTag\`abc\`;
     },
     {
       code: `
-        declare function it(...args: unknown[]): Promise<void>;
+declare function it(...args: unknown[]): Promise<void>;
 
-        it('...', () => {}).then(() => {});
+it('...', () => {}).then(() => {});
       `,
       errors: [
         {
@@ -5130,17 +5130,17 @@ await myTag\`abc\`;
             {
               messageId: 'floatingFixVoid',
               output: `
-        declare function it(...args: unknown[]): Promise<void>;
+declare function it(...args: unknown[]): Promise<void>;
 
-        void it('...', () => {}).then(() => {});
+void it('...', () => {}).then(() => {});
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        declare function it(...args: unknown[]): Promise<void>;
+declare function it(...args: unknown[]): Promise<void>;
 
-        await it('...', () => {}).then(() => {});
+await it('...', () => {}).then(() => {});
       `,
             },
           ],
@@ -5163,9 +5163,9 @@ await myTag\`abc\`;
     },
     {
       code: `
-        declare function it(...args: unknown[]): Promise<void>;
+declare function it(...args: unknown[]): Promise<void>;
 
-        it('...', () => {}).finally(() => {});
+it('...', () => {}).finally(() => {});
       `,
       errors: [
         {
@@ -5175,17 +5175,17 @@ await myTag\`abc\`;
             {
               messageId: 'floatingFixVoid',
               output: `
-        declare function it(...args: unknown[]): Promise<void>;
+declare function it(...args: unknown[]): Promise<void>;
 
-        void it('...', () => {}).finally(() => {});
+void it('...', () => {}).finally(() => {});
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        declare function it(...args: unknown[]): Promise<void>;
+declare function it(...args: unknown[]): Promise<void>;
 
-        await it('...', () => {}).finally(() => {});
+await it('...', () => {}).finally(() => {});
       `,
             },
           ],
@@ -5649,25 +5649,25 @@ await Promise.reject('foo').then(...[], () => {});
     //  https://github.com/microsoft/TypeScript/issues/63441
     {
       code: `
-        interface CustomNode<P> {
-          getNextNode: () => CustomNode<P>;
-        }
+interface CustomNode<P> {
+  getNextNode: () => CustomNode<P>;
+}
 
-        declare const createNode: () => {
-          getNextNode: <T>() => CustomNode<T>;
-        };
+declare const createNode: () => {
+  getNextNode: <T>() => CustomNode<T>;
+};
 
-        function wrapNode<T>(getNode: () => CustomNode<T>) {
-          return getNode;
-        }
+function wrapNode<T>(getNode: () => CustomNode<T>) {
+  return getNode;
+}
 
-        (async () => {
-          wrapNode(() => {
-            const node = createNode();
+(async () => {
+  wrapNode(() => {
+    const node = createNode();
 
-            return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
-          });
-        })();
+    return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
+  });
+})();
       `,
       errors: [
         {
@@ -5676,49 +5676,49 @@ await Promise.reject('foo').then(...[], () => {});
             {
               messageId: 'floatingFixVoid',
               output: `
-        interface CustomNode<P> {
-          getNextNode: () => CustomNode<P>;
-        }
+interface CustomNode<P> {
+  getNextNode: () => CustomNode<P>;
+}
 
-        declare const createNode: () => {
-          getNextNode: <T>() => CustomNode<T>;
-        };
+declare const createNode: () => {
+  getNextNode: <T>() => CustomNode<T>;
+};
 
-        function wrapNode<T>(getNode: () => CustomNode<T>) {
-          return getNode;
-        }
+function wrapNode<T>(getNode: () => CustomNode<T>) {
+  return getNode;
+}
 
-        void (async () => {
-          wrapNode(() => {
-            const node = createNode();
+void (async () => {
+  wrapNode(() => {
+    const node = createNode();
 
-            return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
-          });
-        })();
+    return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
+  });
+})();
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-        interface CustomNode<P> {
-          getNextNode: () => CustomNode<P>;
-        }
+interface CustomNode<P> {
+  getNextNode: () => CustomNode<P>;
+}
 
-        declare const createNode: () => {
-          getNextNode: <T>() => CustomNode<T>;
-        };
+declare const createNode: () => {
+  getNextNode: <T>() => CustomNode<T>;
+};
 
-        function wrapNode<T>(getNode: () => CustomNode<T>) {
-          return getNode;
-        }
+function wrapNode<T>(getNode: () => CustomNode<T>) {
+  return getNode;
+}
 
-        await (async () => {
-          wrapNode(() => {
-            const node = createNode();
+await (async () => {
+  wrapNode(() => {
+    const node = createNode();
 
-            return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
-          });
-        })();
+    return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
+  });
+})();
       `,
             },
           ],

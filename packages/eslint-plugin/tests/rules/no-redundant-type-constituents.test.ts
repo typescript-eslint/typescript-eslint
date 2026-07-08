@@ -6,154 +6,154 @@ const ruleTester = createRuleTesterWithTypes();
 ruleTester.run('no-redundant-type-constituents', rule, {
   valid: [
     `
-      type T = any;
-      type U = T;
+type T = any;
+type U = T;
     `,
     `
-      type T = never;
-      type U = T;
+type T = never;
+type U = T;
     `,
     `
-      type T = 1 | 2;
-      type U = T | 3;
-      type V = U;
+type T = 1 | 2;
+type U = T | 3;
+type V = U;
     `,
     'type T = () => never;',
     'type T = () => never | string;',
     `
-      type B = never;
-      type T = () => B | string;
+type B = never;
+type T = () => B | string;
     `,
     `
-      type B = string;
-      type T = () => B | never;
+type B = string;
+type T = () => B | never;
     `,
     'type T = () => string | never;',
     'type T = { (): string | never };',
     `
-      function _(): string | never {
-        return '';
-      }
+function _(): string | never {
+  return '';
+}
     `,
     `
-      const _ = (): string | never => {
-        return '';
-      };
+const _ = (): string | never => {
+  return '';
+};
     `,
     `
-      type B = string;
-      type T = { (): B | never };
+type B = string;
+type T = { (): B | never };
     `,
     'type T = { new (): string | never };',
     `
-      type B = never;
-      type T = { new (): string | B };
+type B = never;
+type T = { new (): string | B };
     `,
     `
-      type B = unknown;
-      type T = B;
+type B = unknown;
+type T = B;
     `,
     'type T = bigint;',
     `
-      type B = bigint;
-      type T = B;
+type B = bigint;
+type T = B;
     `,
     'type T = 1n | 2n;',
     `
-      type B = 1n;
-      type T = B | 2n;
+type B = 1n;
+type T = B | 2n;
     `,
     'type T = boolean;',
     `
-      type B = boolean;
-      type T = B;
+type B = boolean;
+type T = B;
     `,
     'type T = false | true;',
     `
-      type B = false;
-      type T = B | true;
+type B = false;
+type T = B | true;
     `,
     `
-      type B = true;
-      type T = B | false;
+type B = true;
+type T = B | false;
     `,
     'type T = number;',
     `
-      type B = number;
-      type T = B;
+type B = number;
+type T = B;
     `,
     'type T = 1 | 2;',
     `
-      type B = 1;
-      type T = B | 2;
+type B = 1;
+type T = B | 2;
     `,
     'type T = 1 | false;',
     `
-      type B = 1;
-      type T = B | false;
+type B = 1;
+type T = B | false;
     `,
     'type T = string;',
     `
-      type B = string;
-      type T = B;
+type B = string;
+type T = B;
     `,
     "type T = 'a' | 'b';",
     `
-      type B = 'b';
-      type T = 'a' | B;
+type B = 'b';
+type T = 'a' | B;
     `,
     `
-      type B = 'a';
-      type T = B | 'b';
+type B = 'a';
+type T = B | 'b';
     `,
     'type T = bigint | null;',
     `
-      type B = bigint;
-      type T = B | null;
+type B = bigint;
+type T = B | null;
     `,
     'type T = boolean | null;',
     `
-      type B = boolean;
-      type T = B | null;
+type B = boolean;
+type T = B | null;
     `,
     'type T = number | null;',
     `
-      type B = number;
-      type T = B | null;
+type B = number;
+type T = B | null;
     `,
     'type T = string | null;',
     `
-      type B = string;
-      type T = B | null;
+type B = string;
+type T = B | null;
     `,
     'type T = bigint & null;',
     `
-      type B = bigint;
-      type T = B & null;
+type B = bigint;
+type T = B & null;
     `,
     'type T = boolean & null;',
     `
-      type B = boolean;
-      type T = B & null;
+type B = boolean;
+type T = B & null;
     `,
     'type T = number & null;',
     `
-      type B = number;
-      type T = B & null;
+type B = number;
+type T = B & null;
     `,
     'type T = string & null;',
     `
-      type B = string;
-      type T = B & null;
+type B = string;
+type T = B & null;
     `,
     'type T = `${string}` & null;',
     `
-      type B = \`\${string}\`;
-      type T = B & null;
+type B = \`\${string}\`;
+type T = B & null;
     `,
     `
-      type T = 'a' | 1 | 'b';
-      type U = T & string;
+type T = 'a' | 1 | 'b';
+type U = T & string;
     `,
     "declare function fn(): never | 'foo';",
   ],
@@ -174,12 +174,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = number;
-        type T = B | any;
+type B = number;
+type T = B | any;
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             container: 'union',
             typeName: 'any',
@@ -203,12 +203,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = any;
-        type T = B | number;
+type B = any;
+type T = B | number;
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             container: 'union',
             typeName: 'any',
@@ -232,12 +232,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = number;
-        type T = B | never;
+type B = number;
+type T = B | never;
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             container: 'union',
             typeName: 'never',
@@ -248,12 +248,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = never;
-        type T = B | number;
+type B = never;
+type T = B | number;
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             container: 'union',
             typeName: 'never',
@@ -355,12 +355,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = 0 | 1;
-        type T = (2 | B) | number;
+type B = 0 | 1;
+type T = (2 | B) | number;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             literal: '2 | 0 | 1',
             primitive: 'number',
@@ -436,12 +436,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = 'b';
-        type T = B | string;
+type B = 'b';
+type T = B | string;
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             literal: '"b"',
             primitive: 'string',
@@ -465,12 +465,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = \`a\${number}c\`;
-        type T = B | string;
+type B = \`a\${number}c\`;
+type T = B | string;
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             literal: 'template literal type',
             primitive: 'string',
@@ -533,12 +533,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = boolean;
-        type T = B | false;
+type B = boolean;
+type T = B | false;
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             literal: 'false',
             primitive: 'boolean',
@@ -588,12 +588,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = false;
-        type T = B & boolean;
+type B = false;
+type T = B & boolean;
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             literal: 'false',
             primitive: 'boolean',
@@ -604,12 +604,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = true;
-        type T = B & boolean;
+type B = true;
+type T = B & boolean;
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             literal: 'true',
             primitive: 'boolean',
@@ -685,12 +685,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = never;
-        type T = B & number;
+type B = never;
+type T = B & number;
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             container: 'intersection',
             typeName: 'never',
@@ -766,12 +766,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type B = 0n;
-        type T = B & bigint;
+type B = 0n;
+type T = B & bigint;
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             literal: '0n',
             primitive: 'bigint',
@@ -808,12 +808,12 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type T = 'a' | 'b';
-        type U = T & string;
+type T = 'a' | 'b';
+type U = T & string;
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             literal: '"a" | "b"',
             primitive: 'string',
@@ -824,13 +824,13 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type S = 1 | 2;
-        type T = 'a' | 'b';
-        type U = S & T & string & number;
+type S = 1 | 2;
+type T = 'a' | 'b';
+type U = S & T & string & number;
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             literal: '1 | 2',
             primitive: 'number',
@@ -838,7 +838,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
           messageId: 'primitiveOverridden',
         },
         {
-          column: 22,
+          column: 14,
           data: {
             literal: '"a" | "b"',
             primitive: 'string',

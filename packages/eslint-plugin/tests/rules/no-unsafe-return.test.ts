@@ -94,90 +94,90 @@ function foo(): Set<number> {
 }
     `,
     `
-      type Foo<T = number> = { prop: T };
-      function foo(): Foo {
-        return { prop: 1 } as Foo<number>;
-      }
+type Foo<T = number> = { prop: T };
+function foo(): Foo {
+  return { prop: 1 } as Foo<number>;
+}
     `,
     `
-      type Foo = { prop: any };
-      function foo(): Foo {
-        return { prop: '' } as Foo;
-      }
+type Foo = { prop: any };
+function foo(): Foo {
+  return { prop: '' } as Foo;
+}
     `,
     // TS 3.9 changed this to be safe
     `
-      function fn<T extends any>(x: T) {
-        return x;
-      }
+function fn<T extends any>(x: T) {
+  return x;
+}
     `,
     `
-      function fn<T extends any>(x: T): unknown {
-        return x as any;
-      }
+function fn<T extends any>(x: T): unknown {
+  return x as any;
+}
     `,
     `
-      function fn<T extends any>(x: T): unknown[] {
-        return x as any[];
-      }
+function fn<T extends any>(x: T): unknown[] {
+  return x as any[];
+}
     `,
     `
-      function fn<T extends any>(x: T): Set<unknown> {
-        return x as Set<any>;
-      }
+function fn<T extends any>(x: T): Set<unknown> {
+  return x as Set<any>;
+}
     `,
     `
-      async function fn<T extends any>(x: T): Promise<unknown> {
-        return x as any;
-      }
+async function fn<T extends any>(x: T): Promise<unknown> {
+  return x as any;
+}
     `,
     `
-      function fn<T extends any>(x: T): Promise<unknown> {
-        return Promise.resolve(x as any);
-      }
+function fn<T extends any>(x: T): Promise<unknown> {
+  return Promise.resolve(x as any);
+}
     `,
     `
-      type Wrapper<T> = { inner: T };
-      type Extractor<D extends Wrapper<any>> = D extends Wrapper<infer V> ? V : never;
-      const fn =
-        <D extends Wrapper<any>>(foo: Extractor<D>) =>
-        () =>
-          foo;
+type Wrapper<T> = { inner: T };
+type Extractor<D extends Wrapper<any>> = D extends Wrapper<infer V> ? V : never;
+const fn =
+  <D extends Wrapper<any>>(foo: Extractor<D>) =>
+  () =>
+    foo;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/2109
     `
-      function test(): Map<string, string> {
-        return new Map();
-      }
+function test(): Map<string, string> {
+  return new Map();
+}
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/3549
     `
-      function foo(): any {
-        return [] as any[];
-      }
+function foo(): any {
+  return [] as any[];
+}
     `,
     `
-      function foo(): unknown {
-        return [] as any[];
-      }
+function foo(): unknown {
+  return [] as any[];
+}
     `,
     `
-      declare const value: Promise<any>;
-      function foo() {
-        return value;
-      }
+declare const value: Promise<any>;
+function foo() {
+  return value;
+}
     `,
     'const foo: (() => void) | undefined = () => 1;',
     `
-      class Foo {
-        public foo(): this {
-          return this;
-        }
+class Foo {
+  public foo(): this {
+    return this;
+  }
 
-        protected then(resolve: () => void): void {
-          resolve();
-        }
-      }
+  protected then(resolve: () => void): void {
+    resolve();
+  }
+}
     `,
   ],
   invalid: [

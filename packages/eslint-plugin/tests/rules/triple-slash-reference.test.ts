@@ -8,67 +8,67 @@ ruleTester.run('triple-slash-reference', rule, {
   valid: [
     {
       code: `
-        // <reference path="foo" />
-        // <reference types="bar" />
-        // <reference lib="baz" />
-        import * as foo from 'foo';
-        import * as bar from 'bar';
-        import * as baz from 'baz';
+// <reference path="foo" />
+// <reference types="bar" />
+// <reference lib="baz" />
+import * as foo from 'foo';
+import * as bar from 'bar';
+import * as baz from 'baz';
       `,
       options: [{ lib: 'never', path: 'never', types: 'never' }],
     },
     {
       code: `
-        // <reference path="foo" />
-        // <reference types="bar" />
-        // <reference lib="baz" />
-        import foo = require('foo');
-        import bar = require('bar');
-        import baz = require('baz');
+// <reference path="foo" />
+// <reference types="bar" />
+// <reference lib="baz" />
+import foo = require('foo');
+import bar = require('bar');
+import baz = require('baz');
       `,
       options: [{ lib: 'never', path: 'never', types: 'never' }],
     },
     {
       code: `
-        /// <reference path="foo" />
-        /// <reference types="bar" />
-        /// <reference lib="baz" />
-        import * as foo from 'foo';
-        import * as bar from 'bar';
-        import * as baz from 'baz';
+/// <reference path="foo" />
+/// <reference types="bar" />
+/// <reference lib="baz" />
+import * as foo from 'foo';
+import * as bar from 'bar';
+import * as baz from 'baz';
       `,
       options: [{ lib: 'always', path: 'always', types: 'always' }],
     },
     {
       code: `
-        /// <reference path="foo" />
-        /// <reference types="bar" />
-        /// <reference lib="baz" />
-        import foo = require('foo');
-        import bar = require('bar');
-        import baz = require('baz');
+/// <reference path="foo" />
+/// <reference types="bar" />
+/// <reference lib="baz" />
+import foo = require('foo');
+import bar = require('bar');
+import baz = require('baz');
       `,
       options: [{ lib: 'always', path: 'always', types: 'always' }],
     },
     {
       code: `
-        /// <reference path="foo" />
-        /// <reference types="bar" />
-        /// <reference lib="baz" />
-        import foo = foo;
-        import bar = bar;
-        import baz = baz;
+/// <reference path="foo" />
+/// <reference types="bar" />
+/// <reference lib="baz" />
+import foo = foo;
+import bar = bar;
+import baz = baz;
       `,
       options: [{ lib: 'always', path: 'always', types: 'always' }],
     },
     {
       code: `
-        /// <reference path="foo" />
-        /// <reference types="bar" />
-        /// <reference lib="baz" />
-        import foo = foo.foo;
-        import bar = bar.bar.bar.bar;
-        import baz = baz.baz;
+/// <reference path="foo" />
+/// <reference types="bar" />
+/// <reference lib="baz" />
+import foo = foo.foo;
+import bar = bar.bar.bar.bar;
+import baz = baz.baz;
       `,
       options: [{ lib: 'always', path: 'always', types: 'always' }],
     },
@@ -106,17 +106,17 @@ ruleTester.run('triple-slash-reference', rule, {
     },
     {
       code: `
-        /// <reference types="foo" />
-        import * as bar from 'bar';
+/// <reference types="foo" />
+import * as bar from 'bar';
       `,
       options: [{ types: 'prefer-import' }],
     },
     {
       code: `
-        /*
+/*
         /// <reference types="foo" />
         */
-        import * as foo from 'foo';
+import * as foo from 'foo';
       `,
       options: [{ lib: 'never', path: 'never', types: 'never' }],
     },

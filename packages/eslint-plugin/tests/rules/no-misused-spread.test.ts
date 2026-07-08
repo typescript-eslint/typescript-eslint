@@ -12,124 +12,124 @@ ruleTester.run('no-misused-spread', rule, {
     'const a = [...[1, 2, 3]];',
     'const a = [...([1, 2, 3] as const)];',
     `
-      declare const data: any;
-      const a = [...data];
+declare const data: any;
+const a = [...data];
     `,
     `
-      declare const data: unknown;
-      const a = [...data];
+declare const data: unknown;
+const a = [...data];
     `,
     `
-      const a = [1, 2, 3];
-      const b = [...a];
+const a = [1, 2, 3];
+const b = [...a];
     `,
     `
-      const a = [1, 2, 3] as const;
-      const b = [...a];
+const a = [1, 2, 3] as const;
+const b = [...a];
     `,
     `
-      declare function getArray(): number[];
-      const a = [...getArray()];
+declare function getArray(): number[];
+const a = [...getArray()];
     `,
     `
-      declare function getTuple(): readonly number[];
-      const a = [...getTuple()];
+declare function getTuple(): readonly number[];
+const a = [...getTuple()];
     `,
     `
-      const iterator = {
-        *[Symbol.iterator]() {
-          yield 1;
-          yield 2;
-          yield 3;
-        },
-      };
+const iterator = {
+  *[Symbol.iterator]() {
+    yield 1;
+    yield 2;
+    yield 3;
+  },
+};
 
-      const a = [...iterator];
+const a = [...iterator];
     `,
     `
-      declare const data: Iterable<number> | number[];
+declare const data: Iterable<number> | number[];
 
-      const a = [...data];
+const a = [...data];
     `,
     `
-      declare const data: Iterable<number> & number[];
+declare const data: Iterable<number> & number[];
 
-      const a = [...data];
+const a = [...data];
     `,
     `
-      declare function getIterable(): Iterable<number>;
+declare function getIterable(): Iterable<number>;
 
-      const a = [...getIterable()];
+const a = [...getIterable()];
     `,
     `
-      declare const data: Uint8Array;
+declare const data: Uint8Array;
 
-      const a = [...data];
+const a = [...data];
     `,
     `
-      declare const data: TypedArray;
+declare const data: TypedArray;
 
-      const a = [...data];
+const a = [...data];
     `,
     'const o = { ...{ a: 1, b: 2 } };',
     'const o = { ...({ a: 1, b: 2 } as const) };',
     `
-      declare const obj: any;
+declare const obj: any;
 
-      const o = { ...obj };
+const o = { ...obj };
     `,
     `
-      declare const obj: { a: number; b: number } | any;
+declare const obj: { a: number; b: number } | any;
 
-      const o = { ...obj };
+const o = { ...obj };
     `,
     `
-      declare const obj: { a: number; b: number } & any;
+declare const obj: { a: number; b: number } & any;
 
-      const o = { ...obj };
+const o = { ...obj };
     `,
     `
-      const obj = { a: 1, b: 2 };
-      const o = { ...obj };
+const obj = { a: 1, b: 2 };
+const o = { ...obj };
     `,
     `
-      declare const obj: { a: number; b: number };
-      const o = { ...obj };
+declare const obj: { a: number; b: number };
+const o = { ...obj };
     `,
     `
-      declare function getObject(): { a: number; b: number };
-      const o = { ...getObject() };
+declare function getObject(): { a: number; b: number };
+const o = { ...getObject() };
     `,
     `
-      function f() {}
+function f() {}
 
-      f.prop = 1;
+f.prop = 1;
 
-      const o = { ...f };
+const o = { ...f };
     `,
     `
-      const f = () => {};
+const f = () => {};
 
-      f.prop = 1;
+f.prop = 1;
 
-      const o = { ...f };
+const o = { ...f };
     `,
     `
-      function* generator() {}
+function* generator() {}
 
-      generator.prop = 1;
+generator.prop = 1;
 
-      const o = { ...generator };
+const o = { ...generator };
     `,
     `
-      declare const promiseLike: PromiseLike<number>;
+declare const promiseLike: PromiseLike<number>;
 
-      const o = { ...promiseLike };
+const o = { ...promiseLike };
     `,
     {
       code: `
-        const obj = { a: 1, b: 2 };
-        const o = <div {...x} />;
+const obj = { a: 1, b: 2 };
+const o = <div {...x} />;
       `,
       languageOptions: {
         parserOptions: {
@@ -141,8 +141,8 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const obj: { a: number; b: number } | any;
-        const o = <div {...x} />;
+declare const obj: { a: number; b: number } | any;
+const o = <div {...x} />;
       `,
       languageOptions: {
         parserOptions: {
@@ -155,46 +155,46 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
-        const promise = new Promise(() => {});
-        const o = { ...promise };
+const promise = new Promise(() => {});
+const o = { ...promise };
       `,
       options: [{ allow: ['Promise'] }],
     },
     `
-      interface A {}
+interface A {}
 
-      declare const a: A;
+declare const a: A;
 
-      const o = { ...a };
+const o = { ...a };
     `,
 
     // This case is being flagged by TS already, but since we check in the code
     // for `Iterable`s, it catches string as well, so this test exists to ensure
     // we don't flag it.
     `
-      const o = { ...'test' };
+const o = { ...'test' };
     `,
 
     {
       code: `
-        const str: string = 'test';
-        const a = [...str];
+const str: string = 'test';
+const a = [...str];
       `,
       options: [{ allow: ['string'] }],
     },
     {
       code: `
-        function f() {}
+function f() {}
 
-        const a = { ...f };
+const a = { ...f };
       `,
       options: [{ allow: ['f'] }],
     },
     {
       code: `
-        declare const iterator: Iterable<string>;
+declare const iterator: Iterable<string>;
 
-        const a = { ...iterator };
+const a = { ...iterator };
       `,
       options: [
         {
@@ -204,11 +204,11 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        type BrandedString = string & { __brand: 'safe' };
+type BrandedString = string & { __brand: 'safe' };
 
-        declare const brandedString: BrandedString;
+declare const brandedString: BrandedString;
 
-        const spreadBrandedString = [...brandedString];
+const spreadBrandedString = [...brandedString];
       `,
       options: [
         {
@@ -218,25 +218,25 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        type CustomIterable = {
-          [Symbol.iterator]: () => Generator<string>;
-        };
+type CustomIterable = {
+  [Symbol.iterator]: () => Generator<string>;
+};
 
-        declare const iterator: CustomIterable;
+declare const iterator: CustomIterable;
 
-        const a = { ...iterator };
+const a = { ...iterator };
       `,
       options: [{ allow: ['CustomIterable'] }],
     },
     {
       code: `
-        type CustomIterable = {
-          [Symbol.iterator]: () => string;
-        };
+type CustomIterable = {
+  [Symbol.iterator]: () => string;
+};
 
-        declare const iterator: CustomIterable;
+declare const iterator: CustomIterable;
 
-        const a = { ...iterator };
+const a = { ...iterator };
       `,
       options: [
         {
@@ -246,17 +246,17 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare module 'module' {
-          export type CustomIterable = {
-            [Symbol.iterator]: () => string;
-          };
-        }
+declare module 'module' {
+  export type CustomIterable = {
+    [Symbol.iterator]: () => string;
+  };
+}
 
-        import { CustomIterable } from 'module';
+import { CustomIterable } from 'module';
 
-        declare const iterator: CustomIterable;
+declare const iterator: CustomIterable;
 
-        const a = { ...iterator };
+const a = { ...iterator };
       `,
       options: [
         {
@@ -268,23 +268,23 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          a = 1;
-        }
+class A {
+  a = 1;
+}
 
-        const a = new A();
+const a = new A();
 
-        const o = { ...a };
+const o = { ...a };
       `,
       options: [{ allow: ['A'] }],
     },
     {
       code: `
-        const a = {
-          ...class A {
-            static value = 1;
-          },
-        };
+const a = {
+  ...class A {
+    static value = 1;
+  },
+};
       `,
       options: [{ allow: ['A'] }],
     },
@@ -304,13 +304,111 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        function withText<Text extends string>(text: Text) {
-          return [...text];
-        }
+function withText<Text extends string>(text: Text) {
+  return [...text];
+}
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
+          endColumn: 18,
+          line: 3,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+const test = 'hello';
+const a = [...test];
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          line: 3,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+const test = \`he\${'ll'}o\`;
+const a = [...test];
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          line: 3,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare const test: string;
+const a = [...test];
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          line: 3,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare const test: string | number[];
+const a = [...test];
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          line: 3,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare const test: string & { __brand: 'test' };
+const a = [...test];
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          line: 3,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare const test: number | (boolean | (string & { __brand: true }));
+const a = [...test];
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          line: 3,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare function getString(): string;
+const a = [...getString()];
+      `,
+      errors: [
+        {
+          column: 12,
           endColumn: 26,
           line: 3,
           messageId: 'noStringSpread',
@@ -319,114 +417,16 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const test = 'hello';
-        const a = [...test];
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 27,
-          line: 3,
-          messageId: 'noStringSpread',
-        },
-      ],
-    },
-    {
-      code: `
-        const test = \`he\${'ll'}o\`;
-        const a = [...test];
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 27,
-          line: 3,
-          messageId: 'noStringSpread',
-        },
-      ],
-    },
-    {
-      code: `
-        declare const test: string;
-        const a = [...test];
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 27,
-          line: 3,
-          messageId: 'noStringSpread',
-        },
-      ],
-    },
-    {
-      code: `
-        declare const test: string | number[];
-        const a = [...test];
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 27,
-          line: 3,
-          messageId: 'noStringSpread',
-        },
-      ],
-    },
-    {
-      code: `
-        declare const test: string & { __brand: 'test' };
-        const a = [...test];
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 27,
-          line: 3,
-          messageId: 'noStringSpread',
-        },
-      ],
-    },
-    {
-      code: `
-        declare const test: number | (boolean | (string & { __brand: true }));
-        const a = [...test];
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 27,
-          line: 3,
-          messageId: 'noStringSpread',
-        },
-      ],
-    },
-    {
-      code: `
-        declare function getString(): string;
-        const a = [...getString()];
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 34,
-          line: 3,
-          messageId: 'noStringSpread',
-        },
-      ],
-    },
-    {
-      code: `
-        declare function textIdentity(...args: string[]);
+declare function textIdentity(...args: string[]);
 
-        declare const text: string;
+declare const text: string;
 
-        textIdentity(...text);
+textIdentity(...text);
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 29,
+          column: 14,
+          endColumn: 21,
           line: 6,
           messageId: 'noStringSpread',
         },
@@ -434,22 +434,22 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function textIdentity(...args: string[]);
+declare function textIdentity(...args: string[]);
 
-        declare const text: string;
+declare const text: string;
 
-        textIdentity(...text, 'and', ...text);
+textIdentity(...text, 'and', ...text);
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 29,
+          column: 14,
+          endColumn: 21,
           line: 6,
           messageId: 'noStringSpread',
         },
         {
-          column: 38,
-          endColumn: 45,
+          column: 30,
+          endColumn: 37,
           line: 6,
           messageId: 'noStringSpread',
         },
@@ -457,16 +457,16 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function textIdentity(...args: string[]);
+declare function textIdentity(...args: string[]);
 
-        function withText<Text extends string>(text: Text) {
-          textIdentity(...text);
-        }
+function withText<Text extends string>(text: Text) {
+  textIdentity(...text);
+}
       `,
       errors: [
         {
-          column: 24,
-          endColumn: 31,
+          column: 16,
+          endColumn: 23,
           line: 5,
           messageId: 'noStringSpread',
         },
@@ -474,13 +474,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function getString<T extends string>(): T;
-        const a = [...getString()];
+declare function getString<T extends string>(): T;
+const a = [...getString()];
       `,
       errors: [
         {
-          column: 20,
-          endColumn: 34,
+          column: 12,
+          endColumn: 26,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -488,13 +488,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function getString(): string & { __brand: 'test' };
-        const a = [...getString()];
+declare function getString(): string & { __brand: 'test' };
+const a = [...getString()];
       `,
       errors: [
         {
-          column: 20,
-          endColumn: 34,
+          column: 12,
+          endColumn: 26,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -513,13 +513,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const arr = [1, 2, 3];
-        const o = { ...arr };
+const arr = [1, 2, 3];
+const o = { ...arr };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -527,13 +527,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const arr = [1, 2, 3] as const;
-        const o = { ...arr };
+const arr = [1, 2, 3] as const;
+const o = { ...arr };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -541,13 +541,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const arr: number[];
-        const o = { ...arr };
+declare const arr: number[];
+const o = { ...arr };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -555,13 +555,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const arr: readonly number[];
-        const o = { ...arr };
+declare const arr: readonly number[];
+const o = { ...arr };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -569,13 +569,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const arr: number[] | string[];
-        const o = { ...arr };
+declare const arr: number[] | string[];
+const o = { ...arr };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -583,13 +583,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const arr: number[] & string[];
-        const o = { ...arr };
+declare const arr: number[] & string[];
+const o = { ...arr };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -597,13 +597,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function getArray(): number[];
-        const o = { ...getArray() };
+declare function getArray(): number[];
+const o = { ...getArray() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 34,
+          column: 13,
+          endColumn: 26,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -611,13 +611,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function getArray(): readonly number[];
-        const o = { ...getArray() };
+declare function getArray(): readonly number[];
+const o = { ...getArray() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 34,
+          column: 13,
+          endColumn: 26,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -636,13 +636,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const set = new Set([1, 2, 3]);
-        const o = { ...set };
+const set = new Set([1, 2, 3]);
+const o = { ...set };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -650,13 +650,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const set: Set<number>;
-        const o = { ...set };
+declare const set: Set<number>;
+const o = { ...set };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -664,13 +664,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const set: WeakSet<object>;
-        const o = { ...set };
+declare const set: WeakSet<object>;
+const o = { ...set };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -678,13 +678,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const set: ReadonlySet<number>;
-        const o = { ...set };
+declare const set: ReadonlySet<number>;
+const o = { ...set };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -692,13 +692,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const set: Set<number> | { a: number };
-        const o = { ...set };
+declare const set: Set<number> | { a: number };
+const o = { ...set };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -706,13 +706,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function getSet(): Set<number>;
-        const o = { ...getSet() };
+declare function getSet(): Set<number>;
+const o = { ...getSet() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 32,
+          column: 13,
+          endColumn: 24,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -720,17 +720,17 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const o = {
-          ...new Map([
-            ['test-1', 1],
-            ['test-2', 2],
-          ]),
-        };
+const o = {
+  ...new Map([
+    ['test-1', 1],
+    ['test-2', 2],
+  ]),
+};
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 13,
+          column: 3,
+          endColumn: 5,
           endLine: 6,
           line: 3,
           messageId: 'noMapSpreadInObject',
@@ -738,10 +738,10 @@ ruleTester.run('no-misused-spread', rule, {
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        const o = Object.fromEntries(new Map([
-            ['test-1', 1],
-            ['test-2', 2],
-          ]));
+const o = Object.fromEntries(new Map([
+    ['test-1', 1],
+    ['test-2', 2],
+  ]));
       `,
             },
           ],
@@ -750,29 +750,29 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const map = new Map([
-          ['test-1', 1],
-          ['test-2', 2],
-        ]);
+const map = new Map([
+  ['test-1', 1],
+  ['test-2', 2],
+]);
 
-        const o = { ...map };
+const o = { ...map };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 7,
           messageId: 'noMapSpreadInObject',
           suggestions: [
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        const map = new Map([
-          ['test-1', 1],
-          ['test-2', 2],
-        ]);
+const map = new Map([
+  ['test-1', 1],
+  ['test-2', 2],
+]);
 
-        const o = Object.fromEntries(map);
+const o = Object.fromEntries(map);
       `,
             },
           ],
@@ -781,21 +781,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const map: Map<string, number>;
-        const o = { ...map };
+declare const map: Map<string, number>;
+const o = { ...map };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        declare const map: Map<string, number>;
-        const o = Object.fromEntries(map);
+declare const map: Map<string, number>;
+const o = Object.fromEntries(map);
       `,
             },
           ],
@@ -827,21 +827,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const map: Map<string, number>;
-        const o = { ...(map, map) };
+declare const map: Map<string, number>;
+const o = { ...(map, map) };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 34,
+          column: 13,
+          endColumn: 26,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        declare const map: Map<string, number>;
-        const o = Object.fromEntries((map, map));
+declare const map: Map<string, number>;
+const o = Object.fromEntries((map, map));
       `,
             },
           ],
@@ -850,23 +850,23 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const map: Map<string, number>;
-        const others = { a: 1 };
-        const o = { ...map, ...others };
+declare const map: Map<string, number>;
+const others = { a: 1 };
+const o = { ...map, ...others };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 4,
           messageId: 'noMapSpreadInObject',
           suggestions: [
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        declare const map: Map<string, number>;
-        const others = { a: 1 };
-        const o = { ...Object.fromEntries(map), ...others };
+declare const map: Map<string, number>;
+const others = { a: 1 };
+const o = { ...Object.fromEntries(map), ...others };
       `,
             },
           ],
@@ -875,21 +875,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const map: Map<string, number>;
-        const o = { other: 1, ...map };
+declare const map: Map<string, number>;
+const o = { other: 1, ...map };
       `,
       errors: [
         {
-          column: 31,
-          endColumn: 37,
+          column: 23,
+          endColumn: 29,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        declare const map: Map<string, number>;
-        const o = { other: 1, ...Object.fromEntries(map) };
+declare const map: Map<string, number>;
+const o = { other: 1, ...Object.fromEntries(map) };
       `,
             },
           ],
@@ -898,21 +898,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const map: ReadonlyMap<string, number>;
-        const o = { ...map };
+declare const map: ReadonlyMap<string, number>;
+const o = { ...map };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        declare const map: ReadonlyMap<string, number>;
-        const o = Object.fromEntries(map);
+declare const map: ReadonlyMap<string, number>;
+const o = Object.fromEntries(map);
       `,
             },
           ],
@@ -921,21 +921,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const map: WeakMap<{ a: number }, string>;
-        const o = { ...map };
+declare const map: WeakMap<{ a: number }, string>;
+const o = { ...map };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        declare const map: WeakMap<{ a: number }, string>;
-        const o = Object.fromEntries(map);
+declare const map: WeakMap<{ a: number }, string>;
+const o = Object.fromEntries(map);
       `,
             },
           ],
@@ -944,13 +944,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const map: Map<string, number> | { a: number };
-        const o = { ...map };
+declare const map: Map<string, number> | { a: number };
+const o = { ...map };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noMapSpreadInObject',
         },
@@ -958,44 +958,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function getMap(): Map<string, number>;
-        const o = { ...getMap() };
+declare function getMap(): Map<string, number>;
+const o = { ...getMap() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 32,
-          line: 3,
-          messageId: 'noMapSpreadInObject',
-          suggestions: [
-            {
-              messageId: 'replaceMapSpreadInObject',
-              output: `
-        declare function getMap(): Map<string, number>;
-        const o = Object.fromEntries(getMap());
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-        declare const a: Map<boolean, string> & Set<number>;
-        const o = { ...a };
-      `,
-      errors: [
-        {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 24,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        declare const a: Map<boolean, string> & Set<number>;
-        const o = Object.fromEntries(a);
+declare function getMap(): Map<string, number>;
+const o = Object.fromEntries(getMap());
       `,
             },
           ],
@@ -1004,13 +981,36 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const ref = new WeakRef({ a: 1 });
-        const o = { ...ref };
+declare const a: Map<boolean, string> & Set<number>;
+const o = { ...a };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 17,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+declare const a: Map<boolean, string> & Set<number>;
+const o = Object.fromEntries(a);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const ref = new WeakRef({ a: 1 });
+const o = { ...ref };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
           line: 3,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1018,21 +1018,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const promise = new Promise(() => {});
-        const o = { ...promise };
+const promise = new Promise(() => {});
+const o = { ...promise };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 31,
+          column: 13,
+          endColumn: 23,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
               messageId: 'addAwait',
               output: `
-        const promise = new Promise(() => {});
-        const o = { ...await promise };
+const promise = new Promise(() => {});
+const o = { ...await promise };
       `,
             },
           ],
@@ -1041,77 +1041,25 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const promise: Promise<{ a: 1 }>;
-        async function foo() {
-          return { ...(promise || {}) };
-        }
+declare const promise: Promise<{ a: 1 }>;
+async function foo() {
+  return { ...(promise || {}) };
+}
       `,
       errors: [
         {
-          column: 20,
-          endColumn: 38,
-          line: 4,
-          messageId: 'noPromiseSpreadInObject',
-          suggestions: [
-            {
-              messageId: 'addAwait',
-              output: `
-        declare const promise: Promise<{ a: 1 }>;
-        async function foo() {
-          return { ...(await (promise || {})) };
-        }
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-        declare const promise: Promise<any>;
-        async function foo() {
-          return { ...(Math.random() < 0.5 ? promise : {}) };
-        }
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 59,
-          line: 4,
-          messageId: 'noPromiseSpreadInObject',
-          suggestions: [
-            {
-              messageId: 'addAwait',
-              output: `
-        declare const promise: Promise<any>;
-        async function foo() {
-          return { ...(await (Math.random() < 0.5 ? promise : {})) };
-        }
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-        function withPromise<P extends Promise<void>>(promise: P) {
-          return { ...promise };
-        }
-      `,
-      errors: [
-        {
-          column: 20,
+          column: 12,
           endColumn: 30,
-          line: 3,
+          line: 4,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
               messageId: 'addAwait',
               output: `
-        function withPromise<P extends Promise<void>>(promise: P) {
-          return { ...await promise };
-        }
+declare const promise: Promise<{ a: 1 }>;
+async function foo() {
+  return { ...(await (promise || {})) };
+}
       `,
             },
           ],
@@ -1120,21 +1068,25 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const maybePromise: Promise<number> | { a: number };
-        const o = { ...maybePromise };
+declare const promise: Promise<any>;
+async function foo() {
+  return { ...(Math.random() < 0.5 ? promise : {}) };
+}
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 36,
-          line: 3,
+          column: 12,
+          endColumn: 51,
+          line: 4,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
               messageId: 'addAwait',
               output: `
-        declare const maybePromise: Promise<number> | { a: number };
-        const o = { ...await maybePromise };
+declare const promise: Promise<any>;
+async function foo() {
+  return { ...(await (Math.random() < 0.5 ? promise : {})) };
+}
       `,
             },
           ],
@@ -1143,21 +1095,23 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const promise: Promise<number> & { a: number };
-        const o = { ...promise };
+function withPromise<P extends Promise<void>>(promise: P) {
+  return { ...promise };
+}
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 31,
+          column: 12,
+          endColumn: 22,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
               messageId: 'addAwait',
               output: `
-        declare const promise: Promise<number> & { a: number };
-        const o = { ...await promise };
+function withPromise<P extends Promise<void>>(promise: P) {
+  return { ...await promise };
+}
       `,
             },
           ],
@@ -1166,21 +1120,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function getPromise(): Promise<number>;
-        const o = { ...getPromise() };
+declare const maybePromise: Promise<number> | { a: number };
+const o = { ...maybePromise };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 36,
+          column: 13,
+          endColumn: 28,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
               messageId: 'addAwait',
               output: `
-        declare function getPromise(): Promise<number>;
-        const o = { ...await getPromise() };
+declare const maybePromise: Promise<number> | { a: number };
+const o = { ...await maybePromise };
       `,
             },
           ],
@@ -1189,21 +1143,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function getPromise<T extends Promise<number>>(arg: T): T;
-        const o = { ...getPromise() };
+declare const promise: Promise<number> & { a: number };
+const o = { ...promise };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 36,
+          column: 13,
+          endColumn: 23,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
               messageId: 'addAwait',
               output: `
-        declare function getPromise<T extends Promise<number>>(arg: T): T;
-        const o = { ...await getPromise() };
+declare const promise: Promise<number> & { a: number };
+const o = { ...await promise };
       `,
             },
           ],
@@ -1212,14 +1166,60 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        function f() {}
+declare function getPromise(): Promise<number>;
+const o = { ...getPromise() };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 28,
+          line: 3,
+          messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+declare function getPromise(): Promise<number>;
+const o = { ...await getPromise() };
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function getPromise<T extends Promise<number>>(arg: T): T;
+const o = { ...getPromise() };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 28,
+          line: 3,
+          messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+declare function getPromise<T extends Promise<number>>(arg: T): T;
+const o = { ...await getPromise() };
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function f() {}
 
-        const o = { ...f };
+const o = { ...f };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1227,21 +1227,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        interface FunctionWithProps {
-          (): string;
-          prop: boolean;
-        }
+interface FunctionWithProps {
+  (): string;
+  prop: boolean;
+}
 
-        type FunctionWithoutProps = () => string;
+type FunctionWithoutProps = () => string;
 
-        declare const obj: FunctionWithProps | FunctionWithoutProps | object;
+declare const obj: FunctionWithProps | FunctionWithoutProps | object;
 
-        const o = { ...obj };
+const o = { ...obj };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 27,
+          column: 13,
+          endColumn: 19,
           line: 11,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1249,13 +1249,88 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const f = () => {};
+const f = () => {};
 
-        const o = { ...f };
+const o = { ...f };
       `,
       errors: [
         {
-          column: 21,
+          column: 13,
+          endColumn: 17,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(): void;
+
+const o = { ...f };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 17,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
+        },
+      ],
+    },
+    {
+      code: `
+declare function getFunction(): () => void;
+
+const o = { ...getFunction() };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 29,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: () => void;
+
+const o = { ...f };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 17,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: () => void | { a: number };
+
+const o = { ...f };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 17,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
+        },
+      ],
+    },
+    {
+      code: `
+function* generator() {}
+
+const o = { ...generator };
+      `,
+      errors: [
+        {
+          column: 13,
           endColumn: 25,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
@@ -1264,93 +1339,18 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function f(): void;
+const iterator = {
+  *[Symbol.iterator]() {
+    yield 'test';
+  },
+};
 
-        const o = { ...f };
+const o = { ...iterator };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
-          line: 4,
-          messageId: 'noFunctionSpreadInObject',
-        },
-      ],
-    },
-    {
-      code: `
-        declare function getFunction(): () => void;
-
-        const o = { ...getFunction() };
-      `,
-      errors: [
-        {
-          column: 21,
-          endColumn: 37,
-          line: 4,
-          messageId: 'noFunctionSpreadInObject',
-        },
-      ],
-    },
-    {
-      code: `
-        declare const f: () => void;
-
-        const o = { ...f };
-      `,
-      errors: [
-        {
-          column: 21,
-          endColumn: 25,
-          line: 4,
-          messageId: 'noFunctionSpreadInObject',
-        },
-      ],
-    },
-    {
-      code: `
-        declare const f: () => void | { a: number };
-
-        const o = { ...f };
-      `,
-      errors: [
-        {
-          column: 21,
-          endColumn: 25,
-          line: 4,
-          messageId: 'noFunctionSpreadInObject',
-        },
-      ],
-    },
-    {
-      code: `
-        function* generator() {}
-
-        const o = { ...generator };
-      `,
-      errors: [
-        {
-          column: 21,
-          endColumn: 33,
-          line: 4,
-          messageId: 'noFunctionSpreadInObject',
-        },
-      ],
-    },
-    {
-      code: `
-        const iterator = {
-          *[Symbol.iterator]() {
-            yield 'test';
-          },
-        };
-
-        const o = { ...iterator };
-      `,
-      errors: [
-        {
-          column: 21,
-          endColumn: 32,
+          column: 13,
+          endColumn: 24,
           line: 8,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1358,22 +1358,22 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        type CustomIterable = {
-          [Symbol.iterator]: () => Generator<string>;
-        };
+type CustomIterable = {
+  [Symbol.iterator]: () => Generator<string>;
+};
 
-        const iterator: CustomIterable = {
-          *[Symbol.iterator]() {
-            yield 'test';
-          },
-        };
+const iterator: CustomIterable = {
+  *[Symbol.iterator]() {
+    yield 'test';
+  },
+};
 
-        const a = { ...iterator };
+const a = { ...iterator };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 32,
+          column: 13,
+          endColumn: 24,
           line: 12,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1382,22 +1382,22 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare module 'module' {
-          export type CustomIterable = {
-            [Symbol.iterator]: () => string;
-          };
-        }
+declare module 'module' {
+  export type CustomIterable = {
+    [Symbol.iterator]: () => string;
+  };
+}
 
-        import { CustomIterable } from 'module';
+import { CustomIterable } from 'module';
 
-        declare const iterator: CustomIterable;
+declare const iterator: CustomIterable;
 
-        const a = { ...iterator };
+const a = { ...iterator };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 32,
+          column: 13,
+          endColumn: 24,
           line: 12,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1410,14 +1410,14 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const iterator: Iterable<string>;
+declare const iterator: Iterable<string>;
 
-        const o = { ...iterator };
+const o = { ...iterator };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 32,
+          column: 13,
+          endColumn: 24,
           line: 4,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1425,14 +1425,14 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const iterator: Iterable<string> | { a: number };
+declare const iterator: Iterable<string> | { a: number };
 
-        const o = { ...iterator };
+const o = { ...iterator };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 32,
+          column: 13,
+          endColumn: 24,
           line: 4,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1440,14 +1440,14 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare function getIterable(): Iterable<string>;
+declare function getIterable(): Iterable<string>;
 
-        const o = { ...getIterable() };
+const o = { ...getIterable() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 37,
+          column: 13,
+          endColumn: 29,
           line: 4,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1455,22 +1455,22 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          [Symbol.iterator]() {
-            return {
-              next() {
-                return { done: true, value: undefined };
-              },
-            };
-          }
-        }
+class A {
+  [Symbol.iterator]() {
+    return {
+      next() {
+        return { done: true, value: undefined };
+      },
+    };
+  }
+}
 
-        const a = { ...new A() };
+const a = { ...new A() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 31,
+          column: 13,
+          endColumn: 23,
           line: 12,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1478,12 +1478,12 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const o = { ...new Date() };
+const o = { ...new Date() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 34,
+          column: 13,
+          endColumn: 26,
           line: 2,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1491,14 +1491,14 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare class HTMLElementLike {}
-        declare const element: HTMLElementLike;
-        const o = { ...element };
+declare class HTMLElementLike {}
+declare const element: HTMLElementLike;
+const o = { ...element };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 31,
+          column: 13,
+          endColumn: 23,
           line: 4,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1506,13 +1506,13 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const regex: RegExp;
-        const o = { ...regex };
+declare const regex: RegExp;
+const o = { ...regex };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 29,
+          column: 13,
+          endColumn: 21,
           line: 3,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1520,20 +1520,20 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          a = 1;
-          public b = 2;
-          private c = 3;
-          protected d = 4;
-          static e = 5;
-        }
+class A {
+  a = 1;
+  public b = 2;
+  private c = 3;
+  protected d = 4;
+  static e = 5;
+}
 
-        const o = { ...new A() };
+const o = { ...new A() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 31,
+          column: 13,
+          endColumn: 23,
           line: 10,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1541,18 +1541,18 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          a = 1;
-        }
+class A {
+  a = 1;
+}
 
-        const a = new A();
+const a = new A();
 
-        const o = { ...a };
+const o = { ...a };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1560,18 +1560,18 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          a = 1;
-        }
+class A {
+  a = 1;
+}
 
-        declare const a: A;
+declare const a: A;
 
-        const o = { ...a };
+const o = { ...a };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1579,18 +1579,18 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          a = 1;
-        }
+class A {
+  a = 1;
+}
 
-        declare function getA(): A;
+declare function getA(): A;
 
-        const o = { ...getA() };
+const o = { ...getA() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 30,
+          column: 13,
+          endColumn: 22,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1598,18 +1598,18 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          a = 1;
-        }
+class A {
+  a = 1;
+}
 
-        declare function getA<T extends A>(arg: T): T;
+declare function getA<T extends A>(arg: T): T;
 
-        const o = { ...getA() };
+const o = { ...getA() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 30,
+          column: 13,
+          endColumn: 22,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1617,18 +1617,18 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          a = 1;
-        }
+class A {
+  a = 1;
+}
 
-        class B extends A {}
+class B extends A {}
 
-        const o = { ...new B() };
+const o = { ...new B() };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 31,
+          column: 13,
+          endColumn: 23,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1636,18 +1636,18 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          a = 1;
-        }
+class A {
+  a = 1;
+}
 
-        declare const a: A | { b: string };
+declare const a: A | { b: string };
 
-        const o = { ...a };
+const o = { ...a };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1655,18 +1655,18 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {
-          a = 1;
-        }
+class A {
+  a = 1;
+}
 
-        declare const a: A & { b: string };
+declare const a: A & { b: string };
 
-        const o = { ...a };
+const o = { ...a };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1674,14 +1674,14 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {}
+class A {}
 
-        const o = { ...A };
+const o = { ...A };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           line: 4,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1689,14 +1689,14 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const A = class {};
+const A = class {};
 
-        const o = { ...A };
+const o = { ...A };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           line: 4,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1704,21 +1704,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class Declaration {
-          declaration?: boolean;
-        }
-        const Expression = class {
-          expression?: boolean;
-        };
+class Declaration {
+  declaration?: boolean;
+}
+const Expression = class {
+  expression?: boolean;
+};
 
-        declare const either: typeof Declaration | typeof Expression;
+declare const either: typeof Declaration | typeof Expression;
 
-        const o = { ...either };
+const o = { ...either };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 30,
+          column: 13,
+          endColumn: 22,
           line: 11,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1726,14 +1726,14 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const A = Set<number>;
+const A = Set<number>;
 
-        const o = { ...A };
+const o = { ...A };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           line: 4,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1741,17 +1741,17 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const a = {
-          ...class A {
-            static value = 1;
-            nonStatic = 2;
-          },
-        };
+const a = {
+  ...class A {
+    static value = 1;
+    nonStatic = 2;
+  },
+};
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 12,
+          column: 3,
+          endColumn: 4,
           endLine: 6,
           line: 3,
           messageId: 'noClassDeclarationSpreadInObject',
@@ -1787,12 +1787,12 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
-        const o = <div {...[1, 2, 3]} />;
+const o = <div {...[1, 2, 3]} />;
       `,
       errors: [
         {
-          column: 24,
-          endColumn: 38,
+          column: 16,
+          endColumn: 30,
           line: 2,
           messageId: 'noArraySpreadInObject',
         },
@@ -1807,14 +1807,14 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        class A {}
+class A {}
 
-        const o = <div {...A} />;
+const o = <div {...A} />;
       `,
       errors: [
         {
-          column: 24,
-          endColumn: 30,
+          column: 16,
+          endColumn: 22,
           line: 4,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1829,12 +1829,12 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const o = <div {...new Date()} />;
+const o = <div {...new Date()} />;
       `,
       errors: [
         {
-          column: 24,
-          endColumn: 39,
+          column: 16,
+          endColumn: 31,
           line: 2,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1849,14 +1849,14 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        function f() {}
+function f() {}
 
-        const o = <div {...f} />;
+const o = <div {...f} />;
       `,
       errors: [
         {
-          column: 24,
-          endColumn: 30,
+          column: 16,
+          endColumn: 22,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1871,12 +1871,12 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const o = <div {...new Set([1, 2, 3])} />;
+const o = <div {...new Set([1, 2, 3])} />;
       `,
       errors: [
         {
-          column: 24,
-          endColumn: 47,
+          column: 16,
+          endColumn: 39,
           line: 2,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1891,23 +1891,23 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const map: Map<string, number>;
+declare const map: Map<string, number>;
 
-        const o = <div {...map} />;
+const o = <div {...map} />;
       `,
       errors: [
         {
-          column: 24,
-          endColumn: 32,
+          column: 16,
+          endColumn: 24,
           line: 4,
           messageId: 'noMapSpreadInObject',
           suggestions: [
             {
               messageId: 'replaceMapSpreadInObject',
               output: `
-        declare const map: Map<string, number>;
+declare const map: Map<string, number>;
 
-        const o = <div {...Object.fromEntries(map)} />;
+const o = <div {...Object.fromEntries(map)} />;
       `,
             },
           ],
@@ -1923,23 +1923,23 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const promise = new Promise(() => {});
+const promise = new Promise(() => {});
 
-        const o = <div {...promise} />;
+const o = <div {...promise} />;
       `,
       errors: [
         {
-          column: 24,
-          endColumn: 36,
+          column: 16,
+          endColumn: 28,
           line: 4,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
               messageId: 'addAwait',
               output: `
-        const promise = new Promise(() => {});
+const promise = new Promise(() => {});
 
-        const o = <div {...await promise} />;
+const o = <div {...await promise} />;
       `,
             },
           ],

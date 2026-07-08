@@ -270,21 +270,21 @@ function eachr<Object extends object, Key, Value>(
 function eachr<Key, Value>(subject: Map<Key, Value>): typeof subject;
     `,
     `
-      var a = { b: 3 };
-      var c = a?.b;
+var a = { b: 3 };
+var c = a?.b;
     `,
     `
-      var a = { b: { c: 3 } };
-      var d = a?.['b']?.c;
+var a = { b: { c: 3 } };
+var d = a?.['b']?.c;
     `,
     `
-      var a = { b: 3 };
-      var c = {};
-      var d = (a || c)?.b;
+var a = { b: 3 };
+var c = {};
+var d = (a || c)?.b;
     `,
     `
-      var a = { b: () => {} };
-      a?.b();
+var a = { b: () => {} };
+a?.b();
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/2462
     `

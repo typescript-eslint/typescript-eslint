@@ -3668,11 +3668,11 @@ foo?.['bar']?.().toExponential();
     },
     {
       code: `
-        const a = true;
-        if (!!a) {
-        }
+const a = true;
+if (!!a) {
+}
       `,
-      errors: [{ column: 13, line: 3, messageId: 'alwaysTruthy' }],
+      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
     },
     {
       code: `

@@ -9,77 +9,77 @@ ruleTester.run('unbound-method', rule, {
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
     `
-      const foo = Number;
-      ['1', '2', '3'].map(foo.parseInt);
+const foo = Number;
+['1', '2', '3'].map(foo.parseInt);
     `,
     `
-      const foo = Math;
-      [5.2, 7.1, 3.6].map(foo.floor);
+const foo = Math;
+[5.2, 7.1, 3.6].map(foo.floor);
     `,
     "['1', '2', '3'].map(Number['floor']);",
     'const x = console.log;',
     'const x = Object.defineProperty;',
     `
-      const foo = Object;
-      const x = foo.defineProperty;
+const foo = Object;
+const x = foo.defineProperty;
     `,
     'const x = String.fromCharCode;',
     `
-      const foo = String;
-      const x = foo.fromCharCode;
+const foo = String;
+const x = foo.fromCharCode;
     `,
     'const x = RegExp.prototype;',
     'const x = Symbol.keyFor;',
     `
-      const foo = Symbol;
-      const x = foo.keyFor;
+const foo = Symbol;
+const x = foo.keyFor;
     `,
     'const x = Array.isArray;',
     `
-      const foo = Array;
-      const x = foo.isArray;
+const foo = Array;
+const x = foo.isArray;
     `,
     `
-      class Foo extends Array {}
-      const x = Foo.isArray;
+class Foo extends Array {}
+const x = Foo.isArray;
     `,
     'const x = Proxy.revocable;',
     `
-      const foo = Proxy;
-      const x = foo.revocable;
+const foo = Proxy;
+const x = foo.revocable;
     `,
     'const x = Date.parse;',
     `
-      const foo = Date;
-      const x = foo.parse;
+const foo = Date;
+const x = foo.parse;
     `,
     'const x = Atomics.load;',
     `
-      const foo = Atomics;
-      const x = foo.load;
+const foo = Atomics;
+const x = foo.load;
     `,
     'const x = Reflect.deleteProperty;',
     'const x = JSON.stringify;',
     `
-      const foo = JSON;
-      const x = foo.stringify;
+const foo = JSON;
+const x = foo.stringify;
     `,
     `
-      const o = {
-        f: function (this: void) {},
-      };
-      const f = o.f;
+const o = {
+  f: function (this: void) {},
+};
+const f = o.f;
     `,
     `
-      const { alert } = window;
+const { alert } = window;
     `,
     `
-      let b = window.blur;
+let b = window.blur;
     `,
     `
-      function foo() {}
-      const fooObject = { foo };
-      const { foo: bar } = fooObject;
+function foo() {}
+const fooObject = { foo };
+const { foo: bar } = fooObject;
     `,
     `
 class ContainsMethods {

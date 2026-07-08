@@ -494,37 +494,37 @@ restTuple();
 restTuple('Hello');
     `,
     `
-      let value: Record<string, () => void>;
-      value.sync = () => {};
+let value: Record<string, () => void>;
+value.sync = () => {};
     `,
     `
-      type ReturnsRecord = () => Record<string, () => void>;
+type ReturnsRecord = () => Record<string, () => void>;
 
-      const test: ReturnsRecord = () => {
-        return { sync: () => {} };
-      };
+const test: ReturnsRecord = () => {
+  return { sync: () => {} };
+};
     `,
     `
-      type ReturnsRecord = () => Record<string, () => void>;
+type ReturnsRecord = () => Record<string, () => void>;
 
-      function sync() {}
+function sync() {}
 
-      const test: ReturnsRecord = () => {
-        return { sync };
-      };
+const test: ReturnsRecord = () => {
+  return { sync };
+};
     `,
     `
-      function withTextRecurser<Text extends string>(
-        recurser: (text: Text) => void,
-      ): (text: Text) => void {
-        return (text: Text): void => {
-          if (text.length) {
-            return;
-          }
+function withTextRecurser<Text extends string>(
+  recurser: (text: Text) => void,
+): (text: Text) => void {
+  return (text: Text): void => {
+    if (text.length) {
+      return;
+    }
 
-          return recurser(node);
-        };
-      }
+    return recurser(node);
+  };
+}
     `,
     `
 declare function foo(cb: undefined | (() => void));
@@ -534,16 +534,16 @@ foo(bar);
     // https://github.com/typescript-eslint/typescript-eslint/issues/6637
     {
       code: `
-        type OnSelectNodeFn = (node: string | null) => void;
+type OnSelectNodeFn = (node: string | null) => void;
 
-        interface ASTViewerBaseProps {
-          readonly onSelectNode?: OnSelectNodeFn;
-        }
+interface ASTViewerBaseProps {
+  readonly onSelectNode?: OnSelectNodeFn;
+}
 
-        declare function ASTViewer(props: ASTViewerBaseProps): null;
-        declare const onSelectFn: OnSelectNodeFn;
+declare function ASTViewer(props: ASTViewerBaseProps): null;
+declare const onSelectFn: OnSelectNodeFn;
 
-        <ASTViewer onSelectNode={onSelectFn} />;
+<ASTViewer onSelectNode={onSelectFn} />;
       `,
       languageOptions: {
         parserOptions: {

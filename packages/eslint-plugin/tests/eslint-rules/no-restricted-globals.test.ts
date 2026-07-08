@@ -76,22 +76,22 @@ type Handler = (event: string) => any;
     },
     {
       code: `
-        const a = foo?.bar?.name;
+const a = foo?.bar?.name;
       `,
     },
     {
       code: `
-        const a = foo?.bar?.name ?? 'foobar';
+const a = foo?.bar?.name ?? 'foobar';
       `,
     },
     {
       code: `
-        const a = foo()?.bar;
+const a = foo()?.bar;
       `,
     },
     {
       code: `
-        const a = foo()?.bar ?? true;
+const a = foo()?.bar ?? true;
       `,
     },
   ],

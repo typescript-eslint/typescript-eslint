@@ -82,28 +82,28 @@ if (x) {
     // nullable boolean in boolean context
     {
       code: `
-        declare const x: boolean | null;
-        if (x) {
-        }
+declare const x: boolean | null;
+if (x) {
+}
       `,
       options: [{ allowNullableBoolean: true }],
     },
     {
       code: `
-        (x?: boolean) => !x;
+(x?: boolean) => !x;
       `,
       options: [{ allowNullableBoolean: true }],
     },
     {
       code: `
-        <T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
+<T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
       `,
       options: [{ allowNullableBoolean: true }],
     },
     {
       code: `
-        const a: (undefined | boolean | null)[] = [true, undefined, null];
-        a.some(x => x);
+const a: (undefined | boolean | null)[] = [true, undefined, null];
+a.some(x => x);
       `,
       options: [{ allowNullableBoolean: true }],
     },
@@ -111,21 +111,21 @@ if (x) {
     // nullable string in boolean context
     {
       code: `
-        declare const x: string | null;
-        if (x) {
-        }
+declare const x: string | null;
+if (x) {
+}
       `,
       options: [{ allowNullableString: true }],
     },
     {
       code: `
-        (x?: string) => !x;
+(x?: string) => !x;
       `,
       options: [{ allowNullableString: true }],
     },
     {
       code: `
-        <T extends string | null | undefined>(x: T) => (x ? 1 : 0);
+<T extends string | null | undefined>(x: T) => (x ? 1 : 0);
       `,
       options: [{ allowNullableString: true }],
     },
@@ -133,28 +133,28 @@ if (x) {
     // nullable number in boolean context
     {
       code: `
-        declare const x: number | null;
-        if (x) {
-        }
+declare const x: number | null;
+if (x) {
+}
       `,
       options: [{ allowNullableNumber: true }],
     },
     {
       code: `
-        (x?: number) => !x;
+(x?: number) => !x;
       `,
       options: [{ allowNullableNumber: true }],
     },
     {
       code: `
-        <T extends number | null | undefined>(x: T) => (x ? 1 : 0);
+<T extends number | null | undefined>(x: T) => (x ? 1 : 0);
       `,
       options: [{ allowNullableNumber: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: (null | unknown[])[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array?.length);
+declare const arrayOfArrays: (null | unknown[])[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array?.length);
       `,
       options: [{ allowNullableNumber: true }],
     },
@@ -162,28 +162,28 @@ if (x) {
     // any in boolean context
     {
       code: `
-        declare const x: any;
-        if (x) {
-        }
+declare const x: any;
+if (x) {
+}
       `,
       options: [{ allowAny: true }],
     },
     {
       code: `
-        x => !x;
+x => !x;
       `,
       options: [{ allowAny: true }],
     },
     {
       code: `
-        <T extends any>(x: T) => (x ? 1 : 0);
+<T extends any>(x: T) => (x ? 1 : 0);
       `,
       options: [{ allowAny: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: any[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+declare const arrayOfArrays: any[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowAny: true }],
     },
@@ -191,58 +191,58 @@ if (x) {
     // logical operator
     {
       code: `
-        1 && true && 'x' && {};
+1 && true && 'x' && {};
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        let x = 0 || false || '' || null;
+let x = 0 || false || '' || null;
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        if (1 && true && 'x') void 0;
+if (1 && true && 'x') void 0;
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        if (0 || false || '') void 0;
+if (0 || false || '') void 0;
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        1 && true && 'x' ? {} : null;
+1 && true && 'x' ? {} : null;
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        0 || false || '' ? null : {};
+0 || false || '' ? null : {};
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: string[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+declare const arrayOfArrays: string[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowString: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: number[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+declare const arrayOfArrays: number[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowNumber: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: (null | object)[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+declare const arrayOfArrays: (null | object)[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowNullableObject: true }],
     },
@@ -250,65 +250,65 @@ if (x) {
     // nullable enum in boolean context
     {
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (theEnum) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const rand = Math.random();
+let theEnum: ExampleEnum | null = null;
+if (rand < 0.3) {
+  theEnum = ExampleEnum.This;
+}
+if (theEnum) {
+}
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const rand = Math.random();
+let theEnum: ExampleEnum | null = null;
+if (rand < 0.3) {
+  theEnum = ExampleEnum.This;
+}
+if (!theEnum) {
+}
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 1,
-          That = 2,
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 1,
+  That = 2,
+}
+const rand = Math.random();
+let theEnum: ExampleEnum | null = null;
+if (rand < 0.3) {
+  theEnum = ExampleEnum.This;
+}
+if (!theEnum) {
+}
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 'one',
-          That = 'two',
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 'one',
+  That = 'two',
+}
+const rand = Math.random();
+let theEnum: ExampleEnum | null = null;
+if (rand < 0.3) {
+  theEnum = ExampleEnum.This;
+}
+if (!theEnum) {
+}
       `,
       options: [{ allowNullableEnum: true }],
     },
@@ -317,55 +317,55 @@ if (x) {
     {
       // falsy number and truthy string
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 'one',
-        }
-        (value?: ExampleEnum) => (value ? 1 : 0);
+enum ExampleEnum {
+  This = 0,
+  That = 'one',
+}
+(value?: ExampleEnum) => (value ? 1 : 0);
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       // falsy string and truthy number
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 1,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       // truthy string and truthy number
       code: `
-        enum ExampleEnum {
-          This = 'this',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = 'this',
+  That = 1,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       // falsy string and falsy number
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        declare const arrayOfArrays: (ExampleEnum | null)[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+declare const arrayOfArrays: (ExampleEnum | null)[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowNullableEnum: true }],
     },
@@ -555,9 +555,9 @@ assert(nullableString);
     // Coverage for absent "test expression".
     // Ensure that no crash or false positive occurs
     `
-      for (let x = 0; ; x++) {
-        break;
-      }
+for (let x = 0; ; x++) {
+  break;
+}
     `,
     `
 [true, false].some(function (x) {
@@ -787,8 +787,8 @@ if (true && (Boolean((1 + 1)))) {
     },
     {
       code: `
-        declare const array: string[];
-        array.some(x => x);
+declare const array: string[];
+array.some(x => x);
       `,
       errors: [
         {
@@ -800,29 +800,29 @@ if (true && (Boolean((1 + 1)))) {
             {
               messageId: 'conditionFixCompareStringLength',
               output: `
-        declare const array: string[];
-        array.some(x => x.length > 0);
+declare const array: string[];
+array.some(x => x.length > 0);
       `,
             },
             {
               messageId: 'conditionFixCompareEmptyString',
               output: `
-        declare const array: string[];
-        array.some(x => x !== "");
+declare const array: string[];
+array.some(x => x !== "");
       `,
             },
             {
               messageId: 'conditionFixCastBoolean',
               output: `
-        declare const array: string[];
-        array.some(x => Boolean(x));
+declare const array: string[];
+array.some(x => Boolean(x));
       `,
             },
             {
               messageId: 'explicitBooleanReturnType',
               output: `
-        declare const array: string[];
-        array.some((x): boolean => x);
+declare const array: string[];
+array.some((x): boolean => x);
       `,
             },
           ],
@@ -2748,21 +2748,21 @@ function foo(x: 0 | 1 | null) {
     // nullable enum in boolean context
     {
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum) {
+}
       `,
       errors: [
         {
-          column: 13,
+          column: 5,
           data: {
             context: 'conditional',
           },
-          endColumn: 20,
+          endColumn: 12,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2770,13 +2770,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum != null) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum != null) {
+}
       `,
             },
           ],
@@ -2786,21 +2786,21 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
+          column: 6,
           data: {
             context: 'conditional',
           },
-          endColumn: 21,
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2808,13 +2808,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2824,21 +2824,21 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This,
-          That,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This,
+  That,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
+          column: 6,
           data: {
             context: 'conditional',
           },
-          endColumn: 21,
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2846,13 +2846,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This,
-          That,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This,
+  That,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2862,21 +2862,21 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 'a',
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = '',
+  That = 'a',
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
+          column: 6,
           data: {
             context: 'conditional',
           },
-          endColumn: 21,
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2884,13 +2884,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = '',
-          That = 'a',
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = '',
+  That = 'a',
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2900,21 +2900,21 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
+          column: 6,
           data: {
             context: 'conditional',
           },
-          endColumn: 21,
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2922,13 +2922,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2938,21 +2938,21 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 'one',
-          That = 'two',
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 'one',
+  That = 'two',
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
+          column: 6,
           data: {
             context: 'conditional',
           },
-          endColumn: 21,
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2960,13 +2960,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 'one',
-          That = 'two',
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = 'one',
+  That = 'two',
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2976,21 +2976,21 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 1,
-          That = 2,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 1,
+  That = 2,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
+          column: 6,
           data: {
             context: 'conditional',
           },
-          endColumn: 21,
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2998,13 +2998,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 1,
-          That = 2,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = 1,
+  That = 2,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -3017,19 +3017,19 @@ function foo(x: 0 | 1 | null) {
     {
       // falsy number and truthy string
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 'one',
-        }
-        (value?: ExampleEnum) => (value ? 1 : 0);
+enum ExampleEnum {
+  This = 0,
+  That = 'one',
+}
+(value?: ExampleEnum) => (value ? 1 : 0);
       `,
       errors: [
         {
-          column: 35,
+          column: 27,
           data: {
             context: 'conditional',
           },
-          endColumn: 40,
+          endColumn: 32,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
@@ -3037,11 +3037,11 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 0,
-          That = 'one',
-        }
-        (value?: ExampleEnum) => ((value != null) ? 1 : 0);
+enum ExampleEnum {
+  This = 0,
+  That = 'one',
+}
+(value?: ExampleEnum) => ((value != null) ? 1 : 0);
       `,
             },
           ],
@@ -3052,19 +3052,19 @@ function foo(x: 0 | 1 | null) {
     {
       // falsy string and truthy number
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 1,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       errors: [
         {
-          column: 36,
+          column: 28,
           data: {
             context: 'conditional',
           },
-          endColumn: 41,
+          endColumn: 33,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
@@ -3072,11 +3072,11 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = '',
-          That = 1,
-        }
-        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 1,
+}
+(value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
             },
           ],
@@ -3087,19 +3087,19 @@ function foo(x: 0 | 1 | null) {
     {
       // truthy string and truthy number
       code: `
-        enum ExampleEnum {
-          This = 'this',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = 'this',
+  That = 1,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       errors: [
         {
-          column: 36,
+          column: 28,
           data: {
             context: 'conditional',
           },
-          endColumn: 41,
+          endColumn: 33,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
@@ -3107,11 +3107,11 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 'this',
-          That = 1,
-        }
-        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+enum ExampleEnum {
+  This = 'this',
+  That = 1,
+}
+(value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
             },
           ],
@@ -3122,19 +3122,19 @@ function foo(x: 0 | 1 | null) {
     {
       // falsy string and falsy number
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       errors: [
         {
-          column: 36,
+          column: 28,
           data: {
             context: 'conditional',
           },
-          endColumn: 41,
+          endColumn: 33,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
@@ -3142,11 +3142,11 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+(value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
             },
           ],

@@ -16,86 +16,86 @@ ruleTester.run('no-confusing-void-expression', rule, {
 
     {
       code: `
-        () => console.log('foo');
+() => console.log('foo');
       `,
       options: [{ ignoreArrowShorthand: true }],
     },
     {
       code: `
-        foo => foo && console.log(foo);
+foo => foo && console.log(foo);
       `,
       options: [{ ignoreArrowShorthand: true }],
     },
     {
       code: `
-        foo => foo || console.log(foo);
+foo => foo || console.log(foo);
       `,
       options: [{ ignoreArrowShorthand: true }],
     },
     {
       code: `
-        foo => (foo ? console.log(true) : console.log(false));
+foo => (foo ? console.log(true) : console.log(false));
       `,
       options: [{ ignoreArrowShorthand: true }],
     },
 
     {
       code: `
-        !void console.log('foo');
+!void console.log('foo');
       `,
       options: [{ ignoreVoidOperator: true }],
     },
     {
       code: `
-        +void (foo && console.log(foo));
++void (foo && console.log(foo));
       `,
       options: [{ ignoreVoidOperator: true }],
     },
     {
       code: `
-        -void (foo || console.log(foo));
+-void (foo || console.log(foo));
       `,
       options: [{ ignoreVoidOperator: true }],
     },
     {
       code: `
-        () => void ((foo && void console.log(true)) || console.log(false));
+() => void ((foo && void console.log(true)) || console.log(false));
       `,
       options: [{ ignoreVoidOperator: true }],
     },
     {
       code: `
-        const x = void (foo ? console.log(true) : console.log(false));
+const x = void (foo ? console.log(true) : console.log(false));
       `,
       options: [{ ignoreVoidOperator: true }],
     },
     {
       code: `
-        !(foo && void console.log(foo));
+!(foo && void console.log(foo));
       `,
       options: [{ ignoreVoidOperator: true }],
     },
     {
       code: `
-        !!(foo || void console.log(foo));
+!!(foo || void console.log(foo));
       `,
       options: [{ ignoreVoidOperator: true }],
     },
     {
       code: `
-        const x = (foo && void console.log(true)) || void console.log(false);
+const x = (foo && void console.log(true)) || void console.log(false);
       `,
       options: [{ ignoreVoidOperator: true }],
     },
     {
       code: `
-        () => (foo ? void console.log(true) : void console.log(false));
+() => (foo ? void console.log(true) : void console.log(false));
       `,
       options: [{ ignoreVoidOperator: true }],
     },
     {
       code: `
-        return void console.log('foo');
+return void console.log('foo');
       `,
       options: [{ ignoreVoidOperator: true }],
     },
@@ -407,72 +407,72 @@ test((() => {
   invalid: [
     {
       code: `
-        const x = console.log('foo');
+const x = console.log('foo');
       `,
-      errors: [{ column: 19, messageId: 'invalidVoidExpr' }],
+      errors: [{ column: 11, messageId: 'invalidVoidExpr' }],
       output: null,
     },
     {
       code: `
-        const x = console?.log('foo');
+const x = console?.log('foo');
       `,
-      errors: [{ column: 19, messageId: 'invalidVoidExpr' }],
+      errors: [{ column: 11, messageId: 'invalidVoidExpr' }],
       output: null,
     },
     {
       code: `
-        console.error(console.log('foo'));
-      `,
-      errors: [{ column: 23, messageId: 'invalidVoidExpr' }],
-      output: null,
-    },
-    {
-      code: `
-        [console.log('foo')];
-      `,
-      errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
-      output: null,
-    },
-    {
-      code: `
-        ({ x: console.log('foo') });
+console.error(console.log('foo'));
       `,
       errors: [{ column: 15, messageId: 'invalidVoidExpr' }],
       output: null,
     },
     {
       code: `
-        void console.log('foo');
+[console.log('foo')];
       `,
-      errors: [{ column: 14, messageId: 'invalidVoidExpr' }],
+      errors: [{ column: 2, messageId: 'invalidVoidExpr' }],
       output: null,
     },
     {
       code: `
-        console.log('foo') ? true : false;
+({ x: console.log('foo') });
       `,
-      errors: [{ column: 9, messageId: 'invalidVoidExpr' }],
+      errors: [{ column: 7, messageId: 'invalidVoidExpr' }],
       output: null,
     },
     {
       code: `
-        (console.log('foo') && true) || false;
+void console.log('foo');
+      `,
+      errors: [{ column: 6, messageId: 'invalidVoidExpr' }],
+      output: null,
+    },
+    {
+      code: `
+console.log('foo') ? true : false;
+      `,
+      errors: [{ column: 1, messageId: 'invalidVoidExpr' }],
+      output: null,
+    },
+    {
+      code: `
+(console.log('foo') && true) || false;
+      `,
+      errors: [{ column: 2, messageId: 'invalidVoidExpr' }],
+      output: null,
+    },
+    {
+      code: `
+(cond && console.log('ok')) || console.log('error');
       `,
       errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
       output: null,
     },
     {
       code: `
-        (cond && console.log('ok')) || console.log('error');
+!console.log('foo');
       `,
-      errors: [{ column: 18, messageId: 'invalidVoidExpr' }],
-      output: null,
-    },
-    {
-      code: `
-        !console.log('foo');
-      `,
-      errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
+      errors: [{ column: 2, messageId: 'invalidVoidExpr' }],
       output: null,
     },
 
@@ -525,17 +525,17 @@ function notcool(input: string) {
     },
     {
       code: `
-        function f() {
-          return console.log('foo');
-          console.log('bar');
-        }
+function f() {
+  return console.log('foo');
+  console.log('bar');
+}
       `,
-      errors: [{ column: 18, line: 3, messageId: 'invalidVoidExprReturn' }],
+      errors: [{ column: 10, line: 3, messageId: 'invalidVoidExprReturn' }],
       output: `
-        function f() {
-          console.log('foo'); return;
-          console.log('bar');
-        }
+function f() {
+  console.log('foo'); return;
+  console.log('bar');
+}
       `,
     },
     {
@@ -557,17 +557,17 @@ function notcool(input: string) {
     },
     {
       code: `
-        function f() {
-          console.log('foo');
-          return console.log('bar');
-        }
+function f() {
+  console.log('foo');
+  return console.log('bar');
+}
       `,
-      errors: [{ column: 18, line: 4, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 10, line: 4, messageId: 'invalidVoidExprReturnLast' }],
       output: `
-        function f() {
-          console.log('foo');
-          console.log('bar');
-        }
+function f() {
+  console.log('foo');
+  console.log('bar');
+}
       `,
     },
     {
@@ -587,105 +587,105 @@ function notcool(input: string) {
     },
     {
       code: `
-        const f = () => {
-          if (cond) {
-            return console.error('foo');
-          }
-          console.log('bar');
-        };
+const f = () => {
+  if (cond) {
+    return console.error('foo');
+  }
+  console.log('bar');
+};
       `,
-      errors: [{ column: 20, line: 4, messageId: 'invalidVoidExprReturn' }],
+      errors: [{ column: 12, line: 4, messageId: 'invalidVoidExprReturn' }],
       output: `
-        const f = () => {
-          if (cond) {
-            console.error('foo'); return;
-          }
-          console.log('bar');
-        };
+const f = () => {
+  if (cond) {
+    console.error('foo'); return;
+  }
+  console.log('bar');
+};
       `,
     },
     {
       code: `
-        const f = function () {
-          if (cond) return console.error('foo');
-          console.log('bar');
-        };
+const f = function () {
+  if (cond) return console.error('foo');
+  console.log('bar');
+};
       `,
-      errors: [{ column: 28, line: 3, messageId: 'invalidVoidExprReturn' }],
+      errors: [{ column: 20, line: 3, messageId: 'invalidVoidExprReturn' }],
       output: `
-        const f = function () {
-          if (cond) { console.error('foo'); return; }
-          console.log('bar');
-        };
+const f = function () {
+  if (cond) { console.error('foo'); return; }
+  console.log('bar');
+};
       `,
     },
     {
       code: `
-        const f = function () {
-          let num = 1;
-          return num ? console.log('foo') : num;
-        };
+const f = function () {
+  let num = 1;
+  return num ? console.log('foo') : num;
+};
       `,
-      errors: [{ column: 24, line: 4, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 16, line: 4, messageId: 'invalidVoidExprReturnLast' }],
       output: null,
     },
     {
       code: `
-        const f = function () {
-          let undef = undefined;
-          return undef ? console.log('foo') : undef;
-        };
+const f = function () {
+  let undef = undefined;
+  return undef ? console.log('foo') : undef;
+};
       `,
-      errors: [{ column: 26, line: 4, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 18, line: 4, messageId: 'invalidVoidExprReturnLast' }],
       output: `
-        const f = function () {
-          let undef = undefined;
-          undef ? console.log('foo') : undef;
-        };
+const f = function () {
+  let undef = undefined;
+  undef ? console.log('foo') : undef;
+};
       `,
     },
     {
       code: `
-        const f = function () {
-          let num = 1;
-          return num || console.log('foo');
-        };
+const f = function () {
+  let num = 1;
+  return num || console.log('foo');
+};
       `,
-      errors: [{ column: 25, line: 4, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 17, line: 4, messageId: 'invalidVoidExprReturnLast' }],
       output: null,
     },
     {
       code: `
-        const f = function () {
-          let bar = void 0;
-          return bar || console.log('foo');
-        };
+const f = function () {
+  let bar = void 0;
+  return bar || console.log('foo');
+};
       `,
-      errors: [{ column: 25, line: 4, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 17, line: 4, messageId: 'invalidVoidExprReturnLast' }],
       output: `
-        const f = function () {
-          let bar = void 0;
-          bar || console.log('foo');
-        };
+const f = function () {
+  let bar = void 0;
+  bar || console.log('foo');
+};
       `,
     },
     {
       code: `
-        let num = 1;
-        const foo = () => (num ? console.log('foo') : num);
+let num = 1;
+const foo = () => (num ? console.log('foo') : num);
       `,
-      errors: [{ column: 34, line: 3, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 26, line: 3, messageId: 'invalidVoidExprArrow' }],
       output: null,
     },
     {
       code: `
-        let bar = void 0;
-        const foo = () => (bar ? console.log('foo') : bar);
+let bar = void 0;
+const foo = () => (bar ? console.log('foo') : bar);
       `,
-      errors: [{ column: 34, line: 3, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 26, line: 3, messageId: 'invalidVoidExprArrow' }],
       output: `
-        let bar = void 0;
-        const foo = () => { bar ? console.log('foo') : bar; };
+let bar = void 0;
+const foo = () => { bar ? console.log('foo') : bar; };
       `,
     },
     {
@@ -854,34 +854,34 @@ function foo(): void {
     },
     {
       code: `
-        (): any => console.log('foo');
+(): any => console.log('foo');
       `,
       errors: [
         {
-          column: 20,
+          column: 12,
           line: 2,
           messageId: 'invalidVoidExprArrow',
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
       output: `
-        (): any => { console.log('foo'); };
+(): any => { console.log('foo'); };
       `,
     },
     {
       code: `
-        (): unknown => console.log('foo');
+(): unknown => console.log('foo');
       `,
       errors: [
         {
-          column: 24,
+          column: 16,
           line: 2,
           messageId: 'invalidVoidExprArrow',
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
       output: `
-        (): unknown => { console.log('foo'); };
+(): unknown => { console.log('foo'); };
       `,
     },
     {

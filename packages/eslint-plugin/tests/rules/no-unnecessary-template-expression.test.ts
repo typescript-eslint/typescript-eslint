@@ -13,47 +13,47 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
     'const string = `undefined: ${/* comment */ undefined}`;',
     'const string = `Infinity: ${Infinity /* comment */}`;',
     `
-      declare const string: 'a';
-      \`\${string}b\`;
+declare const string: 'a';
+\`\${string}b\`;
     `,
 
     `
-      declare const number: 1;
-      \`\${number}b\`;
+declare const number: 1;
+\`\${number}b\`;
     `,
 
     `
-      declare const boolean: true;
-      \`\${boolean}b\`;
+declare const boolean: true;
+\`\${boolean}b\`;
     `,
 
     `
-      declare const nullish: null;
-      \`\${nullish}-undefined\`;
+declare const nullish: null;
+\`\${nullish}-undefined\`;
     `,
 
     `
-      declare const undefinedish: undefined;
-      \`\${undefinedish}\`;
+declare const undefinedish: undefined;
+\`\${undefinedish}\`;
     `,
 
     `
-      declare const left: 'a';
-      declare const right: 'b';
-      \`\${left}\${right}\`;
+declare const left: 'a';
+declare const right: 'b';
+\`\${left}\${right}\`;
     `,
 
     `
-      declare const left: 'a';
-      declare const right: 'c';
-      \`\${left}b\${right}\`;
+declare const left: 'a';
+declare const right: 'c';
+\`\${left}b\${right}\`;
     `,
 
     `
-      declare const left: 'a';
-      declare const center: 'b';
-      declare const right: 'c';
-      \`\${left}\${center}\${right}\`;
+declare const left: 'a';
+declare const center: 'b';
+declare const right: 'c';
+\`\${left}\${center}\${right}\`;
     `,
 
     '`1 + 1 = ${1 + 1}`;',
@@ -69,56 +69,56 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
     '`${(...args: any[]) => args}`;',
 
     `
-      declare const number: 1;
-      \`\${number}\`;
+declare const number: 1;
+\`\${number}\`;
     `,
 
     `
-      declare const boolean: true;
-      \`\${boolean}\`;
+declare const boolean: true;
+\`\${boolean}\`;
     `,
 
     `
-      declare const nullish: null;
-      \`\${nullish}\`;
+declare const nullish: null;
+\`\${nullish}\`;
     `,
 
     `
-      declare const union: string | number;
-      \`\${union}\`;
+declare const union: string | number;
+\`\${union}\`;
     `,
 
     `
-      declare const unknown: unknown;
-      \`\${unknown}\`;
+declare const unknown: unknown;
+\`\${unknown}\`;
     `,
 
     `
-      declare const never: never;
-      \`\${never}\`;
+declare const never: never;
+\`\${never}\`;
     `,
 
     `
-      declare const any: any;
-      \`\${any}\`;
+declare const any: any;
+\`\${any}\`;
     `,
 
     `
-      function func<T extends number>(arg: T) {
-        \`\${arg}\`;
-      }
+function func<T extends number>(arg: T) {
+  \`\${arg}\`;
+}
     `,
 
     `
-      \`with
+\`with
 
       new line\`;
     `,
 
     `
-      declare const a: 'a';
+declare const a: 'a';
 
-      \`\${a} with
+\`\${a} with
 
       new line\`;
     `,
@@ -196,9 +196,9 @@ this code has trailing whitespace: \${\`    \`}
 }\`;
     `,
     `
-      function getTpl<T>(input: T) {
-        return \`\${input}\`;
-      }
+function getTpl<T>(input: T) {
+  return \`\${input}\`;
+}
     `,
     `
 type FooBarBaz = \`foo\${/* comment */ 'bar'}"baz"\`;
@@ -1248,40 +1248,40 @@ this code has trailing position template expression but it isn't whitespace
     },
     {
       code: `
-        function func<T extends string>(arg: T) {
-          \`\${arg}\`;
-        }
+function func<T extends string>(arg: T) {
+  \`\${arg}\`;
+}
       `,
       errors: [
         {
-          column: 12,
-          endColumn: 18,
+          column: 4,
+          endColumn: 10,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
       output: `
-        function func<T extends string>(arg: T) {
-          arg;
-        }
+function func<T extends string>(arg: T) {
+  arg;
+}
       `,
     },
     {
       code: `
-        declare const b: 'b';
-        \`a\${b}\${'c'}\`;
+declare const b: 'b';
+\`a\${b}\${'c'}\`;
       `,
       errors: [
         {
-          column: 15,
-          endColumn: 21,
+          column: 7,
+          endColumn: 13,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
       output: `
-        declare const b: 'b';
-        \`a\${b}c\`;
+declare const b: 'b';
+\`a\${b}c\`;
       `,
     },
     {
@@ -1316,38 +1316,38 @@ declare const nested: string, interpolation: string;
     },
     {
       code: `
-        declare const string: 'a';
-        \`\${string}\`;
+declare const string: 'a';
+\`\${string}\`;
       `,
       errors: [
         {
-          column: 10,
-          endColumn: 19,
+          column: 2,
+          endColumn: 11,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
       output: `
-        declare const string: 'a';
-        string;
+declare const string: 'a';
+string;
       `,
     },
     {
       code: `
-        declare const intersection: string & { _brand: 'test-brand' };
-        \`\${intersection}\`;
+declare const intersection: string & { _brand: 'test-brand' };
+\`\${intersection}\`;
       `,
       errors: [
         {
-          column: 10,
-          endColumn: 25,
+          column: 2,
+          endColumn: 17,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
       output: `
-        declare const intersection: string & { _brand: 'test-brand' };
-        intersection;
+declare const intersection: string & { _brand: 'test-brand' };
+intersection;
       `,
     },
     {

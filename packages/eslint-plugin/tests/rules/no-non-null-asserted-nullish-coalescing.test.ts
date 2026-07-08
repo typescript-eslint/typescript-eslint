@@ -16,48 +16,48 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
     'foo() ?? bar!;',
     '(foo ?? bar)!;',
     `
-      let x: string;
-      x! ?? '';
+let x: string;
+x! ?? '';
     `,
     `
-      let x: string;
-      x ?? '';
+let x: string;
+x ?? '';
     `,
     `
-      let x!: string;
-      x ?? '';
+let x!: string;
+x ?? '';
     `,
     `
-      let x: string;
-      foo(x);
-      x! ?? '';
+let x: string;
+foo(x);
+x! ?? '';
     `,
     `
-      let x: string;
-      x! ?? '';
-      x = foo();
+let x: string;
+x! ?? '';
+x = foo();
     `,
     `
-      let x: string;
-      foo(x);
-      x! ?? '';
-      x = foo();
+let x: string;
+foo(x);
+x! ?? '';
+x = foo();
     `,
     `
-      let x = foo();
-      x ?? '';
+let x = foo();
+x ?? '';
     `,
     `
-      function foo() {
-        let x: string;
-        return x ?? '';
-      }
+function foo() {
+  let x: string;
+  return x ?? '';
+}
     `,
     `
-      let x: string;
-      function foo() {
-        return x ?? '';
-      }
+let x: string;
+function foo() {
+  return x ?? '';
+}
     `,
   ],
   invalid: [
