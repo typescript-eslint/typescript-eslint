@@ -1,3 +1,4 @@
+/* eslint-disable eslint-plugin/require-test-error-positions */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/plugin-test-formatting.js';
@@ -1244,7 +1245,7 @@ const test: InvalidTestCase<'', []> = {
       `,
     },
     {
-      // ensure output has enough escaping for `code` with a 'quoted string'.
+      // ensure output has enough escaping for `code` with a "quoted string".
       code: `
 ruleTester.run({
   valid: [
@@ -1271,6 +1272,76 @@ ruleTester.run({
       code: ${
         // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
         String.raw`"'\\\\';"`
+      },
+    },
+  ],
+});
+      `,
+    },
+    {
+      // ensure output has enough escaping for `code` with a 'quoted string'.
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // The user types '\'\\\\\''
+        // meaning the code they are testing is '\\' (which is missing a semicolon for prettier formatting)
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`'\'\\\\\''`
+      },
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // fixes to " style
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`"'\\\\';"`
+      },
+    },
+  ],
+});
+      `,
+    },
+    {
+      // ensure output has enough escaping for `code` with a 'quoted string'.
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // The user types '\'\"\''
+        // meaning the code they are testing is '"'
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`'\'\"\''`
+      },
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // use '  and escape any ' in the string.
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`'\'"\';'`
       },
     },
   ],
@@ -1307,7 +1378,7 @@ ruleTester.run({
       code: \`
 ${
   // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
-  String.raw`'\\\\;'`
+  String.raw`'\\\\';`
 }
       \`,
     },
