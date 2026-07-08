@@ -252,7 +252,10 @@ export default createRule<Options, MessageIds>({
      * @param pattern The RegExp pattern text to parse.
      * @param unicode Whether the RegExp is unicode.
      */
-    function parseRegExpText(pattern: string, unicode: boolean): string | null {
+    function parseRegExpText(
+      pattern: string,
+      unicode: boolean,
+    ): { isEndsWith: boolean; isStartsWith: boolean; text: string } | null {
       // Parse it.
       const ast = regexpp.parsePattern(pattern, undefined, undefined, {
         unicode,
@@ -262,9 +265,20 @@ export default createRule<Options, MessageIds>({
       }
 
       // Drop `^`/`$` assertion.
-      const chars = ast.alternatives[0].elements;
+      const chars = [...ast.alternatives[0].elements];
+      if (chars.length === 0) {
+        return null;
+      }
+
       const first = chars[0];
-      if (first.type === 'Assertion' && first.kind === 'start') {
+      const last = chars[chars.length - 1];
+      const isStartsWith = first.type === 'Assertion' && first.kind === 'start';
+      const isEndsWith = last.type === 'Assertion' && last.kind === 'end';
+      if (isStartsWith === isEndsWith) {
+        return null;
+      }
+
+      if (isStartsWith) {
         chars.shift();
       } else {
         chars.pop();
@@ -276,7 +290,8 @@ export default createRule<Options, MessageIds>({
       }
 
       // To string.
-      return String.fromCodePoint(...chars.map(c => c.value));
+      const text = String.fromCodePoint(...chars.map(c => c.value));
+      return { isEndsWith, isStartsWith, text };
     }
 
     /**
@@ -292,22 +307,11 @@ export default createRule<Options, MessageIds>({
       }
 
       const { flags, source } = evaluated.value;
-      const isStartsWith = source.startsWith('^');
-      const isEndsWith = source.endsWith('$');
-      if (
-        isStartsWith === isEndsWith ||
-        flags.includes('i') ||
-        flags.includes('m')
-      ) {
+      if (flags.includes('i') || flags.includes('m')) {
         return null;
       }
 
-      const text = parseRegExpText(source, flags.includes('u'));
-      if (text == null) {
-        return null;
-      }
-
-      return { isEndsWith, isStartsWith, text };
+      return parseRegExpText(source, flags.includes('u'));
     }
 
     function getLeftNode(

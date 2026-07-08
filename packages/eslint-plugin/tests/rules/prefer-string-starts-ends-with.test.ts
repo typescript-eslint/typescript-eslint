@@ -179,6 +179,11 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
     `,
     `
       function f(s: string) {
+        s.match(/bar\\$/) !== null;
+      }
+    `,
+    `
+      function f(s: string) {
         s.match(/^foo$/) !== null;
       }
     `,
@@ -251,6 +256,11 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
     `
       function f(s: string) {
         pattern.test(s);
+      }
+    `,
+    `
+      function f(s: string) {
+        /bar\\$/.test(s);
       }
     `,
     `
