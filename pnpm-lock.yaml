@@ -13835,7 +13835,7 @@ snapshots:
       obug: 2.1.1
       std-env: 4.1.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.5(@types/node@24.13.2)(@vitest/coverage-v8@4.1.5)(vite@7.3.0(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.22.3)(yaml@2.9.0))
+      vitest: 4.1.5(@types/node@25.9.3)(@vitest/coverage-v8@4.1.5)(vite@7.3.0(@types/node@25.9.3)(jiti@2.7.0)(lightningcss@1.31.1)(terser@5.39.2)(tsx@4.22.3)(yaml@2.9.0))
 
   '@vitest/eslint-plugin@1.6.16(@typescript-eslint/eslint-plugin@packages+eslint-plugin)(eslint@10.6.0(jiti@2.7.0))(typescript@6.0.2)(vitest@4.1.5)':
     dependencies:
