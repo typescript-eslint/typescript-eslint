@@ -1,7 +1,7 @@
 Incorrect
 
-function x(x: number): void;
-function x(x: string): void;
+function x(y: number): void;
+function x(y: string): void;
            ~~~~~~~~~ These overloads can be combined into one signature taking `number | string`.
 
 Incorrect
@@ -12,7 +12,7 @@ function y(...x: number[]): void;
 
 Correct
 
-function x(x: number | string): void;
+function x(y: number | string): void;
 
 Correct
 

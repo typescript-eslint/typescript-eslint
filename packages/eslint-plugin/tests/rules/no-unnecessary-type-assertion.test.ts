@@ -900,6 +900,30 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12485
+    `
+declare const items: string[] | undefined;
+
+const counts = items?.reduce(
+  (acc, item) => {
+    acc[item] = (acc[item] ?? 0) + 1;
+    return acc;
+  },
+  {} as Record<string, number>,
+);
+    `,
+    `
+declare const o:
+  | {
+      fn<U>(g: (memo: U) => U, initial: U): U;
+      fn<T>(g: (memo: T) => T): T | undefined;
+    }
+  | undefined;
+enum E {
+  A = 1,
+}
+const x: E | undefined = o?.fn(n => n | 0, 0 as E);
+    `,
   ],
 
   invalid: [
@@ -2705,6 +2729,171 @@ fn1(() => {
         },
       ],
       output: `({ a: 'foo' });`,
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } + 1;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) + 1;",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } && true;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) && true;",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } ? 1 : 2;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) ? 1 : 2;",
+    },
+    {
+      code: noFormat`<{ a: string }>{ a: 'foo' }, foo();`,
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }), foo();",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } + 1 + 2;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) + 1 + 2;",
+    },
+    {
+      code: "(<{ a: string }>{ a: 'foo' }, 1);",
+      errors: [
+        {
+          column: 2,
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }, 1);",
+    },
+    {
+      code: "1 + <{ a: string }>{ a: 'foo' };",
+      errors: [
+        {
+          column: 5,
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "1 + { a: 'foo' };",
+    },
+    // The assertion binds looser than member access, so its operand can be a
+    // member expression whose leading token is `{`, `function`, or `class` —
+    // each of which leads the statement after the fix and must be wrapped.
+    {
+      code: '<number>{ lol: 32 as number }.lol;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: '({ lol: 32 as number }.lol);',
+    },
+    {
+      code: '<number>function Fun() {}.length;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: '(function Fun() {}.length);',
+    },
+    {
+      code: '<number>class Clazz {}.length;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: '(class Clazz {}.length);',
+    },
+    {
+      code: 'const foo = () => <number>{ lol: 123 as number }.lol + 54321;',
+      errors: [
+        {
+          column: 19,
+          endColumn: 53,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: 'const foo = () => ({ lol: 123 as number }.lol) + 54321;',
+    },
+    {
+      code: `
+declare const maybeFn: ((arg: string | number) => void) | undefined;
+declare const s: string;
+maybeFn?.(s as string | number);
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare const maybeFn: ((arg: string | number) => void) | undefined;
+declare const s: string;
+maybeFn?.(s);
+      `,
     },
   ],
 });

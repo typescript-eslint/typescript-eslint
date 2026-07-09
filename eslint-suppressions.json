@@ -4,11 +4,6 @@
       "count": 3
     }
   },
-  "packages/eslint-plugin-internal/tests/rules/no-dynamic-tests.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 14
-    }
-  },
   "packages/eslint-plugin-internal/tests/rules/no-multiple-lines-of-errors.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 3
@@ -422,11 +417,6 @@
   "packages/eslint-plugin/tests/rules/prefer-namespace-keyword.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 4
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-optional-chain/prefer-optional-chain.test.ts": {
-    "@typescript-eslint/internal/no-dynamic-tests": {
-      "count": 17
     }
   },
   "packages/eslint-plugin/tests/rules/prefer-ts-expect-error.test.ts": {

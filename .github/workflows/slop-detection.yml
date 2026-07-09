@@ -1,0 +1,66 @@
+name: Slop Detection
+
+on:
+  # WARNING: Using pull_request_target here because we need write permissions to
+  # label/comment/close PRs from forks.
+  # DO NOT CHECK OUT THE REPO IN THIS WORKFLOW
+  pull_request_target: # zizmor: ignore[dangerous-triggers]
+    types:
+      - opened
+      - reopened
+  issues:
+    types:
+      - opened
+
+permissions: {}
+
+jobs:
+  agentscan:
+    name: AgentScan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Cache AgentScan analysis
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .agentscan-cache
+          key: agentscan-cache-${{ github.actor }}
+          restore-keys: agentscan-cache-
+
+      - name: AgentScan
+        uses: MatteoGabriele/agentscan-action@4eebb5210583641a015146ea52b6b92e1df14ed7 # main
+        with:
+          auto-close-classifications: automation
+          auto-close: true
+          cache-path: .agentscan-cache
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          label-automation: spam:automated-account
+          label-community-flagged: spam:community-flagged
+          label-mixed: spam:mixed-signals
+          skip-comment-on-organic: true
+
+  anti-slop:
+    name: Anti Slop
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      pull-requests: write
+    steps:
+      - name: Anti Slop
+        uses: peakoss/anti-slop@57858eead489d08b255fab2af45a506c2ca6eab2 # v0.3.0
+        with:
+          close-pr: true
+          exempt-label: spam:exempt
+          failure-add-pr-labels: spam:likely-slop
+          failure-pr-message: |
+            Thanks for the contribution. This PR was automatically closed because
+            it matched multiple low-quality/spam signals.
+
+            If this was a mistake, please comment with more context or ask a
+            maintainer to add the `spam:exempt` label before reopening.
+          lock-pr: false

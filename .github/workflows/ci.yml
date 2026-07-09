@@ -484,6 +484,31 @@ jobs:
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
           PACKAGE: ${{ matrix.package }}
 
+  # Some test jobs are created dynamically and conditionally skipped (see affected-for-tests),
+  # so they can't be marked in the branch ruleset as required.
+  # This static job aggregates all other jobs and is the single check we require in the branch ruleset.
+  required_checks:
+    name: Required Checks
+    if: ${{ always() }}
+    needs:
+      - install
+      - affected-for-tests
+      - build
+      - generate_configs
+      - lint_without_build
+      - lint_with_build
+      - lint_with_build_eslint
+      - stylelint
+      - integration_tests
+      - plugin_unit_tests
+      - unit_tests
+      - unit_tests_project_service
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any dependency failed or was cancelled
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
   upload_coverage:
     name: Upload Codecov Coverage
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
