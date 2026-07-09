@@ -90,6 +90,27 @@ export function eslintIntegrationTest(
   });
 }
 
+export function nodeIntegrationTest(
+  testFilename: string,
+  scriptName: string,
+  assertOutput: (stderr: string) => void,
+): void {
+  integrationTest(`node ${scriptName}`, testFilename, async testFolder => {
+    const [result] = await Promise.allSettled([
+      execFile('node', [scriptName], {
+        cwd: testFolder,
+      }),
+    ]);
+
+    const stderr =
+      result.status === 'rejected'
+        ? String((result.reason as { stderr: string }).stderr)
+        : result.value.stderr;
+
+    assertOutput(stderr);
+  });
+}
+
 export function typescriptIntegrationTest(
   testName: string,
   testFilename: string,
