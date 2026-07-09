@@ -40,7 +40,7 @@ declare module 'typescript' {
 
   interface ImportClause {
     /**
-     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getImportClausePhaseModifier from `src/getImportClausePhaseModifier.ts`.
+     * @deprecated don't use this directly as it does not exist pre-5.9; instead use getImportClausePhaseModifier from `src/getImportClausePhaseModifier.ts`.
      */
     readonly phaseModifier?: SyntaxKind | undefined;
   }
