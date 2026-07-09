@@ -11,6 +11,7 @@ import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 
 import { checkSyntaxError } from './check-syntax-errors';
+import { getImportClausePhaseModifier } from './getImportClausePhaseModifier';
 import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
@@ -1592,7 +1593,7 @@ export class Converter {
               attributes: this.convertImportAttributes(node),
               importKind: 'value',
               phase:
-                node.importClause?.phaseModifier === SyntaxKind.DeferKeyword
+                getImportClausePhaseModifier(node.importClause) === 'defer'
                   ? 'defer'
                   : null,
               source: this.convertChild(node.moduleSpecifier),
@@ -1605,7 +1606,7 @@ export class Converter {
         );
 
         if (node.importClause) {
-          if (node.importClause.phaseModifier === SyntaxKind.TypeKeyword) {
+          if (getImportClausePhaseModifier(node.importClause) === 'type') {
             result.importKind = 'type';
           }
 

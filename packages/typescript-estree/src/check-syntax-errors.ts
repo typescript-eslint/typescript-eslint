@@ -3,6 +3,7 @@ import * as ts from 'typescript';
 import type { TSNode } from './ts-estree';
 
 import { checkModifiers } from './check-modifiers';
+import { getImportClausePhaseModifier } from './getImportClausePhaseModifier';
 import {
   isValidAssignmentTarget,
   createError,
@@ -366,8 +367,8 @@ export function checkSyntaxError(
     case SyntaxKind.ImportDeclaration: {
       const { importClause } = node;
       if (
-        importClause?.phaseModifier === SyntaxKind.TypeKeyword &&
-        importClause.name &&
+        getImportClausePhaseModifier(importClause) === 'type' &&
+        importClause?.name &&
         importClause.namedBindings
       ) {
         throw createError(
