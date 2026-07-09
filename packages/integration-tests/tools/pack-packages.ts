@@ -278,5 +278,9 @@ async function getPnpmWorkspaceContent(): Promise<string> {
   delete parsed.overrides;
   delete parsed.packages;
 
+  // the ts7 fixture installs typescript releases newer than the root
+  // minimumReleaseAge allows; `@typescript/*` covers TS 7's native binaries
+  parsed.minimumReleaseAgeExclude = ['typescript', '@typescript/*'];
+
   return yaml.stringify(parsed);
 }
