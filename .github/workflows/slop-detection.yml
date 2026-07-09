@@ -40,7 +40,7 @@ jobs:
           label-automation: spam:automated-account
           label-community-flagged: spam:community-flagged
           label-mixed: spam:mixed-signals
-          skip-comment-on-organic: true
+          scan-issues: true
 
   anti-slop:
     name: Anti Slop
