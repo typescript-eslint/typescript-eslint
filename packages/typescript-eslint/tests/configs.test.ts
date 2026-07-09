@@ -3,10 +3,11 @@ import type {
   RuleRecommendation,
 } from '@typescript-eslint/utils/ts-eslint';
 
+import eslintPlugin from '@typescript-eslint/eslint-plugin';
 import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { clearCandidateTSConfigRootDirs } from '@typescript-eslint/typescript-estree';
 
-import tseslint from '../src/index.js';
+import tseslint from 'typescript-eslint';
 
 vi.mock('@typescript-eslint/typescript-estree', async () => ({
   ...(await vi.importActual('@typescript-eslint/typescript-estree')),
@@ -399,6 +400,26 @@ describe('stylistic-type-checked-only.ts', () => {
       expect(unfilteredConfigRules).toMatchObject(expectedOverrides);
     },
   );
+});
+
+describe('plugin registration', () => {
+  it('configs reference the same plugin object as tseslint.plugin', () => {
+    for (let config of Object.values(tseslint.configs)) {
+      if (!Array.isArray(config)) {
+        config = [config];
+      }
+      for (const configEntry of config) {
+        const pluginReference = (configEntry as FlatConfig.Config).plugins?.[
+          '@typescript-eslint'
+        ];
+
+        if (pluginReference != null) {
+          expect(pluginReference).toBe(tseslint.plugin);
+          expect(pluginReference).toBe(eslintPlugin);
+        }
+      }
+    }
+  });
 });
 
 const mockAddCandidateTSConfigRootDir = vi.fn();
