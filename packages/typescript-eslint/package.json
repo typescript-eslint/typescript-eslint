@@ -99,7 +99,11 @@
         ]
       },
       "attw-check": {
-        "command": "attw --pack {projectRoot} --profile node16 --ignore-rules cjs-only-exports-default"
+        "cache": false,
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --ignore-rules cjs-only-exports-default"
       }
     }
   }

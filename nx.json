@@ -76,7 +76,8 @@
       "dependsOn": ["build"],
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm exec attw --pack {projectRoot} --profile node16"
+        "cwd": "{projectRoot}",
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16"
       }
     }
   },

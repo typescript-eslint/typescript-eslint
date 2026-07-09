@@ -71,7 +71,11 @@
         "dependsOn": [
           "build"
         ],
-        "command": "attw --pack {projectRoot} --profile esm-only"
+        "cache": false,
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile esm-only"
       }
     }
   }
