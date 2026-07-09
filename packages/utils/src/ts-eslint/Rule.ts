@@ -113,7 +113,7 @@ export interface RuleMetaData<
   hasSuggestions?: boolean;
   /**
    * A map of messages which the rule can report.
-   * The key is the messageId, and the string is the parameterised error string.
+   * The key is the messageId, and the string is the parameterized error string.
    * See: https://eslint.org/docs/developer-guide/working-with-rules#messageids
    */
   messages: Record<MessageIds, string>;
