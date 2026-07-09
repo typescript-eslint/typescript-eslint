@@ -104,7 +104,7 @@ export function nodeIntegrationTest(
 
     const stderr =
       result.status === 'rejected'
-        ? String((result.reason as { stderr: string }).stderr)
+        ? (result.reason as { stderr: string }).stderr
         : result.value.stderr;
 
     assertOutput(stderr);
