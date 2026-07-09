@@ -742,6 +742,28 @@ interface I {
       ],
     },
     {
+      code: `
+function f(a: number | string): void;
+function f(a: string | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number | string',
+            type2: 'boolean',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
       // Works with tuples.
       code: `
 interface I {

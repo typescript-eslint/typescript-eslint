@@ -138,6 +138,10 @@ export default createRule<Options, MessageIds>({
             const typeAnnotation1 = isTSParameterProperty(p1)
               ? p1.parameter.typeAnnotation
               : p1.typeAnnotation;
+            const [type1, type2] = getUnifiedTypeTexts(
+              typeAnnotation0?.typeAnnotation,
+              typeAnnotation1?.typeAnnotation,
+            );
 
             context.report({
               loc: p1.loc,
@@ -145,12 +149,8 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: context.sourceCode.getText(
-                  typeAnnotation0?.typeAnnotation,
-                ),
-                type2: context.sourceCode.getText(
-                  typeAnnotation1?.typeAnnotation,
-                ),
+                type1,
+                type2,
               },
             });
             break;
@@ -500,6 +500,28 @@ export default createRule<Options, MessageIds>({
           context.sourceCode.getText(a.typeAnnotation) ===
             context.sourceCode.getText(b.typeAnnotation))
       );
+    }
+
+    function getUnifiedTypeTexts(
+      a: TSESTree.TypeNode | undefined,
+      b: TSESTree.TypeNode | undefined,
+    ): [string, string] {
+      const textA = context.sourceCode.getText(a);
+      const textB = context.sourceCode.getText(b);
+      const typesA = getUnionTypeTexts(a);
+      const typesB = getUnionTypeTexts(b);
+      const seenTypes = new Set(typesA);
+      const uniqueTypesB = typesB.filter(type => !seenTypes.has(type));
+
+      return uniqueTypesB.length === typesB.length || uniqueTypesB.length === 0
+        ? [textA, textB]
+        : [typesA.join(' | '), uniqueTypesB.join(' | ')];
+    }
+
+    function getUnionTypeTexts(type: TSESTree.TypeNode | undefined): string[] {
+      return type?.type === AST_NODE_TYPES.TSUnionType
+        ? type.types.map(type => context.sourceCode.getText(type))
+        : [context.sourceCode.getText(type)];
     }
 
     function constraintsAreEqual(
