@@ -60,6 +60,32 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
       BigInt(3n);
       export {};
     `,
+    // a builtin redefined in an outer scope is still shadowed inside a nested scope
+    `
+      function String(value: unknown) {
+        return value;
+      }
+      function foo(s: string) {
+        return String(s);
+      }
+      export {};
+    `,
+    `
+      const String = (value: unknown) => value;
+      function foo(s: string) {
+        return String(s);
+      }
+      export {};
+    `,
+    `
+      function Number(value: unknown) {
+        return value;
+      }
+      function foo(n: number) {
+        return Number(n);
+      }
+      export {};
+    `,
     `
       function toString(value: unknown) {
         return value;

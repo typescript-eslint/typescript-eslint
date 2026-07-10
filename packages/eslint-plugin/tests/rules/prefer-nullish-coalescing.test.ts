@@ -1889,6 +1889,20 @@ const x = Boolean(a || b);
       ],
     },
     {
+      // the global Boolean stays ignored when referenced from a nested scope
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const wrap = () => Boolean(a || b);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
       code: `
 let a: string | boolean | undefined;
 let b: string | boolean | undefined;
@@ -10289,6 +10303,44 @@ let b: string | boolean | undefined;
 const x = Boolean(function weird() {
   return a ?? b;
 });
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      // Boolean redefined in an outer scope is not the global, so it must still be flagged
+      code: `
+function outer() {
+  const Boolean = (value: unknown) => value;
+
+  let a: string | true | undefined;
+  let b: string | boolean | undefined;
+
+  return () => Boolean(a || b);
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function outer() {
+  const Boolean = (value: unknown) => value;
+
+  let a: string | true | undefined;
+  let b: string | boolean | undefined;
+
+  return () => Boolean(a ?? b);
+}
       `,
             },
           ],
