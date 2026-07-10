@@ -216,13 +216,11 @@ export default createRule<Options, MessageIds>({
       return displayParts ? ts.displayPartsToString(displayParts) : '';
     }
 
-    type CallLikeNode =
-      | TSESTree.CallExpression
-      | TSESTree.JSXOpeningElement
-      | TSESTree.NewExpression
-      | TSESTree.TaggedTemplateExpression;
+    // the callee of a call-like expression: `foo` in `foo()`, `a.b.c` in
+    // `a.b.c()`, `Tag` in `` Tag`...` `` and `<Tag />`, `super` in `super()`
+    type CallLikeCallee = IdentifierLike | TSESTree.MemberExpression;
 
-    function isNodeCalleeOfParent(node: TSESTree.Node): node is CallLikeNode {
+    function isNodeCalleeOfParent(node: TSESTree.Node): boolean {
       switch (node.parent?.type) {
         case AST_NODE_TYPES.NewExpression:
         case AST_NODE_TYPES.CallExpression:
@@ -239,8 +237,8 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function getCallLikeNode(node: TSESTree.Node): CallLikeNode | undefined {
-      let callee = node;
+    function getCallLikeNode(node: IdentifierLike): CallLikeCallee | undefined {
+      let callee: IdentifierLike | TSESTree.MemberExpression = node;
 
       while (
         callee.parent?.type === AST_NODE_TYPES.MemberExpression &&
@@ -252,15 +250,47 @@ export default createRule<Options, MessageIds>({
       return isNodeCalleeOfParent(callee) ? callee : undefined;
     }
 
-    function getCallLikeDeprecation(node: CallLikeNode): string | undefined {
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
+    function getSignatureDeprecation(node: CallLikeCallee): string | undefined {
+      // Intrinsic JSX elements (e.g. `<div />`) get synthesized signatures
+      // without declarations, which can never be deprecated — deprecations of
+      // the elements themselves live on the `JSX.IntrinsicElements` property
+      // symbols, which are handled by the symbol-based checks.
+      if (
+        node.type === AST_NODE_TYPES.JSXIdentifier &&
+        node.name.charAt(0).toLowerCase() === node.name.charAt(0)
+      ) {
+        return undefined;
+      }
 
-      // If the node is a direct function call, we look for its signature.
+      // Resolving the signature of a call-like expression is expensive: it
+      // forces the checker to fully check the call, including every argument.
+      // The resolved signature can only be deprecated if one of the callee
+      // type's call or construct signatures is deprecated, so we scan those
+      // candidates first — that only requires typing the callee — and resolve
+      // the actual signature only when a deprecated candidate exists, to find
+      // out whether it is the one being used.
+      const calleeType = services.getTypeAtLocation(node);
+      const mayHaveDeprecatedSignature = tsutils
+        .unionConstituents(calleeType)
+        .some(type =>
+          [...type.getCallSignatures(), ...type.getConstructSignatures()].some(
+            signature => getJsDocDeprecation(signature) != null,
+          ),
+        );
+
+      if (!mayHaveDeprecatedSignature) {
+        return undefined;
+      }
+
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
       const signature = nullThrows(
         checker.getResolvedSignature(tsNode as ts.CallLikeExpression),
         'Expected call like node to have signature',
       );
+      return getJsDocDeprecation(signature);
+    }
 
+    function getCallLikeDeprecation(node: CallLikeCallee): string | undefined {
       const symbol = services.getSymbolAtLocation(node);
       const aliasedSymbol =
         symbol != null && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
@@ -282,7 +312,7 @@ export default createRule<Options, MessageIds>({
       ) {
         return (
           searchForDeprecationInAliasesChain(symbol, true) ??
-          getJsDocDeprecation(signature) ??
+          getSignatureDeprecation(node) ??
           getJsDocDeprecation(aliasedSymbol)
         );
       }
@@ -311,22 +341,86 @@ export default createRule<Options, MessageIds>({
           // declaration is deprecated or not.
           //
           // So, in case of function and method declarations, we don't check original
-          // aliased symbol, but rely on the getJsDocDeprecation(signature) call below.
+          // aliased symbol, but rely on the getSignatureDeprecation(node) call below.
           false,
-        ) ?? getJsDocDeprecation(signature)
+        ) ?? getSignatureDeprecation(node)
       );
     }
+
+    // Getting the contextual type of a JSX element's tag name forces the
+    // checker to resolve the element, type-checking all of its attributes.
+    // For function components we can usually prove an attribute is not
+    // deprecated by looking it up on the props parameter of the component's
+    // declared signatures instead, which only requires typing the tag name.
+    function isJSXAttributeProvenNotDeprecated(
+      tagName: TSESTree.JSXTagNameExpression,
+      propertyName: string,
+    ): boolean {
+      if (
+        tagName.type !== AST_NODE_TYPES.JSXMemberExpression &&
+        (tagName.type !== AST_NODE_TYPES.JSXIdentifier ||
+          tagName.name.charAt(0).toLowerCase() === tagName.name.charAt(0))
+      ) {
+        return false;
+      }
+
+      return tsutils
+        .unionConstituents(services.getTypeAtLocation(tagName))
+        .every(constituent => {
+          if (constituent.getConstructSignatures().length > 0) {
+            // Class components get their props type from the instance type,
+            // not from a signature parameter.
+            return false;
+          }
+          const callSignatures = constituent.getCallSignatures();
+          if (callSignatures.length === 0) {
+            return false;
+          }
+          return callSignatures.every(signature => {
+            const propsParam = signature.getParameters().at(0);
+            if (!propsParam) {
+              // A component without a props parameter cannot have deprecated
+              // attributes, unless generics could still produce one.
+              return signature.typeParameters == null;
+            }
+            const property = checker
+              .getTypeOfSymbol(propsParam)
+              .getProperty(propertyName);
+            if (!property) {
+              // The property's absence is only provable when the signature is
+              // not generic — instantiation cannot add properties then.
+              return signature.typeParameters == null;
+            }
+            return getJsDocDeprecation(property) == null;
+          });
+        });
+    }
+
+    const jsxContextualTypeCache = new WeakMap<
+      TSESTree.JSXOpeningElement,
+      ts.Type
+    >();
 
     function getJSXAttributeDeprecation(
       openingElement: TSESTree.JSXOpeningElement,
       propertyName: string,
     ): string | undefined {
-      const contextualType = nullThrows(
-        services.getContextualType(
-          openingElement.name as unknown as TSESTree.Expression,
-        ),
-        'Expected JSX opening element name to have contextualType',
-      );
+      if (
+        isJSXAttributeProvenNotDeprecated(openingElement.name, propertyName)
+      ) {
+        return undefined;
+      }
+
+      let contextualType = jsxContextualTypeCache.get(openingElement);
+      if (contextualType == null) {
+        contextualType = nullThrows(
+          services.getContextualType(
+            openingElement.name as unknown as TSESTree.Expression,
+          ),
+          'Expected JSX opening element name to have contextualType',
+        );
+        jsxContextualTypeCache.set(openingElement, contextualType);
+      }
 
       const symbol = contextualType.getProperty(propertyName);
 
