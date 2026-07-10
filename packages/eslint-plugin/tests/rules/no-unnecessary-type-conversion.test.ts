@@ -60,6 +60,44 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
       BigInt(3n);
       export {};
     `,
+
+    // a builtin redefined in an outer scope is not the global builtin
+    `
+      function String(value: string) {
+        return value;
+      }
+      function foo(s: string) {
+        return String(s);
+      }
+      export {};
+    `,
+    `
+      function Number(value: number) {
+        return value;
+      }
+      function foo(n: number) {
+        return Number(n);
+      }
+      export {};
+    `,
+    `
+      function Boolean(value: boolean) {
+        return value;
+      }
+      function foo(b: boolean) {
+        return Boolean(b);
+      }
+      export {};
+    `,
+    `
+      function BigInt(value: bigint) {
+        return value;
+      }
+      function foo(b: bigint) {
+        return BigInt(b);
+      }
+      export {};
+    `,
     `
       function toString(value: unknown) {
         return value;

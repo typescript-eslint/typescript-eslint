@@ -1889,6 +1889,20 @@ const x = Boolean(a || b);
       ],
     },
     {
+      // the global Boolean is still recognized from a nested scope
+      code: `
+function outer() {
+  return (a: string | true | undefined, b: string | boolean | undefined) =>
+    Boolean(a || b);
+}
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
       code: `
 let a: string | boolean | undefined;
 let b: string | boolean | undefined;
@@ -10227,6 +10241,40 @@ let a: string | true | undefined;
 let b: string | boolean | undefined;
 
 const x = String(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      // a Boolean redefined in an outer scope is not the global builtin
+      code: `
+function outer() {
+  const Boolean = (x: unknown) => x;
+
+  return (a: string | true | undefined, b: string | boolean | undefined) =>
+    Boolean(a || b);
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function outer() {
+  const Boolean = (x: unknown) => x;
+
+  return (a: string | true | undefined, b: string | boolean | undefined) =>
+    Boolean(a ?? b);
+}
       `,
             },
           ],
