@@ -220,8 +220,8 @@ export default createRule<Options, MessageIds>({
     // `a.b.c()`, `Tag` in `` Tag`...` `` and `<Tag />`, `super` in `super()`
     type CallLikeCallee = IdentifierLike | TSESTree.MemberExpression;
 
-    function isNodeCalleeOfParent(node: TSESTree.Node): boolean {
-      switch (node.parent?.type) {
+    function isNodeCalleeOfParent(node: CallLikeCallee): boolean {
+      switch (node.parent.type) {
         case AST_NODE_TYPES.NewExpression:
         case AST_NODE_TYPES.CallExpression:
           return node.parent.callee === node;
@@ -238,10 +238,10 @@ export default createRule<Options, MessageIds>({
     }
 
     function getCallLikeNode(node: IdentifierLike): CallLikeCallee | undefined {
-      let callee: IdentifierLike | TSESTree.MemberExpression = node;
+      let callee: CallLikeCallee = node;
 
       while (
-        callee.parent?.type === AST_NODE_TYPES.MemberExpression &&
+        callee.parent.type === AST_NODE_TYPES.MemberExpression &&
         callee.parent.property === callee
       ) {
         callee = callee.parent;
