@@ -303,11 +303,14 @@ export default createRule<Options, MessageIds>({
         return null;
       }
       const elements = ast.alternatives[0].elements;
+      if (elements.length === 0) {
+        return null;
+      }
       const first = elements[0];
       const last = elements[elements.length - 1];
       const isStartsWith =
-        first?.type === 'Assertion' && first.kind === 'start';
-      const isEndsWith = last?.type === 'Assertion' && last.kind === 'end';
+        first.type === 'Assertion' && first.kind === 'start';
+      const isEndsWith = last.type === 'Assertion' && last.kind === 'end';
       if (isStartsWith === isEndsWith) {
         return null;
       }
