@@ -258,6 +258,28 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         /^bar/.test();
       }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12514
+    `
+      function f(s: string) {
+        /\\$/.test(s);
+      }
+    `,
+    `
+      function f(s: string) {
+        /foo\\$/.test(s);
+      }
+    `,
+    `
+      function f(s: string) {
+        /\\\\\\$/.test(s);
+      }
+    `,
+    // escaped caret is also not an anchor
+    `
+      function f(s: string) {
+        /\\^foo/.test(s);
+      }
+    `,
     `
       function f(x: { test(): void }, s: string) {
         x.test(s);

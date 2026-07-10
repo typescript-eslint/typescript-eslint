@@ -292,13 +292,23 @@ export default createRule<Options, MessageIds>({
       }
 
       const { flags, source } = evaluated.value;
-      const isStartsWith = source.startsWith('^');
-      const isEndsWith = source.endsWith('$');
-      if (
-        isStartsWith === isEndsWith ||
-        flags.includes('i') ||
-        flags.includes('m')
-      ) {
+      if (flags.includes('i') || flags.includes('m')) {
+        return null;
+      }
+
+      const ast = regexpp.parsePattern(source, undefined, undefined, {
+        unicode: flags.includes('u'),
+      });
+      if (ast.alternatives.length !== 1) {
+        return null;
+      }
+      const elements = ast.alternatives[0].elements;
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      const isStartsWith =
+        first?.type === 'Assertion' && first.kind === 'start';
+      const isEndsWith = last?.type === 'Assertion' && last.kind === 'end';
+      if (isStartsWith === isEndsWith) {
         return null;
       }
 
