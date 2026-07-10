@@ -116,6 +116,23 @@ ruleTester.run('require-array-sort-compare', rule, {
       `,
       options: [{ ignoreStringArrays: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12511
+    {
+      code: `
+        function f<T extends string[]>(a: T) {
+          a.sort();
+        }
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        function f<T extends ReadonlyArray<string>>(a: T) {
+          a.sort();
+        }
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
     {
       code: `
         function f(a: number[]) {
@@ -190,6 +207,24 @@ ruleTester.run('require-array-sort-compare', rule, {
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
+    },
+    {
+      code: `
+        function f<T extends string[]>(a: T) {
+          a.sort();
+        }
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+      options: [{ ignoreStringArrays: false }],
+    },
+    {
+      code: `
+        function f<T extends ReadonlyArray<string>>(a: T) {
+          a.sort();
+        }
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+      options: [{ ignoreStringArrays: false }],
     },
     // optional chain
     {
