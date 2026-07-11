@@ -52,6 +52,36 @@ for (let i = 0; i < 10; i += 1) {
   someArray = someArray.filter((item: MyType) => !!item);
 }
     `,
+    {
+      code: `
+for (let i = 0; i < 3; i++) {
+  using resource = getResource();
+  const fn = () => resource;
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            globalReturn: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+for (let i = 0; i < 3; i++) {
+  await using resource = getResource();
+  const fn = () => resource;
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            globalReturn: true,
+          },
+        },
+      },
+    },
   ],
   invalid: [],
 });

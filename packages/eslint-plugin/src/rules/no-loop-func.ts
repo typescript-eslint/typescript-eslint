@@ -142,7 +142,7 @@ export default createRule<Options, MessageIds>({
       }
 
       // Variables which are declared by `const` is safe.
-      if (kind === 'const') {
+      if (kind === 'const' || kind === 'using' || kind === 'await using') {
         return true;
       }
 
