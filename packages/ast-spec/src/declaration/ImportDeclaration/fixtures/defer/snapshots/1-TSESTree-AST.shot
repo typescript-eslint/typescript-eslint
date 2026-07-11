@@ -5,52 +5,52 @@ Program {
       type: "ImportDeclaration",
       attributes: [],
       importKind: "value",
-      phase: null,
+      phase: "defer",
       source: Literal {
         type: "Literal",
         raw: "'mod'",
         value: "mod",
 
-        range: [14, 19],
+        range: [27, 32],
         loc: {
-          start: { column: 14, line: 1 },
-          end: { column: 19, line: 1 },
+          start: { column: 27, line: 1 },
+          end: { column: 32, line: 1 },
         },
       },
       specifiers: [
-        ImportDefaultSpecifier {
-          type: "ImportDefaultSpecifier",
+        ImportNamespaceSpecifier {
+          type: "ImportNamespaceSpecifier",
           local: Identifier {
             type: "Identifier",
             decorators: [],
-            name: "a",
+            name: "mod",
             optional: false,
 
-            range: [7, 8],
+            range: [18, 21],
             loc: {
-              start: { column: 7, line: 1 },
-              end: { column: 8, line: 1 },
+              start: { column: 18, line: 1 },
+              end: { column: 21, line: 1 },
             },
           },
 
-          range: [7, 8],
+          range: [13, 21],
           loc: {
-            start: { column: 7, line: 1 },
-            end: { column: 8, line: 1 },
+            start: { column: 13, line: 1 },
+            end: { column: 21, line: 1 },
           },
         },
       ],
 
-      range: [0, 20],
+      range: [0, 33],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 20, line: 1 },
+        end: { column: 33, line: 1 },
       },
     },
   ],
   sourceType: "module",
 
-  range: [0, 21],
+  range: [0, 34],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },

@@ -3,6 +3,7 @@ import * as ts from 'typescript';
 import type { TSNode } from './ts-estree';
 
 import { checkModifiers } from './check-modifiers';
+import { getImportClausePhaseModifier } from './getImportClausePhaseModifier';
 import {
   isValidAssignmentTarget,
   createError,
@@ -366,11 +367,8 @@ export function checkSyntaxError(
     case SyntaxKind.ImportDeclaration: {
       const { importClause } = node;
       if (
-        // TODO swap to `phaseModifier` once we add support for `import defer`
-        // https://github.com/estree/estree/issues/328
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        importClause?.isTypeOnly &&
-        importClause.name &&
+        getImportClausePhaseModifier(importClause) === 'type' &&
+        importClause?.name &&
         importClause.namedBindings
       ) {
         throw createError(
