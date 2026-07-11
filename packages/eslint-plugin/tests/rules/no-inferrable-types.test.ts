@@ -689,10 +689,9 @@ class Foo {
       output: 'const fn = (a = 5) => {};',
     },
     {
-      // This is invalid TS semantic, but it's trivial to make valid anyway
       code: `
 class A {
-  a!: number = 1;
+  a: number = 1;
 }
       `,
       errors: [

@@ -247,6 +247,20 @@ export function checkSyntaxError(
         );
       }
 
+      if (node.exclamationToken) {
+        if (node.initializer) {
+          throw createError(
+            node,
+            'Declarations with initializers cannot also have definite assignment assertions.',
+          );
+        } else if (!node.type) {
+          throw createError(
+            node,
+            'Declarations with definite assignment assertions must also have type annotations.',
+          );
+        }
+      }
+
       if (
         node.name.kind === SyntaxKind.StringLiteral &&
         node.name.text === 'constructor'
