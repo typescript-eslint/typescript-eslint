@@ -80,7 +80,7 @@ export default createRule<Options, MessageIds>({
       omittingSingleParameter:
         '{{failureStringStart}} with an optional parameter.',
       singleParameterDifference:
-        '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
+        '{{failureStringStart}} taking `{{typeText}}`.',
     },
     schema: [
       {
@@ -139,29 +139,24 @@ export default createRule<Options, MessageIds>({
               ? p1.parameter.typeAnnotation
               : p1.typeAnnotation;
 
-            const type0Members = (
-              context.sourceCode.getText(typeAnnotation0?.typeAnnotation) ?? ''
-            )
-              .split('|')
-              .map(s => s.trim())
-              .filter(Boolean);
-            const type1Members = (
-              context.sourceCode.getText(typeAnnotation1?.typeAnnotation) ?? ''
-            )
-              .split('|')
-              .map(s => s.trim())
-              .filter(Boolean);
-
-            const type0Unique = [...new Set(type0Members)];
-            const type1Unique = [...new Set(type1Members)];
-
-            // Deduplicate type2 against type1 to avoid showing duplicate
-            // type names in the combined error message. E.g. when combining
-            // `number | string` and `string | boolean`, the message should
-            // read `number | string | boolean` not `number | string | string | boolean`.
-            const filteredType1 = type1Unique.filter(
-              m => !type0Unique.includes(m),
-            );
+            const combinedMembers = [
+              ...new Set([
+                ...(
+                  context.sourceCode.getText(typeAnnotation0?.typeAnnotation) ??
+                  ''
+                )
+                  .split('|')
+                  .map(s => s.trim())
+                  .filter(Boolean),
+                ...(
+                  context.sourceCode.getText(typeAnnotation1?.typeAnnotation) ??
+                  ''
+                )
+                  .split('|')
+                  .map(s => s.trim())
+                  .filter(Boolean),
+              ]),
+            ];
 
             context.report({
               loc: p1.loc,
@@ -169,11 +164,7 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: type0Unique.join(' | '),
-                type2:
-                  filteredType1.length > 0
-                    ? filteredType1.join(' | ')
-                    : type1Unique.join(' | '),
+                typeText: combinedMembers.join(' | '),
               },
             });
             break;
