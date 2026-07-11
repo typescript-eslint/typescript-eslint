@@ -52,14 +52,14 @@ ruleTester.run('prefer-ast-types-enum', rule, {
     'node.type === DefinitionType.Parameter;',
     'node.type === 1;',
     `
-      enum MY_ENUM {
-        Literal = 1,
-      }
+enum MY_ENUM {
+  Literal = 1,
+}
     `,
     `
-      enum AST_NODE_TYPES {
-        Literal = 'Literal',
-      }
+enum AST_NODE_TYPES {
+  Literal = 'Literal',
+}
     `,
   ],
 });

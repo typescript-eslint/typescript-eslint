@@ -14,6 +14,10 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('plugin-test-formatting', rule, {
+  assertionOptions: {
+    requireData: true,
+    requireLocation: true,
+  },
   invalid: [
     // Literal
     {
@@ -420,7 +424,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
+const a = '1';
       \`,
     },
   ],
@@ -526,7 +530,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
+const a = '1';
       \`,
     },
   ],
@@ -572,7 +576,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
+const a = '1';
       \`,
     },
   ],
@@ -580,58 +584,7 @@ ruleTester.run({
       `,
       ],
     },
-    // templateStringRequiresIndent
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-  const a = "1";
-      \`,
-    },
-  ],
-});
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            indent: 8,
-          },
-          endColumn: 8,
-          endLine: 7,
-          line: 5,
-          messageId: 'templateStringRequiresIndent',
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    \`
-    const a = "1";
-    \`,
-  ],
-});
-      `,
-      errors: [
-        {
-          column: 5,
-          data: {
-            indent: 6,
-          },
-          endColumn: 6,
-          endLine: 6,
-          line: 4,
-          messageId: 'templateStringRequiresIndent',
-        },
-      ],
-      output: null,
-    },
-    // templateStringMinimumIndent
+    // indented code is reformatted to have no indent
     {
       code: `
 ruleTester.run({
@@ -648,16 +601,24 @@ ruleTester.run({
       errors: [
         {
           column: 13,
-          data: {
-            indent: 8,
-          },
           endColumn: 8,
           endLine: 8,
           line: 5,
-          messageId: 'templateStringMinimumIndent',
+          messageId: 'invalidFormatting',
         },
       ],
-      output: null,
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: \`
+const a = '1';
+const b = '2';
+      \`,
+    },
+  ],
+});
+      `,
     },
     // invalidFormatting
     {
@@ -687,8 +648,8 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
-        const b = '2';
+const a = '1';
+const b = '2';
       \`,
     },
   ],
@@ -721,7 +682,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = \\\`\\\${a}\\\`;
+const a = \\\`\\\${a}\\\`;
       \`,
     },
   ],
@@ -790,43 +751,6 @@ ruleTester.run({
 async function foo() {}
 async function bar() {}
 \`,
-    },
-  ],
-});
-      `,
-    },
-    {
-      code: noFormat`
-ruleTester.run({
-  valid: [
-    {
-      code:
-      noFormat\`
-        async function bar() {}
-        async function foo() {}
-      \`,
-    },
-  ],
-});
-      `,
-      errors: [
-        {
-          column: 7,
-          endColumn: 8,
-          endLine: 9,
-          line: 6,
-          messageId: 'noUnnecessaryNoFormat',
-        },
-      ],
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code:
-      \`
-        async function bar() {}
-        async function foo() {}
-      \`,
     },
   ],
 });
@@ -921,21 +845,45 @@ ruleTester.run({
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
           messageId: 'singleLineQuotes',
         },
         {
+          column: 13,
+          endColumn: 2,
+          endLine: 9,
+          line: 8,
           messageId: 'templateLiteralEmptyEnds',
         },
         {
+          column: 13,
+          endColumn: 11,
+          endLine: 13,
+          line: 12,
           messageId: 'templateLiteralEmptyEnds',
         },
         {
+          column: 13,
+          endColumn: 18,
+          endLine: 18,
+          line: 18,
           messageId: 'singleLineQuotes',
         },
         {
+          column: 13,
+          endColumn: 2,
+          endLine: 22,
+          line: 21,
           messageId: 'templateLiteralEmptyEnds',
         },
         {
+          column: 13,
+          endColumn: 11,
+          endLine: 26,
+          line: 25,
           messageId: 'templateLiteralEmptyEnds',
         },
       ],
@@ -1021,7 +969,7 @@ foo;
     },
     {
       code: \`
-      foo
+foo;
       \`,
     },
   ],
@@ -1036,7 +984,7 @@ foo;
     },
     {
       code: \`
-      foo
+foo;
       \`,
     },
   ],
@@ -1091,12 +1039,24 @@ const test: RunTests = {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 44,
+          endLine: 4,
+          line: 4,
           messageId: 'invalidFormatting',
         },
         {
+          column: 13,
+          endColumn: 52,
+          endLine: 6,
+          line: 6,
           messageId: 'invalidFormatting',
         },
         {
+          column: 13,
+          endColumn: 52,
+          endLine: 11,
+          line: 11,
           messageId: 'invalidFormattingErrorTest',
         },
       ],
@@ -1138,12 +1098,24 @@ const test: RunTests<'', []> = {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 44,
+          endLine: 6,
+          line: 6,
           messageId: 'invalidFormatting',
         },
         {
+          column: 13,
+          endColumn: 52,
+          endLine: 8,
+          line: 8,
           messageId: 'invalidFormatting',
         },
         {
+          column: 13,
+          endColumn: 52,
+          endLine: 13,
+          line: 13,
           messageId: 'invalidFormattingErrorTest',
         },
       ],
@@ -1215,9 +1187,17 @@ const test: InvalidTestCase<'', []> = {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 49,
+          endLine: 5,
+          line: 5,
           messageId: 'invalidFormattingErrorTest',
         },
         {
+          column: 13,
+          endColumn: 53,
+          endLine: 8,
+          line: 8,
           messageId: 'invalidFormattingErrorTest',
         },
       ],
@@ -1243,6 +1223,164 @@ const test: InvalidTestCase<'', []> = {
 };
       `,
     },
+    {
+      // ensure output has enough escaping for `code` with a "quoted string".
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // The user types "'\\\\'"
+        // meaning the code they are testing is '\\' (which is missing a semicolon for prettier formatting)
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`"'\\\\'"`
+      },
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`"'\\\\';"`
+      },
+    },
+  ],
+});
+      `,
+    },
+    {
+      // ensure output has enough escaping for `code` with a 'quoted string'.
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // The user types '\'\\\\\''
+        // meaning the code they are testing is '\\' (which is missing a semicolon for prettier formatting)
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`'\'\\\\\''`
+      },
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // fixes to " style
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`"'\\\\';"`
+      },
+    },
+  ],
+});
+      `,
+    },
+    {
+      // ensure output has enough escaping for `code` with a 'quoted string'.
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // The user types '\'\"\''
+        // meaning the code they are testing is '"'
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`'\'\"\''`
+      },
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // use '  and escape any ' in the string.
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`'\'"\';'`
+      },
+    },
+  ],
+});
+      `,
+    },
+    {
+      // ensure output has enough escaping for `code` with a `template string`.
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: \`
+${
+  // The user types `'\\\\'` (but multiline)
+  // meaning the code they are testing is '\\' (which is missing a semicolon for prettier formatting)
+  // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+  String.raw`'\\\\'`
+}
+      \`,
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 8,
+          endLine: 7,
+          line: 5,
+          messageId: 'invalidFormatting',
+        },
+      ],
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: \`
+${
+  // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+  String.raw`'\\\\';`
+}
+      \`,
+    },
+  ],
+});
+      `,
+    },
   ],
   valid: [
     // sanity check for valid tests non-object style
@@ -1250,9 +1388,6 @@ const test: InvalidTestCase<'', []> = {
 ruleTester.run({
   valid: [
     'const a = 1;',
-    \`
-      const a = 1;
-    \`,
     \`
 const a = 1;
     \`,
@@ -1269,17 +1404,7 @@ ruleTester.run({
   ],
 });
     `,
-    `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-        const a = 1;
-      \`,
-    },
-  ],
-});
-    `,
+
     `
 ruleTester.run({
   valid: [
@@ -1306,27 +1431,6 @@ const a = 1;
                   {
                     messageId: 'bar',
                     output: 'const a = 1;',
-                  },
-                ],
-              }
-            ]
-          },
-          {
-            code: \`
-              const a = 1;
-            \`,
-            output: \`
-              const a = 1;
-            \`,
-            errors: [
-              {
-                messageId: 'foo',
-                suggestions: [
-                  {
-                    messageId: 'bar',
-                    output: \`
-                      const a = 1;
-                    \`,
                   },
                 ],
               }
@@ -1371,15 +1475,30 @@ ruleTester.run({
       options: [{ formatWithPrettier: false }],
     },
 
-    // empty lines are valid when everything else is indented
+    // noFormat is necessary when the test code is intentionally indented
+    noFormat`
+ruleTester.run({
+  valid: [
+    {
+      code:
+      noFormat\`
+        async function bar() {}
+        async function foo() {}
+      \`,
+    },
+  ],
+});
+    `,
+
+    // empty lines are valid
     `
 ruleTester.run({
   valid: [
     {
       code: \`
-        const a = 1;
+const a = 1;
 
-        const b = 1;
+const b = 1;
       \`,
     },
   ],
@@ -1423,5 +1542,21 @@ const test = [
   errors: [],
 }));
     `,
+    {
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // The user types "'\\\\';"
+        // meaning the code they are testing is '\\';
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`"'\\\\';"`
+      },
+    },
+  ],
+});
+      `,
+    },
   ],
 });

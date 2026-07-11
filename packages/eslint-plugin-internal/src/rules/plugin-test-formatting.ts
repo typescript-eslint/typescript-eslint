@@ -23,9 +23,7 @@ This rule just enforces the following:
   - no code on the first line
   - no code on the last line
   - the closing backtick indentation === property indentation
-  - one of the following indentations:
-    - no indentation at all
-    - indentation of 1 + object indent
+  - no indentation
 
 eg:
 [
@@ -33,20 +31,12 @@ eg:
   `
 const a = 1;
   `,
-  `
-    const a = 1;
-  `,
   {
     code: 'const a = 1',
   }
   {
     code: `
 const a = 1;
-    `,
-  }
-  {
-    code: `
-      const a = 1;
     `,
   }
 ]
@@ -68,14 +58,8 @@ function getExpectedIndentForNode(
   )![1];
   return indent.length;
 }
-function doIndent(line: string, indent: number): string {
-  for (let i = 0; i < indent; i += 1) {
-    line = ` ${line}`;
-  }
-  return line;
-}
 
-function getQuote(code: string): "'" | '"' | null {
+function getSafeWrappingQuote(code: string): "'" | '"' | null {
   const hasSingleQuote = code.includes("'");
   const hasDoubleQuote = code.includes('"');
   if (hasSingleQuote && hasDoubleQuote) {
@@ -86,10 +70,18 @@ function getQuote(code: string): "'" | '"' | null {
   return hasSingleQuote ? '"' : "'";
 }
 
-function escapeTemplateString(code: string): string {
+function escapeForTemplateString(code: string): string {
   let fixed = code;
+  fixed = fixed.replaceAll('\\', '\\\\');
   fixed = fixed.replaceAll(BACKTICK_REGEX, '\\`');
   fixed = fixed.replaceAll(TEMPLATE_EXPR_OPENER, '\\${');
+  return fixed;
+}
+
+function escapeForStringLiteral(code: string, quote: string): string {
+  let fixed = code;
+  fixed = fixed.replaceAll('\\', '\\\\');
+  fixed = fixed.replaceAll(quote, `\\${quote}`);
   return fixed;
 }
 
@@ -108,8 +100,7 @@ type MessageIds =
   | 'singleLineQuotes'
   | 'templateLiteralEmptyEnds'
   | 'templateLiteralLastLineIndent'
-  | 'templateStringMinimumIndent'
-  | 'templateStringRequiresIndent';
+  | 'templateStringMinimumIndent';
 
 type FormattingError = {
   codeFrame: string;
@@ -141,8 +132,6 @@ export default createRule<Options, MessageIds>({
         'The closing line of the template literal must be indented to align with its parent.',
       templateStringMinimumIndent:
         'Test code should be indented at least {{indent}} spaces.',
-      templateStringRequiresIndent:
-        'Test code should either have no indent, or be indented {{indent}} spaces.',
     },
     schema: [
       {
@@ -264,16 +253,16 @@ export default createRule<Options, MessageIds>({
                 // formatted string is multiline, then have to use backticks
                 return fixer.replaceText(
                   literal,
-                  `\`${escapeTemplateString(output)}\``,
+                  `\`${escapeForTemplateString(output)}\``,
                 );
               }
 
-              const quote = quoteIn ?? getQuote(output);
-              if (quote == null) {
-                return null;
-              }
+              const quote = quoteIn ?? getSafeWrappingQuote(output) ?? "'";
 
-              return fixer.replaceText(literal, `${quote}${output}${quote}`);
+              return fixer.replaceText(
+                literal,
+                `${quote}${escapeForStringLiteral(output, quote)}${quote}`,
+              );
             },
           });
         }
@@ -302,7 +291,7 @@ export default createRule<Options, MessageIds>({
           node: literal,
           messageId: 'singleLineQuotes',
           fix(fixer) {
-            const quote = getQuote(text);
+            const quote = getSafeWrappingQuote(text);
             if (quote == null) {
               return null;
             }
@@ -361,7 +350,7 @@ export default createRule<Options, MessageIds>({
           fix(fixer) {
             return fixer.replaceTextRange(
               [literal.range[1] - lastLine.length - 1, literal.range[1]],
-              doIndent('`', parentIndent),
+              `${' '.repeat(parentIndent)}\``,
             );
           },
         });
@@ -370,54 +359,6 @@ export default createRule<Options, MessageIds>({
       // remove the empty lines
       lines.pop();
       lines.shift();
-
-      // +2 because we expect the string contents are indented one level
-      const expectedIndent = parentIndent + 2;
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const firstLineIndent = START_OF_LINE_WHITESPACE_MATCHER.exec(
-        lines[0],
-      )![1];
-      const requiresIndent = firstLineIndent.length > 0;
-      if (requiresIndent) {
-        if (firstLineIndent.length !== expectedIndent) {
-          return context.report({
-            node: literal,
-            messageId: 'templateStringRequiresIndent',
-            data: {
-              indent: expectedIndent,
-            },
-          });
-        }
-
-        // quick-and-dirty validation that lines are roughly indented correctly
-        for (const line of lines) {
-          if (line.length === 0) {
-            // empty lines are valid
-            continue;
-          }
-
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          const matches = START_OF_LINE_WHITESPACE_MATCHER.exec(line)!;
-
-          const indent = matches[1];
-          if (indent.length < expectedIndent) {
-            return context.report({
-              node: literal,
-              messageId: 'templateStringMinimumIndent',
-              data: {
-                indent: expectedIndent,
-              },
-            });
-          }
-        }
-
-        // trim the lines to remove expectedIndent characters from the start
-        // this makes it easier to check formatting
-        for (let i = 0; i < lines.length; i += 1) {
-          lines[i] = lines[i].substring(expectedIndent);
-        }
-      }
 
       const code = lines.join('\n');
 
@@ -430,13 +371,6 @@ export default createRule<Options, MessageIds>({
 
       const formatted = getCodeFormattedOrReport(code, literal);
       if (formatted && formatted !== code) {
-        const formattedIndented = requiresIndent
-          ? formatted
-              .split('\n')
-              .map(l => doIndent(l, expectedIndent))
-              .join('\n')
-          : formatted;
-
         return context.report({
           node: literal,
           messageId: isErrorTest
@@ -445,10 +379,9 @@ export default createRule<Options, MessageIds>({
           fix(fixer) {
             return fixer.replaceText(
               literal,
-              `\`\n${escapeTemplateString(formattedIndented)}\n${doIndent(
-                '',
-                parentIndent,
-              )}\``,
+              `\`
+${escapeForTemplateString(formatted)}
+${' '.repeat(parentIndent)}\``,
             );
           },
         });
@@ -474,7 +407,10 @@ export default createRule<Options, MessageIds>({
           messageId: 'noUnnecessaryNoFormat',
           fix(fixer) {
             if (expr.loc.start.line === expr.loc.end.line) {
-              return fixer.replaceText(expr, `'${escapeTemplateString(text)}'`);
+              return fixer.replaceText(
+                expr,
+                `'${escapeForTemplateString(text)}'`,
+              );
             }
             return fixer.replaceText(expr.tag, '');
           },
@@ -561,6 +497,7 @@ export default createRule<Options, MessageIds>({
       // valid
       'CallExpression > ObjectExpression > Property[key.name = "valid"] > ArrayExpression':
         checkValidTest,
+
       // invalid - errors
       [[
         AST_NODE_TYPES.CallExpression,
@@ -569,6 +506,7 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.ArrayExpression,
         AST_NODE_TYPES.ObjectExpression,
       ].join(' > ')]: checkInvalidTest,
+
       /**
        * generic, type-aware handling for any old object
        * this is a fallback to handle random variables people declare or object

@@ -1425,19 +1425,19 @@ declare let x: (bigint & { __brand?: any }) | undefined;
       options: [{ ignorePrimitives: true }],
     },
     `
-      declare let x: never;
-      declare let y: number;
-      x || y;
+declare let x: never;
+declare let y: number;
+x || y;
     `,
     `
-      declare let x: never;
-      declare let y: number;
-      x ? x : y;
+declare let x: never;
+declare let y: number;
+x ? x : y;
     `,
     `
-      declare let x: never;
-      declare let y: number;
-      !x ? y : x;
+declare let x: never;
+declare let y: number;
+!x ? y : x;
     `,
     `
 interface Box {

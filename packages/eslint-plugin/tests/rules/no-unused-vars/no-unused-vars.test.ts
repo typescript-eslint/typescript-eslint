@@ -1218,19 +1218,19 @@ export const x = _Foo;
     },
     {
       code: `
-        const foo: number = 1;
+const foo: number = 1;
 
-        export type Foo = typeof foo;
+export type Foo = typeof foo;
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 18,
+          endColumn: 10,
           endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
@@ -1239,39 +1239,18 @@ export const x = _Foo;
     },
     {
       code: `
-        declare const foo: number;
+declare const foo: number;
 
-        export type Foo = typeof foo;
+export type Foo = typeof foo;
       `,
       errors: [
         {
-          column: 23,
+          column: 15,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 26,
-          endLine: 2,
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo: number = 1;
-
-        export type Foo = typeof foo | string;
-      `,
-      errors: [
-        {
-          column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -1281,19 +1260,19 @@ export const x = _Foo;
     },
     {
       code: `
-        const foo: number = 1;
+const foo: number = 1;
 
-        export type Foo = (typeof foo | string) & { __brand: 'foo' };
+export type Foo = typeof foo | string;
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 18,
+          endColumn: 10,
           endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
@@ -1302,23 +1281,19 @@ export const x = _Foo;
     },
     {
       code: `
-        const foo = {
-          bar: {
-            baz: 123,
-          },
-        };
+const foo: number = 1;
 
-        export type Bar = typeof foo.bar;
+export type Foo = (typeof foo | string) & { __brand: 'foo' };
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 18,
+          endColumn: 10,
           endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
@@ -1327,23 +1302,48 @@ export const x = _Foo;
     },
     {
       code: `
-        const foo = {
-          bar: {
-            baz: 123,
-          },
-        };
+const foo = {
+  bar: {
+    baz: 123,
+  },
+};
 
-        export type Bar = (typeof foo)['bar'];
+export type Bar = typeof foo.bar;
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 18,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  bar: {
+    baz: 123,
+  },
+};
+
+export type Bar = (typeof foo)['bar'];
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
           endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
@@ -2902,11 +2902,11 @@ export type Test<U> = U extends (arg: {
     // https://github.com/typescript-eslint/typescript-eslint/issues/2455
     {
       code: `
-        import React from 'react';
+import React from 'react';
 
-        export const ComponentFoo: React.FC = () => {
-          return <div>Foo Foo</div>;
-        };
+export const ComponentFoo: React.FC = () => {
+  return <div>Foo Foo</div>;
+};
       `,
       languageOptions: {
         parserOptions: {
@@ -2918,11 +2918,11 @@ export type Test<U> = U extends (arg: {
     },
     {
       code: `
-        import { h } from 'some-other-jsx-lib';
+import { h } from 'some-other-jsx-lib';
 
-        export const ComponentFoo: h.FC = () => {
-          return <div>Foo Foo</div>;
-        };
+export const ComponentFoo: h.FC = () => {
+  return <div>Foo Foo</div>;
+};
       `,
       languageOptions: {
         parserOptions: {
@@ -2935,11 +2935,11 @@ export type Test<U> = U extends (arg: {
     },
     {
       code: `
-        import { Fragment } from 'react';
+import { Fragment } from 'react';
 
-        export const ComponentFoo: Fragment = () => {
-          return <>Foo Foo</>;
-        };
+export const ComponentFoo: Fragment = () => {
+  return <>Foo Foo</>;
+};
       `,
       languageOptions: {
         parserOptions: {

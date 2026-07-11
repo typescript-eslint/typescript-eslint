@@ -10,94 +10,94 @@ const ruleTester = createRuleTesterWithTypes();
 ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
   valid: [
     `
-      declare const varAny: any;
-      varAny === true;
+declare const varAny: any;
+varAny === true;
     `,
     `
-      declare const varAny: any;
-      varAny == false;
+declare const varAny: any;
+varAny == false;
     `,
     `
-      declare const varString: string;
-      varString === false;
+declare const varString: string;
+varString === false;
     `,
     `
-      declare const varString: string;
-      varString === true;
+declare const varString: string;
+varString === true;
     `,
     `
-      declare const varObject: {};
-      varObject === true;
+declare const varObject: {};
+varObject === true;
     `,
     `
-      declare const varObject: {};
-      varObject == false;
+declare const varObject: {};
+varObject == false;
     `,
     `
-      declare const varNullOrUndefined: null | undefined;
-      varNullOrUndefined === false;
+declare const varNullOrUndefined: null | undefined;
+varNullOrUndefined === false;
     `,
     `
-      declare const varBooleanOrString: boolean | string;
-      varBooleanOrString === false;
+declare const varBooleanOrString: boolean | string;
+varBooleanOrString === false;
     `,
     `
-      declare const varBooleanOrString: boolean | string;
-      varBooleanOrString == true;
+declare const varBooleanOrString: boolean | string;
+varBooleanOrString == true;
     `,
     `
-      declare const varTrueOrStringOrUndefined: true | string | undefined;
-      varTrueOrStringOrUndefined == true;
+declare const varTrueOrStringOrUndefined: true | string | undefined;
+varTrueOrStringOrUndefined == true;
     `,
     `
-      const test: <T>(someCondition: T) => void = someCondition => {
-        if (someCondition === true) {
-        }
-      };
+const test: <T>(someCondition: T) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
     `,
     `
-      const test: <T>(someCondition: boolean | string) => void = someCondition => {
-        if (someCondition === true) {
-        }
-      };
+const test: <T>(someCondition: boolean | string) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
     `,
     `
-      declare const varBooleanOrUndefined: boolean | undefined;
-      varBooleanOrUndefined === true;
+declare const varBooleanOrUndefined: boolean | undefined;
+varBooleanOrUndefined === true;
     `,
     {
       code: `
-        declare const varBooleanOrUndefined: boolean | undefined;
-        varBooleanOrUndefined === true;
+declare const varBooleanOrUndefined: boolean | undefined;
+varBooleanOrUndefined === true;
       `,
       options: [{ allowComparingNullableBooleansToFalse: false }],
     },
     {
       code: `
-        declare const varBooleanOrUndefined: boolean | undefined;
-        varBooleanOrUndefined === false;
+declare const varBooleanOrUndefined: boolean | undefined;
+varBooleanOrUndefined === false;
       `,
       options: [{ allowComparingNullableBooleansToTrue: false }],
     },
     {
       code: `
-        const test: <T extends boolean | undefined>(
-          someCondition: T,
-        ) => void = someCondition => {
-          if (someCondition === true) {
-          }
-        };
+const test: <T extends boolean | undefined>(
+  someCondition: T,
+) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
       `,
       options: [{ allowComparingNullableBooleansToFalse: false }],
     },
     {
       code: `
-        const test: <T extends boolean | undefined>(
-          someCondition: T,
-        ) => void = someCondition => {
-          if (someCondition === false) {
-          }
-        };
+const test: <T extends boolean | undefined>(
+  someCondition: T,
+) => void = someCondition => {
+  if (someCondition === false) {
+  }
+};
       `,
       options: [{ allowComparingNullableBooleansToTrue: false }],
     },
@@ -158,9 +158,9 @@ function test(a?: boolean): boolean {
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (varBoolean !== false) {
-        }
+declare const varBoolean: boolean;
+if (varBoolean !== false) {
+}
       `,
       errors: [
         {
@@ -168,16 +168,16 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (varBoolean) {
-        }
+declare const varBoolean: boolean;
+if (varBoolean) {
+}
       `,
     },
     {
       code: `
-        declare const varTrue: true;
-        if (varTrue !== true) {
-        }
+declare const varTrue: true;
+if (varTrue !== true) {
+}
       `,
       errors: [
         {
@@ -185,16 +185,16 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varTrue: true;
-        if (!varTrue) {
-        }
+declare const varTrue: true;
+if (!varTrue) {
+}
       `,
     },
     {
       code: `
-        declare const varTrueOrUndefined: true | undefined;
-        if (varTrueOrUndefined === true) {
-        }
+declare const varTrueOrUndefined: true | undefined;
+if (varTrueOrUndefined === true) {
+}
       `,
       errors: [
         {
@@ -203,16 +203,16 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const varTrueOrUndefined: true | undefined;
-        if (varTrueOrUndefined) {
-        }
+declare const varTrueOrUndefined: true | undefined;
+if (varTrueOrUndefined) {
+}
       `,
     },
     {
       code: `
-        declare const varFalseOrNull: false | null;
-        if (varFalseOrNull !== true) {
-        }
+declare const varFalseOrNull: false | null;
+if (varFalseOrNull !== true) {
+}
       `,
       errors: [
         {
@@ -221,14 +221,14 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const varFalseOrNull: false | null;
-        if (!varFalseOrNull) {
-        }
+declare const varFalseOrNull: false | null;
+if (!varFalseOrNull) {
+}
       `,
     },
     {
       code: `
-        const isTrue = (x: boolean | undefined): boolean => x === true;
+const isTrue = (x: boolean | undefined): boolean => x === true;
       `,
       errors: [
         {
@@ -237,14 +237,14 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        const isTrue = (x: boolean | undefined): boolean => x ?? false;
+const isTrue = (x: boolean | undefined): boolean => x ?? false;
       `,
     },
     {
       code: `
-        function isTrue(x: boolean | undefined): boolean {
-          return x === true;
-        }
+function isTrue(x: boolean | undefined): boolean {
+  return x === true;
+}
       `,
       errors: [
         {
@@ -253,15 +253,15 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        function isTrue(x: boolean | undefined): boolean {
-          return x ?? false;
-        }
+function isTrue(x: boolean | undefined): boolean {
+  return x ?? false;
+}
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
-        const value: boolean = x === true;
+declare const x: boolean | undefined;
+const value: boolean = x === true;
       `,
       errors: [
         {
@@ -270,16 +270,16 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
-        const value: boolean = x ?? false;
+declare const x: boolean | undefined;
+const value: boolean = x ?? false;
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
-        declare function acceptsBoolean(value: boolean): void;
+declare const x: boolean | undefined;
+declare function acceptsBoolean(value: boolean): void;
 
-        acceptsBoolean(x === true);
+acceptsBoolean(x === true);
       `,
       errors: [
         {
@@ -288,18 +288,18 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
-        declare function acceptsBoolean(value: boolean): void;
+declare const x: boolean | undefined;
+declare function acceptsBoolean(value: boolean): void;
 
-        acceptsBoolean(x ?? false);
+acceptsBoolean(x ?? false);
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        if (x === true) {
-        }
+if (x === true) {
+}
       `,
       errors: [
         {
@@ -308,17 +308,17 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        if (x) {
-        }
+if (x) {
+}
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        while (x === true) {}
+while (x === true) {}
       `,
       errors: [
         {
@@ -327,16 +327,16 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        while (x) {}
+while (x) {}
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        do {} while (x === true);
+do {} while (x === true);
       `,
       errors: [
         {
@@ -345,16 +345,16 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        do {} while (x);
+do {} while (x);
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        for (; x === true; ) {}
+for (; x === true; ) {}
       `,
       errors: [
         {
@@ -363,16 +363,16 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        for (; x; ) {}
+for (; x; ) {}
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value = x === true ? 'true' : 'false';
+const value = x === true ? 'true' : 'false';
       `,
       errors: [
         {
@@ -381,17 +381,17 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value = x ? 'true' : 'false';
+const value = x ? 'true' : 'false';
       `,
     },
     {
       code: `
-        declare const condition: boolean;
-        declare const x: boolean | undefined;
+declare const condition: boolean;
+declare const x: boolean | undefined;
 
-        const value = condition ? x === true : false;
+const value = condition ? x === true : false;
       `,
       errors: [
         {
@@ -400,19 +400,19 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const condition: boolean;
-        declare const x: boolean | undefined;
+declare const condition: boolean;
+declare const x: boolean | undefined;
 
-        const value = condition ? (x ?? false) : false;
+const value = condition ? (x ?? false) : false;
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
-        declare const other: boolean;
+declare const x: boolean | undefined;
+declare const other: boolean;
 
-        if (other && x === true) {
-        }
+if (other && x === true) {
+}
       `,
       errors: [
         {
@@ -421,19 +421,19 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
-        declare const other: boolean;
+declare const x: boolean | undefined;
+declare const other: boolean;
 
-        if (other && x) {
-        }
+if (other && x) {
+}
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
-        declare const other: boolean;
+declare const x: boolean | undefined;
+declare const other: boolean;
 
-        const value: boolean = other && x === true;
+const value: boolean = other && x === true;
       `,
       errors: [
         {
@@ -442,18 +442,18 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
-        declare const other: boolean;
+declare const x: boolean | undefined;
+declare const other: boolean;
 
-        const value: boolean = other && (x ?? false);
+const value: boolean = other && (x ?? false);
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
-        declare const other: boolean;
+declare const x: boolean | undefined;
+declare const other: boolean;
 
-        const value: boolean = (x && other) === true;
+const value: boolean = (x && other) === true;
       `,
       errors: [
         {
@@ -462,18 +462,18 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
-        declare const other: boolean;
+declare const x: boolean | undefined;
+declare const other: boolean;
 
-        const value: boolean = (x && other) ?? false;
+const value: boolean = (x && other) ?? false;
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
-        declare const other: boolean;
+declare const x: boolean | undefined;
+declare const other: boolean;
 
-        const value: boolean = (x && other) === false;
+const value: boolean = (x && other) === false;
       `,
       errors: [
         {
@@ -482,17 +482,17 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
-        declare const x: boolean | undefined;
-        declare const other: boolean;
+declare const x: boolean | undefined;
+declare const other: boolean;
 
-        const value: boolean = !((x && other) ?? true);
+const value: boolean = !((x && other) ?? true);
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = true === x;
+const value: boolean = true === x;
       `,
       errors: [
         {
@@ -501,16 +501,16 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = x ?? false;
+const value: boolean = x ?? false;
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = x !== true;
+const value: boolean = x !== true;
       `,
       errors: [
         {
@@ -519,16 +519,16 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = !x;
+const value: boolean = !x;
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = x != true;
+const value: boolean = x != true;
       `,
       errors: [
         {
@@ -537,16 +537,16 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = !x;
+const value: boolean = !x;
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = !(x === true);
+const value: boolean = !(x === true);
       `,
       errors: [
         {
@@ -555,16 +555,16 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = !x;
+const value: boolean = !x;
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = !(x !== true);
+const value: boolean = !(x !== true);
       `,
       errors: [
         {
@@ -573,17 +573,17 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
+declare const x: boolean | undefined;
 
-        const value: boolean = x ?? false;
+const value: boolean = x ?? false;
       `,
     },
     {
       code: `
-        declare const varBooleanOrNull: boolean | null;
-        declare const otherBoolean: boolean;
-        if (varBooleanOrNull === false && otherBoolean) {
-        }
+declare const varBooleanOrNull: boolean | null;
+declare const otherBoolean: boolean;
+if (varBooleanOrNull === false && otherBoolean) {
+}
       `,
       errors: [
         {
@@ -592,18 +592,18 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
-        declare const varBooleanOrNull: boolean | null;
-        declare const otherBoolean: boolean;
-        if (!(varBooleanOrNull ?? true) && otherBoolean) {
-        }
+declare const varBooleanOrNull: boolean | null;
+declare const otherBoolean: boolean;
+if (!(varBooleanOrNull ?? true) && otherBoolean) {
+}
       `,
     },
     {
       code: `
-        declare const varBooleanOrNull: boolean | null;
-        declare const otherBoolean: boolean;
-        if (!(varBooleanOrNull === false) || otherBoolean) {
-        }
+declare const varBooleanOrNull: boolean | null;
+declare const otherBoolean: boolean;
+if (!(varBooleanOrNull === false) || otherBoolean) {
+}
       `,
       errors: [
         {
@@ -612,18 +612,18 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
-        declare const varBooleanOrNull: boolean | null;
-        declare const otherBoolean: boolean;
-        if ((varBooleanOrNull ?? true) || otherBoolean) {
-        }
+declare const varBooleanOrNull: boolean | null;
+declare const otherBoolean: boolean;
+if ((varBooleanOrNull ?? true) || otherBoolean) {
+}
       `,
     },
     {
       code: `
-        declare const varTrueOrFalseOrUndefined: true | false | undefined;
-        declare const otherBoolean: boolean;
-        if (varTrueOrFalseOrUndefined !== false && !otherBoolean) {
-        }
+declare const varTrueOrFalseOrUndefined: true | false | undefined;
+declare const otherBoolean: boolean;
+if (varTrueOrFalseOrUndefined !== false && !otherBoolean) {
+}
       `,
       errors: [
         {
@@ -632,17 +632,17 @@ function test(a?: boolean): boolean {
       ],
       options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
-        declare const varTrueOrFalseOrUndefined: true | false | undefined;
-        declare const otherBoolean: boolean;
-        if ((varTrueOrFalseOrUndefined ?? true) && !otherBoolean) {
-        }
+declare const varTrueOrFalseOrUndefined: true | false | undefined;
+declare const otherBoolean: boolean;
+if ((varTrueOrFalseOrUndefined ?? true) && !otherBoolean) {
+}
       `,
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (false !== varBoolean) {
-        }
+declare const varBoolean: boolean;
+if (false !== varBoolean) {
+}
       `,
       errors: [
         {
@@ -650,16 +650,16 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (varBoolean) {
-        }
+declare const varBoolean: boolean;
+if (varBoolean) {
+}
       `,
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (true !== varBoolean) {
-        }
+declare const varBoolean: boolean;
+if (true !== varBoolean) {
+}
       `,
       errors: [
         {
@@ -667,9 +667,9 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (!varBoolean) {
-        }
+declare const varBoolean: boolean;
+if (!varBoolean) {
+}
       `,
     },
     {
@@ -708,9 +708,9 @@ function test(a?: boolean): boolean {
     },
     {
       code: `
-        declare const x;
-        if (x instanceof Error === false) {
-        }
+declare const x;
+if (x instanceof Error === false) {
+}
       `,
       errors: [
         {
@@ -718,9 +718,9 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const x;
-        if (!(x instanceof Error)) {
-        }
+declare const x;
+if (!(x instanceof Error)) {
+}
       `,
     },
     {
@@ -776,9 +776,9 @@ function test(a?: boolean): boolean {
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (!(varBoolean !== false)) {
-        }
+declare const varBoolean: boolean;
+if (!(varBoolean !== false)) {
+}
       `,
       errors: [
         {
@@ -786,16 +786,16 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (!varBoolean) {
-        }
+declare const varBoolean: boolean;
+if (!varBoolean) {
+}
       `,
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (!(varBoolean === false)) {
-        }
+declare const varBoolean: boolean;
+if (!(varBoolean === false)) {
+}
       `,
       errors: [
         {
@@ -803,16 +803,16 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (varBoolean) {
-        }
+declare const varBoolean: boolean;
+if (varBoolean) {
+}
       `,
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (!(varBoolean instanceof Event == false)) {
-        }
+declare const varBoolean: boolean;
+if (!(varBoolean instanceof Event == false)) {
+}
       `,
       errors: [
         {
@@ -820,16 +820,16 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (varBoolean instanceof Event) {
-        }
+declare const varBoolean: boolean;
+if (varBoolean instanceof Event) {
+}
       `,
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (varBoolean instanceof Event == false) {
-        }
+declare const varBoolean: boolean;
+if (varBoolean instanceof Event == false) {
+}
       `,
       errors: [
         {
@@ -837,16 +837,16 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (!(varBoolean instanceof Event)) {
-        }
+declare const varBoolean: boolean;
+if (!(varBoolean instanceof Event)) {
+}
       `,
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (!((varBoolean ?? false) !== false)) {
-        }
+declare const varBoolean: boolean;
+if (!((varBoolean ?? false) !== false)) {
+}
       `,
       errors: [
         {
@@ -854,16 +854,16 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (!(varBoolean ?? false)) {
-        }
+declare const varBoolean: boolean;
+if (!(varBoolean ?? false)) {
+}
       `,
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (!((varBoolean ?? false) === false)) {
-        }
+declare const varBoolean: boolean;
+if (!((varBoolean ?? false) === false)) {
+}
       `,
       errors: [
         {
@@ -871,16 +871,16 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (varBoolean ?? false) {
-        }
+declare const varBoolean: boolean;
+if (varBoolean ?? false) {
+}
       `,
     },
     {
       code: `
-        declare const varBoolean: boolean;
-        if (!((varBoolean ?? true) !== false)) {
-        }
+declare const varBoolean: boolean;
+if (!((varBoolean ?? true) !== false)) {
+}
       `,
       errors: [
         {
@@ -888,17 +888,17 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        declare const varBoolean: boolean;
-        if (!(varBoolean ?? true)) {
-        }
+declare const varBoolean: boolean;
+if (!(varBoolean ?? true)) {
+}
       `,
     },
     {
       code: `
-        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
-          if (someCondition === true) {
-          }
-        };
+const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
       `,
       errors: [
         {
@@ -906,18 +906,18 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
-          if (someCondition) {
-          }
-        };
+const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+  if (someCondition) {
+  }
+};
       `,
     },
     {
       code: `
-        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
-          if (!(someCondition !== false)) {
-          }
-        };
+const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+  if (!(someCondition !== false)) {
+  }
+};
       `,
       errors: [
         {
@@ -925,18 +925,18 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
-          if (!someCondition) {
-          }
-        };
+const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+  if (!someCondition) {
+  }
+};
       `,
     },
     {
       code: `
-        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
-          if (!((someCondition ?? true) !== false)) {
-          }
-        };
+const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+  if (!((someCondition ?? true) !== false)) {
+  }
+};
       `,
       errors: [
         {
@@ -944,10 +944,10 @@ function test(a?: boolean): boolean {
         },
       ],
       output: `
-        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
-          if (!(someCondition ?? true)) {
-          }
-        };
+const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+  if (!(someCondition ?? true)) {
+  }
+};
       `,
     },
     {
@@ -991,8 +991,8 @@ declare const c: boolean;
     },
     {
       code: `
-        declare const x: boolean | undefined;
-        x === true;
+declare const x: boolean | undefined;
+x === true;
       `,
       errors: [
         {
@@ -1001,15 +1001,15 @@ declare const c: boolean;
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
-        x ?? false;
+declare const x: boolean | undefined;
+x ?? false;
       `,
     },
     {
       code: `
-        declare const x: boolean | undefined;
-        declare const y: boolean | undefined;
-        (x || y) === true;
+declare const x: boolean | undefined;
+declare const y: boolean | undefined;
+(x || y) === true;
       `,
       errors: [
         {
@@ -1018,9 +1018,9 @@ declare const c: boolean;
       ],
       options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
-        declare const x: boolean | undefined;
-        declare const y: boolean | undefined;
-        (x || y) ?? false;
+declare const x: boolean | undefined;
+declare const y: boolean | undefined;
+(x || y) ?? false;
       `,
     },
   ],
