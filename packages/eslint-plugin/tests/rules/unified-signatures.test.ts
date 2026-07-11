@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/unified-signatures';
 
@@ -758,6 +758,122 @@ function f(a: string | boolean): void;
           endColumn: 31,
           endLine: 3,
           line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(a: number | string /* shared */): void;
+function f(a: string | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number | string',
+            type2: 'boolean',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(a: 'hello | world' | string): void;
+function f(a: string | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: "'hello | world' | string",
+            type2: 'boolean',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(a: number | string): void;
+function f(a: string | boolean): void;
+function f(a: string | bigint): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 2 can be combined into one signature',
+            type1: 'number | string',
+            type2: 'boolean',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 2 can be combined into one signature',
+            type1: 'number | string',
+            type2: 'bigint',
+          },
+          endColumn: 30,
+          endLine: 4,
+          line: 4,
+          messageId: 'singleParameterDifference',
+        },
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 3 can be combined into one signature',
+            type1: 'string | boolean',
+            type2: 'bigint',
+          },
+          endColumn: 30,
+          endLine: 4,
+          line: 4,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: noFormat`
+function f(a: number        |
+    string): void;
+function f(a: string | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number | string',
+            type2: 'boolean',
+          },
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
           messageId: 'singleParameterDifference',
         },
       ],
