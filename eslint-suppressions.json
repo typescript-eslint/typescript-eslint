@@ -221,7 +221,7 @@
   },
   "packages/eslint-plugin/tests/rules/no-inferrable-types.test.ts": {
     "eslint-plugin/require-test-error-positions": {
-      "count": 49
+      "count": 48
     }
   },
   "packages/eslint-plugin/tests/rules/no-invalid-this.test.ts": {
