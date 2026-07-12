@@ -250,7 +250,7 @@ export function checkSyntaxError(
 
       const isDefinite = !!node.exclamationToken;
 
-      if (isAbstract && isDefinite) {
+      if (isDefinite && isAbstract) {
         throw createError(
           node.exclamationToken,
           `A definite assignment assertion '!' is not permitted in this context.`,
