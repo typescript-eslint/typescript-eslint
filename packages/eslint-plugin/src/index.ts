@@ -15,7 +15,7 @@ if (versionMajor >= 7) {
       "See also https://github.com/typescript-eslint/typescript-eslint/issues/10940 for tracking typescript-eslint's support for TS >=7.1",
     ].join('\n'),
   );
-  throw new Error('typescript-eslint does not support TS 7.');
+  throw new Error('typescript-eslint does not support TS 7.0');
 }
 
 import rawPlugin from './raw-plugin';
