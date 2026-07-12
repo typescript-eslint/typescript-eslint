@@ -235,7 +235,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
     deprecated: {
-      deprecatedSince: '8.63.0',
+      deprecatedSince: '8.64.0',
       replacedBy: [
         {
           rule: {
