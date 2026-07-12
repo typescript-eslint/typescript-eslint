@@ -1026,7 +1026,7 @@ importers:
         specifier: 'catalog:'
         version: 3.0.0
       monaco-editor:
-        specifier: ~0.54.0
+        specifier: 0.54.0
         version: 0.54.0
       prismjs:
         specifier: 1.30.0
