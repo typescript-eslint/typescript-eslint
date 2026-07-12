@@ -7,7 +7,7 @@ import type * as ts from 'typescript';
 
 import type { SandboxInstance } from './useSandboxServices';
 
-function findTwoshashQueries(code: string): RegExpExecArray[] {
+function findTwoslashQueries(code: string): RegExpExecArray[] {
   // RegExp that matches '^<spaces>//?<spaces>$'
   const twoslashQueryRegex = /^(\s*\/\/\s*\^\?)\s*$/gm;
   return [...code.matchAll(twoslashQueryRegex)];
@@ -32,7 +32,7 @@ export function createTwoslashInlayProvider(
         };
       }
 
-      const queryMatches = findTwoshashQueries(model.getValue());
+      const queryMatches = findTwoslashQueries(model.getValue());
 
       const results: Monaco.languages.InlayHint[] = [];
 

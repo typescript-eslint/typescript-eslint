@@ -80,7 +80,7 @@ export default createRule<Options, MessageIds>({
           ignoreOnInitialization: {
             type: 'boolean',
             description:
-              'Whether to ignore the variable initializers when the shadowed variable is presumably still unitialized.',
+              'Whether to ignore the variable initializers when the shadowed variable is presumably still uninitialized.',
           },
           ignoreTypeValueShadow: {
             type: 'boolean',
