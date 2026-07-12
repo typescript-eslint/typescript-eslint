@@ -41,8 +41,9 @@ Open pull requests ideally switch between two states:
 - Ready for review: either newly created or after [review is re-requested](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews#re-requesting-a-review)
 - Waiting for author activity: either by virtue of [being a draft](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests) or having the [`awaiting response` label](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Apr+is%3Aopen+label%3A%22awaiting+response%22)
 
-Add the `awaiting response` label to a PR and remove `1 approval` if it exists whenever you post a request for changes.
-It will be automatically removed if the author re-requests review.
+When you post a request for changes, the `awaiting response` label is automatically added and `1 approval` is removed if it exists.
+Approving a PR does the opposite: it automatically adds `1 approval` and removes `awaiting response`.
+The `awaiting response` label is also automatically removed when the author re-requests review.
 
 ### Be Kind
 
@@ -118,7 +119,7 @@ If the PR addresses a time critical task, such as a security fix or `main` branc
 Otherwise, upon completing your review, if the build is passing and you have no blockers, approve it on GitHub.
 Then:
 
-- If there isn't a `1 approval` label or existing approval, add the `1 approval` label
+- Approving on GitHub automatically adds the `1 approval` label and removes `awaiting response`
 - If there's already `1 approval` and/or it's been a week since the last request for changes, go ahead and squash merge
   - For straightforward PRs that don't impact users, you can wait 3 days instead
 
