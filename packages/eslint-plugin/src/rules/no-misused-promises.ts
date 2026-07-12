@@ -408,12 +408,48 @@ export default createRule<Options, MessageId>({
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      if (
-        tsNode.initializer == null ||
-        node.init == null ||
-        node.id.typeAnnotation == null
-      ) {
+      if (tsNode.initializer == null || node.init == null) {
         return;
+      }
+
+      if (
+        node.parent.kind === 'using' &&
+        hasWellKnownSymbolWithThenableReturn(
+          checker,
+          tsNode.initializer,
+          checker.getTypeAtLocation(tsNode.initializer),
+          'dispose',
+        )
+      ) {
+        context.report({
+          node: node.init,
+          messageId: 'voidReturnVariable',
+        });
+      }
+
+      if (node.id.typeAnnotation == null) {
+        return;
+      }
+
+      const variableType = services.getTypeAtLocation(node.id);
+      if (
+        hasWellKnownSymbolWithVoidReturn(
+          checker,
+          tsNode.name,
+          variableType,
+          'dispose',
+        ) &&
+        hasWellKnownSymbolWithThenableReturn(
+          checker,
+          tsNode.initializer,
+          checker.getTypeAtLocation(tsNode.initializer),
+          'dispose',
+        )
+      ) {
+        context.report({
+          node: node.init,
+          messageId: 'voidReturnVariable',
+        });
       }
 
       // syntactically ignore some known-good cases to avoid touching type info
@@ -1014,4 +1050,56 @@ function isStaticMember(node: TSESTree.Node): boolean {
       node.type === AST_NODE_TYPES.AccessorProperty) &&
     node.static
   );
+}
+
+function hasWellKnownSymbolWithThenableReturn(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+  symbolName: 'asyncDispose' | 'dispose',
+): boolean {
+  return tsutils
+    .unionConstituents(checker.getApparentType(type))
+    .some(typePart => {
+      const symbol = tsutils.getWellKnownSymbolPropertyOfType(
+        typePart,
+        symbolName,
+        checker,
+      );
+      if (symbol == null) {
+        return false;
+      }
+
+      return isThenableReturningFunctionType(
+        checker,
+        node,
+        checker.getTypeOfSymbolAtLocation(symbol, node),
+      );
+    });
+}
+
+function hasWellKnownSymbolWithVoidReturn(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type: ts.Type,
+  symbolName: 'asyncDispose' | 'dispose',
+): boolean {
+  return tsutils
+    .unionConstituents(checker.getApparentType(type))
+    .some(typePart => {
+      const symbol = tsutils.getWellKnownSymbolPropertyOfType(
+        typePart,
+        symbolName,
+        checker,
+      );
+      if (symbol == null) {
+        return false;
+      }
+
+      return isVoidReturningFunctionType(
+        checker,
+        node,
+        checker.getTypeOfSymbolAtLocation(symbol, node),
+      );
+    });
 }

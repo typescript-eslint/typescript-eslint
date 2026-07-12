@@ -84,8 +84,8 @@ const errorMessage = 'Found unexpected value: ' + JSON.stringify(o);
 
 {/* insert option description */}
 
-This is useful for types missing `toString()` or `toLocaleString()` (but actually has `toString()` or `toLocaleString()`).
-There are some types missing `toString()` or `toLocaleString()` in old versions of TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
+This is useful for types whose type definitions do not declare `toString()` or `toLocaleString()`, even though the values have a useful implementation at runtime.
+This can happen in older versions of TypeScript, where types like `RegExp`, `URL`, and `URLSearchParams` were missing those declarations.
 
 The following patterns are considered correct with the default options:
 

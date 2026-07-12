@@ -13,6 +13,9 @@
     'globby',
     // ESM only so we can't go higher until we natively run ESM internally.
     'execa',
+    // Monaco editor version should be locked until ts playground will support newer versions.
+    // https://github.com/typescript-eslint/typescript-eslint/pull/11805#issuecomment-4926086764
+    'monaco-editor',
   ],
   ignorePaths: [
     // Integration test package.json's should never be updated as they're purposely fixed tests.
@@ -35,6 +38,11 @@
       addLabels: ['github-actions'],
       description: 'Label GHA ecosystem PRs appropriately.',
       matchManagers: ['github-actions'],
+    },
+    {
+      description: 'Use range strategy "bump" for dev dependencies.',
+      matchDepTypes: ['devDependencies'],
+      rangeStrategy: 'bump',
     },
   ],
 
