@@ -171,7 +171,7 @@ export default createRule<Options, MessageIds>({
       reportNode: TSESTree.Node,
       propertyName: string,
       type: ts.Type,
-    ): void {
+    ): boolean {
       for (const intersectionPart of tsutils
         .unionConstituents(type)
         .flatMap(unionPart => tsutils.intersectionConstituents(unionPart))) {
@@ -180,9 +180,33 @@ export default createRule<Options, MessageIds>({
           intersectionPart.getProperty(propertyName),
         );
         if (reported) {
-          break;
+          return true;
         }
       }
+      return false;
+    }
+
+    function getAccessedPropertyNames(
+      node: TSESTree.MemberExpression,
+    ): string[] {
+      if (!node.computed) {
+        return node.property.type === AST_NODE_TYPES.Identifier
+          ? [node.property.name]
+          : [];
+      }
+
+      return tsutils
+        .unionConstituents(services.getTypeAtLocation(node.property))
+        .map(part => {
+          if (part.isStringLiteral()) {
+            return part.value;
+          }
+          if (part.isNumberLiteral()) {
+            return String(part.value);
+          }
+          return null;
+        })
+        .filter(name => name != null);
     }
 
     function isNativelyBound(
@@ -234,15 +258,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (node.property.type !== AST_NODE_TYPES.Identifier || node.computed) {
-          return;
+        const objectType = services.getTypeAtLocation(node.object);
+        for (const propertyName of getAccessedPropertyNames(node)) {
+          if (checkUnionConstituentsAndReport(node, propertyName, objectType)) {
+            break;
+          }
         }
-
-        checkUnionConstituentsAndReport(
-          node,
-          node.property.name,
-          services.getTypeAtLocation(node.object),
-        );
       },
       ObjectPattern(node): void {
         if (isNodeInsideTypeDeclaration(node)) {

@@ -2895,5 +2895,39 @@ const bound = union.bazz;
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+class Bar {
+  bazz = 1;
+}
+declare const union: Foo | Bar;
+declare const bazz: 'bazz';
+const bound = union[bazz];
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+foo['bazz'];
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
   ],
 });
