@@ -1,83 +1,79 @@
-name: Sync Review Labels
+name: Apply Review Labels
 
 on:
-  # WARNING: Using `pull_request_target` and `pull_request_review` here because we need write permissions to add/remove labels from fork PRs.
-  # Both these events run in the TARGET (base) repo context, not the fork context.
-  # DO NOT CHECK OUT THE REPO IN THIS WORKFLOW.
-  pull_request_target: # zizmor: ignore[dangerous-triggers] See warning above.
+  # WARNING: Using `workflow_run` here because we need write access to add/remove labels from fork PRs.
+  # DO NOT CHECK OUT THE REPO OR RUN CODE FROM ARTIFACTS IN THIS WORKFLOW
+  workflow_run: # zizmor: ignore[dangerous-triggers]
+    workflows:
+      - On Review Status Change
     types:
-      - review_requested
-
-  pull_request_review:
-    types:
-      - submitted
+      - completed
 
 permissions: {}
 
 jobs:
-  # Author re-requested review: remove "awaiting response" and "1 approval" labels.
-  review_requested:
-    name: Review Requested
-    if: github.event_name == 'pull_request_target'
+  apply:
+    name: Apply Labels
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
 
     permissions:
+      actions: read
       pull-requests: write
 
     steps:
-      - uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0 # v1.3.0
+      - name: Download intent
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
+          name: review-intent
+          path: .
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Read intent
+        id: intent
+        run: |
+          if [ -f review-intent ]; then
+            cat review-intent >> "$GITHUB_OUTPUT"
+          fi
+
+      # Author re-requested review: remove "awaiting response" and "1 approval" labels.
+      - if: steps.intent.outputs.intent == 'review_requested'
+        name: Review Requested
+        uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0 # v1.3.0
+        with:
+          number: ${{ steps.intent.outputs.pr_number }}
           labels: |
             1 approval
             awaiting response
 
-      - if: failure()
-        run: |
-          echo "Don't worry if the previous step failed."
-          echo "See https://github.com/actions-ecosystem/action-remove-labels/issues/221."
-
-  # Reviewer requested changes: add "awaiting response" label and remove "1 approval" label.
-  changes_requested:
-    name: Changes Requested
-    if: github.event_name == 'pull_request_review' && github.event.review.state == 'changes_requested'
-    runs-on: ubuntu-latest
-
-    permissions:
-      pull-requests: write
-
-    steps:
-      - uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf # v1.1.3
+      # Reviewer requested changes: add "awaiting response" label and remove "1 approval" label.
+      - if: steps.intent.outputs.intent == 'changes_requested'
+        name: Changes Requested - Add "awaiting response"
+        uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf # v1.1.3
         with:
+          number: ${{ steps.intent.outputs.pr_number }}
           labels: awaiting response
 
-      - uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0 # v1.3.0
+      - if: steps.intent.outputs.intent == 'changes_requested'
+        name: Changes Requested - Remove "1 approval"
+        uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0 # v1.3.0
         with:
+          number: ${{ steps.intent.outputs.pr_number }}
           labels: 1 approval
 
-      - if: failure()
-        run: |
-          echo "Don't worry if the previous step failed."
-          echo "See https://github.com/actions-ecosystem/action-remove-labels/issues/221."
-
-  # Reviewer approved: add "1 approval" label and remove any stale "awaiting response" label.
-  approved:
-    name: Approved
-    if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved'
-    runs-on: ubuntu-latest
-
-    permissions:
-      pull-requests: write
-
-    steps:
-      - uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf # v1.1.3
+      # Reviewer approved: record the approval and drop any stale "awaiting response" label.
+      - if: steps.intent.outputs.intent == 'approved'
+        name: Approved - Add "1 approval"
+        uses: actions-ecosystem/action-add-labels@18f1af5e3544586314bbe15c0273249c770b2daf # v1.1.3
         with:
+          number: ${{ steps.intent.outputs.pr_number }}
           labels: 1 approval
 
-      - uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0 # v1.3.0
+      - if: steps.intent.outputs.intent == 'approved'
+        name: Approved - Remove "awaiting response"
+        uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0 # v1.3.0
         with:
+          number: ${{ steps.intent.outputs.pr_number }}
           labels: awaiting response
-
-      - if: failure()
-        run: |
-          echo "Don't worry if the previous step failed."
-          echo "See https://github.com/actions-ecosystem/action-remove-labels/issues/221."
