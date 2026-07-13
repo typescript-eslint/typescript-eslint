@@ -54,7 +54,7 @@ describe('Warn on unsupported TypeScript version', () => {
     expect(console.log).not.toHaveBeenCalled();
   });
 
-  it('should throw when `onUnsupportedTypeScriptVersion` is `error`, even on a non TTY process', () => {
+  it('should throw when `onUnsupportedTypeScriptVersion` is `error` and and the TypeScript version is not supported', () => {
     semverSatisfiesMock.mockReturnValueOnce(false);
     vi.stubGlobal('process', { ...process, stdout: { isTTY: false } });
 
