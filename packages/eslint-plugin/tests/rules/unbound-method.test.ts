@@ -2960,5 +2960,20 @@ const bound = foo[\`ba\${'zz'}\`];
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  1() {}
+}
+declare const foo: Foo;
+foo[1];
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
   ],
 });
