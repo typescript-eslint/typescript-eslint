@@ -197,16 +197,15 @@ export default createRule<Options, MessageIds>({
 
       return tsutils
         .unionConstituents(services.getTypeAtLocation(node.property))
-        .map(part => {
+        .flatMap(part => {
           if (part.isStringLiteral()) {
-            return part.value;
+            return [part.value];
           }
           if (part.isNumberLiteral()) {
-            return String(part.value);
+            return [String(part.value)];
           }
-          return null;
-        })
-        .filter(name => name != null);
+          return [];
+        });
     }
 
     function isNativelyBound(
@@ -258,8 +257,13 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const propertyNames = getAccessedPropertyNames(node);
+        if (propertyNames.length === 0) {
+          return;
+        }
+
         const objectType = services.getTypeAtLocation(node.object);
-        for (const propertyName of getAccessedPropertyNames(node)) {
+        for (const propertyName of propertyNames) {
           if (checkUnionConstituentsAndReport(node, propertyName, objectType)) {
             break;
           }
