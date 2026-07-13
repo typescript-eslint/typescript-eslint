@@ -159,9 +159,6 @@ jobs:
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        lint-task: ['check-spelling', 'check-format', 'lint-markdown']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
@@ -174,8 +171,19 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-      - name: Run Check
-        run: pnpm run ${{ matrix.lint-task }}
+      - parallel:
+          - name: Spell Check
+            run: pnpm run check-spelling
+
+          - name: Format Check
+            run: pnpm run check-format
+
+          - name: Markdown Lint
+            run: pnpm run lint-markdown
+
+          - name: Stylelint
+            run: pnpm run stylelint
+            working-directory: packages/website
 
   lint_with_build:
     name: Lint with build
@@ -183,9 +191,6 @@ jobs:
     # because we lint with our own tooling, we need to build
     needs: [build]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        lint-task: ['deduplicate', 'typecheck', 'typecheck:tsgo', 'knip']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
@@ -200,8 +205,18 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      - name: Run Check
-        run: pnpm ${{ matrix.lint-task }}
+      - parallel:
+          - name: Deduplicate
+            run: pnpm run deduplicate
+
+          - name: Typecheck
+            run: pnpm run typecheck
+
+          - name: Typecheck (tsgo)
+            run: pnpm run typecheck:tsgo
+
+          - name: Knip
+            run: pnpm run knip
 
   # Note -- intentionally use the same name as lint_with_build just so everything looks uniform in the checks section
   lint_with_build_eslint:
@@ -210,41 +225,6 @@ jobs:
     # because we lint with our own tooling, we need to build
     needs: [build]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - shard: '1/4'
-            args: '--concurrency=auto'
-            projects:
-              - eslint-plugin
-
-          - shard: '2/4'
-            args: ''
-            projects:
-              - ast-spec
-              - utils
-              - scope-manager
-              - eslint-plugin-internal
-
-          - shard: '3/4'
-            args: ''
-            projects:
-              - typescript-estree
-              - types
-              - website
-              - rule-tester
-              - visitor-keys
-
-          - shard: '4/4'
-            args: ''
-            projects:
-              - parser
-              - type-utils
-              - rule-schema-to-typescript-types
-              - typescript-eslint
-              - repo
-              - website-eslint
-              - integration-tests
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
@@ -255,27 +235,19 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - uses: ./.github/actions/prepare-build
-      - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} ${{ matrix.args }}
 
-  stylelint:
-    name: Stylelint
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [install]
-    runs-on: ubuntu-latest
-    env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-        with:
-          persist-credentials: false
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Run stylelint check
-        run: pnpm run stylelint
-        working-directory: packages/website
+      - parallel:
+          - name: 'Lint shard 1/4 (eslint-plugin)'
+            run: pnpm lint --projects=eslint-plugin -- --concurrency=auto
+
+          - name: 'Lint shard 2/4 (ast-spec, utils, scope-manager, eslint-plugin-internal)'
+            run: pnpm lint --projects=ast-spec,utils,scope-manager,eslint-plugin-internal
+
+          - name: 'Lint shard 3/4 (typescript-estree, types, website, rule-tester, visitor-keys)'
+            run: pnpm lint --projects=typescript-estree,types,website,rule-tester,visitor-keys
+
+          - name: 'Lint shard 4/4 (parser, type-utils, rule-schema-to-typescript-types, typescript-eslint, repo, website-eslint, integration-tests)'
+            run: pnpm lint --projects=parser,type-utils,rule-schema-to-typescript-types,typescript-eslint,repo,website-eslint,integration-tests
 
   integration_tests:
     name: Run integration tests on primary Node.js version
@@ -309,20 +281,23 @@ jobs:
     if: ${{ needs['affected-for-tests'].outputs.is_plugin_affected == 'true' }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         exclude:
           - os: windows-latest
             node-version: 18
+
+        # collect coverage on just the primary node version and on linux
+        # we don't collect coverage on the old node versions or other OSs so that they run faster
+        include:
+          - os: ubuntu-latest
+            node-version: 24
+            coverage: true
+            params: '--coverage'
+
         os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 24]
-        package:
-          [
-            { name: 'eslint-plugin', params: '--shard=1/4' },
-            { name: 'eslint-plugin', params: '--shard=2/4' },
-            { name: 'eslint-plugin', params: '--shard=3/4' },
-            { name: 'eslint-plugin', params: '--shard=4/4' },
-          ]
     steps:
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -336,25 +311,33 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      # collect coverage on just the primary node version and on linux
-      # we don't collect coverage on the old node versions or other OSs so that they run faster
-      - name: Run unit tests with coverage for ${{ matrix.package.name }}
-        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
-        env:
-          CI: true
-      - name: Run unit tests for ${{ matrix.package.name }}
-        if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
-        env:
-          CI: true
+      - parallel:
+          - name: Run unit tests for eslint-plugin (shard 1/4${{ matrix.coverage == true && ', coverage' || '' }})
+            run: pnpm exec nx test eslint-plugin -- --shard=1/4 ${{ matrix.params }}
+            env:
+              CI: true
+
+          - name: Run unit tests for eslint-plugin (shard 2/4${{ matrix.coverage == true && ', coverage' || '' }})
+            run: pnpm exec nx test eslint-plugin -- --shard=2/4 ${{ matrix.params }}
+            env:
+              CI: true
+
+          - name: Run unit tests for eslint-plugin (shard 3/4${{ matrix.coverage == true && ', coverage' || '' }})
+            run: pnpm exec nx test eslint-plugin -- --shard=2/4 ${{ matrix.params }}
+            env:
+              CI: true
+
+          - name: Run unit tests for eslint-plugin (shard 4/4${{ matrix.coverage == true && ', coverage' || '' }})
+            run: pnpm exec nx test eslint-plugin -- --shard=4/4 ${{ matrix.params }}
+            env:
+              CI: true
 
       - name: Store coverage for uploading
-        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
+        if: matrix.coverage == true
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
-          path: packages/${{ matrix.package.name }}/coverage/lcov.info
+          name: eslint-plugin-coverage-${{ strategy.job-index }}
+          path: packages/eslint-plugin/coverage/lcov.info
           # Sadly 1 day is the minimum
           retention-days: 1
 
@@ -365,7 +348,16 @@ jobs:
     if: ${{ needs['affected-for-tests'].outputs.unit_tests_packages != '[]' && needs['affected-for-tests'].outputs.unit_tests_packages != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
+        # collect coverage on just linux
+        # we don't collect coverage on other OSs so that they run faster
+        include:
+          - os: ubuntu-latest
+            node-version: 24
+            coverage: true
+            params: '--coverage'
+
         os: [ubuntu-latest, windows-latest]
         # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version
         node-version: [24]
@@ -407,23 +399,15 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      # collect coverage on just linux
-      # we don't collect coverage on other OSs so that they run faster
-      - name: Run unit tests with coverage for ${{ matrix.package }}
+      - name: Run unit tests for ${{ matrix.package }} ${{ matrix.coverage == true && ', coverage' || '' }}
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx test "$PACKAGE" -- --coverage
-        env:
-          CI: true
-          PACKAGE: ${{ matrix.package }}
-      - name: Run unit tests for ${{ matrix.package }}
-        if: matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test "$PACKAGE"
+        run: pnpm exec nx test "$PACKAGE" -- ${{ matrix.params }}
         env:
           CI: true
           PACKAGE: ${{ matrix.package }}
 
       - name: Store coverage for uploading
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.coverage == true
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ matrix.package }}-coverage-${{ strategy.job-index }}
@@ -438,6 +422,7 @@ jobs:
     if: ${{ needs['affected-for-tests'].outputs.project_service_packages != '[]' && needs['affected-for-tests'].outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
     env:
@@ -476,7 +461,6 @@ jobs:
       - lint_without_build
       - lint_with_build
       - lint_with_build_eslint
-      - stylelint
       - integration_tests
       - plugin_unit_tests
       - unit_tests
