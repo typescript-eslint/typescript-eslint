@@ -1801,6 +1801,14 @@ declare const foo: Foo;
 declare const key: string;
 const bound = foo[key];
     `,
+    `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+declare const bazz: string;
+foo[bazz];
+    `,
   ],
   invalid: [
     {
