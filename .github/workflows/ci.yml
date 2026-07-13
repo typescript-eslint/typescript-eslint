@@ -323,7 +323,7 @@ jobs:
               CI: true
 
           - name: Run unit tests for eslint-plugin (shard 3/4${{ matrix.coverage == true && ', coverage' || '' }})
-            run: pnpm exec nx test eslint-plugin -- --shard=2/4 ${{ matrix.params }}
+            run: pnpm exec nx test eslint-plugin -- --shard=3/4 ${{ matrix.params }}
             env:
               CI: true
 
