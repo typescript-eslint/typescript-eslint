@@ -198,13 +198,9 @@ export default createRule<Options, MessageIds>({
       return tsutils
         .unionConstituents(services.getTypeAtLocation(node.property))
         .flatMap(part => {
-          if (part.isStringLiteral()) {
-            return [part.value];
-          }
-          if (part.isNumberLiteral()) {
-            return [String(part.value)];
-          }
-          return [];
+          return part.isStringLiteral() || part.isNumberLiteral()
+            ? [part.value.toString()]
+            : [];
         });
     }
 
