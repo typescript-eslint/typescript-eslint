@@ -2929,5 +2929,36 @@ foo['bazz'];
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+declare const bazz: keyof Foo;
+const bound = foo[bazz];
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+const bound = foo[\`ba\${'zz'}\`];
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
   ],
 });
