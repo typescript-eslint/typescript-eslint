@@ -186,7 +186,7 @@ jobs:
             working-directory: packages/website
 
   lint_with_build:
-    name: Lint with build
+    name: Lint with build (deduplicate, typecheck, typecheck:tsgo, knip)
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     # because we lint with our own tooling, we need to build
     needs: [build]
@@ -216,11 +216,11 @@ jobs:
             run: pnpm run typecheck:tsgo
 
           - name: Knip
-            run: pnpm run knip
+            run: pnpm exec knip
 
   # Note -- intentionally use the same name as lint_with_build just so everything looks uniform in the checks section
   lint_with_build_eslint:
-    name: Lint with build
+    name: Lint with build (eslint)
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     # because we lint with our own tooling, we need to build
     needs: [build]
