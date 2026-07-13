@@ -2,7 +2,8 @@ name: Apply Review Labels
 
 on:
   # WARNING: Using `workflow_run` here because we need write access to add/remove labels from fork PRs.
-  # DO NOT CHECK OUT THE REPO OR RUN CODE FROM ARTIFACTS IN THIS WORKFLOW
+  # DO NOT CHECK OUT THE REPO IN THIS WORKFLOW
+  # TREAT THE ARTIFACT AS UNTRUSTED CODE
   workflow_run: # zizmor: ignore[dangerous-triggers]
     workflows:
       - On Review Status Change
