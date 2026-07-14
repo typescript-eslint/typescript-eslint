@@ -403,8 +403,9 @@ describe('stylistic-type-checked-only.ts', () => {
 });
 
 describe('plugin registration', () => {
-  it('configs reference the same plugin object as tseslint.plugin', () => {
-    for (let config of Object.values(tseslint.configs)) {
+  it.for(Object.entries(tseslint.configs))(
+    'config %s should reference the same plugin object as tseslint.plugin',
+    ([_configName, config]) => {
       if (!Array.isArray(config)) {
         config = [config];
       }
@@ -418,8 +419,8 @@ describe('plugin registration', () => {
           expect(pluginReference).toBe(eslintPlugin);
         }
       }
-    }
-  });
+    },
+  );
 });
 
 const mockAddCandidateTSConfigRootDir = vi.fn();
