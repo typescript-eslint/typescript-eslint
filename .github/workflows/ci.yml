@@ -493,6 +493,7 @@ jobs:
     needs:
       - install
       - affected-for-tests
+      - attw
       - build
       - generate_configs
       - lint_without_build
