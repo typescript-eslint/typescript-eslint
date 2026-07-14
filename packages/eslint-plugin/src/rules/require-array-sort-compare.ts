@@ -57,7 +57,7 @@ export default createRule<Options, MessageIds>({
      * Check if a given node is an array which all elements are string.
      */
     function isStringArrayNode(node: TSESTree.Expression): boolean {
-      const type = services.getTypeAtLocation(node);
+      const type = getConstrainedTypeAtLocation(services, node);
 
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
         const typeArgs = checker.getTypeArguments(type);
