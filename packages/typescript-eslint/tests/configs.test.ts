@@ -6,7 +6,8 @@ import type {
 import eslintPlugin from '@typescript-eslint/eslint-plugin';
 import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { clearCandidateTSConfigRootDirs } from '@typescript-eslint/typescript-estree';
-import tseslint from 'typescript-eslint';
+
+import tseslint from '../src/index.js';
 
 vi.mock('@typescript-eslint/typescript-estree', async () => ({
   ...(await vi.importActual('@typescript-eslint/typescript-estree')),
