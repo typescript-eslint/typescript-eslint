@@ -27,8 +27,9 @@ Provide it an `## Overview` containing:
 
 ## Timeline
 
-1. In any minor/patch version, add [rule `meta` properties](https://eslint.org/docs/latest/developer-guide/working-with-rules#rule-basics):
-   - `deprecated: true`
+1. In any minor/patch version, add [rule `meta.deprecated` properties](https://eslint.org/docs/latest/extend/rule-deprecation#-deprecatedinfo-type):
+   - `deprecated.url`
+   - `deprecated.deprecatedSince`
    - `deprecated.replacedBy`, if applicable
 2. Search through open issues and PRs, and update the name in them accordingly:
    - Deletions: close them with a link to the issue and deprecation PR
