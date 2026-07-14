@@ -23,7 +23,8 @@ const isRunningSupportedTypeScriptVersion = semver.satisfies(
 
 let warnedAboutTSVersion = false;
 
-function buildUnsupportedTSVersionMessage(label: string): string {
+function buildUnsupportedTSVersionMessage(severity: 'error' | 'warn'): string {
+  const label = severity === 'error' ? 'ERROR' : 'WARNING';
   const border = '=============';
   return [
     border,
@@ -50,7 +51,7 @@ export function handleUnsupportedTSVersion(
   }
 
   if (behavior === 'error') {
-    throw new Error(buildUnsupportedTSVersionMessage('ERROR'));
+    throw new Error(buildUnsupportedTSVersionMessage('error'));
   }
 
   if (warnedAboutTSVersion) {
@@ -63,7 +64,7 @@ export function handleUnsupportedTSVersion(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (typeof process === 'undefined' ? false : process.stdout?.isTTY)
   ) {
-    parseSettings.log(buildUnsupportedTSVersionMessage('WARNING'));
+    parseSettings.log(buildUnsupportedTSVersionMessage('warn'));
   }
 
   warnedAboutTSVersion = true;
