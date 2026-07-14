@@ -40,7 +40,7 @@
     "lint-stylelint": "nx lint website stylelint",
     "lint-prune-suppressions": "nx run-many -t lint --projects=eslint-plugin-internal,eslint-plugin --prune-suppressions",
     "lint": "nx run-many -t lint",
-    "attw-check": "nx run-many -t attw-check --exclude repo ast-spec website website-eslint eslint-plugin-internal integration-tests ",
+    "attw-check": "nx run-many -t attw-check --exclude repo ast-spec website website-eslint eslint-plugin-internal integration-tests",
     "postinstall": "tsx tools/scripts/postinstall.mts",
     "pre-commit": "lint-staged",
     "release": "tsx tools/release/release.mts",
