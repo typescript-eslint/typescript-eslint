@@ -1,3 +1,17 @@
+## 8.64.0 (2026-07-13)
+
+### 🚀 Features
+
+- support parsing `import defer` ([#12513](https://github.com/typescript-eslint/typescript-eslint/pull/12513))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.64.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.63.0 (2026-07-06)
 
 ### 🩹 Fixes

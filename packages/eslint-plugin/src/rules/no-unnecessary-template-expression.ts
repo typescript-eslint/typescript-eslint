@@ -231,7 +231,7 @@ export default createRule<[], MessageId>({
       return false;
     }
 
-    function isUnncessaryTypeInterpolation({
+    function isUnnecessaryTypeInterpolation({
       interpolation,
       nextQuasi,
       prevQuasi,
@@ -461,7 +461,7 @@ export default createRule<[], MessageId>({
         }
 
         const infos = getInterpolationInfos(node).filter(
-          isUnncessaryTypeInterpolation,
+          isUnnecessaryTypeInterpolation,
         );
 
         for (const reportDescriptor of getReportDescriptors(infos)) {
