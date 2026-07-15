@@ -66,6 +66,37 @@ module.exports = {
 </TabItem>
 </Tabs>
 
+## How do I configure JS/TS rules alongside non-JS/TS files such as JSON?
+
+When your project mixes JavaScript/TypeScript with files handled by other plugins (JSON, Markdown, etc.), it can be tempting to enable the JS/TS rules for _all_ files and then turn them off again for the non-JS/TS files.
+That approach is error-prone: some rules - including ones that don't require type information, such as [`consistent-type-assertions`](/rules/consistent-type-assertions) - will still report on files they were never meant to lint.
+
+Instead, scope each set of rules to the files it applies to using [`files`](https://eslint.org/docs/latest/use/configure/configuration-files#specifying-files-and-ignores).
+That way JS/TS rules only ever run on JS/TS files, and the other plugins only ever run on their own files.
+This is also faster, since ESLint won't run rules against files they don't apply to:
+
+```js title="eslint.config.mjs"
+import js from '@eslint/js';
+import packageJson from 'eslint-plugin-package-json';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  {
+    files: ['package.json'],
+    extends: [packageJson.configs.recommended],
+  },
+  {
+    files: ['**/*.{js,ts}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
+  },
+);
+```
+
 ## How can I ban `<specific language feature>`?
 
 ESLint core contains the rule [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax).
