@@ -88,11 +88,7 @@ export default defineConfig(
   },
   {
     files: ['**/*.{js,ts}'],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.strictTypeChecked,
-      tseslint.configs.stylisticTypeChecked,
-    ],
+    extends: [js.configs.recommended, tseslint.configs.recommended],
   },
 );
 ```
