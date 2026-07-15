@@ -577,11 +577,11 @@ export default createRule<Options, MessageId>({
     }
 
     /**
-     * Reports an array predicate callback passed as a direct type guard
-     * reference (e.g. `arr.filter(isNotNil)`) when the array element type
-     * already satisfies the predicate, making the guard unnecessary.
+     * Determines whether an array predicate callback passed as a direct type
+     * guard reference (e.g. `arr.filter(isNotNil)`) is unnecessary because the
+     * array element type already satisfies the predicate.
      */
-    function reportIfUnnecessaryTypeGuardCallback(
+    function isUnnecessaryTypeGuardCallback(
       node: TSESTree.CallExpression,
       callback: TSESTree.CallExpressionArgument,
     ): boolean {
@@ -615,22 +615,12 @@ export default createRule<Options, MessageId>({
       const elementType = checker.getTypeOfSymbol(
         predicateSignature.getParameters()[predicate.parameterIndex],
       );
-      if (
-        tsutils.isTypeFlagSet(
+      return (
+        !tsutils.isTypeFlagSet(
           elementType,
           ts.TypeFlags.Any | ts.TypeFlags.Unknown,
-        ) ||
-        !checker.isTypeAssignableTo(elementType, predicate.type)
-      ) {
-        return false;
-      }
-
-      context.report({
-        node: callback,
-        messageId: 'typeGuardAlreadyIsType',
-        data: { typeGuardOrAssertionFunction: 'type guard' },
-      });
-      return true;
+        ) && checker.isTypeAssignableTo(elementType, predicate.type)
+      );
     }
 
     function checkCallExpression(node: TSESTree.CallExpression): void {
@@ -718,13 +708,16 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
 
-        // Gated behind `checkTypePredicates`, like the inline form
-        // `arr.filter(x => isNotNil(x))` it mirrors.
+        // Unnecessary type guard passed directly as the callback like `arr.filter(isNotNil)` on a `string[]`
         if (
           checkTypePredicates &&
-          reportIfUnnecessaryTypeGuardCallback(node, callback)
+          isUnnecessaryTypeGuardCallback(node, callback)
         ) {
-          return;
+          return context.report({
+            node: callback,
+            messageId: 'typeGuardAlreadyIsType',
+            data: { typeGuardOrAssertionFunction: 'type guard' },
+          });
         }
 
         // Otherwise just do type analysis on the function as a whole.
