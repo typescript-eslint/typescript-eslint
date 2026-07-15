@@ -62,20 +62,23 @@ import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  js.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: {
-        // Remove this line
-        project: true,
-        // Add this line
-        project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [
+    js.configs.recommended,
+    tseslint.configs.recommendedTypeChecked,
+    {
+      languageOptions: {
+        parserOptions: {
+          // Remove this line
+          project: true,
+          // Add this line
+          project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+        },
       },
     },
-  },
-);
+  ],
+});
 ```
 
 </TabItem>
@@ -118,20 +121,23 @@ import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  js.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: {
-        // Remove this line
-        project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
-        // Add this line
-        project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [
+    js.configs.recommended,
+    tseslint.configs.recommendedTypeChecked,
+    {
+      languageOptions: {
+        parserOptions: {
+          // Remove this line
+          project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
+          // Add this line
+          project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+        },
       },
     },
-  },
-);
+  ],
+});
 ```
 
 </TabItem>

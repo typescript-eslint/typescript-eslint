@@ -2,6 +2,7 @@ export * from './BlockScope';
 export * from './CatchScope';
 export * from './ClassFieldInitializerScope';
 export * from './ClassScope';
+export * from './ClassStaticBlockScope';
 export * from './ConditionalTypeScope';
 export * from './ForScope';
 export * from './FunctionExpressionNameScope';

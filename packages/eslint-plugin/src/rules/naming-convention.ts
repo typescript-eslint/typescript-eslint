@@ -716,7 +716,7 @@ export default createRule<Options, MessageIds>({
         return [
           selector,
           (node: Parameters<typeof handler>[0]): void => {
-            handler(node, validator);
+            handler(node as never, validator);
           },
         ] as const;
       }),

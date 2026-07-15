@@ -1,13 +1,10 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "8.59.4",
+  "version": "8.64.0",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
@@ -41,7 +38,8 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@typescript-eslint/types": "workspace:*",
@@ -57,6 +55,7 @@
   "devDependencies": {
     "@types/babel__code-frame": "catalog:",
     "@typescript-eslint/parser": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "ajv": "catalog:",
     "eslint": "catalog:",
@@ -76,7 +75,8 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }

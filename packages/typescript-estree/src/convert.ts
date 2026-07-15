@@ -11,6 +11,7 @@ import type { SemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree, TSESTreeToTSNode, TSNode } from './ts-estree';
 
 import { checkSyntaxError } from './check-syntax-errors';
+import { getImportClausePhaseModifier } from './getImportClausePhaseModifier';
 import { getDecorators, getModifiers } from './getModifiers';
 import {
   canContainDirective,
@@ -1591,6 +1592,10 @@ export class Converter {
               type: AST_NODE_TYPES.ImportDeclaration,
               attributes: this.convertImportAttributes(node),
               importKind: 'value',
+              phase:
+                getImportClausePhaseModifier(node.importClause) === 'defer'
+                  ? 'defer'
+                  : null,
               source: this.convertChild(node.moduleSpecifier),
               specifiers: [],
             },
@@ -1601,10 +1606,7 @@ export class Converter {
         );
 
         if (node.importClause) {
-          // TODO(bradzacher) swap to `phaseModifier` once we add support for `import defer`
-          // https://github.com/estree/estree/issues/328
-          // eslint-disable-next-line @typescript-eslint/no-deprecated
-          if (node.importClause.isTypeOnly) {
+          if (getImportClausePhaseModifier(node.importClause) === 'type') {
             result.importKind = 'type';
           }
 
@@ -1740,11 +1742,21 @@ export class Converter {
             prefix: node.kind === SyntaxKind.PrefixUnaryExpression,
           });
         }
+        const isPrefixUnaryExpression =
+          node.kind === SyntaxKind.PrefixUnaryExpression;
+        if (!isPrefixUnaryExpression) {
+          this.#throwError(
+            node,
+            `Unexpected PrefixUnaryExpression with operator ${operator}`,
+          );
+        }
         return this.createNode<TSESTree.UnaryExpression>(node, {
           type: AST_NODE_TYPES.UnaryExpression,
           argument: this.convertChild(node.operand),
           operator,
-          prefix: node.kind === SyntaxKind.PrefixUnaryExpression,
+          // Guaranteed to be true in a valid AST (and asserted above) but
+          // technically could be false at runtime with allowInvalidAST: true.
+          prefix: isPrefixUnaryExpression as true,
         });
       }
 

@@ -130,7 +130,7 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
 /**
  * Check if a node's parent could have different precedence if the node changes.
  */
-function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
+export function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
   const parent = node.parent;
   if (!parent) {
     return false;

@@ -1,3 +1,140 @@
+## 8.64.0 (2026-07-13)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-loop-func] support `using` / `await using` declarations and deprecate the rule ([#12500](https://github.com/typescript-eslint/typescript-eslint/pull/12500))
+- **typescript-estree:** throw for invalid definite assignment in class properties ([#12543](https://github.com/typescript-eslint/typescript-eslint/pull/12543))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [require-array-sort-compare] handle constrained arrays ([#12512](https://github.com/typescript-eslint/typescript-eslint/pull/12512))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.64.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.63.0 (2026-07-06)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-misused-promises] detect async usage of a sync dispose usage ([#12426](https://github.com/typescript-eslint/typescript-eslint/pull/12426))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-base-to-string] don't flag a shadowed String() call ([#12492](https://github.com/typescript-eslint/typescript-eslint/pull/12492))
+- **eslint-plugin:** [no-unnecessary-type-assertion] handle optional-chained calls to overloaded functions ([#12491](https://github.com/typescript-eslint/typescript-eslint/pull/12491), [#12485](https://github.com/typescript-eslint/typescript-eslint/issues/12485))
+- **eslint-plugin:** [method-signature-style] suggest converting readonly function properties instead of emitting invalid syntax ([#12447](https://github.com/typescript-eslint/typescript-eslint/pull/12447), [#12446](https://github.com/typescript-eslint/typescript-eslint/issues/12446))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Kristjan @KristjanTammekivi
+- Michael Naumov @mnaoumov
+- Serhii Leniv @Serhii-Leniv
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.63.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.62.1 (2026-06-29)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] parenthesize object literal at left edge of expression statement ([#12443](https://github.com/typescript-eslint/typescript-eslint/pull/12443), [#12418](https://github.com/typescript-eslint/typescript-eslint/issues/12418))
+- **eslint-plugin:** [no-unnecessary-boolean-literal-compare] preserve boolean result in fixer for nullable true comparisons ([#12365](https://github.com/typescript-eslint/typescript-eslint/pull/12365))
+- **eslint-plugin:** [prefer-optional-chain] use suggestion instead of autofix for trailing binary operator ([#12328](https://github.com/typescript-eslint/typescript-eslint/pull/12328))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- mdm317
+- Patrick Aleite
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.62.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.62.0 (2026-06-22)
+
+### 🚀 Features
+
+- remove redundant package.json "files" ([#12444](https://github.com/typescript-eslint/typescript-eslint/pull/12444))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.62.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.61.1 (2026-06-15)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-template-expression] respect ECMAScript line terminators ([#12388](https://github.com/typescript-eslint/typescript-eslint/pull/12388))
+- **eslint-plugin:** [no-unnecessary-boolean-literal-compare] fix precedence bug in autofix ([#12413](https://github.com/typescript-eslint/typescript-eslint/pull/12413))
+- **eslint-plugin:** [no-unnecessary-type-assertion] wrap object literal in parens when removing TSTypeAssertion in arrow body ([#12394](https://github.com/typescript-eslint/typescript-eslint/pull/12394), [#12393](https://github.com/typescript-eslint/typescript-eslint/issues/12393))
+- **eslint-plugin:** [no-unnecessary-type-assertion] avoid false positive for template literal expressions ([#12281](https://github.com/typescript-eslint/typescript-eslint/pull/12281))
+- **eslint-plugin:** [consistent-indexed-object-style] do not remove comments when fixing ([#12396](https://github.com/typescript-eslint/typescript-eslint/pull/12396), [#10577](https://github.com/typescript-eslint/typescript-eslint/issues/10577))
+
+### ❤️ Thank You
+
+- Anas @anasm266
+- Deftera @Deftera186
+- Kirk Waiblinger @kirkwaiblinger
+- lumir
+- Sarath Francis @sarathfrancis90
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.61.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.61.0 (2026-06-08)
+
+### 🚀 Features
+
+- **ast-spec:** change type of `UnaryExpression.prefix` to always `true` ([#12372](https://github.com/typescript-eslint/typescript-eslint/pull/12372))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.61.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.60.1 (2026-06-01)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-shadow] correct rule to match ESLint v10 handling ([#12182](https://github.com/typescript-eslint/typescript-eslint/pull/12182))
+- **eslint-plugin:** respect ECMAScript line terminators in ts-comment rules ([#12352](https://github.com/typescript-eslint/typescript-eslint/pull/12352))
+
+### ❤️ Thank You
+
+- lumir
+- Nevette Bailey @nevette-bailey
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.60.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.60.0 (2026-05-25)
+
+This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.60.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.59.4 (2026-05-18)
 
 ### 🩹 Fixes

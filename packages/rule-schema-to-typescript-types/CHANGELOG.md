@@ -1,3 +1,79 @@
+## 8.64.0 (2026-07-13)
+
+This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.64.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.63.0 (2026-07-06)
+
+This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.63.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.62.1 (2026-06-29)
+
+This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.62.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.62.0 (2026-06-22)
+
+### 🩹 Fixes
+
+- add "files" to rule-schema-to-typescript-types ([#12441](https://github.com/typescript-eslint/typescript-eslint/pull/12441))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.62.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.61.1 (2026-06-15)
+
+This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.61.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.61.0 (2026-06-08)
+
+### 🩹 Fixes
+
+- **rule-schema-to-typescript-types:** respect ECMAScript line terminators ([#12374](https://github.com/typescript-eslint/typescript-eslint/pull/12374))
+
+### ❤️ Thank You
+
+- lumir
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.61.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.60.1 (2026-06-01)
+
+This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.60.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.60.0 (2026-05-25)
+
+This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.60.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.59.4 (2026-05-18)
 
 This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.

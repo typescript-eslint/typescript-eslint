@@ -30,7 +30,7 @@ For example, to disable type-checked linting on all `.js` files:
   <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-import defineConfig from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
@@ -77,10 +77,15 @@ import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  js.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
   {
+    files: ['**/*.{js,ts}'],
+
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommendedTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
+
     languageOptions: {
       parserOptions: {
         projectService: true,

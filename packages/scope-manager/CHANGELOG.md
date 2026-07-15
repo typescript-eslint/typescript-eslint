@@ -1,3 +1,85 @@
+## 8.64.0 (2026-07-13)
+
+### 🚀 Features
+
+- support parsing `import defer` ([#12513](https://github.com/typescript-eslint/typescript-eslint/pull/12513))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.64.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.63.0 (2026-07-06)
+
+### 🩹 Fixes
+
+- **scope-manager:** export ClassStaticBlockScope ([#12460](https://github.com/typescript-eslint/typescript-eslint/pull/12460))
+
+### ❤️ Thank You
+
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.63.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.62.1 (2026-06-29)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.62.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.62.0 (2026-06-22)
+
+### 🚀 Features
+
+- remove redundant package.json "files" ([#12444](https://github.com/typescript-eslint/typescript-eslint/pull/12444))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.62.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.61.1 (2026-06-15)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.61.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.61.0 (2026-06-08)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.61.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.60.1 (2026-06-01)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.60.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.60.0 (2026-05-25)
+
+This was a version bump only for scope-manager to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.60.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.59.4 (2026-05-18)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.

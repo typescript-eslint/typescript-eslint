@@ -21,6 +21,11 @@ packages/ast-spec/src/type/TSImportType/fixtures/type-import-type-with-trailing-
 packages/ast-spec/src/statement/ForStatement/fixtures/await-using/fixture.ts
 packages/ast-spec/src/statement/ForStatement/fixtures/using/fixture.ts
 
+# TODO - remove this once prettier supports `import defer`
+# https://github.com/prettier/prettier/issues/18180
+packages/scope-manager/tests/fixtures/import/defer.ts
+packages/ast-spec/src/declaration/ImportDeclaration/fixtures/defer/fixture.ts
+
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 
@@ -29,3 +34,4 @@ packages/website/build
 
 /.nx/cache
 /.nx/workspace-data
+.nx/self-healing

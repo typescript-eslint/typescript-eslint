@@ -9,6 +9,7 @@ import {
   getParserServices,
   getTextWithParentheses,
   getTypeFlags,
+  isConditionalTest,
   isLogicalOrOperator,
   isNodeEqual,
   isNodeOfTypes,
@@ -290,11 +291,6 @@ export default createRule<Options, MessageIds>({
         | TSESTree.LogicalExpression;
       testNode: TSESTree.Node;
     }): boolean {
-      const testType = parserServices.getTypeAtLocation(testNode);
-      if (!isTypeEligibleForPreferNullish(testType)) {
-        return false;
-      }
-
       if (ignoreConditionalTests === true && isConditionalTest(node)) {
         return false;
       }
@@ -307,6 +303,11 @@ export default createRule<Options, MessageIds>({
           node.parent.type === AST_NODE_TYPES.CallExpression
         )
       ) {
+        return false;
+      }
+
+      const testType = parserServices.getTypeAtLocation(testNode);
+      if (!isTypeEligibleForPreferNullish(testType)) {
         return false;
       }
 
@@ -661,51 +662,6 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
-
-function isConditionalTest(node: TSESTree.Node): boolean {
-  const parent = node.parent;
-  if (parent == null) {
-    return false;
-  }
-
-  if (parent.type === AST_NODE_TYPES.LogicalExpression) {
-    return isConditionalTest(parent);
-  }
-
-  if (
-    parent.type === AST_NODE_TYPES.ConditionalExpression &&
-    (parent.consequent === node || parent.alternate === node)
-  ) {
-    return isConditionalTest(parent);
-  }
-
-  if (
-    parent.type === AST_NODE_TYPES.SequenceExpression &&
-    parent.expressions.at(-1) === node
-  ) {
-    return isConditionalTest(parent);
-  }
-
-  if (
-    parent.type === AST_NODE_TYPES.UnaryExpression &&
-    parent.operator === '!'
-  ) {
-    return isConditionalTest(parent);
-  }
-
-  if (
-    (parent.type === AST_NODE_TYPES.ConditionalExpression ||
-      parent.type === AST_NODE_TYPES.DoWhileStatement ||
-      parent.type === AST_NODE_TYPES.IfStatement ||
-      parent.type === AST_NODE_TYPES.ForStatement ||
-      parent.type === AST_NODE_TYPES.WhileStatement) &&
-    parent.test === node
-  ) {
-    return true;
-  }
-
-  return false;
-}
 
 function isBooleanConstructorContext(
   node: TSESTree.Node,

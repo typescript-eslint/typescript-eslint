@@ -1,13 +1,10 @@
 {
   "name": "@typescript-eslint/tsconfig-utils",
-  "version": "8.59.4",
+  "version": "8.64.0",
   "description": "Utilities for collecting TSConfigs for linting scenarios.",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
@@ -42,12 +39,14 @@
     "format": "pnpm -w exec format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "peerDependencies": {
     "typescript": ">=4.8.4 <6.1.0"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
@@ -64,6 +63,9 @@
     "name": "tsconfig-utils",
     "includedScripts": [
       "clean"
-    ]
+    ],
+    "targets": {
+      "typecheck:tsgo": {}
+    }
   }
 }

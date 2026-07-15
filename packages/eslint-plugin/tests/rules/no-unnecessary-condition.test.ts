@@ -2532,7 +2532,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo.bar;
 foo ?. bar;
@@ -2553,7 +2553,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo?.bar;
 foo . bar;
@@ -2574,7 +2574,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo?.bar;
 foo ?. bar;
@@ -2595,7 +2595,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo?.bar;
 foo ?. bar;
@@ -2629,7 +2629,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo();
 foo ?. ();
@@ -2650,7 +2650,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.();
 foo  ();
@@ -2671,7 +2671,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.();
 foo ?. ();
@@ -2692,7 +2692,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.();
 foo ?. ();
@@ -2726,7 +2726,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo(bar);
 foo ?. (bar);
@@ -2747,7 +2747,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.(bar);
 foo  (bar);
@@ -2768,7 +2768,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.(bar);
 foo ?. (bar);
@@ -2789,7 +2789,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.(bar);
 foo ?. (bar);
@@ -3667,7 +3667,7 @@ foo?.bar()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar().toExponential();
@@ -3693,7 +3693,7 @@ foo?.bar?.baz()?.qux?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz().qux?.toExponential();
@@ -3710,7 +3710,7 @@ foo?.bar?.baz().qux?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz()?.qux.toExponential();
@@ -3736,7 +3736,7 @@ foo?.()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.().toExponential();
@@ -3762,7 +3762,7 @@ foo?.['bar']()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']().toExponential();
@@ -3788,7 +3788,7 @@ foo?.['bar']?.()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.().toExponential();

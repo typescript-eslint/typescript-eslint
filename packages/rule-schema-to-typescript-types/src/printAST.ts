@@ -1,3 +1,4 @@
+import { ASTUtils } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
 
 import type { SchemaAST, TupleAST } from './types.js';
@@ -22,7 +23,7 @@ function printComment({
 
   const commentLines: string[] = [];
   for (const line of commentLinesIn) {
-    commentLines.push(...line.split('\n'));
+    commentLines.push(...line.split(ASTUtils.LINEBREAK_MATCHER));
   }
 
   if (commentLines.length === 1) {
@@ -39,7 +40,7 @@ interface CodeWithComments {
 function printAST(ast: SchemaAST): CodeWithComments {
   switch (ast.type) {
     case 'array': {
-      const code = printAndMaybeParenthesise(ast.elementType);
+      const code = printAndMaybeParenthesize(ast.elementType);
       return {
         code: `${code.code}[]`,
         commentLines: [...ast.commentLines, ...code.commentLines],
@@ -85,7 +86,7 @@ function printAST(ast: SchemaAST): CodeWithComments {
         elements.push(printASTWithComment(element));
       }
       if (ast.spreadType) {
-        const result = printAndMaybeParenthesise(ast.spreadType);
+        const result = printAndMaybeParenthesize(ast.spreadType);
         elements.push(`${printComment(result)}...${result.code}[]`);
       }
 
@@ -153,7 +154,7 @@ function compareElements(a: Element, b: Element): number {
   }
 }
 
-function printAndMaybeParenthesise(ast: SchemaAST): CodeWithComments {
+function printAndMaybeParenthesize(ast: SchemaAST): CodeWithComments {
   const printed = printAST(ast);
   if (ast.type === 'union') {
     return {

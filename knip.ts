@@ -13,8 +13,6 @@ export default {
     unresolved: 'off',
   },
 
-  vite: false,
-
   vitest: {
     config: ['vitest.config.mts'],
     entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
@@ -24,17 +22,15 @@ export default {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
 
-      ignoreDependencies: ['@nx/workspace', '@eslint/config-helpers'],
+      ignoreDependencies: [
+        '@nx/workspace',
+        '@eslint/config-helpers',
+        '@typescript/native-preview',
+      ],
 
       project: ['tools/scripts/**/*.mts', '!typings/*.d.ts'],
     },
     'packages/ast-spec': {
-      ignore: [
-        // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
-        // You can check a more detailed explanation in this file
-        'tests/util/parsers/typescript-estree-import.ts',
-      ],
-
       project: ['src/**/*.ts', 'tests/util/**/*.ts', '!src/**/fixtures/**'],
 
       vitest: {

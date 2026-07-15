@@ -1,6 +1,6 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { TSESTree, AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -231,7 +231,7 @@ export default createRule<[], MessageId>({
       return false;
     }
 
-    function isUnncessaryTypeInterpolation({
+    function isUnnecessaryTypeInterpolation({
       interpolation,
       nextQuasi,
       prevQuasi,
@@ -461,7 +461,7 @@ export default createRule<[], MessageId>({
         }
 
         const infos = getInterpolationInfos(node).filter(
-          isUnncessaryTypeInterpolation,
+          isUnnecessaryTypeInterpolation,
         );
 
         for (const reportDescriptor of getReportDescriptors(infos)) {
@@ -485,5 +485,5 @@ function isWhitespace(x: string): boolean {
 }
 
 function startsWithNewLine(x: string): boolean {
-  return x.startsWith('\n') || x.startsWith('\r\n');
+  return ASTUtils.LINEBREAK_MATCHER.exec(x)?.index === 0;
 }

@@ -23,7 +23,8 @@
     "serve": "docusaurus serve",
     "start": "pnpm -w run start",
     "swizzle": "docusaurus swizzle",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
@@ -74,10 +75,11 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "history": "^4.10.1",
     "mdast-util-from-markdown": "catalog:",
     "mdast-util-mdx": "catalog:",
-    "monaco-editor": "~0.54.0",
+    "monaco-editor": "0.54.0",
     "prismjs": "1.30.0",
     "rimraf": "catalog:",
     "stylelint": "^16.26.1",
@@ -135,7 +137,8 @@
         "options": {
           "cwd": "{projectRoot}"
         }
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }

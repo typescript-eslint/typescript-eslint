@@ -53,6 +53,11 @@ export default createRule({
       returnNode: TSESTree.Node,
       reportingNode: TSESTree.Node = returnNode,
     ): void {
+      const functionNode = getParentFunctionNode(returnNode);
+      /* istanbul ignore if */ if (!functionNode) {
+        return;
+      }
+
       const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
       const type = checker.getTypeAtLocation(tsNode);
 
@@ -62,10 +67,6 @@ export default createRule({
         services.program,
         tsNode,
       );
-      const functionNode = getParentFunctionNode(returnNode);
-      /* istanbul ignore if */ if (!functionNode) {
-        return;
-      }
 
       // function has an explicit return type, so ensure it's a safe return
       const returnNodeType = services.getTypeAtLocation(returnNode);
