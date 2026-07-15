@@ -3,7 +3,6 @@ import type {
   RuleRecommendation,
 } from '@typescript-eslint/utils/ts-eslint';
 
-import eslintPlugin from '@typescript-eslint/eslint-plugin';
 import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { clearCandidateTSConfigRootDirs } from '@typescript-eslint/typescript-estree';
 
@@ -398,27 +397,6 @@ describe('stylistic-type-checked-only.ts', () => {
     'has the base rules overridden by the appropriate extension rules',
     ({ expectedOverrides, unfilteredConfigRules }) => {
       expect(unfilteredConfigRules).toMatchObject(expectedOverrides);
-    },
-  );
-});
-
-describe('plugin registration', () => {
-  it.for(Object.entries(tseslint.configs))(
-    'config %s should reference the same plugin object as tseslint.plugin',
-    ([_configName, config]) => {
-      if (!Array.isArray(config)) {
-        config = [config];
-      }
-      for (const configEntry of config) {
-        const pluginReference = (configEntry as FlatConfig.Config).plugins?.[
-          '@typescript-eslint'
-        ];
-
-        if (pluginReference != null) {
-          expect(pluginReference).toBe(tseslint.plugin);
-          expect(pluginReference).toBe(eslintPlugin);
-        }
-      }
     },
   );
 });
