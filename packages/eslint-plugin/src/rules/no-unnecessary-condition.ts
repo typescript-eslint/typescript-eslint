@@ -49,7 +49,15 @@ function isPossiblyNullish(type: ts.Type): boolean {
     .unionConstituents(type)
     .some(t => isNullishType(t) || isTypeFlagSet(t, ts.TypeFlags.Void));
 }
-
+function isPossiblyNonNullish(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .some(
+      t =>
+        !isNullishType(t) &&
+        !isTypeFlagSet(t, ts.TypeFlags.Never | ts.TypeFlags.Void),
+    );
+}
 function toStaticValue(
   type: ts.Type,
 ):
@@ -399,7 +407,43 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function checkNodeForNullish(node: TSESTree.Expression): void {
+    function isPossiblyNonNullishUnionKeyedAccess(
+      node: TSESTree.Expression,
+    ): boolean {
+      if (node.type !== AST_NODE_TYPES.MemberExpression || !node.computed) {
+        return false;
+      }
+      const keyType = getConstrainedTypeAtLocation(services, node.property);
+      if (!keyType.isUnion()) {
+        return false;
+      }
+      const objectType = getConstrainedTypeAtLocation(services, node.object);
+      return keyType.types.some(key => {
+        if (key.isNumberLiteral() || key.isStringLiteral()) {
+          const propertyType = getTypeOfPropertyOfName(
+            checker,
+            objectType,
+            key.value.toString(),
+          );
+          if (propertyType) {
+            return isPossiblyNonNullish(propertyType);
+          }
+        }
+        const keyTypeName = getTypeName(checker, key);
+        return checker
+          .getIndexInfosOfType(objectType)
+          .some(
+            info =>
+              getTypeName(checker, info.keyType) === keyTypeName &&
+              isPossiblyNonNullish(info.type),
+          );
+      });
+    }
+
+    function checkNodeForNullish(
+      node: TSESTree.Expression,
+      isWritePosition = false,
+    ): void {
       const type = getConstrainedTypeAtLocation(services, node);
 
       // Conditional is always necessary if it involves `any`, `unknown` or a naked type parameter
@@ -416,7 +460,10 @@ export default createRule<Options, MessageId>({
       }
 
       let messageId: MessageId | null = null;
-      if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
+      if (
+        isTypeFlagSet(type, ts.TypeFlags.Never) &&
+        !(isWritePosition && isPossiblyNonNullishUnionKeyedAccess(node))
+      ) {
         messageId = 'never';
       } else if (
         !isPossiblyNullish(type) &&
@@ -439,7 +486,10 @@ export default createRule<Options, MessageId>({
         ) {
           messageId = 'neverNullish';
         }
-      } else if (isAlwaysNullish(type)) {
+      } else if (
+        isAlwaysNullish(type) &&
+        !(isWritePosition && isPossiblyNonNullishUnionKeyedAccess(node))
+      ) {
         messageId = 'alwaysNullish';
       }
 
@@ -913,7 +963,7 @@ export default createRule<Options, MessageId>({
       if (['&&=', '||='].includes(node.operator)) {
         checkNode(node.left);
       } else if (node.operator === '??=') {
-        checkNodeForNullish(node.left);
+        checkNodeForNullish(node.left, /* isWritePosition */ true);
       }
     }
 

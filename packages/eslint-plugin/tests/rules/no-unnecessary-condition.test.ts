@@ -455,7 +455,27 @@ function foo<T extends object>(arg: T, key: keyof T): void {
   arg[key] ?? 'default';
 }
     `,
-    // Indexing cases
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12556
+    `
+type Fields = {
+  hello?: number;
+  world?: boolean;
+};
+let fields: Fields = {};
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+    `,
+    `
+declare const foo: { bar?: number; baz?: string };
+declare const key: 'bar' | 'baz';
+foo[key] ??= undefined;
+    `,
+    `
+declare const foo: { bar?: number; baz: string };
+declare const key: 'bar' | 'baz';
+foo[key] ??= undefined;
+    `,
     `
 declare const arr: object[];
 if (arr[42]) {
@@ -3516,6 +3536,40 @@ foo.bar ??= 1;
         },
       ],
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12556
+    {
+      code: `
+declare const foo: { bar: number; baz: number };
+declare const key: 'bar' | 'baz';
+foo[key] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar?: undefined; baz?: undefined };
+declare const key: 'bar' | 'baz';
+foo[key] ??= undefined;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysNullish',
+        },
+      ],
     },
     {
       code: `
