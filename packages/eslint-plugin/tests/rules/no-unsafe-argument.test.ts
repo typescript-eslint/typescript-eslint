@@ -101,6 +101,17 @@ declare function foo<T>(t: T): T;
 const t: T = [];
 foo(t);
     `,
+    // an unconstrained type parameter accepts any type, so passing `any` is safe
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10415
+    `
+declare const foo: <T>(t: T) => void;
+foo(1 as any);
+    `,
+    // the argument is assignable to the type parameter's constraint
+    `
+declare const foo: <T extends number>(t: T) => void;
+foo(1);
+    `,
     `
 function foo(templates: TemplateStringsArray) {}
 foo\`\`;
@@ -533,6 +544,27 @@ foo\`\${arg}\`;
           },
           endColumn: 10,
           line: 5,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    // a constrained type parameter is inferred as `any` from an `any` argument,
+    // but the argument should still be checked against the constraint
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10415
+    {
+      code: `
+declare const foo: <T extends number>(t: T) => void;
+foo(1 as any);
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            receiver: '`number`',
+            sender: '`any`',
+          },
+          endColumn: 13,
+          line: 3,
           messageId: 'unsafeArgument',
         },
       ],

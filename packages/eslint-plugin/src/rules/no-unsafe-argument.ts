@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  getConstraintInfo,
   getParserServices,
   isRestParameterDeclaration,
   isTypeAnyArrayType,
@@ -64,10 +65,20 @@ class FunctionSignature {
     const paramTypes: ts.Type[] = [];
     let restType: RestType | null = null;
 
+    // The resolved signature instantiates generic type parameters based on the
+    // passed arguments. When an argument is `any`, a type parameter is inferred
+    // as `any` too, which would hide unsafe usages. The uninstantiated target
+    // signature still exposes the type parameters, so we use it to fall back to
+    // their constraints.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10415
+    const targetParameters = (
+      signature as ts.Signature & { target?: ts.Signature }
+    ).target?.getParameters();
+
     const parameters = signature.getParameters();
     for (let i = 0; i < parameters.length; i += 1) {
       const param = parameters[i];
-      const type = checker.getTypeOfSymbolAtLocation(param, tsNode);
+      let type = checker.getTypeOfSymbolAtLocation(param, tsNode);
 
       const decl = param.getDeclarations()?.[0];
       if (decl && isRestParameterDeclaration(decl)) {
@@ -92,6 +103,20 @@ class FunctionSignature {
           };
         }
         break;
+      }
+
+      const targetParam = targetParameters?.[i];
+      if (targetParam) {
+        const { constraintType, isTypeParameter } = getConstraintInfo(
+          checker,
+          checker.getTypeOfSymbolAtLocation(targetParam, tsNode),
+        );
+        // Only constrained type parameters can be unsafe to receive an `any`.
+        // Unconstrained type parameters accept anything (like `unknown`), so we
+        // leave the inferred type as-is to avoid false positives.
+        if (isTypeParameter && constraintType != null) {
+          type = constraintType;
+        }
       }
 
       paramTypes.push(type);
