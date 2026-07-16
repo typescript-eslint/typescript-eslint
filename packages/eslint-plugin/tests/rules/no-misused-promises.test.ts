@@ -1293,7 +1293,7 @@ fnWithCallback?.('val', (err, res) => Promise.resolve(res));
       `,
       errors: [
         {
-          line: 8,
+          line: 10,
           messageId: 'voidReturnArgument',
         },
       ],
@@ -1318,7 +1318,7 @@ fnWithCallback('val', (err, res) => {
       `,
       errors: [
         {
-          line: 8,
+          line: 10,
           messageId: 'voidReturnArgument',
         },
       ],

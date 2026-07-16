@@ -6605,7 +6605,7 @@ for (; x || 'foo';) {}
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
-for (; x ?? 'foo'; ) {}
+for (; x ?? 'foo';) {}
       `,
             },
           ],
@@ -6631,7 +6631,7 @@ for (; (x ||= 'foo');) {}
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
-for (; (x ??= 'foo'); ) {}
+for (; (x ??= 'foo');) {}
       `,
             },
           ],
@@ -6657,7 +6657,7 @@ for (; x || 'foo';) {}
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
-for (; x ?? 'foo'; ) {}
+for (; x ?? 'foo';) {}
       `,
             },
           ],
@@ -6683,7 +6683,7 @@ for (; (x ||= 'foo');) {}
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
-for (; (x ??= 'foo'); ) {}
+for (; (x ??= 'foo');) {}
       `,
             },
           ],
@@ -6709,7 +6709,7 @@ for (; x || 'foo';) {}
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
-for (; x ?? 'foo'; ) {}
+for (; x ?? 'foo';) {}
       `,
             },
           ],
@@ -6735,7 +6735,7 @@ for (; (x ||= 'foo');) {}
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
-for (; (x ??= 'foo'); ) {}
+for (; (x ??= 'foo');) {}
       `,
             },
           ],
@@ -6761,7 +6761,7 @@ for (; x || 'foo';) {}
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
-for (; x ?? 'foo'; ) {}
+for (; x ?? 'foo';) {}
       `,
             },
           ],
@@ -6787,7 +6787,7 @@ for (; (x ||= 'foo');) {}
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
-for (; (x ??= 'foo'); ) {}
+for (; (x ??= 'foo');) {}
       `,
             },
           ],

@@ -1787,15 +1787,15 @@ if (x) {
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
-              output: "for (; 'foo'.length > 0; ) {}",
+              output: "for (; 'foo'.length > 0;) {}",
             },
             {
               messageId: 'conditionFixCompareEmptyString',
-              output: `for (; 'foo' !== ""; ) {}`,
+              output: `for (; 'foo' !== "";) {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: "for (; Boolean('foo'); ) {}",
+              output: "for (; Boolean('foo');) {}",
             },
           ],
         },
@@ -1967,15 +1967,15 @@ if (Boolean(x)) {
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: 'for (; 123 !== 0; ) {}',
+              output: 'for (; 123 !== 0;) {}',
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output: 'for (; !Number.isNaN(123); ) {}',
+              output: 'for (; !Number.isNaN(123);) {}',
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: 'for (; Boolean(123); ) {}',
+              output: 'for (; Boolean(123);) {}',
             },
           ],
         },

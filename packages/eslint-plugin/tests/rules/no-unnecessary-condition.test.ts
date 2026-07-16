@@ -3898,8 +3898,8 @@ const t1 = b1 && b2;
         {
           column: 12,
           endColumn: 14,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'alwaysFalsy',
         },
       ],
@@ -3969,8 +3969,8 @@ const t1 = b1 && b2;
         {
           column: 12,
           endColumn: 14,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'alwaysTruthy',
         },
       ],
@@ -3989,8 +3989,8 @@ const t1 = b1 && b2;
         {
           column: 12,
           endColumn: 14,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'alwaysTruthy',
         },
       ],

@@ -353,7 +353,7 @@ function test(a?: boolean): boolean {
     {
       code: `
         declare const x: boolean | undefined;
-        
+
         for (; x === true;) {}
       `,
       errors: [
@@ -365,7 +365,7 @@ function test(a?: boolean): boolean {
       output: `
         declare const x: boolean | undefined;
 
-        for (; x; ) {}
+        for (; x;) {}
       `,
     },
     {

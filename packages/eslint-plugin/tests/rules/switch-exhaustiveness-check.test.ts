@@ -2147,7 +2147,7 @@ function test(arg: Enum): string {
               output: `
 export enum Enum {
   'test-test' = 'test-test',
-  'test' = 'test',
+  test = 'test',
 }
 
 function test(arg: Enum): string {
@@ -2184,7 +2184,7 @@ function test(arg: Enum): string {
               output: `
 export enum Enum {
   '' = 'test-test',
-  'test' = 'test',
+  test = 'test',
 }
 
 function test(arg: Enum): string {
@@ -2221,7 +2221,7 @@ function test(arg: Enum): string {
               output: `
 export enum Enum {
   '9test' = 'test-test',
-  'test' = 'test',
+  test = 'test',
 }
 
 function test(arg: Enum): string {
