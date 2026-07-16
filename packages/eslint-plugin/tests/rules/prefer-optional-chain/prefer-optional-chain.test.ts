@@ -4514,9 +4514,7 @@ foo.bar?.baz?.buzz;
           {
             code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo && foo.bar && foo.bar.baz.buzz;
             `,
             errors: [
@@ -4615,9 +4613,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -4653,9 +4649,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -4689,9 +4683,7 @@ foo?.[bar].baz?.buzz;
             code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo && foo[bar.baz] && foo[bar.baz].buzz;
             `,
             errors: [
@@ -4718,9 +4710,7 @@ foo?.[bar.baz]?.buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -4870,9 +4860,7 @@ foo.bar?.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -5100,9 +5088,7 @@ foo?.bar.baz?.[buzz];
           {
             code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo && foo?.() && foo?.().bar;
             `,
             errors: [
@@ -5277,9 +5263,7 @@ foo.bar?.baz?.buzz && bing;
           {
             code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo && foo.bar && foo.bar.baz.buzz && bing;
             `,
             errors: [
@@ -5378,9 +5362,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -5416,9 +5398,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -5452,9 +5432,7 @@ foo?.[bar].baz?.buzz && bing;
             code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo && foo[bar.baz] && foo[bar.baz].buzz && bing;
             `,
             errors: [
@@ -5481,9 +5459,7 @@ foo?.[bar.baz]?.buzz && bing;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -5633,9 +5609,7 @@ foo.bar?.baz.buzz() && bing;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -5877,9 +5851,7 @@ foo?.bar.baz?.[buzz] && bing;
           {
             code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo && foo?.() && foo?.().bar && bing;
             `,
             errors: [
@@ -6053,9 +6025,7 @@ foo.bar?.baz?.buzz && bing.bong;
           {
             code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo && foo.bar && foo.bar.baz.buzz && bing.bong;
             `,
             errors: [
@@ -6154,9 +6124,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6192,9 +6160,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6228,9 +6194,7 @@ foo?.[bar].baz?.buzz && bing.bong;
             code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo && foo[bar.baz] && foo[bar.baz].buzz && bing.bong;
             `,
             errors: [
@@ -6257,9 +6221,7 @@ foo?.[bar.baz]?.buzz && bing.bong;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6415,9 +6377,7 @@ foo.bar?.baz.buzz() && bing.bong;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -6659,9 +6619,7 @@ foo?.bar.baz?.[buzz] && bing.bong;
           {
             code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo && foo?.() && foo?.().bar && bing.bong;
             `,
             errors: [
@@ -6757,9 +6715,7 @@ foo.bar !== null && foo.bar.baz !== null && foo.bar.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo !== null && foo.bar !== null && foo.bar.baz.buzz;
               `,
             },
@@ -6800,9 +6756,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6815,9 +6769,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6828,9 +6780,7 @@ foo !== null && foo[bar].baz !== null && foo[bar].baz.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo !== null && foo[bar.baz] !== null && foo[bar.baz].buzz;
               `,
             },
@@ -6839,9 +6789,7 @@ foo !== null && foo[bar.baz] !== null && foo[bar.baz].buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6902,9 +6850,7 @@ foo.bar !== null && foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -7005,9 +6951,7 @@ foo !== null && foo?.bar.baz !== null && foo?.bar.baz[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo !== null && foo?.() !== null && foo?.().bar;
               `,
             },
@@ -7940,9 +7884,7 @@ foo.bar?.baz?.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo != null && foo.bar != null && foo.bar.baz.buzz;
               `,
               errors: [
@@ -8068,9 +8010,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8111,9 +8051,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8152,9 +8090,7 @@ foo?.[bar].baz?.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo != null && foo[bar.baz] != null && foo[bar.baz].buzz;
               `,
               errors: [
@@ -8186,9 +8122,7 @@ foo?.[bar.baz]?.buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8370,9 +8304,7 @@ foo.bar?.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -8641,9 +8573,7 @@ foo?.bar.baz?.[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo != null && foo?.() != null && foo?.().bar;
               `,
               errors: [
@@ -8751,9 +8681,7 @@ foo.bar !== undefined && foo.bar.baz !== undefined && foo.bar.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo !== undefined && foo.bar !== undefined && foo.bar.baz.buzz;
               `,
             },
@@ -8794,9 +8722,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8812,9 +8738,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8825,9 +8749,7 @@ foo !== undefined && foo[bar].baz !== undefined && foo[bar].baz.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo !== undefined && foo[bar.baz] !== undefined && foo[bar.baz].buzz;
               `,
             },
@@ -8836,9 +8758,7 @@ foo !== undefined && foo[bar.baz] !== undefined && foo[bar.baz].buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8902,9 +8822,7 @@ foo.bar !== undefined && foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -8993,9 +8911,7 @@ foo !== undefined && foo?.bar.baz !== undefined && foo?.bar.baz[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo !== undefined && foo?.() !== undefined && foo?.().bar;
               `,
             },
@@ -9106,8 +9022,7 @@ foo.bar?.();
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo !== undefined &&
   foo.bar !== undefined &&
   foo.bar.baz !== undefined &&
@@ -9217,8 +9132,7 @@ foo.bar?.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo !== undefined &&
   foo.bar !== undefined &&
   foo.bar.baz !== undefined &&
@@ -9250,8 +9164,7 @@ foo?.bar?.baz?.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo.bar !== undefined &&
   foo.bar.baz !== undefined &&
   foo.bar.baz !== undefined &&
@@ -9495,8 +9408,7 @@ foo.bar?.baz?.buzz?.();
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: () => number } } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: () => number } } | undefined } | undefined;
 foo !== undefined && foo.bar !== undefined && foo.bar.baz.buzz();
               `,
               errors: [
@@ -9586,8 +9498,7 @@ foo?.bar?.baz.buzz?.();
               code: `
 declare const foo: {
   bar: () =>
-    | { baz: { buzz: (() => number) | undefined } | undefined }
-    | undefined;
+    { baz: { buzz: (() => number) | undefined } | undefined } | undefined;
 };
 foo.bar !== undefined &&
   foo.bar() !== undefined &&
@@ -9755,8 +9666,7 @@ foo?.bar?.baz?.[buzz]?.();
               code: `
 declare const buzz: string;
 declare const foo:
-  | { bar: { baz: { [k: string]: number } | undefined } }
-  | undefined;
+  { bar: { baz: { [k: string]: number } | undefined } } | undefined;
 foo !== undefined && foo?.bar.baz !== undefined && foo?.bar.baz[buzz];
               `,
               errors: [
@@ -10062,9 +9972,7 @@ foo.bar?.baz?.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo != undefined && foo.bar != undefined && foo.bar.baz.buzz;
               `,
               errors: [
@@ -10190,9 +10098,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -10236,9 +10142,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -10277,9 +10181,7 @@ foo?.[bar].baz?.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo != undefined && foo[bar.baz] != undefined && foo[bar.baz].buzz;
               `,
               errors: [
@@ -10311,9 +10213,7 @@ foo?.[bar.baz]?.buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -10498,9 +10398,7 @@ foo.bar?.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -10772,9 +10670,7 @@ foo?.bar.baz?.[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo != undefined && foo?.() != undefined && foo?.().bar;
               `,
               errors: [
@@ -10969,9 +10865,7 @@ declare const foo: {
           {
             code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 !foo || !foo.bar || !foo.bar.baz.buzz;
             `,
             errors: [
@@ -11070,9 +10964,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11108,9 +11000,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11144,9 +11034,7 @@ declare const foo:
             code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 !foo || !foo[bar.baz] || !foo[bar.baz].buzz;
             `,
             errors: [
@@ -11173,9 +11061,7 @@ declare const foo:
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11325,9 +11211,7 @@ declare const foo: { bar: { baz: { buzz: () => number } } | null | undefined };
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -11559,9 +11443,7 @@ declare const foo:
           {
             code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 !foo || !foo?.() || !foo?.().bar;
             `,
             errors: [
@@ -11657,9 +11539,7 @@ foo.bar === null || foo.bar.baz === null || foo.bar.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo === null || foo.bar === null || foo.bar.baz.buzz;
               `,
             },
@@ -11700,9 +11580,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11715,9 +11593,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11728,9 +11604,7 @@ foo === null || foo[bar].baz === null || foo[bar].baz.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo === null || foo[bar.baz] === null || foo[bar.baz].buzz;
               `,
             },
@@ -11739,9 +11613,7 @@ foo === null || foo[bar.baz] === null || foo[bar.baz].buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11802,9 +11674,7 @@ foo.bar === null || foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -11905,9 +11775,7 @@ foo === null || foo?.bar.baz === null || foo?.bar.baz[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo === null || foo?.() === null || foo?.().bar;
               `,
             },
@@ -12825,9 +12693,7 @@ foo.bar?.baz?.buzz == null;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo == null || foo.bar == null || foo.bar.baz.buzz == null;
               `,
               errors: [
@@ -12933,9 +12799,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -12974,9 +12838,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13010,9 +12872,7 @@ foo?.[bar].baz?.buzz == null;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo == null || foo[bar.baz] == null || foo[bar.baz].buzz == null;
               `,
               errors: [
@@ -13039,9 +12899,7 @@ foo?.[bar.baz]?.buzz == null;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13201,9 +13059,7 @@ foo.bar?.baz.buzz() == null;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -13445,9 +13301,7 @@ foo?.bar.baz?.[buzz] == null;
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo == null || foo?.() == null || foo?.().bar == null;
               `,
               errors: [
@@ -13545,9 +13399,7 @@ foo.bar === undefined || foo.bar.baz === undefined || foo.bar.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo === undefined || foo.bar === undefined || foo.bar.baz.buzz;
               `,
             },
@@ -13588,9 +13440,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13606,9 +13456,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13619,9 +13467,7 @@ foo === undefined || foo[bar].baz === undefined || foo[bar].baz.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo === undefined || foo[bar.baz] === undefined || foo[bar.baz].buzz;
               `,
             },
@@ -13630,9 +13476,7 @@ foo === undefined || foo[bar.baz] === undefined || foo[bar.baz].buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13696,9 +13540,7 @@ foo.bar === undefined || foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -13787,9 +13629,7 @@ foo === undefined || foo?.bar.baz === undefined || foo?.bar.baz[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo === undefined || foo?.() === undefined || foo?.().bar;
               `,
             },
@@ -13880,8 +13720,7 @@ foo.bar?.() === undefined;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo === undefined ||
   foo.bar === undefined ||
   foo.bar.baz === undefined ||
@@ -13973,8 +13812,7 @@ foo.bar?.baz.buzz === undefined;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo === undefined ||
   foo.bar === undefined ||
   foo.bar.baz === undefined ||
@@ -14001,8 +13839,7 @@ foo?.bar?.baz?.buzz === undefined;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo.bar === undefined ||
   foo.bar.baz === undefined ||
   foo.bar.baz === undefined ||
@@ -14215,8 +14052,7 @@ foo.bar?.baz?.buzz?.() === undefined;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: () => number } } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: () => number } } | undefined } | undefined;
 foo === undefined || foo.bar === undefined || foo.bar.baz.buzz() === undefined;
               `,
               errors: [
@@ -14291,8 +14127,7 @@ foo?.bar?.baz.buzz?.() === undefined;
               code: `
 declare const foo: {
   bar: () =>
-    | { baz: { buzz: (() => number) | undefined } | undefined }
-    | undefined;
+    { baz: { buzz: (() => number) | undefined } | undefined } | undefined;
 };
 foo.bar === undefined ||
   foo.bar() === undefined ||
@@ -14440,8 +14275,7 @@ foo?.bar?.baz?.[buzz]?.() === undefined;
               code: `
 declare const buzz: string;
 declare const foo:
-  | { bar: { baz: { [k: string]: number } | undefined } }
-  | undefined;
+  { bar: { baz: { [k: string]: number } | undefined } } | undefined;
 foo === undefined ||
   foo?.bar.baz === undefined ||
   foo?.bar.baz[buzz] === undefined;
@@ -14708,9 +14542,7 @@ foo.bar?.baz?.buzz == undefined;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo == undefined || foo.bar == undefined || foo.bar.baz.buzz == undefined;
               `,
               errors: [
@@ -14816,9 +14648,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -14857,9 +14687,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -14893,9 +14721,7 @@ foo?.[bar].baz?.buzz == undefined;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo == undefined || foo[bar.baz] == undefined || foo[bar.baz].buzz == undefined;
               `,
               errors: [
@@ -14922,9 +14748,7 @@ foo?.[bar.baz]?.buzz == undefined;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -15084,9 +14908,7 @@ foo.bar?.baz.buzz() == undefined;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -15330,9 +15152,7 @@ foo?.bar.baz?.[buzz] == undefined;
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo == undefined || foo?.() == undefined || foo?.().bar == undefined;
               `,
               errors: [

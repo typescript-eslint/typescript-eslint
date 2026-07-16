@@ -16,7 +16,7 @@ if (false) {
 }
     `,
     'while (true) {}',
-    'for (; false; ) {}',
+    'for (; false;) {}',
     '!true;',
     'false || 123;',
     "true && 'foo';",
@@ -44,7 +44,7 @@ if ('') {
 }
     `,
     "while ('x') {}",
-    "for (; ''; ) {}",
+    "for (; '';) {}",
     "('' && '1') || x;",
     `
 declare const x: string;
@@ -60,7 +60,7 @@ if (0) {
 }
     `,
     'while (1n) {}',
-    'for (; Infinity; ) {}',
+    'for (; Infinity;) {}',
     '(0 / 0 && 1 + 2) || x;',
     `
 declare const x: number;
@@ -1775,7 +1775,7 @@ if (x) {
       ],
     },
     {
-      code: "for (; 'foo'; ) {}",
+      code: "for (; 'foo';) {}",
       errors: [
         {
           column: 8,
@@ -1955,7 +1955,7 @@ if (Boolean(x)) {
       ],
     },
     {
-      code: 'for (; 123; ) {}',
+      code: 'for (; 123;) {}',
       errors: [
         {
           column: 8,

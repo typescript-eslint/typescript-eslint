@@ -479,9 +479,7 @@ declare namespace BaseAndDerived {
     },
     {
       code: `
-let value: {
-  /* ... */
-};
+let value: {/* ... */};
       `,
       errors: [
         {

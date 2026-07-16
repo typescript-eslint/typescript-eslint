@@ -1,3 +1,4 @@
 enum Foo {
-  a = 1,
+  // prettier-ignore
+  'a' = 1,
 }

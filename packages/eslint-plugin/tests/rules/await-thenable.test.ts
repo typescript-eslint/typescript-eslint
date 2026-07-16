@@ -529,8 +529,7 @@ Promise.all(x);
     {
       code: `
 declare const x:
-  | Iterable<Promise<string>>
-  | [Promise<string>, Promise<unknown>];
+  Iterable<Promise<string>> | [Promise<string>, Promise<unknown>];
 Promise.all(x);
       `,
     },

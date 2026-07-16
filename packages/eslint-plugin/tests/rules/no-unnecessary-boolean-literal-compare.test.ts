@@ -353,8 +353,8 @@ function test(a?: boolean): boolean {
     {
       code: `
         declare const x: boolean | undefined;
-
-        for (; x === true; ) {}
+        
+        for (; x === true;) {}
       `,
       errors: [
         {

@@ -906,35 +906,35 @@ do {} while ((x ||= 'foo'));
     `,
     `
 declare let x: string | null | undefined;
-for (; x || 'foo'; ) {}
+for (; x || 'foo';) {}
     `,
     `
 declare let x: string | null | undefined;
-for (; (x ||= 'foo'); ) {}
+for (; (x ||= 'foo');) {}
     `,
     `
 declare let x: number | null | undefined;
-for (; x || 'foo'; ) {}
+for (; x || 'foo';) {}
     `,
     `
 declare let x: number | null | undefined;
-for (; (x ||= 'foo'); ) {}
+for (; (x ||= 'foo');) {}
     `,
     `
 declare let x: boolean | null | undefined;
-for (; x || 'foo'; ) {}
+for (; x || 'foo';) {}
     `,
     `
 declare let x: boolean | null | undefined;
-for (; (x ||= 'foo'); ) {}
+for (; (x ||= 'foo');) {}
     `,
     `
 declare let x: object | null | undefined;
-for (; x || 'foo'; ) {}
+for (; x || 'foo';) {}
     `,
     `
 declare let x: object | null | undefined;
-for (; (x ||= 'foo'); ) {}
+for (; (x ||= 'foo');) {}
     `,
     `
 declare let x: string | null | undefined;
@@ -6591,7 +6591,7 @@ do {} while ((x ??= 'foo'));
     {
       code: `
 declare let x: string | null | undefined;
-for (; x || 'foo'; ) {}
+for (; x || 'foo';) {}
       `,
       errors: [
         {
@@ -6617,7 +6617,7 @@ for (; x ?? 'foo'; ) {}
     {
       code: `
 declare let x: string | null | undefined;
-for (; (x ||= 'foo'); ) {}
+for (; (x ||= 'foo');) {}
       `,
       errors: [
         {
@@ -6643,7 +6643,7 @@ for (; (x ??= 'foo'); ) {}
     {
       code: `
 declare let x: number | null | undefined;
-for (; x || 'foo'; ) {}
+for (; x || 'foo';) {}
       `,
       errors: [
         {
@@ -6669,7 +6669,7 @@ for (; x ?? 'foo'; ) {}
     {
       code: `
 declare let x: number | null | undefined;
-for (; (x ||= 'foo'); ) {}
+for (; (x ||= 'foo');) {}
       `,
       errors: [
         {
@@ -6695,7 +6695,7 @@ for (; (x ??= 'foo'); ) {}
     {
       code: `
 declare let x: boolean | null | undefined;
-for (; x || 'foo'; ) {}
+for (; x || 'foo';) {}
       `,
       errors: [
         {
@@ -6721,7 +6721,7 @@ for (; x ?? 'foo'; ) {}
     {
       code: `
 declare let x: boolean | null | undefined;
-for (; (x ||= 'foo'); ) {}
+for (; (x ||= 'foo');) {}
       `,
       errors: [
         {
@@ -6747,7 +6747,7 @@ for (; (x ??= 'foo'); ) {}
     {
       code: `
 declare let x: object | null | undefined;
-for (; x || 'foo'; ) {}
+for (; x || 'foo';) {}
       `,
       errors: [
         {
@@ -6773,7 +6773,7 @@ for (; x ?? 'foo'; ) {}
     {
       code: `
 declare let x: object | null | undefined;
-for (; (x ||= 'foo'); ) {}
+for (; (x ||= 'foo');) {}
       `,
       errors: [
         {

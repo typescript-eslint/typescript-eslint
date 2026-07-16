@@ -1282,8 +1282,10 @@ fnWithCallback('val', (err, res) => {
     {
       code: `
 const fnWithCallback:
-  | ((arg: string, cb: (err: any, res: string) => void) => void)
-  | null = (arg, cb) => {
+  ((arg: string, cb: (err: any, res: string) => void) => void) | null = (
+  arg,
+  cb,
+) => {
   cb(null, arg);
 };
 
@@ -1299,8 +1301,10 @@ fnWithCallback?.('val', (err, res) => Promise.resolve(res));
     {
       code: `
 const fnWithCallback:
-  | ((arg: string, cb: (err: any, res: string) => void) => void)
-  | null = (arg, cb) => {
+  ((arg: string, cb: (err: any, res: string) => void) => void) | null = (
+  arg,
+  cb,
+) => {
   cb(null, arg);
 };
 
