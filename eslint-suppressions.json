@@ -4,11 +4,6 @@
       "count": 3
     }
   },
-  "packages/eslint-plugin-internal/tests/rules/no-multiple-lines-of-errors.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
   "packages/eslint-plugin-internal/tests/rules/no-poorly-typed-ts-props.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 3
@@ -27,11 +22,6 @@
   "packages/eslint-plugin-internal/tests/rules/no-typescript-estree.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 6
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/plugin-test-formatting.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 14
     }
   },
   "packages/eslint-plugin-internal/tests/rules/prefer-ast-types-enum.test.ts": {
@@ -221,7 +211,7 @@
   },
   "packages/eslint-plugin/tests/rules/no-inferrable-types.test.ts": {
     "eslint-plugin/require-test-error-positions": {
-      "count": 49
+      "count": 48
     }
   },
   "packages/eslint-plugin/tests/rules/no-invalid-this.test.ts": {
