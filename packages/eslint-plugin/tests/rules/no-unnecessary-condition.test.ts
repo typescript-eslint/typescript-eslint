@@ -1039,6 +1039,29 @@ declare const foo: Foo;
 declare const key: Keys;
 foo[key] ??= 1;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12556
+    `
+type Fields = {
+  hello?: number;
+  world?: boolean;
+};
+
+let fields: Fields = {};
+
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+    `,
+    `
+declare const foo: { bar?: number; baz?: string };
+declare const key: 'bar' | 'baz';
+foo[key] ??= undefined;
+    `,
+    `
+declare const foo: { bar?: number; baz: string };
+declare const key: 'bar' | 'baz';
+foo[key] ??= undefined;
+    `,
     {
       code: `
 declare const foo: { bar?: number };
@@ -3439,6 +3462,76 @@ foo ??= null;
           endColumn: 4,
           endLine: 3,
           line: 3,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12556
+    {
+      code: `
+declare const foo: { bar: number; baz: number };
+declare const key: 'bar' | 'baz';
+foo[key] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: number; baz: string };
+declare const key: 'bar' | 'baz';
+foo[key] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar?: undefined; baz?: undefined };
+declare const key: 'bar' | 'baz';
+foo[key] ??= undefined;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      // in a read position the checker uses the read type (union of the
+      // per-key property types), which control flow analysis can narrow —
+      // the union-keyed write suppression must not apply here
+      code: `
+declare const foo: { bar?: number; baz?: number };
+declare const key: 'bar' | 'baz';
+if (foo[key] === undefined) {
+  foo[key] ?? 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
           messageId: 'alwaysNullish',
         },
       ],
