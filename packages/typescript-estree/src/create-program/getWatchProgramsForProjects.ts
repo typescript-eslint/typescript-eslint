@@ -1,5 +1,6 @@
 import debug from 'debug';
 import fs from 'node:fs';
+import path from 'node:path';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
@@ -259,6 +260,53 @@ function createWatchProgram(
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
   watchCompilerHost.jsDocParsingMode = parseSettings.jsDocParsingMode;
+
+  const compilerHostsWithSourceFileHook = new WeakSet<ts.CompilerHost>();
+  const oldCreateProgram = watchCompilerHost.createProgram;
+  watchCompilerHost.createProgram = (
+    rootNames,
+    options,
+    host,
+    oldProgram,
+    configFileParsingDiagnostics,
+    projectReferences,
+  ): ts.BuilderProgram => {
+    if (host && !compilerHostsWithSourceFileHook.has(host)) {
+      const oldGetSourceFile = host.getSourceFile;
+      host.getSourceFile = (
+        fileName: string,
+        languageVersionOrOptions: ts.CreateSourceFileOptions | ts.ScriptTarget,
+        onError?: (message: string) => void,
+        shouldCreateNewSourceFile?: boolean,
+      ): ts.SourceFile | undefined => {
+        const sourceFile = oldGetSourceFile(
+          fileName,
+          languageVersionOrOptions,
+          onError,
+          shouldCreateNewSourceFile,
+        );
+
+        if (
+          sourceFile &&
+          parseSettings.extraFileExtensions.includes(path.extname(fileName))
+        ) {
+          parseSettings.setExternalModuleIndicator?.(sourceFile);
+        }
+
+        return sourceFile;
+      };
+      compilerHostsWithSourceFileHook.add(host);
+    }
+
+    return oldCreateProgram(
+      rootNames,
+      options,
+      host,
+      oldProgram,
+      configFileParsingDiagnostics,
+      projectReferences,
+    );
+  };
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;

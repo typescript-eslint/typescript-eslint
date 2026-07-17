@@ -45,13 +45,15 @@ export function createIsolatedProgram(
       return '\n';
     },
     getSourceFile(filename: string) {
-      return ts.createSourceFile(
+      const sourceFile = ts.createSourceFile(
         filename,
         parseSettings.codeFullText,
         ts.ScriptTarget.Latest,
         /* setParentNodes */ true,
         getScriptKind(parseSettings.filePath, parseSettings.jsx),
       );
+      parseSettings.setExternalModuleIndicator?.(sourceFile);
+      return sourceFile;
     },
     readFile() {
       return undefined;

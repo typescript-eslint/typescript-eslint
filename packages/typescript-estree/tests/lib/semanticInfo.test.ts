@@ -285,6 +285,37 @@ describe('semanticInfo', async () => {
     },
   );
 
+  it.skipIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')(
+    'respects sourceType module for extra file extensions',
+    async () => {
+      const fileName = path.resolve(FIXTURES_DIR, 'extra-file-extension.vue');
+      const otherFileName = path.resolve(
+        FIXTURES_DIR,
+        'extra-file-extension-other.vue',
+      );
+      const parseResult = parseCodeAndGenerateServices(
+        await fs.readFile(fileName, { encoding: 'utf-8' }),
+        {
+          ...createOptions(fileName),
+          extraFileExtensions: ['.vue'],
+          sourceType: 'module',
+        },
+      );
+
+      assert.isParserServices(parseResult.services);
+
+      const sourceFile = parseResult.services.program.getSourceFile(fileName);
+      const otherSourceFile =
+        parseResult.services.program.getSourceFile(otherFileName);
+
+      expect(parseResult.ast.sourceType).toBe('module');
+      expect(sourceFile).toBeDefined();
+      expect(otherSourceFile).toBeDefined();
+      expect(ts.isExternalModule(sourceFile!)).toBe(true);
+      expect(ts.isExternalModule(otherSourceFile!)).toBe(true);
+    },
+  );
+
   it('non-existent-estree-nodes tests', async () => {
     const fileName = path.resolve(
       FIXTURES_DIR,
