@@ -244,7 +244,7 @@ export default createRule<Options, MessageIds>({
       cast: ts.Type,
     ): boolean {
       if (uncast === cast) {
-        return true;
+        return !isContextuallyTypedGenericCall(expression);
       }
 
       if (
@@ -540,6 +540,67 @@ export default createRule<Options, MessageIds>({
 
     function hasGenericCallSignature(type: ts.Type): boolean {
       return type.getCallSignatures().some(hasTypeParams);
+    }
+
+    function isContextuallyTypedGenericCall(
+      expression: TSESTree.Expression,
+    ): boolean {
+      if (
+        expression.type !== AST_NODE_TYPES.CallExpression ||
+        expression.typeArguments != null
+      ) {
+        return false;
+      }
+
+      const signatures = services
+        .getTypeAtLocation(expression.callee)
+        .getNonNullableType()
+        .getCallSignatures();
+      if (signatures.length <= 1) {
+        return false;
+      }
+
+      return signatures.some(signature => {
+        const typeParameters = signature.getTypeParameters();
+        if (typeParameters == null) {
+          return false;
+        }
+
+        const returnedTypeParameters = typeParameters.filter(typeParameter =>
+          typeContains(
+            signature.getReturnType(),
+            type => type === typeParameter,
+          ),
+        );
+        if (returnedTypeParameters.length === 0) {
+          return false;
+        }
+
+        const parameters = signature.getParameters();
+        return expression.arguments.some((argument, index) => {
+          const argumentType = services.getTypeAtLocation(argument);
+          if (
+            !isTypeFlagSet(
+              argumentType,
+              ts.TypeFlags.Any | ts.TypeFlags.Never,
+            ) &&
+            !isEmptyObjectType(argumentType)
+          ) {
+            return false;
+          }
+
+          if (index >= parameters.length) {
+            return false;
+          }
+          const parameter = parameters[index];
+          return returnedTypeParameters.some(typeParameter =>
+            typeContains(
+              checker.getTypeOfSymbol(parameter),
+              type => type === typeParameter,
+            ),
+          );
+        });
+      });
     }
 
     function isArgumentToOverloadedFunction(
