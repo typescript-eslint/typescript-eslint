@@ -20,8 +20,7 @@ import { rangeToLoc } from '../util/rangeToLoc';
 export type MessageId = 'noUnnecessaryTemplateExpression';
 
 type TemplateLiteralTypeOrValue =
-  | TSESTree.TemplateLiteral
-  | TSESTree.TSTemplateLiteralType;
+  TSESTree.TemplateLiteral | TSESTree.TSTemplateLiteralType;
 
 interface InterpolationInfo {
   interpolation: TSESTree.Expression | TSESTree.TypeNode;

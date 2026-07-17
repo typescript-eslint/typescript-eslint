@@ -63,8 +63,7 @@ export interface LetOrVarNonDeclaredDeclaration extends LetOrConstOrVarDeclarati
    * assertions or initializers, but not both.
    */
   declarations: (
-    | VariableDeclaratorDefiniteAssignment
-    | VariableDeclaratorMaybeInit
+    VariableDeclaratorDefiniteAssignment | VariableDeclaratorMaybeInit
   )[];
   declare: false;
   kind: 'let' | 'var';
@@ -132,7 +131,6 @@ export interface UsingInForOfDeclaration extends UsingDeclarationBase {
 }
 
 export type UsingDeclaration =
-  | UsingInForOfDeclaration
-  | UsingInNormalContextDeclaration;
+  UsingInForOfDeclaration | UsingInNormalContextDeclaration;
 
 export type VariableDeclaration = LetOrConstOrVarDeclaration | UsingDeclaration;

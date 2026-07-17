@@ -73,7 +73,7 @@ for (; x < arr.length; x++) {}
 for (let x = 0; ; x++) {}
     `,
     `
-for (let x = 0; x < arr.length; ) {}
+for (let x = 0; x < arr.length;) {}
     `,
     `
 for (let x = 0; NOTX < arr.length; x++) {}

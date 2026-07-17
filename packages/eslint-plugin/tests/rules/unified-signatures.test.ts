@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/unified-signatures';
 
@@ -872,7 +872,7 @@ abstract class C {
     },
     {
       // Works with literals
-      code: `
+      code: noFormat`
 interface Foo {
   'f'(x: string): void;
   'f'(x: number): void;

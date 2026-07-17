@@ -121,8 +121,7 @@ export default createRule<Options, MessageIds>({
               messageId: 'preferTypeAnnotation',
               fix(fixer) {
                 function getIDToAttachAnnotation():
-                  | TSESTree.Node
-                  | TSESTree.Token {
+                  TSESTree.Node | TSESTree.Token {
                   if (
                     node.type !== AST_NODE_TYPES.PropertyDefinition &&
                     node.type !== AST_NODE_TYPES.AccessorProperty

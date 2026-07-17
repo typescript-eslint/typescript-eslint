@@ -12,12 +12,7 @@ export type RefMap = ReadonlyMap<
  * Minimal representation of the nodes in a schema being compiled to types.
  */
 export type SchemaAST =
-  | ArrayAST
-  | LiteralAST
-  | ObjectAST
-  | TupleAST
-  | TypeReferenceAST
-  | UnionAST;
+  ArrayAST | LiteralAST | ObjectAST | TupleAST | TypeReferenceAST | UnionAST;
 
 export interface BaseSchemaASTNode {
   readonly commentLines: string[];

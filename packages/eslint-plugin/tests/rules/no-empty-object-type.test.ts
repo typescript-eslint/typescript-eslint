@@ -479,16 +479,14 @@ declare namespace BaseAndDerived {
     },
     {
       code: `
-let value: {
-  /* ... */
-};
+let value: {/* ... */};
       `,
       errors: [
         {
           column: 12,
           data: { option: 'allowObjectTypes' },
-          endColumn: 2,
-          endLine: 4,
+          endColumn: 23,
+          endLine: 2,
           line: 2,
           messageId: 'noEmptyObject',
           suggestions: [

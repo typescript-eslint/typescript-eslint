@@ -61,8 +61,8 @@ catalogs:
       specifier: ^3.0.0
       version: 3.0.0
     prettier:
-      specifier: 3.8.0
-      version: 3.8.0
+      specifier: 3.9.5
+      version: 3.9.5
     rimraf:
       specifier: ^5.0.10
       version: 5.0.10
@@ -214,7 +214,7 @@ importers:
         version: 22.7.6(@swc/core@1.15.8(@swc/helpers@0.5.17))
       prettier:
         specifier: 'catalog:'
-        version: 3.8.0
+        version: 3.9.5
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
@@ -368,7 +368,7 @@ importers:
         version: 3.0.0
       prettier:
         specifier: 'catalog:'
-        version: 3.8.0
+        version: 3.9.5
       rimraf:
         specifier: 'catalog:'
         version: 5.0.10
@@ -392,7 +392,7 @@ importers:
     dependencies:
       '@prettier/sync':
         specifier: ^0.6.1
-        version: 0.6.1(prettier@3.8.0)
+        version: 0.6.1(prettier@3.9.5)
       '@typescript-eslint/rule-tester':
         specifier: workspace:*
         version: link:../rule-tester
@@ -407,7 +407,7 @@ importers:
         version: link:../utils
       prettier:
         specifier: 'catalog:'
-        version: 3.8.0
+        version: 3.9.5
     devDependencies:
       '@typescript/native-preview':
         specifier: 'catalog:'
@@ -942,7 +942,7 @@ importers:
         version: 4.0.0
       prettier:
         specifier: 'catalog:'
-        version: 3.8.0
+        version: 3.9.5
       prism-react-renderer:
         specifier: ^2.4.1
         version: 2.4.1(react@18.3.1)
@@ -8297,8 +8297,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.8.0:
-    resolution: {integrity: sha512-yEPsovQfpxYfgWNhCfECjG5AQaO+K3dp6XERmOepyPDVqcJm+bjyCVO3pmU+nAPe0N5dDvekfGezt/EIiRe1TA==}
+  prettier@3.9.5:
+    resolution: {integrity: sha512-/FVl766LpUfB5vXgCYOYa0MeV/441Ia99AeICQIQFTY/Nw0roZwULcXpku5i1/m5kt/baz+s4Zogspd839HSMg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -12988,10 +12988,10 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@prettier/sync@0.6.1(prettier@3.8.0)':
+  '@prettier/sync@0.6.1(prettier@3.9.5)':
     dependencies:
       make-synchronized: 0.8.0
-      prettier: 3.8.0
+      prettier: 3.9.5
 
   '@rollup/plugin-babel@5.3.1(@babel/core@7.29.0)(@types/babel__core@7.20.5)(rollup@2.79.2)':
     dependencies:
@@ -18728,7 +18728,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.8.0: {}
+  prettier@3.9.5: {}
 
   pretty-bytes@5.6.0: {}
 

@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/adjacent-overload-signatures';
 
@@ -659,7 +659,7 @@ interface Foo {
       ],
     },
     {
-      code: `
+      code: noFormat`
 interface Foo {
   foo(s: string): void;
   'foo'(n: number): void;

@@ -29,7 +29,7 @@ catalog:
   json-schema: ^0.4.0
   mdast-util-from-markdown: ^2.0.2
   mdast-util-mdx: ^3.0.0
-  prettier: 3.8.0
+  prettier: 3.9.5
   rimraf: ^5.0.10
   tsx: ^4.7.2
   typescript: '>=4.8.4 <6.1.0'
@@ -41,4 +41,3 @@ catalog:
 # override it.
 overrides:
   typescript: 6.0.2
-

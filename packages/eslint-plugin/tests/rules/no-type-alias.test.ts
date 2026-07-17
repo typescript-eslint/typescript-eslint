@@ -429,13 +429,7 @@ type Foo<T> = {
     {
       code: `
 export type ClassValue =
-  | string
-  | number
-  | ClassDictionary
-  | ClassArray
-  | undefined
-  | null
-  | false;
+  string | number | ClassDictionary | ClassArray | undefined | null | false;
       `,
       options: [
         {

@@ -250,10 +250,7 @@ export function getLocFor(
  */
 export function canContainDirective(
   node:
-    | ts.Block
-    | ts.ClassStaticBlockDeclaration
-    | ts.ModuleBlock
-    | ts.SourceFile,
+    ts.Block | ts.ClassStaticBlockDeclaration | ts.ModuleBlock | ts.SourceFile,
 ): boolean {
   if (node.kind === ts.SyntaxKind.Block) {
     switch (node.parent.kind) {

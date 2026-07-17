@@ -26,10 +26,7 @@ interface ScopeInfo {
 }
 
 type Option =
-  | 'always'
-  | 'error-handling-correctness-only'
-  | 'in-try-catch'
-  | 'never';
+  'always' | 'error-handling-correctness-only' | 'in-try-catch' | 'never';
 
 export default createRule({
   name: 'return-await',

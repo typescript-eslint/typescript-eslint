@@ -53,8 +53,7 @@ function isPossiblyNullish(type: ts.Type): boolean {
 function toStaticValue(
   type: ts.Type,
 ):
-  | { value: bigint | boolean | number | string | null | undefined }
-  | undefined {
+  { value: bigint | boolean | number | string | null | undefined } | undefined {
   // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
   if (tsutils.isBooleanLiteralType(type)) {
     return { value: tsutils.isTrueLiteralType(type) };
@@ -135,8 +134,7 @@ const constantLoopConditionsAllowedLiterals = new Set<unknown>([
 export type Options = [
   {
     allowConstantLoopConditions?:
-      | AllowConstantLoopConditions
-      | LegacyAllowConstantLoopConditions;
+      AllowConstantLoopConditions | LegacyAllowConstantLoopConditions;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     checkTypePredicates?: boolean;
   },
@@ -958,8 +956,7 @@ export default createRule<Options, MessageId>({
 
 function normalizeAllowConstantLoopConditions(
   allowConstantLoopConditions:
-    | AllowConstantLoopConditions
-    | LegacyAllowConstantLoopConditions,
+    AllowConstantLoopConditions | LegacyAllowConstantLoopConditions,
 ): AllowConstantLoopConditions {
   if (allowConstantLoopConditions === true) {
     return 'always';

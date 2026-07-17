@@ -679,11 +679,10 @@ class Foo {
     `
       class TestStaticUnion {
         private static prop: number = 1;
-
+      
         test() {
           const that = {} as
-            | typeof TestStaticUnion
-            | (typeof TestStaticUnion & { _foo: 'bar' });
+            typeof TestStaticUnion | (typeof TestStaticUnion & { _foo: 'bar' });
           that.prop = 1;
         }
       }

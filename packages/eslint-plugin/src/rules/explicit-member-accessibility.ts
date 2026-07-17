@@ -148,8 +148,7 @@ export default createRule<Options, MessageIds>({
      */
     function checkMethodAccessibilityModifier(
       methodDefinition:
-        | TSESTree.MethodDefinition
-        | TSESTree.TSAbstractMethodDefinition,
+        TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition,
     ): void {
       if (methodDefinition.key.type === AST_NODE_TYPES.PrivateIdentifier) {
         return;

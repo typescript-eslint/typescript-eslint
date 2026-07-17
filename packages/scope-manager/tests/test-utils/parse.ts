@@ -18,8 +18,7 @@ const DEFAULT_ANALYZE_OPTIONS = {
 export function parse(
   code: string,
   sourceTypeOrParserOptions:
-    | SourceType
-    | tseslint.TSESTreeOptions = DEFAULT_PARSER_OPTIONS,
+    SourceType | tseslint.TSESTreeOptions = DEFAULT_PARSER_OPTIONS,
 ): ReturnType<typeof tseslint.parse> {
   return tseslint.parse(code, {
     ...DEFAULT_PARSER_OPTIONS,
@@ -47,8 +46,7 @@ export function parseAndAnalyze(
 export function parseAndAnalyze(
   code: string,
   sourceTypeOrAnalyzeOption:
-    | AnalyzeOptions
-    | SourceType = DEFAULT_ANALYZE_OPTIONS,
+    AnalyzeOptions | SourceType = DEFAULT_ANALYZE_OPTIONS,
   parserOptions: tseslint.TSESTreeOptions = DEFAULT_PARSER_OPTIONS,
 ): ParseAndAnalyze {
   const ast = parse(code, { ...parserOptions });

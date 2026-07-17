@@ -11,10 +11,7 @@ export type Options = [
   },
 ];
 export type MessageIds =
-  | 'suggestNever'
-  | 'suggestPropertyKey'
-  | 'suggestUnknown'
-  | 'unexpectedAny';
+  'suggestNever' | 'suggestPropertyKey' | 'suggestUnknown' | 'unexpectedAny';
 
 export default createRule<Options, MessageIds>({
   name: 'no-explicit-any',

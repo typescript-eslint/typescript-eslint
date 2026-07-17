@@ -13,5 +13,4 @@ export interface PropertyDefinitionNonComputedName extends ClassPropertyDefiniti
 }
 
 export type PropertyDefinition =
-  | PropertyDefinitionComputedName
-  | PropertyDefinitionNonComputedName;
+  PropertyDefinitionComputedName | PropertyDefinitionNonComputedName;
