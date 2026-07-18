@@ -160,6 +160,7 @@ jobs:
     needs: [install]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         lint-task: ['check-spelling', 'check-format', 'lint-markdown']
     env:
@@ -184,6 +185,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         lint-task: ['deduplicate', 'typecheck', 'typecheck:tsgo', 'knip']
     env:
@@ -211,6 +213,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
           - shard: '1/4'
@@ -309,6 +312,7 @@ jobs:
     if: ${{ needs['affected-for-tests'].outputs.is_plugin_affected == 'true' }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         exclude:
           - os: windows-latest
@@ -365,6 +369,7 @@ jobs:
     if: ${{ needs['affected-for-tests'].outputs.unit_tests_packages != '[]' && needs['affected-for-tests'].outputs.unit_tests_packages != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version
@@ -438,6 +443,7 @@ jobs:
     if: ${{ needs['affected-for-tests'].outputs.project_service_packages != '[]' && needs['affected-for-tests'].outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
     env:
