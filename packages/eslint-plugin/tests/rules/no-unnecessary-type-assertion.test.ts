@@ -924,6 +924,13 @@ enum E {
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6951
+    // the recommended fix for a return-position-only generic: pass the type
+    // argument explicitly instead of asserting the call's result.
+    `
+declare function get<T = unknown>(): T;
+const x = get<string>();
+    `,
   ],
 
   invalid: [
@@ -2893,6 +2900,61 @@ maybeFn?.(s as string | number);
 declare const maybeFn: ((arg: string | number) => void) | undefined;
 declare const s: string;
 maybeFn?.(s);
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6951
+    // Type parameter used only in the return position: TS backfills it from the
+    // assertion, so the assertion looks unnecessary. Report a dedicated message
+    // and offer no autofix (removing the assertion would widen the type back).
+    {
+      code: `
+export type PartyKitStorage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: PartyKitStorage;
+export async function levelGet() {
+  return (await db.list()) as Map<string, Uint8Array>;
+}
+      `,
+      errors: [{ messageId: 'unnecessaryAssertionOnGenericCall' }],
+      output: null,
+    },
+    {
+      code: `
+declare function get<T = unknown>(): T;
+const x = get() as string;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertionOnGenericCall' }],
+      output: null,
+    },
+    // Control: the type parameter is used in a parameter, so it is inferred from
+    // the argument rather than backfilled. The original message/fix still apply.
+    {
+      code: `
+declare function identity<T>(x: T): T;
+declare const s: string;
+const y = identity(s) as string;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: `
+declare function identity<T>(x: T): T;
+declare const s: string;
+const y = identity(s);
+      `,
+    },
+    // Control: the type argument is written explicitly, so the standard message
+    // and autofix are appropriate.
+    {
+      code: `
+export type Store = { get<T = unknown>(): T };
+declare const store: Store;
+const v = store.get<string>() as string;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: `
+export type Store = { get<T = unknown>(): T };
+declare const store: Store;
+const v = store.get<string>();
       `,
     },
   ],

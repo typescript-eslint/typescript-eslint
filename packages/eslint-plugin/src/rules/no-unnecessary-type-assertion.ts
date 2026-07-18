@@ -72,7 +72,10 @@ export type Options = [
     typesToIgnore?: string[];
   },
 ];
-export type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
+export type MessageIds =
+  | 'contextuallyUnnecessary'
+  | 'unnecessaryAssertion'
+  | 'unnecessaryAssertionOnGenericCall';
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
@@ -90,6 +93,8 @@ export default createRule<Options, MessageIds>({
         'This assertion is unnecessary since the receiver accepts the original type of the expression.',
       unnecessaryAssertion:
         'This assertion is unnecessary since it does not change the type of the expression.',
+      unnecessaryAssertionOnGenericCall:
+        'This assertion does not change the type of the expression, but only because the type argument of the generic call is being inferred from it. Consider passing the type argument explicitly instead (e.g. `foo<Type>()`).',
     },
     schema: [
       {
@@ -892,6 +897,68 @@ export default createRule<Options, MessageIds>({
       };
     }
 
+    function collectIdentifierNames(tsNode: ts.Node, names: Set<string>): void {
+      if (ts.isIdentifier(tsNode)) {
+        names.add(tsNode.text);
+        return;
+      }
+      tsNode.forEachChild(child => collectIdentifierNames(child, names));
+    }
+
+    /**
+     * Detects the "type parameter only used in a return position" pattern, e.g.
+     * `declare function get<T = unknown>(): T` called as `get() as Foo`.
+     *
+     * In these cases TypeScript backfills the type argument from the assertion,
+     * so the asserted expression appears to already have the asserted type and
+     * the assertion looks like it "does not change the type". The generic
+     * message is misleading here: the fix is to pass the type argument to the
+     * call explicitly rather than to remove the assertion (which would silently
+     * widen the type back and can break downstream code).
+     *
+     * @see https://github.com/typescript-eslint/typescript-eslint/issues/6951
+     */
+    function isUnnecessaryAssertionOnReturnOnlyGeneric(
+      expression: TSESTree.Expression,
+    ): boolean {
+      const call =
+        expression.type === AST_NODE_TYPES.AwaitExpression
+          ? expression.argument
+          : expression;
+
+      // Only relevant when the type argument was inferred rather than written.
+      if (
+        call.type !== AST_NODE_TYPES.CallExpression ||
+        call.typeArguments != null
+      ) {
+        return false;
+      }
+
+      const tsCall = services.esTreeNodeToTSNodeMap.get(call);
+      const signature = checker.getResolvedSignature(tsCall);
+      const declaration = signature?.getDeclaration();
+      if (declaration == null) {
+        return false;
+      }
+      const { typeParameters } = declaration;
+      if (typeParameters == null || typeParameters.length === 0) {
+        return false;
+      }
+
+      const namesUsedInParameters = new Set<string>();
+      for (const parameter of declaration.parameters) {
+        if (parameter.type != null) {
+          collectIdentifierNames(parameter.type, namesUsedInParameters);
+        }
+      }
+
+      // A type parameter that never appears in a parameter can only be inferred
+      // from the return position (or its default), which is the backfill case.
+      return typeParameters.some(
+        typeParameter => !namesUsedInParameters.has(typeParameter.name.text),
+      );
+    }
+
     function reportDoubleAssertionIfUnnecessary(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
       contextualType: ts.Type | undefined,
@@ -958,6 +1025,15 @@ export default createRule<Options, MessageIds>({
           : !typeAnnotationIsConstAssertion;
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
+          if (isUnnecessaryAssertionOnReturnOnlyGeneric(node.expression)) {
+            // Don't offer an autofix: removing the assertion here widens the
+            // type back to the generic default, which can break downstream code.
+            context.report({
+              node,
+              messageId: 'unnecessaryAssertionOnGenericCall',
+            });
+            return;
+          }
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
