@@ -23,11 +23,38 @@ const isRunningSupportedTypeScriptVersion = semver.satisfies(
 
 let warnedAboutTSVersion = false;
 
-export function warnAboutTSVersion(
+function buildUnsupportedTSVersionMessage(severity: 'error' | 'warn'): string {
+  const label = severity === 'error' ? 'ERROR' : 'WARNING';
+  const border = '=============';
+  return [
+    border,
+    '\n',
+    `${label}: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.`,
+    '\n',
+    `* @typescript-eslint/typescript-estree version: ${TYPESCRIPT_ESTREE_VERSION}`,
+    `* Supported TypeScript versions: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
+    `* Your TypeScript version: ${ACTIVE_TYPESCRIPT_VERSION}`,
+    '\n',
+    'Please only submit bug reports when using the officially supported version.',
+    '\n',
+    border,
+  ].join('\n');
+}
+
+export function handleUnsupportedTSVersion(
   parseSettings: ParseSettings,
+  behavior: 'error' | 'ignore' | 'warn',
   passedLoggerFn: boolean,
 ): void {
-  if (isRunningSupportedTypeScriptVersion || warnedAboutTSVersion) {
+  if (isRunningSupportedTypeScriptVersion || behavior === 'ignore') {
+    return;
+  }
+
+  if (behavior === 'error') {
+    throw new Error(buildUnsupportedTSVersionMessage('error'));
+  }
+
+  if (warnedAboutTSVersion) {
     return;
   }
 
@@ -37,22 +64,7 @@ export function warnAboutTSVersion(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (typeof process === 'undefined' ? false : process.stdout?.isTTY)
   ) {
-    const border = '=============';
-    const versionWarning = [
-      border,
-      '\n',
-      'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
-      '\n',
-      `* @typescript-eslint/typescript-estree version: ${TYPESCRIPT_ESTREE_VERSION}`,
-      `* Supported TypeScript versions: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
-      `* Your TypeScript version: ${ACTIVE_TYPESCRIPT_VERSION}`,
-      '\n',
-      'Please only submit bug reports when using the officially supported version.',
-      '\n',
-      border,
-    ].join('\n');
-
-    parseSettings.log(versionWarning);
+    parseSettings.log(buildUnsupportedTSVersionMessage('warn'));
   }
 
   warnedAboutTSVersion = true;
