@@ -115,5 +115,19 @@ export interface ParserOptions {
   tokens?: boolean;
   tsconfigRootDir?: string;
 
+  /**
+   * Controls how the parser reacts when run with a TypeScript version that is
+   * not officially supported by typescript-eslint.
+   * - `'warn'` (default): log a warning to the console.
+   * - `'error'`: throw, causing the lint run to fail. Useful in CI to prevent
+   *   unsupported TypeScript versions from being merged unnoticed.
+   * - `'ignore'`: do nothing.
+   */
+  onUnsupportedTypeScriptVersion?: 'error' | 'ignore' | 'warn';
+
+  /**
+   * @deprecated Use {@link onUnsupportedTypeScriptVersion} instead.
+   * `true` is equivalent to `'warn'` and `false` is equivalent to `'ignore'`.
+   */
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }

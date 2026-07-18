@@ -40,6 +40,7 @@
     "lint-stylelint": "nx lint website stylelint",
     "lint-prune-suppressions": "nx run-many -t lint --projects=eslint-plugin-internal,eslint-plugin --prune-suppressions",
     "lint": "nx run-many -t lint",
+    "attw-check": "nx run-many -t attw-check --exclude repo ast-spec website website-eslint eslint-plugin-internal integration-tests",
     "postinstall": "tsx tools/scripts/postinstall.mts",
     "pre-commit": "lint-staged",
     "release": "tsx tools/release/release.mts",
@@ -54,6 +55,7 @@
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.3",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
     "@eslint/compat": "^2.0.2",
     "@eslint/config-helpers": "^0.6.0",
@@ -93,7 +95,7 @@
     "execa": "7.2.0",
     "globals": "catalog:",
     "husky": "^9.1.7",
-    "knip": "6.25.0",
+    "knip": "6.26.0",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.49.0",
     "nx": "22.7.6",
@@ -109,6 +111,7 @@
   "nx": {
     "name": "repo",
     "includedScripts": [
+      "attw-check",
       "generate-configs",
       "generate-lib",
       "generate-sponsors"

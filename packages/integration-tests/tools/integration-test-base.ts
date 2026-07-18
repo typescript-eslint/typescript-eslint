@@ -92,15 +92,22 @@ export function eslintIntegrationTest(
 
 export function nodeIntegrationTest(
   testFilename: string,
-  scriptFilename: string,
+  scriptName: string,
+  assertOutput: (stderr: string) => void,
 ): void {
-  integrationTest('node', testFilename, async testFolder => {
-    const { stderr, stdout } = await execFile('node', [scriptFilename], {
-      cwd: testFolder,
-    });
+  integrationTest(`node ${scriptName}`, testFilename, async testFolder => {
+    const [result] = await Promise.allSettled([
+      execFile('node', [scriptName], {
+        cwd: testFolder,
+      }),
+    ]);
 
-    expect(stdout).toBe('');
-    expect(stderr).toBe('');
+    const stderr =
+      result.status === 'rejected'
+        ? (result.reason as { stderr: string }).stderr
+        : result.value.stderr;
+
+    assertOutput(stderr);
   });
 }
 
