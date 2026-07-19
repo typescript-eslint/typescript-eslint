@@ -27,7 +27,7 @@ type Example = () => string;
 Correct
 
 function foo(example: () => number): number {
-  return bar();
+  return example();
 }
 
 Correct
