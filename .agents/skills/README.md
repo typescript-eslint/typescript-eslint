@@ -13,3 +13,4 @@ skills/<name>/SKILL.md
 ## Available skills
 
 - [`rule-performance`](./rule-performance/SKILL.md) — defer expensive TypeScript type lookups behind cheap AST/syntactic guards when writing or reviewing typed lint rules.
+- [`tests`](./tests/SKILL.md) — write rule test cases as small static units: one logical unit and one error per case, self-contained snippets, comments only when they add meaning, precise error assertions.
