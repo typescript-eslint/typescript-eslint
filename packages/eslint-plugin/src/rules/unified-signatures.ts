@@ -4,7 +4,12 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
-import { arraysAreEqual, createRule, nullThrows } from '../util';
+import {
+  arraysAreEqual,
+  createRule,
+  nullThrows,
+  typeNodeRequiresParentheses,
+} from '../util';
 
 interface Failure {
   only2: boolean;
@@ -122,6 +127,29 @@ export default createRule<Options, MessageIds>({
       return `${overloads} can be combined into one signature`;
     }
 
+    function getUnifiedTypeParts(
+      ...types: (TSESTree.TypeNode | undefined)[]
+    ): [string, string] {
+      const seen = new Set<string>();
+      const parts: string[] = [];
+
+      for (const type of types.flatMap(type =>
+        type?.type === AST_NODE_TYPES.TSUnionType ? type.types : [type],
+      )) {
+        const text = context.sourceCode.getText(type);
+        if (!seen.has(text)) {
+          seen.add(text);
+          parts.push(
+            type != null && typeNodeRequiresParentheses(type, text)
+              ? `(${text})`
+              : text,
+          );
+        }
+      }
+
+      return [parts.slice(0, -1).join(' | '), parts.at(-1) ?? ''];
+    }
+
     function addFailures(failures: Failure[]): void {
       for (const failure of failures) {
         const { only2, unify } = failure;
@@ -136,6 +164,10 @@ export default createRule<Options, MessageIds>({
             const typeAnnotation1 = isTSParameterProperty(p1)
               ? p1.parameter.typeAnnotation
               : p1.typeAnnotation;
+            const [type1, type2] = getUnifiedTypeParts(
+              typeAnnotation0?.typeAnnotation,
+              typeAnnotation1?.typeAnnotation,
+            );
 
             context.report({
               loc: p1.loc,
@@ -143,12 +175,8 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: context.sourceCode.getText(
-                  typeAnnotation0?.typeAnnotation,
-                ),
-                type2: context.sourceCode.getText(
-                  typeAnnotation1?.typeAnnotation,
-                ),
+                type1,
+                type2,
               },
             });
             break;

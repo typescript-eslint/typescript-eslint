@@ -742,6 +742,90 @@ interface I {
       ],
     },
     {
+      code: `
+function f(a: number | string): void;
+function f(a: string | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number | string',
+            type2: 'boolean',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+function f(a: string): void;
+function f(a: number | string): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'string',
+            type2: 'number',
+          },
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+function f(a: boolean | string): void;
+function f(a: number | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'boolean | string',
+            type2: 'number',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+function f(a: () => void): void;
+function f(a: string | (() => void)): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: '(() => void)',
+            type2: 'string',
+          },
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
       // Works with tuples.
       code: `
 interface I {
