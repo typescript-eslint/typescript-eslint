@@ -1,6 +1,6 @@
 ---
 name: tests
-description: Write rule test cases the way this repo expects — one logical unit and one error per case, static self-contained snippets, comments only when they add meaning, and precise error assertions. Use when adding or changing tests in packages/eslint-plugin/tests/rules or reviewing a PR that touches rule tests.
+description: Write rule test cases the way this repo expects — one logical unit per test case, static self-contained snippets, comments only when they add meaning, and precise error assertions. Use when adding or changing tests in packages/eslint-plugin/tests/rules or reviewing a PR that touches rule tests.
 ---
 
 # Writing rule tests
@@ -19,7 +19,7 @@ Use this when adding or changing test cases for a lint rule — a new rule, a bu
 
 ## One logical unit per test case
 
-Each case exercises exactly one behavior, and each invalid case asserts exactly one error. When several inputs exercise the same behavior, write several small cases — then a failing case names exactly what broke.
+Prefer one logical behavior per test case and, when reasonable, one error per `invalid` case. When several inputs exercise the same behavior, write several small cases — then a failing case names exactly what broke.
 
 Before — one case bundling two assertions:
 
@@ -61,11 +61,11 @@ b!.length;
 },
 ```
 
-A behavior change includes both `valid` and `invalid` cases: a false-positive fix adds valid cases reproducing the false positive, and a fix that reports new violations adds invalid cases, usually with a valid neighbor showing where reporting correctly stops.
+When reasonable, a behavior change includes both `valid` and `invalid` coverage: a false-positive fix adds valid cases reproducing the false positive, and newly reported behavior adds invalid cases — where useful, with a valid neighbor showing where reporting correctly stops.
 
 ## Static, self-contained code only
 
-- `valid` and `invalid` are fully literal arrays: no cases generated with `.map()`, spreads, shared snippet constants, or `${}` interpolation. Repeating a similar snippet across cases is fine — a reviewer or a failure report should never have to compute what code a case ran.
+- `valid` and `invalid` are fully literal arrays: no cases generated with `.map()`, spreads, shared snippet constants, or `${}` interpolation (lint enforces this via `@typescript-eslint/internal/no-dynamic-tests`). Repeating a similar snippet across cases is fine — a reviewer or a failure report should never have to compute what code a case ran.
 - Every snippet declares what it uses (`declare const`, minimal types or classes) rather than relying on ambient globals, and contains nothing beyond what the behavior under test needs.
 - Use the `noFormat` template tag only when a case deliberately tests formatting that Prettier would normalize away, and only on `code`.
 
@@ -79,7 +79,7 @@ Test code should not narrate what the snippet already shows. The comments that d
 
 ## Assert precisely
 
-- Every error asserts `messageId` plus all of `line`, `column`, `endLine`, and `endColumn`. Never assert raw message strings.
+- Every error asserts `messageId` plus all of `line`, `column`, `endLine`, and `endColumn` — lint requires the full location in new tests via `eslint-plugin/require-test-error-positions`. Raw `message` strings are not part of the test case types; use `messageId`.
 - When the message has `{{placeholder}}`s, also assert `data` so the rendered message is checked.
 - `output: null` asserts the rule applies no fix; a string `output` repeats the whole snippet with identical indentation; an array `output` asserts multi-pass fixes.
 - Suggestions are asserted per error as `suggestions: [{ messageId, output }]` (plus `data` when the suggestion message has placeholders); each suggestion `output` stands alone rather than building on other fixes.
