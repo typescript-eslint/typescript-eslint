@@ -722,8 +722,33 @@ export function analyzeChain(
   const maybeReportThenReset = (
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
-    if (subChain.length + (lastChain ? 1 : 0) > 1) {
-      const subChainFlat = subChain.flat();
+    const subChainFlat = subChain.flat();
+    const lastSubChainOperand = subChainFlat.at(-1);
+    // Optional chains return `undefined` at a short-circuited boundary, so
+    // strict comparisons against `null` would invert the guarded result.
+    const hasUnsafeStrictNullComparison =
+      !lastChain &&
+      chain.at(-1)?.node === lastSubChainOperand?.node &&
+      ((operator === '||' &&
+        lastSubChainOperand?.comparisonType ===
+          NullishComparisonType.StrictEqualNull &&
+        subChainFlat.some(
+          operand =>
+            operand.comparisonType ===
+            NullishComparisonType.StrictEqualUndefined,
+        )) ||
+        (operator === '&&' &&
+          lastSubChainOperand?.comparisonType ===
+            NullishComparisonType.NotStrictEqualNull &&
+          subChainFlat.some(
+            operand =>
+              operand.comparisonType ===
+              NullishComparisonType.NotStrictEqualUndefined,
+          )));
+    if (
+      subChain.length + (lastChain ? 1 : 0) > 1 &&
+      !hasUnsafeStrictNullComparison
+    ) {
       const maybeNullishNodes = lastChain
         ? subChainFlat.map(({ node }) => node)
         : subChainFlat.slice(0, -1).map(({ node }) => node);

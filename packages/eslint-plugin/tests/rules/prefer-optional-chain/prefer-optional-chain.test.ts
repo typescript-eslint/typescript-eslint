@@ -689,6 +689,111 @@ describe('|| {}', () => {
   });
 });
 
+describe('chain ending with a strict null comparison', () => {
+  ruleTester.run('prefer-optional-chain', rule, {
+    invalid: [
+      {
+        code: `
+          declare const foo: { bar: number | null } | undefined;
+          foo === undefined || foo.bar !== null;
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: { bar: number | null } | undefined;
+          foo?.bar !== null;
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: { bar: number | null } | undefined;
+          foo !== undefined && foo.bar === null;
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: { bar: number | null } | undefined;
+          foo?.bar === null;
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: { bar: number | null } | undefined;
+          undefined === foo || null !== foo.bar;
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: { bar: number | null } | undefined;
+          null !== foo?.bar;
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: { bar: number | null } | undefined;
+          undefined !== foo && null === foo.bar;
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: { bar: number | null } | undefined;
+          null === foo?.bar;
+        `,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    valid: [
+      `
+        declare const foo: { bar: number | null } | undefined;
+        foo === undefined || foo.bar === null;
+      `,
+      `
+        declare const foo: { bar: number | null } | undefined;
+        undefined === foo || null === foo.bar;
+      `,
+      `
+        declare const foo: { bar: number | null } | undefined;
+        foo !== undefined && foo.bar !== null;
+      `,
+      `
+        declare const foo: { bar: number | null } | undefined;
+        undefined !== foo && null !== foo.bar;
+      `,
+    ],
+  });
+});
+
 describe('chain ending with comparison', () => {
   ruleTester.run('prefer-optional-chain', rule, {
     invalid: [
