@@ -12,7 +12,11 @@ ruleTester.run('prefer-ast-types-enum', rule, {
       code: "node.type === 'Literal';",
       errors: [
         {
+          column: 15,
           data: { enumName: 'AST_NODE_TYPES', literal: AST_NODE_TYPES.Literal },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'preferEnum',
         },
       ],
@@ -22,10 +26,14 @@ ruleTester.run('prefer-ast-types-enum', rule, {
       code: "node.type === 'Keyword';",
       errors: [
         {
+          column: 15,
           data: {
             enumName: 'AST_TOKEN_TYPES',
             literal: AST_TOKEN_TYPES.Keyword,
           },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'preferEnum',
         },
       ],
@@ -35,10 +43,14 @@ ruleTester.run('prefer-ast-types-enum', rule, {
       code: "node.type === 'Parameter';",
       errors: [
         {
+          column: 15,
           data: {
             enumName: 'DefinitionType',
             literal: DefinitionType.Parameter,
           },
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
           messageId: 'preferEnum',
         },
       ],
