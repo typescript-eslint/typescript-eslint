@@ -166,6 +166,13 @@ class Foo {
   init2 = (Foo.foo = 1);
 }
     `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    this[foo] = foo;
+  }
+}
+    `,
   ],
   invalid: [
     {
