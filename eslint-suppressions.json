@@ -1,39 +1,4 @@
 {
-  "packages/eslint-plugin-internal/tests/rules/debug-namespace.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/no-poorly-typed-ts-props.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/no-relative-paths-to-internal-packages.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 4
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/no-typescript-default-import.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/no-typescript-estree.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 6
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/prefer-ast-types-enum.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/prefer-tsutils-methods.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 13
-    }
-  },
   "packages/eslint-plugin/tests/eslint-rules/no-restricted-globals.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 3

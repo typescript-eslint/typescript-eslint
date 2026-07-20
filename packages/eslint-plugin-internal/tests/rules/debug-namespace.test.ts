@@ -12,6 +12,7 @@ ruleTester.run('debug-namespace', rule, {
         {
           column: 19,
           endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'mismatched',
         },
@@ -25,6 +26,7 @@ ruleTester.run('debug-namespace', rule, {
         {
           column: 19,
           endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'mismatched',
         },
@@ -38,6 +40,7 @@ ruleTester.run('debug-namespace', rule, {
         {
           column: 19,
           endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'mismatched',
         },
