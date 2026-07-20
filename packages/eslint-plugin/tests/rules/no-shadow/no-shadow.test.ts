@@ -97,6 +97,31 @@ function foo<T extends (arg: any) => void>(arg: T) {}
     },
     {
       code: `
+        enum A {
+          B = 2,
+        }
+
+        enum A {
+          A = 1,
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'A',
+            shadowedColumn: 14,
+            shadowedLine: 2,
+          },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
+          messageId: 'noEnumShadow',
+        },
+      ],
+    },
+    {
+      code: `
 const x = 1;
 {
   type x = string;
