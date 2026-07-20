@@ -1,3 +1,18 @@
+## 8.65.0 (2026-07-20)
+
+### 🚀 Features
+
+- add warning when TS 7 is detected ([#12529](https://github.com/typescript-eslint/typescript-eslint/pull/12529))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.65.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.64.0 (2026-07-13)
 
 This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.

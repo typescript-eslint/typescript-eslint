@@ -1,3 +1,29 @@
+## 8.65.0 (2026-07-20)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-shadow] specialized error on enum declaration and member shadowing ([#12578](https://github.com/typescript-eslint/typescript-eslint/pull/12578))
+- add warning when TS 7 is detected ([#12529](https://github.com/typescript-eslint/typescript-eslint/pull/12529))
+- **eslint-plugin:** [no-restricted-imports] deprecate extension rule ([#12527](https://github.com/typescript-eslint/typescript-eslint/pull/12527), [#19562](https://github.com/typescript-eslint/typescript-eslint/issues/19562), [#11889](https://github.com/typescript-eslint/typescript-eslint/issues/11889))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-parameter-property-assignment] don't flag computed assignments with a variable key ([#12568](https://github.com/typescript-eslint/typescript-eslint/pull/12568))
+- **eslint-plugin:** [unbound-method] report unbound methods accessed via member expression on union types ([#12448](https://github.com/typescript-eslint/typescript-eslint/pull/12448))
+- **eslint-plugin:** [prefer-string-starts-ends-with] handle escaped $ ending regex literals ([#12515](https://github.com/typescript-eslint/typescript-eslint/pull/12515))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- Serhii Leniv @Serhii-Leniv
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.65.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.64.0 (2026-07-13)
 
 ### 🚀 Features
