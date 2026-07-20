@@ -1734,8 +1734,9 @@ type MatchRegexConfig = {
 
 type PrefixSuffixConfig = string[];
 
-type Options = (/** Multiple selectors in one config */
-| {
+type Options = (
+  /** Multiple selectors in one config */
+  | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
       filter?: MatchRegexConfig | string;
@@ -2216,12 +2217,7 @@ type Options = (/** Multiple selectors in one config */
       format: FormatOptionsConfig;
       leadingUnderscore?: UnderscoreOptions;
       modifiers?: (
-        | 'async'
-        | 'const'
-        | 'destructured'
-        | 'exported'
-        | 'global'
-        | 'unused'
+        'async' | 'const' | 'destructured' | 'exported' | 'global' | 'unused'
       )[];
       prefix?: PrefixSuffixConfig;
       selector: 'variable';

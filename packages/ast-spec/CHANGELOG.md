@@ -1,3 +1,18 @@
+## 8.64.0 (2026-07-13)
+
+### 🚀 Features
+
+- **typescript-estree:** throw for invalid definite assignment in class properties ([#12543](https://github.com/typescript-eslint/typescript-eslint/pull/12543))
+- support parsing `import defer` ([#12513](https://github.com/typescript-eslint/typescript-eslint/pull/12513))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.64.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.63.0 (2026-07-06)
 
 This was a version bump only for ast-spec to align it with other projects, there were no code changes.

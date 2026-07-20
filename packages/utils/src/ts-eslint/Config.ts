@@ -26,8 +26,7 @@ export namespace SharedConfig {
     | /** @deprecated use `'readonly'` */ false
     | /** @deprecated use `'writable'` */ true;
   export type GlobalVariableOption =
-    | GlobalVariableOptionBase
-    | GlobalVariableOptionBoolean;
+    GlobalVariableOptionBase | GlobalVariableOptionBoolean;
 
   export interface GlobalsConfig {
     [name: string]: GlobalVariableOption;
@@ -204,9 +203,7 @@ export namespace FlatConfig {
      * @default "warn"
      */
     reportUnusedDisableDirectives?:
-      | boolean
-      | SharedConfig.Severity
-      | SharedConfig.SeverityString;
+      boolean | SharedConfig.Severity | SharedConfig.SeverityString;
     /**
      * A severity string indicating if and how unused inline directives
      * should be tracked and reported.
@@ -215,8 +212,7 @@ export namespace FlatConfig {
      * @default "off"
      */
     reportUnusedInlineConfigs?:
-      | SharedConfig.Severity
-      | SharedConfig.SeverityString;
+      SharedConfig.Severity | SharedConfig.SeverityString;
   }
 
   export interface LanguageOptions {

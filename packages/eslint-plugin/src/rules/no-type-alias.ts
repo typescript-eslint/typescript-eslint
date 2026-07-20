@@ -26,8 +26,7 @@ export type Options = [
 export type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
 
 type CompositionType =
-  | AST_NODE_TYPES.TSIntersectionType
-  | AST_NODE_TYPES.TSUnionType;
+  AST_NODE_TYPES.TSIntersectionType | AST_NODE_TYPES.TSUnionType;
 interface TypeWithLabel {
   compositionType: CompositionType | null;
   node: TSESTree.Node;

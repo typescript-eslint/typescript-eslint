@@ -13,8 +13,6 @@ export default {
     unresolved: 'off',
   },
 
-  vite: false,
-
   vitest: {
     config: ['vitest.config.mts'],
     entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],

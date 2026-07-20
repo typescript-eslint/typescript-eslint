@@ -21,5 +21,4 @@ export interface TSTypePredicateNoAsserts extends TSTypePredicateBase {
 }
 
 export type TSTypePredicate =
-  | TSTypePredicateNoAsserts
-  | TSTypePredicateWithAsserts;
+  TSTypePredicateNoAsserts | TSTypePredicateWithAsserts;

@@ -1881,7 +1881,7 @@ type A = string;
 type B = string;
 type C = string;
 type D = string;
-declare function f<T extends A extends B ? C : D>(): T | null;
+declare function f<T extends (A extends B ? C : D)>(): T | null;
       `,
       errors: [
         {

@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-literal-enum-member';
 
@@ -46,12 +46,12 @@ enum ValidPlain {
   A,
 }
     `,
-    `
+    noFormat`
 enum ValidQuotedKey {
   'a',
 }
     `,
-    `
+    noFormat`
 enum ValidQuotedKeyWithAssignment {
   'a' = 1,
 }

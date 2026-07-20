@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures > legacy-fixtures > basics > function-anonymus-with-type-parameters > AST Alignment - AST`]
+exports[`AST Fixtures > legacy-fixtures > basics > function-anonymous-with-type-parameters > AST Alignment - AST`]
 Snapshot Diff:
 - TSESTree
 + Babel

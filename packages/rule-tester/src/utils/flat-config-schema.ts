@@ -293,12 +293,10 @@ const disableDirectiveSeveritySchema: ObjectPropertySchema<SharedConfig.RuleLeve
       return normalizeSeverityToNumber(value!);
     },
     validate(value: unknown) {
-      if (
-        !(
-          ALLOWED_SEVERITIES.has(value as number | string) ||
-          typeof value === 'boolean'
-        )
-      ) {
+      if (!(
+        ALLOWED_SEVERITIES.has(value as number | string) ||
+        typeof value === 'boolean'
+      )) {
         throw new TypeError(
           'Expected one of: "error", "warn", "off", 0, 1, 2, or a boolean.',
         );

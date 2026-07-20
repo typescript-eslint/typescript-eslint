@@ -64,10 +64,7 @@ export interface PackageSpecifier {
  * See [TypeOrValueSpecifier](/packages/type-utils/type-or-value-specifier).
  */
 export type TypeOrValueSpecifier =
-  | string
-  | FileSpecifier
-  | LibSpecifier
-  | PackageSpecifier;
+  string | FileSpecifier | LibSpecifier | PackageSpecifier;
 
 export const typeOrValueSpecifiersSchema = {
   items: {

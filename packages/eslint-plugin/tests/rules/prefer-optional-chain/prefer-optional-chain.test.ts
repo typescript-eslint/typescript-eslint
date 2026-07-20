@@ -4514,26 +4514,22 @@ foo.bar?.baz?.buzz;
           {
             code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo && foo.bar && foo.bar.baz.buzz;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 35,
-                endLine: 6,
-                line: 6,
+                endLine: 4,
+                line: 4,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
             ],
             output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo?.bar?.baz.buzz;
             `,
           },
@@ -4615,9 +4611,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -4627,8 +4621,8 @@ foo && foo[bar] && foo[bar].baz && foo[bar].baz.buzz;
               {
                 column: 1,
                 endColumn: 53,
-                endLine: 12,
-                line: 12,
+                endLine: 10,
+                line: 10,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -4638,9 +4632,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -4653,9 +4645,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -4665,8 +4655,8 @@ foo && foo[bar].baz && foo[bar].baz.buzz;
               {
                 column: 1,
                 endColumn: 41,
-                endLine: 12,
-                line: 12,
+                endLine: 10,
+                line: 10,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -4676,9 +4666,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -4689,17 +4677,15 @@ foo?.[bar].baz?.buzz;
             code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo && foo[bar.baz] && foo[bar.baz].buzz;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 41,
-                endLine: 7,
-                line: 7,
+                endLine: 5,
+                line: 5,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -4707,9 +4693,7 @@ foo && foo[bar.baz] && foo[bar.baz].buzz;
             output: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo?.[bar.baz]?.buzz;
             `,
           },
@@ -4718,9 +4702,7 @@ foo?.[bar.baz]?.buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -4730,8 +4712,8 @@ foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz();
               {
                 column: 1,
                 endColumn: 52,
-                endLine: 11,
-                line: 11,
+                endLine: 9,
+                line: 9,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -4740,9 +4722,7 @@ foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -4870,9 +4850,7 @@ foo.bar?.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -4882,8 +4860,8 @@ foo && foo.bar && foo.bar.baz.buzz && foo.bar.baz.buzz();
               {
                 column: 1,
                 endColumn: 57,
-                endLine: 11,
-                line: 11,
+                endLine: 9,
+                line: 9,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -4892,9 +4870,7 @@ foo && foo.bar && foo.bar.baz.buzz && foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -5100,26 +5076,22 @@ foo?.bar.baz?.[buzz];
           {
             code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo && foo?.() && foo?.().bar;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 30,
-                endLine: 6,
-                line: 6,
+                endLine: 4,
+                line: 4,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
             ],
             output: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo?.()?.bar;
             `,
           },
@@ -5277,26 +5249,22 @@ foo.bar?.baz?.buzz && bing;
           {
             code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo && foo.bar && foo.bar.baz.buzz && bing;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 35,
-                endLine: 6,
-                line: 6,
+                endLine: 4,
+                line: 4,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
             ],
             output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo?.bar?.baz.buzz && bing;
             `,
           },
@@ -5378,9 +5346,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -5390,8 +5356,8 @@ foo && foo[bar] && foo[bar].baz && foo[bar].baz.buzz && bing;
               {
                 column: 1,
                 endColumn: 53,
-                endLine: 12,
-                line: 12,
+                endLine: 10,
+                line: 10,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -5401,9 +5367,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -5416,9 +5380,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -5428,8 +5390,8 @@ foo && foo[bar].baz && foo[bar].baz.buzz && bing;
               {
                 column: 1,
                 endColumn: 41,
-                endLine: 12,
-                line: 12,
+                endLine: 10,
+                line: 10,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -5439,9 +5401,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -5452,17 +5412,15 @@ foo?.[bar].baz?.buzz && bing;
             code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo && foo[bar.baz] && foo[bar.baz].buzz && bing;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 41,
-                endLine: 7,
-                line: 7,
+                endLine: 5,
+                line: 5,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -5470,9 +5428,7 @@ foo && foo[bar.baz] && foo[bar.baz].buzz && bing;
             output: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo?.[bar.baz]?.buzz && bing;
             `,
           },
@@ -5481,9 +5437,7 @@ foo?.[bar.baz]?.buzz && bing;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -5493,8 +5447,8 @@ foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz() && bing;
               {
                 column: 1,
                 endColumn: 52,
-                endLine: 11,
-                line: 11,
+                endLine: 9,
+                line: 9,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -5503,9 +5457,7 @@ foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz() && bing;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -5633,9 +5585,7 @@ foo.bar?.baz.buzz() && bing;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -5645,8 +5595,8 @@ foo && foo.bar && foo.bar.baz.buzz && foo.bar.baz.buzz() && bing;
               {
                 column: 1,
                 endColumn: 57,
-                endLine: 11,
-                line: 11,
+                endLine: 9,
+                line: 9,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -5655,9 +5605,7 @@ foo && foo.bar && foo.bar.baz.buzz && foo.bar.baz.buzz() && bing;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -5877,26 +5825,22 @@ foo?.bar.baz?.[buzz] && bing;
           {
             code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo && foo?.() && foo?.().bar && bing;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 30,
-                endLine: 6,
-                line: 6,
+                endLine: 4,
+                line: 4,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
             ],
             output: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo?.()?.bar && bing;
             `,
           },
@@ -6053,26 +5997,22 @@ foo.bar?.baz?.buzz && bing.bong;
           {
             code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo && foo.bar && foo.bar.baz.buzz && bing.bong;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 35,
-                endLine: 6,
-                line: 6,
+                endLine: 4,
+                line: 4,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
             ],
             output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo?.bar?.baz.buzz && bing.bong;
             `,
           },
@@ -6154,9 +6094,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6166,8 +6104,8 @@ foo && foo[bar] && foo[bar].baz && foo[bar].baz.buzz && bing.bong;
               {
                 column: 1,
                 endColumn: 53,
-                endLine: 12,
-                line: 12,
+                endLine: 10,
+                line: 10,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -6177,9 +6115,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6192,9 +6128,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6204,8 +6138,8 @@ foo && foo[bar].baz && foo[bar].baz.buzz && bing.bong;
               {
                 column: 1,
                 endColumn: 41,
-                endLine: 12,
-                line: 12,
+                endLine: 10,
+                line: 10,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -6215,9 +6149,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6228,17 +6160,15 @@ foo?.[bar].baz?.buzz && bing.bong;
             code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo && foo[bar.baz] && foo[bar.baz].buzz && bing.bong;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 41,
-                endLine: 7,
-                line: 7,
+                endLine: 5,
+                line: 5,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -6246,9 +6176,7 @@ foo && foo[bar.baz] && foo[bar.baz].buzz && bing.bong;
             output: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo?.[bar.baz]?.buzz && bing.bong;
             `,
           },
@@ -6257,9 +6185,7 @@ foo?.[bar.baz]?.buzz && bing.bong;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6269,8 +6195,8 @@ foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz() && bing.bong;
               {
                 column: 1,
                 endColumn: 52,
-                endLine: 11,
-                line: 11,
+                endLine: 9,
+                line: 9,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -6279,9 +6205,7 @@ foo && foo.bar && foo.bar.baz && foo.bar.baz.buzz() && bing.bong;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6415,9 +6339,7 @@ foo.bar?.baz.buzz() && bing.bong;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -6427,8 +6349,8 @@ foo && foo.bar && foo.bar.baz.buzz && foo.bar.baz.buzz() && bing.bong;
               {
                 column: 1,
                 endColumn: 57,
-                endLine: 11,
-                line: 11,
+                endLine: 9,
+                line: 9,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -6437,9 +6359,7 @@ foo && foo.bar && foo.bar.baz.buzz && foo.bar.baz.buzz() && bing.bong;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -6659,26 +6579,22 @@ foo?.bar.baz?.[buzz] && bing.bong;
           {
             code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo && foo?.() && foo?.().bar && bing.bong;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 30,
-                endLine: 6,
-                line: 6,
+                endLine: 4,
+                line: 4,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
             ],
             output: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo?.()?.bar && bing.bong;
             `,
           },
@@ -6757,9 +6673,7 @@ foo.bar !== null && foo.bar.baz !== null && foo.bar.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo !== null && foo.bar !== null && foo.bar.baz.buzz;
               `,
             },
@@ -6800,9 +6714,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6815,9 +6727,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6828,9 +6738,7 @@ foo !== null && foo[bar].baz !== null && foo[bar].baz.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo !== null && foo[bar.baz] !== null && foo[bar.baz].buzz;
               `,
             },
@@ -6839,9 +6747,7 @@ foo !== null && foo[bar.baz] !== null && foo[bar.baz].buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -6902,9 +6808,7 @@ foo.bar !== null && foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -7005,9 +6909,7 @@ foo !== null && foo?.bar.baz !== null && foo?.bar.baz[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo !== null && foo?.() !== null && foo?.().bar;
               `,
             },
@@ -7940,26 +7842,22 @@ foo.bar?.baz?.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo != null && foo.bar != null && foo.bar.baz.buzz;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 51,
-                  endLine: 6,
-                  line: 6,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
                       messageId: 'optionalChainSuggest',
                       output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo?.bar?.baz.buzz;
               `,
                     },
@@ -8068,9 +7966,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8080,8 +7976,8 @@ foo != null && foo[bar] != null && foo[bar].baz != null && foo[bar].baz.buzz;
                 {
                   column: 1,
                   endColumn: 77,
-                  endLine: 12,
-                  line: 12,
+                  endLine: 10,
+                  line: 10,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -8091,9 +7987,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8111,9 +8005,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8123,8 +8015,8 @@ foo != null && foo[bar].baz != null && foo[bar].baz.buzz;
                 {
                   column: 1,
                   endColumn: 57,
-                  endLine: 12,
-                  line: 12,
+                  endLine: 10,
+                  line: 10,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -8134,9 +8026,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8152,17 +8042,15 @@ foo?.[bar].baz?.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo != null && foo[bar.baz] != null && foo[bar.baz].buzz;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 57,
-                  endLine: 7,
-                  line: 7,
+                  endLine: 5,
+                  line: 5,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -8170,9 +8058,7 @@ foo != null && foo[bar.baz] != null && foo[bar.baz].buzz;
                       output: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo?.[bar.baz]?.buzz;
               `,
                     },
@@ -8186,9 +8072,7 @@ foo?.[bar.baz]?.buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8198,8 +8082,8 @@ foo != null && foo.bar != null && foo.bar.baz != null && foo.bar.baz.buzz();
                 {
                   column: 1,
                   endColumn: 76,
-                  endLine: 11,
-                  line: 11,
+                  endLine: 9,
+                  line: 9,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -8208,9 +8092,7 @@ foo != null && foo.bar != null && foo.bar.baz != null && foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8370,9 +8252,7 @@ foo.bar?.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -8385,8 +8265,8 @@ foo != null &&
                 {
                   column: 1,
                   endColumn: 21,
-                  endLine: 14,
-                  line: 11,
+                  endLine: 12,
+                  line: 9,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -8395,9 +8275,7 @@ foo != null &&
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -8641,26 +8519,22 @@ foo?.bar.baz?.[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo != null && foo?.() != null && foo?.().bar;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 46,
-                  endLine: 6,
-                  line: 6,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
                       messageId: 'optionalChainSuggest',
                       output: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo?.()?.bar;
               `,
                     },
@@ -8751,9 +8625,7 @@ foo.bar !== undefined && foo.bar.baz !== undefined && foo.bar.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo !== undefined && foo.bar !== undefined && foo.bar.baz.buzz;
               `,
             },
@@ -8794,9 +8666,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8812,9 +8682,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8825,9 +8693,7 @@ foo !== undefined && foo[bar].baz !== undefined && foo[bar].baz.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo !== undefined && foo[bar.baz] !== undefined && foo[bar.baz].buzz;
               `,
             },
@@ -8836,9 +8702,7 @@ foo !== undefined && foo[bar.baz] !== undefined && foo[bar.baz].buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -8902,9 +8766,7 @@ foo.bar !== undefined && foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -8993,9 +8855,7 @@ foo !== undefined && foo?.bar.baz !== undefined && foo?.bar.baz[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo !== undefined && foo?.() !== undefined && foo?.().bar;
               `,
             },
@@ -9106,8 +8966,7 @@ foo.bar?.();
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo !== undefined &&
   foo.bar !== undefined &&
   foo.bar.baz !== undefined &&
@@ -9117,16 +8976,15 @@ foo !== undefined &&
                 {
                   column: 1,
                   endColumn: 19,
-                  endLine: 8,
-                  line: 5,
+                  endLine: 7,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
                       messageId: 'optionalChainSuggest',
                       output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo?.bar?.baz?.buzz;
               `,
                     },
@@ -9217,8 +9075,7 @@ foo.bar?.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo !== undefined &&
   foo.bar !== undefined &&
   foo.bar.baz !== undefined &&
@@ -9229,16 +9086,15 @@ foo !== undefined &&
                 {
                   column: 1,
                   endColumn: 19,
-                  endLine: 9,
-                  line: 5,
+                  endLine: 8,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
                       messageId: 'optionalChainSuggest',
                       output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo?.bar?.baz?.buzz;
               `,
                     },
@@ -9250,8 +9106,7 @@ foo?.bar?.baz?.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo.bar !== undefined &&
   foo.bar.baz !== undefined &&
   foo.bar.baz !== undefined &&
@@ -9261,16 +9116,15 @@ foo.bar !== undefined &&
                 {
                   column: 1,
                   endColumn: 19,
-                  endLine: 8,
-                  line: 5,
+                  endLine: 7,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
                       messageId: 'optionalChainSuggest',
                       output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo.bar?.baz?.buzz;
               `,
                     },
@@ -9495,24 +9349,22 @@ foo.bar?.baz?.buzz?.();
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: () => number } } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: () => number } } | undefined } | undefined;
 foo !== undefined && foo.bar !== undefined && foo.bar.baz.buzz();
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 65,
-                  endLine: 5,
-                  line: 5,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
                       messageId: 'optionalChainSuggest',
                       output: `
 declare const foo:
-  | { bar: { baz: { buzz: () => number } } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: () => number } } | undefined } | undefined;
 foo?.bar?.baz.buzz();
               `,
                     },
@@ -9586,8 +9438,7 @@ foo?.bar?.baz.buzz?.();
               code: `
 declare const foo: {
   bar: () =>
-    | { baz: { buzz: (() => number) | undefined } | undefined }
-    | undefined;
+    { baz: { buzz: (() => number) | undefined } | undefined } | undefined;
 };
 foo.bar !== undefined &&
   foo.bar() !== undefined &&
@@ -9599,8 +9450,8 @@ foo.bar !== undefined &&
                 {
                   column: 1,
                   endColumn: 23,
-                  endLine: 11,
-                  line: 7,
+                  endLine: 10,
+                  line: 6,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -9608,8 +9459,7 @@ foo.bar !== undefined &&
                       output: `
 declare const foo: {
   bar: () =>
-    | { baz: { buzz: (() => number) | undefined } | undefined }
-    | undefined;
+    { baz: { buzz: (() => number) | undefined } | undefined } | undefined;
 };
 foo.bar?.()?.baz?.buzz?.();
               `,
@@ -9755,16 +9605,15 @@ foo?.bar?.baz?.[buzz]?.();
               code: `
 declare const buzz: string;
 declare const foo:
-  | { bar: { baz: { [k: string]: number } | undefined } }
-  | undefined;
+  { bar: { baz: { [k: string]: number } | undefined } } | undefined;
 foo !== undefined && foo?.bar.baz !== undefined && foo?.bar.baz[buzz];
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 70,
-                  endLine: 6,
-                  line: 6,
+                  endLine: 5,
+                  line: 5,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -9772,8 +9621,7 @@ foo !== undefined && foo?.bar.baz !== undefined && foo?.bar.baz[buzz];
                       output: `
 declare const buzz: string;
 declare const foo:
-  | { bar: { baz: { [k: string]: number } | undefined } }
-  | undefined;
+  { bar: { baz: { [k: string]: number } | undefined } } | undefined;
 foo?.bar.baz?.[buzz];
               `,
                     },
@@ -10062,26 +9910,22 @@ foo.bar?.baz?.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo != undefined && foo.bar != undefined && foo.bar.baz.buzz;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 61,
-                  endLine: 6,
-                  line: 6,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
                       messageId: 'optionalChainSuggest',
                       output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo?.bar?.baz.buzz;
               `,
                     },
@@ -10190,9 +10034,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -10205,8 +10047,8 @@ foo != undefined &&
                 {
                   column: 1,
                   endColumn: 20,
-                  endLine: 15,
-                  line: 12,
+                  endLine: 13,
+                  line: 10,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -10216,9 +10058,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -10236,9 +10076,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -10248,8 +10086,8 @@ foo != undefined && foo[bar].baz != undefined && foo[bar].baz.buzz;
                 {
                   column: 1,
                   endColumn: 67,
-                  endLine: 12,
-                  line: 12,
+                  endLine: 10,
+                  line: 10,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -10259,9 +10097,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -10277,17 +10113,15 @@ foo?.[bar].baz?.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo != undefined && foo[bar.baz] != undefined && foo[bar.baz].buzz;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 67,
-                  endLine: 7,
-                  line: 7,
+                  endLine: 5,
+                  line: 5,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -10295,9 +10129,7 @@ foo != undefined && foo[bar.baz] != undefined && foo[bar.baz].buzz;
                       output: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo?.[bar.baz]?.buzz;
               `,
                     },
@@ -10311,9 +10143,7 @@ foo?.[bar.baz]?.buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -10326,8 +10156,8 @@ foo != undefined &&
                 {
                   column: 1,
                   endColumn: 21,
-                  endLine: 14,
-                  line: 11,
+                  endLine: 12,
+                  line: 9,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -10336,9 +10166,7 @@ foo != undefined &&
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -10498,9 +10326,7 @@ foo.bar?.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -10513,8 +10339,8 @@ foo != undefined &&
                 {
                   column: 1,
                   endColumn: 21,
-                  endLine: 14,
-                  line: 11,
+                  endLine: 12,
+                  line: 9,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
@@ -10523,9 +10349,7 @@ foo != undefined &&
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -10772,26 +10596,22 @@ foo?.bar.baz?.[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo != undefined && foo?.() != undefined && foo?.().bar;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 56,
-                  endLine: 6,
-                  line: 6,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: [
                     {
                       messageId: 'optionalChainSuggest',
                       output: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo?.()?.bar;
               `,
                     },
@@ -10969,26 +10789,22 @@ declare const foo: {
           {
             code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 !foo || !foo.bar || !foo.bar.baz.buzz;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 38,
-                endLine: 6,
-                line: 6,
+                endLine: 4,
+                line: 4,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
             ],
             output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 !foo?.bar?.baz.buzz;
             `,
           },
@@ -11070,9 +10886,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11082,8 +10896,8 @@ declare const foo:
               {
                 column: 1,
                 endColumn: 57,
-                endLine: 12,
-                line: 12,
+                endLine: 10,
+                line: 10,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -11093,9 +10907,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11108,9 +10920,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11120,8 +10930,8 @@ declare const foo:
               {
                 column: 1,
                 endColumn: 44,
-                endLine: 12,
-                line: 12,
+                endLine: 10,
+                line: 10,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -11131,9 +10941,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11144,17 +10952,15 @@ declare const foo:
             code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 !foo || !foo[bar.baz] || !foo[bar.baz].buzz;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 44,
-                endLine: 7,
-                line: 7,
+                endLine: 5,
+                line: 5,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -11162,9 +10968,7 @@ declare const foo:
             output: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 !foo?.[bar.baz]?.buzz;
             `,
           },
@@ -11173,9 +10977,7 @@ declare const foo:
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11185,8 +10987,8 @@ declare const foo:
               {
                 column: 1,
                 endColumn: 56,
-                endLine: 11,
-                line: 11,
+                endLine: 9,
+                line: 9,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -11195,9 +10997,7 @@ declare const foo:
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11325,9 +11125,7 @@ declare const foo: { bar: { baz: { buzz: () => number } } | null | undefined };
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -11337,8 +11135,8 @@ declare const foo:
               {
                 column: 1,
                 endColumn: 61,
-                endLine: 11,
-                line: 11,
+                endLine: 9,
+                line: 9,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
@@ -11347,9 +11145,7 @@ declare const foo:
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -11559,26 +11355,22 @@ declare const foo:
           {
             code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 !foo || !foo?.() || !foo?.().bar;
             `,
             errors: [
               {
                 column: 1,
                 endColumn: 33,
-                endLine: 6,
-                line: 6,
+                endLine: 4,
+                line: 4,
                 messageId: 'preferOptionalChain',
                 suggestions: null,
               },
             ],
             output: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 !foo?.()?.bar;
             `,
           },
@@ -11657,9 +11449,7 @@ foo.bar === null || foo.bar.baz === null || foo.bar.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo === null || foo.bar === null || foo.bar.baz.buzz;
               `,
             },
@@ -11700,9 +11490,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11715,9 +11503,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11728,9 +11514,7 @@ foo === null || foo[bar].baz === null || foo[bar].baz.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo === null || foo[bar.baz] === null || foo[bar.baz].buzz;
               `,
             },
@@ -11739,9 +11523,7 @@ foo === null || foo[bar.baz] === null || foo[bar.baz].buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -11802,9 +11584,7 @@ foo.bar === null || foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -11905,9 +11685,7 @@ foo === null || foo?.bar.baz === null || foo?.bar.baz[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo === null || foo?.() === null || foo?.().bar;
               `,
             },
@@ -12825,26 +12603,22 @@ foo.bar?.baz?.buzz == null;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo == null || foo.bar == null || foo.bar.baz.buzz == null;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 59,
-                  endLine: 6,
-                  line: 6,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
               ],
               output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo?.bar?.baz.buzz == null;
               `,
             },
@@ -12933,9 +12707,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -12948,8 +12720,8 @@ foo == null ||
                 {
                   column: 1,
                   endColumn: 28,
-                  endLine: 15,
-                  line: 12,
+                  endLine: 13,
+                  line: 10,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -12959,9 +12731,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -12974,9 +12744,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -12986,8 +12754,8 @@ foo == null || foo[bar].baz == null || foo[bar].baz.buzz == null;
                 {
                   column: 1,
                   endColumn: 65,
-                  endLine: 12,
-                  line: 12,
+                  endLine: 10,
+                  line: 10,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -12997,9 +12765,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13010,17 +12776,15 @@ foo?.[bar].baz?.buzz == null;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo == null || foo[bar.baz] == null || foo[bar.baz].buzz == null;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 65,
-                  endLine: 7,
-                  line: 7,
+                  endLine: 5,
+                  line: 5,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -13028,9 +12792,7 @@ foo == null || foo[bar.baz] == null || foo[bar.baz].buzz == null;
               output: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo?.[bar.baz]?.buzz == null;
               `,
             },
@@ -13039,9 +12801,7 @@ foo?.[bar.baz]?.buzz == null;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13054,8 +12814,8 @@ foo == null ||
                 {
                   column: 1,
                   endColumn: 29,
-                  endLine: 14,
-                  line: 11,
+                  endLine: 12,
+                  line: 9,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -13064,9 +12824,7 @@ foo == null ||
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13201,9 +12959,7 @@ foo.bar?.baz.buzz() == null;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -13216,8 +12972,8 @@ foo == null ||
                 {
                   column: 1,
                   endColumn: 29,
-                  endLine: 14,
-                  line: 11,
+                  endLine: 12,
+                  line: 9,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -13226,9 +12982,7 @@ foo == null ||
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -13445,26 +13199,22 @@ foo?.bar.baz?.[buzz] == null;
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo == null || foo?.() == null || foo?.().bar == null;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 54,
-                  endLine: 6,
-                  line: 6,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
               ],
               output: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo?.()?.bar == null;
               `,
             },
@@ -13545,9 +13295,7 @@ foo.bar === undefined || foo.bar.baz === undefined || foo.bar.baz.buzz;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo === undefined || foo.bar === undefined || foo.bar.baz.buzz;
               `,
             },
@@ -13588,9 +13336,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13606,9 +13352,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13619,9 +13363,7 @@ foo === undefined || foo[bar].baz === undefined || foo[bar].baz.buzz;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo === undefined || foo[bar.baz] === undefined || foo[bar.baz].buzz;
               `,
             },
@@ -13630,9 +13372,7 @@ foo === undefined || foo[bar.baz] === undefined || foo[bar.baz].buzz;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -13696,9 +13436,7 @@ foo.bar === undefined || foo.bar.baz.buzz();
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -13787,9 +13525,7 @@ foo === undefined || foo?.bar.baz === undefined || foo?.bar.baz[buzz];
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo === undefined || foo?.() === undefined || foo?.().bar;
               `,
             },
@@ -13880,8 +13616,7 @@ foo.bar?.() === undefined;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo === undefined ||
   foo.bar === undefined ||
   foo.bar.baz === undefined ||
@@ -13891,16 +13626,15 @@ foo === undefined ||
                 {
                   column: 1,
                   endColumn: 33,
-                  endLine: 8,
-                  line: 5,
+                  endLine: 7,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
               ],
               output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo?.bar?.baz?.buzz === undefined;
               `,
             },
@@ -13973,8 +13707,7 @@ foo.bar?.baz.buzz === undefined;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo === undefined ||
   foo.bar === undefined ||
   foo.bar.baz === undefined ||
@@ -13985,24 +13718,22 @@ foo === undefined ||
                 {
                   column: 1,
                   endColumn: 33,
-                  endLine: 9,
-                  line: 5,
+                  endLine: 8,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
               ],
               output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo?.bar?.baz?.buzz === undefined;
               `,
             },
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo.bar === undefined ||
   foo.bar.baz === undefined ||
   foo.bar.baz === undefined ||
@@ -14012,16 +13743,15 @@ foo.bar === undefined ||
                 {
                   column: 1,
                   endColumn: 33,
-                  endLine: 8,
-                  line: 5,
+                  endLine: 7,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
               ],
               output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } | undefined } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: number } | undefined } | undefined } | undefined;
 foo.bar?.baz?.buzz === undefined;
               `,
             },
@@ -14215,24 +13945,22 @@ foo.bar?.baz?.buzz?.() === undefined;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: () => number } } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: () => number } } | undefined } | undefined;
 foo === undefined || foo.bar === undefined || foo.bar.baz.buzz() === undefined;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 79,
-                  endLine: 5,
-                  line: 5,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
               ],
               output: `
 declare const foo:
-  | { bar: { baz: { buzz: () => number } } | undefined }
-  | undefined;
+  { bar: { baz: { buzz: () => number } } | undefined } | undefined;
 foo?.bar?.baz.buzz() === undefined;
               `,
             },
@@ -14291,8 +14019,7 @@ foo?.bar?.baz.buzz?.() === undefined;
               code: `
 declare const foo: {
   bar: () =>
-    | { baz: { buzz: (() => number) | undefined } | undefined }
-    | undefined;
+    { baz: { buzz: (() => number) | undefined } | undefined } | undefined;
 };
 foo.bar === undefined ||
   foo.bar() === undefined ||
@@ -14304,8 +14031,8 @@ foo.bar === undefined ||
                 {
                   column: 1,
                   endColumn: 37,
-                  endLine: 11,
-                  line: 7,
+                  endLine: 10,
+                  line: 6,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -14313,8 +14040,7 @@ foo.bar === undefined ||
               output: `
 declare const foo: {
   bar: () =>
-    | { baz: { buzz: (() => number) | undefined } | undefined }
-    | undefined;
+    { baz: { buzz: (() => number) | undefined } | undefined } | undefined;
 };
 foo.bar?.()?.baz?.buzz?.() === undefined;
               `,
@@ -14440,8 +14166,7 @@ foo?.bar?.baz?.[buzz]?.() === undefined;
               code: `
 declare const buzz: string;
 declare const foo:
-  | { bar: { baz: { [k: string]: number } | undefined } }
-  | undefined;
+  { bar: { baz: { [k: string]: number } | undefined } } | undefined;
 foo === undefined ||
   foo?.bar.baz === undefined ||
   foo?.bar.baz[buzz] === undefined;
@@ -14450,8 +14175,8 @@ foo === undefined ||
                 {
                   column: 1,
                   endColumn: 35,
-                  endLine: 8,
-                  line: 6,
+                  endLine: 7,
+                  line: 5,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -14459,8 +14184,7 @@ foo === undefined ||
               output: `
 declare const buzz: string;
 declare const foo:
-  | { bar: { baz: { [k: string]: number } | undefined } }
-  | undefined;
+  { bar: { baz: { [k: string]: number } | undefined } } | undefined;
 foo?.bar.baz?.[buzz] === undefined;
               `,
             },
@@ -14708,26 +14432,22 @@ foo.bar?.baz?.buzz == undefined;
             {
               code: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo == undefined || foo.bar == undefined || foo.bar.baz.buzz == undefined;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 74,
-                  endLine: 6,
-                  line: 6,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
               ],
               output: `
 declare const foo:
-  | { bar: { baz: { buzz: number } } | null | undefined }
-  | null
-  | undefined;
+  { bar: { baz: { buzz: number } } | null | undefined } | null | undefined;
 foo?.bar?.baz.buzz == undefined;
               `,
             },
@@ -14816,9 +14536,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -14831,8 +14549,8 @@ foo == undefined ||
                 {
                   column: 1,
                   endColumn: 33,
-                  endLine: 15,
-                  line: 12,
+                  endLine: 13,
+                  line: 10,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -14842,9 +14560,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -14857,9 +14573,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -14869,8 +14583,8 @@ foo == undefined || foo[bar].baz == undefined || foo[bar].baz.buzz == undefined;
                 {
                   column: 1,
                   endColumn: 80,
-                  endLine: 12,
-                  line: 12,
+                  endLine: 10,
+                  line: 10,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -14880,9 +14594,7 @@ declare const bar: string;
 declare const foo:
   | {
       [k: string]:
-        | { baz: { buzz: number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -14893,17 +14605,15 @@ foo?.[bar].baz?.buzz == undefined;
               code: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo == undefined || foo[bar.baz] == undefined || foo[bar.baz].buzz == undefined;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 80,
-                  endLine: 7,
-                  line: 7,
+                  endLine: 5,
+                  line: 5,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -14911,9 +14621,7 @@ foo == undefined || foo[bar.baz] == undefined || foo[bar.baz].buzz == undefined;
               output: `
 declare const bar: { baz: string };
 declare const foo:
-  | { [k: string]: { buzz: number } | null | undefined }
-  | null
-  | undefined;
+  { [k: string]: { buzz: number } | null | undefined } | null | undefined;
 foo?.[bar.baz]?.buzz == undefined;
               `,
             },
@@ -14922,9 +14630,7 @@ foo?.[bar.baz]?.buzz == undefined;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -14937,8 +14643,8 @@ foo == undefined ||
                 {
                   column: 1,
                   endColumn: 34,
-                  endLine: 14,
-                  line: 11,
+                  endLine: 12,
+                  line: 9,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -14947,9 +14653,7 @@ foo == undefined ||
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: () => number } | null | undefined }
-        | null
-        | undefined;
+        { baz: { buzz: () => number } | null | undefined } | null | undefined;
     }
   | null
   | undefined;
@@ -15084,9 +14788,7 @@ foo.bar?.baz.buzz() == undefined;
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -15099,8 +14801,8 @@ foo == undefined ||
                 {
                   column: 1,
                   endColumn: 34,
-                  endLine: 14,
-                  line: 11,
+                  endLine: 12,
+                  line: 9,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
@@ -15109,9 +14811,7 @@ foo == undefined ||
 declare const foo:
   | {
       bar:
-        | { baz: { buzz: (() => number) | null | undefined } }
-        | null
-        | undefined;
+        { baz: { buzz: (() => number) | null | undefined } } | null | undefined;
     }
   | null
   | undefined;
@@ -15330,26 +15030,22 @@ foo?.bar.baz?.[buzz] == undefined;
             {
               code: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo == undefined || foo?.() == undefined || foo?.().bar == undefined;
               `,
               errors: [
                 {
                   column: 1,
                   endColumn: 69,
-                  endLine: 6,
-                  line: 6,
+                  endLine: 4,
+                  line: 4,
                   messageId: 'preferOptionalChain',
                   suggestions: null,
                 },
               ],
               output: `
 declare const foo:
-  | (() => { bar: number } | null | undefined)
-  | null
-  | undefined;
+  (() => { bar: number } | null | undefined) | null | undefined;
 foo?.()?.bar == undefined;
               `,
             },

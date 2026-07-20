@@ -5,7 +5,4 @@ import type { LeftHandSideExpression } from './LeftHandSideExpression';
 
 // TODO - breaking change remove this
 export type TSUnaryExpression =
-  | AwaitExpression
-  | LeftHandSideExpression
-  | UnaryExpression
-  | UpdateExpression;
+  AwaitExpression | LeftHandSideExpression | UnaryExpression | UpdateExpression;

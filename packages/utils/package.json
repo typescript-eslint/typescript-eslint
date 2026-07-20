@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "8.63.0",
+  "version": "8.64.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -56,7 +56,8 @@
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.9.1",
@@ -106,7 +107,8 @@
           "^build",
           "typecheck"
         ]
-      }
+      },
+      "attw-check": {}
     }
   }
 }

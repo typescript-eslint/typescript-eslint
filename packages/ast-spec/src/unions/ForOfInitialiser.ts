@@ -5,6 +5,4 @@ import type {
 import type { Expression } from './Expression';
 
 export type ForOfInitialiser =
-  | Expression
-  | LetOrConstOrVarDeclaration
-  | UsingInForOfDeclaration;
+  Expression | LetOrConstOrVarDeclaration | UsingInForOfDeclaration;

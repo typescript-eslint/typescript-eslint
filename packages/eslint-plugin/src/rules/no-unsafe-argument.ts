@@ -15,10 +15,7 @@ import {
 } from '../util';
 
 export type MessageIds =
-  | 'unsafeArgument'
-  | 'unsafeArraySpread'
-  | 'unsafeSpread'
-  | 'unsafeTupleSpread';
+  'unsafeArgument' | 'unsafeArraySpread' | 'unsafeSpread' | 'unsafeTupleSpread';
 
 const enum RestTypeKind {
   Array,

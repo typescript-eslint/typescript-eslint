@@ -68,7 +68,7 @@ ruleTester.run('my-rule', rule, {
       code: 'const b = 1;',
       output: 'const c = 1;',
       errors: [
-        /* ... */
+        // ...
       ],
     },
     // passing `output = null` will enforce the code is NOT changed
@@ -76,7 +76,7 @@ ruleTester.run('my-rule', rule, {
       code: 'const c = 1;',
       output: null,
       errors: [
-        /* ... */
+        // ...
       ],
     },
     // Multi-pass fixes can be tested using the array form of output.
@@ -85,7 +85,7 @@ ruleTester.run('my-rule', rule, {
       code: 'const d = 1;',
       output: ['const e = 1;', 'const f = 1;'],
       errors: [
-        /* ... */
+        // ...
       ],
     },
 
@@ -190,7 +190,7 @@ ruleTester.run('my-rule', rule, {
     },
   ],
   invalid: [
-    /* ... */
+    // ...
   ],
 });
 ```
@@ -315,10 +315,10 @@ ruleTester.run('my-rule', rule, {
     requireLocation: true,
   },
   valid: [
-    /* ... */
+    // ...
   ],
   invalid: [
-    /* ... */
+    // ...
   ],
 });
 ```

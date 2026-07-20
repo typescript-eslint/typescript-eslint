@@ -18,8 +18,7 @@ export type PatternVisitorCallback = (
 export type PatternVisitorOptions = VisitorOptions;
 export class PatternVisitor extends VisitorBase {
   readonly #assignments: (
-    | TSESTree.AssignmentExpression
-    | TSESTree.AssignmentPattern
+    TSESTree.AssignmentExpression | TSESTree.AssignmentPattern
   )[] = [];
   readonly #callback: PatternVisitorCallback;
   readonly #restElements: TSESTree.RestElement[] = [];

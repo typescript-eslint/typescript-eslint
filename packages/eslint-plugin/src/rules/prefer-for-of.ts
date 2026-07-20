@@ -132,8 +132,7 @@ export default createRule({
         }
 
         const declarator = node.init.declarations[0] as
-          | TSESTree.VariableDeclarator
-          | undefined;
+          TSESTree.VariableDeclarator | undefined;
         if (
           !declarator ||
           !isZeroInitialized(declarator) ||

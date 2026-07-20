@@ -1,3 +1,23 @@
+## 8.64.0 (2026-07-13)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-loop-func] support `using` / `await using` declarations and deprecate the rule ([#12500](https://github.com/typescript-eslint/typescript-eslint/pull/12500))
+- **typescript-estree:** throw for invalid definite assignment in class properties ([#12543](https://github.com/typescript-eslint/typescript-eslint/pull/12543))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [require-array-sort-compare] handle constrained arrays ([#12512](https://github.com/typescript-eslint/typescript-eslint/pull/12512))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.64.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.63.0 (2026-07-06)
 
 ### 🚀 Features

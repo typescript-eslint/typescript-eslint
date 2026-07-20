@@ -58,5 +58,4 @@ export interface TSImportEqualsRequireDeclaration extends TSImportEqualsDeclarat
 }
 
 export type TSImportEqualsDeclaration =
-  | TSImportEqualsNamespaceDeclaration
-  | TSImportEqualsRequireDeclaration;
+  TSImportEqualsNamespaceDeclaration | TSImportEqualsRequireDeclaration;

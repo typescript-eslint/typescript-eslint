@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > element > PropertyDefinition > _error_ > definite-without-type > TSESTree - Error`]
+TSError
+  1 | class Bar {
+> 2 |   bar!;
+    |   ^^^^^ Declarations with definite assignment assertions must also have type annotations.
+  3 | }
+  4 |

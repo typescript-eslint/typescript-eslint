@@ -248,6 +248,29 @@ export function checkSyntaxError(
         );
       }
 
+      const isDefinite = !!node.exclamationToken;
+
+      if (isDefinite && isAbstract) {
+        throw createError(
+          node.exclamationToken,
+          `A definite assignment assertion '!' is not permitted in this context.`,
+        );
+      }
+
+      if (isDefinite && !node.type) {
+        throw createError(
+          node,
+          `Declarations with definite assignment assertions must also have type annotations.`,
+        );
+      }
+
+      if (isDefinite && node.initializer) {
+        throw createError(
+          node,
+          `Declarations with initializers cannot also have definite assignment assertions.`,
+        );
+      }
+
       if (
         node.name.kind === SyntaxKind.StringLiteral &&
         node.name.text === 'constructor'
@@ -366,14 +389,35 @@ export function checkSyntaxError(
 
     case SyntaxKind.ImportDeclaration: {
       const { importClause } = node;
+      const importPhase = getImportClausePhaseModifier(importClause);
+
       if (
-        getImportClausePhaseModifier(importClause) === 'type' &&
+        importPhase === 'type' &&
         importClause?.name &&
         importClause.namedBindings
       ) {
         throw createError(
           importClause,
           'A type-only import can specify a default import or named bindings, but not both.',
+        );
+      }
+
+      const isNamedImport =
+        importClause?.namedBindings?.kind === SyntaxKind.NamedImports;
+
+      const isDefaultImport = !!importClause?.name;
+
+      if (importPhase === 'defer' && isNamedImport) {
+        throw createError(
+          importClause,
+          'Named imports are not allowed in a deferred import.',
+        );
+      }
+
+      if (importPhase === 'defer' && isDefaultImport) {
+        throw createError(
+          importClause,
+          'Default imports are not allowed in a deferred import.',
         );
       }
 
