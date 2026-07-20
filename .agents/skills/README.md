@@ -12,4 +12,5 @@ skills/<name>/SKILL.md
 
 ## Available skills
 
+- [`docs-writing`](./docs-writing/SKILL.md) — write and review documentation with objective, verifiable claims and self-contained code examples.
 - [`rule-performance`](./rule-performance/SKILL.md) — defer expensive TypeScript type lookups behind cheap AST/syntactic guards when writing or reviewing typed lint rules.
