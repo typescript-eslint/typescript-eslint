@@ -10210,6 +10210,41 @@ const x = Boolean(a ?? b);
       ],
     },
     {
+      // a `Boolean` redefined in an outer scope is not the global builtin,
+      // even when called from a nested scope, so `ignoreBooleanCoercion`
+      // should not suppress this report
+      // https://github.com/typescript-eslint/typescript-eslint/issues/12524
+      code: `
+function outer() {
+  const Boolean = (x: unknown) => x;
+
+  return (a: string | null, b: string) => Boolean(a || b);
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function outer() {
+  const Boolean = (x: unknown) => x;
+
+  return (a: string | null, b: string) => Boolean(a ?? b);
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
       code: `
 let a: string | true | undefined;
 let b: string | boolean | undefined;
