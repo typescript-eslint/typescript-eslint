@@ -89,7 +89,14 @@ class A {
 }
       `,
       errors: [
-        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
       ],
     },
     {
@@ -100,7 +107,14 @@ class A {
 };
       `,
       errors: [
-        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
       ],
     },
     {
@@ -111,7 +125,14 @@ class A {
 }
       `,
       errors: [
-        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
       ],
     },
     {
@@ -122,7 +143,14 @@ class A {
 }
       `,
       errors: [
-        { column: 3, data: { name: '10' }, line: 4, messageId: 'unexpected' },
+        {
+          column: 3,
+          data: { name: '10' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
       ],
     },
     {
@@ -134,8 +162,22 @@ class A {
 }
       `,
       errors: [
-        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
-        { column: 3, data: { name: 'foo' }, line: 5, messageId: 'unexpected' },
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 6,
+          endLine: 5,
+          line: 5,
+          messageId: 'unexpected',
+        },
       ],
     },
     {
@@ -146,7 +188,14 @@ class A {
 }
       `,
       errors: [
-        { column: 10, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        {
+          column: 10,
+          data: { name: 'foo' },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
       ],
     },
     {
@@ -157,7 +206,14 @@ class A {
 }
       `,
       errors: [
-        { column: 7, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        {
+          column: 7,
+          data: { name: 'foo' },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
       ],
     },
     {
@@ -168,7 +224,14 @@ class A {
 }
       `,
       errors: [
-        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
       ],
     },
     {
@@ -179,7 +242,14 @@ class A {
 }
       `,
       errors: [
-        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
       ],
     },
     {
@@ -190,7 +260,14 @@ class A {
 }
       `,
       errors: [
-        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpected',
+        },
       ],
     },
   ],

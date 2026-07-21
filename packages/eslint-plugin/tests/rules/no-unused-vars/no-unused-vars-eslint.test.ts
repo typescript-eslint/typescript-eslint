@@ -115,7 +115,15 @@ function foox() {
   return foox();
 }
       `,
-      errors: [definedError('foox')],
+      errors: [
+        {
+          ...definedError('foox'),
+          column: 10,
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+        },
+      ],
     },
     {
       code: `
@@ -127,11 +135,21 @@ function foox() {
   }
 })();
       `,
-      errors: [definedError('foox')],
+      errors: [
+        {
+          ...definedError('foox'),
+          column: 12,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+        },
+      ],
     },
     {
       code: 'var a = 10;',
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 5, endColumn: 6, endLine: 1, line: 1 },
+      ],
     },
     {
       code: `
@@ -142,7 +160,15 @@ function f() {
   };
 }
       `,
-      errors: [definedError('f')],
+      errors: [
+        {
+          ...definedError('f'),
+          column: 10,
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+        },
+      ],
     },
     {
       code: `
@@ -153,11 +179,27 @@ function f() {
   };
 }
       `,
-      errors: [definedError('f')],
+      errors: [
+        {
+          ...definedError('f'),
+          column: 10,
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+        },
+      ],
     },
     {
       code: '/*global a */',
-      errors: [definedError('a', '')],
+      errors: [
+        {
+          ...definedError('a', ''),
+          column: 10,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
+        },
+      ],
     },
     {
       code: `
@@ -167,11 +209,21 @@ function foo(first, second) {
   });
 }
       `,
-      errors: [definedError('foo')],
+      errors: [
+        {
+          ...definedError('foo'),
+          column: 10,
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+        },
+      ],
     },
     {
       code: 'var a = 10;',
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 5, endColumn: 6, endLine: 1, line: 1 },
+      ],
       options: ['all'],
     },
     {
@@ -179,7 +231,9 @@ function foo(first, second) {
 var a = 10;
 a = 20;
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 1, endColumn: 2, endLine: 3, line: 3 },
+      ],
       options: ['all'],
     },
     {
@@ -190,7 +244,9 @@ var a = 10;
   alert(a);
 })();
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 5, endColumn: 6, endLine: 2, line: 2 },
+      ],
       options: ['all'],
     },
     {
@@ -200,7 +256,9 @@ var a = 10,
   c = null;
 alert(a + b);
       `,
-      errors: [assignedError('c')],
+      errors: [
+        { ...assignedError('c'), column: 3, endColumn: 4, endLine: 4, line: 4 },
+      ],
       options: ['all'],
     },
     {
@@ -213,7 +271,9 @@ setTimeout(function () {
   alert(a + b + c);
 }, 0);
       `,
-      errors: [assignedError('b')],
+      errors: [
+        { ...assignedError('b'), column: 3, endColumn: 4, endLine: 3, line: 3 },
+      ],
       options: ['all'],
     },
     {
@@ -227,7 +287,10 @@ setTimeout(function () {
   alert(a + b + c);
 }, 0);
       `,
-      errors: [assignedError('b'), assignedError('c')],
+      errors: [
+        { ...assignedError('b'), column: 3, endColumn: 4, endLine: 3, line: 3 },
+        { ...assignedError('c'), column: 3, endColumn: 4, endLine: 4, line: 4 },
+      ],
       options: ['all'],
     },
     {
@@ -237,7 +300,15 @@ function f() {
   return a.map(function () {});
 }
       `,
-      errors: [definedError('f')],
+      errors: [
+        {
+          ...definedError('f'),
+          column: 10,
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: ['all'],
     },
     {
@@ -247,7 +318,15 @@ function f() {
   return a.map(function g() {});
 }
       `,
-      errors: [definedError('f')],
+      errors: [
+        {
+          ...definedError('f'),
+          column: 10,
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: ['all'],
     },
     {
@@ -263,7 +342,10 @@ function foo() {
       `,
       errors: [
         {
+          column: 10,
           data: { action: 'defined', additional: '', varName: 'foo' },
+          endColumn: 13,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -281,7 +363,29 @@ function f() {
   }
 }
       `,
-      errors: [definedError('f'), definedError('a'), definedError('b')],
+      errors: [
+        {
+          ...definedError('f'),
+          column: 10,
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+        },
+        {
+          ...definedError('a'),
+          column: 12,
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+        },
+        {
+          ...definedError('b'),
+          column: 12,
+          endColumn: 13,
+          endLine: 7,
+          line: 7,
+        },
+      ],
       options: ['all'],
     },
     {
@@ -289,7 +393,15 @@ function f() {
 function f(a) {}
 f();
       `,
-      errors: [definedError('a')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 12,
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: ['all'],
     },
     {
@@ -299,17 +411,41 @@ function a(x, y, z) {
 }
 a();
       `,
-      errors: [definedError('z')],
+      errors: [
+        {
+          ...definedError('z'),
+          column: 18,
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: ['all'],
     },
     {
       code: 'var min = Math.min;',
-      errors: [assignedError('min')],
+      errors: [
+        {
+          ...assignedError('min'),
+          column: 5,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       options: ['all'],
     },
     {
       code: 'var min = { min: 1 };',
-      errors: [assignedError('min')],
+      errors: [
+        {
+          ...assignedError('min'),
+          column: 5,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       options: ['all'],
     },
     {
@@ -318,12 +454,28 @@ Foo.bar = function (baz) {
   return 1;
 };
       `,
-      errors: [definedError('baz')],
+      errors: [
+        {
+          ...definedError('baz'),
+          column: 21,
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: ['all'],
     },
     {
       code: 'var min = { min: 1 };',
-      errors: [assignedError('min')],
+      errors: [
+        {
+          ...assignedError('min'),
+          column: 5,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       options: [{ vars: 'all' }],
     },
     {
@@ -333,7 +485,15 @@ function gg(baz, bar) {
 }
 gg();
       `,
-      errors: [definedError('bar')],
+      errors: [
+        {
+          ...definedError('bar'),
+          column: 18,
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: [{ vars: 'all' }],
     },
     {
@@ -342,7 +502,15 @@ gg();
   return baz;
 })();
       `,
-      errors: [definedError('bar')],
+      errors: [
+        {
+          ...definedError('bar'),
+          column: 22,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: [{ args: 'after-used', vars: 'all' }],
     },
     {
@@ -351,7 +519,22 @@ gg();
   return baz;
 })();
       `,
-      errors: [definedError('foo'), definedError('bar')],
+      errors: [
+        {
+          ...definedError('foo'),
+          column: 12,
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+        },
+        {
+          ...definedError('bar'),
+          column: 22,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: [{ args: 'all', vars: 'all' }],
     },
     {
@@ -360,7 +543,22 @@ gg();
   var bar = 33;
 })();
       `,
-      errors: [definedError('foo'), assignedError('bar')],
+      errors: [
+        {
+          ...definedError('foo'),
+          column: 13,
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+        },
+        {
+          ...assignedError('bar'),
+          column: 7,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       options: [{ args: 'all', vars: 'all' }],
     },
     {
@@ -369,7 +567,15 @@ gg();
   z();
 })();
       `,
-      errors: [definedError('foo')],
+      errors: [
+        {
+          ...definedError('foo'),
+          column: 13,
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: [{}],
     },
     {
@@ -381,18 +587,31 @@ function f() {
   };
 }
       `,
-      errors: [definedError('f'), assignedError('a')],
+      errors: [
+        {
+          ...definedError('f'),
+          column: 10,
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+        },
+        { ...assignedError('a'), column: 7, endColumn: 8, endLine: 3, line: 3 },
+      ],
       options: [{}],
     },
     {
       code: "import x from 'y';",
       errors: [
         {
+          column: 8,
           data: {
             action: 'defined',
             additional: '',
             varName: 'x',
           },
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
           messageId: 'unusedVar',
           suggestions: [
             {
@@ -415,7 +634,15 @@ export function fn2({ x, y }) {
   console.log(x);
 }
       `,
-      errors: [definedError('y')],
+      errors: [
+        {
+          ...definedError('y'),
+          column: 26,
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },
@@ -426,7 +653,15 @@ export function fn2(x, y) {
   console.log(x);
 }
       `,
-      errors: [definedError('y')],
+      errors: [
+        {
+          ...definedError('y'),
+          column: 24,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },
@@ -438,11 +673,27 @@ export function fn2(x, y) {
 /*exported max*/ var max = 1,
   min = { min: 1 };
       `,
-      errors: [assignedError('min')],
+      errors: [
+        {
+          ...assignedError('min'),
+          column: 3,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+        },
+      ],
     },
     {
       code: '/*exported x*/ var { x, y } = z;',
-      errors: [assignedError('y')],
+      errors: [
+        {
+          ...assignedError('y'),
+          column: 25,
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
 
@@ -460,6 +711,8 @@ var b;
             additional: '. Allowed unused vars must match /^_/u',
             varName: 'b',
           },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -483,6 +736,8 @@ foo();
             additional: '. Allowed unused vars must match /^_/u',
             varName: 'c_',
           },
+          endColumn: 9,
+          endLine: 5,
           line: 5,
           messageId: 'unusedVar',
         },
@@ -502,6 +757,8 @@ foo();
             additional: '. Allowed unused args must match /^_/u',
             varName: 'a',
           },
+          endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -523,6 +780,8 @@ foo();
             additional: '. Allowed unused args must match /^_/u',
             varName: 'c',
           },
+          endColumn: 22,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -542,6 +801,8 @@ foo();
             additional: '. Allowed unused args must match /[iI]gnored/u',
             varName: '_a',
           },
+          endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -558,6 +819,8 @@ foo();
             additional: '. Allowed unused vars must match /[iI]gnored/u',
             varName: 'secondItem',
           },
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'unusedVar',
         },
@@ -575,7 +838,13 @@ const newArray = [a, c];
       `,
       errors: [
         // should report only `newArray`
-        { ...assignedError('newArray'), column: 7, line: 4 },
+        {
+          ...assignedError('newArray'),
+          column: 7,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+        },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
       options: [{ destructuredArrayIgnorePattern: '^_' }],
@@ -592,6 +861,8 @@ const [a, _b, c] = array;
             '. Allowed unused elements of array destructuring must match /^_/u',
           ),
           column: 8,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
         },
         {
@@ -600,6 +871,8 @@ const [a, _b, c] = array;
             '. Allowed unused elements of array destructuring must match /^_/u',
           ),
           column: 15,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
         },
       ],
@@ -621,6 +894,8 @@ const ignoreArray = ['ignore'];
             '. Allowed unused elements of array destructuring must match /^_/u',
           ),
           column: 8,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
         },
         {
@@ -629,6 +904,8 @@ const ignoreArray = ['ignore'];
             '. Allowed unused elements of array destructuring must match /^_/u',
           ),
           column: 15,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
         },
         {
@@ -637,6 +914,8 @@ const ignoreArray = ['ignore'];
             '. Allowed unused vars must match /ignore/u',
           ),
           column: 7,
+          endColumn: 15,
+          endLine: 4,
           line: 4,
         },
         {
@@ -645,6 +924,8 @@ const ignoreArray = ['ignore'];
             '. Allowed unused vars must match /ignore/u',
           ),
           column: 7,
+          endColumn: 15,
+          endLine: 5,
           line: 5,
         },
       ],
@@ -663,6 +944,8 @@ console.log(foo);
         {
           ...assignedError('_a'),
           column: 10,
+          endColumn: 12,
+          endLine: 3,
           line: 3,
         },
       ],
@@ -680,6 +963,8 @@ foo();
         {
           ...definedError('_a'),
           column: 17,
+          endColumn: 19,
+          endLine: 2,
           line: 2,
         },
       ],
@@ -698,11 +983,15 @@ foo.forEach(item => {
         {
           ...definedError('_a'),
           column: 5,
+          endColumn: 7,
+          endLine: 2,
           line: 2,
         },
         {
           ...assignedError('b'),
           column: 9,
+          endColumn: 10,
+          endLine: 2,
           line: 2,
         },
       ],
@@ -729,6 +1018,8 @@ foo.forEach(item => {
             additional: '',
             varName: 'name',
           },
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'unusedVar',
         },
@@ -750,6 +1041,8 @@ foo.forEach(item => {
             additional: '',
             varName: 'name',
           },
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'unusedVar',
         },
@@ -770,6 +1063,8 @@ foo.forEach(item => {
             additional: '',
             varName: 'name',
           },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -795,6 +1090,8 @@ foo.forEach(item => {
             additional: '',
             varName: 'name',
           },
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'unusedVar',
         },
@@ -817,6 +1114,8 @@ foo.forEach(item => {
             additional: '',
             varName: 'name',
           },
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'unusedVar',
         },
@@ -838,6 +1137,8 @@ foo.forEach(item => {
             additional: '',
             varName: 'name',
           },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -929,6 +1230,8 @@ console.log(coords);
             additional: '',
             varName: 'type',
           },
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -951,6 +1254,8 @@ console.log(type);
             additional: '',
             varName: 'coords',
           },
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -972,6 +1277,8 @@ console.log(type);
             additional: '',
             varName: 'coords',
           },
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -995,6 +1302,8 @@ console.log(type);
             additional: '',
             varName: 'coords',
           },
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1020,6 +1329,8 @@ console.log(coords);
             additional: '',
             varName: 'x',
           },
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'unusedVar',
         },
@@ -1045,6 +1356,8 @@ console.log(coords);
             additional: '',
             varName: 'x',
           },
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'unusedVar',
         },
@@ -1055,7 +1368,15 @@ console.log(coords);
     // https://github.com/eslint/eslint/issues/8119
     {
       code: '({ a, ...rest }) => {};',
-      errors: [definedError('rest')],
+      errors: [
+        {
+          ...definedError('rest'),
+          column: 10,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2018 } },
       options: [{ args: 'all', ignoreRestSiblings: true }],
     },
@@ -1202,7 +1523,15 @@ a$fooz;
     // https://github.com/eslint/eslint/issues/4047
     {
       code: 'export default function (a) {}',
-      errors: [definedError('a')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 26,
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },
@@ -1213,14 +1542,30 @@ export default function (a, b) {
   console.log(a);
 }
       `,
-      errors: [definedError('b')],
+      errors: [
+        {
+          ...definedError('b'),
+          column: 29,
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },
     },
     {
       code: 'export default (function (a) {});',
-      errors: [definedError('a')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 27,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },
@@ -1231,14 +1576,30 @@ export default (function (a, b) {
   console.log(a);
 });
       `,
-      errors: [definedError('b')],
+      errors: [
+        {
+          ...definedError('b'),
+          column: 30,
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },
     },
     {
       code: 'export default a => {};',
-      errors: [definedError('a')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 16,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },
@@ -1249,7 +1610,15 @@ export default (a, b) => {
   console.log(a);
 };
       `,
-      errors: [definedError('b')],
+      errors: [
+        {
+          ...definedError('b'),
+          column: 20,
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: {
         parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       },
@@ -1261,14 +1630,30 @@ export default (a, b) => {
 try {
 } catch (err) {}
       `,
-      errors: [definedError('err')],
+      errors: [
+        {
+          ...definedError('err'),
+          column: 10,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+        },
+      ],
     },
     {
       code: `
 try {
 } catch (err) {}
       `,
-      errors: [definedError('err')],
+      errors: [
+        {
+          ...definedError('err'),
+          column: 10,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       options: [{ caughtErrors: 'all' }],
     },
     {
@@ -1277,10 +1662,16 @@ try {
 } catch (err) {}
       `,
       errors: [
-        definedError(
-          'err',
-          '. Allowed unused caught errors must match /^ignore/u',
-        ),
+        {
+          ...definedError(
+            'err',
+            '. Allowed unused caught errors must match /^ignore/u',
+          ),
+          column: 10,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+        },
       ],
       options: [{ caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' }],
     },
@@ -1289,7 +1680,15 @@ try {
 try {
 } catch (err) {}
       `,
-      errors: [definedError('err')],
+      errors: [
+        {
+          ...definedError('err'),
+          column: 10,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       options: [{ caughtErrors: 'all', varsIgnorePattern: '^err' }],
     },
     {
@@ -1297,7 +1696,15 @@ try {
 try {
 } catch (err) {}
       `,
-      errors: [definedError('err')],
+      errors: [
+        {
+          ...definedError('err'),
+          column: 10,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       options: [{ caughtErrors: 'all', varsIgnorePattern: '^.' }],
     },
 
@@ -1310,10 +1717,16 @@ try {
 } catch (err) {}
       `,
       errors: [
-        definedError(
-          'err',
-          '. Allowed unused caught errors must match /^ignore/u',
-        ),
+        {
+          ...definedError(
+            'err',
+            '. Allowed unused caught errors must match /^ignore/u',
+          ),
+          column: 10,
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+        },
       ],
       options: [{ caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' }],
     },
@@ -1327,14 +1740,26 @@ try {
 } catch (err) {}
       `,
       errors: [
-        definedError(
-          'error',
-          '. Allowed unused caught errors must match /^ignore/u',
-        ),
-        definedError(
-          'err',
-          '. Allowed unused caught errors must match /^ignore/u',
-        ),
+        {
+          ...definedError(
+            'error',
+            '. Allowed unused caught errors must match /^ignore/u',
+          ),
+          column: 10,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+        },
+        {
+          ...definedError(
+            'err',
+            '. Allowed unused caught errors must match /^ignore/u',
+          ),
+          column: 10,
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+        },
       ],
       options: [{ caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' }],
     },
@@ -1345,7 +1770,15 @@ try {
 try {
 } catch (err) {}
       `,
-      errors: [definedError('err')],
+      errors: [
+        {
+          ...definedError('err'),
+          column: 10,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       options: [{ args: 'all', caughtErrors: 'all', vars: 'all' }],
     },
 
@@ -1355,7 +1788,15 @@ try {
 try {
 } catch (err) {}
       `,
-      errors: [definedError('err')],
+      errors: [
+        {
+          ...definedError('err'),
+          column: 10,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       options: [
         {
           args: 'all',
@@ -1372,28 +1813,36 @@ try {
 var a = 0;
 a = a + 1;
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 1, endColumn: 2, endLine: 3, line: 3 },
+      ],
     },
     {
       code: `
 var a = 0;
 a = a + a;
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 1, endColumn: 2, endLine: 3, line: 3 },
+      ],
     },
     {
       code: `
 var a = 0;
 a += a + 1;
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 1, endColumn: 2, endLine: 3, line: 3 },
+      ],
     },
     {
       code: `
 var a = 0;
 a++;
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 1, endColumn: 2, endLine: 3, line: 3 },
+      ],
     },
     {
       code: `
@@ -1402,7 +1851,9 @@ function foo(a) {
 }
 foo();
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 3, endColumn: 4, endLine: 3, line: 3 },
+      ],
     },
     {
       code: `
@@ -1411,7 +1862,9 @@ function foo(a) {
 }
 foo();
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 3, endColumn: 4, endLine: 3, line: 3 },
+      ],
     },
     {
       code: `
@@ -1420,14 +1873,18 @@ function foo(a) {
 }
 foo();
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 3, endColumn: 4, endLine: 3, line: 3 },
+      ],
     },
     {
       code: `
 var a = 3;
 a = a * 5 + 6;
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 1, endColumn: 2, endLine: 3, line: 3 },
+      ],
     },
     {
       code: `
@@ -1435,7 +1892,9 @@ var a = 2,
   b = 4;
 a = a * 2 + b;
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 1, endColumn: 2, endLine: 4, line: 4 },
+      ],
     },
 
     // https://github.com/eslint/eslint/issues/6576 (For coverage)
@@ -1449,7 +1908,15 @@ function foo(cb) {
 }
 foo();
       `,
-      errors: [assignedError('cb')],
+      errors: [
+        {
+          ...assignedError('cb'),
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+        },
+      ],
     },
     {
       code: `
@@ -1460,7 +1927,15 @@ function foo(cb) {
 }
 foo();
       `,
-      errors: [assignedError('cb')],
+      errors: [
+        {
+          ...assignedError('cb'),
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+        },
+      ],
     },
     {
       code: `
@@ -1473,7 +1948,15 @@ function foo(cb) {
 }
 foo();
       `,
-      errors: [assignedError('cb')],
+      errors: [
+        {
+          ...assignedError('cb'),
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+        },
+      ],
     },
     {
       code: `
@@ -1486,7 +1969,15 @@ function foo(cb) {
 }
 foo();
       `,
-      errors: [assignedError('cb')],
+      errors: [
+        {
+          ...assignedError('cb'),
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+        },
+      ],
     },
 
     // https://github.com/eslint/eslint/issues/6646
@@ -1499,23 +1990,49 @@ while (a) {
   foo();
 }
       `,
-      errors: [assignedError('b')],
+      errors: [
+        { ...assignedError('b'), column: 5, endColumn: 6, endLine: 4, line: 4 },
+      ],
     },
 
     // https://github.com/eslint/eslint/issues/7124
     {
       code: '(function (a, b, c) {});',
       errors: [
-        definedError('a', '. Allowed unused args must match /c/u'),
-        definedError('b', '. Allowed unused args must match /c/u'),
+        {
+          ...definedError('a', '. Allowed unused args must match /c/u'),
+          column: 12,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
+        },
+        {
+          ...definedError('b', '. Allowed unused args must match /c/u'),
+          column: 15,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+        },
       ],
       options: [{ argsIgnorePattern: 'c' }],
     },
     {
       code: '(function (a, b, { c, d }) {});',
       errors: [
-        definedError('a', '. Allowed unused args must match /[cd]/u'),
-        definedError('b', '. Allowed unused args must match /[cd]/u'),
+        {
+          ...definedError('a', '. Allowed unused args must match /[cd]/u'),
+          column: 12,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
+        },
+        {
+          ...definedError('b', '. Allowed unused args must match /[cd]/u'),
+          column: 15,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+        },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [{ argsIgnorePattern: '[cd]' }],
@@ -1523,9 +2040,27 @@ while (a) {
     {
       code: '(function (a, b, { c, d }) {});',
       errors: [
-        definedError('a', '. Allowed unused args must match /c/u'),
-        definedError('b', '. Allowed unused args must match /c/u'),
-        definedError('d', '. Allowed unused args must match /c/u'),
+        {
+          ...definedError('a', '. Allowed unused args must match /c/u'),
+          column: 12,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
+        },
+        {
+          ...definedError('b', '. Allowed unused args must match /c/u'),
+          column: 15,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+        },
+        {
+          ...definedError('d', '. Allowed unused args must match /c/u'),
+          column: 23,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+        },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [{ argsIgnorePattern: 'c' }],
@@ -1533,9 +2068,27 @@ while (a) {
     {
       code: '(function (a, b, { c, d }) {});',
       errors: [
-        definedError('a', '. Allowed unused args must match /d/u'),
-        definedError('b', '. Allowed unused args must match /d/u'),
-        definedError('c', '. Allowed unused args must match /d/u'),
+        {
+          ...definedError('a', '. Allowed unused args must match /d/u'),
+          column: 12,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
+        },
+        {
+          ...definedError('b', '. Allowed unused args must match /d/u'),
+          column: 15,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+        },
+        {
+          ...definedError('c', '. Allowed unused args must match /d/u'),
+          column: 20,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+        },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [{ argsIgnorePattern: 'd' }],
@@ -1568,7 +2121,15 @@ foo*/
   return b;
 })();
       `,
-      errors: [definedError('a')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 14,
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1577,7 +2138,22 @@ foo*/
   return b;
 })();
       `,
-      errors: [definedError('a'), definedError('c')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 14,
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+        },
+        {
+          ...definedError('c'),
+          column: 24,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
 
@@ -1587,7 +2163,9 @@ foo*/
 let x = 0;
 (x++, (x = 0));
       `,
-      errors: [{ ...assignedError('x'), column: 8, line: 3 }],
+      errors: [
+        { ...assignedError('x'), column: 8, endColumn: 9, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1596,7 +2174,9 @@ let x = 0;
 (x++, (x = 0));
 x = 3;
       `,
-      errors: [{ ...assignedError('x'), column: 1, line: 4 }],
+      errors: [
+        { ...assignedError('x'), column: 1, endColumn: 2, endLine: 4, line: 4 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1604,7 +2184,9 @@ x = 3;
 let x = 0;
 (x++, 0);
       `,
-      errors: [{ ...assignedError('x'), column: 2, line: 3 }],
+      errors: [
+        { ...assignedError('x'), column: 2, endColumn: 3, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1612,7 +2194,9 @@ let x = 0;
 let x = 0;
 (0, x++);
       `,
-      errors: [{ ...assignedError('x'), column: 5, line: 3 }],
+      errors: [
+        { ...assignedError('x'), column: 5, endColumn: 6, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1620,7 +2204,15 @@ let x = 0;
 let x = 0;
 (0, (1, x++));
       `,
-      errors: [{ ...assignedError('x'), column: 9, line: 3 }],
+      errors: [
+        {
+          ...assignedError('x'),
+          column: 9,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1628,7 +2220,9 @@ let x = 0;
 let x = 0;
 foo = (x++, 0);
       `,
-      errors: [{ ...assignedError('x'), column: 8, line: 3 }],
+      errors: [
+        { ...assignedError('x'), column: 8, endColumn: 9, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1636,7 +2230,15 @@ foo = (x++, 0);
 let x = 0;
 foo = ((0, x++), 0);
       `,
-      errors: [{ ...assignedError('x'), column: 12, line: 3 }],
+      errors: [
+        {
+          ...assignedError('x'),
+          column: 12,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1644,7 +2246,9 @@ foo = ((0, x++), 0);
 let x = 0;
 ((x += 1), 0);
       `,
-      errors: [{ ...assignedError('x'), column: 3, line: 3 }],
+      errors: [
+        { ...assignedError('x'), column: 3, endColumn: 4, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1652,7 +2256,9 @@ let x = 0;
 let x = 0;
 (0, (x += 1));
       `,
-      errors: [{ ...assignedError('x'), column: 6, line: 3 }],
+      errors: [
+        { ...assignedError('x'), column: 6, endColumn: 7, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1660,7 +2266,15 @@ let x = 0;
 let x = 0;
 (0, (1, (x += 1)));
       `,
-      errors: [{ ...assignedError('x'), column: 10, line: 3 }],
+      errors: [
+        {
+          ...assignedError('x'),
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1668,7 +2282,15 @@ let x = 0;
 let x = 0;
 foo = ((x += 1), 0);
       `,
-      errors: [{ ...assignedError('x'), column: 9, line: 3 }],
+      errors: [
+        {
+          ...assignedError('x'),
+          column: 9,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1676,7 +2298,15 @@ foo = ((x += 1), 0);
 let x = 0;
 foo = ((0, (x += 1)), 0);
       `,
-      errors: [{ ...assignedError('x'), column: 13, line: 3 }],
+      errors: [
+        {
+          ...assignedError('x'),
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
 
@@ -1686,7 +2316,15 @@ foo = ((0, (x += 1)), 0);
 let z = 0;
 ((z = z + 1), (z = 2));
       `,
-      errors: [{ ...assignedError('z'), column: 16, line: 3 }],
+      errors: [
+        {
+          ...assignedError('z'),
+          column: 16,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1695,7 +2333,9 @@ let z = 0;
 ((z = z + 1), (z = 2));
 z = 3;
       `,
-      errors: [{ ...assignedError('z'), column: 1, line: 4 }],
+      errors: [
+        { ...assignedError('z'), column: 1, endColumn: 2, endLine: 4, line: 4 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1704,7 +2344,9 @@ let z = 0;
 ((z = z + 1), (z = 2));
 z = z + 3;
       `,
-      errors: [{ ...assignedError('z'), column: 1, line: 4 }],
+      errors: [
+        { ...assignedError('z'), column: 1, endColumn: 2, endLine: 4, line: 4 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1712,7 +2354,9 @@ z = z + 3;
 let x = 0;
 (0, (x = x + 1));
       `,
-      errors: [{ ...assignedError('x'), column: 6, line: 3 }],
+      errors: [
+        { ...assignedError('x'), column: 6, endColumn: 7, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1720,7 +2364,9 @@ let x = 0;
 let x = 0;
 ((x = x + 1), 0);
       `,
-      errors: [{ ...assignedError('x'), column: 3, line: 3 }],
+      errors: [
+        { ...assignedError('x'), column: 3, endColumn: 4, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1728,7 +2374,15 @@ let x = 0;
 let x = 0;
 foo = ((0, (x = x + 1)), 0);
       `,
-      errors: [{ ...assignedError('x'), column: 13, line: 3 }],
+      errors: [
+        {
+          ...assignedError('x'),
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1736,7 +2390,15 @@ foo = ((0, (x = x + 1)), 0);
 let x = 0;
 foo = ((x = x + 1), 0);
       `,
-      errors: [{ ...assignedError('x'), column: 9, line: 3 }],
+      errors: [
+        {
+          ...assignedError('x'),
+          column: 9,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1744,7 +2406,15 @@ foo = ((x = x + 1), 0);
 let x = 0;
 (0, (1, (x = x + 1)));
       `,
-      errors: [{ ...assignedError('x'), column: 10, line: 3 }],
+      errors: [
+        {
+          ...assignedError('x'),
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1753,7 +2423,22 @@ let x = 0;
   return b;
 })();
       `,
-      errors: [definedError('a'), definedError('c')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 14,
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+        },
+        {
+          ...definedError('c'),
+          column: 24,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1762,7 +2447,15 @@ let x = 0;
   return b;
 })();
       `,
-      errors: [definedError('a')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 13,
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1771,7 +2464,22 @@ let x = 0;
   return b;
 })();
       `,
-      errors: [definedError('a'), definedError('c')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 13,
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+        },
+        {
+          ...definedError('c'),
+          column: 21,
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1780,19 +2488,50 @@ let x = 0;
   return b;
 })();
       `,
-      errors: [definedError('a'), definedError('c')],
+      errors: [
+        {
+          ...definedError('a'),
+          column: 13,
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+        },
+        {
+          ...definedError('c'),
+          column: 21,
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
 
     // https://github.com/eslint/eslint/issues/9774
     {
       code: '(function (_a) {})();',
-      errors: [definedError('_a')],
+      errors: [
+        {
+          ...definedError('_a'),
+          column: 12,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       options: [{ args: 'all', varsIgnorePattern: '^_' }],
     },
     {
       code: '(function (_a) {})();',
-      errors: [definedError('_a')],
+      errors: [
+        {
+          ...definedError('_a'),
+          column: 12,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       options: [{ args: 'all', caughtErrorsIgnorePattern: '^_' }],
     },
 
@@ -1803,7 +2542,9 @@ var a = function () {
   a();
 };
       `,
-      errors: [assignedError('a')],
+      errors: [
+        { ...assignedError('a'), column: 5, endColumn: 6, endLine: 2, line: 2 },
+      ],
     },
     {
       code: `
@@ -1813,7 +2554,9 @@ var a = function () {
   };
 };
       `,
-      errors: [{ ...assignedError('a'), column: 5, line: 2 }],
+      errors: [
+        { ...assignedError('a'), column: 5, endColumn: 6, endLine: 2, line: 2 },
+      ],
     },
     {
       code: `
@@ -1821,7 +2564,9 @@ const a = () => () => {
   a();
 };
       `,
-      errors: [{ ...assignedError('a'), column: 7, line: 2 }],
+      errors: [
+        { ...assignedError('a'), column: 7, endColumn: 8, endLine: 2, line: 2 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1829,7 +2574,15 @@ const a = () => () => {
 let myArray = [1, 2, 3, 4].filter(x => x == 0);
 myArray = myArray.filter(x => x == 1);
       `,
-      errors: [{ ...assignedError('myArray'), column: 1, line: 3 }],
+      errors: [
+        {
+          ...assignedError('myArray'),
+          column: 1,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1837,7 +2590,9 @@ myArray = myArray.filter(x => x == 1);
 const a = 1;
 a += 1;
       `,
-      errors: [{ ...assignedError('a'), column: 1, line: 3 }],
+      errors: [
+        { ...assignedError('a'), column: 1, endColumn: 2, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1846,7 +2601,9 @@ const a = () => {
   a();
 };
       `,
-      errors: [{ ...assignedError('a'), column: 7, line: 2 }],
+      errors: [
+        { ...assignedError('a'), column: 7, endColumn: 8, endLine: 2, line: 2 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
 
@@ -1856,7 +2613,9 @@ const a = () => {
 let x = [];
 x = x.concat(x);
       `,
-      errors: [{ ...assignedError('x'), column: 1, line: 3 }],
+      errors: [
+        { ...assignedError('x'), column: 1, endColumn: 2, endLine: 3, line: 3 },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
     {
@@ -1874,11 +2633,15 @@ function foo() {
         {
           ...assignedError('a'),
           column: 1,
+          endColumn: 2,
+          endLine: 3,
           line: 3,
         },
         {
           ...definedError('foo'),
           column: 10,
+          endColumn: 13,
+          endLine: 4,
           line: 4,
         },
       ],
@@ -1893,7 +2656,15 @@ function init() {
   foo = 1;
 }
       `,
-      errors: [{ ...assignedError('foo'), column: 1, line: 4 }],
+      errors: [
+        {
+          ...assignedError('foo'),
+          column: 1,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1903,7 +2674,15 @@ function foo(n) {
   return n * foo(n - 1);
 }
       `,
-      errors: [{ ...definedError('foo'), column: 10, line: 2 }],
+      errors: [
+        {
+          ...definedError('foo'),
+          column: 10,
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
@@ -1919,7 +2698,15 @@ function foo1() {
 
 c = foo1;
       `,
-      errors: [{ ...assignedError('c'), column: 1, line: 11 }],
+      errors: [
+        {
+          ...assignedError('c'),
+          column: 1,
+          endColumn: 2,
+          endLine: 11,
+          line: 11,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
 
@@ -1930,7 +2717,15 @@ class Foo {
   static {}
 }
       `,
-      errors: [{ ...definedError('Foo'), column: 7, line: 2 }],
+      errors: [
+        {
+          ...definedError('Foo'),
+          column: 7,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2022 } },
       options: [{ ignoreClassWithStaticInitBlock: false }],
     },
@@ -1940,7 +2735,15 @@ class Foo {
   static {}
 }
       `,
-      errors: [{ ...definedError('Foo'), column: 7, line: 2 }],
+      errors: [
+        {
+          ...definedError('Foo'),
+          column: 7,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2022 } },
     },
     {
@@ -1951,13 +2754,29 @@ class Foo {
   }
 }
       `,
-      errors: [{ ...definedError('bar'), column: 9, line: 4 }],
+      errors: [
+        {
+          ...definedError('bar'),
+          column: 9,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2022 } },
       options: [{ ignoreClassWithStaticInitBlock: true }],
     },
     {
       code: 'class Foo {}',
-      errors: [{ ...definedError('Foo'), column: 7, line: 1 }],
+      errors: [
+        {
+          ...definedError('Foo'),
+          column: 7,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2022 } },
       options: [{ ignoreClassWithStaticInitBlock: true }],
     },
@@ -1967,7 +2786,15 @@ class Foo {
   static bar;
 }
       `,
-      errors: [{ ...definedError('Foo'), column: 7, line: 2 }],
+      errors: [
+        {
+          ...definedError('Foo'),
+          column: 7,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2022 } },
       options: [{ ignoreClassWithStaticInitBlock: true }],
     },
@@ -1977,7 +2804,15 @@ class Foo {
   static bar() {}
 }
       `,
-      errors: [{ ...definedError('Foo'), column: 7, line: 2 }],
+      errors: [
+        {
+          ...definedError('Foo'),
+          column: 7,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 2022 } },
       options: [{ ignoreClassWithStaticInitBlock: true }],
     },
@@ -1988,7 +2823,15 @@ class Foo {
 const _a = 5;
 const _b = _a + 5;
       `,
-      errors: [usedIgnoredError('_a', '. Used vars must not match /^_/u')],
+      errors: [
+        {
+          ...usedIgnoredError('_a', '. Used vars must not match /^_/u'),
+          column: 7,
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
         {
@@ -2003,7 +2846,15 @@ const _b = _a + 5;
 const _a = 42;
 foo(() => _a);
       `,
-      errors: [usedIgnoredError('_a', '. Used vars must not match /^_/u')],
+      errors: [
+        {
+          ...usedIgnoredError('_a', '. Used vars must not match /^_/u'),
+          column: 7,
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
         {
@@ -2019,7 +2870,15 @@ foo(() => _a);
   return _a + 5;
 })(5);
       `,
-      errors: [usedIgnoredError('_a', '. Used args must not match /^_/u')],
+      errors: [
+        {
+          ...usedIgnoredError('_a', '. Used args must not match /^_/u'),
+          column: 15,
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
+        },
+      ],
       options: [
         {
           args: 'all',
@@ -2034,10 +2893,16 @@ const [a, _b] = items;
 console.log(a + _b);
       `,
       errors: [
-        usedIgnoredError(
-          '_b',
-          '. Used elements of array destructuring must not match /^_/u',
-        ),
+        {
+          ...usedIgnoredError(
+            '_b',
+            '. Used elements of array destructuring must not match /^_/u',
+          ),
+          column: 11,
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+        },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
@@ -2054,10 +2919,16 @@ let _x;
 foo(_x);
       `,
       errors: [
-        usedIgnoredError(
-          '_x',
-          '. Used elements of array destructuring must not match /^_/u',
-        ),
+        {
+          ...usedIgnoredError(
+            '_x',
+            '. Used elements of array destructuring must not match /^_/u',
+          ),
+          column: 2,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+        },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
@@ -2074,7 +2945,16 @@ const [ignored] = arr;
 foo(ignored);
       `,
       errors: [
-        usedIgnoredError('ignored', '. Used vars must not match /[iI]gnored/u'),
+        {
+          ...usedIgnoredError(
+            'ignored',
+            '. Used vars must not match /[iI]gnored/u',
+          ),
+          column: 8,
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+        },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
@@ -2093,7 +2973,16 @@ try {
 }
       `,
       errors: [
-        usedIgnoredError('_err', '. Used caught errors must not match /^_/u'),
+        {
+          ...usedIgnoredError(
+            '_err',
+            '. Used caught errors must not match /^_/u',
+          ),
+          column: 10,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+        },
       ],
       options: [
         {
@@ -2111,7 +3000,16 @@ try {
 }
       `,
       errors: [
-        assignedError('_', '. Allowed unused caught errors must match /foo/u'),
+        {
+          ...assignedError(
+            '_',
+            '. Allowed unused caught errors must match /foo/u',
+          ),
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+        },
       ],
       options: [{ caughtErrorsIgnorePattern: 'foo' }],
     },
@@ -2123,10 +3021,16 @@ try {
 }
       `,
       errors: [
-        assignedError(
-          '_',
-          '. Allowed unused caught errors must match /ignored/u',
-        ),
+        {
+          ...assignedError(
+            '_',
+            '. Allowed unused caught errors must match /ignored/u',
+          ),
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+        },
       ],
       options: [
         {
@@ -2148,6 +3052,8 @@ try {
           ),
           column: 12,
           endColumn: 19,
+          endLine: 3,
+          line: 3,
         },
         {
           ...definedError(
@@ -2156,6 +3062,8 @@ try {
           ),
           column: 30,
           endColumn: 40,
+          endLine: 3,
+          line: 3,
         },
       ],
       options: [{ caughtErrorsIgnorePattern: 'foo' }],
@@ -2175,6 +3083,8 @@ try {
           ),
           column: 3,
           endColumn: 4,
+          endLine: 4,
+          line: 4,
         },
       ],
       options: [{ caughtErrorsIgnorePattern: '\\w' }],
@@ -2186,7 +3096,13 @@ _ => {
 };
       `,
       errors: [
-        assignedError('_', '. Allowed unused args must match /ignored/u'),
+        {
+          ...assignedError('_', '. Allowed unused args must match /ignored/u'),
+          column: 3,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+        },
       ],
       options: [
         {

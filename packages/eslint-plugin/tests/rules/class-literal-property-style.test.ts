@@ -299,6 +299,8 @@ class Mx {
       errors: [
         {
           column: 7,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -325,6 +327,8 @@ class Mx {
       errors: [
         {
           column: 7,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -351,6 +355,8 @@ class Mx {
       errors: [
         {
           column: 14,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -377,6 +383,8 @@ class Mx {
       errors: [
         {
           column: 21,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -403,6 +411,8 @@ class Mx {
       errors: [
         {
           column: 15,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -429,6 +439,8 @@ class Mx {
       errors: [
         {
           column: 15,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -453,6 +465,8 @@ class Mx {
       errors: [
         {
           column: 20,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -478,6 +492,8 @@ class Mx {
       errors: [
         {
           column: 12,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -503,6 +519,8 @@ class Mx {
       errors: [
         {
           column: 12,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -528,6 +546,8 @@ class Mx {
       errors: [
         {
           column: 19,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -555,6 +575,8 @@ class Mx {
       errors: [
         {
           column: 17,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -580,6 +602,8 @@ class Mx {
       errors: [
         {
           column: 22,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -607,6 +631,8 @@ class Mx {
       errors: [
         {
           column: 21,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -631,6 +657,8 @@ class Mx {
       errors: [
         {
           column: 26,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -665,6 +693,8 @@ class Mx {
       errors: [
         {
           column: 14,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -703,6 +733,8 @@ class Mx {
       errors: [
         {
           column: 19,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -743,6 +775,8 @@ class A {
       errors: [
         {
           column: 20,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -786,6 +820,8 @@ class A {
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 6,
           line: 6,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -826,6 +862,8 @@ class A {
       errors: [
         {
           column: 20,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [

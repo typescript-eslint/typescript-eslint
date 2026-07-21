@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+
 // The following tests are adapted from the tests in eslint.
 // Original Code: https://github.com/t-mangoe/eslint/blob/c4a70499720f48e27734068074fbeee4f48fb460/tests/lib/rules/no-shadow.js
 // License      : https://github.com/eslint/eslint/blob/c4a70499720f48e27734068074fbeee4f48fb460/LICENSE
@@ -20,11 +22,15 @@ function a(x) {
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'x',
             shadowedColumn: 12,
             shadowedLine: 2,
           },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -39,11 +45,15 @@ var a = x => {
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'x',
             shadowedColumn: 9,
             shadowedLine: 2,
           },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -59,11 +69,15 @@ function a(x) {
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'x',
             shadowedColumn: 12,
             shadowedLine: 2,
           },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -77,11 +91,15 @@ function a(x) {
       `,
       errors: [
         {
+          column: 12,
           data: {
             name: 'x',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -95,11 +113,15 @@ function b() {
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -116,11 +138,15 @@ setTimeout(function () {
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -138,19 +164,27 @@ setTimeout(function () {
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
         {
+          column: 7,
           data: {
             name: 'b',
             shadowedColumn: 10,
             shadowedLine: 3,
           },
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -164,11 +198,15 @@ var x = 1;
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'x',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -183,11 +221,15 @@ let x = 1;
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'x',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -202,11 +244,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -221,11 +267,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 5,
           },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -240,11 +290,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -259,11 +313,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -276,11 +334,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 3,
           },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -295,11 +357,15 @@ let a;
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -315,11 +381,15 @@ var a;
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -335,11 +405,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -355,11 +429,15 @@ const a = 1;
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'a',
             shadowedColumn: 7,
             shadowedLine: 5,
           },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -375,11 +453,15 @@ var a;
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 5,
           },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -395,11 +477,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 5,
           },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -415,11 +501,15 @@ let a;
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -435,11 +525,15 @@ var a;
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -455,11 +549,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -475,11 +573,15 @@ let a;
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -495,11 +597,15 @@ var a;
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -515,11 +621,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 5,
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -533,11 +643,15 @@ let a;
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 3,
           },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -551,11 +665,15 @@ var a;
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 3,
           },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -569,11 +687,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'a',
             shadowedColumn: 10,
             shadowedLine: 3,
           },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -588,11 +710,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 12,
           data: {
             name: 'a',
             shadowedColumn: 11,
             shadowedLine: 2,
           },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -605,11 +731,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'a',
             shadowedColumn: 11,
             shadowedLine: 2,
           },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -623,11 +753,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'a',
             shadowedColumn: 11,
             shadowedLine: 2,
           },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -640,11 +774,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 10,
           data: {
             name: 'a',
             shadowedColumn: 11,
             shadowedLine: 2,
           },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -658,11 +796,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 21,
           data: {
             name: 'a',
             shadowedColumn: 7,
             shadowedLine: 3,
           },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -677,11 +819,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'a',
             shadowedColumn: 7,
             shadowedLine: 3,
           },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -696,11 +842,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'a',
             shadowedColumn: 7,
             shadowedLine: 3,
           },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -716,11 +866,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'a',
             shadowedColumn: 7,
             shadowedLine: 3,
           },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -735,11 +889,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 12,
           data: {
             name: 'a',
             shadowedColumn: 7,
             shadowedLine: 3,
           },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -757,11 +915,15 @@ function a() {}
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'a',
             shadowedColumn: 7,
             shadowedLine: 3,
           },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -777,11 +939,15 @@ class A {
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'A',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -797,19 +963,27 @@ class A {
       `,
       errors: [
         {
+          column: 12,
           data: {
             name: 'a',
             shadowedColumn: 11,
             shadowedLine: 2,
           },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
         {
+          column: 14,
           data: {
             name: 'a',
             shadowedColumn: 12,
             shadowedLine: 3,
           },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -822,9 +996,13 @@ function foo() {
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'Object',
           },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -838,9 +1016,13 @@ function foo() {
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'top',
           },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -851,9 +1033,13 @@ function foo() {
       code: 'var Object = 0;',
       errors: [
         {
+          column: 5,
           data: {
             name: 'Object',
           },
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -864,9 +1050,13 @@ function foo() {
       code: 'var top = 0;',
       errors: [
         {
+          column: 5,
           data: {
             name: 'top',
           },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -879,9 +1069,13 @@ function foo() {
       code: 'var Object = 0;',
       errors: [
         {
+          column: 5,
           data: {
             name: 'Object',
           },
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -894,9 +1088,13 @@ function foo() {
       code: 'var top = 0;',
       errors: [
         {
+          column: 5,
           data: {
             name: 'top',
           },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -916,11 +1114,15 @@ function foo(cb) {
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'cb',
             shadowedColumn: 14,
             shadowedLine: 2,
           },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -931,11 +1133,15 @@ const FooBarComponent = memo(function FooBarComponent() {});
       `,
       errors: [
         {
+          column: 39,
           data: {
             name: 'FooBarComponent',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -946,11 +1152,15 @@ const FooBarComponent = memo(class FooBarComponent {});
       `,
       errors: [
         {
+          column: 36,
           data: {
             name: 'FooBarComponent',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 51,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -962,11 +1172,15 @@ const FooBarComponent = memo(function FooBarComponent() {});
       `,
       errors: [
         {
+          column: 39,
           data: {
             name: 'FooBarComponent',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -978,11 +1192,15 @@ function foo(a = wrap(function a() {})) {}
       `,
       errors: [
         {
+          column: 32,
           data: {
             name: 'a',
             shadowedColumn: 14,
             shadowedLine: 2,
           },
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -995,11 +1213,15 @@ var b = function a() {};
       `,
       errors: [
         {
+          column: 18,
           data: {
             name: 'a',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],

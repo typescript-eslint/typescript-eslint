@@ -186,6 +186,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -202,6 +204,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -218,6 +222,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 26,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -234,6 +240,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -251,6 +259,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -267,6 +277,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -283,6 +295,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -299,6 +313,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -315,6 +331,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 22,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -334,6 +352,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 7,
           line: 7,
           messageId: 'unnecessaryAssign',
         },
@@ -353,6 +373,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 7,
           line: 7,
           messageId: 'unnecessaryAssign',
         },
@@ -374,11 +396,15 @@ class Foo {
       errors: [
         {
           column: 9,
+          endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'unnecessaryAssign',
         },
         {
           column: 5,
+          endColumn: 19,
+          endLine: 9,
           line: 9,
           messageId: 'unnecessaryAssign',
         },
@@ -398,6 +424,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -417,6 +445,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -438,11 +468,15 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
         {
           column: 7,
+          endColumn: 21,
+          endLine: 8,
           line: 8,
           messageId: 'unnecessaryAssign',
         },
@@ -461,6 +495,8 @@ class Foo {
       errors: [
         {
           column: 7,
+          endColumn: 21,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryAssign',
         },
@@ -479,6 +515,8 @@ class Foo {
       errors: [
         {
           column: 7,
+          endColumn: 21,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryAssign',
         },

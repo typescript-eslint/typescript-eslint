@@ -14,6 +14,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -27,6 +31,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -40,6 +48,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -53,6 +65,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -66,6 +82,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 32,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -79,6 +99,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 34,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -92,6 +116,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -105,6 +133,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -118,6 +150,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -131,6 +167,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -144,6 +184,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -157,6 +201,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -175,6 +223,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -188,6 +240,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -201,6 +257,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -214,6 +274,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -227,6 +291,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -240,6 +308,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -259,6 +331,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -278,6 +354,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -291,6 +371,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -304,6 +388,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -323,6 +411,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -342,6 +434,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -355,6 +451,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -368,6 +468,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -388,6 +492,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -408,6 +516,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -421,6 +533,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -434,6 +550,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -447,6 +567,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -465,6 +589,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -483,6 +611,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -501,6 +633,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -514,6 +650,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -527,6 +667,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -540,6 +684,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -558,6 +706,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -577,6 +729,10 @@ class Foo implements Bar {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'missingThis',
         },
       ],
@@ -600,6 +756,10 @@ function fn() {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 11,
+          endLine: 6,
+          line: 6,
           messageId: 'missingThis',
         },
       ],

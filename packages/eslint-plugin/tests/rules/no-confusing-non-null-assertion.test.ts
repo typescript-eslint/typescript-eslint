@@ -25,6 +25,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
@@ -41,6 +43,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 9,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
@@ -57,6 +61,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
@@ -73,6 +79,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 47,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
@@ -89,6 +97,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
@@ -105,6 +115,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'confusingAssign',
           suggestions: [
@@ -121,6 +133,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 46,
+          endLine: 1,
           line: 1,
           messageId: 'confusingAssign',
           suggestions: [
@@ -137,6 +151,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'confusingAssign',
           suggestions: [
@@ -154,6 +170,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
         {
           column: 1,
           data: { operator: 'in' },
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'confusingOperator',
           suggestions: [
@@ -177,6 +195,8 @@ a !in b;
         {
           column: 1,
           data: { operator: 'in' },
+          endColumn: 8,
+          endLine: 2,
           line: 2,
           messageId: 'confusingOperator',
           suggestions: [
@@ -202,6 +222,8 @@ a in b;
         {
           column: 1,
           data: { operator: 'instanceof' },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'confusingOperator',
           suggestions: [

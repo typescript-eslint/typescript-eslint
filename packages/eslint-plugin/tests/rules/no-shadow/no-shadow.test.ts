@@ -15,11 +15,15 @@ type T = 1;
       `,
       errors: [
         {
+          column: 8,
           data: {
             name: 'T',
             shadowedColumn: 6,
             shadowedLine: 2,
           },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -31,11 +35,15 @@ function foo<T>(arg: T) {}
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'T',
             shadowedColumn: 6,
             shadowedLine: 2,
           },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -48,11 +56,15 @@ function foo<T>() {
       `,
       errors: [
         {
+          column: 20,
           data: {
             name: 'T',
             shadowedColumn: 14,
             shadowedLine: 2,
           },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -64,11 +76,15 @@ function foo<T extends (arg: any) => void>(arg: T) {}
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'T',
             shadowedColumn: 6,
             shadowedLine: 2,
           },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -129,11 +145,15 @@ const x = 1;
       `,
       errors: [
         {
+          column: 8,
           data: {
             name: 'x',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -145,9 +165,13 @@ type Foo = 1;
       `,
       errors: [
         {
+          column: 6,
           data: {
             name: 'Foo',
           },
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -171,11 +195,15 @@ type Fn = (test: string) => typeof test;
       `,
       errors: [
         {
+          column: 12,
           data: {
             name: 'test',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -187,9 +215,13 @@ type Fn = (Foo: string) => typeof Foo;
       `,
       errors: [
         {
+          column: 12,
           data: {
             name: 'Foo',
           },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -217,11 +249,15 @@ interface Test {
       `,
       errors: [
         {
+          column: 4,
           data: {
             name: 'arg',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 15,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -237,11 +273,15 @@ interface Test {
       `,
       errors: [
         {
+          column: 6,
           data: {
             name: 'arg',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -255,11 +295,15 @@ declare function test(arg: string): typeof arg;
       `,
       errors: [
         {
+          column: 23,
           data: {
             name: 'arg',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -273,11 +317,15 @@ declare const test: (arg: string) => typeof arg;
       `,
       errors: [
         {
+          column: 22,
           data: {
             name: 'arg',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 33,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -293,11 +341,15 @@ declare class Test {
       `,
       errors: [
         {
+          column: 6,
           data: {
             name: 'arg',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -313,11 +365,15 @@ declare const Test: {
       `,
       errors: [
         {
+          column: 8,
           data: {
             name: 'arg',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -331,11 +387,15 @@ type Bar = new (arg: number) => typeof arg;
       `,
       errors: [
         {
+          column: 17,
           data: {
             name: 'arg',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
           messageId: 'noShadow',
         },
       ],
@@ -351,11 +411,15 @@ declare namespace Lib {
       `,
       errors: [
         {
+          column: 17,
           data: {
             name: 'arg',
             shadowedColumn: 7,
             shadowedLine: 2,
           },
+          endColumn: 28,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -368,11 +432,15 @@ function doThing(foo: number) {}
       `,
       errors: [
         {
+          column: 18,
           data: {
             name: 'foo',
             shadowedColumn: 15,
             shadowedLine: 2,
           },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -385,11 +453,15 @@ function doThing(foo: number) {}
       `,
       errors: [
         {
+          column: 18,
           data: {
             name: 'foo',
             shadowedColumn: 15,
             shadowedLine: 2,
           },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -402,11 +474,15 @@ function doThing(foo: number, bar: number) {}
       `,
       errors: [
         {
+          column: 18,
           data: {
             name: 'foo',
             shadowedColumn: 10,
             shadowedLine: 2,
           },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -424,11 +500,15 @@ declare module 'bar' {
       `,
       errors: [
         {
+          column: 20,
           data: {
             name: 'Foo',
             shadowedColumn: 11,
             shadowedLine: 2,
           },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -445,11 +525,15 @@ declare module 'baz' {
       `,
       errors: [
         {
+          column: 20,
           data: {
             name: 'Foo',
             shadowedColumn: 15,
             shadowedLine: 2,
           },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -466,11 +550,15 @@ declare module 'baz' {
       `,
       errors: [
         {
+          column: 20,
           data: {
             name: 'Foo',
             shadowedColumn: 15,
             shadowedLine: 2,
           },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
           messageId: 'noShadow',
         },
       ],
@@ -482,19 +570,27 @@ let y;
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'x',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
         {
+          column: 17,
           data: {
             name: 'y',
             shadowedColumn: 5,
             shadowedLine: 3,
           },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -508,11 +604,15 @@ let y;
       `,
       errors: [
         {
+          column: 14,
           data: {
             name: 'x',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -526,11 +626,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 10,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 3,
           },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -543,11 +647,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 3,
           },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -560,11 +668,15 @@ interface A {}
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'A',
             shadowedColumn: 11,
             shadowedLine: 3,
           },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -577,11 +689,15 @@ interface A {}
       `,
       errors: [
         {
+          column: 10,
           data: {
             name: 'A',
             shadowedColumn: 11,
             shadowedLine: 3,
           },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -596,11 +712,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 8,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 5,
           },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -615,11 +735,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 5,
           },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -633,11 +757,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 10,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 3,
           },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -650,11 +778,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 3,
           },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -667,11 +799,15 @@ interface A {}
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'A',
             shadowedColumn: 11,
             shadowedLine: 3,
           },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -684,11 +820,15 @@ interface A {}
       `,
       errors: [
         {
+          column: 10,
           data: {
             name: 'A',
             shadowedColumn: 11,
             shadowedLine: 3,
           },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -703,11 +843,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 8,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 5,
           },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -722,11 +866,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 5,
           },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -740,11 +888,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 10,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 3,
           },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -757,11 +909,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 3,
           },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -774,11 +930,15 @@ interface A {}
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'A',
             shadowedColumn: 11,
             shadowedLine: 3,
           },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -791,11 +951,15 @@ interface A {}
       `,
       errors: [
         {
+          column: 10,
           data: {
             name: 'A',
             shadowedColumn: 11,
             shadowedLine: 3,
           },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadow',
         },
       ],
@@ -810,11 +974,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 8,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 5,
           },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -829,11 +997,15 @@ type A = 1;
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'A',
             shadowedColumn: 6,
             shadowedLine: 5,
           },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],
@@ -846,11 +1018,15 @@ function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
       `,
       errors: [
         {
+          column: 56,
           data: {
             name: 'args',
             shadowedColumn: 5,
             shadowedLine: 2,
           },
+          endColumn: 67,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -872,9 +1048,13 @@ declare const has = (environment: 'dev' | 'prod' | 'test') => boolean;
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'has',
           },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
           messageId: 'noShadowGlobal',
         },
       ],
@@ -892,11 +1072,15 @@ const fn = (has: string) => {};
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'has',
             shadowedColumn: 15,
             shadowedLine: 2,
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'noShadow',
         },
       ],

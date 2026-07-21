@@ -508,9 +508,13 @@ class C {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#unusedInOuterClass',
           },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -543,9 +547,13 @@ class C {
       `,
       errors: [
         {
+          column: 7,
           data: {
             classMemberName: '#unusedOnlyInSecondNestedClass',
           },
+          endColumn: 37,
+          endLine: 21,
+          line: 21,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -572,9 +580,12 @@ class C {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#usedOnlyInTheSecondInnerClass',
           },
+          endColumn: 33,
+          endLine: 3,
           line: 3,
           messageId: 'unusedPrivateClassMember',
         },
@@ -588,9 +599,13 @@ class C {
       `,
       errors: [
         {
+          column: 20,
           data: {
             classMemberName: 'accessorMember',
           },
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -603,9 +618,13 @@ class C {
       `,
       errors: [
         {
+          column: 18,
           data: {
             classMemberName: 'staticMember',
           },
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -618,9 +637,13 @@ class Test1 {
       `,
       errors: [
         {
+          column: 23,
           data: {
             classMemberName: 'parameterProperty',
           },
+          endColumn: 48,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -633,9 +656,13 @@ class Test1 {
       `,
       errors: [
         {
+          column: 32,
           data: {
             classMemberName: 'parameterProperty',
           },
+          endColumn: 57,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -648,9 +675,13 @@ class Test1 {
       `,
       errors: [
         {
+          column: 32,
           data: {
             classMemberName: 'parameterProperty',
           },
+          endColumn: 57,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -668,9 +699,13 @@ console.log(instance.usedOutsideClass);
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'usedOutsideClass',
           },
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -687,9 +722,13 @@ console.log(instance['usedOutsideClass']);
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'usedOutsideClass',
           },
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -709,9 +748,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'prop',
           },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -725,9 +768,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -740,9 +787,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -756,9 +807,13 @@ class Second {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -772,9 +827,13 @@ class Second {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -788,9 +847,13 @@ class Second {}
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -804,9 +867,13 @@ class Second {}
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -820,15 +887,23 @@ class First {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember2',
           },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -842,15 +917,23 @@ class First {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember2',
           },
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -866,9 +949,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -884,9 +971,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -902,9 +993,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -920,9 +1015,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -939,9 +1038,13 @@ class C {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -958,9 +1061,13 @@ class C {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -977,9 +1084,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -992,9 +1103,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1013,9 +1128,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1034,9 +1153,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1049,9 +1172,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 7,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1064,9 +1191,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 15,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1083,9 +1214,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1102,9 +1237,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1121,9 +1260,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1140,9 +1283,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1158,9 +1305,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1176,9 +1327,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1194,9 +1349,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1212,9 +1371,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1230,9 +1393,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1248,9 +1415,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1266,9 +1437,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             classMemberName: '#privateMember',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1284,9 +1459,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1303,9 +1482,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'privateMember',
           },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1323,9 +1506,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'foo',
           },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'unusedPrivateClassMember',
         },
       ],
@@ -1344,15 +1531,23 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             classMemberName: 'foo',
           },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'unusedPrivateClassMember',
         },
         {
+          column: 11,
           data: {
             classMemberName: 'bar',
           },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'unusedPrivateClassMember',
         },
       ],
