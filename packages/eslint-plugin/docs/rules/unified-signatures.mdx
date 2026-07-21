@@ -122,6 +122,38 @@ declare function f(x: null): void;
 </TabItem>
 </Tabs>
 
+## Caveats
+
+This rule reports overloads that have the same _shape_, so they _could_ be written as a single signature.
+It does not check whether the merged signature would accept exactly the same calls as the separate overloads.
+There is intentionally no autofixer: it's up to you to decide whether merging is appropriate.
+
+Merging is most often not equivalent when the differing parameters are object types, because of
+[excess property checking](https://www.typescriptlang.org/docs/handbook/2/objects.html#excess-property-checks).
+An object literal passed to separate overloads must match one of them exactly, whereas a union parameter permits
+properties from any of its members - including a literal that mixes properties from several:
+
+```ts showPlaygroundButton
+interface A {
+  a: string;
+}
+
+interface B {
+  b: string;
+}
+
+declare function separate(x: A): void;
+declare function separate(x: B): void;
+//                        ~~~~ These overloads can be combined into one signature taking `A | B`.
+
+declare function merged(x: A | B): void;
+
+separate({ a: '', b: '' }); // Error: No overload matches this call.
+merged({ a: '', b: '' }); // No error
+```
+
+If merging would change the types your function accepts, add an [ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments-1) explaining why the overloads must stay separate.
+
 ## When Not To Use It
 
 This is purely a stylistic rule to help with readability of function signature overloads.
