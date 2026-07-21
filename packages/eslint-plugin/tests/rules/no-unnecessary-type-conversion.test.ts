@@ -60,6 +60,18 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
       BigInt(3n);
       export {};
     `,
+    // a builtin redefined in an outer scope is still not the global, even
+    // when called from a nested scope
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12522
+    `
+      function String(value: unknown) {
+        return value;
+      }
+      function useString(value: string) {
+        return String(value);
+      }
+      export {};
+    `,
     `
       function toString(value: unknown) {
         return value;
