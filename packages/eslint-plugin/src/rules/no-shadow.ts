@@ -6,7 +6,7 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import { createRule, isDefinitionFile } from '../util';
 import { isTypeImport } from '../util/isTypeImport';
 
-export type MessageIds = 'noShadow' | 'noShadowGlobal';
+export type MessageIds = 'noEnumShadow' | 'noShadow' | 'noShadowGlobal';
 export type Options = [
   {
     allow?: string[];
@@ -45,6 +45,8 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     messages: {
+      noEnumShadow:
+        "Enum members are added to the enum scope, so references to '{{name}}' in enum member initializers resolve to this member instead of the declaration in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}.",
       noShadow:
         "'{{name}}' is already declared in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}.",
       noShadowGlobal: "'{{name}}' is already a global variable.",
@@ -247,8 +249,7 @@ export default createRule<Options, MessageIds>({
 
     function isImportDeclaration(
       definition:
-        | TSESTree.ImportDeclaration
-        | TSESTree.TSImportEqualsDeclaration,
+        TSESTree.ImportDeclaration | TSESTree.TSImportEqualsDeclaration,
     ): definition is TSESTree.ImportDeclaration {
       return definition.type === AST_NODE_TYPES.ImportDeclaration;
     }
@@ -397,14 +398,11 @@ export default createRule<Options, MessageIds>({
 
       const { variableScope } = variable.scope;
 
-      if (
-        !(
-          (variableScope.block.type ===
-            AST_NODE_TYPES.ArrowFunctionExpression ||
-            variableScope.block.type === AST_NODE_TYPES.FunctionExpression) &&
-          getOuterScope(variableScope) === shadowedVariable.scope
-        )
-      ) {
+      if (!(
+        (variableScope.block.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          variableScope.block.type === AST_NODE_TYPES.FunctionExpression) &&
+        getOuterScope(variableScope) === shadowedVariable.scope
+      )) {
         return false;
       }
 
@@ -500,14 +498,12 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      if (
-        !(
-          (innerDef.type === DefinitionType.FunctionName &&
-            innerDef.node.type === AST_NODE_TYPES.FunctionExpression) ||
-          (innerDef.type === DefinitionType.ClassName &&
-            innerDef.node.type === AST_NODE_TYPES.ClassExpression)
-        )
-      ) {
+      if (!(
+        (innerDef.type === DefinitionType.FunctionName &&
+          innerDef.node.type === AST_NODE_TYPES.FunctionExpression) ||
+        (innerDef.type === DefinitionType.ClassName &&
+          innerDef.node.type === AST_NODE_TYPES.ClassExpression)
+      )) {
         return false;
       }
 
@@ -528,12 +524,10 @@ export default createRule<Options, MessageIds>({
 
       const nodeToCheck = innerDef.node;
 
-      if (
-        !(
-          initializerNode.range[0] <= nodeToCheck.range[0] &&
-          nodeToCheck.range[1] <= initializerNode.range[1]
-        )
-      ) {
+      if (!(
+        initializerNode.range[0] <= nodeToCheck.range[0] &&
+        nodeToCheck.range[1] <= initializerNode.range[1]
+      )) {
         return false;
       }
 
@@ -717,6 +711,10 @@ export default createRule<Options, MessageIds>({
         ) {
           const location = getDeclaredLocation(shadowed);
 
+          const isEnumDeclaration = shadowed.defs.some(
+            def => def.type === DefinitionType.TSEnumName,
+          );
+
           context.report({
             node: variable.identifiers[0],
             ...(location.global
@@ -727,7 +725,7 @@ export default createRule<Options, MessageIds>({
                   },
                 }
               : {
-                  messageId: 'noShadow',
+                  messageId: isEnumDeclaration ? 'noEnumShadow' : 'noShadow',
                   data: {
                     name: variable.name,
                     shadowedColumn: location.column,

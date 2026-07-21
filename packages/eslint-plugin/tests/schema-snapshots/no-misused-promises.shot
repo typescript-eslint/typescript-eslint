@@ -68,7 +68,8 @@ type Options = [
     /** Whether to warn when `...` spreading a `Promise`. */
     checksSpreads?: boolean;
     /** Whether to warn when a Promise is returned from a function typed as returning `void`. */
-    checksVoidReturn?: /**
+    checksVoidReturn?:
+      /**
        * Whether to warn when a Promise is returned from a function typed as returning `void`.
        * Whether to disable checking all asynchronous functions.
        */

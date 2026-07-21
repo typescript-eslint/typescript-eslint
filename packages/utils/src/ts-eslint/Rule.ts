@@ -234,8 +234,7 @@ interface ReportDescriptorNodeOptionalLoc {
    * An override of the location of the report
    */
   readonly loc?:
-    | Readonly<TSESTree.Position>
-    | Readonly<TSESTree.SourceLocation>;
+    Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation>;
   /**
    * The Node or AST Token which the report is being attached to
    */
@@ -249,8 +248,7 @@ interface ReportDescriptorLocOnly {
 }
 
 export type ReportDescriptor<MessageIds extends string> = (
-  | ReportDescriptorLocOnly
-  | ReportDescriptorNodeOptionalLoc
+  ReportDescriptorLocOnly | ReportDescriptorNodeOptionalLoc
 ) &
   ReportDescriptorWithSuggestion<MessageIds>;
 
@@ -667,7 +665,9 @@ interface RuleListenerBaseSelectors {
   YieldExpression?: RuleFunction<TSESTree.YieldExpression>;
 }
 type RuleListenerExitSelectors = {
-  [K in keyof RuleListenerBaseSelectors as `${K}:exit`]: RuleListenerBaseSelectors[K];
+  [
+    K in keyof RuleListenerBaseSelectors as `${K}:exit`
+  ]: RuleListenerBaseSelectors[K];
 };
 type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors

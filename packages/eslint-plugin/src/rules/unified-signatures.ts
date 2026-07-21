@@ -38,8 +38,7 @@ type ScopeNode =
 
 type OverloadNode = MethodDefinition | SignatureDefinition;
 type ContainingNode =
-  | TSESTree.ExportDefaultDeclaration
-  | TSESTree.ExportNamedDeclaration;
+  TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration;
 
 type SignatureDefinition =
   | TSESTree.FunctionExpression
@@ -50,8 +49,7 @@ type SignatureDefinition =
   | TSESTree.TSMethodSignature;
 
 type MethodDefinition =
-  | TSESTree.MethodDefinition
-  | TSESTree.TSAbstractMethodDefinition;
+  TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition;
 
 export type MessageIds =
   | 'omittingRestParameter'

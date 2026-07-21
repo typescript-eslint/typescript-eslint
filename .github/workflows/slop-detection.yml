@@ -31,7 +31,7 @@ jobs:
           restore-keys: agentscan-cache-
 
       - name: AgentScan
-        uses: MatteoGabriele/agentscan-action@4eebb5210583641a015146ea52b6b92e1df14ed7 # main
+        uses: MatteoGabriele/agentscan-action@e02ef270c024bfad3541b2a71619c3c9f20b3312 # main
         with:
           auto-close-classifications: automation
           auto-close: true

@@ -15,8 +15,7 @@ export type AtLeastVersionConstraint =
   | `${number}.${number}`
   | `${number}`;
 export type VersionConstraint =
-  | AtLeastVersionConstraint
-  | SemverVersionConstraint;
+  AtLeastVersionConstraint | SemverVersionConstraint;
 /**
  * Passing a string for the value is shorthand for a '>=' constraint
  */

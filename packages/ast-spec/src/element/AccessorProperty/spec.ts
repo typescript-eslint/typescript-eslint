@@ -13,5 +13,4 @@ export interface AccessorPropertyNonComputedName extends PropertyDefinitionNonCo
 }
 
 export type AccessorProperty =
-  | AccessorPropertyComputedName
-  | AccessorPropertyNonComputedName;
+  AccessorPropertyComputedName | AccessorPropertyNonComputedName;

@@ -277,9 +277,7 @@ export class RuleTester extends TestFramework {
   ): InvalidTestCase<MessageIds, Options>;
   static only<MessageIds extends string, Options extends readonly unknown[]>(
     item:
-      | string
-      | InvalidTestCase<MessageIds, Options>
-      | ValidTestCase<Options>,
+      string | InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
   ): InvalidTestCase<MessageIds, Options> | ValidTestCase<Options> {
     if (typeof item === 'string') {
       return { code: item, only: true };

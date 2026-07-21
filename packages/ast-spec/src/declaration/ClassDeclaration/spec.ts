@@ -27,5 +27,4 @@ export interface ClassDeclarationWithOptionalName extends ClassDeclarationBase {
 }
 
 export type ClassDeclaration =
-  | ClassDeclarationWithName
-  | ClassDeclarationWithOptionalName;
+  ClassDeclarationWithName | ClassDeclarationWithOptionalName;

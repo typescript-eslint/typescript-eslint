@@ -34,5 +34,4 @@ export interface TSMethodSignatureNonComputedName extends TSMethodSignatureBase 
 }
 
 export type TSMethodSignature =
-  | TSMethodSignatureComputedName
-  | TSMethodSignatureNonComputedName;
+  TSMethodSignatureComputedName | TSMethodSignatureNonComputedName;

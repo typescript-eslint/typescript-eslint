@@ -389,14 +389,35 @@ export function checkSyntaxError(
 
     case SyntaxKind.ImportDeclaration: {
       const { importClause } = node;
+      const importPhase = getImportClausePhaseModifier(importClause);
+
       if (
-        getImportClausePhaseModifier(importClause) === 'type' &&
+        importPhase === 'type' &&
         importClause?.name &&
         importClause.namedBindings
       ) {
         throw createError(
           importClause,
           'A type-only import can specify a default import or named bindings, but not both.',
+        );
+      }
+
+      const isNamedImport =
+        importClause?.namedBindings?.kind === SyntaxKind.NamedImports;
+
+      const isDefaultImport = !!importClause?.name;
+
+      if (importPhase === 'defer' && isNamedImport) {
+        throw createError(
+          importClause,
+          'Named imports are not allowed in a deferred import.',
+        );
+      }
+
+      if (importPhase === 'defer' && isDefaultImport) {
+        throw createError(
+          importClause,
+          'Default imports are not allowed in a deferred import.',
         );
       }
 
