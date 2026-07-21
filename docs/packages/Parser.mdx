@@ -46,12 +46,13 @@ interface ParserOptions {
   ecmaVersion?: number | 'latest';
   emitDecoratorMetadata?: boolean;
   experimentalDecorators?: boolean;
-  isolatedDeclarations?: boolean;
   extraFileExtensions?: string[];
+  isolatedDeclarations?: boolean;
   jsDocParsingMode?: 'all' | 'none' | 'type-info';
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
   lib?: string[];
+  onUnsupportedTypeScriptVersion?: 'warn' | 'error' | 'ignore';
   programs?: import('typescript').Program[];
   project?: string | string[] | boolean | null;
   projectFolderIgnoreList?: string[];
