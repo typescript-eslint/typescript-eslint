@@ -195,25 +195,43 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    // Used to skip repeated `symbol.getJsDocTags` invocations and resolution here.
+    // In real-world projects this cache's hit ratio is at 60%, so worth doing it.
+    const jsDocDeprecationCache = new Map<
+      ts.Signature | ts.Symbol,
+      string | undefined
+    >();
+
     function getJsDocDeprecation(
       symbol: ts.Signature | ts.Symbol | undefined,
     ): string | undefined {
-      let jsDocTags: ts.JSDocTagInfo[] | undefined;
+      if (!symbol) {
+        return undefined;
+      }
+
+      if (jsDocDeprecationCache.has(symbol)) {
+        return jsDocDeprecationCache.get(symbol);
+      }
+
+      let jsDocTags: ts.JSDocTagInfo[];
       try {
-        jsDocTags = symbol?.getJsDocTags(checker);
+        jsDocTags = symbol.getJsDocTags(checker);
       } catch {
+        jsDocDeprecationCache.set(symbol, undefined);
         // workaround for https://github.com/microsoft/TypeScript/issues/60024
         return;
       }
-      const tag = jsDocTags?.find(tag => tag.name === 'deprecated');
+      const tag = jsDocTags.find(t => t.name === 'deprecated');
 
       if (!tag) {
+        jsDocDeprecationCache.set(symbol, undefined);
         return undefined;
       }
 
       const displayParts = tag.text;
-
-      return displayParts ? ts.displayPartsToString(displayParts) : '';
+      const reason = displayParts ? ts.displayPartsToString(displayParts) : '';
+      jsDocDeprecationCache.set(symbol, reason);
+      return reason;
     }
 
     // the callee of a call-like expression: `foo` in `foo()`, `a.b.c` in
@@ -279,12 +297,14 @@ export default createRule<Options, MessageIds>({
       const calleeType = aliasedSymbol
         ? checker.getTypeOfSymbol(aliasedSymbol)
         : services.getTypeAtLocation(node);
+      const hasDeprecatedSig = (sig: ts.Signature): boolean =>
+        getJsDocDeprecation(sig) != null;
       const mayHaveDeprecatedSignature = tsutils
         .unionConstituents(calleeType)
-        .some(type =>
-          [...type.getCallSignatures(), ...type.getConstructSignatures()].some(
-            signature => getJsDocDeprecation(signature) != null,
-          ),
+        .some(
+          type =>
+            type.getCallSignatures().some(hasDeprecatedSig) ||
+            type.getConstructSignatures().some(hasDeprecatedSig),
         );
 
       if (!mayHaveDeprecatedSignature) {
