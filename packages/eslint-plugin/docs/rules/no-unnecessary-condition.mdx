@@ -195,6 +195,14 @@ Some projects may intentionally use type predicates to ensure that runtime value
 Often, it makes sense to use eslint-disable comments in these cases, with a comment indicating why the condition should be checked at runtime, despite appearing unnecessary.
 However, in some contexts, it may be more appropriate to keep this option disabled entirely.
 
+:::note
+This option assumes that type predicates accurately describe their runtime behavior.
+
+For a type predicate such as `isString(value): value is string`, TypeScript's control-flow analysis assumes that the function returns `true` if and only if `value` has the asserted type. If a predicate performs additional runtime checks that are not represented in its return type, this option may report conditions that are still meaningful at runtime.
+
+For assertion functions such as `assertIsString(value): asserts value is string`, TypeScript similarly assumes that the value has the asserted type whenever the function returns normally.
+:::
+
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
 
 {/* insert option description */}
