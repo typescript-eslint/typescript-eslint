@@ -1,6 +1,8 @@
 import type { Lib, TSESTree } from '@typescript-eslint/types';
+import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
@@ -28,6 +30,40 @@ import { ReferenceFlag } from './Reference';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
+function isNode(value: unknown): value is TSESTree.Node {
+  return (
+    typeof value === 'object' &&
+    value != null &&
+    typeof (value as { type?: unknown }).type === 'string'
+  );
+}
+
+function collectCommentIdentifierNames(
+  node: TSESTree.Program,
+  names: Set<string>,
+): void {
+  const comments = (node as unknown as { comments?: unknown }).comments;
+  if (!Array.isArray(comments)) {
+    return;
+  }
+
+  for (const comment of comments) {
+    if (
+      typeof comment !== 'object' ||
+      comment == null ||
+      typeof (comment as { value?: unknown }).value !== 'string'
+    ) {
+      continue;
+    }
+
+    for (const match of (comment as { value: string }).value.matchAll(
+      /[A-Za-z_$][\w$]*/g,
+    )) {
+      names.add(match[0]);
+    }
+  }
+}
+
 export interface ReferencerOptions extends VisitorOptions {
   jsxFragmentName: string | null;
   jsxPragma: string | null;
@@ -36,6 +72,7 @@ export interface ReferencerOptions extends VisitorOptions {
 
 // Referencing variables and creating bindings.
 export class Referencer extends Visitor {
+  readonly #childVisitorKeys: VisitorKeys;
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
   #jsxFragmentName: string | null;
@@ -46,16 +83,64 @@ export class Referencer extends Visitor {
   constructor(options: ReferencerOptions, scopeManager: ScopeManager) {
     super(options);
     this.scopeManager = scopeManager;
+    this.#childVisitorKeys = options.childVisitorKeys ?? visitorKeys;
     this.#jsxPragma = options.jsxPragma;
     this.#jsxFragmentName = options.jsxFragmentName;
     this.#lib = options.lib;
   }
 
-  private populateGlobalsFromLib(globalScope: GlobalScope): void {
+  private collectCandidateImplicitGlobalNames(
+    node: TSESTree.Program,
+  ): Set<string> {
+    const names = new Set<string>();
+
+    const visit = (child: unknown): void => {
+      if (!isNode(child)) {
+        return;
+      }
+
+      if (
+        child.type === AST_NODE_TYPES.Identifier ||
+        child.type === AST_NODE_TYPES.JSXIdentifier
+      ) {
+        names.add(child.name);
+      }
+
+      const childRecord = child as unknown as Record<string, unknown>;
+      const children = this.#childVisitorKeys[child.type] ?? Object.keys(child);
+      for (const key of children) {
+        if (key === 'parent') {
+          continue;
+        }
+
+        const value = childRecord[key];
+        if (Array.isArray(value)) {
+          for (const subValue of value) {
+            visit(subValue);
+          }
+        } else {
+          visit(value);
+        }
+      }
+    };
+
+    collectCommentIdentifierNames(node, names);
+    visit(node);
+    return names;
+  }
+
+  private populateGlobalsFromLib(
+    globalScope: GlobalScope,
+    candidateNames: ReadonlySet<string>,
+  ): void {
     const libs = this.resolveLibDefinitions();
 
     for (const lib of libs) {
       for (const [name, variable] of lib.variables) {
+        if (!candidateNames.has(name)) {
+          continue;
+        }
+
         globalScope.defineImplicitVariable(name, variable);
       }
     }
@@ -600,7 +685,10 @@ export class Referencer extends Visitor {
 
   protected Program(node: TSESTree.Program): void {
     const globalScope = this.scopeManager.nestGlobalScope(node);
-    this.populateGlobalsFromLib(globalScope);
+    this.populateGlobalsFromLib(
+      globalScope,
+      this.collectCandidateImplicitGlobalNames(node),
+    );
 
     if (this.scopeManager.isGlobalReturn()) {
       // Force strictness of GlobalScope to false when using node.js scope.
