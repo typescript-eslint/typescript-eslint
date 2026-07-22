@@ -250,7 +250,10 @@ export default createRule<Options, MessageIds>({
       return isNodeCalleeOfParent(callee) ? callee : undefined;
     }
 
-    function getSignatureDeprecation(node: CallLikeCallee): string | undefined {
+    function getSignatureDeprecation(
+      node: CallLikeCallee,
+      aliasedSymbol: ts.Symbol | undefined,
+    ): string | undefined {
       // Intrinsic JSX elements (e.g. `<div />`) get synthesized signatures
       // without declarations, which can never be deprecated — deprecations of
       // the elements themselves live on the `JSX.IntrinsicElements` property
@@ -269,7 +272,13 @@ export default createRule<Options, MessageIds>({
       // candidates first — that only requires typing the callee — and resolve
       // the actual signature only when a deprecated candidate exists, to find
       // out whether it is the one being used.
-      const calleeType = services.getTypeAtLocation(node);
+      //
+      // When the caller already resolved the callee symbol, reuse it via
+      // checker.getTypeOfSymbol — this avoids a redundant getSymbolAtLocation
+      // that getTypeAtLocation would perform internally.
+      const calleeType = aliasedSymbol
+        ? checker.getTypeOfSymbol(aliasedSymbol)
+        : services.getTypeAtLocation(node);
       const mayHaveDeprecatedSignature = tsutils
         .unionConstituents(calleeType)
         .some(type =>
@@ -312,7 +321,7 @@ export default createRule<Options, MessageIds>({
       ) {
         return (
           searchForDeprecationInAliasesChain(symbol, true) ??
-          getSignatureDeprecation(node) ??
+          getSignatureDeprecation(node, aliasedSymbol) ??
           getJsDocDeprecation(aliasedSymbol)
         );
       }
@@ -343,7 +352,7 @@ export default createRule<Options, MessageIds>({
           // So, in case of function and method declarations, we don't check original
           // aliased symbol, but rely on the getSignatureDeprecation(node) call below.
           false,
-        ) ?? getSignatureDeprecation(node)
+        ) ?? getSignatureDeprecation(node, aliasedSymbol)
       );
     }
 
