@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -11,6 +11,40 @@ export type Options = [
     checkNever: boolean;
   },
 ];
+
+function isClearlyMeaninglessExpression(node: TSESTree.Expression): boolean {
+  switch (node.type) {
+    case AST_NODE_TYPES.ChainExpression:
+    case AST_NODE_TYPES.TSAsExpression:
+    case AST_NODE_TYPES.TSInstantiationExpression:
+    case AST_NODE_TYPES.TSNonNullExpression:
+    case AST_NODE_TYPES.TSTypeAssertion:
+      return isClearlyMeaninglessExpression(node.expression);
+
+    case AST_NODE_TYPES.Identifier:
+    case AST_NODE_TYPES.Literal:
+    case AST_NODE_TYPES.ThisExpression:
+      return true;
+
+    case AST_NODE_TYPES.MemberExpression:
+      return (
+        isClearlyMeaninglessExpression(node.object) &&
+        (!node.computed || isClearlyMeaninglessExpression(node.property))
+      );
+
+    case AST_NODE_TYPES.CallExpression:
+      if (
+        node.arguments.length > 0 ||
+        node.callee.type !== AST_NODE_TYPES.MemberExpression
+      ) {
+        return false;
+      }
+      return isClearlyMeaninglessExpression(node.callee);
+
+    default:
+      return false;
+  }
+}
 
 export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
   name: 'no-meaningless-void-operator',
@@ -47,11 +81,12 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
 
   create(context, [{ checkNever }]) {
     const services = ESLintUtils.getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program } = services;
+    const checker = program.getTypeChecker();
 
     return {
       'UnaryExpression[operator="void"]'(node: TSESTree.UnaryExpression): void {
-        const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
+        const fix = (fixer: TSESLint.RuleFixer) => {
           return fixer.removeRange([
             context.sourceCode.getTokens(node)[0].range[0],
             context.sourceCode.getTokens(node)[1].range[0],
@@ -74,8 +109,10 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
             data: { type: checker.typeToString(argType) },
             fix,
           });
-        } else if (
-          checkNever &&
+          return;
+        }
+
+        if (
           unionParts.every(part =>
             tsutils.isTypeFlagSet(
               part,
@@ -83,13 +120,31 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
             ),
           )
         ) {
-          context.report({
-            node,
-            messageId: 'meaninglessVoidOperator',
-            data: { type: checker.typeToString(argType) },
-            suggest: [{ messageId: 'removeVoid', fix }],
-          });
+          if (checkNever) {
+            context.report({
+              node,
+              messageId: 'meaninglessVoidOperator',
+              data: { type: checker.typeToString(argType) },
+              suggest: [{ messageId: 'removeVoid', fix }],
+            });
+          }
+          return;
         }
+
+        const tsNode = services.esTreeNodeToTSNodeMap.get(node.argument);
+        if (tsutils.isThenableType(checker, tsNode, argType)) {
+          return;
+        }
+
+        if (!isClearlyMeaninglessExpression(node.argument)) {
+          return;
+        }
+
+        context.report({
+          node,
+          messageId: 'meaninglessVoidOperator',
+          data: { type: checker.typeToString(argType) },
+        });
       },
     };
   },
