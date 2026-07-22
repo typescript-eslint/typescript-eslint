@@ -20,11 +20,17 @@ import { parseFinallyCall } from '../util/promiseUtils';
 
 export type Options = [
   {
-    checksConditionals?: boolean;
+    checksConditionals?: boolean | ChecksConditionalsOptions;
     checksSpreads?: boolean;
     checksVoidReturn?: boolean | ChecksVoidReturnOptions;
   },
 ];
+
+export type FlagUnionsOptions = 'all' | 'none' | 'strict';
+
+export interface ChecksConditionalsOptions {
+  flagUnions?: FlagUnionsOptions;
+}
 
 export interface ChecksVoidReturnOptions {
   arguments?: boolean;
@@ -108,9 +114,26 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
         properties: {
           checksConditionals: {
-            type: 'boolean',
             description:
               'Whether to warn when a Promise is provided to conditional statements.',
+            oneOf: [
+              {
+                type: 'boolean',
+                description: 'Whether to disable checking conditionals.',
+              },
+              {
+                type: 'object',
+                description: 'Detailed settings for conditional inspection.',
+                properties: {
+                  flagUnions: {
+                    type: 'string',
+                    description:
+                      'Configures how union types containing Promise-like types are checked.',
+                    enum: ['all', 'strict', 'none'],
+                  },
+                },
+              },
+            ],
           },
           checksSpreads: {
             type: 'boolean',
@@ -183,17 +206,21 @@ export default createRule<Options, MessageId>({
 
     const checkedNodes = new Set<TSESTree.Node>();
 
+    const flagUnionsOption = parseFlagUnionsOption(checksConditionals);
+
     const conditionalChecks: TSESLint.RuleListener = {
       'CallExpression > MemberExpression': checkArrayPredicates,
-      ConditionalExpression: checkTestConditional,
-      DoWhileStatement: checkTestConditional,
-      ForStatement: checkTestConditional,
-      IfStatement: checkTestConditional,
-      LogicalExpression: checkConditional,
-      'UnaryExpression[operator="!"]'(node: TSESTree.UnaryExpression) {
-        checkConditional(node.argument, true);
+      ConditionalExpression: checkTestConditional(flagUnionsOption),
+      DoWhileStatement: checkTestConditional(flagUnionsOption),
+      ForStatement: checkTestConditional(flagUnionsOption),
+      IfStatement: checkTestConditional(flagUnionsOption),
+      LogicalExpression: (node: TSESTree.LogicalExpression) => {
+        checkConditional(node, flagUnionsOption);
       },
-      WhileStatement: checkTestConditional,
+      'UnaryExpression[operator="!"]'(node: TSESTree.UnaryExpression) {
+        checkConditional(node.argument, flagUnionsOption, true);
+      },
+      WhileStatement: checkTestConditional(flagUnionsOption),
     };
 
     checksVoidReturn = parseChecksVoidReturn(checksVoidReturn);
@@ -292,17 +319,19 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function checkTestConditional(
-      node:
-        | TSESTree.ConditionalExpression
-        | TSESTree.DoWhileStatement
-        | TSESTree.ForStatement
-        | TSESTree.IfStatement
-        | TSESTree.WhileStatement,
-    ): void {
-      if (node.test) {
-        checkConditional(node.test, true);
-      }
+    function checkTestConditional(flagUnionsOption: FlagUnionsOptions) {
+      return (
+        node:
+          | TSESTree.ConditionalExpression
+          | TSESTree.DoWhileStatement
+          | TSESTree.ForStatement
+          | TSESTree.IfStatement
+          | TSESTree.WhileStatement,
+      ): void => {
+        if (node.test) {
+          checkConditional(node.test, flagUnionsOption, true);
+        }
+      };
     }
 
     /**
@@ -313,6 +342,7 @@ export default createRule<Options, MessageId>({
      */
     function checkConditional(
       node: TSESTree.Expression,
+      flagUnionsOption: FlagUnionsOptions,
       isTestExpr = false,
     ): void {
       // prevent checking the same node multiple times
@@ -324,16 +354,32 @@ export default createRule<Options, MessageId>({
       if (node.type === AST_NODE_TYPES.LogicalExpression) {
         // ignore the left operand for nullish coalescing expressions not in a context of a test expression
         if (node.operator !== '??' || isTestExpr) {
-          checkConditional(node.left, isTestExpr);
+          checkConditional(node.left, flagUnionsOption, isTestExpr);
         }
         // we ignore the right operand when not in a context of a test expression
         if (isTestExpr) {
-          checkConditional(node.right, isTestExpr);
+          checkConditional(node.right, flagUnionsOption, isTestExpr);
         }
         return;
       }
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (isAlwaysThenable(checker, tsNode)) {
+        context.report({
+          node,
+          messageId: 'conditional',
+        });
+        return;
+      }
+
+      if (flagUnionsOption === 'all' && isSometimesThenable(checker, tsNode)) {
+        context.report({
+          node,
+          messageId: 'conditional',
+        });
+      } else if (
+        flagUnionsOption === 'strict' &&
+        !hasMatchingPromiseTypeArgument(checker, tsNode)
+      ) {
         context.report({
           node,
           messageId: 'conditional',
@@ -1102,4 +1148,111 @@ function hasWellKnownSymbolWithVoidReturn(
         checker.getTypeOfSymbolAtLocation(symbol, node),
       );
     });
+}
+/**
+ * Check that the Promise argument is the same as the rest of the type when it is a Union that contains Promise.
+ */
+function hasMatchingPromiseTypeArgument(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+) {
+  const type = checker.getTypeAtLocation(node);
+
+  const subTypes = tsutils.unionConstituents(checker.getApparentType(type));
+
+  const promiseType = subTypes.find(type => type.getProperty('then'));
+  if (!promiseType || !tsutils.isThenableType(checker, node, promiseType)) {
+    return false;
+  }
+
+  const anotherTypes = subTypes.filter(type => type !== promiseType);
+  const promiseTypeArgumentSubTypes = getPromiseTypeArguments(
+    checker,
+    promiseType,
+  );
+
+  if (isSameTypes(checker, promiseTypeArgumentSubTypes, anotherTypes)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * @returns The constituent types of the Promise type argument
+ */
+function getPromiseTypeArguments(
+  checker: ts.TypeChecker,
+  type: ts.Type,
+): ts.Type[] {
+  const typeReference = type as ts.TypeReference;
+  const typeArgument = checker.getTypeArguments(typeReference)[0];
+  return tsutils.unionConstituents(typeArgument);
+}
+
+function mergeFlags(types: ts.Type[]) {
+  return types.reduce((flags, type) => flags | type.flags, 0);
+}
+
+/**
+ * Merges the flags of the types to check whether they are the same types.
+ * If any of the types are objects, checks whether there are mutually assignable object types.
+ */
+function isSameTypes(
+  checker: ts.TypeChecker,
+  sourceTypes: ts.Type[],
+  targetTypes: ts.Type[],
+) {
+  const objectType = sourceTypes.find(type => tsutils.isObjectType(type));
+
+  const isSameFlags = mergeFlags(sourceTypes) === mergeFlags(targetTypes);
+  if (!isSameFlags) {
+    return false;
+  }
+
+  if (!objectType) {
+    return true;
+  }
+
+  for (const sourceType of sourceTypes) {
+    if (!tsutils.isObjectType(sourceType)) {
+      continue;
+    }
+
+    if (!isSameObject(checker, targetTypes, sourceType)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Checks whether the source contains an object type that is mutually assignable to the target.
+ */
+function isSameObject(
+  checker: ts.TypeChecker,
+  sourceTypes: ts.Type[],
+  targetType: ts.Type,
+) {
+  return sourceTypes.some(sourceType => {
+    if (
+      checker.isTypeAssignableTo(targetType, sourceType) &&
+      checker.isTypeAssignableTo(sourceType, targetType)
+    ) {
+      return true;
+    }
+
+    return false;
+  });
+}
+
+function parseFlagUnionsOption(
+  checksConditionals: boolean | ChecksConditionalsOptions | undefined,
+): FlagUnionsOptions {
+  if (!checksConditionals || checksConditionals === true) {
+    return 'none';
+  }
+
+  return checksConditionals.flagUnions ?? 'none';
 }

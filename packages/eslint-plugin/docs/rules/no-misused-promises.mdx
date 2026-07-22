@@ -39,6 +39,90 @@ If you don't want to check conditionals, you can configure the rule with `"check
 
 Doing so prevents the rule from looking at code like `if (somePromise)`.
 
+The following sub-options are supported:
+
+#### `flagUnions`
+
+Provides detailed configuration for checkConditionals, such as configuring how union types containing Promise-like types are checked in conditional expressions.
+
+##### `'all'`
+
+Reports all union types containing Promise-like types.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "checksConditionals": { "flagUnions": "all" } }'
+const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
+if (fn()) {
+  // Do something
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "checksConditionals": { "flagUnions": "all" } }'
+const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
+if (await fn()) {
+  // Do something
+}
+```
+
+</TabItem>
+</Tabs>
+
+##### `'strict'`
+
+Reports an error when a union contains a Promise-like type and its resolved type does not exactly match the other union constituents.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "checksConditionals": { "flagUnions": "strict" } }'
+const fn: () => Promise<boolean> | string = () =>
+  Math.random() > 0.5 ? Promise.resolve(true) : 'hello';
+if (fn()) {
+  // Do something
+}
+
+type MyBox<T> = { value: T };
+type PromiseBox<T> = { value: T };
+
+const fn: () => Promise<PromiseBox<number>> | MyBox<string> = () =>
+  Math.random() > 0.5 ? Promise.resolve({ value: 23 }) : { value: 'Hello' };
+if (fn()) {
+  // Do something
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "checksConditionals": { "flagUnions": "strict" } }'
+const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
+if (fn()) {
+  // Do something
+}
+
+type MyBox<T> = { value: T };
+type PromiseBox<T> = { value: T };
+
+// These types are structurally identical.
+const fn: () => Promise<PromiseBox<number>> | MyBox<number> = () =>
+  Promise.resolve({ value: 23 });
+if (fn()) {
+  // Do something
+}
+```
+
+</TabItem>
+</Tabs>
+
+##### `'none'`
+
+Does not report errors for union types containing Promise-like types.
+
 ### `checksVoidReturn`
 
 {/* insert option description */}
