@@ -1037,6 +1037,28 @@ for (const key of ['hello', 'world'] as const) {
 }
     `,
     `
+type Fields = {
+  0?: number;
+  1?: boolean;
+};
+
+let fields: Fields = {};
+
+for (const key of [0, 1] as const) {
+  fields[key] ??= undefined;
+}
+    `,
+    `
+type Fields = {
+  [key: string]: number | undefined;
+  [key: symbol]: boolean | undefined;
+};
+
+declare const fields: Fields;
+declare const key: string | symbol;
+fields[key] ??= undefined;
+    `,
+    `
 enum Keys {
   A = 'A',
   B = 'B',
@@ -3472,6 +3494,26 @@ for (const key of ['hello', 'world'] as const) {
           endColumn: 14,
           endLine: 10,
           line: 10,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      code: `
+type Fields = {
+  [key: string]: undefined;
+};
+
+declare const fields: Fields;
+declare const key: 'hello';
+fields[key] ??= undefined;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 8,
+          line: 8,
           messageId: 'alwaysNullish',
         },
       ],
