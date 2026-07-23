@@ -492,7 +492,6 @@ jobs:
       - lint_without_build
       - lint_with_build
       - lint_with_build_eslint
-      - stylelint
       - integration_tests
       - plugin_unit_tests
       - unit_tests
