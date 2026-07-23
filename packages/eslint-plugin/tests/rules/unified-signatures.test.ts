@@ -118,6 +118,61 @@ interface I {
 function f<T extends number>(x: T[]): void;
 function f<T extends string>(x: T): void;
     `,
+    // Type parameters with different constraints must not be unified, even when
+    // they are named differently.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12143
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+function f<T extends A>(x: T, y: string): void;
+function f<R extends B>(x: R): void;
+    `,
+    // Type parameters with different constraints must not be unified, even when
+    // they share a name.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12143
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+function f<T extends A>(x: T, y: string): void;
+function f<T extends B>(x: T): void;
+    `,
+    // Type parameters with different defaults must not be unified.
+    `
+function f<T extends string = 'a'>(x: T, y: string): void;
+function f<R extends string = 'b'>(x: R): void;
+    `,
+    // Type parameters with different defaults must not be unified, even when
+    // they share a name.
+    `
+function f<T extends string = 'a'>(x: T, y: string): void;
+function f<T extends string = 'b'>(x: T): void;
+    `,
+    // Outer type parameters are bindings, not local placeholder names.
+    `
+interface Box<T> {
+  f(x: T, y: string): void;
+  f<U extends string>(x: U): void;
+}
+    `,
+    // A signature's own type parameters shadow outer type parameters with the
+    // same name.
+    `
+interface I<T> {
+  m<T>(x: T): void;
+  m<U>(x: T): void;
+}
+    `,
+    // Mapped type keys shadow same-named signature type parameters.
+    `
+function h<K extends string>(x: { [K in 'a' | 'b']: K }, y: string): void;
+function h<J extends string>(x: { [K in 'a' | 'b']: J }): void;
+    `,
+    // Mapped type keys shadow same-named signature type parameters in name
+    // remapping too.
+    `
+function h<K extends string>(x: { [K in 'a' | 'b' as K]: K }, y: string): void;
+function h<J extends string>(x: { [K in 'a' | 'b' as K]: J }): void;
+    `,
     // Same name, different scopes
     `
 declare function foo(n: number): number;
@@ -801,6 +856,185 @@ function f<T>(x: T): void;
           },
           line: 3,
           messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      // Type parameters with the same constraint should be unified even when
+      // they are named differently.
+      // https://github.com/typescript-eslint/typescript-eslint/issues/12143
+      code: `
+function f<T extends string>(x: T, y: string): void;
+function f<R extends string>(x: R): void;
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Differently named type parameters that share a constraint should be
+      // unified when nested in another type.
+      code: `
+function f<T extends string>(x: Array<T>, y: string): void;
+function f<R extends string>(x: Array<R>): void;
+      `,
+      errors: [
+        {
+          column: 43,
+          endColumn: 52,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // A later parameter should still compare equal when it uses a renamed
+      // type parameter with the same constraint.
+      code: `
+function f<T extends string>(x: number, y: T): void;
+function f<R extends string>(x: string, y: R): void;
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      // Multiple renamed type parameters with matching constraints should be
+      // compared by position.
+      code: `
+function f<T extends string, U extends number>(x: Map<T, U>, y: string): void;
+function f<R extends string, S extends number>(x: Map<R, S>): void;
+      `,
+      errors: [
+        {
+          column: 62,
+          endColumn: 71,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Conditional types without infer type parameters should still normalize
+      // signature type parameters.
+      code: `
+type Wrapper<T> = T;
+function f<U>(x: string extends Wrapper<U> ? U : never, y: string): void;
+function f<V>(x: string extends Wrapper<V> ? V : never): void;
+      `,
+      errors: [
+        {
+          column: 57,
+          endColumn: 66,
+          endLine: 3,
+          line: 3,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Nested conditional infer type parameters should not shadow the outer
+      // conditional type's true branch.
+      code: `
+function f<U>(
+  x: string extends (number extends infer U ? U : never) ? U : never,
+  y: string,
+): void;
+function f<V>(
+  x: string extends (number extends infer U ? U : never) ? V : never,
+): void;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Mapped type keys should shadow same-named signature type parameters
+      // when normalizing type references.
+      code: `
+function f<K extends string>(x: { [K in 'a' | 'b']: K }, y: string): void;
+function f<J extends string>(x: { [K in 'a' | 'b']: K }, y: number): void;
+      `,
+      errors: [
+        {
+          column: 58,
+          endColumn: 67,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      // Conditional infer type parameters should shadow same-named signature type
+      // parameters when normalizing type references.
+      code: `
+function g<U>(x: string extends infer U ? U : never, y: string): void;
+function g<V>(x: string extends infer U ? U : never): void;
+      `,
+      errors: [
+        {
+          column: 54,
+          endColumn: 63,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // Nested type parameters should shadow same-named signature type
+      // parameters when normalizing type references.
+      code: `
+function f<T extends string>(x: <T>(y: T) => T, z: string): void;
+function f<R extends string>(x: <T>(y: T) => T): void;
+      `,
+      errors: [
+        {
+          column: 49,
+          endColumn: 58,
+          endLine: 2,
+          line: 2,
+          messageId: 'omittingSingleParameter',
+        },
+      ],
+    },
+    {
+      // A signature's own type parameters should not be treated as outer type
+      // parameter references just because they share the same name.
+      code: `
+interface I<T> {
+  f<T extends string>(x: T, y: number): void;
+  f<R extends string>(x: R): void;
+}
+      `,
+      errors: [
+        {
+          column: 29,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'omittingSingleParameter',
         },
       ],
     },
