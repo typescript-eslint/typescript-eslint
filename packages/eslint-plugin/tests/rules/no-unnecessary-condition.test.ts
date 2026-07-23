@@ -1025,6 +1025,18 @@ declare const key: Key;
 foo.bar[key] ??= 1;
     `,
     `
+type Fields = {
+  hello?: number;
+  world?: boolean;
+};
+
+let fields: Fields = {};
+
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+    `,
+    `
 enum Keys {
   A = 'A',
   B = 'B',
@@ -3437,6 +3449,29 @@ foo ??= null;
           endColumn: 4,
           endLine: 3,
           line: 3,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      code: `
+type Fields = {
+  hello?: undefined;
+  world?: null;
+};
+
+const fields: Fields = {};
+
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 10,
+          line: 10,
           messageId: 'alwaysNullish',
         },
       ],

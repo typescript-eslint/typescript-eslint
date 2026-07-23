@@ -50,6 +50,15 @@ function isPossiblyNullish(type: ts.Type): boolean {
     .some(t => isNullishType(t) || isTypeFlagSet(t, ts.TypeFlags.Void));
 }
 
+function isPossiblyNonNullish(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .some(
+      t =>
+        !isTypeFlagSet(t, nullishFlag | ts.TypeFlags.Void | ts.TypeFlags.Never),
+    );
+}
+
 function toStaticValue(
   type: ts.Type,
 ):
@@ -399,7 +408,10 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function checkNodeForNullish(node: TSESTree.Expression): void {
+    function checkNodeForNullish(
+      node: TSESTree.Expression,
+      isAssignmentTarget = false,
+    ): void {
       const type = getConstrainedTypeAtLocation(services, node);
 
       // Conditional is always necessary if it involves `any`, `unknown` or a naked type parameter
@@ -439,7 +451,20 @@ export default createRule<Options, MessageId>({
         ) {
           messageId = 'neverNullish';
         }
-      } else if (isAlwaysNullish(type)) {
+      } else if (
+        isAlwaysNullish(type) &&
+        !(
+          // For indexed compound assignments, TypeScript exposes the write type.
+          // Disjoint property types can intersect away non-nullish read types.
+          isAssignmentTarget &&
+          node.type === AST_NODE_TYPES.MemberExpression &&
+          node.computed &&
+          isPossiblyNonNullishPropertyType(
+            getConstrainedTypeAtLocation(services, node.object),
+            getConstrainedTypeAtLocation(services, node.property),
+          )
+        )
+      ) {
         messageId = 'alwaysNullish';
       }
 
@@ -739,6 +764,35 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    function isPossiblyNonNullishPropertyType(
+      objType: ts.Type,
+      propertyType: ts.Type,
+    ): boolean {
+      if (propertyType.isUnion()) {
+        return propertyType.types.some(type =>
+          isPossiblyNonNullishPropertyType(objType, type),
+        );
+      }
+      if (propertyType.isNumberLiteral() || propertyType.isStringLiteral()) {
+        const propType = getTypeOfPropertyOfName(
+          checker,
+          objType,
+          propertyType.value.toString(),
+        );
+        if (propType) {
+          return isPossiblyNonNullish(propType);
+        }
+      }
+      const typeName = getTypeName(checker, propertyType);
+      return checker
+        .getIndexInfosOfType(objType)
+        .some(
+          info =>
+            getTypeName(checker, info.keyType) === typeName &&
+            isPossiblyNonNullish(info.type),
+        );
+    }
+
     function isNullablePropertyType(
       objType: ts.Type,
       propertyType: ts.Type,
@@ -913,7 +967,7 @@ export default createRule<Options, MessageId>({
       if (['&&=', '||='].includes(node.operator)) {
         checkNode(node.left);
       } else if (node.operator === '??=') {
-        checkNodeForNullish(node.left);
+        checkNodeForNullish(node.left, true);
       }
     }
 
