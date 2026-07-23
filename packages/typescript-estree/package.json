@@ -63,7 +63,7 @@
     "ts-api-utils": "^2.5.0"
   },
   "devDependencies": {
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",

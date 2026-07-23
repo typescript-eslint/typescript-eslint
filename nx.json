@@ -50,7 +50,7 @@
       "executor": "nx:run-commands",
       "dependsOn": ["build", "^typecheck:tsgo"],
       "options": {
-        "command": "tsgo --build --emitDeclarationOnly",
+        "command": "tsc --build --emitDeclarationOnly",
         "cwd": "{projectRoot}"
       },
       "outputs": ["{projectRoot}/dist"]

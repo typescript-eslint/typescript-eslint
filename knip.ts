@@ -25,7 +25,7 @@ export default {
       ignoreDependencies: [
         '@nx/workspace',
         '@eslint/config-helpers',
-        '@typescript/native-preview',
+        '@typescript/native',
       ],
 
       project: ['tools/scripts/**/*.mts', '!typings/*.d.ts'],
