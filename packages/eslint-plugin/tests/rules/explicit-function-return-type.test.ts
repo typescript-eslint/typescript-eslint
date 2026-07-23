@@ -1836,7 +1836,15 @@ const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
     },
     {
       code: 'const log = <A,>(a: A) => a;',
-      errors: [{ messageId: 'missingReturnType' }],
+      errors: [
+        {
+          column: 24,
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
+          messageId: 'missingReturnType',
+        },
+      ],
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
@@ -1845,7 +1853,15 @@ function log<A>(a: A) {
   return a;
 }
       `,
-      errors: [{ messageId: 'missingReturnType' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingReturnType',
+        },
+      ],
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
@@ -1854,7 +1870,15 @@ const log = function <A>(a: A) {
   return a;
 };
       `,
-      errors: [{ messageId: 'missingReturnType' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingReturnType',
+        },
+      ],
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
@@ -2097,6 +2121,8 @@ const f = (gotcha: ObjectWithCallback = { callback: () => {} }): void => {};
       errors: [
         {
           column: 43,
+          endColumn: 53,
+          endLine: 4,
           line: 4,
           messageId: 'missingReturnType',
         },

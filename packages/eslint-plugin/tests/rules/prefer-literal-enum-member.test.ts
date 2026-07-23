@@ -155,6 +155,8 @@ enum InvalidObject {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'notLiteral',
         },
@@ -169,6 +171,8 @@ enum InvalidArray {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'notLiteral',
         },
@@ -183,6 +187,8 @@ enum InvalidTemplateLiteral {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'notLiteral',
         },
@@ -197,6 +203,8 @@ enum InvalidConstructor {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'notLiteral',
         },
@@ -211,6 +219,8 @@ enum InvalidExpression {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'notLiteral',
         },
@@ -229,26 +239,36 @@ enum InvalidExpression {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 4,
           line: 4,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 5,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 6,
           line: 6,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 7,
           line: 7,
           messageId: 'notLiteral',
         },
@@ -267,6 +287,8 @@ enum InvalidVariable {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 7,
           line: 7,
           messageId: 'notLiteral',
         },
@@ -282,6 +304,8 @@ enum InvalidEnumMember {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 4,
           line: 4,
           messageId: 'notLiteral',
         },
@@ -298,6 +322,8 @@ enum InvalidObjectMember {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 5,
           messageId: 'notLiteral',
         },
@@ -316,6 +342,8 @@ enum InvalidEnumMember {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 7,
           line: 7,
           messageId: 'notLiteral',
         },
@@ -332,6 +360,8 @@ enum InvalidSpread {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 5,
           messageId: 'notLiteral',
         },
@@ -352,36 +382,50 @@ enum Foo {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 4,
           line: 4,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 5,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 6,
           line: 6,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 7,
           line: 7,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 8,
           line: 8,
           messageId: 'notLiteral',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 9,
           line: 9,
           messageId: 'notLiteral',
         },
@@ -404,36 +448,50 @@ enum Foo {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 4,
           line: 4,
           messageId: 'notLiteralOrBitwiseExpression',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 5,
           messageId: 'notLiteralOrBitwiseExpression',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 6,
           line: 6,
           messageId: 'notLiteralOrBitwiseExpression',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 7,
           line: 7,
           messageId: 'notLiteralOrBitwiseExpression',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 8,
           line: 8,
           messageId: 'notLiteralOrBitwiseExpression',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 9,
           line: 9,
           messageId: 'notLiteralOrBitwiseExpression',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 10,
           line: 10,
           messageId: 'notLiteralOrBitwiseExpression',
         },
@@ -452,11 +510,15 @@ enum Foo {
       errors: [
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 5,
           messageId: 'notLiteralOrBitwiseExpression',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 6,
           line: 6,
           messageId: 'notLiteralOrBitwiseExpression',
         },
@@ -472,6 +534,9 @@ enum Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 4,
           line: 4,
           messageId: 'notLiteral',
         },

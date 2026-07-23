@@ -65,6 +65,8 @@ export type W<T> = {
       errors: [
         {
           column: 6,
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'interfaceOverType',
         },
@@ -77,6 +79,8 @@ export type W<T> = {
       errors: [
         {
           column: 6,
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'interfaceOverType',
         },
@@ -89,6 +93,8 @@ export type W<T> = {
       errors: [
         {
           column: 6,
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'interfaceOverType',
         },
@@ -101,6 +107,8 @@ export type W<T> = {
       errors: [
         {
           column: 6,
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'interfaceOverType',
         },
@@ -117,6 +125,8 @@ export type W<T> = {
       errors: [
         {
           column: 13,
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'interfaceOverType',
         },
@@ -133,6 +143,8 @@ export interface W<T> {
       errors: [
         {
           column: 11,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'typeOverInterface',
         },
@@ -145,6 +157,8 @@ export interface W<T> {
       errors: [
         {
           column: 11,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'typeOverInterface',
         },
@@ -157,6 +171,8 @@ export interface W<T> {
       errors: [
         {
           column: 11,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'typeOverInterface',
         },
@@ -169,6 +185,8 @@ export interface W<T> {
       errors: [
         {
           column: 11,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'typeOverInterface',
         },
@@ -181,6 +199,8 @@ export interface W<T> {
       errors: [
         {
           column: 11,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'typeOverInterface',
         },
@@ -197,6 +217,8 @@ export interface W<T> {
       errors: [
         {
           column: 18,
+          endColumn: 19,
+          endLine: 2,
           line: 2,
           messageId: 'typeOverInterface',
         },
@@ -219,6 +241,8 @@ namespace JSX {
       errors: [
         {
           column: 13,
+          endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'typeOverInterface',
         },
@@ -243,6 +267,8 @@ global {
       errors: [
         {
           column: 13,
+          endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'typeOverInterface',
         },
@@ -267,6 +293,8 @@ declare global {
       errors: [
         {
           column: 13,
+          endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'typeOverInterface',
         },
@@ -285,6 +313,8 @@ declare global {
       errors: [
         {
           column: 15,
+          endColumn: 18,
+          endLine: 4,
           line: 4,
           messageId: 'typeOverInterface',
         },
@@ -303,6 +333,8 @@ export default interface Test {
       errors: [
         {
           column: 26,
+          endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'typeOverInterface',
         },
@@ -327,6 +359,8 @@ export declare type Test = {
       errors: [
         {
           column: 21,
+          endColumn: 25,
+          endLine: 2,
           line: 2,
           messageId: 'interfaceOverType',
         },
@@ -350,6 +384,8 @@ export declare interface Test {
       errors: [
         {
           column: 26,
+          endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'typeOverInterface',
         },
@@ -370,6 +406,9 @@ type Foo = ({
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 9,
+          endLine: 2,
           line: 2,
           messageId: 'interfaceOverType',
         },
@@ -388,6 +427,9 @@ type Foo = ((((((((({
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 9,
+          endLine: 2,
           line: 2,
           messageId: 'interfaceOverType',
         },
@@ -407,6 +449,9 @@ type Foo = {
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 9,
+          endLine: 2,
           line: 2,
           messageId: 'interfaceOverType',
         },
@@ -427,6 +472,9 @@ type Bar = string;
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 9,
+          endLine: 2,
           line: 2,
           messageId: 'interfaceOverType',
         },
@@ -449,6 +497,9 @@ const bar = 1;
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 9,
+          endLine: 2,
           line: 2,
           messageId: 'interfaceOverType',
         },

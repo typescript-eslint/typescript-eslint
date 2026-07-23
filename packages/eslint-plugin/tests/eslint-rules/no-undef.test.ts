@@ -12,9 +12,13 @@ ruleTester.run('no-undef', rule, {
       code: 'a = 5;',
       errors: [
         {
+          column: 1,
           data: {
             name: 'a',
           },
+          endColumn: 2,
+          endLine: 1,
+          line: 1,
           messageId: 'undef',
         },
       ],
@@ -23,9 +27,13 @@ ruleTester.run('no-undef', rule, {
       code: 'a?.b = 5;',
       errors: [
         {
+          column: 1,
           data: {
             name: 'a',
           },
+          endColumn: 2,
+          endLine: 1,
+          line: 1,
           messageId: 'undef',
         },
       ],
@@ -34,9 +42,13 @@ ruleTester.run('no-undef', rule, {
       code: 'a()?.b = 5;',
       errors: [
         {
+          column: 1,
           data: {
             name: 'a',
           },
+          endColumn: 2,
+          endLine: 1,
+          line: 1,
           messageId: 'undef',
         },
       ],
@@ -49,6 +61,8 @@ ruleTester.run('no-undef', rule, {
           data: {
             name: 'Foo',
           },
+          endColumn: 5,
+          endLine: 1,
           line: 1,
           messageId: 'undef',
         },
@@ -72,6 +86,8 @@ function Foo() {}
           data: {
             name: 'x',
           },
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'undef',
         },
@@ -95,6 +111,8 @@ function Foo() {}
           data: {
             name: 'x',
           },
+          endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'undef',
         },
@@ -118,6 +136,8 @@ function Foo() {}
           data: {
             name: 'T',
           },
+          endColumn: 7,
+          endLine: 3,
           line: 3,
           messageId: 'undef',
         },
@@ -141,6 +161,8 @@ function Foo() {}
           data: {
             name: 'x',
           },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'undef',
         },
@@ -161,9 +183,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'Bar',
           },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'undef',
         },
       ],
@@ -176,9 +202,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 16,
           data: {
             name: 'Bar',
           },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'undef',
         },
       ],

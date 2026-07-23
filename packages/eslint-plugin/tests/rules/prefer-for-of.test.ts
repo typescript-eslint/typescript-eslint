@@ -244,6 +244,10 @@ for (var a = 0; a < obj.arr.length; a++) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -254,6 +258,10 @@ for (var b = 0; b < arr.length; b++) console.log(arr[b]);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 58,
+          endLine: 2,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -266,6 +274,10 @@ for (let a = 0; a < arr.length; a++) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -276,6 +288,10 @@ for (var b = 0; b < arr.length; b++) console?.log(arr[b]);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 59,
+          endLine: 2,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -288,6 +304,10 @@ for (let a = 0; a < arr.length; a++) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -300,6 +320,10 @@ for (let a = 0; a < arr.length; ++a) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -310,6 +334,10 @@ for (let x = 0; x < arr.length; x++) {}
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -320,6 +348,10 @@ for (let x = 0; x < arr.length; x += 1) {}
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -330,6 +362,10 @@ for (let x = 0; x < arr.length; x = x + 1) {}
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 46,
+          endLine: 2,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -340,6 +376,10 @@ for (let x = 0; x < arr.length; x = 1 + x) {}
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 46,
+          endLine: 2,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -352,9 +392,17 @@ for (let shadow = 0; shadow < arr.length; shadow++) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
         {
+          column: 3,
+          endColumn: 57,
+          endLine: 3,
+          line: 3,
           messageId: 'preferForOf',
         },
       ],
@@ -367,6 +415,10 @@ for (let i = 0; i < arr.length; i++) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -379,6 +431,10 @@ for (let i = 0; i < arr.length; i++) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -391,6 +447,10 @@ for (let i = 0; i < arr.length; i++) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -403,6 +463,10 @@ for (let i = 0; i < arr.length; i++) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -415,6 +479,10 @@ for (let i = 0; i < arr.length; i++) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -427,6 +495,10 @@ for (let i = 0; i < this.item.length; ++i) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],
@@ -439,6 +511,10 @@ for (let i = 0; i < this.array.length; ++i) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'preferForOf',
         },
       ],

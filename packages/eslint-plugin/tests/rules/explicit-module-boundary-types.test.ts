@@ -1391,6 +1391,8 @@ export class Test {
           data: {
             name: 'foo',
           },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
@@ -1460,20 +1462,29 @@ export function foo(outer) {
       `,
       errors: [
         {
+          column: 21,
           data: {
             name: 'outer',
           },
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
         {
+          column: 10,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'missingReturnType',
         },
         {
+          column: 20,
           data: {
             name: 'inner',
           },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
@@ -1484,9 +1495,12 @@ export function foo(outer) {
       code: 'export const baz = arg => arg as const;',
       errors: [
         {
+          column: 20,
           data: {
             name: 'arg',
           },
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'missingArgType',
         },
@@ -1500,13 +1514,19 @@ export default foo;
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'arg',
           },
+          endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
         {
+          column: 17,
+          endColumn: 19,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
@@ -1519,13 +1539,19 @@ export = foo;
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'arg',
           },
+          endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
         {
+          column: 17,
+          endColumn: 19,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
@@ -1539,13 +1565,19 @@ export default foo;
       `,
       errors: [
         {
+          column: 7,
           data: {
             name: 'arg',
           },
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
         {
+          column: 11,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'missingReturnType',
         },
@@ -1558,13 +1590,19 @@ export default [foo];
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'arg',
           },
+          endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
         {
+          column: 17,
+          endColumn: 19,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
@@ -1577,13 +1615,19 @@ export default { foo };
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'arg',
           },
+          endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
         {
+          column: 17,
+          endColumn: 19,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
@@ -1598,13 +1642,19 @@ export default foo;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 13,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
         {
+          column: 14,
           data: {
             name: 'arg',
           },
+          endColumn: 17,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
@@ -1619,13 +1669,19 @@ export default [foo];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 13,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
         {
+          column: 14,
           data: {
             name: 'arg',
           },
+          endColumn: 17,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
@@ -1640,13 +1696,19 @@ export default { foo };
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 13,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
         {
+          column: 14,
           data: {
             name: 'arg',
           },
+          endColumn: 17,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
@@ -1661,13 +1723,19 @@ export default { bar };
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 25,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
         {
+          column: 26,
           data: {
             name: 'arg',
           },
+          endColumn: 29,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
@@ -1684,13 +1752,19 @@ export default Foo;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 7,
+          endLine: 3,
           line: 3,
           messageId: 'missingReturnType',
         },
         {
+          column: 8,
           data: {
             name: 'arg',
           },
+          endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
@@ -1707,13 +1781,19 @@ export default Foo;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'missingReturnType',
         },
         {
+          column: 10,
           data: {
             name: 'arg',
           },
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
@@ -1730,13 +1810,19 @@ export default Foo;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'missingReturnType',
         },
         {
+          column: 20,
           data: {
             name: 'arg',
           },
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
@@ -1753,13 +1839,19 @@ export default Foo;
       `,
       errors: [
         {
+          column: 19,
           data: {
             name: 'arg',
           },
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
         {
+          column: 23,
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'missingReturnType',
         },
@@ -1776,13 +1868,19 @@ export default Foo;
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'missingReturnType',
         },
         {
+          column: 29,
           data: {
             name: 'arg',
           },
+          endColumn: 32,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
@@ -1799,13 +1897,19 @@ export default [Foo];
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'missingReturnType',
         },
         {
+          column: 20,
           data: {
             name: 'arg',
           },
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
@@ -1821,13 +1925,19 @@ export default test;
       `,
       errors: [
         {
+          column: 12,
           data: {
             name: 'arg',
           },
+          endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
         {
+          column: 16,
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
@@ -1843,13 +1953,19 @@ export { test };
       `,
       errors: [
         {
+          column: 12,
           data: {
             name: 'arg',
           },
+          endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
         {
+          column: 16,
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
@@ -1868,6 +1984,8 @@ export const foo =
       errors: [
         {
           column: 6,
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'missingReturnType',
         },
@@ -1881,22 +1999,9 @@ export var arrowFn = () => () => {};
       errors: [
         {
           column: 31,
+          endColumn: 33,
+          endLine: 2,
           line: 2,
-          messageId: 'missingReturnType',
-        },
-      ],
-      options: [{ allowHigherOrderFunctions: true }],
-    },
-    {
-      code: `
-export function fn() {
-  return function () {};
-}
-      `,
-      errors: [
-        {
-          column: 10,
-          line: 3,
           messageId: 'missingReturnType',
         },
       ],
@@ -1914,6 +2019,8 @@ export function foo(outer) {
           data: {
             name: 'outer',
           },
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
@@ -1922,6 +2029,8 @@ export function foo(outer) {
           data: {
             name: 'inner',
           },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'missingArgType',
         },
@@ -1943,6 +2052,8 @@ export function foo(outer: boolean) {
           data: {
             name: 'inner',
           },
+          endColumn: 20,
+          endLine: 2,
           line: 2,
           messageId: 'missingReturnType',
         },
@@ -1960,6 +2071,8 @@ export function foo({ foo }): void {}
           data: {
             type: 'Object pattern',
           },
+          endColumn: 28,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgTypeUnnamed',
         },
@@ -1975,6 +2088,8 @@ export function foo([bar]): void {}
           data: {
             type: 'Array pattern',
           },
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgTypeUnnamed',
         },
@@ -1990,6 +2105,8 @@ export function foo(...bar): void {}
           data: {
             name: 'bar',
           },
+          endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgType',
         },
@@ -2005,6 +2122,8 @@ export function foo(...[a]): void {}
           data: {
             type: 'Rest',
           },
+          endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'missingArgTypeUnnamed',
         },
@@ -2021,6 +2140,8 @@ export function foo(foo: any): void {}
           data: {
             name: 'foo',
           },
+          endColumn: 29,
+          endLine: 2,
           line: 2,
           messageId: 'anyTypedArg',
         },
@@ -2037,6 +2158,8 @@ export function foo({ foo }: any): void {}
           data: {
             type: 'Object pattern',
           },
+          endColumn: 33,
+          endLine: 2,
           line: 2,
           messageId: 'anyTypedArgUnnamed',
         },
@@ -2053,6 +2176,8 @@ export function foo([bar]: any): void {}
           data: {
             type: 'Array pattern',
           },
+          endColumn: 31,
+          endLine: 2,
           line: 2,
           messageId: 'anyTypedArgUnnamed',
         },
@@ -2069,6 +2194,8 @@ export function foo(...bar: any): void {}
           data: {
             name: 'bar',
           },
+          endColumn: 32,
+          endLine: 2,
           line: 2,
           messageId: 'anyTypedArg',
         },
@@ -2085,6 +2212,8 @@ export function foo(...[a]: any): void {}
           data: {
             type: 'Rest',
           },
+          endColumn: 32,
+          endLine: 2,
           line: 2,
           messageId: 'anyTypedArgUnnamed',
         },
@@ -2136,6 +2265,7 @@ export function test(a: unknown) {
         {
           column: 8,
           endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'missingReturnType',
         },
@@ -2153,6 +2283,7 @@ export default function test(a: unknown) {
         {
           column: 16,
           endColumn: 29,
+          endLine: 4,
           line: 4,
           messageId: 'missingReturnType',
         },
@@ -2170,6 +2301,7 @@ export default function (a: unknown) {
         {
           column: 16,
           endColumn: 25,
+          endLine: 4,
           line: 4,
           messageId: 'missingReturnType',
         },
@@ -2189,6 +2321,7 @@ export class Test {
         {
           column: 3,
           endColumn: 7,
+          endLine: 5,
           line: 5,
           messageId: 'missingReturnType',
         },

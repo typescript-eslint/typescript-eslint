@@ -122,6 +122,10 @@ abstract class Foo {
       code: 'class Foo {}',
       errors: [
         {
+          column: 7,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'empty',
         },
       ],
@@ -145,9 +149,17 @@ export class Bar {
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'onlyStatic',
         },
         {
+          column: 14,
+          endColumn: 17,
+          endLine: 10,
+          line: 10,
           messageId: 'onlyStatic',
         },
       ],
@@ -160,6 +172,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
           messageId: 'onlyConstructor',
         },
       ],
@@ -178,9 +194,17 @@ export class AClass {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'onlyStatic',
         },
         {
+          column: 11,
+          endColumn: 22,
+          endLine: 8,
+          line: 8,
           messageId: 'empty',
         },
       ],
@@ -194,6 +218,10 @@ export default class {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'onlyStatic',
         },
       ],
@@ -205,6 +233,10 @@ class Foo {}
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'empty',
         },
       ],
@@ -223,6 +255,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'onlyConstructor',
         },
       ],
@@ -234,6 +270,10 @@ abstract class Foo {}
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'empty',
         },
       ],
@@ -246,6 +286,10 @@ abstract class Foo {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'onlyStatic',
         },
       ],
@@ -258,6 +302,10 @@ abstract class Foo {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'onlyConstructor',
         },
       ],
@@ -270,6 +318,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
           messageId: 'onlyStatic',
         },
       ],
@@ -282,6 +334,10 @@ abstract class Foo {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'onlyStatic',
         },
       ],

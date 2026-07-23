@@ -23,6 +23,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'bannedFunctionType',
         },
@@ -34,6 +36,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'bannedFunctionType',
         },
@@ -45,6 +49,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'bannedFunctionType',
         },
@@ -60,6 +66,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 32,
+          endColumn: 40,
+          endLine: 2,
           line: 2,
           messageId: 'bannedFunctionType',
         },
@@ -75,6 +83,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 33,
+          endColumn: 41,
+          endLine: 2,
           line: 2,
           messageId: 'bannedFunctionType',
         },
