@@ -30,7 +30,7 @@ function parseOptions(options: string | Config | null): Required<Config> {
     variables = options.variables !== false;
     typedefs = options.typedefs !== false;
     ignoreTypeReferences = options.ignoreTypeReferences !== false;
-    allowNamedExports = options.allowNamedExports !== false;
+    allowNamedExports = options.allowNamedExports === true;
   }
 
   return {
@@ -276,19 +276,11 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  defaultOptions: [
-    {
-      allowNamedExports: false,
-      classes: true,
-      enums: true,
-      functions: true,
-      ignoreTypeReferences: true,
-      typedefs: true,
-      variables: true,
-    },
-  ],
-  create(context, optionsWithDefault) {
-    const options = parseOptions(optionsWithDefault[0]);
+  defaultOptions: [{}],
+  create(context, [firstOption]) {
+    const options = parseOptions(firstOption);
+    const isTypedefsOptionExplicitlyEnabled =
+      typeof firstOption === 'object' && firstOption.typedefs === true;
 
     /**
      * Determines whether a given use-before-define case should be reported according to the options.
@@ -299,6 +291,9 @@ export default createRule<Options, MessageIds>({
       variable: TSESLint.Scope.Variable,
       reference: TSESLint.Scope.Reference,
     ): boolean {
+      if (isTypedefsOptionExplicitlyEnabled && isTypedef(variable)) {
+        return true;
+      }
       if (options.ignoreTypeReferences && isTypeReference(reference)) {
         return false;
       }

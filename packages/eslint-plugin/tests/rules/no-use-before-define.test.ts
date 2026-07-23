@@ -1483,5 +1483,23 @@ var a = { b: 5 };
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10389
+    {
+      code: `
+let myVar: StringOrNumber;
+type StringOrNumber = string | number;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'StringOrNumber' },
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      options: [{ typedefs: true }],
+    },
   ],
 });
