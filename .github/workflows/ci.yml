@@ -159,10 +159,6 @@ jobs:
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        lint-task: ['check-spelling', 'check-format', 'lint-markdown']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
@@ -175,8 +171,19 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-      - name: Run Check
-        run: pnpm run ${{ matrix.lint-task }}
+      - parallel:
+          - name: Run Spell Check
+            run: pnpm run check-spelling
+
+          - name: Run Format Check
+            run: pnpm run check-format
+
+          - name: Run Markdown Lint
+            run: pnpm run lint-markdown
+
+          - name: Run Stylelint
+            run: pnpm run stylelint
+            working-directory: packages/website
 
   lint_with_build:
     name: Lint with build
@@ -281,26 +288,6 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - uses: ./.github/actions/prepare-build
       - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} ${{ matrix.args }}
-
-  stylelint:
-    name: Stylelint
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [install]
-    runs-on: ubuntu-latest
-    env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-        with:
-          persist-credentials: false
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Run stylelint check
-        run: pnpm run stylelint
-        working-directory: packages/website
 
   integration_tests:
     name: Run integration tests on primary Node.js version
