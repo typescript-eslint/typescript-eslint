@@ -196,6 +196,129 @@ describe('convert', () => {
     checkMaps(ast);
   });
 
+  it('converts long binary expression chains without overflowing the stack', () => {
+    const operandCount = 1_500;
+    const ast = convertCode(
+      Array.from({ length: operandCount }, () => '"value"').join(' + '),
+    );
+    const instance = new Converter(ast, {
+      shouldPreserveNodeMaps: true,
+    });
+
+    const program = instance.convertProgram();
+    const maps = instance.getASTMaps();
+    const expressionStatement = program.body[0];
+    if (expressionStatement.type !== AST_NODE_TYPES.ExpressionStatement) {
+      throw new Error('Expected an expression statement.');
+    }
+
+    let expression = expressionStatement.expression;
+    let esBinaryExpressionCount = 0;
+    while (expression.type === AST_NODE_TYPES.BinaryExpression) {
+      esBinaryExpressionCount += 1;
+      expression = expression.left as TSESTree.Expression;
+    }
+
+    let tsExpression = (ast.statements[0] as ts.ExpressionStatement).expression;
+    let missingMapCount = 0;
+    while (ts.isBinaryExpression(tsExpression)) {
+      if (!maps.tsNodeToESTreeNodeMap.has(tsExpression)) {
+        missingMapCount += 1;
+      }
+      tsExpression = tsExpression.left;
+    }
+
+    expect(esBinaryExpressionCount).toBe(operandCount - 1);
+    expect(missingMapCount).toBe(0);
+  });
+
+  it('converts left-recursive logical expression chains', () => {
+    const ast = convertCode('foo && bar && baz;');
+    const instance = new Converter(ast);
+
+    const program = instance.convertProgram();
+    const expressionStatement = program.body[0];
+    if (expressionStatement.type !== AST_NODE_TYPES.ExpressionStatement) {
+      throw new Error('Expected an expression statement.');
+    }
+
+    const { expression } = expressionStatement;
+    if (expression.type !== AST_NODE_TYPES.LogicalExpression) {
+      throw new Error('Expected a logical expression.');
+    }
+
+    expect(expression.operator).toBe('&&');
+    expect(expression.left.type).toBe(AST_NODE_TYPES.LogicalExpression);
+    expect(expression.right.type).toBe(AST_NODE_TYPES.Identifier);
+  });
+
+  it('skips left-recursive conversion for unsupported binary operators', () => {
+    interface BinaryExpressionConverter {
+      convertLeftRecursiveBinaryExpression(
+        node: ts.BinaryExpression,
+      ): TSESTree.BinaryExpression | TSESTree.LogicalExpression | null;
+      getNonAssignmentBinaryExpressionType(node: ts.BinaryExpression): unknown;
+    }
+
+    const createIdentifier = (name: string): ts.Identifier =>
+      ts.factory.createIdentifier(name);
+    const createBinaryExpression = (
+      left: ts.Expression,
+      operator: ts.BinaryOperator,
+      right: ts.Expression,
+    ): ts.BinaryExpression =>
+      ts.factory.createBinaryExpression(left, operator, right);
+
+    const instance = new Converter(
+      convertCode(''),
+    ) as unknown as BinaryExpressionConverter;
+
+    expect(
+      instance.convertLeftRecursiveBinaryExpression(
+        createBinaryExpression(
+          createIdentifier('a'),
+          ts.SyntaxKind.PlusToken,
+          createIdentifier('b'),
+        ),
+      ),
+    ).toBeNull();
+    expect(
+      instance.convertLeftRecursiveBinaryExpression(
+        createBinaryExpression(
+          createBinaryExpression(
+            createIdentifier('a'),
+            ts.SyntaxKind.PlusToken,
+            createIdentifier('b'),
+          ),
+          ts.SyntaxKind.EqualsToken,
+          createIdentifier('c'),
+        ),
+      ),
+    ).toBeNull();
+    expect(
+      instance.convertLeftRecursiveBinaryExpression(
+        createBinaryExpression(
+          createBinaryExpression(
+            createIdentifier('a'),
+            ts.SyntaxKind.EqualsToken,
+            createIdentifier('b'),
+          ),
+          ts.SyntaxKind.PlusToken,
+          createIdentifier('c'),
+        ),
+      ),
+    ).toBeNull();
+    expect(
+      instance.getNonAssignmentBinaryExpressionType(
+        createBinaryExpression(
+          createIdentifier('a'),
+          ts.SyntaxKind.CommaToken,
+          createIdentifier('b'),
+        ),
+      ),
+    ).toBeNull();
+  });
+
   /* eslint-disable @typescript-eslint/dot-notation */
   describe('createNode', () => {
     it('should correctly create node with range and loc set', () => {
