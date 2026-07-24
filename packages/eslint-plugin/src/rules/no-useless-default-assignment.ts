@@ -8,6 +8,7 @@ import {
   createRule,
   getParserServices,
   isFunction,
+  isRestParameterDeclaration,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownType,
@@ -175,8 +176,7 @@ export default createRule<Options, MessageId>({
               const paramSymbol = params[paramIndex];
               if (
                 paramSymbol.valueDeclaration &&
-                ts.isParameter(paramSymbol.valueDeclaration) &&
-                paramSymbol.valueDeclaration.dotDotDotToken != null
+                isRestParameterDeclaration(paramSymbol.valueDeclaration)
               ) {
                 return true;
               }
