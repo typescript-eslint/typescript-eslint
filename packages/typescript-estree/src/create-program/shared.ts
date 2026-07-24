@@ -17,12 +17,24 @@ export interface ASTAndDefiniteProgram {
 export type ASTAndProgram = ASTAndDefiniteProgram | ASTAndNoProgram;
 
 /**
+ * Compiler options for the watch program.
+ *
+ * These are passed to `ts.createWatchCompilerHost` as `optionsToExtend`, which
+ * takes precedence over the user's tsconfig, so this must stay limited to the
+ * options we genuinely require. In particular `allowJs`/`checkJs` are absent:
+ * the tsconfig decides those.
+ */
+const WATCH_COMPILER_OPTIONS: ts.CompilerOptions = {
+  ...CORE_COMPILER_OPTIONS,
+  allowNonTsExtensions: true,
+};
+
+/**
  * Default compiler options for program generation
  */
 const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
-  ...CORE_COMPILER_OPTIONS,
+  ...WATCH_COMPILER_OPTIONS,
   allowJs: true,
-  allowNonTsExtensions: true,
   checkJs: true,
 };
 
@@ -48,6 +60,19 @@ export function createDefaultCompilerOptionsFromExtra(
   }
 
   return DEFAULT_COMPILER_OPTIONS;
+}
+
+export function createWatchCompilerOptionsFromExtra(
+  parseSettings: ParseSettings,
+): ts.CompilerOptions {
+  if (parseSettings.debugLevel.has('typescript')) {
+    return {
+      ...WATCH_COMPILER_OPTIONS,
+      extendedDiagnostics: true,
+    };
+  }
+
+  return WATCH_COMPILER_OPTIONS;
 }
 
 // This narrows the type so we can be sure we're passing canonical names in the correct places

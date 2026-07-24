@@ -411,4 +411,32 @@ describe('persistent parse', () => {
       );
     });
   });
+
+  // https://github.com/typescript-eslint/typescript-eslint/issues/10013
+  describe.skipIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')(
+    'tsconfig compilerOptions',
+    () => {
+      it.for([false, true] as const)(
+        'lets the tsconfig decide allowJs when it is %s',
+        async (allowJs, { expect }) => {
+          const PROJECT_DIR = await setup({
+            compilerOptions: { allowJs },
+            include: ['./**/*'],
+          });
+
+          const result = parseAndGenerateServices(CONTENTS.foo, {
+            disallowAutomaticSingleRunInference: true,
+            filePath: path.join(PROJECT_DIR, 'src', 'foo.ts'),
+            project: './tsconfig.json',
+            tsconfigRootDir: PROJECT_DIR,
+          });
+
+          assert.isNotNull(result.services.program);
+          expect(result.services.program.getCompilerOptions().allowJs).toBe(
+            allowJs,
+          );
+        },
+      );
+    },
+  );
 });

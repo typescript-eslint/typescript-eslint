@@ -21,6 +21,9 @@ vi.mock(import('../../src/create-program/shared.js'), async importOriginal => {
     createDefaultCompilerOptionsFromExtra: vi.fn(
       sharedActual.createDefaultCompilerOptionsFromExtra,
     ),
+    createWatchCompilerOptionsFromExtra: vi.fn(
+      sharedActual.createWatchCompilerOptionsFromExtra,
+    ),
   };
 });
 
@@ -49,8 +52,8 @@ vi.mock('tinyglobby', async importOriginal => {
   };
 });
 
-const createDefaultCompilerOptionsFromExtra = vi.mocked(
-  sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
+const createWatchCompilerOptionsFromExtra = vi.mocked(
+  sharedParserUtilsModule.createWatchCompilerOptionsFromExtra,
 );
 // eslint-disable-next-line @typescript-eslint/no-deprecated -- see #10215
 const globSyncMock = vi.mocked(tinyGlobbyModule.globSync);
@@ -765,8 +768,8 @@ describe(parser.parseAndGenerateServices, () => {
           }),
         ) // should throw because the file and tsconfig don't exist
           .toThrow();
-        expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalledOnce();
-        expect(createDefaultCompilerOptionsFromExtra).toHaveLastReturnedWith(
+        expect(createWatchCompilerOptionsFromExtra).toHaveBeenCalledOnce();
+        expect(createWatchCompilerOptionsFromExtra).toHaveLastReturnedWith(
           expect.objectContaining({
             extendedDiagnostics: true,
           }),

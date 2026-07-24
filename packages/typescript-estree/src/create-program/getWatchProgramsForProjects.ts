@@ -9,8 +9,8 @@ import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigF
 import { getCodeText } from '../source-files';
 import {
   canonicalDirname,
-  createDefaultCompilerOptionsFromExtra,
   createHash,
+  createWatchCompilerOptionsFromExtra,
   getCanonicalFileName,
 } from './shared';
 
@@ -250,7 +250,7 @@ function createWatchProgram(
   // create compiler host
   const watchCompilerHost = ts.createWatchCompilerHost(
     tsconfigPath,
-    createDefaultCompilerOptionsFromExtra(parseSettings),
+    createWatchCompilerOptionsFromExtra(parseSettings),
     ts.sys,
     ts.createAbstractBuilder,
     diagnosticReporter,
