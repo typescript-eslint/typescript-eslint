@@ -7,23 +7,7 @@
     "properties": {
       "checksConditionals": {
         "description": "Whether to warn when a Promise is provided to conditional statements.",
-        "oneOf": [
-          {
-            "description": "Whether to disable checking conditionals.",
-            "type": "boolean"
-          },
-          {
-            "description": "Detailed settings for conditional inspection.",
-            "properties": {
-              "flagUnions": {
-                "description": "Configures how union types containing Promise-like types are checked.",
-                "enum": ["all", "none", "strict"],
-                "type": "string"
-              }
-            },
-            "type": "object"
-          }
-        ]
+        "type": "boolean"
       },
       "checksSpreads": {
         "description": "Whether to warn when `...` spreading a `Promise`.",
@@ -80,25 +64,12 @@
 type Options = [
   {
     /** Whether to warn when a Promise is provided to conditional statements. */
-    checksConditionals?: /**
-       * Whether to warn when a Promise is provided to conditional statements.
-       * Whether to disable checking conditionals.
-       */
-      | boolean
-      /** Detailed settings for conditional inspection. */
-      | {
-          /** Configures how union types containing Promise-like types are checked. */
-          flagUnions?:
-            | 'none'
-            | 'strict'
-            /** Configures how union types containing Promise-like types are checked. */
-            | 'all';
-          [k: string]: unknown;
-        };
+    checksConditionals?: boolean;
     /** Whether to warn when `...` spreading a `Promise`. */
     checksSpreads?: boolean;
     /** Whether to warn when a Promise is returned from a function typed as returning `void`. */
-    checksVoidReturn?: /**
+    checksVoidReturn?:
+      /**
        * Whether to warn when a Promise is returned from a function typed as returning `void`.
        * Whether to disable checking all asynchronous functions.
        */
