@@ -9,7 +9,6 @@ This saves us having to mock unnecessary things and reduces our bundle size.
 */
 
 import js from '@eslint/js';
-import * as plugin from '@typescript-eslint/eslint-plugin';
 import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
 import { analyze } from '@typescript-eslint/scope-manager';
 import {
@@ -45,6 +44,11 @@ for (const [name, value] of Object.entries(rawPlugin.flatConfigs)) {
 
 exports.configs = configs;
 
-exports.rules = plugin.rules;
+exports.rules = rawPlugin.plugin.rules;
+
+// exposed so the playground can register the same plugin object reference
+// used inside `flatConfigs`, avoiding an ESLint "Cannot redefine plugin" error
+// when a config extends one of those flat configs.
+exports.plugin = rawPlugin.plugin;
 
 exports.builtinRules = builtinRules;

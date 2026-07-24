@@ -26,6 +26,7 @@ export interface WebLinterModule {
   configs: Record<string, FlatConfig.Config | FlatConfig.ConfigArray>;
   createLinter: () => Linter;
   esquery: typeof esquery;
+  plugin: FlatConfig.Plugin;
   rules: Record<string, RuleModule<string>>;
   visitorKeys: SourceCode.VisitorKeys;
 }

@@ -74,9 +74,9 @@ export function createLinter(
       parserOptions: { ...defaultEslintLanguageConfig.parserOptions },
     },
     plugins: {
-      '@typescript-eslint': {
-        rules: webLinterModule.rules,
-      },
+      // reuse the same plugin object referenced by `webLinterModule.configs`
+      // so extending one of those configs doesn't redefine the plugin
+      '@typescript-eslint': webLinterModule.plugin,
     },
   };
 
