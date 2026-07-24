@@ -409,6 +409,91 @@ declare const test: <T extends boolean>() => T;
     `
 [1, null].filter(1 as never);
     `,
+    // Type guard callback that is necessary — array has nullable elements.
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: (string | null)[];
+arr.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // Type guard callback that is necessary — predicate narrows a subtype.
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: (string | number)[];
+arr.filter(isString);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // Same code without `checkTypePredicates` — not reported.
+    `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.filter(isNotNil);
+    `,
+    // No overlap between element and predicate type is out of scope here.
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: number[];
+arr.filter(isString);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // `any[]` / `unknown[]` — can't determine, not reported.
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: any[];
+arr.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: unknown[];
+arr.filter(isString);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // `some` / `findIndex` lack type-guard overloads — not reported.
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.some(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.findIndex(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // Generic element type — not reported, could be instantiated with anything.
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+function f<T>(arr: T[]) {
+  arr.filter(isString);
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    // Spread callback — not reported.
+    {
+      code: `
+declare const predicates: [(x: number | null) => boolean];
+[1, null, 2].filter(...predicates);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
     // Ignores non-array methods of the same name
     `
 const notArray = {
@@ -2181,6 +2266,53 @@ declare const test: <T extends true>() => T;
 [1, null].filter(test);
       `,
       errors: [{ column: 18, line: 4, messageId: 'alwaysTruthyFunc' }],
+    },
+    // Type guard callbacks passed directly whose element type already
+    // satisfies the predicate, e.g. `arr.filter(isNotNil)`.
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.filter(isNotNil);
+      `,
+      errors: [{ column: 12, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: string[];
+arr.filter(isString);
+      `,
+      errors: [{ column: 12, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: number[];
+arr.find(isNotNil);
+      `,
+      errors: [{ column: 10, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: string[];
+arr.every(isString);
+      `,
+      errors: [{ column: 11, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNumber(value: unknown): value is number;
+declare const arr: number[];
+arr.filter(isNumber);
+      `,
+      errors: [{ column: 12, line: 4, messageId: 'typeGuardAlreadyIsType' }],
+      options: [{ checkTypePredicates: true }],
     },
     // Indexing cases
     {
