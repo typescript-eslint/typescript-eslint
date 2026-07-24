@@ -30,7 +30,7 @@ type MyBox<T> = { value: T };
 type PromiseBox<T> = { value: T };
 
 const fn: () => Promise<PromiseBox<number>> | MyBox<string> = () =>
-  Math.random() > 0.5 ? Promise.resolve({ value: 23 }) : { value: "Hello" };
+  Math.random() > 0.5 ? Promise.resolve({value:23}) : { value: "Hello" };
   ~~~~~~~~~~~~~~~~~~~ Expected non-Promise value in a boolean conditional.
 if (fn()) {
     ~~~~ Expected non-Promise value in a boolean conditional.
@@ -50,7 +50,7 @@ type PromiseBox<T> = { value: T };
 
 // These types are structurally identical.
 const fn: () => Promise<PromiseBox<number>> | MyBox<number> = () =>
-  Promise.resolve({value:23});
+  Promise.resolve({ value: 23 });
 if (fn()) {
   // Do something
 }
