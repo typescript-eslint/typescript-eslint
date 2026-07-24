@@ -1,0 +1,77 @@
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: CallExpression {
+        type: "CallExpression",
+        arguments: [
+          Literal {
+            type: "Literal",
+            raw: "'foo'",
+            value: "foo",
+
+            range: [13, 18],
+            loc: {
+              start: { column: 13, line: 1 },
+              end: { column: 18, line: 1 },
+            },
+          },
+        ],
+        callee: MetaProperty {
+          type: "MetaProperty",
+          meta: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "import",
+            optional: false,
+
+            range: [0, 6],
+            loc: {
+              start: { column: 0, line: 1 },
+              end: { column: 6, line: 1 },
+            },
+          },
+          property: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "defer",
+            optional: false,
+
+            range: [7, 12],
+            loc: {
+              start: { column: 7, line: 1 },
+              end: { column: 12, line: 1 },
+            },
+          },
+
+          range: [0, 12],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 12, line: 1 },
+          },
+        },
+        optional: false,
+
+        range: [0, 19],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 19, line: 1 },
+        },
+      },
+
+      range: [0, 20],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 20, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 21],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

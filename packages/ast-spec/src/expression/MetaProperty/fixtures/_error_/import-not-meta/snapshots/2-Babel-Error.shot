@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > MetaProperty > _error_ > import-not-meta > Babel - Error`]
+BabelError
+> 1 | import.foo;
+    |        ^ The only valid meta property for import is import.meta. (1:7)
+  2 |
+  
