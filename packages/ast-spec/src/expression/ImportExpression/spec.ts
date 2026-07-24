@@ -21,5 +21,14 @@ export interface ImportExpression extends BaseNode {
    * ```
    */
   options: Expression | null;
+  /**
+   * The phase modifier of the import.
+   * @example
+   * ```ts
+   * import('mod'); // phase: null
+   * import.defer('mod'); // phase: defer
+   * ```
+   */
+  phase: 'defer' | null;
   source: Expression;
 }

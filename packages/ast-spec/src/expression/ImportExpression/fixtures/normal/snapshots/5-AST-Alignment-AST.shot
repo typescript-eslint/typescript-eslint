@@ -14,6 +14,7 @@ Snapshot Diff:
           type: 'ImportExpression',
 +         attributes: null,
           options: null,
+-         phase: null,
           source: Literal {
             type: 'Literal',
             raw: '\'some-module\'',

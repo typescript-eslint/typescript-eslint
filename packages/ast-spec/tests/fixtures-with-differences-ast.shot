@@ -76,7 +76,6 @@ exports[`AST Fixtures > List fixtures with AST differences`]
   "declaration/TSModuleDeclaration/fixtures/namespace-nested-twice/fixture.ts",
   "declaration/TSTypeAliasDeclaration/fixtures/type-param-many/fixture.ts",
   "declaration/TSTypeAliasDeclaration/fixtures/type-param-one/fixture.ts",
-  "expression/ImportExpression/fixtures/defer/fixture.ts",
   "expression/ImportExpression/fixtures/normal/fixture.ts",
   "expression/MetaProperty/fixtures/import-meta/fixture.ts",
   "expression/TSSatisfiesExpression/fixtures/arrow-func-with-parentheses/fixture.ts",

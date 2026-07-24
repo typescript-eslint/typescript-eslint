@@ -1,5 +1,6 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
+import assert from 'node:assert';
 import * as ts from 'typescript';
 
 import type { TSError } from './node-utils';
@@ -1878,7 +1879,34 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
-        if (node.expression.kind === SyntaxKind.ImportKeyword) {
+        const importExpressionParams: { phase: 'defer' | null } | undefined =
+          (() => {
+            // import(...);
+            if (node.expression.kind === SyntaxKind.ImportKeyword) {
+              return {
+                phase: null,
+              };
+            }
+            // import.defer(...);
+            if (node.expression.kind === SyntaxKind.MetaProperty) {
+              const metaPropertyNode = node.expression as ts.MetaProperty;
+              const metaObject = getTextForTokenKind(
+                metaPropertyNode.keywordToken,
+              );
+              if (metaObject === 'import') {
+                const metaPropertyName = metaPropertyNode.name.text;
+                if (metaPropertyName === 'defer') {
+                  return {
+                    phase: 'defer',
+                  };
+                }
+              }
+            }
+
+            return undefined;
+          })();
+
+        if (importExpressionParams != null) {
           return this.createNode<TSESTree.ImportExpression>(
             node,
             this.#withDeprecatedAliasGetter(
@@ -1887,6 +1915,7 @@ export class Converter {
                 options: node.arguments[1]
                   ? this.convertChild(node.arguments[1])
                   : null,
+                phase: importExpressionParams.phase,
                 source: this.convertChild(node.arguments[0]),
               },
               'attributes',
@@ -1932,6 +1961,28 @@ export class Converter {
         });
 
       case SyntaxKind.MetaProperty: {
+        const metaObject = getTextForTokenKind(node.keywordToken);
+        const metaPropertyName = node.name.text;
+        if (metaObject === 'import') {
+          if (metaPropertyName === 'defer') {
+            assert(
+              node.parent.kind !== SyntaxKind.CallExpression,
+              'import.defer() should be handled when parsing parent node',
+            );
+            this.#throwError(
+              node,
+              "'import.defer' is only valid when called. Use 'import.defer()' instead.",
+            );
+          }
+
+          if (metaPropertyName !== 'meta') {
+            this.#throwError(
+              node,
+              `'${metaPropertyName}' is not a valid meta-property for keyword 'import'.`,
+            );
+          }
+        }
+
         return this.createNode<TSESTree.MetaProperty>(node, {
           type: AST_NODE_TYPES.MetaProperty,
           meta: this.createNode<TSESTree.Identifier>(
@@ -1940,7 +1991,7 @@ export class Converter {
             {
               type: AST_NODE_TYPES.Identifier,
               decorators: [],
-              name: getTextForTokenKind(node.keywordToken),
+              name: metaObject,
               optional: false,
               typeAnnotation: undefined,
             },
