@@ -1,6 +1,5 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
-import assert from 'node:assert';
 import * as ts from 'typescript';
 
 import type { TSError } from './node-utils';
@@ -1961,28 +1960,6 @@ export class Converter {
         });
 
       case SyntaxKind.MetaProperty: {
-        const metaObject = getTextForTokenKind(node.keywordToken);
-        const metaPropertyName = node.name.text;
-        if (metaObject === 'import') {
-          if (metaPropertyName === 'defer') {
-            assert(
-              node.parent.kind !== SyntaxKind.CallExpression,
-              'import.defer() should be handled when parsing parent node',
-            );
-            this.#throwError(
-              node,
-              "'import.defer' is only valid when called. Use 'import.defer()' instead.",
-            );
-          }
-
-          if (metaPropertyName !== 'meta') {
-            this.#throwError(
-              node,
-              `'${metaPropertyName}' is not a valid meta-property for keyword 'import'.`,
-            );
-          }
-        }
-
         return this.createNode<TSESTree.MetaProperty>(node, {
           type: AST_NODE_TYPES.MetaProperty,
           meta: this.createNode<TSESTree.Identifier>(
@@ -1991,7 +1968,7 @@ export class Converter {
             {
               type: AST_NODE_TYPES.Identifier,
               decorators: [],
-              name: metaObject,
+              name: getTextForTokenKind(node.keywordToken),
               optional: false,
               typeAnnotation: undefined,
             },
