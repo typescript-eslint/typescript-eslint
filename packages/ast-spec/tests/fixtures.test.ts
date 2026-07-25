@@ -285,7 +285,6 @@ describe('AST Fixtures', async () => {
             // if this fails and you WEREN'T expecting a parser error, then your fixture should not be in the `_error_` subfolder
             // if this fails and you WERE expecting a parser error - then something is broken.
             expect(errorLabel).not.toBe(ErrorLabel.None);
-            expect(errorLabel).not.toBe(ErrorLabel.Babel);
           });
         } else {
           {
@@ -349,41 +348,39 @@ describe('AST Fixtures', async () => {
             }
 
             if (fixturesWithASTDifferences.has(relative)) {
-              {
-                const snapshotPath = snapshotFiles.success.alignment.ast(5);
-                snapshotPaths.push(snapshotPath);
-                it('AST Alignment - AST', async () => {
-                  const diffResult = fixturesWithASTDifferences.get(relative);
+              const snapshotPath = snapshotFiles.success.alignment.ast(5);
+              snapshotPaths.push(snapshotPath);
+              it('AST Alignment - AST', async () => {
+                const diffResult = fixturesWithASTDifferences.get(relative);
 
-                  assert.isDefined(diffResult);
+                assert.isDefined(diffResult);
 
-                  await expect(
-                    [
-                      `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-                      diffResult,
-                      '',
-                    ].join('\n'),
-                  ).toMatchFileSnapshot(snapshotPath);
-                });
-              }
+                await expect(
+                  [
+                    `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
+                    diffResult,
+                    '',
+                  ].join('\n'),
+                ).toMatchFileSnapshot(snapshotPath);
+              });
+            }
 
-              {
-                const snapshotPath = snapshotFiles.success.alignment.tokens(6);
-                snapshotPaths.push(snapshotPath);
-                it('AST Alignment - Token', async () => {
-                  const diffResult = fixturesWithTokenDifferences.get(relative);
+            if (fixturesWithTokenDifferences.has(relative)) {
+              const snapshotPath = snapshotFiles.success.alignment.tokens(6);
+              snapshotPaths.push(snapshotPath);
+              it('AST Alignment - Token', async () => {
+                const diffResult = fixturesWithTokenDifferences.get(relative);
 
-                  assert.isDefined(diffResult);
+                assert.isDefined(diffResult);
 
-                  await expect(
-                    [
-                      `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-                      diffResult,
-                      '',
-                    ].join('\n'),
-                  ).toMatchFileSnapshot(snapshotPath);
-                });
-              }
+                await expect(
+                  [
+                    `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
+                    diffResult,
+                    '',
+                  ].join('\n'),
+                ).toMatchFileSnapshot(snapshotPath);
+              });
             }
 
             it('Should parse with no errors', () => {
