@@ -13,7 +13,10 @@ export interface Fixture {
   readonly errorLabel: ErrorLabel;
   readonly ext: string;
   readonly isBabelError: boolean;
-  readonly isError: boolean;
+  /**
+   * whether it's an '_error_' fixture
+   */
+  readonly isErrorFixture: boolean;
   readonly isJSX: boolean;
   readonly isTSESTreeError: boolean;
   readonly name: string;
@@ -32,7 +35,7 @@ export interface Fixture {
       readonly tsestree: SuccessSnapshotPaths;
     };
   };
-  readonly snapshotPath: string;
+  readonly snapshotsDirPath: string;
   readonly vitestSnapshotHeader: string;
 }
 

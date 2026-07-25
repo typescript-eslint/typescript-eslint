@@ -55,7 +55,7 @@ describe('AST Fixtures', async () => {
 
       const fixtureDir = path.join(SRC_DIR, dir);
       const configPath = path.join(fixtureDir, 'config.js');
-      const snapshotPath = path.join(fixtureDir, 'snapshots');
+      const snapshotsDirPath = path.join(fixtureDir, 'snapshots');
 
       const config = await (async (): Promise<ASTFixtureConfig> => {
         try {
@@ -67,11 +67,11 @@ describe('AST Fixtures', async () => {
       })();
 
       const isJSX = ext.endsWith('x');
-      const isError = directorySegments.includes('_error_');
+      const isErrorFixture = directorySegments.includes('_error_');
       const relative = path.posix.join(...directorySegments, base);
 
       const vitestSnapshotEnvironment = new VitestSnapshotEnvironment({
-        snapshotsDirName: snapshotPath,
+        snapshotsDirName: snapshotsDirPath,
       });
 
       const vitestSnapshotHeader = vitestSnapshotEnvironment.getHeader();
@@ -80,7 +80,7 @@ describe('AST Fixtures', async () => {
         encoding: 'utf-8',
       });
 
-      await fs.mkdir(snapshotPath, { recursive: true });
+      await fs.mkdir(snapshotsDirPath, { recursive: true });
 
       const TSESTreeParsed = parseTSESTree({ config, contents, isJSX });
       const babelParsed = parseBabel({ contents, isJSX });
@@ -138,7 +138,7 @@ describe('AST Fixtures', async () => {
         errorLabel,
         ext,
         isBabelError,
-        isError,
+        isErrorFixture,
         isJSX,
         isTSESTreeError,
         name,
@@ -147,49 +147,64 @@ describe('AST Fixtures', async () => {
         snapshotFiles: {
           error: {
             alignment: (i: number) =>
-              path.join(snapshotPath, `${i.toString()}-Alignment-Error.shot`),
+              path.join(
+                snapshotsDirPath,
+                `${i.toString()}-Alignment-Error.shot`,
+              ),
 
             babel: (i: number) =>
-              path.join(snapshotPath, `${i.toString()}-Babel-Error.shot`),
+              path.join(snapshotsDirPath, `${i.toString()}-Babel-Error.shot`),
 
             tsestree: (i: number) =>
-              path.join(snapshotPath, `${i.toString()}-TSESTree-Error.shot`),
+              path.join(
+                snapshotsDirPath,
+                `${i.toString()}-TSESTree-Error.shot`,
+              ),
           },
 
           success: {
             alignment: {
               ast: (i: number) =>
                 path.join(
-                  snapshotPath,
+                  snapshotsDirPath,
                   `${i.toString()}-AST-Alignment-AST.shot`,
                 ),
 
               tokens: (i: number) =>
                 path.join(
-                  snapshotPath,
+                  snapshotsDirPath,
                   `${i.toString()}-AST-Alignment-Tokens.shot`,
                 ),
             },
 
             babel: {
               ast: (i: number) =>
-                path.join(snapshotPath, `${i.toString()}-Babel-AST.shot`),
+                path.join(snapshotsDirPath, `${i.toString()}-Babel-AST.shot`),
 
               tokens: (i: number) =>
-                path.join(snapshotPath, `${i.toString()}-Babel-Tokens.shot`),
+                path.join(
+                  snapshotsDirPath,
+                  `${i.toString()}-Babel-Tokens.shot`,
+                ),
             },
 
             tsestree: {
               ast: (i: number) =>
-                path.join(snapshotPath, `${i.toString()}-TSESTree-AST.shot`),
+                path.join(
+                  snapshotsDirPath,
+                  `${i.toString()}-TSESTree-AST.shot`,
+                ),
 
               tokens: (i: number) =>
-                path.join(snapshotPath, `${i.toString()}-TSESTree-Tokens.shot`),
+                path.join(
+                  snapshotsDirPath,
+                  `${i.toString()}-TSESTree-Tokens.shot`,
+                ),
             },
           },
         },
 
-        snapshotPath,
+        snapshotsDirPath,
         TSESTreeParsed,
         vitestSnapshotHeader,
       } satisfies Fixture;
@@ -210,182 +225,242 @@ describe('AST Fixtures', async () => {
           config,
           contents,
           errorLabel,
-          isError,
+          isErrorFixture,
           relative,
           snapshotFiles,
+          snapshotsDirPath,
           TSESTreeParsed,
           vitestSnapshotHeader,
         } = fixture;
 
-        it.runIf(isError)('TSESTree - Error', async () => {
-          await expect(
-            [
-              `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-              serializeError(TSESTreeParsed.error, contents),
-              '',
-            ].join('\n'),
-          ).toMatchFileSnapshot(snapshotFiles.error.tsestree(1));
-        });
-
-        it.runIf(isError)('Babel - Error', async () => {
-          await expect(
-            [
-              `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-              serializeError(babelParsed.error, contents),
-              '',
-            ].join('\n'),
-          ).toMatchFileSnapshot(snapshotFiles.error.babel(2));
-        });
-
-        it.runIf(isError)('Error Alignment', async () => {
-          await expect(
-            [
-              `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-              errorLabel,
-              '',
-            ].join('\n'),
-          ).toMatchFileSnapshot(snapshotFiles.error.alignment(3));
-        });
-
-        it.runIf(isError)('Should parse with errors', () => {
-          // if this fails and you WEREN'T expecting a parser error, then your fixture should not be in the `_error_` subfolder
-          // if this fails and you WERE expecting a parser error - then something is broken.
-          expect(errorLabel).not.toBe(ErrorLabel.None);
-        });
-
-        it.skipIf(isError)('TSESTree - AST', async () => {
-          assert.isSuccessResponse(TSESTreeParsed);
-
-          await expect(TSESTreeParsed.ast).toMatchFileSnapshot(
-            snapshotFiles.success.tsestree.ast(1),
-          );
-        });
-
-        it.skipIf(isError)('TSESTree - Tokens', async () => {
-          assert.isSuccessResponse(TSESTreeParsed);
-
-          await expect(TSESTreeParsed.tokens).toMatchFileSnapshot(
-            snapshotFiles.success.tsestree.tokens(2),
-          );
-        });
-
         const hasExpectBabelToNotSupport =
           config.expectBabelToNotSupport != null;
 
-        // eslint-disable-next-line vitest/no-identical-title -- intentional duplication that won't ever happen due to exclusionary conditions
-        it.skipIf(isError || !hasExpectBabelToNotSupport)(
-          'Babel - Error',
-          async () => {
-            await expect(
-              [
-                `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-                babelParsed.error,
-                '',
-              ].join('\n'),
-            ).toMatchFileSnapshot(snapshotFiles.error.babel(3));
-          },
-        );
+        const snapshotPaths: string[] = [];
 
-        // eslint-disable-next-line vitest/no-disabled-tests -- intentional skip for CLI documentation purposes
-        it.skip('Babel - Skipped as this fixture is configured to expect babel to error', () => {});
-        // eslint-disable-next-line vitest/no-disabled-tests -- intentional skip for CLI documentation purposes
-        it.skip('AST Alignment - Skipped as this fixture is configured to expect babel to error', () => {});
-        it.skipIf(isError || hasExpectBabelToNotSupport)(
-          'Babel - AST',
-          async () => {
-            assert.isSuccessResponse(babelParsed);
-
-            await expect(babelParsed.ast).toMatchFileSnapshot(
-              snapshotFiles.success.babel.ast(3),
-            );
-          },
-        );
-
-        it.skipIf(isError || hasExpectBabelToNotSupport)(
-          'Babel - Tokens',
-          async () => {
-            assert.isSuccessResponse(babelParsed);
-
-            await expect(babelParsed.tokens).toMatchFileSnapshot(
-              snapshotFiles.success.babel.tokens(4),
-            );
-          },
-        );
-
-        it.skipIf(
-          isError ||
-            hasExpectBabelToNotSupport ||
-            !fixturesWithASTDifferences.has(relative),
-        )('AST Alignment - AST', async () => {
-          const diffResult = fixturesWithASTDifferences.get(relative);
-
-          assert.isDefined(diffResult);
-
-          await expect(
-            [
-              `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-              diffResult,
-              '',
-            ].join('\n'),
-          ).toMatchFileSnapshot(snapshotFiles.success.alignment.ast(5));
-        });
-
-        it.skipIf(
-          isError ||
-            hasExpectBabelToNotSupport ||
-            !fixturesWithTokenDifferences.has(relative),
-        )('AST Alignment - Token', async () => {
-          const diffResult = fixturesWithTokenDifferences.get(relative);
-
-          assert.isDefined(diffResult);
-
-          await expect(
-            [
-              `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
-              diffResult,
-              '',
-            ].join('\n'),
-          ).toMatchFileSnapshot(snapshotFiles.success.alignment.tokens(6));
-        });
-
-        it.skipIf(isError)('Should parse with no errors', () => {
-          switch (errorLabel) {
-            case ErrorLabel.Babel:
-              assert.isErrorResponse(babelParsed);
-
-              break;
-
-            case ErrorLabel.Both:
-              assert.isErrorResponse(babelParsed);
-
-              assert.isErrorResponse(TSESTreeParsed);
-
-              break;
-
-            case ErrorLabel.None:
-              return;
-
-            case ErrorLabel.TSESTree:
-              assert.isErrorResponse(TSESTreeParsed);
-
-              break;
+        if (isErrorFixture) {
+          {
+            const snapshotPath = snapshotFiles.error.tsestree(1);
+            snapshotPaths.push(snapshotPath);
+            it('TSESTree - Error', async () => {
+              await expect(
+                [
+                  `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
+                  serializeError(TSESTreeParsed.error, contents),
+                  '',
+                ].join('\n'),
+              ).toMatchFileSnapshot(snapshotPath);
+            });
           }
 
-          // NOTE - the comments below exist so that they show up in the stack trace vitest shows
-          //        when the test fails. Yes, sadly, they're duplicated, but it's necessary to
-          //        provide the best and most understandable DevX that we can here.
-          //        Vitest will print a code frame with the fail line as well as 2 lines before and after
+          {
+            const snapshotPath = snapshotFiles.error.babel(2);
+            snapshotPaths.push(snapshotPath);
+            it('Babel - Error', async () => {
+              await expect(
+                [
+                  `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
+                  serializeError(babelParsed.error, contents),
+                  '',
+                ].join('\n'),
+              ).toMatchFileSnapshot(snapshotPath);
+            });
+          }
 
-          // if this fails and you WERE expecting a parser error, then your fixture should be in the `_error_` subfolder
-          // if this fails and you WEREN'T expecting a parser error - then something is broken.
-          expect(errorLabel).not.toBe(ErrorLabel.TSESTree);
+          {
+            const snapshotPath = snapshotFiles.error.alignment(3);
+            snapshotPaths.push(snapshotPath);
+            it('Error Alignment', async () => {
+              await expect(
+                [
+                  `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
+                  errorLabel,
+                  '',
+                ].join('\n'),
+              ).toMatchFileSnapshot(snapshotPath);
+            });
+          }
 
-          // if this fails and you WERE expecting a parser error, then your fixture should be in the `_error_` subfolder
-          // if this fails and you WEREN'T expecting a parser error - then something is broken.
-          expect(errorLabel).not.toBe(ErrorLabel.Both);
+          it('Should parse with errors', () => {
+            // if this fails and you WEREN'T expecting a parser error, then your fixture should not be in the `_error_` subfolder
+            // if this fails and you WERE expecting a parser error - then something is broken.
+            expect(errorLabel).not.toBe(ErrorLabel.None);
+            expect(errorLabel).not.toBe(ErrorLabel.Babel);
+          });
+        } else {
+          {
+            const snapshotPath = snapshotFiles.success.tsestree.ast(1);
+            snapshotPaths.push(snapshotPath);
+            it('TSESTree - AST', async () => {
+              assert.isSuccessResponse(TSESTreeParsed);
 
-          // if this fails and you WERE expecting a parser error, then Babel parsed without error and you should remove the `expectBabelToNotSupport` config.
-          expect(errorLabel).toBe(ErrorLabel.Babel);
+              await expect(TSESTreeParsed.ast).toMatchFileSnapshot(
+                snapshotPath,
+              );
+            });
+          }
+
+          {
+            const snapshotPath = snapshotFiles.success.tsestree.tokens(2);
+            snapshotPaths.push(snapshotPath);
+            it('TSESTree - Tokens', async () => {
+              assert.isSuccessResponse(TSESTreeParsed);
+
+              await expect(TSESTreeParsed.tokens).toMatchFileSnapshot(
+                snapshotPath,
+              );
+            });
+          }
+
+          if (hasExpectBabelToNotSupport) {
+            const snapshotPath = snapshotFiles.error.babel(3);
+            snapshotPaths.push(snapshotPath);
+            // eslint-disable-next-line vitest/no-identical-title -- intentional duplication that won't ever happen due to exclusionary conditions
+            it('Babel - Error', async () => {
+              await expect(
+                [
+                  `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
+                  babelParsed.error,
+                  '',
+                ].join('\n'),
+              ).toMatchFileSnapshot(snapshotPath);
+            });
+          } else {
+            {
+              const snapshotPath = snapshotFiles.success.babel.ast(3);
+              snapshotPaths.push(snapshotPath);
+              it('Babel - AST', async () => {
+                assert.isSuccessResponse(babelParsed);
+
+                await expect(babelParsed.ast).toMatchFileSnapshot(snapshotPath);
+              });
+            }
+
+            {
+              const snapshotPath = snapshotFiles.success.babel.tokens(4);
+              snapshotPaths.push(snapshotPath);
+              it('Babel - Tokens', async () => {
+                assert.isSuccessResponse(babelParsed);
+
+                await expect(babelParsed.tokens).toMatchFileSnapshot(
+                  snapshotPath,
+                );
+              });
+            }
+
+            if (fixturesWithASTDifferences.has(relative)) {
+              {
+                const snapshotPath = snapshotFiles.success.alignment.ast(5);
+                snapshotPaths.push(snapshotPath);
+                it('AST Alignment - AST', async () => {
+                  const diffResult = fixturesWithASTDifferences.get(relative);
+
+                  assert.isDefined(diffResult);
+
+                  await expect(
+                    [
+                      `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
+                      diffResult,
+                      '',
+                    ].join('\n'),
+                  ).toMatchFileSnapshot(snapshotPath);
+                });
+              }
+
+              {
+                const snapshotPath = snapshotFiles.success.alignment.tokens(6);
+                snapshotPaths.push(snapshotPath);
+                it('AST Alignment - Token', async () => {
+                  const diffResult = fixturesWithTokenDifferences.get(relative);
+
+                  assert.isDefined(diffResult);
+
+                  await expect(
+                    [
+                      `${vitestSnapshotHeader}\n\nexports[\`${expect.getState().currentTestName}\`]`,
+                      diffResult,
+                      '',
+                    ].join('\n'),
+                  ).toMatchFileSnapshot(snapshotPath);
+                });
+              }
+            }
+
+            it('Should parse with no errors', () => {
+              switch (errorLabel) {
+                case ErrorLabel.Babel:
+                  assert.isErrorResponse(babelParsed);
+
+                  break;
+
+                case ErrorLabel.Both:
+                  assert.isErrorResponse(babelParsed);
+
+                  assert.isErrorResponse(TSESTreeParsed);
+
+                  break;
+
+                case ErrorLabel.None:
+                  return;
+
+                case ErrorLabel.TSESTree:
+                  assert.isErrorResponse(TSESTreeParsed);
+
+                  break;
+              }
+
+              // NOTE - the comments below exist so that they show up in the stack trace vitest shows
+              //        when the test fails. Yes, sadly, they're duplicated, but it's necessary to
+              //        provide the best and most understandable DevX that we can here.
+              //        Vitest will print a code frame with the fail line as well as 2 lines before and after
+
+              // if this fails and you WERE expecting a parser error, then your fixture should be in the `_error_` subfolder
+              // if this fails and you WEREN'T expecting a parser error - then something is broken.
+              expect(errorLabel).not.toBe(ErrorLabel.TSESTree);
+
+              // if this fails and you WERE expecting a parser error, then your fixture should be in the `_error_` subfolder
+              // if this fails and you WEREN'T expecting a parser error - then something is broken.
+              expect(errorLabel).not.toBe(ErrorLabel.Both);
+
+              // if this fails and you WERE expecting a parser error, then Babel parsed without error and you should remove the `expectBabelToNotSupport` config.
+              expect(errorLabel).toBe(ErrorLabel.Babel);
+            });
+          }
+        }
+
+        {
+          const snapshotPath = path.join(
+            snapshotsDirPath,
+            '0-Expected-Files.shot',
+          );
+          snapshotPaths.unshift(snapshotPath);
+          it('Should list the files which are used in snapshots', async () => {
+            await expect(
+              snapshotPaths
+                .map(snapshotPath =>
+                  path.relative(snapshotsDirPath, snapshotPath),
+                )
+                .join('\n'),
+            ).toMatchFileSnapshot(snapshotPath);
+          });
+        }
+
+        it('Should not find any unexpected files in the snapshots dir', async () => {
+          const dirItems = await fs.readdir(snapshotsDirPath);
+          const snapshotsRelative = snapshotPaths.map(snapshotPath =>
+            path.relative(snapshotsDirPath, snapshotPath),
+          );
+          for (const item of dirItems) {
+            if (snapshotsRelative.some(snapshotPath => snapshotPath === item)) {
+              continue;
+            }
+            expect
+              .soft(
+                item,
+                'File is not an expected snapshot and must be removed',
+              )
+              .toBeUndefined();
+          }
         });
       },
     );
