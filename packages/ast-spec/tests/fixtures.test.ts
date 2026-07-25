@@ -14,6 +14,7 @@ import { serializeError } from './util/serialize-error.js';
 import { diffHasChanges, snapshotDiff } from './util/snapshot-diff.js';
 
 const PACKAGE_ROOT = path.join(__dirname, '..');
+const REPO_ROOT = path.join(PACKAGE_ROOT, '..', '..');
 const SRC_DIR = path.join(PACKAGE_ROOT, 'src');
 
 // Assign a segment set to this variable to limit the test to only this segment
@@ -442,22 +443,27 @@ describe('AST Fixtures', async () => {
           });
         }
 
-        it('Should not find any unexpected files in the snapshots dir', async () => {
-          const dirItems = await fs.readdir(snapshotsDirPath);
+        it('Should not find any unexpected items in the snapshots dir', async () => {
           const snapshotsRelative = snapshotPaths.map(snapshotPath =>
             path.relative(snapshotsDirPath, snapshotPath),
           );
-          for (const item of dirItems) {
-            if (snapshotsRelative.some(snapshotPath => snapshotPath === item)) {
-              continue;
-            }
-            expect
-              .soft(
-                item,
-                'File is not an expected snapshot and must be removed',
-              )
-              .toBeUndefined();
-          }
+
+          const unexpectedDirItems = (
+            await fs.readdir(snapshotsDirPath)
+          ).filter(
+            item =>
+              !snapshotsRelative.some(snapshotPath => snapshotPath === item),
+          );
+
+          // Include the full path from the repo root in the error message so that users can easily remove the offending file(s)
+          const unexpectedDirItemsRelative = unexpectedDirItems.map(item =>
+            path.relative(REPO_ROOT, path.join(snapshotsDirPath, item)),
+          );
+
+          expect(
+            unexpectedDirItemsRelative,
+            'Unexpected items found in snapshots directory.',
+          ).toEqual([]);
         });
       },
     );
