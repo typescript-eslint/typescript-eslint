@@ -2,7 +2,7 @@
 
 exports[`AST Fixtures > expression > MetaProperty > _error_ > import-not-meta > Babel - Error`]
 BabelError
-> 1 | import.foo;
+> 1 | import.invalidMetaProperty;
     |        ^ The only valid meta property for import is import.meta. (1:7)
   2 |
   

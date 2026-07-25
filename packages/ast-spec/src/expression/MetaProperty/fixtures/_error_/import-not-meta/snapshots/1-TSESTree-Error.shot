@@ -2,6 +2,6 @@
 
 exports[`AST Fixtures > expression > MetaProperty > _error_ > import-not-meta > TSESTree - Error`]
 TSError
-> 1 | import.foo;
-    | ^^^^^^^^^^ 'foo' is not a valid meta-property for keyword 'import'.
+> 1 | import.invalidMetaProperty;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^ 'invalidMetaProperty' is not a valid meta-property for keyword 'import'.
   2 |
