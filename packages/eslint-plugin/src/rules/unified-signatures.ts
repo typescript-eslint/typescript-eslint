@@ -4,7 +4,12 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
-import { arraysAreEqual, createRule, nullThrows } from '../util';
+import {
+  arraysAreEqual,
+  createRule,
+  nullThrows,
+  typeNodeRequiresParentheses,
+} from '../util';
 
 interface Failure {
   only2: boolean;
@@ -122,6 +127,53 @@ export default createRule<Options, MessageIds>({
       return `${overloads} can be combined into one signature`;
     }
 
+    function getTypeText(typeAnnotation: TSESTree.TypeNode): string {
+      const tokens = context.sourceCode.getTokens(typeAnnotation);
+      const text = tokens
+        .map((token, index) => {
+          const separator =
+            index > 0 && tokens[index - 1].range[1] < token.range[0] ? ' ' : '';
+          return `${separator}${token.value}`;
+        })
+        .join('');
+
+      return typeNodeRequiresParentheses(typeAnnotation, text)
+        ? `(${text})`
+        : text;
+    }
+
+    function getTypeTexts(typeAnnotation?: TSESTree.TypeNode): string[] {
+      if (typeAnnotation == null) {
+        return [];
+      }
+
+      if (typeAnnotation.type === AST_NODE_TYPES.TSUnionType) {
+        return typeAnnotation.types.flatMap(getTypeTexts);
+      }
+
+      return [getTypeText(typeAnnotation)];
+    }
+
+    function getTypeTextPair(
+      typeAnnotation0: TSESTree.TypeNode | undefined,
+      typeAnnotation1: TSESTree.TypeNode | undefined,
+    ): [string, string] | undefined {
+      const typeTexts0 = [...new Set(getTypeTexts(typeAnnotation0))];
+      const typeTexts = [
+        ...new Set([...typeTexts0, ...getTypeTexts(typeAnnotation1)]),
+      ];
+
+      if (typeTexts.length < 2) {
+        return undefined;
+      }
+
+      const splitIndex = Math.min(typeTexts0.length, typeTexts.length - 1);
+      return [
+        typeTexts.slice(0, splitIndex).join(' | '),
+        typeTexts.slice(splitIndex).join(' | '),
+      ];
+    }
+
     function addFailures(failures: Failure[]): void {
       for (const failure of failures) {
         const { only2, unify } = failure;
@@ -136,6 +188,14 @@ export default createRule<Options, MessageIds>({
             const typeAnnotation1 = isTSParameterProperty(p1)
               ? p1.parameter.typeAnnotation
               : p1.typeAnnotation;
+            const typeTextPair = getTypeTextPair(
+              typeAnnotation0?.typeAnnotation,
+              typeAnnotation1?.typeAnnotation,
+            );
+            if (typeTextPair == null) {
+              break;
+            }
+            const [type1, type2] = typeTextPair;
 
             context.report({
               loc: p1.loc,
@@ -143,12 +203,8 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: context.sourceCode.getText(
-                  typeAnnotation0?.typeAnnotation,
-                ),
-                type2: context.sourceCode.getText(
-                  typeAnnotation1?.typeAnnotation,
-                ),
+                type1,
+                type2,
               },
             });
             break;
