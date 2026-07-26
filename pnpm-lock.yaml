@@ -946,9 +946,6 @@ importers:
       prettier:
         specifier: 'catalog:'
         version: 3.9.5
-      prism-react-renderer:
-        specifier: ^2.4.1
-        version: 2.4.1(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
