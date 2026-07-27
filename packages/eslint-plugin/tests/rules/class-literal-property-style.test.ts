@@ -423,6 +423,34 @@ class Mx {
     {
       code: `
 class Mx {
+  public static get n() /* before */ : 1 | 2 /* after */ {
+    return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferFieldStyle',
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  public static readonly n /* before */ : 1 | 2 /* after */ = 1;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Mx {
   @logAccess
   public static get foo(): number {
     return 1;

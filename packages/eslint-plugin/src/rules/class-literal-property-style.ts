@@ -181,6 +181,8 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          const getterBody = node.value.body;
+
           context.report({
             node: node.key,
             messageId: 'preferFieldStyle',
@@ -191,14 +193,22 @@ export default createRule<Options, MessageIds>({
                 fix(fixer): TSESLint.RuleFix {
                   const name = context.sourceCode.getText(node.key);
 
+                  const closingParen = nullThrows(
+                    context.sourceCode.getTokenBefore(
+                      node.value.returnType ?? getterBody,
+                    ),
+                    'Getter should have a closing parenthesis.',
+                  );
+                  const betweenParensAndBody = context.sourceCode
+                    .getText()
+                    .slice(closingParen.range[1], getterBody.range[0]);
+
                   let text = '';
 
                   text += printNodeModifiers(node, 'readonly');
                   text += node.computed ? `[${name}]` : name;
-                  if (node.value.returnType) {
-                    text += context.sourceCode.getText(node.value.returnType);
-                  }
-                  text += ` = ${context.sourceCode.getText(argument)};`;
+                  text += betweenParensAndBody;
+                  text += `= ${context.sourceCode.getText(argument)};`;
 
                   return fixer.replaceText(node, text);
                 },
