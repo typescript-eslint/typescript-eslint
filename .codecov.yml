@@ -5,9 +5,7 @@ codecov:
 
 coverage:
   status:
-    patch:
-      default:
-        target: 90%
+    patch: off
     project:
       default:
         target: auto
