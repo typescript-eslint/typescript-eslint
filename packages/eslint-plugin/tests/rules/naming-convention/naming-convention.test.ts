@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 /* eslint-disable @typescript-eslint/internal/plugin-test-formatting -- Prettier doesn't yet support TS 5.6 string literal module identifiers */
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
@@ -20,19 +21,43 @@ ruleTester.run('naming-convention', rule, {
     {
       // make sure we handle no options and apply defaults
       code: 'const x_x = 1;',
-      errors: [{ messageId: 'doesNotMatchFormat' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
     },
     {
       // make sure we handle empty options and apply defaults
       code: 'const x_x = 1;',
-      errors: [{ messageId: 'doesNotMatchFormat' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [],
     },
     {
       code: `
         const child_process = require('child_process');
       `,
-      errors: [{ messageId: 'doesNotMatchFormat' }],
+      errors: [
+        {
+          column: 15,
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       languageOptions: { parserOptions },
       options: [
         {
@@ -69,60 +94,136 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 50,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 62,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 49,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 56,
+          endLine: 6,
+          line: 6,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 68,
+          endLine: 7,
+          line: 7,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 65,
+          endLine: 8,
+          line: 8,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 74,
+          endLine: 9,
+          line: 9,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 49,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 56,
+          endLine: 11,
+          line: 11,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 68,
+          endLine: 12,
+          line: 12,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 63,
+          endLine: 13,
+          line: 13,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 72,
+          endLine: 14,
+          line: 14,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 51,
+          endLine: 15,
+          line: 15,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 58,
+          endLine: 16,
+          line: 16,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 70,
+          endLine: 17,
+          line: 17,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 67,
+          endLine: 18,
+          line: 18,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 68,
+          endLine: 19,
+          line: 19,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 75,
+          endLine: 20,
+          line: 20,
           messageId: 'doesNotMatchFormatTrimmed',
         },
       ],
@@ -167,15 +268,31 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 63,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 75,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 22,
+          endLine: 9,
+          line: 5,
           messageId: 'doesNotMatchFormatTrimmed',
         },
       ],
@@ -211,27 +328,59 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 69,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 68,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 77,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 22,
+          endLine: 10,
+          line: 6,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 62,
+          endLine: 11,
+          line: 11,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 68,
+          endLine: 12,
+          line: 12,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 23,
+          endColumn: 22,
+          endLine: 18,
+          line: 13,
           messageId: 'doesNotMatchFormatTrimmed',
         },
       ],
@@ -251,12 +400,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'unused_foo',
             regex: '/^unused_\\w/u',
             regexMatch: 'not match',
             type: 'Variable',
           },
+          endColumn: 23,
+          endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
         },
@@ -279,12 +431,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: '_unused_foo',
             regex: '/^unused_\\w/u',
             regexMatch: 'not match',
             type: 'Variable',
           },
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
         },
@@ -307,12 +462,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 19,
           data: {
             name: 'IFoo',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
             type: 'Interface',
           },
+          endColumn: 23,
+          endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
         },
@@ -334,12 +492,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'IBar',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
             type: 'Class',
           },
+          endColumn: 19,
+          endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
         },
@@ -361,12 +522,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 18,
           data: {
             name: 'fooBar',
             regex: '/function/u',
             regexMatch: 'match',
             type: 'Function',
           },
+          endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
         },
@@ -389,11 +553,14 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 13,
           data: {
             formats: 'camelCase',
             name: 'unused_foo',
             type: 'Variable',
           },
+          endColumn: 23,
+          endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
@@ -412,12 +579,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
           data: {
             formats: 'camelCase',
             name: '_unused_foo',
             processedName: 'unused_foo',
             type: 'Variable',
           },
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
@@ -436,11 +606,14 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 18,
           data: {
             formats: 'camelCase',
             name: 'foo_bar',
             type: 'Function',
           },
+          endColumn: 25,
+          endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
@@ -459,12 +632,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 19,
           data: {
             name: 'IFoo',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
             type: 'Interface',
           },
+          endColumn: 23,
+          endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
         },
@@ -486,12 +662,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'IBar',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
             type: 'Class',
           },
+          endColumn: 19,
+          endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
         },
@@ -520,11 +699,14 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 11,
           data: {
             formats: 'strictCamelCase',
             name: 'Property Name',
             type: 'Object Literal Property',
           },
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
@@ -550,12 +732,24 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 22,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormatTrimmed',
         },
       ],
@@ -575,7 +769,15 @@ ruleTester.run('naming-convention', rule, {
           private readonly fooBar: boolean;
         }
       `,
-      errors: [{ messageId: 'doesNotMatchFormat' }],
+      errors: [
+        {
+          column: 28,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['PascalCase'],
@@ -588,7 +790,15 @@ ruleTester.run('naming-convention', rule, {
       code: `
         function my_foo_bar() {}
       `,
-      errors: [{ messageId: 'doesNotMatchFormatTrimmed' }],
+      errors: [
+        {
+          column: 18,
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
       languageOptions: { parserOptions },
       options: [
         {
@@ -609,6 +819,9 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 18,
+          endColumn: 31,
+          endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
@@ -627,6 +840,9 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
@@ -645,21 +861,45 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 22,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 21,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 22,
+          endColumn: 37,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 25,
+          endColumn: 43,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 26,
+          endColumn: 45,
+          endLine: 6,
+          line: 6,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 21,
+          endColumn: 35,
+          endLine: 7,
+          line: 7,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -719,21 +959,45 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 14,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 15,
+          endColumn: 30,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 18,
+          endColumn: 36,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 19,
+          endColumn: 38,
+          endLine: 6,
+          line: 6,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 14,
+          endColumn: 28,
+          endLine: 7,
+          line: 7,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -779,12 +1043,24 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 18,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 26,
+          endColumn: 52,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -812,9 +1088,17 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 17,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -842,9 +1126,17 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 13,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -867,7 +1159,15 @@ ruleTester.run('naming-convention', rule, {
           IgnoredDueToModifiers = 1;
         }
       `,
-      errors: [{ messageId: 'doesNotMatchFormat' }],
+      errors: [
+        {
+          column: 44,
+          endColumn: 53,
+          endLine: 3,
+          line: 3,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['PascalCase'],
@@ -889,7 +1189,15 @@ ruleTester.run('naming-convention', rule, {
           ) {}
         }
       `,
-      errors: [{ messageId: 'doesNotMatchFormat' }],
+      errors: [
+        {
+          column: 30,
+          endColumn: 39,
+          endLine: 4,
+          line: 4,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['PascalCase'],
@@ -909,7 +1217,15 @@ ruleTester.run('naming-convention', rule, {
           IgnoredDueToModifiers() {}
         }
       `,
-      errors: [{ messageId: 'doesNotMatchFormat' }],
+      errors: [
+        {
+          column: 26,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['PascalCase'],
@@ -929,7 +1245,15 @@ ruleTester.run('naming-convention', rule, {
           get IgnoredDueToModifiers() {}
         }
       `,
-      errors: [{ messageId: 'doesNotMatchFormat' }],
+      errors: [
+        {
+          column: 30,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['PascalCase'],
@@ -947,7 +1271,15 @@ ruleTester.run('naming-convention', rule, {
         abstract class some_name {}
         class IgnoredDueToModifier {}
       `,
-      errors: [{ messageId: 'doesNotMatchFormat' }],
+      errors: [
+        {
+          column: 24,
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
       options: [
         {
           format: ['PascalCase'],
@@ -976,24 +1308,52 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 18,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 15,
+          endColumn: 26,
+          endLine: 7,
+          line: 7,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 19,
+          endColumn: 34,
+          endLine: 8,
+          line: 8,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 14,
+          endColumn: 24,
+          endLine: 9,
+          line: 9,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 26,
+          endLine: 11,
+          line: 11,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1041,42 +1401,94 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 15,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 15,
+          endColumn: 20,
+          endLine: 8,
+          line: 8,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 11,
+          line: 11,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 12,
+          line: 12,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 15,
+          endColumn: 20,
+          endLine: 13,
+          line: 13,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 15,
+          endColumn: 20,
+          endLine: 16,
+          line: 16,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 19,
+          line: 19,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 20,
+          line: 20,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 23,
+          line: 23,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 24,
+          line: 24,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 27,
+          line: 27,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1110,21 +1522,45 @@ ruleTester.run('naming-convention', rule, {
       // 6, not 7 because 'foo' is valid
       errors: [
         {
+          column: 11,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 20,
+          endLine: 7,
+          line: 7,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 21,
+          endLine: 8,
+          line: 8,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
+          endColumn: 24,
+          endLine: 12,
+          line: 12,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1160,35 +1596,51 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 24,
           data: {
             formats: 'snake_case',
             name: 'asyncBar',
             type: 'Class Method',
           },
+          endColumn: 32,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 18,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar2',
             type: 'Class Method',
           },
+          endColumn: 27,
+          endLine: 14,
+          line: 14,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 18,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar3',
             type: 'Class Method',
           },
+          endColumn: 27,
+          endLine: 18,
+          line: 18,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 33,
           data: {
             formats: 'snake_case',
             name: 'ASYNC_BAR',
             type: 'Class Method',
           },
+          endColumn: 42,
+          endLine: 26,
+          line: 26,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1234,27 +1686,39 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 17,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar',
             type: 'Object Literal Method',
           },
+          endColumn: 25,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar2',
             type: 'Object Literal Method',
           },
+          endColumn: 20,
+          endLine: 14,
+          line: 14,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar3',
             type: 'Object Literal Method',
           },
+          endColumn: 20,
+          endLine: 18,
+          line: 18,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1291,19 +1755,27 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar1',
             type: 'Variable',
           },
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'asyncBar5',
             type: 'Variable',
           },
+          endColumn: 24,
+          endLine: 12,
+          line: 12,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1336,19 +1808,27 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 24,
           data: {
             formats: 'snake_case',
             name: 'asyncBar2',
             type: 'Function',
           },
+          endColumn: 33,
+          endLine: 8,
+          line: 8,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 43,
           data: {
             formats: 'snake_case',
             name: 'ASYNC_BAR4',
             type: 'Function',
           },
+          endColumn: 53,
+          endLine: 12,
+          line: 12,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1376,11 +1856,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 27,
           data: {
             formats: 'snake_case',
             name: 'someAttributeOverride',
             type: 'Class Property',
           },
+          endColumn: 48,
+          endLine: 6,
+          line: 6,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1411,11 +1895,15 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 27,
           data: {
             formats: 'snake_case',
             name: 'someMethodOverride',
             type: 'Class Method',
           },
+          endColumn: 45,
+          endLine: 7,
+          line: 7,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1447,19 +1935,27 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 31,
           data: {
             formats: 'snake_case',
             name: 'someGetterOverride',
             type: 'Classic Accessor',
           },
+          endColumn: 49,
+          endLine: 6,
+          line: 6,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 31,
           data: {
             formats: 'snake_case',
             name: 'someSetterOverride',
             type: 'Classic Accessor',
           },
+          endColumn: 49,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1489,19 +1985,27 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 19,
           data: {
             formats: 'camelCase',
             name: 'first_private_field',
             type: 'Class Property',
           },
+          endColumn: 38,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
           data: {
             formats: 'snake_case',
             name: 'secondPrivateField',
             type: 'Class Property',
           },
+          endColumn: 30,
+          endLine: 7,
+          line: 7,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1531,19 +2035,27 @@ ruleTester.run('naming-convention', rule, {
       `,
       errors: [
         {
+          column: 19,
           data: {
             formats: 'camelCase',
             name: 'first_private_method',
             type: 'Class Method',
           },
+          endColumn: 39,
+          endLine: 5,
+          line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
+          column: 11,
           data: {
             formats: 'snake_case',
             name: 'secondPrivateMethod',
             type: 'Class Method',
           },
+          endColumn: 31,
+          endLine: 7,
+          line: 7,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1564,11 +2076,15 @@ ruleTester.run('naming-convention', rule, {
       code: "import * as fooBar from 'foo_bar';",
       errors: [
         {
+          column: 13,
           data: {
             formats: 'PascalCase',
             name: 'fooBar',
             type: 'Import',
           },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1589,11 +2105,15 @@ ruleTester.run('naming-convention', rule, {
       code: "import FooBar from 'foo_bar';",
       errors: [
         {
+          column: 8,
           data: {
             formats: 'camelCase',
             name: 'FooBar',
             type: 'Import',
           },
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1614,11 +2134,15 @@ ruleTester.run('naming-convention', rule, {
       code: "import { default as foo_bar } from 'foo_bar';",
       errors: [
         {
+          column: 21,
           data: {
             formats: 'camelCase',
             name: 'foo_bar',
             type: 'Import',
           },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -1639,11 +2163,15 @@ ruleTester.run('naming-convention', rule, {
       code: 'import { "🍎" as foo } from \'foo_bar\';',
       errors: [
         {
+          column: 18,
           data: {
             formats: 'PascalCase',
             name: 'foo',
             type: 'Import',
           },
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'doesNotMatchFormat',
         },
       ],

@@ -68,6 +68,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'bigint', typeName: 'BigInt' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -80,6 +82,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'boolean', typeName: 'Boolean' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -92,6 +96,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -104,6 +110,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'object', typeName: 'Object' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -116,6 +124,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'string', typeName: 'String' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -128,6 +138,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'symbol', typeName: 'Symbol' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -140,12 +152,16 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
         {
           column: 21,
           data: { preferred: 'symbol', typeName: 'Symbol' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -157,6 +173,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 24,
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -168,6 +186,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 6,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -179,6 +199,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 15,
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -190,6 +212,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 16,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -201,6 +225,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 26,
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -212,6 +238,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 31,
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -224,12 +252,16 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 15,
           data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
         {
           column: 24,
           data: { preferred: 'string', typeName: 'String' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
