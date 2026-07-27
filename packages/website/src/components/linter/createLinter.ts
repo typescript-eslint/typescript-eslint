@@ -167,10 +167,23 @@ export function createLinter(
       for (const extendsName of parsed.extends) {
         const maybeConfig = configs.get(extendsName);
         if (maybeConfig) {
-          if (Array.isArray(maybeConfig)) {
-            eslintExtendedConfig.push(...maybeConfig);
-          } else {
-            eslintExtendedConfig.push(maybeConfig);
+          const configsToAdd = Array.isArray(maybeConfig)
+            ? maybeConfig
+            : [maybeConfig];
+          for (const config of configsToAdd) {
+            // Extended configs (e.g. `flat/recommended-type-checked`) carry
+            // their own `languageOptions.parser`, meant for a real Node.js
+            // ESLint run. Applying it here would silently replace the
+            // Playground's own TS-vfs-backed parser set on
+            // `eslintLanguageConfig`, since configs later in the array take
+            // precedence regardless of `files` specificity.
+            if (config.languageOptions?.parser) {
+              const { parser: _parser, ...languageOptions } =
+                config.languageOptions;
+              eslintExtendedConfig.push({ ...config, languageOptions });
+            } else {
+              eslintExtendedConfig.push(config);
+            }
           }
         }
       }
