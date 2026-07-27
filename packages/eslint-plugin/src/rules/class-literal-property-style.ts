@@ -4,6 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  getFixOrSuggest,
   getStaticMemberAccessValue,
   isAssignee,
   isFunction,
@@ -183,8 +184,9 @@ export default createRule<Options, MessageIds>({
           context.report({
             node: node.key,
             messageId: 'preferFieldStyle',
-            suggest: [
-              {
+            ...getFixOrSuggest({
+              fixOrSuggest: node.decorators.length === 0 ? 'suggest' : 'none',
+              suggestion: {
                 messageId: 'preferFieldStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
                   const name = context.sourceCode.getText(node.key);
@@ -193,12 +195,15 @@ export default createRule<Options, MessageIds>({
 
                   text += printNodeModifiers(node, 'readonly');
                   text += node.computed ? `[${name}]` : name;
+                  if (node.value.returnType) {
+                    text += context.sourceCode.getText(node.value.returnType);
+                  }
                   text += ` = ${context.sourceCode.getText(argument)};`;
 
                   return fixer.replaceText(node, text);
                 },
               },
-            ],
+            }),
           });
         },
       }),

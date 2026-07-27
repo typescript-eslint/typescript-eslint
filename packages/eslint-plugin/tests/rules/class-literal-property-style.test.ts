@@ -395,6 +395,54 @@ class Mx {
     {
       code: `
 class Mx {
+  public static get n(): 1 | 2 {
+    return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferFieldStyle',
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  public static readonly n: 1 | 2 = 1;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Mx {
+  @logAccess
+  public static get foo(): number {
+    return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferFieldStyle',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+class Mx {
   public get [myValue]() {
     return 'a literal value';
   }
