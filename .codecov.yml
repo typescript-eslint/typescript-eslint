@@ -5,11 +5,11 @@ codecov:
 
 coverage:
   status:
-    patch: off
     project:
       default:
         target: auto
         threshold: 2%
+    patch: off
 
 comment:
   layout: diff, flags, files
