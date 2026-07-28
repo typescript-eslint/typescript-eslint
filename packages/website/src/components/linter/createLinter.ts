@@ -165,21 +165,10 @@ export function createLinter(
       for (const extendsName of parsed.extends) {
         const maybeConfig = configs.get(extendsName);
         if (maybeConfig) {
-          const configsToAdd = Array.isArray(maybeConfig)
-            ? maybeConfig
-            : [maybeConfig];
-          for (const config of configsToAdd) {
-            // When extending the ESLint config, some configs bring in their own
-            // `languageOptions.parser`. This will override the browser-compatible
-            // parser of the Playground with the default Node parser, and will cause
-            // an error.
-            if (config.languageOptions?.parser) {
-              const { parser: _parser, ...languageOptions } =
-                config.languageOptions;
-              eslintExtendedConfig.push({ ...config, languageOptions });
-            } else {
-              eslintExtendedConfig.push(config);
-            }
+          if (Array.isArray(maybeConfig)) {
+            eslintExtendedConfig.push(...maybeConfig);
+          } else {
+            eslintExtendedConfig.push(maybeConfig);
           }
         }
       }
