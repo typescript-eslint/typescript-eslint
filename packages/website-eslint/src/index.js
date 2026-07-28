@@ -44,11 +44,6 @@ for (const [name, value] of Object.entries(rawPlugin.flatConfigs)) {
 
 exports.configs = configs;
 
-exports.rules = rawPlugin.plugin.rules;
-
-// exposed so the playground can register the same plugin object reference
-// used inside `flatConfigs`, avoiding an ESLint "Cannot redefine plugin" error
-// when a config extends one of those flat configs.
 exports.plugin = rawPlugin.plugin;
 
 exports.builtinRules = builtinRules;

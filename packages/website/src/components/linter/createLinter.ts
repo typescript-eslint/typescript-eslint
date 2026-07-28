@@ -74,8 +74,6 @@ export function createLinter(
       parserOptions: { ...defaultEslintLanguageConfig.parserOptions },
     },
     plugins: {
-      // reuse the same plugin object referenced by `webLinterModule.configs`
-      // so extending one of those configs doesn't redefine the plugin
       '@typescript-eslint': webLinterModule.plugin,
     },
   };
@@ -90,7 +88,7 @@ export function createLinter(
   const onParse = createEventsBinder<LinterOnParse>();
   const linter = webLinterModule.createLinter();
 
-  Object.entries(webLinterModule.rules).forEach(([name, item]) => {
+  Object.entries(webLinterModule.plugin.rules).forEach(([name, item]) => {
     rules.set(`@typescript-eslint/${name}`, {
       description: item.meta.docs?.description,
       name: `@typescript-eslint/${name}`,
@@ -171,12 +169,10 @@ export function createLinter(
             ? maybeConfig
             : [maybeConfig];
           for (const config of configsToAdd) {
-            // Extended configs (e.g. `flat/recommended-type-checked`) carry
-            // their own `languageOptions.parser`, meant for a real Node.js
-            // ESLint run. Applying it here would silently replace the
-            // Playground's own TS-vfs-backed parser set on
-            // `eslintLanguageConfig`, since configs later in the array take
-            // precedence regardless of `files` specificity.
+            // When extending the ESLint config, some configs bring in their own
+            // `languageOptions.parser`. This will override the browser-compatible
+            // parser of the Playground with the default Node parser, and will cause
+            // an error.
             if (config.languageOptions?.parser) {
               const { parser: _parser, ...languageOptions } =
                 config.languageOptions;
