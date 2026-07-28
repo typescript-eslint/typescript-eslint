@@ -1878,32 +1878,32 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
-        const importExpressionParams: Pick<ImportExpression['phase']> | undefined =
-          (() => {
-            // import(...);
-            if (node.expression.kind === SyntaxKind.ImportKeyword) {
-              return {
-                phase: null,
-              };
-            }
-            // import.defer(...);
-            if (node.expression.kind === SyntaxKind.MetaProperty) {
-              const metaPropertyNode = node.expression as ts.MetaProperty;
-              const metaObject = getTextForTokenKind(
-                metaPropertyNode.keywordToken,
-              );
-              if (metaObject === 'import') {
-                const metaPropertyName = metaPropertyNode.name.text;
-                if (metaPropertyName === 'defer') {
-                  return {
-                    phase: 'defer',
-                  };
-                }
+        const importExpressionParams:
+          Pick<TSESTree.ImportExpression, 'phase'> | undefined = (() => {
+          // import(...);
+          if (node.expression.kind === SyntaxKind.ImportKeyword) {
+            return {
+              phase: null,
+            };
+          }
+          // import.defer(...);
+          if (node.expression.kind === SyntaxKind.MetaProperty) {
+            const metaPropertyNode = node.expression as ts.MetaProperty;
+            const metaObject = getTextForTokenKind(
+              metaPropertyNode.keywordToken,
+            );
+            if (metaObject === 'import') {
+              const metaPropertyName = metaPropertyNode.name.text;
+              if (metaPropertyName === 'defer') {
+                return {
+                  phase: 'defer',
+                };
               }
             }
+          }
 
-            return undefined;
-          })();
+          return undefined;
+        })();
 
         if (importExpressionParams != null) {
           return this.createNode<TSESTree.ImportExpression>(
