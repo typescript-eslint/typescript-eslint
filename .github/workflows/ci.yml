@@ -326,6 +326,43 @@ jobs:
         env:
           CI: true
 
+  ast_spec_snapshots_clean:
+    name: Verify ast-spec snapshots are clean
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build, affected-for-tests]
+    if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.unit_tests_packages), 'ast-spec') }}
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Delete all ast-spec fixture snapshots
+        run: pnpm exec nx run ast-spec:clean-fixtures
+
+      - name: Regenerate ast-spec fixture snapshots
+        run: pnpm exec nx test ast-spec
+        env:
+          CI: true
+
+      - name: Fail if regenerating snapshots produced a diff
+        run: |
+          changes="$(git status --porcelain -- packages/ast-spec/src)"
+          if [ -n "$changes" ]; then
+            echo "$changes"
+            echo "::error::Regenerating ast-spec fixture snapshots from scratch produced a different set of files than what is committed. This means some snapshot files are stale/orphaned/missing in git. Run 'pnpm exec nx run ast-spec:clean-fixtures && pnpm exec nx test ast-spec' locally and commit the resulting changes."
+            exit 1
+          fi
+
   plugin_unit_tests:
     # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
     name: Run Unit Tests
@@ -507,6 +544,7 @@ jobs:
       - lint_with_build_eslint
       - stylelint
       - integration_tests
+      - ast_spec_snapshots_clean
       - plugin_unit_tests
       - unit_tests
       - unit_tests_project_service
