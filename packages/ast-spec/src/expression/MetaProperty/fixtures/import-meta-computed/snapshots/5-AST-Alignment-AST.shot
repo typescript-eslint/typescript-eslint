@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures > expression > MetaProperty > import-meta > AST Alignment - AST`]
+exports[`AST Fixtures > expression > MetaProperty > import-meta-computed > AST Alignment - AST`]
 Snapshot Diff:
 - TSESTree
 + Babel
@@ -12,7 +12,7 @@ Snapshot Diff:
         type: 'ExpressionStatement',
         expression: MemberExpression {
           type: 'MemberExpression',
-          computed: false,
+          computed: true,
           object: MetaProperty {
             type: 'MetaProperty',
             meta: Identifier {
@@ -47,36 +47,35 @@ Snapshot Diff:
             },
           },
           optional: false,
-          property: Identifier {
-            type: 'Identifier',
-            decorators: Array [],
-            name: 'url',
-            optional: false,
+          property: Literal {
+            type: 'Literal',
+            raw: '\'url\'',
+            value: 'url',
 
-            range: [12, 15],
+            range: [12, 17],
             loc: {
               start: { column: 12, line: 1 },
-              end: { column: 15, line: 1 },
+              end: { column: 17, line: 1 },
             },
           },
 
-          range: [0, 15],
+          range: [0, 18],
           loc: {
             start: { column: 0, line: 1 },
-            end: { column: 15, line: 1 },
+            end: { column: 18, line: 1 },
           },
         },
 
-        range: [0, 16],
+        range: [0, 19],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 16, line: 1 },
+          end: { column: 19, line: 1 },
         },
       },
     ],
     sourceType: 'module',
 
-    range: [0, 17],
+    range: [0, 20],
     loc: {
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
