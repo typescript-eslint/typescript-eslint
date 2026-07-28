@@ -58,7 +58,7 @@
     "@arethetypeswrong/cli": "0.18.3",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
     "@eslint/compat": "^2.0.2",
-    "@eslint/config-helpers": "^0.6.0",
+    "@eslint/config-helpers": "^0.7.0",
     "@eslint/js": "catalog:",
     "@nx/devkit": "22.7.6",
     "@nx/js": "22.7.6",
