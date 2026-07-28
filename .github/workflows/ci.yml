@@ -350,7 +350,7 @@ jobs:
         run: pnpm exec nx run ast-spec:clean-fixtures
 
       - name: Regenerate ast-spec fixture snapshots
-        run: pnpm exec nx test ast-spec
+        run: pnpm exec nx test ast-spec -u
         env:
           CI: true
 
