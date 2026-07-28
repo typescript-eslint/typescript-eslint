@@ -1878,7 +1878,7 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
-        const importExpressionParams: { phase: 'defer' | null } | undefined =
+        const importExpressionParams: Pick<ImportExpression['phase']> | undefined =
           (() => {
             // import(...);
             if (node.expression.kind === SyntaxKind.ImportKeyword) {
