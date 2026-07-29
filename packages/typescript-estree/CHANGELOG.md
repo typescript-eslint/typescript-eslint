@@ -1,3 +1,20 @@
+## 8.65.0 (2026-07-20)
+
+### 🚀 Features
+
+- **parser:** add onUnsupportedTypeScriptVersion option to error on unsupported TypeScript versions ([#12465](https://github.com/typescript-eslint/typescript-eslint/pull/12465))
+- **typescript-estree:** throw for invalid import defer syntax ([#12552](https://github.com/typescript-eslint/typescript-eslint/pull/12552))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.65.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.64.0 (2026-07-13)
 
 ### 🚀 Features
