@@ -155,7 +155,7 @@ while (thisIsTrue) {
 
 ### `checkTypePredicates`
 
-{/* insert option description */}
+When this option is enabled, the rule assumes that type predicates are accurate in both directions: the predicate returns `true` if and only if the value has the asserted type. This is required for TypeScript's type narrowing to be sound, but it may not be obvious to everyone writing a type predicate. Assertion signatures (`asserts`) may require particular care, as their runtime checks do not always make the same guarantee.
 
 Example of additional incorrect code with `{ checkTypePredicates: true }`:
 
