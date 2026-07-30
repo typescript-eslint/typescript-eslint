@@ -1,4 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > legacy-fixtures > basics > export-type > Babel - Error`]
-SyntaxError: Export 'foo' is not defined. (3:14)

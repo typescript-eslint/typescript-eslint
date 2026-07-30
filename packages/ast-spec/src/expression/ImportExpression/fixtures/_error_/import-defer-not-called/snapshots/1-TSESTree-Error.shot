@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ImportExpression > _error_ > import-defer-not-called > TSESTree - Error`]
+TSError
+> 1 | import.defer;
+    | ^^^^^^^^^^^^ 'import.defer' is only valid when called. Use 'import.defer()' instead.
+  2 |
