@@ -62,6 +62,13 @@ const messagePromiseArrayVoid =
   "An array of Promises may be unintentional. Consider handling the promises' fulfillment or rejection with Promise.all or similar," +
   ' or explicitly marking the expression as ignored with the `void` operator.';
 
+const enum UnhandledInfo {
+  None = 0,
+  IsUnhandled = 1 << 0,
+  NonFunctionHandler = 1 << 1,
+  PromiseArray = 1 << 2,
+}
+
 export default createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
@@ -148,11 +155,9 @@ export default createRule<Options, MessageId>({
           return;
         }
 
-        const { isUnhandled, nonFunctionHandler, promiseArray } =
-          isUnhandledPromise(checker, expression);
-
-        if (isUnhandled) {
-          if (promiseArray) {
+        const unhandledPromiseInfo = isUnhandledPromise(checker, expression);
+        if (unhandledPromiseInfo & UnhandledInfo.IsUnhandled) {
+          if (unhandledPromiseInfo & UnhandledInfo.PromiseArray) {
             context.report({
               node,
               messageId: options.ignoreVoid
@@ -162,9 +167,10 @@ export default createRule<Options, MessageId>({
           } else if (options.ignoreVoid) {
             context.report({
               node,
-              messageId: nonFunctionHandler
-                ? 'floatingUselessRejectionHandlerVoid'
-                : 'floatingVoid',
+              messageId:
+                unhandledPromiseInfo & UnhandledInfo.NonFunctionHandler
+                  ? 'floatingUselessRejectionHandlerVoid'
+                  : 'floatingVoid',
               suggest: [
                 {
                   messageId: 'floatingFixVoid',
@@ -195,9 +201,10 @@ export default createRule<Options, MessageId>({
           } else {
             context.report({
               node,
-              messageId: nonFunctionHandler
-                ? 'floatingUselessRejectionHandler'
-                : 'floating',
+              messageId:
+                unhandledPromiseInfo & UnhandledInfo.NonFunctionHandler
+                  ? 'floatingUselessRejectionHandler'
+                  : 'floating',
               suggest: [
                 {
                   messageId: 'floatingFixAwait',
@@ -291,13 +298,9 @@ export default createRule<Options, MessageId>({
     function isUnhandledPromise(
       checker: ts.TypeChecker,
       node: TSESTree.Node,
-    ): {
-      isUnhandled: boolean;
-      nonFunctionHandler?: boolean;
-      promiseArray?: boolean;
-    } {
+    ): UnhandledInfo {
       if (node.type === AST_NODE_TYPES.AssignmentExpression) {
-        return { isUnhandled: false };
+        return UnhandledInfo.None;
       }
 
       // First, check expressions whose resulting types may not be promise-like
@@ -308,7 +311,8 @@ export default createRule<Options, MessageId>({
         return (
           node.expressions
             .map(item => isUnhandledPromise(checker, item))
-            .find(result => result.isUnhandled) ?? { isUnhandled: false }
+            .find(result => result & UnhandledInfo.IsUnhandled) ??
+          UnhandledInfo.None
         );
       }
 
@@ -328,7 +332,7 @@ export default createRule<Options, MessageId>({
       // or array thereof.
 
       if (isPromiseArray(tsNode)) {
-        return { isUnhandled: true, promiseArray: true };
+        return UnhandledInfo.IsUnhandled | UnhandledInfo.PromiseArray;
       }
 
       // await expression addresses promises, but not promise arrays.
@@ -337,11 +341,11 @@ export default createRule<Options, MessageId>({
         // anyway checking the type of the expression, but, unfortunately TS
         // reports the result of `await (promise as Promise<number> & number)`
         // as `Promise<number> & number` instead of `number`.
-        return { isUnhandled: false };
+        return UnhandledInfo.None;
       }
 
       if (!isPromiseLike(tsNode)) {
-        return { isUnhandled: false };
+        return UnhandledInfo.None;
       }
 
       if (node.type === AST_NODE_TYPES.CallExpression) {
@@ -354,11 +358,11 @@ export default createRule<Options, MessageId>({
           const onRejected = promiseHandlingMethodCall.onRejected;
           if (onRejected != null) {
             if (isValidRejectionHandler(onRejected)) {
-              return { isUnhandled: false };
+              return UnhandledInfo.None;
             }
-            return { isUnhandled: true, nonFunctionHandler: true };
+            return UnhandledInfo.IsUnhandled | UnhandledInfo.NonFunctionHandler;
           }
-          return { isUnhandled: true };
+          return UnhandledInfo.IsUnhandled;
         }
 
         const promiseFinallyCall = parseFinallyCall(node, context);
@@ -368,14 +372,14 @@ export default createRule<Options, MessageId>({
         }
 
         // All other cases are unhandled.
-        return { isUnhandled: true };
+        return UnhandledInfo.IsUnhandled;
       }
 
       if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
         // ternary. Check them directly.
         const alternateResult = isUnhandledPromise(checker, node.alternate);
-        if (alternateResult.isUnhandled) {
+        if (alternateResult & UnhandledInfo.IsUnhandled) {
           return alternateResult;
         }
         return isUnhandledPromise(checker, node.consequent);
@@ -383,14 +387,14 @@ export default createRule<Options, MessageId>({
 
       if (node.type === AST_NODE_TYPES.LogicalExpression) {
         const leftResult = isUnhandledPromise(checker, node.left);
-        if (leftResult.isUnhandled) {
+        if (leftResult & UnhandledInfo.IsUnhandled) {
           return leftResult;
         }
         return isUnhandledPromise(checker, node.right);
       }
 
       // Anything else is unhandled.
-      return { isUnhandled: true };
+      return UnhandledInfo.IsUnhandled;
     }
 
     function isPromiseArray(node: ts.Node): boolean {
