@@ -38,11 +38,11 @@ export function generateObjectType(
     const propertyDefs = Object.entries(schema.properties);
     for (const [propName, propSchema] of propertyDefs) {
       const propType = generateType(propSchema, refMap);
-      const sanitisedPropName = requiresQuoting(propName)
+      const sanitizedPropName = requiresQuoting(propName)
         ? `'${propName}'`
         : propName;
       properties.push({
-        name: sanitisedPropName,
+        name: sanitizedPropName,
         optional: !required.has(propName),
         type: propType,
       });

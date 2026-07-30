@@ -118,6 +118,30 @@ x.sort();
     },
     {
       code: `
+function f<T extends string[]>(a: T) {
+  a.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f<T extends Array<string>>(a: T) {
+  a.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function f<T extends string>(a: T[]) {
+  a.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
 function f(a: number[]) {
   a.toSorted((a, b) => a - b);
 }
@@ -182,6 +206,15 @@ function f<T extends number[]>(a: T) {
 }
       `,
       errors: [{ messageId: 'requireCompare' }],
+    },
+    {
+      code: `
+function f<T extends string[]>(a: T) {
+  a.sort();
+}
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+      options: [{ ignoreStringArrays: false }],
     },
     {
       code: `

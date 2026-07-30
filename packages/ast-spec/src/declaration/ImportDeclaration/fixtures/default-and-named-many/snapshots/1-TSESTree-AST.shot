@@ -5,6 +5,7 @@ Program {
       type: "ImportDeclaration",
       attributes: [],
       importKind: "value",
+      phase: null,
       source: Literal {
         type: "Literal",
         raw: "'mod'",

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures > legacy-fixtures > types > mapped-untypped > AST Alignment - AST`]
+exports[`AST Fixtures > legacy-fixtures > types > mapped-untyped > AST Alignment - AST`]
 Snapshot Diff:
 - TSESTree
 + Babel

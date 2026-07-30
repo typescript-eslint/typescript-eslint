@@ -20,8 +20,7 @@ import { rangeToLoc } from '../util/rangeToLoc';
 export type MessageId = 'noUnnecessaryTemplateExpression';
 
 type TemplateLiteralTypeOrValue =
-  | TSESTree.TemplateLiteral
-  | TSESTree.TSTemplateLiteralType;
+  TSESTree.TemplateLiteral | TSESTree.TSTemplateLiteralType;
 
 interface InterpolationInfo {
   interpolation: TSESTree.Expression | TSESTree.TypeNode;
@@ -231,7 +230,7 @@ export default createRule<[], MessageId>({
       return false;
     }
 
-    function isUnncessaryTypeInterpolation({
+    function isUnnecessaryTypeInterpolation({
       interpolation,
       nextQuasi,
       prevQuasi,
@@ -461,7 +460,7 @@ export default createRule<[], MessageId>({
         }
 
         const infos = getInterpolationInfos(node).filter(
-          isUnncessaryTypeInterpolation,
+          isUnnecessaryTypeInterpolation,
         );
 
         for (const reportDescriptor of getReportDescriptors(infos)) {
