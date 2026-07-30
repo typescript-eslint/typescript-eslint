@@ -1,5 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > legacy-fixtures > basics > optional-chain-element-access-with-non-null-assertion > AST Alignment - AST`]
-Snapshot Diff:
-Compared values have no visual difference.
