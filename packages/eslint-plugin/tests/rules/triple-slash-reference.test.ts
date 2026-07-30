@@ -130,6 +130,8 @@ import * as foo from 'foo';
       errors: [
         {
           column: 1,
+          endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'tripleSlashReference',
         },
@@ -144,6 +146,8 @@ import foo = require('foo');
       errors: [
         {
           column: 1,
+          endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'tripleSlashReference',
         },
@@ -155,6 +159,8 @@ import foo = require('foo');
       errors: [
         {
           column: 1,
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'tripleSlashReference',
         },
@@ -166,6 +172,8 @@ import foo = require('foo');
       errors: [
         {
           column: 1,
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'tripleSlashReference',
         },
@@ -177,6 +185,8 @@ import foo = require('foo');
       errors: [
         {
           column: 1,
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'tripleSlashReference',
         },
