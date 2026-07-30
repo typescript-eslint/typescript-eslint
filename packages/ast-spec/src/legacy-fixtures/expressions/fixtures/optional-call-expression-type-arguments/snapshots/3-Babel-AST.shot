@@ -44,7 +44,7 @@ Program {
             },
           },
           optional: false,
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
@@ -140,7 +140,7 @@ Program {
             },
           },
           optional: false,
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSNumberKeyword {
@@ -184,9 +184,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 108],
+  range: [0, 108],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 5 },
   },
 }

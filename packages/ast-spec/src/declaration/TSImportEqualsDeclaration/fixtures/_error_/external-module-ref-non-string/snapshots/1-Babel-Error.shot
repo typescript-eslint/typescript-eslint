@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ external-module-ref-non-string Babel - Error 1`] = `[SyntaxError: Unexpected token (1:19)]`;

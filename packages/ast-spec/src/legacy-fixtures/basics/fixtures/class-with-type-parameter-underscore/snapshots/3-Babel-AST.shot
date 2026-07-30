@@ -37,7 +37,18 @@ Program {
             type: "TSTypeParameter",
             const: false,
             in: false,
-            name: "__P",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "__P",
+              optional: false,
+
+              range: [81, 84],
+              loc: {
+                start: { column: 8, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
             out: false,
 
             range: [81, 84],
@@ -64,9 +75,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 89],
+  range: [0, 89],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

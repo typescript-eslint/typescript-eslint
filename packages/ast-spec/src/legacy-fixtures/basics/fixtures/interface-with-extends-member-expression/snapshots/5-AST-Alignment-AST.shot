@@ -22,17 +22,12 @@ Snapshot Diff:
         },
         declare: false,
         extends: Array [
--         TSInterfaceHeritage {
--           type: 'TSInterfaceHeritage',
--           expression: MemberExpression {
--             type: 'MemberExpression',
--             computed: false,
--             object: Identifier {
-+         TSExpressionWithTypeArguments {
-+           type: 'TSExpressionWithTypeArguments',
-+           expression: TSQualifiedName {
-+             type: 'TSQualifiedName',
-+             left: Identifier {
+          TSInterfaceHeritage {
+            type: 'TSInterfaceHeritage',
+            expression: MemberExpression {
+              type: 'MemberExpression',
+              computed: false,
+              object: Identifier {
                 type: 'Identifier',
                 decorators: Array [],
                 name: 'bar',
@@ -44,9 +39,8 @@ Snapshot Diff:
                   end: { column: 25, line: 3 },
                 },
               },
--             optional: false,
--             property: Identifier {
-+             right: Identifier {
+              optional: false,
+              property: Identifier {
                 type: 'Identifier',
                 decorators: Array [],
                 name: 'baz',
@@ -95,9 +89,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 106],
+-   range: [73, 106],
++   range: [0, 106],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }
