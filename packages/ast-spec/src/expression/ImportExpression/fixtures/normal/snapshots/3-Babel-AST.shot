@@ -5,7 +5,6 @@ Program {
       type: "ExpressionStatement",
       expression: ImportExpression {
         type: "ImportExpression",
-        attributes: null,
         options: null,
         source: Literal {
           type: "Literal",
