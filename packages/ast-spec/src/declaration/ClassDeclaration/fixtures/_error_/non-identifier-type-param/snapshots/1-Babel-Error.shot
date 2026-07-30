@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration ClassDeclaration _error_ non-identifier-type-param Babel - Error 1`] = `[SyntaxError: Unexpected token (1:8)]`;

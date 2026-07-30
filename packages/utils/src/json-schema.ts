@@ -28,9 +28,7 @@ export type JSONSchema4TypeName =
 export type JSONSchema4Type = boolean | number | string | null;
 
 export type JSONSchema4TypeExtended =
-  | JSONSchema4Array
-  | JSONSchema4Object
-  | JSONSchema4Type;
+  JSONSchema4Array | JSONSchema4Object | JSONSchema4Type;
 
 export interface JSONSchema4Object {
   [key: string]: JSONSchema4TypeExtended;

@@ -6,11 +6,9 @@
     "additionalProperties": false,
     "properties": {
       "detectObjects": {
-        "default": false,
         "type": "boolean"
       },
       "enforceConst": {
-        "default": false,
         "type": "boolean"
       },
       "ignore": {
@@ -29,34 +27,27 @@
         "uniqueItems": true
       },
       "ignoreArrayIndexes": {
-        "default": false,
         "type": "boolean"
       },
       "ignoreClassFieldInitialValues": {
-        "default": false,
         "type": "boolean"
       },
       "ignoreDefaultValues": {
-        "default": false,
         "type": "boolean"
       },
       "ignoreEnums": {
-        "default": false,
         "description": "Whether enums used in TypeScript are considered okay.",
         "type": "boolean"
       },
       "ignoreNumericLiteralTypes": {
-        "default": false,
         "description": "Whether numbers used in TypeScript numeric literal types are considered okay.",
         "type": "boolean"
       },
       "ignoreReadonlyClassProperties": {
-        "default": false,
         "description": "Whether `readonly` class properties are considered okay.",
         "type": "boolean"
       },
       "ignoreTypeIndexes": {
-        "default": false,
         "description": "Whether numbers used to index types are okay.",
         "type": "boolean"
       }

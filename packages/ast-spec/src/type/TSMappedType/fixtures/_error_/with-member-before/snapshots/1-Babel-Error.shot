@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures type TSMappedType _error_ looks-like-mapped-type-but-with-members Babel - Error 1`] = `[SyntaxError: Unexpected token, expected "]" (3:16)]`;

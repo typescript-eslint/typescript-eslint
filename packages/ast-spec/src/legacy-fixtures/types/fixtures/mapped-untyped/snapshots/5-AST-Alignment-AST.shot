@@ -1,0 +1,112 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > legacy-fixtures > types > mapped-untyped > AST Alignment - AST`]
+Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+            definite: false,
+            id: Identifier {
+              type: 'Identifier',
+              decorators: Array [],
+              name: 'map',
+              optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSMappedType {
+                  type: 'TSMappedType',
+-                 constraint: TSStringKeyword {
+-                   type: 'TSStringKeyword',
++                 nameType: null,
++                 optional: false,
++                 typeParameter: TSTypeParameter {
++                   type: 'TSTypeParameter',
++                   const: false,
++                   constraint: TSStringKeyword {
++                     type: 'TSStringKeyword',
+
+-                   range: [90, 96],
+-                   loc: {
+-                     start: { column: 17, line: 3 },
+-                     end: { column: 23, line: 3 },
++                     range: [90, 96],
++                     loc: {
++                       start: { column: 17, line: 3 },
++                       end: { column: 23, line: 3 },
++                     },
+                    },
+-                 },
+-                 key: Identifier {
+-                   type: 'Identifier',
+-                   decorators: Array [],
++                   in: false,
+                    name: 'P',
+-                   optional: false,
++                   out: false,
+
+-                   range: [85, 86],
++                   range: [85, 96],
+                    loc: {
+                      start: { column: 12, line: 3 },
+-                     end: { column: 13, line: 3 },
++                     end: { column: 23, line: 3 },
+                    },
+                  },
+-                 nameType: null,
+-                 optional: false,
+
+                  range: [82, 99],
+                  loc: {
+                    start: { column: 9, line: 3 },
+                    end: { column: 26, line: 3 },
+                  },
+                },
+
+                range: [80, 99],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 26, line: 3 },
+                },
+              },
+
+              range: [77, 99],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 26, line: 3 },
+              },
+            },
+            init: null,
+
+            range: [77, 99],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 26, line: 3 },
+            },
+          },
+        ],
+        declare: false,
+        kind: 'let',
+
+        range: [73, 100],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 27, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 101],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }

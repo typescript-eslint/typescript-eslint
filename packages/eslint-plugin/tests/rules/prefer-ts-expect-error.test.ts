@@ -39,6 +39,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -50,6 +52,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -62,6 +66,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -78,6 +84,8 @@ if (false) {
       errors: [
         {
           column: 3,
+          endColumn: 40,
+          endLine: 3,
           line: 3,
           messageId: 'preferExpectErrorComment',
         },
@@ -94,11 +102,80 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
       ],
       output: '/* @ts-expect-error */',
+    },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- intentionally testing a CRLF(`\r\n`) in the comment
+      code: '/* not on the last line\r\n * @ts-ignore */',
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 2,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* not on the last line\r\n * @ts-expect-error */',
+    },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- intentionally testing a CR(`\r`) in the comment
+      code: '/* not on the last line\r * @ts-ignore */',
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 2,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* not on the last line\r * @ts-expect-error */',
+    },
+    {
+      code: '/* not on the last line\n * @ts-ignore */',
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 2,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* not on the last line\n * @ts-expect-error */',
+    },
+    {
+      code: '/* not on the last line\u2028 * @ts-ignore */',
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 2,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* not on the last line\u2028 * @ts-expect-error */',
+    },
+    {
+      code: '/* not on the last line\u2029 * @ts-ignore */',
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 2,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* not on the last line\u2029 * @ts-expect-error */',
     },
     {
       code: `
@@ -110,6 +187,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 5,
           line: 2,
           messageId: 'preferExpectErrorComment',
         },
@@ -126,6 +205,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -140,6 +221,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 54,
+          endLine: 3,
           line: 2,
           messageId: 'preferExpectErrorComment',
         },

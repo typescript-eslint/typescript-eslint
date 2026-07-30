@@ -38,17 +38,23 @@ import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  js.configs.recommended,
-  tseslint.configs.recommended,
-);
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [js.configs.recommended, tseslint.configs.recommended],
+});
 ```
 
 This code will enable our [recommended configuration](../users/Shared_Configurations.mdx) for linting.
 
 #### Details
 
+- [`// @ts-check` enables TypeScript](https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html#ts-check) to typecheck the config file, which improves editor support and can help catch errors when authoring your ESLint config.
+  It's also fine to leave this off if it causes problems with your TypeScript setup.
 - `defineConfig(...)` is an optional helper function built in to current versions of ESLint. See [the ESLint configuration docs](https://eslint.org/docs/latest/use/configure/configuration-files) for more detail.
+- `files`/`extends`: this setup is an optional feature of `defineConfig(...)` that restricts the `extends` configs to JS and TS files, and can be modified to suite your project's needs.
+  We recommend this in order to avoid issues if you enable ESLint to run on other file types such as CSS or Markdown files, but it's entirely optional.
+  To enable linting for all standard JS and TS file extensions, consider using `files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}']`.
+  See the [Framework FAQs](../troubleshooting/faqs/Frameworks.mdx) to use typescript-eslint on file types other than those.
 - `'@eslint/js'` / `js.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
 - `tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
@@ -101,15 +107,18 @@ We recommend you consider enabling the following two configs:
 - [`stylistic`](../users/Shared_Configurations.mdx#stylistic): additional rules that enforce consistent styling without significantly catching bugs or changing logic.
 
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  js.configs.recommended,
-  // Remove this line
-  tseslint.configs.recommended,
-  // Add this line
-  tseslint.configs.strict,
-  // Add this line
-  tseslint.configs.stylistic,
-);
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [
+    js.configs.recommended,
+    // Remove this line
+    tseslint.configs.recommended,
+    // Add this line
+    tseslint.configs.strict,
+    // Add this line
+    tseslint.configs.stylistic,
+  ],
+});
 ```
 
 You can read more about these in our [shared configurations docs](../users/Shared_Configurations.mdx).

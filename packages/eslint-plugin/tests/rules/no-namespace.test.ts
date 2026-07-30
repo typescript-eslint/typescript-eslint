@@ -79,6 +79,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -89,6 +91,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -99,6 +103,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -110,6 +116,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -121,6 +129,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -132,6 +142,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -143,6 +155,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -153,6 +167,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -163,6 +179,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -174,6 +192,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -185,6 +205,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -197,6 +219,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -209,6 +233,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -221,6 +247,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -233,6 +261,8 @@ export declare namespace foo {
       errors: [
         {
           column: 1,
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -250,11 +280,15 @@ namespace Foo.Bar {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 3,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -271,11 +305,15 @@ namespace A {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 3,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -293,11 +331,15 @@ namespace A {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 3,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -315,6 +357,8 @@ namespace A {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -332,6 +376,8 @@ namespace A {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -349,6 +395,8 @@ namespace A {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -366,6 +414,8 @@ namespace A {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -383,6 +433,8 @@ namespace A {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -400,11 +452,15 @@ namespace A {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
         {
           column: 10,
+          endColumn: 4,
+          endLine: 5,
           line: 3,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -422,11 +478,15 @@ export namespace A {
       errors: [
         {
           column: 8,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 3,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -444,11 +504,15 @@ export namespace A {
       errors: [
         {
           column: 8,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
         {
           column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 3,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -466,6 +530,8 @@ export namespace A {
       errors: [
         {
           column: 8,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -483,6 +549,8 @@ export namespace A {
       errors: [
         {
           column: 8,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -500,6 +568,8 @@ export namespace A {
       errors: [
         {
           column: 8,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -517,6 +587,8 @@ export namespace A {
       errors: [
         {
           column: 8,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -534,6 +606,8 @@ export namespace A {
       errors: [
         {
           column: 8,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
@@ -551,11 +625,15 @@ export namespace A {
       errors: [
         {
           column: 8,
+          endColumn: 2,
+          endLine: 6,
           line: 2,
           messageId: 'moduleSyntaxIsPreferred',
         },
         {
           column: 10,
+          endColumn: 4,
+          endLine: 5,
           line: 3,
           messageId: 'moduleSyntaxIsPreferred',
         },

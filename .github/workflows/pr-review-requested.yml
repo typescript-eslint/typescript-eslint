@@ -4,7 +4,7 @@ on:
   # WARNING: Using pull_request_target here because we need write permissions to remove labels from fork PRs
   # pull_request_target can be UNSAFE because it runs in the TARGET repo context (not fork context).
   # DO NOT CHECK OUT THE REPO IN THIS WORKFLOW
-  pull_request_target:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] See warning above.
     types:
       - review_requested
 
@@ -16,7 +16,7 @@ jobs:
   pr_review_requested:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions-ecosystem/action-remove-labels@v1
+      - uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0 # v1.3.0
         with:
           labels: |
             1 approval

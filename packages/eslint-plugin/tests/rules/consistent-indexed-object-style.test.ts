@@ -312,7 +312,15 @@ interface Foo {
   [key: string]: any;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo = Record<string, any>;
       `,
@@ -325,7 +333,15 @@ interface Foo {
   readonly [key: string]: any;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo = Readonly<Record<string, any>>;
       `,
@@ -338,7 +354,15 @@ interface Foo<A> {
   [key: string]: A;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo<A> = Record<string, A>;
       `,
@@ -351,7 +375,15 @@ interface Foo<A = any> {
   [key: string]: A;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo<A = any> = Record<string, A>;
       `,
@@ -364,7 +396,15 @@ interface B extends A {
   [index: number]: unknown;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: null,
     },
 
@@ -375,7 +415,15 @@ export default interface Foo {
   [key: string]: unknown;
 }
       `,
-      errors: [{ column: 16, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 16,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: null,
     },
     // Readonly interface with generic parameter
@@ -385,7 +433,15 @@ interface Foo<A> {
   readonly [key: string]: A;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo<A> = Readonly<Record<string, A>>;
       `,
@@ -398,7 +454,15 @@ interface Foo<A, B> {
   [key: A]: B;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo<A, B> = Record<A, B>;
       `,
@@ -411,7 +475,15 @@ interface Foo<A, B> {
   readonly [key: A]: B;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo<A, B> = Readonly<Record<A, B>>;
       `,
@@ -420,52 +492,116 @@ type Foo<A, B> = Readonly<Record<A, B>>;
     // Type literal
     {
       code: 'type Foo = { [key: string]: any };',
-      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'type Foo = Record<string, any>;',
     },
 
     // Readonly type literal
     {
       code: 'type Foo = { readonly [key: string]: any };',
-      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'type Foo = Readonly<Record<string, any>>;',
     },
 
     // Generic
     {
       code: 'type Foo = Generic<{ [key: string]: any }>;',
-      errors: [{ column: 20, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 20,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'type Foo = Generic<Record<string, any>>;',
     },
 
     // Readonly Generic
     {
       code: 'type Foo = Generic<{ readonly [key: string]: any }>;',
-      errors: [{ column: 20, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 20,
+          endColumn: 51,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'type Foo = Generic<Readonly<Record<string, any>>>;',
     },
 
     // Function types
     {
       code: 'function foo(arg: { [key: string]: any }) {}',
-      errors: [{ column: 19, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 19,
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'function foo(arg: Record<string, any>) {}',
     },
     {
       code: 'function foo(): { [key: string]: any } {}',
-      errors: [{ column: 17, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 17,
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'function foo(): Record<string, any> {}',
     },
 
     // Readonly function types
     {
       code: 'function foo(arg: { readonly [key: string]: any }) {}',
-      errors: [{ column: 19, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 19,
+          endColumn: 50,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'function foo(arg: Readonly<Record<string, any>>) {}',
     },
     {
       code: 'function foo(): { readonly [key: string]: any } {}',
-      errors: [{ column: 17, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 17,
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'function foo(): Readonly<Record<string, any>> {}',
     },
 
@@ -473,7 +609,15 @@ type Foo<A, B> = Readonly<Record<A, B>>;
     // Type literal
     {
       code: 'type Foo = Record<string, any>;',
-      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
       options: ['index-signature'],
       output: 'type Foo = { [key: string]: any };',
     },
@@ -481,7 +625,15 @@ type Foo<A, B> = Readonly<Record<A, B>>;
     // Type literal with generic parameter
     {
       code: 'type Foo<T> = Record<string, T>;',
-      errors: [{ column: 15, line: 1, messageId: 'preferIndexSignature' }],
+      errors: [
+        {
+          column: 15,
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
       options: ['index-signature'],
       output: 'type Foo<T> = { [key: string]: T };',
     },
@@ -489,22 +641,54 @@ type Foo<A, B> = Readonly<Record<A, B>>;
     // Circular
     {
       code: 'type Foo = { [k: string]: A.Foo };',
-      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'type Foo = Record<string, A.Foo>;',
     },
     {
       code: 'type Foo = { [key: string]: AnotherFoo };',
-      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'type Foo = Record<string, AnotherFoo>;',
     },
     {
       code: 'type Foo = { [key: string]: { [key: string]: Foo } };',
-      errors: [{ column: 29, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 29,
+          endColumn: 51,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'type Foo = { [key: string]: Record<string, Foo> };',
     },
     {
       code: 'type Foo = { [key: string]: string } | Foo;',
-      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: 'type Foo = Record<string, string> | Foo;',
     },
     {
@@ -513,7 +697,15 @@ interface Foo<T> {
   [k: string]: T;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo<T> = Record<string, T>;
       `,
@@ -524,7 +716,15 @@ interface Foo {
   [k: string]: A.Foo;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo = Record<string, A.Foo>;
       `,
@@ -535,7 +735,15 @@ interface Foo {
   [k: string]: { [key: string]: Foo };
 }
       `,
-      errors: [{ column: 16, line: 3, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 16,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 interface Foo {
   [k: string]: Record<string, Foo>;
@@ -548,7 +756,15 @@ interface Foo {
   [key: string]: { foo: Foo };
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo = Record<string, { foo: Foo }>;
       `,
@@ -559,7 +775,15 @@ interface Foo {
   [key: string]: Foo[];
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo = Record<string, Foo[]>;
       `,
@@ -570,7 +794,15 @@ interface Foo {
   [key: string]: () => Foo;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo = Record<string, () => Foo>;
       `,
@@ -581,7 +813,15 @@ interface Foo {
   [s: string]: [Foo];
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo = Record<string, [Foo]>;
       `,
@@ -602,7 +842,15 @@ interface Foo3 {
   [key: string]: Foo2;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo1 = Record<string, Foo2>;
 
@@ -629,7 +877,15 @@ interface Foo3 {
   [key: string]: Foo2;
 }
       `,
-      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo1 = Record<string, Record<string, Foo2>>;
 
@@ -657,9 +913,27 @@ type Foo3 = {
 };
       `,
       errors: [
-        { column: 13, line: 2, messageId: 'preferRecord' },
-        { column: 13, line: 6, messageId: 'preferRecord' },
-        { column: 13, line: 10, messageId: 'preferRecord' },
+        {
+          column: 13,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+        {
+          column: 13,
+          endColumn: 2,
+          endLine: 8,
+          line: 6,
+          messageId: 'preferRecord',
+        },
+        {
+          column: 13,
+          endColumn: 2,
+          endLine: 12,
+          line: 10,
+          messageId: 'preferRecord',
+        },
       ],
       output: `
 type Foo1 = Record<string, { foo2: Foo2 }>;
@@ -677,7 +951,15 @@ type Foos<K extends string = never> = {
 
 type Foo = Foos;
       `,
-      errors: [{ column: 39, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 39,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foos<K extends string = never> = Record<K, { foo: Foo }>;
 
@@ -692,7 +974,15 @@ type Foos<K extends string = never> = {
 
 type Foo = Foos;
       `,
-      errors: [{ column: 39, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 39,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foos<K extends string = never> = Record<K, Foo[]>;
 
@@ -703,7 +993,15 @@ type Foo = Foos;
     // Generic
     {
       code: 'type Foo = Generic<Record<string, any>>;',
-      errors: [{ column: 20, line: 1, messageId: 'preferIndexSignature' }],
+      errors: [
+        {
+          column: 20,
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
       options: ['index-signature'],
       output: 'type Foo = Generic<{ [key: string]: any }>;',
     },
@@ -714,6 +1012,8 @@ type Foo = Foos;
       errors: [
         {
           column: 12,
+          endColumn: 40,
+          endLine: 1,
           line: 1,
           messageId: 'preferIndexSignature',
           suggestions: [
@@ -731,6 +1031,8 @@ type Foo = Foos;
       errors: [
         {
           column: 12,
+          endColumn: 54,
+          endLine: 1,
           line: 1,
           messageId: 'preferIndexSignature',
           suggestions: [
@@ -748,13 +1050,29 @@ type Foo = Foos;
     // Record with valid index node should use an auto-fix
     {
       code: 'type Foo = Record<number, any>;',
-      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
       options: ['index-signature'],
       output: 'type Foo = { [key: number]: any };',
     },
     {
       code: 'type Foo = Record<symbol, any>;',
-      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
       options: ['index-signature'],
       output: 'type Foo = { [key: symbol]: any };',
     },
@@ -762,34 +1080,82 @@ type Foo = Foos;
     // Function types
     {
       code: 'function foo(arg: Record<string, any>) {}',
-      errors: [{ column: 19, line: 1, messageId: 'preferIndexSignature' }],
+      errors: [
+        {
+          column: 19,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
       options: ['index-signature'],
       output: 'function foo(arg: { [key: string]: any }) {}',
     },
     {
       code: 'function foo(): Record<string, any> {}',
-      errors: [{ column: 17, line: 1, messageId: 'preferIndexSignature' }],
+      errors: [
+        {
+          column: 17,
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+        },
+      ],
       options: ['index-signature'],
       output: 'function foo(): { [key: string]: any } {}',
     },
     {
       code: 'type T = { readonly [key in string]: number };',
-      errors: [{ column: 10, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 46,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `type T = Readonly<Record<string, number>>;`,
     },
     {
       code: 'type T = { +readonly [key in string]: number };',
-      errors: [{ column: 10, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `type T = Readonly<Record<string, number>>;`,
     },
     {
       // There is no fix, since there isn't a builtin Mutable<T> :(
       code: 'type T = { -readonly [key in string]: number };',
-      errors: [{ column: 10, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
     },
     {
       code: 'type T = { [key in string]: number };',
-      errors: [{ column: 10, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `type T = Record<string, number>;`,
     },
     {
@@ -964,10 +1330,148 @@ type Foo = {
   [k in string];
 };
       `,
-      errors: [{ column: 12, line: 2, messageId: 'preferRecord' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
       output: `
 type Foo = Record<string, any>;
       `,
+    },
+
+    // A comment outside the sub-nodes the fixer keeps would be dropped, so the
+    // reshape is offered as an opt-in suggestion rather than an autofix.
+    {
+      code: 'type Foo = { [key: string]: /* preserve me */ number };',
+      errors: [
+        {
+          column: 12,
+          endColumn: 55,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: 'type Foo = Record<string, number>;',
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Foo {
+  // preserve me
+  [key: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+type Foo = Record<string, number>;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Foo = {
+  // preserve me
+  [Key in 'a' | 'b']: number;
+};
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 2,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+type Foo = Record<'a' | 'b', number>;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      // reproduction of https://github.com/typescript-eslint/typescript-eslint/issues/10577
+      code: noFormat`
+type Test = {
+  // 1
+  [Key in // 2
+    | 'a' // 3
+    | 'b' // 4
+    | 'c' // 5
+    | 'd' // 6
+  ]: string; // 7
+  // 8
+};
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 2,
+          endLine: 11,
+          line: 2,
+          messageId: 'preferRecord',
+          suggestions: [
+            {
+              messageId: 'preferRecordSuggestion',
+              output: `
+type Test = Record<| 'a' // 3
+    | 'b' // 4
+    | 'c' // 5
+    | 'd', string>;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      // index-signature mode: a dropped comment makes the reshape a suggestion.
+      code: 'type Foo = Record<string, /* preserve me */ number>;',
+      errors: [
+        {
+          column: 12,
+          endColumn: 52,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferIndexSignature',
+          suggestions: [
+            {
+              messageId: 'preferIndexSignatureSuggestion',
+              output: 'type Foo = { [key: string]: number };',
+            },
+          ],
+        },
+      ],
+      options: ['index-signature'],
     },
   ],
 });

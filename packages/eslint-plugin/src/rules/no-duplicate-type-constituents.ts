@@ -192,19 +192,32 @@ export default createRule<Options, MessageIds>({
       cachedTypeMap: Map<Type, TSESTree.TypeNode>,
       forEachNodeType?: (type: Type, node: TSESTree.TypeNode) => void,
     ): void {
+      const reportDuplicate = (previous: TSESTree.TypeNode) => {
+        report('duplicate', constituentNode, {
+          type: unionOrIntersection,
+          previous: sourceCode.getText(previous),
+        });
+      };
+
+      // Check duplicates in the AST before type lookup for better performance.
+      let duplicatedPrevious = uniqueConstituents.find(ele =>
+        isSameAstNode(ele, constituentNode),
+      );
+
+      if (duplicatedPrevious) {
+        reportDuplicate(duplicatedPrevious);
+        return;
+      }
+
       const type = parserServices.getTypeAtLocation(constituentNode);
       if (tsutils.isIntrinsicErrorType(type)) {
         return;
       }
-      const duplicatedPrevious =
-        uniqueConstituents.find(ele => isSameAstNode(ele, constituentNode)) ??
-        cachedTypeMap.get(type);
+
+      duplicatedPrevious = cachedTypeMap.get(type);
 
       if (duplicatedPrevious) {
-        report('duplicate', constituentNode, {
-          type: unionOrIntersection,
-          previous: sourceCode.getText(duplicatedPrevious),
-        });
+        reportDuplicate(duplicatedPrevious);
         return;
       }
 

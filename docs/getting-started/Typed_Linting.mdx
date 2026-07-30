@@ -23,21 +23,23 @@ import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  js.configs.recommended,
-  // Remove this line
-  tseslint.configs.recommended,
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [
+    js.configs.recommended,
+    // Remove this line
+    tseslint.configs.recommended,
+    // Add this line
+    tseslint.configs.recommendedTypeChecked,
+  ],
   // Added lines start
-  tseslint.configs.recommendedTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-      },
+  languageOptions: {
+    parserOptions: {
+      projectService: true,
     },
   },
   // Added lines end
-);
+});
 ```
 
 In more detail:
@@ -98,18 +100,21 @@ If you enabled the [`strict` shared config](../users/Shared_Configurations.mdx#s
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  js.configs.recommended,
-  // Removed lines start
-  tseslint.configs.strict,
-  tseslint.configs.stylistic,
-  // Removed lines end
-  // Added lines start
-  tseslint.configs.strictTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
-  // Added lines end
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [
+    js.configs.recommended,
+    // Removed lines start
+    tseslint.configs.strict,
+    tseslint.configs.stylistic,
+    // Removed lines end
+    // Added lines start
+    tseslint.configs.strictTypeChecked,
+    tseslint.configs.stylisticTypeChecked,
+    // Added lines end
+  ],
   // ...
-);
+});
 ```
 
 </TabItem>

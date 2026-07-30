@@ -173,6 +173,27 @@ ruleTester.run('restrict-template-expressions', rule, {
       `,
       options: [{ allowArray: true, allowNullish: true }],
     },
+    {
+      code: `
+        declare const arg: string[][];
+        const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
+        declare const arg: never[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowArray: true, allowNever: true }],
+    },
+    {
+      code: `
+        declare const arg: any[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowAny: true, allowArray: true }],
+    },
     // allowAny
     {
       code: `
@@ -498,6 +519,7 @@ ruleTester.run('restrict-template-expressions', rule, {
           messageId: 'invalidType',
         },
       ],
+      options: [{ allowArray: true, allowNumber: false }],
     },
     {
       code: `
@@ -536,6 +558,66 @@ ruleTester.run('restrict-template-expressions', rule, {
         },
       ],
       options: [{ allowArray: true, allowNullish: false }],
+    },
+    {
+      code: `
+        declare const arg: object[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'object[]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
+        declare const arg: (object | string)[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: '(string | object)[]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
+        declare const arg: object[][];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: 'object[][]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true }],
+    },
+    {
+      code: `
+        declare const arg: (object | string)[][];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { type: '(string | object)[][]' },
+          line: 3,
+          messageId: 'invalidType',
+        },
+      ],
+      options: [{ allowArray: true }],
     },
     {
       code: `

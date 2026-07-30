@@ -8,6 +8,7 @@ import {
   createRule,
   getParserServices,
   isFunction,
+  isRestParameterDeclaration,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownType,
@@ -166,28 +167,34 @@ export default createRule<Options, MessageId>({
               return;
             }
 
-            const params = signatures[0].getParameters();
-            if (paramIndex < params.length) {
+            const defaultCanBeUsed = signatures.some(signature => {
+              const params = signature.getParameters();
+              if (paramIndex >= params.length) {
+                return true;
+              }
+
               const paramSymbol = params[paramIndex];
               if (
                 paramSymbol.valueDeclaration &&
-                ts.isParameter(paramSymbol.valueDeclaration) &&
-                paramSymbol.valueDeclaration.dotDotDotToken != null
+                isRestParameterDeclaration(paramSymbol.valueDeclaration)
               ) {
-                return;
+                return true;
               }
 
               if (
-                !tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional)
+                tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional)
               ) {
-                const paramType = checker.getTypeOfSymbol(paramSymbol);
-                if (
-                  !tsutils.isTypeParameter(paramType) &&
-                  !canBeUndefined(paramType)
-                ) {
-                  reportUselessDefaultAssignment(node, 'parameter');
-                }
+                return true;
               }
+
+              const paramType = checker.getTypeOfSymbol(paramSymbol);
+              return (
+                tsutils.isTypeParameter(paramType) || canBeUndefined(paramType)
+              );
+            });
+
+            if (!defaultCanBeUsed) {
+              reportUselessDefaultAssignment(node, 'parameter');
             }
           }
         }

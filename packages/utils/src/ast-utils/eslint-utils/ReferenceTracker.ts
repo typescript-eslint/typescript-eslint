@@ -4,11 +4,10 @@ import * as eslintUtils from '@eslint-community/eslint-utils';
 import type * as TSESLint from '../../ts-eslint';
 import type { TSESTree } from '../../ts-estree';
 
-const ReferenceTrackerREAD: unique symbol = eslintUtils.ReferenceTracker.READ;
-const ReferenceTrackerCALL: unique symbol = eslintUtils.ReferenceTracker.CALL;
-const ReferenceTrackerCONSTRUCT: unique symbol =
-  eslintUtils.ReferenceTracker.CONSTRUCT;
-const ReferenceTrackerESM: unique symbol = eslintUtils.ReferenceTracker.ESM;
+const ReferenceTrackerREAD = eslintUtils.ReferenceTracker.READ;
+const ReferenceTrackerCALL = eslintUtils.ReferenceTracker.CALL;
+const ReferenceTrackerCONSTRUCT = eslintUtils.ReferenceTracker.CONSTRUCT;
+const ReferenceTrackerESM = eslintUtils.ReferenceTracker.ESM;
 
 interface ReferenceTracker {
   /**
@@ -70,7 +69,7 @@ namespace ReferenceTracker {
   export type CALL = ReferenceTrackerStatic['CALL'];
   export type CONSTRUCT = ReferenceTrackerStatic['CONSTRUCT'];
   export type ESM = ReferenceTrackerStatic['ESM'];
-  export type ReferenceType = CALL | CONSTRUCT | READ;
+  export type ReferenceType = symbol;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export type TraceMap<T = any> = Record<string, TraceMapElement<T>>;
   export interface TraceMapElement<T> {

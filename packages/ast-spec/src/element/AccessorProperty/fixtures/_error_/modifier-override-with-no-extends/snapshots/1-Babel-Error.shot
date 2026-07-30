@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures element AccessorProperty _error_ modifier-override-with-no-extends Babel - Error 1`] = `[SyntaxError: This member cannot have an 'override' modifier because its containing class does not extend another class. (2:2)]`;
