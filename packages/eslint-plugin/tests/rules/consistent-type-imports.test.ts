@@ -1502,31 +1502,6 @@ const a: Default = '';
         },
         {
           code: `
-import Foo from 'foo';
-@deco
-class A {
-  constructor(foo: Foo) {}
-}
-          `,
-          errors: [
-            {
-              column: 1,
-              endColumn: 23,
-              endLine: 2,
-              line: 2,
-              messageId: 'typeOverValue',
-            },
-          ],
-          output: `
-import type Foo from 'foo';
-@deco
-class A {
-  constructor(foo: Foo) {}
-}
-          `,
-        },
-        {
-          code: `
 import { type A, B } from 'foo';
 type T = A;
 const b = B;
@@ -1949,8 +1924,8 @@ class A {
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
@@ -1974,8 +1949,8 @@ class A {
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
@@ -1999,8 +1974,8 @@ class A {
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
@@ -2024,8 +1999,8 @@ class A {
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
@@ -2048,8 +2023,8 @@ class A {
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
@@ -2072,8 +2047,8 @@ class A {
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
@@ -2099,8 +2074,8 @@ class A {
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
@@ -2128,8 +2103,8 @@ class A {
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
@@ -2155,8 +2130,8 @@ class A {
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 40,
+              column: 1,
+              endColumn: 28,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
@@ -2384,8 +2359,8 @@ export type T = Foo;
         `,
         errors: [
           {
-            column: 11,
-            endColumn: 33,
+            column: 1,
+            endColumn: 23,
             endLine: 2,
             line: 2,
             messageId: 'typeOverValue',

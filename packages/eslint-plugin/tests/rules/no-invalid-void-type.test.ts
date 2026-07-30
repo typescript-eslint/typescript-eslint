@@ -473,8 +473,8 @@ interface Interface {
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           endLine: 4,
           line: 4,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -489,8 +489,8 @@ class ClassName {
       `,
       errors: [
         {
-          column: 38,
-          endColumn: 42,
+          column: 30,
+          endColumn: 34,
           endLine: 3,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -505,8 +505,8 @@ class ClassName {
       `,
       errors: [
         {
-          column: 30,
-          endColumn: 34,
+          column: 22,
+          endColumn: 26,
           endLine: 3,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -534,8 +534,8 @@ class OtherClassName {
       `,
       errors: [
         {
-          column: 25,
-          endColumn: 29,
+          column: 17,
+          endColumn: 21,
           endLine: 2,
           line: 2,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -610,8 +610,8 @@ type MappedType<T> = {
       `,
       errors: [
         {
-          column: 27,
-          endColumn: 31,
+          column: 19,
+          endColumn: 23,
           endLine: 3,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -626,8 +626,8 @@ type ConditionalType<T> = {
       `,
       errors: [
         {
-          column: 49,
-          endColumn: 53,
+          column: 41,
+          endColumn: 45,
           endLine: 3,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',

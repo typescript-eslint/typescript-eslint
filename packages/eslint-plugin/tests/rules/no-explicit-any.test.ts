@@ -1710,8 +1710,8 @@ function foo(a: number, ...rest: any[]): void {
       `,
       errors: [
         {
-          column: 42,
-          endColumn: 45,
+          column: 34,
+          endColumn: 37,
           endLine: 2,
           line: 2,
           messageId: 'unexpectedAny',

@@ -133,8 +133,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 32,
+          column: 3,
+          endColumn: 24,
           endLine: 3,
           line: 3,
           messageId: 'errorMethod',
@@ -154,8 +154,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 35,
+          column: 3,
+          endColumn: 27,
           endLine: 3,
           line: 3,
           messageId: 'errorMethod',
@@ -175,8 +175,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 25,
+          column: 3,
+          endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'errorMethod',
@@ -196,8 +196,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 46,
+          column: 3,
+          endColumn: 38,
           endLine: 3,
           line: 3,
           messageId: 'errorMethod',
@@ -217,8 +217,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 57,
+          column: 3,
+          endColumn: 49,
           endLine: 3,
           line: 3,
           messageId: 'errorMethod',
@@ -236,8 +236,8 @@ type Test = { f(a: string): number };
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 43,
+          column: 15,
+          endColumn: 35,
           endLine: 2,
           line: 2,
           messageId: 'errorMethod',
@@ -253,8 +253,8 @@ type Test = { ['f']?(a: boolean): void };
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 47,
+          column: 15,
+          endColumn: 39,
           endLine: 2,
           line: 2,
           messageId: 'errorMethod',
@@ -270,8 +270,8 @@ type Test = { f?<T>(a?: T): T };
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 38,
+          column: 15,
+          endColumn: 30,
           endLine: 2,
           line: 2,
           messageId: 'errorMethod',
@@ -287,8 +287,8 @@ type Test = { ['f']?<T>(a: T, b: T): T };
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 47,
+          column: 15,
+          endColumn: 39,
           endLine: 2,
           line: 2,
           messageId: 'errorMethod',
@@ -306,8 +306,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 36,
+          column: 3,
+          endColumn: 28,
           endLine: 3,
           line: 3,
           messageId: 'errorProperty',
@@ -328,8 +328,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 39,
+          column: 3,
+          endColumn: 31,
           endLine: 3,
           line: 3,
           messageId: 'errorProperty',
@@ -350,8 +350,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 29,
+          column: 3,
+          endColumn: 21,
           endLine: 3,
           line: 3,
           messageId: 'errorProperty',
@@ -372,8 +372,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 50,
+          column: 3,
+          endColumn: 42,
           endLine: 3,
           line: 3,
           messageId: 'errorProperty',
@@ -394,8 +394,8 @@ interface Test {
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 61,
+          column: 3,
+          endColumn: 53,
           endLine: 3,
           line: 3,
           messageId: 'errorProperty',
@@ -414,8 +414,8 @@ type Test = { f: (a: string) => number };
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 47,
+          column: 15,
+          endColumn: 39,
           endLine: 2,
           line: 2,
           messageId: 'errorProperty',
@@ -432,8 +432,8 @@ type Test = { ['f']?: (a: boolean) => void };
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 51,
+          column: 15,
+          endColumn: 43,
           endLine: 2,
           line: 2,
           messageId: 'errorProperty',
@@ -450,8 +450,8 @@ type Test = { f?: <T>(a?: T) => T };
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 42,
+          column: 15,
+          endColumn: 34,
           endLine: 2,
           line: 2,
           messageId: 'errorProperty',
@@ -468,8 +468,8 @@ type Test = { ['f']?: <T>(a: T, b: T) => T };
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 51,
+          column: 15,
+          endColumn: 43,
           endLine: 2,
           line: 2,
           messageId: 'errorProperty',

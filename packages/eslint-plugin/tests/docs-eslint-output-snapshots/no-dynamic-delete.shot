@@ -9,7 +9,9 @@ delete container[name.toUpperCase()];
 
 Correct
 
-const container: { [i: string]: number } = {/* ... */};
+const container: { [i: string]: number } = {
+  /* ... */
+};
 
 // Constant runtime lookups by string index
 delete container.aaa;

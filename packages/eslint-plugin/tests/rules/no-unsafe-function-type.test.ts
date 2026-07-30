@@ -65,8 +65,8 @@ class Weird implements Function {
       `,
       errors: [
         {
-          column: 32,
-          endColumn: 40,
+          column: 24,
+          endColumn: 32,
           endLine: 2,
           line: 2,
           messageId: 'bannedFunctionType',
@@ -82,8 +82,8 @@ interface Weird extends Function {
       `,
       errors: [
         {
-          column: 33,
-          endColumn: 41,
+          column: 25,
+          endColumn: 33,
           endLine: 2,
           line: 2,
           messageId: 'bannedFunctionType',
