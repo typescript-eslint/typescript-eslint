@@ -99,8 +99,7 @@ type MessageIds =
   | 'prettierException'
   | 'singleLineQuotes'
   | 'templateLiteralEmptyEnds'
-  | 'templateLiteralLastLineIndent'
-  | 'templateStringMinimumIndent';
+  | 'templateLiteralLastLineIndent';
 
 type FormattingError = {
   codeFrame: string;
@@ -130,8 +129,6 @@ export default createRule<Options, MessageIds>({
         'Template literals must start and end with an empty line.',
       templateLiteralLastLineIndent:
         'The closing line of the template literal must be indented to align with its parent.',
-      templateStringMinimumIndent:
-        'Test code should be indented at least {{indent}} spaces.',
     },
     schema: [
       {
