@@ -137,18 +137,19 @@ export default createRule<Options, MessageIds>({
               ? p1.parameter.typeAnnotation
               : p1.typeAnnotation;
 
+            const unionTypes = getUniqueCombinedTypeTexts(
+              typeAnnotation0?.typeAnnotation,
+              typeAnnotation1?.typeAnnotation,
+            );
+
             context.report({
               loc: p1.loc,
               node: p1,
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: context.sourceCode.getText(
-                  typeAnnotation0?.typeAnnotation,
-                ),
-                type2: context.sourceCode.getText(
-                  typeAnnotation1?.typeAnnotation,
-                ),
+                type1: unionTypes[0],
+                type2: unionTypes.slice(1).join(' | '),
               },
             });
             break;
@@ -498,6 +499,35 @@ export default createRule<Options, MessageIds>({
           context.sourceCode.getText(a.typeAnnotation) ===
             context.sourceCode.getText(b.typeAnnotation))
       );
+    }
+
+    function getUniqueCombinedTypeTexts(
+      a: TSESTree.TypeNode | undefined,
+      b: TSESTree.TypeNode | undefined,
+    ): string[] {
+      const seen = new Set<string>();
+      const types: string[] = [];
+
+      for (const typeNode of [a, b]) {
+        const typeNodes =
+          typeNode?.type === AST_NODE_TYPES.TSUnionType
+            ? typeNode.types
+            : [typeNode];
+
+        for (const typeNode of typeNodes) {
+          if (typeNode == null) {
+            continue;
+          }
+
+          const text = context.sourceCode.getText(typeNode);
+          if (!seen.has(text)) {
+            seen.add(text);
+            types.push(text);
+          }
+        }
+      }
+
+      return types;
     }
 
     function constraintsAreEqual(
