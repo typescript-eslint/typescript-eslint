@@ -31,5 +31,4 @@ export interface FunctionDeclarationWithOptionalName extends FunctionDeclaration
 }
 
 export type FunctionDeclaration =
-  | FunctionDeclarationWithName
-  | FunctionDeclarationWithOptionalName;
+  FunctionDeclarationWithName | FunctionDeclarationWithOptionalName;

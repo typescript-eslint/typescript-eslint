@@ -1879,8 +1879,7 @@ export class Converter {
 
       case SyntaxKind.CallExpression: {
         const importExpressionParams:
-          | Pick<TSESTree.ImportExpression, 'phase'>
-          | undefined = (() => {
+          Pick<TSESTree.ImportExpression, 'phase'> | undefined = (() => {
           // import(...);
           if (node.expression.kind === SyntaxKind.ImportKeyword) {
             return {
@@ -2993,8 +2992,7 @@ export class Converter {
    */
   private fixExports<
     T extends
-      | TSESTree.DefaultExportDeclarations
-      | TSESTree.NamedExportDeclarations,
+      TSESTree.DefaultExportDeclarations | TSESTree.NamedExportDeclarations,
   >(
     node:
       | ts.ClassDeclaration

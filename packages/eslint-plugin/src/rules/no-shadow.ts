@@ -249,8 +249,7 @@ export default createRule<Options, MessageIds>({
 
     function isImportDeclaration(
       definition:
-        | TSESTree.ImportDeclaration
-        | TSESTree.TSImportEqualsDeclaration,
+        TSESTree.ImportDeclaration | TSESTree.TSImportEqualsDeclaration,
     ): definition is TSESTree.ImportDeclaration {
       return definition.type === AST_NODE_TYPES.ImportDeclaration;
     }
@@ -399,14 +398,11 @@ export default createRule<Options, MessageIds>({
 
       const { variableScope } = variable.scope;
 
-      if (
-        !(
-          (variableScope.block.type ===
-            AST_NODE_TYPES.ArrowFunctionExpression ||
-            variableScope.block.type === AST_NODE_TYPES.FunctionExpression) &&
-          getOuterScope(variableScope) === shadowedVariable.scope
-        )
-      ) {
+      if (!(
+        (variableScope.block.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          variableScope.block.type === AST_NODE_TYPES.FunctionExpression) &&
+        getOuterScope(variableScope) === shadowedVariable.scope
+      )) {
         return false;
       }
 
@@ -502,14 +498,12 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      if (
-        !(
-          (innerDef.type === DefinitionType.FunctionName &&
-            innerDef.node.type === AST_NODE_TYPES.FunctionExpression) ||
-          (innerDef.type === DefinitionType.ClassName &&
-            innerDef.node.type === AST_NODE_TYPES.ClassExpression)
-        )
-      ) {
+      if (!(
+        (innerDef.type === DefinitionType.FunctionName &&
+          innerDef.node.type === AST_NODE_TYPES.FunctionExpression) ||
+        (innerDef.type === DefinitionType.ClassName &&
+          innerDef.node.type === AST_NODE_TYPES.ClassExpression)
+      )) {
         return false;
       }
 
@@ -530,12 +524,10 @@ export default createRule<Options, MessageIds>({
 
       const nodeToCheck = innerDef.node;
 
-      if (
-        !(
-          initializerNode.range[0] <= nodeToCheck.range[0] &&
-          nodeToCheck.range[1] <= initializerNode.range[1]
-        )
-      ) {
+      if (!(
+        initializerNode.range[0] <= nodeToCheck.range[0] &&
+        nodeToCheck.range[1] <= initializerNode.range[1]
+      )) {
         return false;
       }
 

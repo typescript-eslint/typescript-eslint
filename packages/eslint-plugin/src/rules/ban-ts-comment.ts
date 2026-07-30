@@ -7,9 +7,7 @@ import { createRule, getStringLength, nullThrows } from '../util';
 const defaultMinimumDescriptionLength = 3;
 
 export type DirectiveConfig =
-  | boolean
-  | 'allow-with-description'
-  | { descriptionFormat: string };
+  boolean | 'allow-with-description' | { descriptionFormat: string };
 
 export interface OptionsShape {
   minimumDescriptionLength?: number;

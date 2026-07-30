@@ -1,6 +1,5 @@
 export type PreferOptionalChainMessageIds =
-  | 'optionalChainSuggest'
-  | 'preferOptionalChain';
+  'optionalChainSuggest' | 'preferOptionalChain';
 
 export interface PreferOptionalChainOptions {
   allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;

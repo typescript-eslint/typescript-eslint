@@ -3,6 +3,4 @@ import type { ImportNamespaceSpecifier } from '../special/ImportNamespaceSpecifi
 import type { ImportSpecifier } from '../special/ImportSpecifier/spec';
 
 export type ImportClause =
-  | ImportDefaultSpecifier
-  | ImportNamespaceSpecifier
-  | ImportSpecifier;
+  ImportDefaultSpecifier | ImportNamespaceSpecifier | ImportSpecifier;

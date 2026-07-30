@@ -15,9 +15,7 @@ import {
 
 type Options = [];
 type MessageIds =
-  | 'suggestRemove'
-  | 'suggestSatisfies'
-  | 'unnecessaryTypeConversion';
+  'suggestRemove' | 'suggestSatisfies' | 'unnecessaryTypeConversion';
 
 function isEnumType(type: ts.Type): boolean {
   return (type.getFlags() & ts.TypeFlags.EnumLike) !== 0;

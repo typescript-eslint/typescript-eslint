@@ -3,8 +3,7 @@ import type { Program } from 'typescript';
 import type { Lib } from './lib';
 
 export type DebugLevel =
-  | boolean
-  | ('eslint' | 'typescript' | 'typescript-eslint')[];
+  boolean | ('eslint' | 'typescript' | 'typescript-eslint')[];
 export type CacheDurationSeconds = number | 'Infinity';
 
 export type EcmaVersion =

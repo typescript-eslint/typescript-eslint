@@ -381,9 +381,7 @@ function checkIfMethod(
 
 function checkMethod(
   valueDeclaration:
-    | ts.FunctionExpression
-    | ts.MethodDeclaration
-    | ts.MethodSignature,
+    ts.FunctionExpression | ts.MethodDeclaration | ts.MethodSignature,
   ignoreStatic: boolean,
 ): CheckMethodResult {
   const firstParam = valueDeclaration.parameters.at(0);
