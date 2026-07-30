@@ -354,7 +354,7 @@ do {} while (x);
       code: `
 declare const x: boolean | undefined;
 
-for (; x === true; ) {}
+        for (; x === true;) {}
       `,
       errors: [
         {
@@ -365,7 +365,7 @@ for (; x === true; ) {}
       output: `
 declare const x: boolean | undefined;
 
-for (; x; ) {}
+        for (; x;) {}
       `,
     },
     {

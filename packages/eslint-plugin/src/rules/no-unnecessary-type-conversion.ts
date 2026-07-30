@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { RuleFix, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -260,7 +260,7 @@ export default createRule<Options, MessageIds>({
         const typeFlag =
           builtInTypeFlags[nodeCallee.name as keyof typeof builtInTypeFlags];
         const scope = context.sourceCode.getScope(node);
-        const variable = scope.set.get(nodeCallee.name);
+        const variable = ASTUtils.findVariable(scope, nodeCallee.name);
         if (
           !!variable?.defs.length ||
           !doesUnderlyingTypeMatchFlag(

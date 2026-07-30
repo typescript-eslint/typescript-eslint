@@ -51,7 +51,7 @@ type Example = () => string;
 
 ```ts
 function foo(example: () => number): number {
-  return bar();
+  return example();
 }
 ```
 

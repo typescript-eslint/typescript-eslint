@@ -95,8 +95,6 @@ export default (
       '@typescript-eslint/no-redeclare': 'error',
       '@typescript-eslint/no-redundant-type-constituents': 'error',
       '@typescript-eslint/no-require-imports': 'error',
-      'no-restricted-imports': 'off',
-      '@typescript-eslint/no-restricted-imports': 'error',
       '@typescript-eslint/no-restricted-types': 'error',
       'no-shadow': 'off',
       '@typescript-eslint/no-shadow': 'error',

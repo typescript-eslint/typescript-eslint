@@ -93,10 +93,9 @@ declare const foo: Readonly<
 Promise.reject(foo);
     `,
     `
-declare const foo:
-  | Readonly<Readonly<Error> | Readonly<TypeError & string>>
-  | Readonly<Error>;
-Promise.reject(foo);
+      declare const foo:
+        Readonly<Readonly<Error> | Readonly<TypeError & string>> | Readonly<Error>;
+      Promise.reject(foo);
     `,
     `
 type Wrapper<T> = { foo: Readonly<T>[] };
@@ -231,10 +230,9 @@ declare const foo: Readonly<
 new Promise((resolve, reject) => reject(foo));
     `,
     `
-declare const foo:
-  | Readonly<Readonly<Error> | Readonly<TypeError & string>>
-  | Readonly<Error>;
-new Promise((resolve, reject) => reject(foo));
+      declare const foo:
+        Readonly<Readonly<Error> | Readonly<TypeError & string>> | Readonly<Error>;
+      new Promise((resolve, reject) => reject(foo));
     `,
     `
 type Wrapper<T> = { foo: Readonly<T>[] };

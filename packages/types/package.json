@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.63.0",
+  "version": "8.65.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -42,7 +42,8 @@
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "devDependencies": {
     "@typescript/native-preview": "catalog:",
@@ -69,9 +70,6 @@
       "build": {
         "dependsOn": [
           "copy-ast-spec"
-        ],
-        "inputs": [
-          "{projectRoot}/src/generated/**/*"
         ]
       },
       "copy-ast-spec": {
@@ -94,7 +92,8 @@
           "eslint-plugin-internal:build"
         ]
       },
-      "typecheck:tsgo": {}
+      "typecheck:tsgo": {},
+      "attw-check": {}
     }
   }
 }

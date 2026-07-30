@@ -332,6 +332,24 @@ function f(this: void, { bar = 42 }: { bar?: number }) {
   return bar;
 }
     `,
+    `
+      interface Fn {
+        (value: string): void;
+        (): void;
+      }
+      const fn: Fn = (value = 'default') => {
+        return value;
+      };
+    `,
+    `
+      interface Fn {
+        (value: string): void;
+        (value?: string): void;
+      }
+      const fn: Fn = (value = 'default') => {
+        return value;
+      };
+    `,
   ],
   invalid: [
     {

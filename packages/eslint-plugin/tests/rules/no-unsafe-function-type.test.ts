@@ -23,6 +23,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'bannedFunctionType',
         },
@@ -34,6 +36,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'bannedFunctionType',
         },
@@ -45,6 +49,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'bannedFunctionType',
         },
@@ -59,7 +65,9 @@ class Weird implements Function {
       `,
       errors: [
         {
-          column: 24,
+          column: 32,
+          endColumn: 40,
+          endLine: 2,
           line: 2,
           messageId: 'bannedFunctionType',
         },
@@ -74,7 +82,9 @@ interface Weird extends Function {
       `,
       errors: [
         {
-          column: 25,
+          column: 33,
+          endColumn: 41,
+          endLine: 2,
           line: 2,
           messageId: 'bannedFunctionType',
         },

@@ -18,6 +18,8 @@ ruleTester.run('prefer-namespace-keyword', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'useNamespace',
         },
@@ -29,6 +31,8 @@ ruleTester.run('prefer-namespace-keyword', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'useNamespace',
         },
@@ -44,11 +48,15 @@ declare module foo {
       errors: [
         {
           column: 1,
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'useNamespace',
         },
         {
           column: 3,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'useNamespace',
         },
