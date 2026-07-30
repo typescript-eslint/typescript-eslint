@@ -91,20 +91,20 @@ function foo<T extends (arg: any) => void>(arg: T) {}
     },
     {
       code: `
-        enum A {
-          A,
-          B,
-        }
+enum A {
+  A,
+  B,
+}
       `,
       errors: [
         {
-          column: 11,
+          column: 3,
           data: {
             name: 'A',
-            shadowedColumn: 14,
+            shadowedColumn: 6,
             shadowedLine: 2,
           },
-          endColumn: 12,
+          endColumn: 4,
           endLine: 3,
           line: 3,
           messageId: 'noEnumShadow',
@@ -113,23 +113,23 @@ function foo<T extends (arg: any) => void>(arg: T) {}
     },
     {
       code: `
-        enum A {
-          B = 2,
-        }
+enum A {
+  B = 2,
+}
 
-        enum A {
-          A = 1,
-        }
+enum A {
+  A = 1,
+}
       `,
       errors: [
         {
-          column: 11,
+          column: 3,
           data: {
             name: 'A',
-            shadowedColumn: 14,
+            shadowedColumn: 6,
             shadowedLine: 2,
           },
-          endColumn: 12,
+          endColumn: 4,
           endLine: 7,
           line: 7,
           messageId: 'noEnumShadow',

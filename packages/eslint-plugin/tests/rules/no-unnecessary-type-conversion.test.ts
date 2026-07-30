@@ -61,46 +61,46 @@ BigInt(3n);
 export {};
     `,
     `
-      function String(value: unknown) {
-        return value;
-      }
-      function foo(value: string) {
-        return String(value);
-      }
-      export {};
+function String(value: unknown) {
+  return value;
+}
+function foo(value: string) {
+  return String(value);
+}
+export {};
     `,
     `
-      function Number(value: unknown) {
-        return value;
-      }
-      function foo(value: number) {
-        return Number(value);
-      }
-      export {};
+function Number(value: unknown) {
+  return value;
+}
+function foo(value: number) {
+  return Number(value);
+}
+export {};
     `,
     `
-      function Boolean(value: unknown) {
-        return value;
-      }
-      function foo(value: boolean) {
-        return Boolean(value);
-      }
-      export {};
+function Boolean(value: unknown) {
+  return value;
+}
+function foo(value: boolean) {
+  return Boolean(value);
+}
+export {};
     `,
     `
-      function BigInt(value: unknown) {
-        return value;
-      }
-      function foo(value: bigint) {
-        return BigInt(value);
-      }
-      export {};
+function BigInt(value: unknown) {
+  return value;
+}
+function foo(value: bigint) {
+  return BigInt(value);
+}
+export {};
     `,
     `
-      function toString(value: unknown) {
-        return value;
-      }
-      toString('asdf');
+function toString(value: unknown) {
+  return value;
+}
+toString('asdf');
     `,
     `
 export {};

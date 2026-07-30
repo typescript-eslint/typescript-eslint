@@ -4766,9 +4766,9 @@ cursed();
     },
     {
       code: `
-        declare const arrayOrPromiseTuple:
-          Array<number> | [number, number, Promise<unknown>, string];
-        arrayOrPromiseTuple;
+declare const arrayOrPromiseTuple:
+  Array<number> | [number, number, Promise<unknown>, string];
+arrayOrPromiseTuple;
       `,
       errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
     },
