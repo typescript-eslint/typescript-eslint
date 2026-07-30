@@ -608,7 +608,7 @@ export default defineConfig(
   },
   {
     name: 'all-files',
-    files: ['**/*'],
+    files: [tseslint.globs.tsjs],
     ignores: [
       'packages/eslint-plugin/src/configs/eslintrc/*',
       'packages/eslint-plugin/src/configs/flat/*',
