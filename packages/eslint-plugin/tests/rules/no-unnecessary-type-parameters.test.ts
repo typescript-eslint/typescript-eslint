@@ -1904,5 +1904,47 @@ declare function f(): (A extends B ? C : D) | null;
         },
       ],
     },
+    {
+      code: 'declare function foo<T extends () => number>(arg: T[]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: (() => number)[]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  a: string;
+  b: number;
+}
+declare function foo<T extends keyof Foo>(arg: T[]): void;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+interface Foo {
+  a: string;
+  b: number;
+}
+declare function foo(arg: (keyof Foo)[]): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
