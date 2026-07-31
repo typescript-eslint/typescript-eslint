@@ -24,10 +24,9 @@ export function getRangeWithParens(
   for (;;) {
     const prevToken = sourceCode.getTokenBefore(startToken);
     const nextToken = sourceCode.getTokenAfter(endToken);
-    if (prevToken == null || nextToken == null) {
-      break;
-    }
     if (
+      !prevToken ||
+      !nextToken ||
       !ASTUtils.isOpeningParenToken(prevToken) ||
       !ASTUtils.isClosingParenToken(nextToken)
     ) {
