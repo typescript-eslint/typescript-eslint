@@ -316,6 +316,7 @@ exports[`semanticInfo > fixtures/import-file.src 1`] = `
           "line": 1,
         },
       },
+      "phase": null,
       "range": [
         0,
         36,

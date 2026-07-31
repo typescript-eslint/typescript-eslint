@@ -274,9 +274,7 @@ export class TypeVisitor extends Visitor {
 
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
     let entityName:
-      | TSESTree.Identifier
-      | TSESTree.ThisExpression
-      | TSESTree.TSImportType;
+      TSESTree.Identifier | TSESTree.ThisExpression | TSESTree.TSImportType;
     if (node.exprName.type === AST_NODE_TYPES.TSQualifiedName) {
       let iter = node.exprName;
       while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {

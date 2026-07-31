@@ -141,7 +141,15 @@ interface Test {
           f(a: string): number;
         }
       `,
-      errors: [{ messageId: 'errorMethod' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
       output: `
         interface Test {
           f: (a: string) => number;
@@ -154,7 +162,15 @@ interface Test {
           ['f'](a: boolean): void;
         }
       `,
-      errors: [{ messageId: 'errorMethod' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
       output: `
         interface Test {
           ['f']: (a: boolean) => void;
@@ -167,7 +183,15 @@ interface Test {
           f<T>(a: T): T;
         }
       `,
-      errors: [{ messageId: 'errorMethod' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
       output: `
         interface Test {
           f: <T>(a: T) => T;
@@ -180,7 +204,15 @@ interface Test {
           ['f']<T extends {}>(a: T, b: T): T;
         }
       `,
-      errors: [{ messageId: 'errorMethod' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
       output: `
         interface Test {
           ['f']: <T extends {}>(a: T, b: T) => T;
@@ -193,7 +225,15 @@ interface Test {
           'f!'</* a */ T>(/* b */ x: any /* c */): void;
         }
       `,
-      errors: [{ messageId: 'errorMethod' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 57,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
       output: `
         interface Test {
           'f!': </* a */ T>(/* b */ x: any /* c */) => void;
@@ -204,7 +244,15 @@ interface Test {
       code: `
         type Test = { f(a: string): number };
       `,
-      errors: [{ messageId: 'errorMethod' }],
+      errors: [
+        {
+          column: 23,
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'errorMethod',
+        },
+      ],
       output: `
         type Test = { f: (a: string) => number };
       `,
@@ -213,7 +261,15 @@ interface Test {
       code: `
         type Test = { ['f']?(a: boolean): void };
       `,
-      errors: [{ messageId: 'errorMethod' }],
+      errors: [
+        {
+          column: 23,
+          endColumn: 47,
+          endLine: 2,
+          line: 2,
+          messageId: 'errorMethod',
+        },
+      ],
       output: `
         type Test = { ['f']?: (a: boolean) => void };
       `,
@@ -222,7 +278,15 @@ interface Test {
       code: `
         type Test = { f?<T>(a?: T): T };
       `,
-      errors: [{ messageId: 'errorMethod' }],
+      errors: [
+        {
+          column: 23,
+          endColumn: 38,
+          endLine: 2,
+          line: 2,
+          messageId: 'errorMethod',
+        },
+      ],
       output: `
         type Test = { f?: <T>(a?: T) => T };
       `,
@@ -231,7 +295,15 @@ interface Test {
       code: `
         type Test = { ['f']?<T>(a: T, b: T): T };
       `,
-      errors: [{ messageId: 'errorMethod' }],
+      errors: [
+        {
+          column: 23,
+          endColumn: 47,
+          endLine: 2,
+          line: 2,
+          messageId: 'errorMethod',
+        },
+      ],
       output: `
         type Test = { ['f']?: <T>(a: T, b: T) => T };
       `,
@@ -242,7 +314,15 @@ interface Test {
           f: (a: string) => number;
         }
       `,
-      errors: [{ messageId: 'errorProperty' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
       options: ['method'],
       output: `
         interface Test {
@@ -256,7 +336,15 @@ interface Test {
           ['f']: (a: boolean) => void;
         }
       `,
-      errors: [{ messageId: 'errorProperty' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
       options: ['method'],
       output: `
         interface Test {
@@ -270,7 +358,15 @@ interface Test {
           f: <T>(a: T) => T;
         }
       `,
-      errors: [{ messageId: 'errorProperty' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
       options: ['method'],
       output: `
         interface Test {
@@ -284,7 +380,15 @@ interface Test {
           ['f']: <T extends {}>(a: T, b: T) => T;
         }
       `,
-      errors: [{ messageId: 'errorProperty' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 50,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
       options: ['method'],
       output: `
         interface Test {
@@ -298,7 +402,15 @@ interface Test {
           'f!': </* a */ T>(/* b */ x: any /* c */) => void;
         }
       `,
-      errors: [{ messageId: 'errorProperty' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 61,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
       options: ['method'],
       output: `
         interface Test {
@@ -310,7 +422,15 @@ interface Test {
       code: `
         type Test = { f: (a: string) => number };
       `,
-      errors: [{ messageId: 'errorProperty' }],
+      errors: [
+        {
+          column: 23,
+          endColumn: 47,
+          endLine: 2,
+          line: 2,
+          messageId: 'errorProperty',
+        },
+      ],
       options: ['method'],
       output: `
         type Test = { f(a: string): number };
@@ -320,7 +440,15 @@ interface Test {
       code: `
         type Test = { ['f']?: (a: boolean) => void };
       `,
-      errors: [{ messageId: 'errorProperty' }],
+      errors: [
+        {
+          column: 23,
+          endColumn: 51,
+          endLine: 2,
+          line: 2,
+          messageId: 'errorProperty',
+        },
+      ],
       options: ['method'],
       output: `
         type Test = { ['f']?(a: boolean): void };
@@ -330,7 +458,15 @@ interface Test {
       code: `
         type Test = { f?: <T>(a?: T) => T };
       `,
-      errors: [{ messageId: 'errorProperty' }],
+      errors: [
+        {
+          column: 23,
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
+          messageId: 'errorProperty',
+        },
+      ],
       options: ['method'],
       output: `
         type Test = { f?<T>(a?: T): T };
@@ -340,11 +476,107 @@ interface Test {
       code: `
         type Test = { ['f']?: <T>(a: T, b: T) => T };
       `,
-      errors: [{ messageId: 'errorProperty' }],
+      errors: [
+        {
+          column: 23,
+          endColumn: 51,
+          endLine: 2,
+          line: 2,
+          messageId: 'errorProperty',
+        },
+      ],
       options: ['method'],
       output: `
         type Test = { ['f']?<T>(a: T, b: T): T };
       `,
+    },
+    {
+      code: 'type Test = { readonly f: (a: string) => number };',
+      errors: [
+        {
+          column: 15,
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: 'type Test = { f(a: string): number };',
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
+      code: 'type Test = { readonly f?: <T>(a?: T) => T };',
+      errors: [
+        {
+          column: 15,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: 'type Test = { f?<T>(a?: T): T };',
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
+      code: "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
+      errors: [
+        {
+          column: 15,
+          endColumn: 52,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: "type Test = { ['f']?<T>(a: T, b: T): T };",
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
+    },
+    {
+      code: `
+        interface Test {
+          readonly f: (a: string) => number;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+          suggestions: [
+            {
+              messageId: 'convertToMethodSignature',
+              output: `
+        interface Test {
+          f(a: string): number;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+      options: ['method'],
+      output: null,
     },
     {
       code: noFormat`
@@ -356,14 +588,23 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 28,
+          endLine: 4,
           line: 4,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 5,
           line: 5,
           messageId: 'errorMethod',
         },
@@ -386,14 +627,23 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 31,
+          endLine: 3,
           line: 3,
           messageId: 'errorProperty',
         },
         {
+          column: 3,
+          endColumn: 32,
+          endLine: 4,
           line: 4,
           messageId: 'errorProperty',
         },
         {
+          column: 3,
+          endColumn: 30,
+          endLine: 5,
           line: 5,
           messageId: 'errorProperty',
         },
@@ -425,10 +675,16 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 10,
+          endLine: 8,
           line: 3,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 11,
+          endLine: 12,
           line: 9,
           messageId: 'errorMethod',
         },
@@ -458,14 +714,23 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'errorMethod',
         },
@@ -486,14 +751,23 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 38,
+          endLine: 4,
           line: 4,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'errorMethod',
         },
@@ -514,14 +788,23 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 40,
+          endLine: 4,
           line: 4,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 18,
+          endLine: 5,
           line: 5,
           messageId: 'errorMethod',
         },
@@ -544,22 +827,37 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 40,
+          endLine: 4,
           line: 4,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 18,
+          endLine: 5,
           line: 5,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 6,
           line: 6,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 25,
+          endLine: 7,
           line: 7,
           messageId: 'errorMethod',
         },
@@ -585,10 +883,16 @@ interface Foo {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 95,
+          endLine: 6,
           line: 6,
           messageId: 'errorMethod',
         },
         {
+          column: 15,
+          endColumn: 61,
+          endLine: 7,
           line: 7,
           messageId: 'errorMethod',
         },
@@ -605,14 +909,23 @@ type Foo = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'errorMethod',
         },
@@ -633,14 +946,23 @@ declare const Foo: {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'errorMethod',
         },
@@ -660,6 +982,9 @@ interface MyInterface {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 32,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
@@ -678,6 +1003,9 @@ interface Test {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
@@ -693,10 +1021,16 @@ interface Test {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
         {
+          column: 3,
+          endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'errorMethod',
         },
@@ -711,6 +1045,9 @@ interface Test {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 38,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
@@ -725,6 +1062,9 @@ interface Test {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 35,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
@@ -739,6 +1079,9 @@ interface Test {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 47,
+          endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },

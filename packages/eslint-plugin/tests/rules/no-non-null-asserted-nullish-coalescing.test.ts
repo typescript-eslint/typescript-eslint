@@ -65,6 +65,10 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
       code: 'foo! ?? bar;',
       errors: [
         {
+          column: 1,
+          endColumn: 5,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -79,6 +83,10 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
       code: 'foo! ?? bar!;',
       errors: [
         {
+          column: 1,
+          endColumn: 5,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -93,6 +101,10 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
       code: 'foo.bazz! ?? bar;',
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -107,6 +119,10 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
       code: 'foo.bazz! ?? bar!;',
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -121,6 +137,10 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
       code: 'foo!.bazz! ?? bar;',
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -135,6 +155,10 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
       code: 'foo!.bazz! ?? bar!;',
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -149,6 +173,10 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
       code: 'foo()! ?? bar;',
       errors: [
         {
+          column: 1,
+          endColumn: 7,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -163,6 +191,10 @@ ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
       code: 'foo()! ?? bar!;',
       errors: [
         {
+          column: 1,
+          endColumn: 7,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -180,6 +212,10 @@ x! ?? '';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 3,
+          endLine: 3,
+          line: 3,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -201,6 +237,10 @@ x! ?? '';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 3,
+          endLine: 4,
+          line: 4,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -224,6 +264,10 @@ x = foo();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 3,
+          endLine: 4,
+          line: 4,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -246,6 +290,10 @@ x! ?? '';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 3,
+          endLine: 3,
+          line: 3,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -268,6 +316,10 @@ function foo() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -292,6 +344,10 @@ function foo() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {
@@ -314,6 +370,10 @@ x  ! ?? '';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'noNonNullAssertedNullishCoalescing',
           suggestions: [
             {

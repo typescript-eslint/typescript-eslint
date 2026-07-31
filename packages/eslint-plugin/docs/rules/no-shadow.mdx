@@ -19,8 +19,7 @@ This rule adds the following options:
 type AdditionalHoistOptionEntries = 'types' | 'functions-and-types';
 
 type HoistOptionEntries =
-  | BaseNoShadowHoistOptionEntries
-  | AdditionalHoistOptionEntries;
+  BaseNoShadowHoistOptionEntries | AdditionalHoistOptionEntries;
 
 interface Options extends BaseNoShadowOptions {
   hoist?: HoistOptionEntries;

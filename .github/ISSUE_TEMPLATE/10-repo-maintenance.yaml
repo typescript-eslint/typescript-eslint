@@ -9,6 +9,13 @@ body:
     attributes:
       value: |
         This issue form is specifically for work done in this repository. Only use it if you are suggesting a change to repository tooling. Don't use it for work in any other repository.
+  - type: checkboxes
+    id: ai-policy
+    attributes:
+      label: AI Assistance
+      options:
+        - label: If I used AI assistance to prepare this issue, I have reviewed and followed the [AI Contribution Policy](https://typescript-eslint.io/contributing/ai-policy/).
+          required: true
   - type: textarea
     attributes:
       label: Suggestion

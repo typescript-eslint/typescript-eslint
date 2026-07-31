@@ -94,8 +94,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     `,
     `
       declare const foo:
-        | Readonly<Readonly<Error> | Readonly<TypeError & string>>
-        | Readonly<Error>;
+        Readonly<Readonly<Error> | Readonly<TypeError & string>> | Readonly<Error>;
       Promise.reject(foo);
     `,
     `
@@ -232,8 +231,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     `,
     `
       declare const foo:
-        | Readonly<Readonly<Error> | Readonly<TypeError & string>>
-        | Readonly<Error>;
+        Readonly<Readonly<Error> | Readonly<TypeError & string>> | Readonly<Error>;
       new Promise((resolve, reject) => reject(foo));
     `,
     `

@@ -673,7 +673,7 @@ const ruleTester = new RuleTester();
 
 ruleTester.run('my-rule', rule, {
   valid: [
-    /* ... */
+    // ...
   ],
   invalid: [
     {
@@ -683,7 +683,7 @@ ruleTester.run('my-rule', rule, {
       // Add the line with array form of `output`
       output: ['const b = 1;', 'const c = 1;'],
       errors: [
-        /* ... */
+        // ...
       ],
     },
   ],

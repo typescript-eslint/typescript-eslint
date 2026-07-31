@@ -17,6 +17,7 @@ export * from './getWrappingFixer';
 export * from './hasOverloadSignatures';
 export * from './isArrayMethodCallWithPredicate';
 export * from './isAssignee';
+export * from './isConditionalTest';
 export * from './isNodeEqual';
 export * from './isNullLiteral';
 export * from './isStartOfExpressionStatement';

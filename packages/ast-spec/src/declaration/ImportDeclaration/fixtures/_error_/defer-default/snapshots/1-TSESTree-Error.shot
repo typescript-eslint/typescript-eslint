@@ -1,0 +1,6 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > defer-default > TSESTree - Error`]
+TSError
+> 1 | import defer defaultValue from 'mod';
+    |        ^^^^^^^^^^^^^^^^^^ Default imports are not allowed in a deferred import.

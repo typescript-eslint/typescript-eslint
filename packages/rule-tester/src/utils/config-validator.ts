@@ -40,8 +40,7 @@ function validateRuleSeverity(options: Linter.RuleEntry): number | string {
   const normSeverity =
     typeof severity === 'string'
       ? (severityMap[severity.toLowerCase() as Linter.SeverityString] as
-          | number
-          | undefined)
+          number | undefined)
       : (severity as number);
 
   if (normSeverity === 0 || normSeverity === 1 || normSeverity === 2) {

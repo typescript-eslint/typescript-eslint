@@ -242,25 +242,25 @@ export default createRule<Options, MessageIds>({
             getEsNodesFromViolatingNode(violatingNode);
 
           const reportNodeOrLoc:
-            | { loc: TSESTree.SourceLocation }
-            | { node: TSESTree.Node } = (() => {
-            switch (esNode.type) {
-              case AST_NODE_TYPES.MethodDefinition:
-              case AST_NODE_TYPES.PropertyDefinition:
-              case AST_NODE_TYPES.TSAbstractMethodDefinition:
-                return { loc: getMemberHeadLoc(context.sourceCode, esNode) };
-              case AST_NODE_TYPES.TSParameterProperty:
-                return {
-                  loc: getParameterPropertyHeadLoc(
-                    context.sourceCode,
-                    esNode,
-                    (nameNode as TSESTree.Identifier).name,
-                  ),
-                };
-              default:
-                return { node: esNode };
-            }
-          })();
+            { loc: TSESTree.SourceLocation } | { node: TSESTree.Node } =
+            (() => {
+              switch (esNode.type) {
+                case AST_NODE_TYPES.MethodDefinition:
+                case AST_NODE_TYPES.PropertyDefinition:
+                case AST_NODE_TYPES.TSAbstractMethodDefinition:
+                  return { loc: getMemberHeadLoc(context.sourceCode, esNode) };
+                case AST_NODE_TYPES.TSParameterProperty:
+                  return {
+                    loc: getParameterPropertyHeadLoc(
+                      context.sourceCode,
+                      esNode,
+                      (nameNode as TSESTree.Identifier).name,
+                    ),
+                  };
+                default:
+                  return { node: esNode };
+              }
+            })();
 
           const typeAnnotation = (() => {
             if (esNode.type !== AST_NODE_TYPES.PropertyDefinition) {
@@ -383,8 +383,7 @@ export default createRule<Options, MessageIds>({
 });
 
 type ParameterOrPropertyDeclaration =
-  | ts.ParameterDeclaration
-  | ts.PropertyDeclaration;
+  ts.ParameterDeclaration | ts.PropertyDeclaration;
 
 const OUTSIDE_CONSTRUCTOR = -1;
 const DIRECTLY_INSIDE_CONSTRUCTOR = 0;

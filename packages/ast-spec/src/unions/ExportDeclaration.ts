@@ -46,5 +46,4 @@ export type NamedExportDeclarations =
 
 // TODO - breaking change remove this in the next major
 export type ExportDeclaration =
-  | DefaultExportDeclarations
-  | NamedExportDeclarations;
+  DefaultExportDeclarations | NamedExportDeclarations;

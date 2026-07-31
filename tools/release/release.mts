@@ -1,49 +1,105 @@
+import type { ParseArgsConfig } from 'node:util';
+
 import { execaSync } from 'execa';
+import { parseArgs } from 'node:util';
 import {
   releaseChangelog,
   releasePublish,
   releaseVersion,
 } from 'nx/release/index.js';
-import yargs from 'yargs';
 
-if (process.env.CI !== 'true') {
+function booleanOption(value: string): boolean {
+  const normalizedValue = value.toLowerCase().trim();
+  const allowedValues = ['', 'true', 'false'];
+
+  if (!allowedValues.includes(normalizedValue)) {
+    throw new Error(`Invalid boolean value: "${value}"`);
+  }
+
+  return normalizedValue !== 'false';
+}
+
+const parseArgsOptions = {
+  'dry-run': {
+    default: 'true',
+    short: 'd',
+    type: 'string',
+  },
+  'first-release': {
+    default: 'false',
+    type: 'string',
+  },
+  'force-release-without-changes': {
+    default: 'false',
+    type: 'string',
+  },
+  help: {
+    default: false,
+    type: 'boolean',
+  },
+  verbose: {
+    default: false,
+    type: 'boolean',
+  },
+  version: {
+    type: 'string',
+  },
+} as const satisfies ParseArgsConfig['options'];
+
+const optionDescriptions: Record<keyof typeof parseArgsOptions, string> = {
+  'dry-run':
+    'Whether to perform a dry-run of the release process, defaults to true',
+  'first-release':
+    'Whether or not one of more of the packages are being released for the first time',
+  'force-release-without-changes':
+    'Whether to do a release regardless of if there have been changes',
+  help: 'Show help',
+  verbose: 'Whether or not to enable verbose logging, defaults to false',
+  version:
+    'Explicit version specifier to use, if overriding conventional commits',
+};
+
+function printHelp(): void {
+  console.log('Options:');
+  for (const [name, config] of Object.entries(parseArgsOptions)) {
+    const short = 'short' in config ? `-${config.short}, ` : '    ';
+    const defaultStr =
+      'default' in config ? ` [default: ${String(config.default)}]` : '';
+    const description =
+      optionDescriptions[name as keyof typeof optionDescriptions];
+
+    console.log(
+      `  ${short}--${name.padEnd(35)} ${description} [${config.type}]${defaultStr}`,
+    );
+  }
+}
+
+const { values: rawOptions } = parseArgs({
+  args: process.argv.slice(2),
+  options: parseArgsOptions,
+});
+
+if (rawOptions.help) {
+  printHelp();
+  // eslint-disable-next-line no-process-exit
+  process.exit(0);
+}
+
+const options = {
+  dryRun: booleanOption(rawOptions['dry-run']),
+  firstRelease: booleanOption(rawOptions['first-release']),
+  forceReleaseWithoutChanges: booleanOption(
+    rawOptions['force-release-without-changes'],
+  ),
+  verbose: rawOptions.verbose,
+  version: rawOptions.version,
+};
+
+if (process.env.CI !== 'true' && !options.dryRun) {
   throw new Error(
     'Releases cannot be run outside of CI, we use trusted publishing which requires an authenticated GitHub Actions environment',
   );
 }
-
-const options = await yargs(process.argv.slice(2))
-  .version(false)
-  .option('version', {
-    description:
-      'Explicit version specifier to use, if overriding conventional commits',
-    type: 'string',
-  })
-  .option('dryRun', {
-    alias: 'd',
-    default: true,
-    description:
-      'Whether to perform a dry-run of the release process, defaults to true',
-    type: 'boolean',
-  })
-  .option('forceReleaseWithoutChanges', {
-    default: false,
-    description:
-      'Whether to do a release regardless of if there have been changes',
-    type: 'boolean',
-  })
-  .option('verbose', {
-    default: false,
-    description: 'Whether or not to enable verbose logging, defaults to false',
-    type: 'boolean',
-  })
-  .option('firstRelease', {
-    default: false,
-    description:
-      'Whether or not one of more of the packages are being released for the first time',
-    type: 'boolean',
-  })
-  .parseAsync();
 
 const { projectsVersionData, workspaceVersion } = await releaseVersion({
   specifier: options.version,
@@ -94,7 +150,7 @@ if (options.dryRun) {
   console.log(
     '⚠️ NOTE: Applying canary version to package.json files so that dry-run publishing produces useful output...',
   );
-  execaSync('pnpm exec', ['tsx', 'tools/release/apply-canary-version.mts']);
+  execaSync('pnpm', ['exec', 'tsx', 'tools/release/apply-canary-version.mts']);
   console.log(
     '✅ Applied canary version to package.json files so that dry-run publishing produces useful output\n',
   );
@@ -112,7 +168,9 @@ if (options.dryRun) {
     '⚠️ NOTE: Reverting temporary package.json changes related to dry-run publishing...',
   );
   execaSync('git', [
-    'checkout',
+    'restore',
+    '--staged',
+    '--worktree',
     'packages/**/package.json',
     'package.json',
     'pnpm-lock.yaml',

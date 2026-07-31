@@ -24,6 +24,8 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 9,
+          endColumn: 38,
+          endLine: 7,
           line: 7,
           messageId: 'multipleLines',
         },
@@ -46,11 +48,15 @@ ruleTester.run('test', rule, {
       errors: [
         {
           column: 9,
+          endColumn: 38,
+          endLine: 7,
           line: 7,
           messageId: 'multipleLines',
         },
         {
           column: 9,
+          endColumn: 38,
+          endLine: 8,
           line: 8,
           messageId: 'multipleLines',
         },

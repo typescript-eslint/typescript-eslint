@@ -9,6 +9,7 @@ Otherwise we may not be able to review your PR.
 - [ ] Addresses an existing open issue: fixes #000
 - [ ] That issue was marked as [accepting prs](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aopen+is%3Aissue+label%3A%22accepting+prs%22)
 - [ ] Steps in [Contributing](https://typescript-eslint.io/contributing) were taken
+- [ ] If this PR used AI assistance, I followed the [AI Contribution Policy](https://typescript-eslint.io/contributing/ai-policy/)
 
 ## Overview
 
