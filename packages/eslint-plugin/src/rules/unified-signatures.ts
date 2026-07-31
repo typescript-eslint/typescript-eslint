@@ -136,6 +136,10 @@ export default createRule<Options, MessageIds>({
             const typeAnnotation1 = isTSParameterProperty(p1)
               ? p1.parameter.typeAnnotation
               : p1.typeAnnotation;
+            const typeMessageData = getUnionTypeMessageData(
+              typeAnnotation0?.typeAnnotation,
+              typeAnnotation1?.typeAnnotation,
+            );
 
             context.report({
               loc: p1.loc,
@@ -143,12 +147,8 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: context.sourceCode.getText(
-                  typeAnnotation0?.typeAnnotation,
-                ),
-                type2: context.sourceCode.getText(
-                  typeAnnotation1?.typeAnnotation,
-                ),
+                type1: typeMessageData.type1,
+                type2: typeMessageData.type2,
               },
             });
             break;
@@ -254,6 +254,58 @@ export default createRule<Options, MessageIds>({
         signatureUsesTypeParameter(a, isTypeParameter) ===
           signatureUsesTypeParameter(b, isTypeParameter)
       );
+    }
+
+    function getUnionTypeMessageData(
+      type0: TSESTree.TypeNode | undefined,
+      type1: TSESTree.TypeNode | undefined,
+    ): { type1: string; type2: string } {
+      const parts: string[] = [];
+      const seen = new Set<string>();
+
+      for (const type of [
+        ...getTopLevelUnionTypes(type0),
+        ...getTopLevelUnionTypes(type1),
+      ]) {
+        const text = getTypeTextForMessage(type);
+        if (!seen.has(text)) {
+          seen.add(text);
+          parts.push(text);
+        }
+      }
+
+      return {
+        type1: parts[0] ?? '',
+        type2: parts.slice(1).join(' | '),
+      };
+    }
+
+    function getTopLevelUnionTypes(
+      type: TSESTree.TypeNode | undefined,
+    ): TSESTree.TypeNode[] {
+      return type == null
+        ? []
+        : type.type === AST_NODE_TYPES.TSUnionType
+          ? type.types
+          : [type];
+    }
+
+    function getTypeTextForMessage(type: TSESTree.TypeNode): string {
+      let text = context.sourceCode.getText(type);
+      const [start, end] = type.range;
+
+      for (const comment of [
+        ...context.sourceCode.getAllComments(),
+      ].reverse()) {
+        const [commentStart, commentEnd] = comment.range;
+        if (start <= commentStart && commentEnd <= end) {
+          text =
+            text.slice(0, commentStart - start) +
+            text.slice(commentEnd - start);
+        }
+      }
+
+      return text.replaceAll(/\s+/gu, ' ').trim();
     }
 
     /** Detect `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`. */

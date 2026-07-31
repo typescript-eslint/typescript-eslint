@@ -774,6 +774,96 @@ interface I {
       ],
     },
     {
+      code: `
+function f(a: number | string): void;
+function f(a: string | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string | boolean',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(a: number | string): void;
+function f(a: 'hello | world' | string): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: "string | 'hello | world'",
+          },
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(a: number | /* Hey */ string): void;
+function f(a: string | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string | boolean',
+          },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: noFormat`
+function f(a: number | string & {
+  brand: true
+}): void;
+function f(a: string | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string & { brand: true } | string | boolean',
+          },
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
       // Works with tuples.
       code: `
 interface I {
