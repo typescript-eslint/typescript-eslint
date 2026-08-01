@@ -43,11 +43,22 @@ void getBox().value;
     `,
     `
 declare const str: string;
-void str.normalize('NFC');
+void \`\${str}\`;
     `,
     `
 declare const str: string;
-void \`\${str}\`;
+declare function getMode(): string;
+void str.normalize(getMode());
+    `,
+    `
+declare const str: string;
+declare const replacer: () => string;
+void str.replace(/a/, replacer);
+    `,
+    `
+declare const str: string;
+declare const parts: string[];
+void str.concat(...parts);
     `,
   ],
   invalid: [
@@ -395,6 +406,20 @@ class Foo {
         {
           column: 5,
           line: 7,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const str: string;
+void str.normalize('NFC');
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
           messageId: 'meaninglessVoidOperator',
         },
       ],

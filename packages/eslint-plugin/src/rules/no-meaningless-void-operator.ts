@@ -12,14 +12,14 @@ export type Options = [
   },
 ];
 
-function isClearlyMeaninglessExpression(node: TSESTree.Expression): boolean {
+function isMeaninglessExpression(node: TSESTree.Expression): boolean {
   switch (node.type) {
     case AST_NODE_TYPES.ChainExpression:
     case AST_NODE_TYPES.TSAsExpression:
     case AST_NODE_TYPES.TSInstantiationExpression:
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSTypeAssertion:
-      return isClearlyMeaninglessExpression(node.expression);
+      return isMeaninglessExpression(node.expression);
 
     case AST_NODE_TYPES.Identifier:
     case AST_NODE_TYPES.Literal:
@@ -28,18 +28,18 @@ function isClearlyMeaninglessExpression(node: TSESTree.Expression): boolean {
 
     case AST_NODE_TYPES.MemberExpression:
       return (
-        isClearlyMeaninglessExpression(node.object) &&
-        (!node.computed || isClearlyMeaninglessExpression(node.property))
+        isMeaninglessExpression(node.object) &&
+        (!node.computed || isMeaninglessExpression(node.property))
       );
 
     case AST_NODE_TYPES.CallExpression:
-      if (
-        node.arguments.length > 0 ||
-        node.callee.type !== AST_NODE_TYPES.MemberExpression
-      ) {
-        return false;
-      }
-      return isClearlyMeaninglessExpression(node.callee);
+      return (
+        node.callee.type === AST_NODE_TYPES.MemberExpression &&
+        isMeaninglessExpression(node.callee) &&
+        node.arguments.every(
+          argument => argument.type === AST_NODE_TYPES.Literal,
+        )
+      );
 
     default:
       return false;
@@ -136,7 +136,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           return;
         }
 
-        if (!isClearlyMeaninglessExpression(node.argument)) {
+        if (!isMeaninglessExpression(node.argument)) {
           return;
         }
 
