@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSModuleDeclaration _error_ namespace-invalid-id Error Alignment 1`] = `"Both errored"`;

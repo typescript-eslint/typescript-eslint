@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures parameter TSParameterProperty _error_ override-method-parameter Error Alignment 1`] = `"Babel errored but TSESTree didn't"`;
