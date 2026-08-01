@@ -49,7 +49,8 @@ type Options = [
     /** Allows specified method names to be ignored with this rule. */
     exceptMethods?: string[];
     /** Whether to ignore class members that are defined within a class that `implements` a type. */
-    ignoreClassesThatImplementAnInterface?: /**
+    ignoreClassesThatImplementAnInterface?:
+      /**
        * Whether to ignore class members that are defined within a class that `implements` a type.
        * Ignore all classes that implement an interface
        */

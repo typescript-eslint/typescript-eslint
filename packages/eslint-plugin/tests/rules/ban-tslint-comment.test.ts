@@ -31,6 +31,8 @@ ruleTester.run('ban-tslint-comment', rule, {
           data: {
             text: '/* tslint:disable */',
           },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'commentDetected',
         },
@@ -45,6 +47,8 @@ ruleTester.run('ban-tslint-comment', rule, {
           data: {
             text: '/* tslint:enable */',
           },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'commentDetected',
         },
@@ -59,6 +63,8 @@ ruleTester.run('ban-tslint-comment', rule, {
           data: {
             text: '/* tslint:disable:rule1 rule2 rule3... */',
           },
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'commentDetected',
         },
@@ -73,6 +79,8 @@ ruleTester.run('ban-tslint-comment', rule, {
           data: {
             text: '/* tslint:enable:rule1 rule2 rule3... */',
           },
+          endColumn: 41,
+          endLine: 1,
           line: 1,
           messageId: 'commentDetected',
         },
@@ -87,6 +95,8 @@ ruleTester.run('ban-tslint-comment', rule, {
           data: {
             text: '// tslint:disable-next-line',
           },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'commentDetected',
         },
@@ -101,6 +111,8 @@ ruleTester.run('ban-tslint-comment', rule, {
           data: {
             text: '// tslint:disable-line',
           },
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'commentDetected',
         },
@@ -113,6 +125,8 @@ ruleTester.run('ban-tslint-comment', rule, {
         {
           column: 1,
           data: { text: '// tslint:disable-next-line:rule1 rule2 rule3...' },
+          endColumn: 49,
+          endLine: 1,
           line: 1,
           messageId: 'commentDetected',
         },
@@ -131,6 +145,8 @@ console.log(woah);
           data: {
             text: '// tslint:disable-line',
           },
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'commentDetected',
         },

@@ -118,6 +118,30 @@ ruleTester.run('require-array-sort-compare', rule, {
     },
     {
       code: `
+        function f<T extends string[]>(a: T) {
+          a.sort();
+        }
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        function f<T extends Array<string>>(a: T) {
+          a.sort();
+        }
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+        function f<T extends string>(a: T[]) {
+          a.sort();
+        }
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
         function f(a: number[]) {
           a.toSorted((a, b) => a - b);
         }
@@ -182,6 +206,15 @@ ruleTester.run('require-array-sort-compare', rule, {
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
+    },
+    {
+      code: `
+        function f<T extends string[]>(a: T) {
+          a.sort();
+        }
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+      options: [{ ignoreStringArrays: false }],
     },
     {
       code: `

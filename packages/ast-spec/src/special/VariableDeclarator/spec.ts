@@ -61,7 +61,6 @@ export interface UsingInForOfDeclarator extends VariableDeclaratorBase {
 }
 
 export type UsingDeclarator =
-  | UsingInForOfDeclarator
-  | UsingInNormalContextDeclarator;
+  UsingInForOfDeclarator | UsingInNormalContextDeclarator;
 
 export type VariableDeclarator = LetOrConstOrVarDeclarator | UsingDeclarator;

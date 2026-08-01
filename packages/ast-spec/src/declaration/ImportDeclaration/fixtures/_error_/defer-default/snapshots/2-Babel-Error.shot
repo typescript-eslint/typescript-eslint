@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > defer-default > Babel - Error`]
+BabelError
+> 1 | import defer defaultValue from 'mod';
+    |              ^ Only `import defer * as x from "./module"` is valid. (1:13)
+  

@@ -393,6 +393,9 @@ function fn(a: Foo): Foo {}
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 23,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -414,6 +417,9 @@ let foo: Foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 23,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -431,6 +437,9 @@ let foo: Foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 23,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -451,6 +460,9 @@ let bar: B;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -469,6 +481,9 @@ let bar: b;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 38,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -486,6 +501,9 @@ type Bar = typeof Foo; // TSTypeQuery
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 23,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -502,6 +520,9 @@ type Bar = foo.Bar; // TSQualifiedName
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 23,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -518,6 +539,9 @@ type Baz = (typeof foo.bar)['Baz']; // TSQualifiedName & TSTypeQuery
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 23,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -534,6 +558,9 @@ let foo: A.Foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 26,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -552,6 +579,9 @@ let bar: B;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -570,6 +600,9 @@ let foo: A;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 25,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -586,7 +619,10 @@ const foo: A = B();
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"A"' },
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -605,7 +641,10 @@ let bar: C;
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"A" and "C"' },
+              endColumn: 31,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -625,7 +664,10 @@ type T = { bar: C; baz: D };
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"A", "C" and "D"' },
+              endColumn: 34,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -645,7 +687,10 @@ type T = { foo: A; bar: C; baz: D };
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"A", "C" and "D"' },
+              endColumn: 34,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -666,7 +711,10 @@ type T = A;
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"A"' },
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -689,12 +737,18 @@ type T = { b: B; c: C; d: D };
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"B"' },
+              endColumn: 28,
+              endLine: 4,
               line: 4,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
+              column: 1,
               data: { typeImports: '"C" and "D"' },
+              endColumn: 31,
+              endLine: 5,
               line: 5,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -715,7 +769,10 @@ type T = B;
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"B"' },
+              endColumn: 42,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -734,12 +791,18 @@ type T = A | D;
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"A"' },
+              endColumn: 31,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
+              column: 1,
               data: { typeImports: '"D"' },
+              endColumn: 32,
+              endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -760,12 +823,18 @@ type T = B | E;
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"B"' },
+              endColumn: 31,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
+              column: 1,
               data: { typeImports: '"E"' },
+              endColumn: 32,
+              endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -786,12 +855,18 @@ type T = C | F;
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"C"' },
+              endColumn: 31,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
+              column: 1,
               data: { typeImports: '"F"' },
+              endColumn: 32,
+              endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -815,18 +890,30 @@ type T = Type1 | Type2 | Type | Types.A | Default | Named;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 44,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
             {
+              column: 1,
+              endColumn: 33,
+              endLine: 3,
               line: 3,
               messageId: 'typeOverValue',
             },
             {
+              column: 1,
+              endColumn: 41,
+              endLine: 4,
               line: 4,
               messageId: 'typeOverValue',
             },
             {
+              column: 1,
+              endColumn: 57,
+              endLine: 5,
               line: 5,
               messageId: 'typeOverValue',
             },
@@ -851,22 +938,34 @@ type T = Type1 | Type2 | Type3 | Type4 | Type5;
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"Type1"' },
+              endColumn: 46,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
+              column: 1,
               data: { typeImports: '"Type2"' },
+              endColumn: 48,
+              endLine: 3,
               line: 3,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
+              column: 1,
               data: { typeImports: '"Type3"' },
+              endColumn: 49,
+              endLine: 4,
               line: 4,
               messageId: 'someImportsAreOnlyTypes',
             },
             {
+              column: 1,
               data: { typeImports: '"Type4" and "Type5"' },
+              endColumn: 65,
+              endLine: 5,
               line: 5,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -892,10 +991,16 @@ let bar: import('foo').Bar;
           `,
           errors: [
             {
+              column: 10,
+              endColumn: 23,
+              endLine: 2,
               line: 2,
               messageId: 'noImportTypeAnnotations',
             },
             {
+              column: 10,
+              endColumn: 27,
+              endLine: 3,
               line: 3,
               messageId: 'noImportTypeAnnotations',
             },
@@ -908,6 +1013,9 @@ let foo: import('foo');
           `,
           errors: [
             {
+              column: 10,
+              endColumn: 23,
+              endLine: 2,
               line: 2,
               messageId: 'noImportTypeAnnotations',
             },
@@ -922,6 +1030,9 @@ let foo: Foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
@@ -939,6 +1050,9 @@ let foo: Foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 32,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
@@ -959,6 +1073,9 @@ type T = typeof Type.foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 24,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -979,6 +1096,9 @@ type T = typeof Type.foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -999,6 +1119,9 @@ type T = typeof Type.foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 29,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1019,6 +1142,9 @@ type T = typeof Type.foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 29,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
@@ -1040,6 +1166,9 @@ type T = typeof Type.foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 33,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
@@ -1061,6 +1190,9 @@ type T = typeof Type.foo;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 34,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
@@ -1082,6 +1214,9 @@ export type { Type }; // is a type-only export
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 24,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1100,6 +1235,9 @@ export type { Type }; // is a type-only export
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1118,6 +1256,9 @@ export type { Type }; // is a type-only export
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 29,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1138,6 +1279,9 @@ export type { Type }; // is a type-only export
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 29,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
@@ -1161,6 +1305,9 @@ export type { Type }; // is a type-only export
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 33,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
@@ -1184,6 +1331,9 @@ export type { Type }; // is a type-only export
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 34,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
@@ -1209,14 +1359,23 @@ type T = { a: AllType; b: DefType; c: Type };
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 49,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
             {
+              column: 1,
+              endColumn: 20,
+              endLine: 4,
               line: 3,
               messageId: 'avoidImportType',
             },
             {
+              column: 1,
+              endColumn: 45,
+              endLine: 5,
               line: 5,
               messageId: 'avoidImportType',
             },
@@ -1239,6 +1398,9 @@ const a: Rest.A = '';
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 41,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1257,6 +1419,9 @@ const a: Default = '';
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 41,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1276,6 +1441,9 @@ const b: Rest.A = '';
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 41,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1296,6 +1464,9 @@ const a: Default = '';
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 53,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1315,6 +1486,9 @@ const a: Default = '';
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 66,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1336,6 +1510,9 @@ class A {
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 23,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1356,6 +1533,9 @@ const b = B;
           `,
           errors: [
             {
+              column: 10,
+              endColumn: 16,
+              endLine: 2,
               line: 2,
               messageId: 'avoidImportType',
             },
@@ -1375,7 +1555,10 @@ const b = B;
           `,
           errors: [
             {
+              column: 1,
               data: { typeImports: '"A"' },
+              endColumn: 36,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1398,6 +1581,9 @@ let bar: B;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1420,6 +1606,9 @@ B();
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1442,6 +1631,9 @@ B();
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 28,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1464,10 +1656,16 @@ type U = B;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 25,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
             {
+              column: 1,
+              endColumn: 25,
+              endLine: 3,
               line: 3,
               messageId: 'typeOverValue',
             },
@@ -1491,10 +1689,16 @@ type U = B;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 25,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
             {
+              column: 1,
+              endColumn: 21,
+              endLine: 3,
               line: 3,
               messageId: 'typeOverValue',
             },
@@ -1518,6 +1722,9 @@ A();
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 31,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1541,6 +1748,9 @@ type V = A;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 31,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1565,6 +1775,9 @@ type V = A;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 36,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1587,6 +1800,9 @@ type T = A;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 42,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1606,6 +1822,9 @@ type T = A;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 42,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1629,6 +1848,9 @@ let baz: D;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 31,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1655,6 +1877,9 @@ let baz: D;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 36,
+              endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
@@ -1677,6 +1902,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 21,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1696,6 +1924,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 1,
+              endColumn: 25,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1718,6 +1949,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 13,
+              endColumn: 35,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1740,6 +1974,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 13,
+              endColumn: 35,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1762,6 +1999,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 13,
+              endColumn: 35,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1784,6 +2024,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 13,
+              endColumn: 35,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1805,6 +2048,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 13,
+              endColumn: 35,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1826,6 +2072,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 13,
+              endColumn: 35,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1850,6 +2099,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 13,
+              endColumn: 35,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1876,6 +2128,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 13,
+              endColumn: 35,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1900,6 +2155,9 @@ export = {} as A;
           `,
           errors: [
             {
+              column: 13,
+              endColumn: 40,
+              endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
@@ -1920,7 +2178,13 @@ import { Foo, Bar } from 'foo';
 function test(foo: Foo) {}
           `,
           errors: [
-            { column: 1, line: 3, messageId: 'someImportsAreOnlyTypes' },
+            {
+              column: 1,
+              endColumn: 32,
+              endLine: 3,
+              line: 3,
+              messageId: 'someImportsAreOnlyTypes',
+            },
           ],
           output: `
 import 'foo';
@@ -1936,7 +2200,13 @@ import { Foo, Bar } from 'foo';
 function test(foo: Foo) {}
           `,
           errors: [
-            { column: 1, line: 3, messageId: 'someImportsAreOnlyTypes' },
+            {
+              column: 1,
+              endColumn: 32,
+              endLine: 3,
+              line: 3,
+              messageId: 'someImportsAreOnlyTypes',
+            },
           ],
           output: `
 import {} from 'foo';
@@ -2114,6 +2384,9 @@ describe('experimentalDecorators: true + emitDecoratorMetadata: true', () => {
         `,
         errors: [
           {
+            column: 11,
+            endColumn: 33,
+            endLine: 2,
             line: 2,
             messageId: 'typeOverValue',
           },

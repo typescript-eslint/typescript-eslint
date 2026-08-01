@@ -206,8 +206,7 @@ describe(parser.parseAndGenerateServices, () => {
         jsxContent ? 'with' : 'without'
       } JSX content - parserOptions.jsx = ${jsxSetting}`, () => {
         let result:
-          | parser.ParseAndGenerateServicesResult<typeof config>
-          | undefined;
+          parser.ParseAndGenerateServicesResult<typeof config> | undefined;
         // eslint-disable-next-line vitest/valid-expect
         const exp = expect(() => {
           result = parser.parseAndGenerateServices(code, {

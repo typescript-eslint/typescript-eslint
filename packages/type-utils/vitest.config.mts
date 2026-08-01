@@ -16,6 +16,7 @@ const vitestConfig = mergeConfig(
       },
 
       dir: path.join(import.meta.dirname, 'tests'),
+      include: getTestFiles(),
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
       setupFiles: ['./tests/test-utils/custom-matchers/custom-matchers.ts'],
@@ -23,5 +24,16 @@ const vitestConfig = mergeConfig(
     },
   }),
 );
+
+function getTestFiles() {
+  const isWindowsCI = process.platform === 'win32' && Boolean(process.env.CI);
+
+  if (isWindowsCI) {
+    // Test(s) that could be affected by OS.
+    return ['./tests/TypeOrValueSpecifier.test.ts'];
+  }
+
+  return undefined;
+}
 
 export default vitestConfig;

@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -307,7 +307,7 @@ export default createRule<Options, MessageIds>({
       ) {
         const scope = context.sourceCode.getScope(node);
         // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-        const variable = scope.set.get('String');
+        const variable = ASTUtils.findVariable(scope, 'String');
         return !variable?.defs.length;
       }
       return false;

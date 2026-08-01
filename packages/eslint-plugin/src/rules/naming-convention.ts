@@ -716,7 +716,6 @@ export default createRule<Options, MessageIds>({
         return [
           selector,
           (node: Parameters<typeof handler>[0]): void => {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
             handler(node as never, validator);
           },
         ] as const;

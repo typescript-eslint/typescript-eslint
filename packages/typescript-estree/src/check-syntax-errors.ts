@@ -3,6 +3,7 @@ import * as ts from 'typescript';
 import type { TSNode } from './ts-estree';
 
 import { checkModifiers } from './check-modifiers';
+import { getImportClausePhaseModifier } from './getImportClausePhaseModifier';
 import {
   isValidAssignmentTarget,
   createError,
@@ -247,6 +248,29 @@ export function checkSyntaxError(
         );
       }
 
+      const isDefinite = !!node.exclamationToken;
+
+      if (isDefinite && isAbstract) {
+        throw createError(
+          node.exclamationToken,
+          `A definite assignment assertion '!' is not permitted in this context.`,
+        );
+      }
+
+      if (isDefinite && !node.type) {
+        throw createError(
+          node,
+          `Declarations with definite assignment assertions must also have type annotations.`,
+        );
+      }
+
+      if (isDefinite && node.initializer) {
+        throw createError(
+          node,
+          `Declarations with initializers cannot also have definite assignment assertions.`,
+        );
+      }
+
       if (
         node.name.kind === SyntaxKind.StringLiteral &&
         node.name.text === 'constructor'
@@ -365,17 +389,35 @@ export function checkSyntaxError(
 
     case SyntaxKind.ImportDeclaration: {
       const { importClause } = node;
+      const importPhase = getImportClausePhaseModifier(importClause);
+
       if (
-        // TODO swap to `phaseModifier` once we add support for `import defer`
-        // https://github.com/estree/estree/issues/328
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        importClause?.isTypeOnly &&
-        importClause.name &&
+        importPhase === 'type' &&
+        importClause?.name &&
         importClause.namedBindings
       ) {
         throw createError(
           importClause,
           'A type-only import can specify a default import or named bindings, but not both.',
+        );
+      }
+
+      const isNamedImport =
+        importClause?.namedBindings?.kind === SyntaxKind.NamedImports;
+
+      const isDefaultImport = !!importClause?.name;
+
+      if (importPhase === 'defer' && isNamedImport) {
+        throw createError(
+          importClause,
+          'Named imports are not allowed in a deferred import.',
+        );
+      }
+
+      if (importPhase === 'defer' && isDefaultImport) {
+        throw createError(
+          importClause,
+          'Default imports are not allowed in a deferred import.',
         );
       }
 
@@ -557,6 +599,30 @@ export function checkSyntaxError(
             ? 'An abstract accessor cannot have an implementation.'
             : `Method '${declarationNameToString(node.name)}' cannot have an implementation because it is marked abstract.`,
         );
+      }
+      break;
+    }
+
+    case SyntaxKind.MetaProperty: {
+      const metaObject = getTextForTokenKind(node.keywordToken);
+      const metaPropertyName = node.name.text;
+      if (metaObject === 'import') {
+        if (
+          metaPropertyName === 'defer' &&
+          node.parent.kind !== SyntaxKind.CallExpression
+        ) {
+          throw createError(
+            node,
+            "'import.defer' is only valid when called. Use 'import.defer()' instead.",
+          );
+        }
+
+        if (metaPropertyName !== 'meta') {
+          throw createError(
+            node,
+            `'${metaPropertyName}' is not a valid meta-property for keyword 'import'.`,
+          );
+        }
       }
       break;
     }

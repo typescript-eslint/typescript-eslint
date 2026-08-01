@@ -1,0 +1,6 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > defer-named > TSESTree - Error`]
+TSError
+> 1 | import defer { named } from 'mod';
+    |        ^^^^^^^^^^^^^^^ Named imports are not allowed in a deferred import.

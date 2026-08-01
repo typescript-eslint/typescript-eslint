@@ -75,7 +75,7 @@ function doIndent(line: string, indent: number): string {
   return line;
 }
 
-function getQuote(code: string): "'" | '"' | null {
+function getSafeWrappingQuote(code: string): "'" | '"' | null {
   const hasSingleQuote = code.includes("'");
   const hasDoubleQuote = code.includes('"');
   if (hasSingleQuote && hasDoubleQuote) {
@@ -86,10 +86,18 @@ function getQuote(code: string): "'" | '"' | null {
   return hasSingleQuote ? '"' : "'";
 }
 
-function escapeTemplateString(code: string): string {
+function escapeForTemplateString(code: string): string {
   let fixed = code;
+  fixed = fixed.replaceAll('\\', '\\\\');
   fixed = fixed.replaceAll(BACKTICK_REGEX, '\\`');
   fixed = fixed.replaceAll(TEMPLATE_EXPR_OPENER, '\\${');
+  return fixed;
+}
+
+function escapeForStringLiteral(code: string, quote: string): string {
+  let fixed = code;
+  fixed = fixed.replaceAll('\\', '\\\\');
+  fixed = fixed.replaceAll(quote, `\\${quote}`);
   return fixed;
 }
 
@@ -264,16 +272,16 @@ export default createRule<Options, MessageIds>({
                 // formatted string is multiline, then have to use backticks
                 return fixer.replaceText(
                   literal,
-                  `\`${escapeTemplateString(output)}\``,
+                  `\`${escapeForTemplateString(output)}\``,
                 );
               }
 
-              const quote = quoteIn ?? getQuote(output);
-              if (quote == null) {
-                return null;
-              }
+              const quote = quoteIn ?? getSafeWrappingQuote(output) ?? "'";
 
-              return fixer.replaceText(literal, `${quote}${output}${quote}`);
+              return fixer.replaceText(
+                literal,
+                `${quote}${escapeForStringLiteral(output, quote)}${quote}`,
+              );
             },
           });
         }
@@ -302,7 +310,7 @@ export default createRule<Options, MessageIds>({
           node: literal,
           messageId: 'singleLineQuotes',
           fix(fixer) {
-            const quote = getQuote(text);
+            const quote = getSafeWrappingQuote(text);
             if (quote == null) {
               return null;
             }
@@ -445,7 +453,7 @@ export default createRule<Options, MessageIds>({
           fix(fixer) {
             return fixer.replaceText(
               literal,
-              `\`\n${escapeTemplateString(formattedIndented)}\n${doIndent(
+              `\`\n${escapeForTemplateString(formattedIndented)}\n${doIndent(
                 '',
                 parentIndent,
               )}\``,
@@ -474,7 +482,10 @@ export default createRule<Options, MessageIds>({
           messageId: 'noUnnecessaryNoFormat',
           fix(fixer) {
             if (expr.loc.start.line === expr.loc.end.line) {
-              return fixer.replaceText(expr, `'${escapeTemplateString(text)}'`);
+              return fixer.replaceText(
+                expr,
+                `'${escapeForTemplateString(text)}'`,
+              );
             }
             return fixer.replaceText(expr.tag, '');
           },

@@ -33,7 +33,7 @@ export default createRule<Options, MessageIds>({
           allowDestructuring: {
             type: 'boolean',
             description:
-              'Whether to ignore destructurings, such as `const { props, state } = this`.',
+              'Whether to ignore destructuring, such as `const { props, state } = this`.',
           },
           allowedNames: {
             type: 'array',

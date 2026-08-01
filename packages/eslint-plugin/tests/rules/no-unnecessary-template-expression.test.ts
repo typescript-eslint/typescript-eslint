@@ -141,7 +141,19 @@ this code has trailing whitespace: \${\`    \`}
     \`;
     `,
     noFormat`
-\`this code has trailing whitespace with a windows \\\r new line: \${' '}\r\n\`;
+\`this code has trailing whitespace with a CRLF (windows \\\r) new line: \${' '}\r\n\`;
+    `,
+    noFormat`
+\`this code has trailing whitespace with a CR new line: \${' '}\r\`;
+    `,
+    `
+\`this code has trailing whitespace with a LF new line: \${' '}\n\`;
+    `,
+    `
+\`this code has trailing whitespace with a LS new line: \${' '}\u2028\`;
+    `,
+    `
+\`this code has trailing whitespace with a PS new line: \${' '}\u2029\`;
     `,
     `
 \`trailing position interpolated empty string also makes whitespace clear    \${''}
@@ -208,7 +220,19 @@ type Foo =
 \`;
     `,
     noFormat`
-type Foo = \`this code has trailing whitespace with a windows \\\r new line: \${\` \`}\r\n\`;
+type Foo = \`this code has trailing whitespace with a CRLF (windows \\\r) new line: \${\` \`}\r\n\`;
+    `,
+    noFormat`
+type Foo = \`this code has trailing whitespace with a CR new line: \${\` \`}\r\`;
+    `,
+    `
+type Foo = \`this code has trailing whitespace with a LF new line: \${\` \`}\n\`;
+    `,
+    `
+type Foo = \`this code has trailing whitespace with a LS new line: \${\` \`}\u2028\`;
+    `,
+    `
+type Foo = \`this code has trailing whitespace with a PS new line: \${\` \`}\u2029\`;
     `,
     "type Foo = `${'foo' | 'bar' | null}`;",
 

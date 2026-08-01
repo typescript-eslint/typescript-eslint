@@ -368,8 +368,7 @@ function collectTypeParameterUsageCounts(
 
     if (tsutils.isTypeParameter(type)) {
       const declaration = type.getSymbol()?.getDeclarations()?.[0] as
-        | ts.TypeParameterDeclaration
-        | undefined;
+        ts.TypeParameterDeclaration | undefined;
 
       if (declaration) {
         incrementIdentifierCount(declaration.name, assumeMultipleUses);
@@ -458,6 +457,12 @@ function collectTypeParameterUsageCounts(
           // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
           // They have properties, so we need to avoid double-counting.
           visitType(type.templateType ?? type.constraintType, false);
+        }
+
+        // TS doesn't count mapped types key remapping (`{[K in 'a' as T]: K}`)
+        // but handles this under `MappedType.nameType`, so we need to visit that too.
+        if (type.nameType) {
+          visitType(type.nameType, false);
         }
       }
 
@@ -550,6 +555,7 @@ interface MappedType extends ts.ObjectType {
   constraintType?: ts.Type;
   templateType?: ts.Type;
   typeParameter: ts.Type;
+  nameType?: ts.Type;
 }
 
 function isMappedType(type: ts.Type): type is MappedType {

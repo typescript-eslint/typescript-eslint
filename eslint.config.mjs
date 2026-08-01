@@ -418,6 +418,7 @@ export default defineConfig(
       '@typescript-eslint/internal/no-dynamic-tests': 'error',
       '@typescript-eslint/internal/no-multiple-lines-of-errors': 'error',
       '@typescript-eslint/internal/plugin-test-formatting': 'error',
+      'eslint-plugin/require-test-error-positions': 'error',
     },
   },
 

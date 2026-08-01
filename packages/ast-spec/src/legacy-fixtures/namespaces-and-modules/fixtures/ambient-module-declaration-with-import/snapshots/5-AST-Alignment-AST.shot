@@ -18,6 +18,7 @@ Snapshot Diff:
 -             attributes: Array [],
 +             assertions: Array [],
               importKind: 'value',
+-             phase: null,
               source: Literal {
                 type: 'Literal',
                 raw: '\'fs\'',

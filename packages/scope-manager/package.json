@@ -1,13 +1,10 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.60.0",
+  "version": "8.65.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
@@ -39,13 +36,14 @@
   "scripts": {
     "build": "pnpm exec nx build",
     "clean": "rimraf dist/ coverage/",
-    "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
+    "clean-fixtures": "rimraf -g \"./tests/fixtures/**/*.shot\"",
     "format": "pnpm -w run format",
     "generate-lib": "pnpm -w exec nx generate-lib repo",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
     "@typescript-eslint/types": "workspace:*",
@@ -76,7 +74,8 @@
       "lint": {
         "command": "eslint"
       },
-      "typecheck:tsgo": {}
+      "typecheck:tsgo": {},
+      "attw-check": {}
     }
   }
 }

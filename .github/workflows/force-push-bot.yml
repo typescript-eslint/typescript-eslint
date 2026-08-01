@@ -18,6 +18,8 @@ jobs:
     permissions:
       pull-requests: write
 
+    if: github.event.pull_request.user.login != 'renovate[bot]'
+
     steps:
       # Uses the GitHub Compare API instead of checkout, so no fork code ever
       # touches the runner.
