@@ -6,16 +6,6 @@ import * as path from 'node:path';
 export function createRuleTesterWithTypes(
   providedParserOptions: ParserOptions | undefined = {},
 ): RuleTester {
-  const parserOptions = createRuleTesterParserOptions(providedParserOptions);
-
-  return new RuleTester({
-    languageOptions: { parserOptions },
-  });
-}
-
-export function createRuleTesterParserOptions(
-  providedParserOptions: ParserOptions | undefined = {},
-): ParserOptions {
   const parserOptions = {
     ...providedParserOptions,
     tsconfigRootDir:
@@ -27,7 +17,9 @@ export function createRuleTesterParserOptions(
   // See: https://github.com/typescript-eslint/typescript-eslint/issues/11676
   parserOptions.projectService ??= !parserOptions.project;
 
-  return parserOptions;
+  return new RuleTester({
+    languageOptions: { parserOptions },
+  });
 }
 
 export function getFixturesRootDir(): string {

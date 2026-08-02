@@ -1,13 +1,13 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../../../src/rules/prefer-optional-chain';
-import { createRuleTesterParserOptions } from '../../../RuleTester';
+import rule from '../../../src/rules/prefer-optional-chain';
+import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
-  languageOptions: { parserOptions: createRuleTesterParserOptions() },
+  languageOptions: { parserOptions: { tsconfigRootDir: getFixturesRootDir() } },
 });
 
-ruleTester.run('prefer-optional-chain', rule, {
+ruleTester.run('prefer-optional-chain-ignore-spacing', rule, {
   valid: [],
   // One base case does not match the mutator, so we have to dedupe it
   invalid: [

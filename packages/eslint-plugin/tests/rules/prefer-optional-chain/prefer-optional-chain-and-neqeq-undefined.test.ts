@@ -1,13 +1,13 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../../../../../src/rules/prefer-optional-chain';
-import { createRuleTesterParserOptions } from '../../../../../RuleTester';
+import rule from '../../../src/rules/prefer-optional-chain';
+import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
-  languageOptions: { parserOptions: createRuleTesterParserOptions() },
+  languageOptions: { parserOptions: { tsconfigRootDir: getFixturesRootDir() } },
 });
 
-ruleTester.run('prefer-optional-chain', rule, {
+ruleTester.run('prefer-optional-chain-and-neqeq-undefined', rule, {
   // with the `| null | undefined` type - `!== undefined` doesn't cover the
   // `null` case - so optional chaining is not a valid conversion
   valid: [
