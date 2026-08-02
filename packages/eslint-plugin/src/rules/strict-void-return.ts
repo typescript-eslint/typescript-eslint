@@ -17,8 +17,6 @@ type MessageId =
   | `nonVoidFunc`
   | `nonVoidReturn`
   | `suggestAddVoidOp`
-  | `suggestMakeSyncFunc`
-  | `suggestRemoveFuncBody`
   | `suggestWrapInAsyncIIFE`;
 
 export default util.createRule<Options, MessageId>({
@@ -39,8 +37,6 @@ export default util.createRule<Options, MessageId>({
       nonVoidReturn:
         'Value returned in a context where a void return is expected.',
       suggestAddVoidOp: 'Add a void operator to discard the return value.',
-      suggestMakeSyncFunc: 'Make the function synchronous.',
-      suggestRemoveFuncBody: 'Remove the function body.',
       suggestWrapInAsyncIIFE: 'Wrap the function body in an async IIFE.',
     },
     schema: [
@@ -400,57 +396,26 @@ export default util.createRule<Options, MessageId>({
       if (funcNode.async) {
         // The provided function is an async function.
 
-        if (
-          funcNode.body.type === AST_NODE_TYPES.BlockStatement &&
-          funcNode.body.body.length === 0
-        ) {
-          // This async function is empty, e.g. `async () => {}`.
-          // Replace it with a sync empty function.
-          return context.report({
-            loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: 'asyncFunc',
-            suggest: [
-              {
-                messageId: 'suggestMakeSyncFunc',
-                fix: fixer => makeSyncFuncFix(fixer, funcNode),
-              },
-            ],
-          });
-        }
-
         if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
           // This async function is an arrow function shorthand without braces.
 
-          if (!ASTUtils.hasSideEffect(funcNode.body, sourceCode)) {
-            // This async function has no side effects, e.g. `async () => value`.
-            // Remove async keyword and replace body with empty block.
-            return context.report({
-              loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-              messageId: 'asyncFunc',
-              suggest: [
-                {
-                  messageId: 'suggestRemoveFuncBody',
-                  fix: fixer => removeFuncBodyFix(fixer, funcNode),
-                },
-              ],
-            });
-          }
-
-          // This async function has side effects, e.g. `async () => doSomething()`.
-          // Remove async keyword and add a void operator to discard the return value.
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
             messageId: 'asyncFunc',
-            suggest: [
-              {
-                messageId: 'suggestAddVoidOp',
-                fix: fixer =>
-                  addVoidToArrowFix(
-                    fixer,
-                    funcNode as TSESTree.ArrowFunctionExpression,
-                  ),
-              },
-            ],
+            suggest: ASTUtils.hasSideEffect(funcNode.body, sourceCode)
+              ? // This function has side effects, e.g. `async () => doSomething()`.
+                // Suggest removing the async keyword and adding a void operator.
+                [
+                  {
+                    messageId: 'suggestAddVoidOp',
+                    fix: fixer =>
+                      addVoidToArrowFix(
+                        fixer,
+                        funcNode as TSESTree.ArrowFunctionExpression,
+                      ),
+                  },
+                ]
+              : [],
           });
         }
 
@@ -458,7 +423,7 @@ export default util.createRule<Options, MessageId>({
         // Suggest wrapping its body in an async IIFE.
         return context.report({
           loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-          messageId: `asyncFunc`,
+          messageId: 'asyncFunc',
           suggest: [
             {
               messageId: 'suggestWrapInAsyncIIFE',
@@ -472,37 +437,23 @@ export default util.createRule<Options, MessageId>({
 
       if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
         // This function is an arrow function shorthand without braces.
-
-        if (!ASTUtils.hasSideEffect(funcNode.body, sourceCode)) {
-          // This function has no side effects, e.g. `() => value`.
-          // Replace body with empty block.
-          return context.report({
-            node: funcNode.body,
-            messageId: 'nonVoidReturn',
-            suggest: [
-              {
-                messageId: 'suggestRemoveFuncBody',
-                fix: fixer => removeFuncBodyFix(fixer, funcNode),
-              },
-            ],
-          });
-        }
-
-        // This function has side effects, e.g. `() => doSomething()`.
-        // Add a void operator to discard the return value.
         return context.report({
           node: funcNode.body,
-          messageId: `nonVoidReturn`,
-          suggest: [
-            {
-              messageId: 'suggestAddVoidOp',
-              fix: fixer =>
-                addVoidToArrowFix(
-                  fixer,
-                  funcNode as TSESTree.ArrowFunctionExpression,
-                ),
-            },
-          ],
+          messageId: 'nonVoidReturn',
+          suggest: ASTUtils.hasSideEffect(funcNode.body, sourceCode)
+            ? // This function has side effects, e.g. `() => doSomething()`.
+              // Suggest adding a void operator.
+              [
+                {
+                  messageId: 'suggestAddVoidOp',
+                  fix: fixer =>
+                    addVoidToArrowFix(
+                      fixer,
+                      funcNode as TSESTree.ArrowFunctionExpression,
+                    ),
+                },
+              ]
+            : [],
         });
       }
 
