@@ -1946,5 +1946,114 @@ declare function foo(arg: (keyof Foo)[]): void;
         },
       ],
     },
+    {
+      code: 'declare function foo<T extends () => void>(arg: T | string): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: (() => void) | string): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  x: string;
+  shared: string;
+}
+interface B {
+  y: string;
+  shared: string;
+}
+declare function foo<T extends A | B>(k: keyof T): void;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+interface A {
+  x: string;
+  shared: string;
+}
+interface B {
+  y: string;
+  shared: string;
+}
+declare function foo(k: keyof (A | B)): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+declare function bar<T extends new () => Foo>(arg: T[]): void;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class Foo {}
+declare function bar(arg: (new () => Foo)[]): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo<T extends () => Promise<string>>(
+  arg: T extends () => Promise<infer R> ? R : never,
+): void;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare function foo(
+  arg: (() => Promise<string>) extends () => Promise<infer R> ? R : never,
+): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends readonly string[]>(x: T[]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(x: (readonly string[])[]): void;',
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
