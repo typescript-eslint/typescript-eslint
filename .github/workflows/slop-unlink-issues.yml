@@ -51,7 +51,7 @@ jobs:
           body=$(gh pr view "$PR" --repo "$REPO" --json body --jq .body)
 
           for issue in $issues; do
-            body=$(printf '%s' "$body" | perl -pe "s/#$issue\b/#000/g")
+            body=$(printf '%s' "$body" | perl -pe "s/#$issue\b/#~$issue~/g")
           done
 
           gh pr edit "$PR" --repo "$REPO" --body "$body"
