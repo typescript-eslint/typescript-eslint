@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures element AccessorProperty _error_ modifier-abstract-property-with-value Babel - Error 1`] = `[SyntaxError: Property 'property' cannot have an initializer because it is marked abstract. (2:20)]`;

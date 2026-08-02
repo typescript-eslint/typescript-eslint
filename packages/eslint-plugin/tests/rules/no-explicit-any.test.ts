@@ -368,6 +368,8 @@ interface Garply4 {
       errors: [
         {
           column: 15,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -388,6 +390,8 @@ interface Garply4 {
       errors: [
         {
           column: 21,
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -408,6 +412,8 @@ interface Garply4 {
       errors: [
         {
           column: 27,
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -428,6 +434,8 @@ interface Garply4 {
       errors: [
         {
           column: 21,
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -448,6 +456,8 @@ interface Garply4 {
       errors: [
         {
           column: 31,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -468,6 +478,8 @@ interface Garply4 {
       errors: [
         {
           column: 25,
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -488,6 +500,8 @@ interface Garply4 {
       errors: [
         {
           column: 31,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -503,6 +517,8 @@ interface Garply4 {
         },
         {
           column: 44,
+          endColumn: 47,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -523,6 +539,8 @@ interface Garply4 {
       errors: [
         {
           column: 33,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -543,6 +561,8 @@ interface Garply4 {
       errors: [
         {
           column: 27,
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -567,6 +587,8 @@ class Greeter {
       errors: [
         {
           column: 28,
+          endColumn: 31,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -599,6 +621,8 @@ class Greeter {
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -631,6 +655,8 @@ class Greeter {
       errors: [
         {
           column: 18,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -663,6 +689,8 @@ class Greeter {
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -695,6 +723,8 @@ class Greeter {
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -727,6 +757,8 @@ class Greeter {
       errors: [
         {
           column: 18,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -759,6 +791,8 @@ interface Greeter {
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -791,6 +825,8 @@ interface Greeter {
       errors: [
         {
           column: 18,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -823,6 +859,8 @@ interface Greeter {
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -855,6 +893,8 @@ interface Greeter {
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -887,6 +927,8 @@ interface Greeter {
       errors: [
         {
           column: 18,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -919,6 +961,8 @@ type obj = {
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -951,6 +995,8 @@ type obj = {
       errors: [
         {
           column: 18,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -983,6 +1029,8 @@ type obj = {
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1015,6 +1063,8 @@ type obj = {
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1047,6 +1097,8 @@ type obj = {
       errors: [
         {
           column: 18,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1079,6 +1131,8 @@ type obj = {
       errors: [
         {
           column: 21,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1111,6 +1165,8 @@ type obj = {
       errors: [
         {
           column: 27,
+          endColumn: 30,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1143,6 +1199,8 @@ type obj = {
       errors: [
         {
           column: 21,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1175,6 +1233,8 @@ type obj = {
       errors: [
         {
           column: 33,
+          endColumn: 36,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1207,6 +1267,8 @@ type obj = {
       errors: [
         {
           column: 27,
+          endColumn: 30,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1239,6 +1301,8 @@ type obj = {
       errors: [
         {
           column: 21,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1271,6 +1335,8 @@ type obj = {
       errors: [
         {
           column: 27,
+          endColumn: 30,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1303,6 +1369,8 @@ type obj = {
       errors: [
         {
           column: 21,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1335,6 +1403,8 @@ type obj = {
       errors: [
         {
           column: 33,
+          endColumn: 36,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1367,6 +1437,8 @@ type obj = {
       errors: [
         {
           column: 27,
+          endColumn: 30,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1395,6 +1467,8 @@ type obj = {
       errors: [
         {
           column: 15,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1410,6 +1484,8 @@ type obj = {
         },
         {
           column: 32,
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1430,6 +1506,8 @@ type obj = {
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1445,6 +1523,8 @@ type obj = {
         },
         {
           column: 41,
+          endColumn: 44,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1465,6 +1545,8 @@ type obj = {
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1482,6 +1564,8 @@ type obj = {
         },
         {
           column: 44,
+          endColumn: 47,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1499,6 +1583,8 @@ type obj = {
         },
         {
           column: 54,
+          endColumn: 57,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1521,6 +1607,8 @@ type obj = {
       errors: [
         {
           column: 9,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1541,6 +1629,8 @@ type obj = {
       errors: [
         {
           column: 5,
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1565,6 +1655,8 @@ const test = <T extends Partial<any>>() => {};
       errors: [
         {
           column: 33,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1586,6 +1678,8 @@ const test = <T extends Partial<any>>() => {};
         },
         {
           column: 33,
+          endColumn: 36,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1617,6 +1711,8 @@ const test = <T extends Partial<never>>() => {};
       errors: [
         {
           column: 42,
+          endColumn: 45,
+          endLine: 2,
           line: 2,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1645,6 +1741,8 @@ const test = <T extends Partial<never>>() => {};
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1666,6 +1764,8 @@ const test = <T extends Partial<never>>() => {};
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1687,6 +1787,8 @@ const test = <T extends Partial<never>>() => {};
       errors: [
         {
           column: 33,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1708,6 +1810,8 @@ const test = <T extends Partial<never>>() => {};
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1733,6 +1837,8 @@ interface Qux5 {
       errors: [
         {
           column: 13,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1762,6 +1868,8 @@ interface Qux5 {
       errors: [
         {
           column: 30,
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1783,6 +1891,8 @@ interface Qux5 {
       errors: [
         {
           column: 29,
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1803,6 +1913,8 @@ interface Qux5 {
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1824,6 +1936,8 @@ interface Qux5 {
       errors: [
         {
           column: 29,
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1849,6 +1963,8 @@ interface Grault5 {
       errors: [
         {
           column: 17,
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1882,6 +1998,8 @@ interface Garply5 {
       errors: [
         {
           column: 14,
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1911,6 +2029,8 @@ interface Garply5 {
       errors: [
         {
           column: 34,
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1932,6 +2052,8 @@ interface Garply5 {
       errors: [
         {
           column: 19,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1958,6 +2080,8 @@ const integer = <
       errors: [
         {
           column: 22,
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -1984,6 +2108,8 @@ const integer = <
       errors: [
         {
           column: 19,
+          endColumn: 22,
+          endLine: 2,
           line: 2,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -2013,6 +2139,8 @@ const integer = <
       errors: [
         {
           column: 22,
+          endColumn: 25,
+          endLine: 4,
           line: 4,
           messageId: 'unexpectedAny',
           suggestions: [
@@ -2056,6 +2184,8 @@ const number: any = 1;
       errors: [
         {
           column: 15,
+          endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedAny',
           suggestions: [

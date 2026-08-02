@@ -603,6 +603,30 @@ export function checkSyntaxError(
       break;
     }
 
+    case SyntaxKind.MetaProperty: {
+      const metaObject = getTextForTokenKind(node.keywordToken);
+      const metaPropertyName = node.name.text;
+      if (metaObject === 'import') {
+        if (
+          metaPropertyName === 'defer' &&
+          node.parent.kind !== SyntaxKind.CallExpression
+        ) {
+          throw createError(
+            node,
+            "'import.defer' is only valid when called. Use 'import.defer()' instead.",
+          );
+        }
+
+        if (metaPropertyName !== 'meta') {
+          throw createError(
+            node,
+            `'${metaPropertyName}' is not a valid meta-property for keyword 'import'.`,
+          );
+        }
+      }
+      break;
+    }
+
     case SyntaxKind.ObjectLiteralExpression: {
       if (!allowPattern) {
         for (const property of node.properties) {
