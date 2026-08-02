@@ -46,7 +46,7 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Install
@@ -67,7 +67,7 @@ jobs:
       project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 2
           persist-credentials: false
@@ -123,7 +123,7 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Install
@@ -142,7 +142,7 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Install
@@ -163,7 +163,7 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Install
@@ -199,7 +199,7 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Install
@@ -221,7 +221,7 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Install
@@ -280,7 +280,7 @@ jobs:
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - uses: ./.github/actions/prepare-install
@@ -298,7 +298,7 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Install
@@ -312,6 +312,80 @@ jobs:
         run: pnpm run test-integration
         env:
           CI: true
+
+  ast_spec_snapshots_clean:
+    name: Verify ast-spec snapshots are clean
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build, affected-for-tests]
+    if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.unit_tests_packages), 'ast-spec') }}
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Delete all ast-spec fixture snapshots
+        run: pnpm exec nx run ast-spec:clean-fixtures
+
+      - name: Regenerate ast-spec fixture snapshots
+        run: pnpm exec nx test ast-spec -u
+        env:
+          CI: true
+
+      - name: Fail if regenerating snapshots produced a diff
+        run: |
+          changes="$(git status --porcelain -- packages/ast-spec/src)"
+          if [ -n "$changes" ]; then
+            echo "$changes"
+            echo "::error::Regenerating ast-spec fixture snapshots from scratch produced a different set of files than what is committed. This means some snapshot files are stale/orphaned/missing in git. Run 'pnpm exec nx run ast-spec:clean-fixtures && pnpm exec nx test ast-spec' locally and commit the resulting changes."
+            exit 1
+          fi
+
+  scope_manager_snapshots_clean:
+    name: Verify scope-manager snapshots are clean
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build, affected-for-tests]
+    if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.unit_tests_packages), 'scope-manager') }}
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Delete all scope-manager fixture snapshots
+        run: pnpm exec nx run scope-manager:clean-fixtures
+
+      - name: Regenerate scope-manager fixture snapshots
+        run: pnpm exec nx test scope-manager -u
+        env:
+          CI: true
+
+      - name: Fail if regenerating snapshots produced a diff
+        run: |
+          changes="$(git status --porcelain -- packages/scope-manager/tests/fixtures)"
+          if [ -n "$changes" ]; then
+            echo "$changes"
+            echo "::error::Regenerating scope-manager fixture snapshots from scratch produced a different set of files than what is committed. This means some snapshot files are stale/orphaned/missing in git. Run 'pnpm exec nx run scope-manager:clean-fixtures && pnpm exec nx test scope-manager' locally and commit the resulting changes."
+            exit 1
+          fi
 
   plugin_unit_tests:
     # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
@@ -338,7 +412,7 @@ jobs:
           ]
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 2
           persist-credentials: false
@@ -410,7 +484,7 @@ jobs:
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 2
           persist-credentials: false
@@ -460,7 +534,7 @@ jobs:
       COLLECT_COVERAGE: false,
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 2
           persist-credentials: false
@@ -493,6 +567,8 @@ jobs:
       - lint_with_build
       - lint_with_build_eslint
       - integration_tests
+      - ast_spec_snapshots_clean
+      - scope_manager_snapshots_clean
       - plugin_unit_tests
       - unit_tests
       - unit_tests_project_service
@@ -509,7 +585,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
 

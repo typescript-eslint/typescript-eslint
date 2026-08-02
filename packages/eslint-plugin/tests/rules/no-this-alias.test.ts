@@ -40,7 +40,15 @@ declare module 'foo' {
   invalid: [
     {
       code: 'const self = this;',
-      errors: [{ messageId: 'thisAssignment' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
+          messageId: 'thisAssignment',
+        },
+      ],
       options: [
         {
           allowDestructuring: true,
@@ -49,18 +57,42 @@ declare module 'foo' {
     },
     {
       code: 'const self = this;',
-      errors: [{ messageId: 'thisAssignment' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
+          messageId: 'thisAssignment',
+        },
+      ],
     },
     {
       code: `
 let that;
 that = this;
       `,
-      errors: [{ messageId: 'thisAssignment' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'thisAssignment',
+        },
+      ],
     },
     {
       code: 'const { props, state } = this;',
-      errors: [{ messageId: 'thisDestructure' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'thisDestructure',
+        },
+      ],
       options: [
         {
           allowDestructuring: false,
@@ -79,9 +111,27 @@ const testLambda = () => {
 };
       `,
       errors: [
-        { messageId: 'thisAssignment' },
-        { messageId: 'thisAssignment' },
-        { messageId: 'thisAssignment' },
+        {
+          column: 5,
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'thisAssignment',
+        },
+        {
+          column: 7,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'thisAssignment',
+        },
+        {
+          column: 9,
+          endColumn: 17,
+          endLine: 8,
+          line: 8,
+          messageId: 'thisAssignment',
+        },
       ],
     },
     {
@@ -106,13 +156,55 @@ class TestClass {
 }
       `,
       errors: [
-        { messageId: 'thisAssignment' },
-        { messageId: 'thisAssignment' },
-        { messageId: 'thisAssignment' },
-        { messageId: 'thisDestructure' },
-        { messageId: 'thisDestructure' },
-        { messageId: 'thisDestructure' },
-        { messageId: 'thisDestructure' },
+        {
+          column: 11,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'thisAssignment',
+        },
+        {
+          column: 11,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'thisAssignment',
+        },
+        {
+          column: 11,
+          endColumn: 27,
+          endLine: 13,
+          line: 13,
+          messageId: 'thisAssignment',
+        },
+        {
+          column: 11,
+          endColumn: 18,
+          endLine: 14,
+          line: 14,
+          messageId: 'thisDestructure',
+        },
+        {
+          column: 11,
+          endColumn: 31,
+          endLine: 15,
+          line: 15,
+          messageId: 'thisDestructure',
+        },
+        {
+          column: 11,
+          endColumn: 16,
+          endLine: 16,
+          line: 16,
+          messageId: 'thisDestructure',
+        },
+        {
+          column: 11,
+          endColumn: 21,
+          endLine: 17,
+          line: 17,
+          messageId: 'thisDestructure',
+        },
       ],
       options: [
         {

@@ -94,6 +94,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 27,
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'preferConstAssertion',
         },
@@ -105,6 +107,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 23,
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'preferConstAssertion',
         },
@@ -116,6 +120,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'variableConstAssertion',
           suggestions: [
@@ -133,6 +139,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 10,
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'variableConstAssertion',
           suggestions: [
@@ -150,6 +158,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 10,
+          endColumn: 11,
+          endLine: 1,
           line: 1,
           messageId: 'variableConstAssertion',
           suggestions: [
@@ -167,6 +177,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 27,
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'preferConstAssertion',
         },
@@ -178,6 +190,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'preferConstAssertion',
         },
@@ -189,6 +203,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'preferConstAssertion',
         },
@@ -200,6 +216,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 20,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'preferConstAssertion',
         },
@@ -211,6 +229,8 @@ ruleTester.run('prefer-as-const', rule, {
       errors: [
         {
           column: 16,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'preferConstAssertion',
         },
@@ -226,6 +246,8 @@ class foo {
       errors: [
         {
           column: 8,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'variableConstAssertion',
           suggestions: [
@@ -251,6 +273,8 @@ class foo {
       errors: [
         {
           column: 8,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'variableConstAssertion',
           suggestions: [
@@ -276,6 +300,8 @@ class foo {
       errors: [
         {
           column: 10,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'preferConstAssertion',
         },
@@ -295,6 +321,8 @@ class foo {
       errors: [
         {
           column: 18,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'preferConstAssertion',
         },
@@ -314,6 +342,8 @@ class foo {
       errors: [
         {
           column: 14,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'preferConstAssertion',
         },
