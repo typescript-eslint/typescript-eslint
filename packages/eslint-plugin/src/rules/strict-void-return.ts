@@ -405,7 +405,7 @@ export default util.createRule<Options, MessageId>({
           funcNode.body.body.length === 0
         ) {
           // This async function is empty, e.g. `async () => {}`.
-          // Replace it with a regular empty function.
+          // Replace it with a sync empty function.
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
             messageId: 'asyncFunc',
