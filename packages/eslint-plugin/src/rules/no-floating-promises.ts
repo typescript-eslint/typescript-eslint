@@ -137,6 +137,14 @@ export default createRule<Options, MessageId>({
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
     return {
+      'ArrowFunctionExpression:has(> UnaryExpression)'(
+        node: TSESTree.ArrowFunctionExpression,
+      ): void {
+        if (node.body.type === AST_NODE_TYPES.UnaryExpression) {
+          checkNode(node.body, node.body);
+        }
+      },
+
       ExpressionStatement(node): void {
         if (options.ignoreIIFE && isAsyncIife(node)) {
           return;
@@ -144,77 +152,84 @@ export default createRule<Options, MessageId>({
 
         const expression = skipChainExpression(node.expression);
 
-        if (isKnownSafePromiseCall(expression)) {
-          return;
-        }
-
-        const { isUnhandled, nonFunctionHandler, promiseArray } =
-          isUnhandledPromise(checker, expression);
-
-        if (isUnhandled) {
-          if (promiseArray) {
-            context.report({
-              node,
-              messageId: options.ignoreVoid
-                ? 'floatingPromiseArrayVoid'
-                : 'floatingPromiseArray',
-            });
-          } else if (options.ignoreVoid) {
-            context.report({
-              node,
-              messageId: nonFunctionHandler
-                ? 'floatingUselessRejectionHandlerVoid'
-                : 'floatingVoid',
-              suggest: [
-                {
-                  messageId: 'floatingFixVoid',
-                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                    if (
-                      isParenthesized(expression, context.sourceCode) ||
-                      getOperatorPrecedenceForNode(expression) >
-                        OperatorPrecedence.Unary
-                    ) {
-                      return fixer.insertTextBefore(node, 'void ');
-                    }
-                    return [
-                      fixer.insertTextBefore(node, 'void ('),
-                      fixer.insertTextAfterRange(
-                        [expression.range[1], expression.range[1]],
-                        ')',
-                      ),
-                    ];
-                  },
-                },
-                {
-                  messageId: 'floatingFixAwait',
-                  fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
-                    addAwait(fixer, expression, node),
-                },
-              ],
-            });
-          } else {
-            context.report({
-              node,
-              messageId: nonFunctionHandler
-                ? 'floatingUselessRejectionHandler'
-                : 'floating',
-              suggest: [
-                {
-                  messageId: 'floatingFixAwait',
-                  fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
-                    addAwait(fixer, expression, node),
-                },
-              ],
-            });
-          }
-        }
+        checkNode(node, expression);
       },
     };
+
+    function checkNode(
+      node: TSESTree.Expression | TSESTree.ExpressionStatement,
+      expression: TSESTree.Expression,
+    ): void {
+      if (isKnownSafePromiseCall(expression)) {
+        return;
+      }
+
+      const { isUnhandled, nonFunctionHandler, promiseArray } =
+        isUnhandledPromise(checker, expression);
+
+      if (isUnhandled) {
+        if (promiseArray) {
+          context.report({
+            node,
+            messageId: options.ignoreVoid
+              ? 'floatingPromiseArrayVoid'
+              : 'floatingPromiseArray',
+          });
+        } else if (options.ignoreVoid) {
+          context.report({
+            node,
+            messageId: nonFunctionHandler
+              ? 'floatingUselessRejectionHandlerVoid'
+              : 'floatingVoid',
+            suggest: [
+              {
+                messageId: 'floatingFixVoid',
+                fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                  if (
+                    isParenthesized(expression, context.sourceCode) ||
+                    getOperatorPrecedenceForNode(expression) >
+                      OperatorPrecedence.Unary
+                  ) {
+                    return fixer.insertTextBefore(node, 'void ');
+                  }
+                  return [
+                    fixer.insertTextBefore(node, 'void ('),
+                    fixer.insertTextAfterRange(
+                      [expression.range[1], expression.range[1]],
+                      ')',
+                    ),
+                  ];
+                },
+              },
+              {
+                messageId: 'floatingFixAwait',
+                fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
+                  addAwait(fixer, expression, node),
+              },
+            ],
+          });
+        } else {
+          context.report({
+            node,
+            messageId: nonFunctionHandler
+              ? 'floatingUselessRejectionHandler'
+              : 'floating',
+            suggest: [
+              {
+                messageId: 'floatingFixAwait',
+                fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
+                  addAwait(fixer, expression, node),
+              },
+            ],
+          });
+        }
+      }
+    }
 
     function addAwait(
       fixer: TSESLint.RuleFixer,
       expression: TSESTree.Expression,
-      node: TSESTree.ExpressionStatement,
+      node: TSESTree.Expression | TSESTree.ExpressionStatement,
     ): TSESLint.RuleFix | TSESLint.RuleFix[] {
       if (
         expression.type === AST_NODE_TYPES.UnaryExpression &&
