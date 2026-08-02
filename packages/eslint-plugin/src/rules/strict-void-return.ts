@@ -535,19 +535,6 @@ export default util.createRule<Options, MessageId>({
     }
 
     /**
-     * Makes the function sync and replaces function body with an empty block.
-     */
-    function* removeFuncBodyFix(
-      fixer: TSESLint.RuleFixer,
-      funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-    ): Generator<TSESLint.RuleFix> {
-      yield* makeSyncFuncFix(fixer, funcNode);
-      // Replace body with empty block
-      const bodyRange = util.getRangeWithParens(funcNode.body, sourceCode);
-      yield fixer.replaceTextRange(bodyRange, '{}');
-    }
-
-    /**
      * Makes the function sync and adds a void operator to the arrow shorthand body.
      */
     function* addVoidToArrowFix(
