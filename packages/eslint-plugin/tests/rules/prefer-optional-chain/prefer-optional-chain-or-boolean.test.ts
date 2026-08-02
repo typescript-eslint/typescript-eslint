@@ -4,7 +4,12 @@ import rule from '../../../src/rules/prefer-optional-chain';
 import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
-  languageOptions: { parserOptions: { tsconfigRootDir: getFixturesRootDir() } },
+  languageOptions: {
+    parserOptions: {
+      projectService: true,
+      tsconfigRootDir: getFixturesRootDir(),
+    },
+  },
 });
 
 ruleTester.run('prefer-optional-chain-or-boolean', rule, {
