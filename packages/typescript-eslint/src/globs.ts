@@ -1,8 +1,8 @@
-const jsExtensions = ['mjs', 'js', 'cjs', 'jsx'];
-const tsExtensions = ['mts', 'ts', 'cts', 'tsx'];
+const jsExtensions = Object.freeze(['mjs', 'js', 'cjs', 'jsx']);
+const tsExtensions = Object.freeze(['mts', 'ts', 'cts', 'tsx']);
 
 /**
- * File extensions for TS- and JS-based files, provided to facilitate
+ * File extensions for JS- and TS-based files, provided to facilitate
  * programmatic construction of globs used in configs.
  */
 export const extensions = {
@@ -11,23 +11,23 @@ export const extensions = {
    *
    * The value of this property is the array `['mjs', 'js', 'cjs', 'jsx']`
    */
-  js: jsExtensions,
+  js: jsExtensions as string[],
   /**
    * File extensions (without leading .) for standard TS-based files supported by typescript-eslint.
    *
    * The value of this property is the array `['mts', 'ts', 'cts', 'tsx']`
    */
-  ts: tsExtensions,
+  ts: tsExtensions as string[],
   /**
-   * File extensions (without leading .) for both standard TS- and JS-based files supported by typescript-eslint.
+   * File extensions (without leading .) for both standard JS- and TS-based files supported by typescript-eslint.
    *
-   * The value of this property is the array `['mts', 'ts', 'cts', 'tsx', 'mjs', 'js', 'cjs', 'jsx']`
+   * The value of this property is the array `['mjs', 'js', 'cjs', 'jsx', 'mts', 'ts', 'cts', 'tsx', ]`
    */
-  jsts: [...tsExtensions, ...jsExtensions],
+  jsts: Object.freeze([...jsExtensions, ...tsExtensions]) as string[],
 };
 
 /**
- * Globs for TS- and JS-based files supported by typescript-eslint, in order to
+ * Globs for JS- and TS-based files supported by typescript-eslint, in order to
  * simplify typical configurations.
  */
 export const globs = {
@@ -83,9 +83,9 @@ export const globs = {
   ts: `**/*.{${extensions.ts.join(',')}}`,
 
   /**
-   * Glob to match both standard TS- and JS-based files supported by typescript-eslint.
+   * Glob to match both standard JS- and TS-based files supported by typescript-eslint.
    *
-   * The value of this glob is the string "**&sol;*.{mts,ts,cts,tsx,mjs,js,cjs,jsx}"
+   * The value of this glob is the string "**&sol;*.{mjs,js,cjs,jsx,mts,ts,cts,tsx}"
    *
    * @example
    * ```ts
