@@ -1,5 +1,9 @@
-const jsExtensions = Object.freeze(['mjs', 'js', 'cjs', 'jsx']);
-const tsExtensions = Object.freeze(['mts', 'ts', 'cts', 'tsx']);
+const jsExtensions = ['mjs', 'js', 'cjs', 'jsx'];
+Object.freeze(jsExtensions);
+const tsExtensions = ['mts', 'ts', 'cts', 'tsx'];
+Object.freeze(tsExtensions);
+const jstsExtensions = [...jsExtensions, ...tsExtensions];
+Object.freeze(jstsExtensions);
 
 /**
  * File extensions for JS- and TS-based files, provided to facilitate
@@ -11,19 +15,19 @@ export const extensions = {
    *
    * The value of this property is the array `['mjs', 'js', 'cjs', 'jsx']`
    */
-  js: jsExtensions as string[],
+  js: jsExtensions,
   /**
    * File extensions (without leading .) for standard TS-based files supported by typescript-eslint.
    *
    * The value of this property is the array `['mts', 'ts', 'cts', 'tsx']`
    */
-  ts: tsExtensions as string[],
+  ts: tsExtensions,
   /**
    * File extensions (without leading .) for both standard JS- and TS-based files supported by typescript-eslint.
    *
    * The value of this property is the array `['mjs', 'js', 'cjs', 'jsx', 'mts', 'ts', 'cts', 'tsx', ]`
    */
-  jsts: Object.freeze([...jsExtensions, ...tsExtensions]) as string[],
+  jsts: jstsExtensions,
 };
 
 /**
