@@ -121,14 +121,13 @@ export default createRule({
                       NullThrowsReasons.MissingParent,
                     );
 
-                    const isWeakPrecedenceTypeParent = [
-                      AST_NODE_TYPES.TSArrayType,
-                      AST_NODE_TYPES.TSIndexedAccessType,
-                      AST_NODE_TYPES.TSIntersectionType,
-                      AST_NODE_TYPES.TSUnionType,
-                      AST_NODE_TYPES.TSConditionalType,
-                      AST_NODE_TYPES.TSTypeOperator,
-                    ].some(type => grandparent.type === type);
+                    const isWeakPrecedenceTypeParent =
+                      grandparent.type === AST_NODE_TYPES.TSArrayType ||
+                      grandparent.type === AST_NODE_TYPES.TSIndexedAccessType ||
+                      grandparent.type === AST_NODE_TYPES.TSIntersectionType ||
+                      grandparent.type === AST_NODE_TYPES.TSUnionType ||
+                      grandparent.type === AST_NODE_TYPES.TSConditionalType ||
+                      grandparent.type === AST_NODE_TYPES.TSTypeOperator;
 
                     if (
                       isWeakPrecedenceConstraint &&
