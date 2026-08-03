@@ -131,14 +131,17 @@ export default createRule({
                       isWeakPrecedenceTypeParent
                     ) {
                       const fixResult = getWrappingFixer({
-                        node: referenceNode,
+                        node: referenceNode.parent,
                         innerNode: constraint,
                         sourceCode: context.sourceCode,
                         wrap: constraintNode => constraintNode,
                       })(fixer);
                       yield fixResult;
                     } else {
-                      yield fixer.replaceText(referenceNode, constraintText);
+                      yield fixer.replaceText(
+                        referenceNode.parent,
+                        constraintText,
+                      );
                     }
                   }
                 }
