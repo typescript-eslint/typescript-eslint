@@ -75,14 +75,14 @@ import tseslint from 'typescript-eslint';
 const customGlob = `src/**/*.{${tseslint.extensions.js.join(',')}}`;
 ```
 
-#### `extensions.tsjs`
+#### `extensions.jsts`
 
 Array of both TypeScript and JavaScript file extensions: `['mts', 'ts', 'cts', 'tsx', 'mjs', 'js', 'cjs', 'jsx']`
 
 ```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
 
-const customGlob = `src/**/*.{${tseslint.extensions.tsjs.join(',')}}`;
+const customGlob = `src/**/*.{${tseslint.extensions.jsts.join(',')}}`;
 ```
 
 ### `globs`
@@ -120,7 +120,7 @@ export default defineConfig(
 );
 ```
 
-#### `globs.tsjs`
+#### `globs.jsts`
 
 Matches both TypeScript and JavaScript files: `**/*.{mts,ts,cts,tsx,mjs,js,cjs,jsx}`
 
@@ -131,7 +131,7 @@ import tseslint from 'typescript-eslint';
 export default defineConfig(
   // other configs...
   {
-    files: [tseslint.globs.tsjs],
+    files: [tseslint.globs.jsts],
     rules: {
       // Rules for all TS/JS files
     },

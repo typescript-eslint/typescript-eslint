@@ -23,7 +23,7 @@ export const extensions = {
    *
    * The value of this property is the array `['mts', 'ts', 'cts', 'tsx', 'mjs', 'js', 'cjs', 'jsx']`
    */
-  tsjs: [...tsExtensions, ...jsExtensions],
+  jsts: [...tsExtensions, ...jsExtensions],
 };
 
 /**
@@ -96,7 +96,7 @@ export const globs = {
    *   // other configs...
    *   {
    *     name: 'config-for-TypeScript/JavaScript',
-   *     files: [tseslint.globs.tsjs],
+   *     files: [tseslint.globs.jsts],
    *     extends: [
    *       tseslint.configs.recommended,
    *     ],
@@ -104,7 +104,7 @@ export const globs = {
    * );
    * ```
    */
-  tsjs: `**/*.{${extensions.tsjs.join(',')}}`,
+  jsts: `**/*.{${extensions.jsts.join(',')}}`,
 
   /**
    * Glob to match TypeScript declaration files (.d.ts, .d.css.ts, .d.other-file-type.ts).
