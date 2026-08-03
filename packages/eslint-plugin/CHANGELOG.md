@@ -1,3 +1,22 @@
+## 8.66.0 (2026-08-03)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [class-literal-property-style] preserve type annotations and don't drop decorators ([#12617](https://github.com/typescript-eslint/typescript-eslint/pull/12617))
+- **eslint-plugin:** [no-unnecessary-type-parameters] check MappedType key remapping ([#12588](https://github.com/typescript-eslint/typescript-eslint/pull/12588))
+- **eslint-plugin:** [no-useless-default-assignment] don't report defaults used by other overloads ([#12607](https://github.com/typescript-eslint/typescript-eslint/pull/12607))
+- **eslint-plugin:** [prefer-nullish-coalescing] handle shadowed Boolean calls ([#12591](https://github.com/typescript-eslint/typescript-eslint/pull/12591))
+- **eslint-plugin:** [no-unnecessary-type-conversion] ignore shadowed built-ins ([#12590](https://github.com/typescript-eslint/typescript-eslint/pull/12590))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.66.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.65.0 (2026-07-20)
 
 ### 🚀 Features
