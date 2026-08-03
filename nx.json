@@ -17,6 +17,7 @@
     {
       "plugin": "@nx/vitest",
       "exclude": ["*"],
+      "outputs": ["{projectRoot}/coverage", "{projectRoot}/**/*.shot"],
       "options": {
         "testTargetName": "test",
         "typecheckTargetName": "vitest:typecheck"
