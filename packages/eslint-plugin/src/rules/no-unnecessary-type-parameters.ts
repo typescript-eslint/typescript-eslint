@@ -112,7 +112,10 @@ export default createRule({
                     const isWeakPrecedenceConstraint =
                       constraint?.type === AST_NODE_TYPES.TSUnionType ||
                       constraint?.type === AST_NODE_TYPES.TSIntersectionType ||
-                      constraint?.type === AST_NODE_TYPES.TSConditionalType;
+                      constraint?.type === AST_NODE_TYPES.TSConditionalType ||
+                      constraint?.type === AST_NODE_TYPES.TSTypeOperator ||
+                      constraint?.type === AST_NODE_TYPES.TSFunctionType ||
+                      constraint?.type === AST_NODE_TYPES.TSConstructorType;
 
                     const grandparent = nullThrows(
                       referenceNode.parent.parent,
@@ -124,6 +127,8 @@ export default createRule({
                       AST_NODE_TYPES.TSIndexedAccessType,
                       AST_NODE_TYPES.TSIntersectionType,
                       AST_NODE_TYPES.TSUnionType,
+                      AST_NODE_TYPES.TSConditionalType,
+                      AST_NODE_TYPES.TSTypeOperator,
                     ].some(type => grandparent.type === type);
 
                     if (
