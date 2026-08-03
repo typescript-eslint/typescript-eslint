@@ -164,8 +164,7 @@ const t1 = b1 && b2;
     `,
     `
 declare const b1:
-  | (string & { __brandA: string })
-  | (number & { __brandB: string });
+  (string & { __brandA: string }) | (number & { __brandB: string });
 declare const b2: boolean;
 const t1 = b1 && b2;
     `,
@@ -178,8 +177,7 @@ const t1 = b1 && b2;
     `,
     `
 declare const b1: { __brandA: string } & (
-  | ({ __brandB: string } & string)
-  | ({ __brandC: string } & number)
+  ({ __brandB: string } & string) | ({ __brandC: string } & number)
 );
 declare const b2: boolean;
 const t1 = b1 && b2;
@@ -566,7 +564,7 @@ while (true) {}
     },
     {
       code: `
-for (; true; ) {}
+for (; true;) {}
       `,
       options: [{ allowConstantLoopConditions: true }],
     },
@@ -584,19 +582,19 @@ while (true) {}
     },
     {
       code: `
-for (; true; ) {}
+for (; true;) {}
       `,
       options: [{ allowConstantLoopConditions: 'always' }],
     },
     {
       code: `
-for (; true; ) {}
+for (; true;) {}
       `,
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
-for (; 0; ) {}
+for (; 0;) {}
       `,
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
@@ -2280,7 +2278,7 @@ while (test) {}
       code: `
 declare const test: true;
 
-for (; test; ) {}
+for (; test;) {}
       `,
       errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
       options: [{ allowConstantLoopConditions: false }],
@@ -2307,7 +2305,7 @@ while (test) {}
       code: `
 declare const test: true;
 
-for (; test; ) {}
+for (; test;) {}
       `,
       errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
       options: [{ allowConstantLoopConditions: 'never' }],
@@ -2343,7 +2341,7 @@ while (test) {}
       code: `
 declare const test: true;
 
-for (; test; ) {}
+for (; test;) {}
       `,
       errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
@@ -2400,7 +2398,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo.bar;
 foo ?. bar;
@@ -2421,7 +2419,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo?.bar;
 foo . bar;
@@ -2442,7 +2440,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo?.bar;
 foo ?. bar;
@@ -2463,7 +2461,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo?.bar;
 foo ?. bar;
@@ -2497,7 +2495,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo();
 foo ?. ();
@@ -2518,7 +2516,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.();
 foo  ();
@@ -2539,7 +2537,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.();
 foo ?. ();
@@ -2560,7 +2558,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.();
 foo ?. ();
@@ -2594,7 +2592,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo(bar);
 foo ?. (bar);
@@ -2615,7 +2613,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.(bar);
 foo  (bar);
@@ -2636,7 +2634,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.(bar);
 foo ?. (bar);
@@ -2657,7 +2655,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.(bar);
 foo ?. (bar);
@@ -3535,7 +3533,7 @@ foo?.bar()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar().toExponential();
@@ -3561,7 +3559,7 @@ foo?.bar?.baz()?.qux?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz().qux?.toExponential();
@@ -3578,7 +3576,7 @@ foo?.bar?.baz().qux?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz()?.qux.toExponential();
@@ -3604,7 +3602,7 @@ foo?.()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.().toExponential();
@@ -3630,7 +3628,7 @@ foo?.['bar']()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']().toExponential();
@@ -3656,7 +3654,7 @@ foo?.['bar']?.()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.().toExponential();
@@ -3890,8 +3888,7 @@ const t1 = b1 && b2;
     {
       code: `
 declare const b1: (
-  | (string & { __brandA: string })
-  | (number & { __brandB: string })
+  (string & { __brandA: string }) | (number & { __brandB: string })
 ) &
   '';
 declare const b2: boolean;
@@ -3901,8 +3898,8 @@ const t1 = b1 && b2;
         {
           column: 12,
           endColumn: 14,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'alwaysFalsy',
         },
       ],
@@ -3962,8 +3959,7 @@ const t1 = b1 && b2;
     {
       code: `
 declare const b1: (
-  | (string & { __brandA: string })
-  | (number & { __brandB: string })
+  (string & { __brandA: string }) | (number & { __brandB: string })
 ) &
   'foo';
 declare const b2: boolean;
@@ -3973,8 +3969,8 @@ const t1 = b1 && b2;
         {
           column: 12,
           endColumn: 14,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'alwaysTruthy',
         },
       ],
@@ -3983,8 +3979,7 @@ const t1 = b1 && b2;
     {
       code: `
 declare const b1: (
-  | (string & { __brandA: string })
-  | (number & { __brandB: string })
+  (string & { __brandA: string }) | (number & { __brandB: string })
 ) &
   ('foo' | 123);
 declare const b2: boolean;
@@ -3994,8 +3989,8 @@ const t1 = b1 && b2;
         {
           column: 12,
           endColumn: 14,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'alwaysTruthy',
         },
       ],

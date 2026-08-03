@@ -1782,6 +1782,33 @@ class OtherClass extends BaseClass {
 const oc = new OtherClass();
 oc.superLogThis();
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11683
+    `
+class Foo {
+  bound = () => {};
+}
+class Bar {
+  bound = 1;
+}
+declare const union: Foo | Bar;
+const bound = union.bound;
+    `,
+    `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+declare const key: string;
+const bound = foo[key];
+    `,
+    `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+declare const bazz: string;
+foo[bazz];
+    `,
   ],
   invalid: [
     {
@@ -2845,6 +2872,105 @@ const f = objectLiteral.f;
       errors: [
         {
           line: 5,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11683
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+class Bar {
+  bazz = 1;
+}
+declare const union: Foo | Bar;
+const bound = union.bazz;
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+class Bar {
+  bazz = 1;
+}
+declare const union: Foo | Bar;
+declare const bazz: 'bazz';
+const bound = union[bazz];
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+foo['bazz'];
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+declare const bazz: keyof Foo;
+const bound = foo[bazz];
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  bazz() {}
+}
+declare const foo: Foo;
+const bound = foo[\`ba\${'zz'}\`];
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  1() {}
+}
+declare const foo: Foo;
+foo[1];
+      `,
+      errors: [
+        {
+          line: 6,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],

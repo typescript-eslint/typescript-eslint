@@ -293,7 +293,8 @@ export default createRule<Options, MessageIds>({
 
       const { flags, source } = evaluated.value;
       const isStartsWith = source.startsWith('^');
-      const isEndsWith = source.endsWith('$');
+      // ends with a $ preceded by an even number of backslashes (or zero)
+      const isEndsWith = /[^\\](\\\\)*\$$/.test(source);
       if (
         isStartsWith === isEndsWith ||
         flags.includes('i') ||

@@ -6,8 +6,7 @@ import { isConstructor, isSetter, isTypeAssertion } from './astUtils';
 import { getFunctionHeadLoc } from './getFunctionHeadLoc';
 
 export type FunctionExpression =
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression;
+  TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression;
 export type FunctionNode = FunctionExpression | TSESTree.FunctionDeclaration;
 
 export interface FunctionInfo<T extends FunctionNode> {

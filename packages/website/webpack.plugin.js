@@ -10,10 +10,23 @@ module.exports = function (/*context, options*/) {
         externals: {
           typescript: 'window.ts',
         },
+        module: {
+          rules: [
+            {
+              resourceQuery: /raw/,
+              type: 'asset/source',
+            },
+          ],
+        },
         plugins: [
           new rspack.DefinePlugin({
             'process.env.ESLINT_VERSION': JSON.stringify(
               require('eslint/package.json').version,
+            ),
+            'process.env.SUPPORTED_TYPESCRIPT_VERSIONS': JSON.stringify(
+              // eslint-disable-next-line @typescript-eslint/no-require-imports
+              require('@typescript-eslint/typescript-estree/use-at-your-own-risk')
+                .SUPPORTED_TYPESCRIPT_VERSIONS,
             ),
             'process.env.TS_ESLINT_VERSION': JSON.stringify(
               require('@typescript-eslint/eslint-plugin/package.json').version,

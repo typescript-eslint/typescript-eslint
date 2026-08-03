@@ -20,7 +20,8 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@prettier/sync": "^0.6.1",
@@ -31,6 +32,7 @@
     "prettier": "catalog:"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
@@ -44,7 +46,8 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }

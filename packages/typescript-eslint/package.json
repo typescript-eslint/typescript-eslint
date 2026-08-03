@@ -1,12 +1,10 @@
 {
   "name": "typescript-eslint",
-  "version": "8.59.3",
+  "version": "8.65.0",
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "README.md",
-    "LICENSE"
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
@@ -47,7 +45,9 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "workspace:*",
@@ -60,6 +60,7 @@
     "typescript": ">=4.8.4 <6.1.0"
   },
   "devDependencies": {
+    "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
@@ -85,11 +86,24 @@
           "{projectRoot}/dist"
         ]
       },
+      "typecheck:tsgo": {
+        "outputs": [
+          "{workspaceRoot}/dist",
+          "{projectRoot}/dist"
+        ]
+      },
       "test": {
         "dependsOn": [
           "^build",
           "typecheck"
         ]
+      },
+      "attw-check": {
+        "cache": false,
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --ignore-rules cjs-only-exports-default"
       }
     }
   }

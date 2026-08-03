@@ -34,7 +34,7 @@ export function generateArrayType(
   }
   if (!TSUtils.isArray(schema.items) && schema.additionalItems) {
     throw new NotSupportedError(
-      'singlely-typed array with additionalItems',
+      'singly-typed array with additionalItems',
       schema,
     );
   }

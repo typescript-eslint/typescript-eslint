@@ -83,7 +83,8 @@ type Options = [
     /** Whether to ignore any logical or expressions that are part of a mixed logical expression (with `&&`). */
     ignoreMixedLogicalExpressions?: boolean;
     /** Whether to ignore all (`true`) or some (an object with properties) primitive types. */
-    ignorePrimitives?: /**
+    ignorePrimitives?:
+      /**
        * Whether to ignore all (`true`) or some (an object with properties) primitive types.
        * Which primitives types may be ignored.
        */

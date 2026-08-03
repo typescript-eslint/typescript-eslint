@@ -11,16 +11,15 @@ export function insertWhenNotToUseIt(page: RuleDocsPage): void {
     page.headingIndices.whenNotToUseIt < page.children.length - 1 &&
     page.children[page.headingIndices.whenNotToUseIt + 1].type !== 'heading';
 
-  const nextHeadingIndex =
-    page.children.findIndex(
-      child => nodeIsHeading(child) && child.depth === 2,
-      page.headingIndices.whenNotToUseIt + 1,
-    ) +
-    page.headingIndices.whenNotToUseIt +
-    1;
+  const nextHeadingIndex = page.children.findIndex(
+    (child, index) =>
+      index > page.headingIndices.whenNotToUseIt &&
+      nodeIsHeading(child) &&
+      child.depth === 2,
+  );
 
   page.spliceChildren(
-    nextHeadingIndex === -1 ? page.children.length : nextHeadingIndex - 1,
+    nextHeadingIndex === -1 ? page.children.length : nextHeadingIndex,
     0,
     ...(hasExistingText ? ['---'] : []),
     'Type checked lint rules are more powerful than traditional lint rules, but also require configuring [type checked linting](/getting-started/typed-linting).',

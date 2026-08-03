@@ -493,13 +493,9 @@ void promiseArray;
 interface SafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
+      ((value: T) => TResult1 | SafeThenable<TResult1>) | undefined | null,
     onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
+      ((reason: any) => TResult2 | SafeThenable<TResult2>) | undefined | null,
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: SafeThenable<number> = Promise.resolve(5);
@@ -516,13 +512,9 @@ let promise: SafeThenable<number> = Promise.resolve(5);
 interface SafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
+      ((value: T) => TResult1 | SafeThenable<TResult1>) | undefined | null,
     onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
+      ((reason: any) => TResult2 | SafeThenable<TResult2>) | undefined | null,
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: SafeThenable<number> = Promise.resolve(5);
@@ -575,13 +567,9 @@ promise.finally();
 interface SafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
+      ((value: T) => TResult1 | SafeThenable<TResult1>) | undefined | null,
     onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
+      ((reason: any) => TResult2 | SafeThenable<TResult2>) | undefined | null,
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: () => SafeThenable<number> = () => Promise.resolve(5);
@@ -598,13 +586,9 @@ let promise: () => SafeThenable<number> = () => Promise.resolve(5);
 interface SafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
+      ((value: T) => TResult1 | SafeThenable<TResult1>) | undefined | null,
     onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
+      ((reason: any) => TResult2 | SafeThenable<TResult2>) | undefined | null,
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: () => SafeThenable<number> = () => Promise.resolve(5);
@@ -764,13 +748,9 @@ async function* generator() {
 interface SafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
+      ((value: T) => TResult1 | SafeThenable<TResult1>) | undefined | null,
     onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
+      ((reason: any) => TResult2 | SafeThenable<TResult2>) | undefined | null,
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: () => SafeThenable<number> = () => Promise.resolve(5);
@@ -887,6 +867,33 @@ myAsyncFunction();
         },
       ],
     },
+
+    // This code makes TypeScript type checker to crash with infinite recursion
+    //
+    // See:
+    //  https://github.com/typescript-eslint/typescript-eslint/issues/11947
+    //  https://github.com/microsoft/TypeScript/issues/63441
+    `
+      interface CustomNode<P> {
+        getNextNode: () => CustomNode<P>;
+      }
+
+      declare const createNode: () => {
+        getNextNode: <T>() => CustomNode<T>;
+      };
+
+      function wrapNode<T>(getNode: () => CustomNode<T>) {
+        return getNode;
+      }
+
+      (async () => {
+        wrapNode(() => {
+          const node = createNode();
+
+          return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
+        });
+      })().catch(() => {});
+    `,
   ],
 
   invalid: [
@@ -4760,11 +4767,10 @@ cursed();
     {
       code: `
         declare const arrayOrPromiseTuple:
-          | Array<number>
-          | [number, number, Promise<unknown>, string];
+          Array<number> | [number, number, Promise<unknown>, string];
         arrayOrPromiseTuple;
       `,
-      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
     },
     {
       code: `
@@ -4778,13 +4784,9 @@ cursed();
 interface UnsafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
-      | ((value: T) => TResult1 | UnsafeThenable<TResult1>)
-      | undefined
-      | null,
+      ((value: T) => TResult1 | UnsafeThenable<TResult1>) | undefined | null,
     onrejected?:
-      | ((reason: any) => TResult2 | UnsafeThenable<TResult2>)
-      | undefined
-      | null,
+      ((reason: any) => TResult2 | UnsafeThenable<TResult2>) | undefined | null,
   ): UnsafeThenable<TResult1 | TResult2>;
 }
 let promise: UnsafeThenable<number> = Promise.resolve(5);
@@ -4792,7 +4794,7 @@ promise;
       `,
       errors: [
         {
-          line: 15,
+          line: 11,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -4801,13 +4803,9 @@ promise;
 interface UnsafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
-      | ((value: T) => TResult1 | UnsafeThenable<TResult1>)
-      | undefined
-      | null,
+      ((value: T) => TResult1 | UnsafeThenable<TResult1>) | undefined | null,
     onrejected?:
-      | ((reason: any) => TResult2 | UnsafeThenable<TResult2>)
-      | undefined
-      | null,
+      ((reason: any) => TResult2 | UnsafeThenable<TResult2>) | undefined | null,
   ): UnsafeThenable<TResult1 | TResult2>;
 }
 let promise: UnsafeThenable<number> = Promise.resolve(5);
@@ -4820,13 +4818,9 @@ void promise;
 interface UnsafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
-      | ((value: T) => TResult1 | UnsafeThenable<TResult1>)
-      | undefined
-      | null,
+      ((value: T) => TResult1 | UnsafeThenable<TResult1>) | undefined | null,
     onrejected?:
-      | ((reason: any) => TResult2 | UnsafeThenable<TResult2>)
-      | undefined
-      | null,
+      ((reason: any) => TResult2 | UnsafeThenable<TResult2>) | undefined | null,
   ): UnsafeThenable<TResult1 | TResult2>;
 }
 let promise: UnsafeThenable<number> = Promise.resolve(5);
@@ -5608,6 +5602,90 @@ void Promise.reject('foo').then(...[], () => {});
               messageId: 'floatingFixAwait',
               output: `
 await Promise.reject('foo').then(...[], () => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    // This code makes TypeScript type checker to crash with infinite recursion
+    //
+    // See:
+    //  https://github.com/typescript-eslint/typescript-eslint/issues/11947
+    //  https://github.com/microsoft/TypeScript/issues/63441
+    {
+      code: `
+        interface CustomNode<P> {
+          getNextNode: () => CustomNode<P>;
+        }
+
+        declare const createNode: () => {
+          getNextNode: <T>() => CustomNode<T>;
+        };
+
+        function wrapNode<T>(getNode: () => CustomNode<T>) {
+          return getNode;
+        }
+
+        (async () => {
+          wrapNode(() => {
+            const node = createNode();
+
+            return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
+          });
+        })();
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+        interface CustomNode<P> {
+          getNextNode: () => CustomNode<P>;
+        }
+
+        declare const createNode: () => {
+          getNextNode: <T>() => CustomNode<T>;
+        };
+
+        function wrapNode<T>(getNode: () => CustomNode<T>) {
+          return getNode;
+        }
+
+        void (async () => {
+          wrapNode(() => {
+            const node = createNode();
+
+            return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
+          });
+        })();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+        interface CustomNode<P> {
+          getNextNode: () => CustomNode<P>;
+        }
+
+        declare const createNode: () => {
+          getNextNode: <T>() => CustomNode<T>;
+        };
+
+        function wrapNode<T>(getNode: () => CustomNode<T>) {
+          return getNode;
+        }
+
+        await (async () => {
+          wrapNode(() => {
+            const node = createNode();
+
+            return wrapNode<typeof node.getNextNode<any>>(node.getNextNode);
+          });
+        })();
       `,
             },
           ],

@@ -542,39 +542,37 @@ declare module 'eslint/lib/rules/prefer-destructuring' {
 declare module 'eslint/lib/rules/no-restricted-imports' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-  namespace rule {
-    export type ArrayOfStringOrObject = (
-      | string
-      | {
-          // extended
-          allowTypeImports?: boolean;
-          importNames?: string[];
-          message?: string;
-          name: string;
-        }
-    )[];
-    export type ArrayOfStringOrObjectPatterns =
-      | string[]
-      | {
-          // extended
-          allowTypeImports?: boolean;
-          caseSensitive?: boolean;
-          group?: string[];
-          regex?: string;
-          message?: string;
-        }[];
-    export type RuleListener =
-      | Record<string, never>
-      | {
-          ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
-          ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
-          ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-        };
-  }
+  export type ArrayOfStringOrObject = (
+    | string
+    | {
+        // extended
+        allowTypeImports?: boolean;
+        importNames?: string[];
+        message?: string;
+        name: string;
+      }
+  )[];
+  export type ArrayOfStringOrObjectPatterns =
+    | string[]
+    | {
+        // extended
+        allowTypeImports?: boolean;
+        caseSensitive?: boolean;
+        group?: string[];
+        regex?: string;
+        message?: string;
+      }[];
+  export type RuleListener =
+    | Record<string, never>
+    | {
+        ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
+        ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+        ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+      };
 
   export interface ObjectOfPathsAndPatterns {
-    paths?: rule.ArrayOfStringOrObject;
-    patterns?: rule.ArrayOfStringOrObjectPatterns;
+    paths?: ArrayOfStringOrObject;
+    patterns?: ArrayOfStringOrObjectPatterns;
   }
 
   const rule: TSESLint.RuleModule<
@@ -586,9 +584,9 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
     | 'pathWithCustomMessage'
     | 'patterns'
     | 'patternWithCustomMessage',
-    [ObjectOfPathsAndPatterns] | rule.ArrayOfStringOrObject,
+    [ObjectOfPathsAndPatterns] | ArrayOfStringOrObject,
     unknown,
-    rule.RuleListener
+    RuleListener
   >;
   export = rule;
 }
