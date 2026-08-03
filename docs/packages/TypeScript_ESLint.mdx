@@ -20,7 +20,7 @@ This package exports the following:
 | --------------------- | ------------------------------------------------------------------------------------------------- |
 | `config` (deprecated) | A utility function for creating type-safe flat configs -- see [`config(...)`](#config-deprecated) |
 | `configs`             | [Shared ESLint (flat) configs](../users/Shared_Configurations.mdx)                                |
-| `exts`                | File extension arrays for TypeScript/JavaScript files -- see [`exts`](#exts)                      |
+| `extensions`          | File extension arrays for TypeScript/JavaScript files -- see [`extensions`](#extensions)          |
 | `globs`               | Predefined glob patterns for TypeScript/JavaScript files -- see [`globs`](#globs)                 |
 | `parser`              | A re-export of [`@typescript-eslint/parser`](./Parser.mdx)                                        |
 | `plugin`              | A re-export of [`@typescript-eslint/eslint-plugin`](./ESLint_Plugin.mdx)                          |
@@ -51,38 +51,38 @@ export default defineConfig({
 
 This config file exports a flat config that enables both the [core ESLint recommended config](https://www.npmjs.com/package/@eslint/js) and [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
-### `exts`
+### `extensions`
 
-The `exts` export provides arrays of file extensions (without leading dots) for TypeScript and JavaScript files. These arrays are useful when you need to programmatically construct globs or perform file extension checks.
+The `extensions` export provides arrays of file extensions (without leading dots) for TypeScript and JavaScript files. These arrays are useful when you need to programmatically construct globs or perform file extension checks.
 
-#### `exts.ts`
+#### `extensions.ts`
 
 Array of TypeScript file extensions: `['mts', 'ts', 'cts', 'tsx']`
 
 ```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
 
-const customGlob = `src/**/*.{${tseslint.exts.ts.join(',')}}`;
+const customGlob = `src/**/*.{${tseslint.extensions.ts.join(',')}}`;
 ```
 
-#### `exts.js`
+#### `extensions.js`
 
 Array of JavaScript file extensions: `['mjs', 'js', 'cjs', 'jsx']`
 
 ```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
 
-const customGlob = `src/**/*.{${tseslint.exts.js.join(',')}}`;
+const customGlob = `src/**/*.{${tseslint.extensions.js.join(',')}}`;
 ```
 
-#### `exts.tsjs`
+#### `extensions.tsjs`
 
 Array of both TypeScript and JavaScript file extensions: `['mts', 'ts', 'cts', 'tsx', 'mjs', 'js', 'cjs', 'jsx']`
 
 ```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
 
-const customGlob = `src/**/*.{${tseslint.exts.tsjs.join(',')}}`;
+const customGlob = `src/**/*.{${tseslint.extensions.tsjs.join(',')}}`;
 ```
 
 ### `globs`

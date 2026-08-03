@@ -5,7 +5,7 @@ const tsExtensions = ['mts', 'ts', 'cts', 'tsx'];
  * File extensions for TS- and JS-based files, provided to facilitate
  * programmatic construction of globs used in configs.
  */
-export const exts = {
+export const extensions = {
   /**
    * File extensions (without leading .) for standard JS-based files supported by typescript-eslint.
    *
@@ -56,7 +56,7 @@ export const globs = {
    * );
    * ```
    */
-  js: `**/*.{${exts.js.join(',')}}`,
+  js: `**/*.{${extensions.js.join(',')}}`,
 
   /**
    * Glob to match standard TS-based files supported by typescript-eslint.
@@ -80,7 +80,7 @@ export const globs = {
    * );
    * ```
    */
-  ts: `**/*.{${exts.ts.join(',')}}`,
+  ts: `**/*.{${extensions.ts.join(',')}}`,
 
   /**
    * Glob to match both standard TS- and JS-based files supported by typescript-eslint.
@@ -104,7 +104,7 @@ export const globs = {
    * );
    * ```
    */
-  tsjs: `**/*.{${exts.tsjs.join(',')}}`,
+  tsjs: `**/*.{${extensions.tsjs.join(',')}}`,
 
   /**
    * Glob to match TypeScript declaration files (.d.ts, .d.css.ts, .d.other-file-type.ts).
