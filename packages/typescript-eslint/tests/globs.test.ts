@@ -3,9 +3,10 @@ import { minimatch } from 'minimatch';
 import tseslint from '../src';
 
 const MINIMATCH_OPTIONS = { dot: true };
+
 /**
  * Helper function to call minimatch in roughly the same way that eslint uses it.
- * https://github.com/eslint/eslint/blob/main/lib/eslint/eslint-helpers.js
+ * https://github.com/eslint/eslint/blob/df321080af5758b1fa25e4b9a40e26135642dd6e/lib/eslint/eslint-helpers.js#L210
  */
 function callMinimatch(testString: string, pattern: string): boolean {
   const matcher = new minimatch.Minimatch(pattern, MINIMATCH_OPTIONS);
