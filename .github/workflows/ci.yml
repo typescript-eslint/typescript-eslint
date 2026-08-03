@@ -58,9 +58,9 @@ jobs:
     name: Determine Affected Projects for Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
     outputs:
       is_plugin_affected: ${{ steps.filter.outputs.is_plugin_affected }}
       unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
@@ -137,9 +137,9 @@ jobs:
     name: Generate Configs
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -209,9 +209,9 @@ jobs:
     name: Are The Types Wrong?
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -586,7 +586,7 @@ jobs:
       - plugin_unit_tests
       - unit_tests
       - unit_tests_project_service
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Fail if any dependency failed or was cancelled
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
@@ -596,7 +596,7 @@ jobs:
     name: Upload Codecov Coverage
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [unit_tests, plugin_unit_tests]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
