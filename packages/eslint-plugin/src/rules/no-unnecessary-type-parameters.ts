@@ -109,7 +109,7 @@ export default createRule({
                 for (const reference of smTypeParameterVariable.references) {
                   if (reference.isTypeReference) {
                     const referenceNode = reference.identifier;
-                    const isComplexType =
+                    const isWeakPrecedenceConstraint =
                       constraint?.type === AST_NODE_TYPES.TSUnionType ||
                       constraint?.type === AST_NODE_TYPES.TSIntersectionType ||
                       constraint?.type === AST_NODE_TYPES.TSConditionalType;
@@ -119,14 +119,17 @@ export default createRule({
                       NullThrowsReasons.MissingParent,
                     );
 
-                    const hasMatchingAncestorType = [
+                    const isWeakPrecedenceTypeParent = [
                       AST_NODE_TYPES.TSArrayType,
                       AST_NODE_TYPES.TSIndexedAccessType,
                       AST_NODE_TYPES.TSIntersectionType,
                       AST_NODE_TYPES.TSUnionType,
                     ].some(type => grandparent.type === type);
 
-                    if (isComplexType && hasMatchingAncestorType) {
+                    if (
+                      isWeakPrecedenceConstraint &&
+                      isWeakPrecedenceTypeParent
+                    ) {
                       const fixResult = getWrappingFixer({
                         node: referenceNode,
                         innerNode: constraint,
