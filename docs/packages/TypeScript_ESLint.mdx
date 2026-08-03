@@ -53,7 +53,7 @@ This config file exports a flat config that enables both the [core ESLint recomm
 
 ### `extensions`
 
-The `extensions` export provides arrays of file extensions (without leading dots) for TypeScript and JavaScript files. These arrays are useful when you need to programmatically construct globs or perform file extension checks.
+The `extensions` export provides arrays of standard file extensions (without leading dots) for JavaScript and TypeScript files. These arrays are useful when you need to programmatically construct globs or perform file extension checks.
 
 #### `extensions.ts`
 
@@ -77,7 +77,7 @@ const customGlob = `src/**/*.{${tseslint.extensions.js.join(',')}}`;
 
 #### `extensions.jsts`
 
-Array of both TypeScript and JavaScript file extensions: `['mts', 'ts', 'cts', 'tsx', 'mjs', 'js', 'cjs', 'jsx']`
+Array of both JavaScript and TypeScript file extensions: `['mjs', 'js', 'cjs', 'jsx', 'mts', 'ts', 'cts', 'tsx', ]`
 
 ```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
@@ -87,7 +87,7 @@ const customGlob = `src/**/*.{${tseslint.extensions.jsts.join(',')}}`;
 
 ### `globs`
 
-The `globs` export provides predefined glob patterns for matching TypeScript and JavaScript files in your ESLint configurations. These globs simplify typical configurations by providing consistent patterns for file matching.
+The `globs` export provides predefined glob patterns for matching standard JavaScript and TypeScript files in your ESLint configurations. These globs simplify typical configurations by providing consistent patterns for file matching.
 
 #### `globs.ts`
 
@@ -122,7 +122,7 @@ export default defineConfig(
 
 #### `globs.jsts`
 
-Matches both TypeScript and JavaScript files: `**/*.{mts,ts,cts,tsx,mjs,js,cjs,jsx}`
+Matches both JavaScript and TypeScript files: `**/*.{mjs,js,cjs,jsx,mts,ts,cts,tsx}`
 
 ```js title="eslint.config.mjs"
 import { defineConfig } from 'eslint/config';
@@ -133,7 +133,7 @@ export default defineConfig(
   {
     files: [tseslint.globs.jsts],
     rules: {
-      // Rules for all TS/JS files
+      // Rules for all JS/TS files
     },
   },
 );
