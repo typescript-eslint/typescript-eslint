@@ -10,7 +10,6 @@ import type { MakeRequired } from '../util';
 import {
   createRule,
   getParserServices,
-  getWrappingFixer,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -135,13 +134,10 @@ export default createRule({
                       isWeakPrecedenceConstraint &&
                       isWeakPrecedenceTypeParent
                     ) {
-                      const fixResult = getWrappingFixer({
-                        node: referenceNode.parent,
-                        innerNode: constraint,
-                        sourceCode: context.sourceCode,
-                        wrap: constraintNode => constraintNode,
-                      })(fixer);
-                      yield fixResult;
+                      yield fixer.replaceText(
+                        referenceNode.parent,
+                        `(${constraintText})`,
+                      );
                     } else {
                       yield fixer.replaceText(
                         referenceNode.parent,
