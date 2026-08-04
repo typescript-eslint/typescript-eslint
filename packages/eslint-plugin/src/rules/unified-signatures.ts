@@ -1,10 +1,20 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  ASTUtils,
+} from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
-import { arraysAreEqual, createRule, nullThrows } from '../util';
+import {
+  arraysAreEqual,
+  createRule,
+  getTextWithParentheses,
+  isParenthesized,
+  nullThrows,
+} from '../util';
 
 interface Failure {
   only2: boolean;
@@ -21,6 +31,8 @@ type Unify =
       kind: 'single-parameter-difference';
       p0: TSESTree.Parameter;
       p1: TSESTree.Parameter;
+      typeParameters0?: TSESTree.TSTypeParameterDeclaration;
+      typeParameters1?: TSESTree.TSTypeParameterDeclaration;
     };
 
 /**
@@ -77,8 +89,7 @@ export default createRule<Options, MessageIds>({
       omittingRestParameter: '{{failureStringStart}} with a rest parameter.',
       omittingSingleParameter:
         '{{failureStringStart}} with an optional parameter.',
-      singleParameterDifference:
-        '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
+      singleParameterDifference: '{{failureStringStart}} taking `{{types}}`.',
     },
     schema: [
       {
@@ -130,12 +141,8 @@ export default createRule<Options, MessageIds>({
             const { p0, p1 } = unify;
             const lineOfOtherOverload = only2 ? undefined : p0.loc.start.line;
 
-            const typeAnnotation0 = isTSParameterProperty(p0)
-              ? p0.parameter.typeAnnotation
-              : p0.typeAnnotation;
-            const typeAnnotation1 = isTSParameterProperty(p1)
-              ? p1.parameter.typeAnnotation
-              : p1.typeAnnotation;
+            const type0 = getParameterType(p0);
+            const type1 = getParameterType(p1);
 
             context.report({
               loc: p1.loc,
@@ -143,11 +150,11 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: context.sourceCode.getText(
-                  typeAnnotation0?.typeAnnotation,
-                ),
-                type2: context.sourceCode.getText(
-                  typeAnnotation1?.typeAnnotation,
+                types: getUnifiedTypeText(
+                  type0,
+                  type1,
+                  unify.typeParameters0,
+                  unify.typeParameters1,
                 ),
               },
             });
@@ -209,7 +216,7 @@ export default createRule<Options, MessageIds>({
       }
 
       return a.params.length === b.params.length
-        ? signaturesDifferBySingleParameter(a.params, b.params)
+        ? signaturesDifferBySingleParameter(a, b)
         : signaturesDifferByOptionalOrRestParameter(a, b);
     }
 
@@ -258,9 +265,11 @@ export default createRule<Options, MessageIds>({
 
     /** Detect `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`. */
     function signaturesDifferBySingleParameter(
-      types1: readonly TSESTree.Parameter[],
-      types2: readonly TSESTree.Parameter[],
+      signature0: SignatureDefinition,
+      signature1: SignatureDefinition,
     ): Unify | undefined {
+      const types1 = signature0.params;
+      const types2 = signature1.params;
       const firstParam1 = types1[0];
       const firstParam2 = types2[0];
 
@@ -295,8 +304,204 @@ export default createRule<Options, MessageIds>({
       // See https://github.com/Microsoft/TypeScript/issues/5077
       return parametersHaveEqualSigils(a, b) &&
         a.type !== AST_NODE_TYPES.RestElement
-        ? { kind: 'single-parameter-difference', p0: a, p1: b }
+        ? {
+            kind: 'single-parameter-difference',
+            p0: a,
+            p1: b,
+            typeParameters0: signature0.typeParameters,
+            typeParameters1: signature1.typeParameters,
+          }
         : undefined;
+    }
+
+    function getParameterType(
+      parameter: TSESTree.Parameter,
+    ): TSESTree.TypeNode | undefined {
+      return (
+        isTSParameterProperty(parameter)
+          ? parameter.parameter.typeAnnotation
+          : parameter.typeAnnotation
+      )?.typeAnnotation;
+    }
+
+    function getUnifiedTypeText(
+      type0: TSESTree.TypeNode | undefined,
+      type1: TSESTree.TypeNode | undefined,
+      typeParameters0?: TSESTree.TSTypeParameterDeclaration,
+      typeParameters1?: TSESTree.TSTypeParameterDeclaration,
+    ): string {
+      if (type0 == null || type1 == null) {
+        return '';
+      }
+
+      const members = [
+        ...getUnionMembers(type0).map(type => ({
+          type,
+          typeParameters: typeParameters0,
+        })),
+        ...getUnionMembers(type1).map(type => ({
+          type,
+          typeParameters: typeParameters1,
+        })),
+      ];
+      const uniqueMembers: typeof members = [];
+
+      for (const member of members) {
+        if (
+          !uniqueMembers.some(other =>
+            typeNodesAreEqual(
+              other.type,
+              member.type,
+              other.typeParameters,
+              member.typeParameters,
+            ),
+          )
+        ) {
+          uniqueMembers.push(member);
+        }
+      }
+
+      return uniqueMembers
+        .map(member => getUnionMemberText(member.type))
+        .join(' | ');
+    }
+
+    function getUnionMembers(type: TSESTree.TypeNode): TSESTree.TypeNode[] {
+      return type.type === AST_NODE_TYPES.TSUnionType
+        ? type.types.flatMap(getUnionMembers)
+        : [type];
+    }
+
+    function getUnionMemberText(type: TSESTree.TypeNode): string {
+      const text = getTextWithParentheses(context.sourceCode, type);
+      const needsParentheses =
+        type.type === AST_NODE_TYPES.TSConditionalType ||
+        type.type === AST_NODE_TYPES.TSConstructorType ||
+        type.type === AST_NODE_TYPES.TSFunctionType;
+
+      return needsParentheses && !isParenthesized(type, context.sourceCode)
+        ? `(${text})`
+        : text;
+    }
+
+    function typeNodesAreEqual(
+      a: TSESTree.TypeNode,
+      b: TSESTree.TypeNode,
+      typeParameters0?: TSESTree.TSTypeParameterDeclaration,
+      typeParameters1?: TSESTree.TSTypeParameterDeclaration,
+    ): boolean {
+      const typeParameterIndices0 = new Map(
+        typeParameters0?.params.map((parameter, index) => [
+          parameter.name.name,
+          index,
+        ]),
+      );
+      const typeParameterIndices1 = new Map(
+        typeParameters1?.params.map((parameter, index) => [
+          parameter.name.name,
+          index,
+        ]),
+      );
+
+      return nodesAreEqual(a, b);
+
+      function nodesAreEqual(left: unknown, right: unknown): boolean {
+        if (left === right) {
+          return true;
+        }
+        if (left == null || right == null || typeof left !== typeof right) {
+          return false;
+        }
+        if (typeof left !== 'object') {
+          return left === right;
+        }
+        if (Array.isArray(left) || Array.isArray(right)) {
+          return (
+            Array.isArray(left) &&
+            Array.isArray(right) &&
+            left.length === right.length &&
+            left.every((value, index) => nodesAreEqual(value, right[index]))
+          );
+        }
+
+        const leftNode = left as Record<string, unknown>;
+        const rightNode = right as Record<string, unknown>;
+        if (leftNode.type !== rightNode.type) {
+          return false;
+        }
+
+        if (
+          leftNode.type === AST_NODE_TYPES.TSTypeReference &&
+          rightNode.type === AST_NODE_TYPES.TSTypeReference
+        ) {
+          const leftName = leftNode.typeName;
+          const rightName = rightNode.typeName;
+          if (!typeReferenceNamesAreEqual(leftName, rightName)) {
+            return false;
+          }
+        }
+
+        const ignoredKeys = new Set([
+          'comments',
+          'loc',
+          'parent',
+          'range',
+          'raw',
+          'tokens',
+        ]);
+        const keys = new Set([
+          ...Object.keys(leftNode),
+          ...Object.keys(rightNode),
+        ]);
+        for (const key of keys) {
+          if (
+            ignoredKeys.has(key) ||
+            (key === 'typeName' &&
+              leftNode.type === AST_NODE_TYPES.TSTypeReference)
+          ) {
+            continue;
+          }
+          if (!nodesAreEqual(leftNode[key], rightNode[key])) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function typeReferenceNamesAreEqual(
+        left: unknown,
+        right: unknown,
+      ): boolean {
+        if (!isIdentifierNode(left) || !isIdentifierNode(right)) {
+          return nodesAreEqual(left, right);
+        }
+
+        const leftIndex = typeParameterIndices0.get(left.name);
+        const rightIndex = typeParameterIndices1.get(right.name);
+        if (leftIndex != null || rightIndex != null) {
+          return leftIndex === rightIndex;
+        }
+
+        return (
+          left.name === right.name &&
+          ASTUtils.findVariable(
+            context.sourceCode.getScope(left),
+            left.name,
+          ) ===
+            ASTUtils.findVariable(
+              context.sourceCode.getScope(right),
+              right.name,
+            )
+        );
+      }
+
+      function isIdentifierNode(value: unknown): value is TSESTree.Identifier {
+        return (
+          typeof value === 'object' &&
+          value != null &&
+          (value as { type?: unknown }).type === AST_NODE_TYPES.Identifier
+        );
+      }
     }
 
     function isThisParam(param: TSESTree.Parameter | undefined): boolean {
