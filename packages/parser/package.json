@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "8.65.0",
+  "version": "8.66.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "files": [
     "dist",
@@ -58,7 +58,7 @@
     "debug": "^4.4.3"
   },
   "devDependencies": {
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",
