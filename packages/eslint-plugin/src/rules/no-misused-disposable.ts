@@ -24,6 +24,14 @@ interface FunctionInfo {
   upper: FunctionInfo | null;
 }
 
+// BIG TODO - all iterators apparently are Disposable (why??).
+// So we need to find some way to detect that and not report them all over.
+// Perhaps if a disposable is created that is also an iterator, iteration should
+// be a form a handling it?
+
+// also - vi.spy() sort of stuff triggers all over.
+// This might be big pain.
+
 export default createRule({
   name: 'no-misused-disposable',
   meta: {
@@ -84,7 +92,7 @@ export default createRule({
     }
 
     /**
-     * A segment is considered handled for `variableId` if it is unreachable,
+     * A segment is considered handled for `variableId`
      * if the variable's declaration can't reach it (the variable was never
      * live on that path, so there is nothing to require), or if it was
      * explicitly marked handled.
@@ -112,6 +120,7 @@ export default createRule({
       return undefined;
     }
 
+    // TODO - it matters what type of disposable it is.
     function typeAcceptsDisposable(type: ts.Type): boolean {
       return tsutils
         .unionConstituents(type)
@@ -149,6 +158,12 @@ export default createRule({
             return traverseUpTransparentParents(parent);
           }
           return node;
+        case AST_NODE_TYPES.TSSatisfiesExpression:
+        case AST_NODE_TYPES.TSAsExpression:
+        case AST_NODE_TYPES.TSTypeAssertion:
+          // parent.expression === node since we're in a value context
+          return traverseUpTransparentParents(parent);
+
         default:
           return node;
       }
@@ -162,8 +177,9 @@ export default createRule({
     function isEscapingCallArgument(node: TSESTree.Node): boolean {
       const { parent } = node;
       if (
-        parent?.type !== AST_NODE_TYPES.CallExpression &&
-        parent?.type !== AST_NODE_TYPES.NewExpression
+        parent == null ||
+        (parent.type !== AST_NODE_TYPES.CallExpression &&
+          parent.type !== AST_NODE_TYPES.NewExpression)
       ) {
         return false;
       }
@@ -173,8 +189,7 @@ export default createRule({
       if (argIndex === -1) {
         return false;
       }
-      const tsCallLike = services.esTreeNodeToTSNodeMap.get(parent) as
-        ts.CallExpression | ts.NewExpression;
+      const tsCallLike = services.esTreeNodeToTSNodeMap.get(parent);
       const contextualType = checker.getContextualTypeForArgumentAtIndex(
         tsCallLike,
         argIndex,
@@ -188,10 +203,8 @@ export default createRule({
      * disposable. If not, the disposable does not actually escape via this
      * return (e.g. the enclosing function's return type is `unknown`).
      */
-    function isEscapingReturnArgument(node: TSESTree.Node): boolean {
-      const tsNode = services.esTreeNodeToTSNodeMap.get(
-        node as TSESTree.Expression,
-      ) as ts.Expression;
+    function isEscapingReturnArgument(node: TSESTree.Expression): boolean {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node) as ts.Expression;
       const contextualType = checker.getContextualType(tsNode);
       if (contextualType == null) {
         return true;
@@ -207,16 +220,16 @@ export default createRule({
         return false;
       }
 
-      if (parent.type === AST_NODE_TYPES.ReturnStatement) {
-        return isEscapingReturnArgument(target);
-      }
-
       if (
         parent.type === AST_NODE_TYPES.VariableDeclarator &&
         parent.init === target &&
         (parent.parent.kind === 'using' || parent.parent.kind === 'await using')
       ) {
         return true;
+      }
+
+      if (parent.type === AST_NODE_TYPES.ReturnStatement) {
+        return isEscapingReturnArgument(target as TSESTree.Expression);
       }
 
       return isEscapingCallArgument(target);
@@ -230,18 +243,25 @@ export default createRule({
       node: TSESTree.Identifier,
       disposeKind: DisposeKind,
     ): boolean {
+      // Question - why isn't this part of isImmediatelyHandled?
       const { parent } = node;
-      if (
-        parent.type !== AST_NODE_TYPES.MemberExpression ||
-        parent.object !== node ||
-        !parent.computed ||
-        parent.parent.type !== AST_NODE_TYPES.CallExpression ||
-        parent.parent.callee !== parent
-      ) {
+      if (!(
+        parent.type === AST_NODE_TYPES.MemberExpression &&
+        parent.object === node &&
+        parent.computed &&
+        parent.parent.type === AST_NODE_TYPES.CallExpression &&
+        parent.parent.callee === parent
+      )) {
         return false;
       }
 
       const propertyType = services.getTypeAtLocation(parent.property);
+      // this should specifically be checking for the right well-known symbol.
+      // OR, syntactically checking for Symbol.dispose/Symbol.asyncDispose.
+
+      // TODO - is this whole following section just a workaround for the fact that
+      // TypeScript doesn't have a way to get the type of a symbol property access?
+
       if (!tsutils.isUniqueESSymbolType(propertyType)) {
         return false;
       }
@@ -276,6 +296,8 @@ export default createRule({
 
     function markHandled(variableId: number): void {
       for (const segment of currentFuncInfo().currentSegments) {
+        // why is the segment.reachable check necessary?
+        // No tests fail if it's removed.
         if (segment.reachable) {
           handledAtSegment.set(segmentKey(segment, variableId), true);
         }
@@ -380,6 +402,7 @@ export default createRule({
       }
 
       const type = services.getTypeAtLocation(node.right);
+      // ?
       if (getDisposeKind(type) != null) {
         // Handled by `checkProducedDisposable`, which also accounts for the
         // possibility of overwriting a previously tracked disposable.
@@ -407,8 +430,12 @@ export default createRule({
         return;
       }
 
+      // why traverseUpParents inside isImmediatelyHandled if we also traverseUp manually here?
+      // seems like that's not what immediately means?
+
       const target = traverseUpTransparentParents(node);
       const { parent } = target;
+      // TODO - what about var?
       if (
         parent?.type === AST_NODE_TYPES.VariableDeclarator &&
         parent.init === target &&
@@ -419,6 +446,7 @@ export default createRule({
         return;
       }
 
+      // what about &&= and ??= and ||= ?
       if (
         parent?.type === AST_NODE_TYPES.AssignmentExpression &&
         parent.operator === '=' &&

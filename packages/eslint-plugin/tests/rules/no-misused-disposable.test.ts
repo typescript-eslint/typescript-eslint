@@ -56,10 +56,61 @@ declare function doSomething(): void;
 
 function foo() {
   const x = makeDisposable();
+  doSomething();
+  x[Symbol.dispose]();
+}
+    `,
+    // regression test for control flow bug when a loop follows the disposal
+    `
+declare function makeDisposable(): Disposable;
+declare function doSomething(): void;
+
+function foo() {
+  const x = makeDisposable();
+  doSomething();
+  x[Symbol.dispose]();
+
+  for (const item of [1, 2, 3]) {
+  }
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare function doSomething(): void;
+
+function foo() {
+  const x = makeDisposable();
   try {
     doSomething();
   } finally {
     x[Symbol.dispose]();
+  }
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare function doSomething(): void;
+
+function foo() {
+  const x = makeDisposable();
+  try {
+    doSomething();
+  } finally {
+    x?.[Symbol.dispose]?.();
+  }
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare function doSomething(): void;
+const symbolDisposeAlias = Symbol.dispose;
+
+function foo() {
+  const x = makeDisposable();
+  try {
+    doSomething();
+  } finally {
+    x[symbolDisposeAlias]();
   }
 }
     `,
@@ -236,6 +287,50 @@ using bar = foo;
     `
 declare function makeDisposable(): Disposable;
 const foo = makeDisposable();
+using bar = foo;
+    `,
+    `
+declare function makeDisposable(): Disposable;
+
+using d = makeDisposable() satisfies {};
+    `,
+    `
+declare function makeDisposable(): Disposable;
+
+using d = makeDisposable() as {};
+    `,
+    // member accesses aren't considered to have "produced" a disposable,
+    // just accessed it
+    `
+declare const o: { d: Disposable };
+console.log(o.d);
+    `,
+    `
+declare function makeDisposable(): Disposable;
+let foo;
+if (Math.random() > 0.5) {
+  foo = makeDisposable();
+} else {
+  foo = makeDisposable();
+}
+if (Math.random() > 0.5) {
+  foo ||= 42;
+}
+
+using bar = foo;
+    `,
+    `
+declare function makeDisposable(): Disposable;
+let foo;
+if (Math.random() > 0.5) {
+  foo = makeDisposable();
+} else {
+  foo = makeDisposable();
+}
+if (Math.random() > 0.5) {
+  foo ??= 42;
+}
+
 using bar = foo;
     `,
   ],
@@ -469,6 +564,23 @@ if (Math.random() > 0.5) {
   foo = makeDisposable();
 }
 if (Math.random() > 0.5) {
+  foo &&= 42;
+}
+
+using bar = foo;
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+let foo;
+if (Math.random() > 0.5) {
+  foo = makeDisposable();
+} else {
+  foo = makeDisposable();
+}
+if (Math.random() > 0.5) {
   foo = makeDisposable();
 }
 
@@ -490,6 +602,31 @@ if (Math.random() > 0.5) {
 }
 
 using bar = foo;
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+declare function acceptsAsyncDisposable(d: AsyncDisposable): void;
+
+acceptsAsyncDisposable(makeDisposable());
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+
+makeDisposable() satisfies {};
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+
+makeDisposable() as {};
       `,
       errors: [{ messageId: 'misusedDisposable' }],
     },
