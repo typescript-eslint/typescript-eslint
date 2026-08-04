@@ -393,6 +393,22 @@ export interface RuleContext<
   report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
+export interface CodePathSegmentTraversalController {
+  skip(): void;
+  break(): void;
+}
+
+export type CodePathSegmentTraversalCallback = (
+  this: CodePath,
+  segment: CodePathSegment,
+  controller: CodePathSegmentTraversalController,
+) => void;
+
+export interface CodePathTraversalOptions {
+  first?: CodePathSegment | undefined;
+  last?: CodePathSegment | undefined;
+}
+
 /**
  * Part of the code path analysis feature of ESLint:
  * https://eslint.org/docs/latest/extend/code-path-analysis
@@ -432,6 +448,15 @@ export interface CodePath {
 
   /** The code path of the upper function/global scope. */
   upper: CodePath | null;
+
+  traverseSegments(
+    options: CodePathTraversalOptions,
+    callback: (
+      this: CodePath,
+      segment: CodePathSegment,
+      controller: CodePathSegmentTraversalCallback,
+    ) => void,
+  ): void;
 }
 
 /**

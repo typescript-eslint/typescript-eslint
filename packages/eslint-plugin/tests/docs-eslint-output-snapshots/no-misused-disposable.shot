@@ -1,0 +1,43 @@
+Incorrect
+
+declare function getDisposable(): Disposable;
+
+getDisposable();
+~~~~~~~~~~~~~~~ This value creates a Disposable that is not guaranteed to be disposed. It must be declared with 'using'/'await using', returned, passed to a function accepting a disposable, or explicitly disposed on every code path.
+
+function foo() {
+  const disposable = getDisposable();
+        ~~~~~~~~~~ This value creates a Disposable that is not guaranteed to be disposed. It must be declared with 'using'/'await using', returned, passed to a function accepting a disposable, or explicitly disposed on every code path.
+  // `disposable` is never used again and never disposed
+}
+
+function bar() {
+  const disposable = getDisposable();
+        ~~~~~~~~~~ This value creates a Disposable that is not guaranteed to be disposed. It must be declared with 'using'/'await using', returned, passed to a function accepting a disposable, or explicitly disposed on every code path.
+  if (Math.random() > 0.5) {
+    disposable[Symbol.dispose]();
+  }
+  // not handled on every path
+}
+
+Correct
+
+declare function getDisposable(): Disposable;
+
+using disposable = getDisposable();
+
+function foo() {
+  return getDisposable();
+}
+
+function bar() {
+  const disposable = getDisposable();
+  try {
+    // ...
+  } finally {
+    disposable[Symbol.dispose]();
+  }
+}
+
+declare function acceptsDisposable(d: Disposable): void;
+acceptsDisposable(getDisposable());

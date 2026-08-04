@@ -1,0 +1,81 @@
+---
+description: "Disallow using disposables in a way that won't be disposed."
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misused-disposable** for documentation.
+
+[Explicit resource management](https://github.com/tc39/proposal-explicit-resource-management) introduces `Disposable` and `AsyncDisposable` objects, along with `using` and `await using` declarations to dispose of them automatically at the end of a scope.
+A `Disposable` (or `AsyncDisposable`) that is created but never disposed of defeats the purpose of the API: any cleanup logic in its `[Symbol.dispose]()`/`[Symbol.asyncDispose]()` method silently never runs.
+
+This rule reports disposable-producing expressions (calls, `new` expressions) whose result isn't handled in one of the following ways:
+
+- Declared with a `using` or `await using` declaration
+- `return`ed (directly, or via a variable that is later returned)
+- Passed to a function or constructor whose parameter type accepts a disposable
+- Explicitly disposed by calling `[Symbol.dispose]()`/`[Symbol.asyncDispose]()` on every code path
+
+Because handling can be conditional, this rule uses [code path analysis](https://eslint.org/docs/latest/extend/code-path-analysis) to require handling on _every_ reachable code path out of the disposable's scope, not just some of them.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare function getDisposable(): Disposable;
+
+getDisposable();
+
+function foo() {
+  const disposable = getDisposable();
+  // `disposable` is never used again and never disposed
+}
+
+function bar() {
+  const disposable = getDisposable();
+  if (Math.random() > 0.5) {
+    disposable[Symbol.dispose]();
+  }
+  // not handled on every path
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+declare function getDisposable(): Disposable;
+
+using disposable = getDisposable();
+
+function foo() {
+  return getDisposable();
+}
+
+function bar() {
+  const disposable = getDisposable();
+  try {
+    // ...
+  } finally {
+    disposable[Symbol.dispose]();
+  }
+}
+
+declare function acceptsDisposable(d: Disposable): void;
+acceptsDisposable(getDisposable());
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+Not every `Disposable`/`AsyncDisposable` is meant to be exclusively managed with `using`/`await using`.
+Some APIs (for example, timers or handles in Node.js) implement the disposable protocol as one of several supported ways to release resources, and may be intentionally handed off to other code for lifecycle management outside of the immediately enclosing scope in ways this rule cannot always detect.
+
+If your codebase relies heavily on APIs like this, you may want to avoid this rule, or disable it for the specific lines or files involved.

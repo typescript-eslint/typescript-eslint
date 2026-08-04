@@ -1,0 +1,497 @@
+import rule from '../../src/rules/no-misused-disposable';
+import { createRuleTesterWithTypes } from '../RuleTester';
+
+const ruleTester = createRuleTesterWithTypes();
+
+ruleTester.run('no-misused-disposable', rule, {
+  valid: [
+    `
+declare function makeDisposable(): Disposable;
+using foo = makeDisposable();
+    `,
+    `
+declare function makeAsyncDisposable(): AsyncDisposable;
+async function test() {
+  await using foo = makeAsyncDisposable();
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+new (class {
+  constructor() {
+    using foo = makeDisposable();
+  }
+})();
+    `,
+    `
+declare function makeDisposable(): Disposable;
+function foo() {
+  return makeDisposable();
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+function foo() {
+  const x = makeDisposable();
+  return x;
+}
+    `,
+    // passed as an argument to a function accepting a disposable
+    `
+declare function makeDisposable(): Disposable;
+declare function acceptsDisposable(d: Disposable): void;
+acceptsDisposable(makeDisposable());
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare function acceptsDisposable(d: Disposable): void;
+function foo() {
+  const x = makeDisposable();
+  acceptsDisposable(x);
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare function doSomething(): void;
+
+function foo() {
+  const x = makeDisposable();
+  try {
+    doSomething();
+  } finally {
+    x[Symbol.dispose]();
+  }
+}
+    `,
+    `
+declare function makeAsyncDisposable(): AsyncDisposable;
+declare function doSomething(): void;
+
+async function foo() {
+  const x = makeAsyncDisposable();
+  try {
+    doSomething();
+  } finally {
+    await x[Symbol.asyncDispose]();
+  }
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+function foo() {
+  const x = makeDisposable();
+  if (Math.random() > 0.5) {
+    return x;
+  }
+  return x;
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+
+function foo() {
+  const x = makeDisposable();
+  if (Math.random() > 0.5) {
+    x[Symbol.dispose]();
+    return;
+  }
+  return x;
+}
+    `,
+    `
+declare function makeThing(): { a: string };
+declare function acceptsDisposable(d: Disposable): void;
+acceptsDisposable(makeThing());
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare const cond: boolean;
+
+using foo = cond ? makeDisposable() : makeDisposable();
+    `,
+    `
+declare function f(): void;
+declare function makeDisposable(): Disposable;
+using foo = (f(), makeDisposable());
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare const cond: boolean;
+using foo = cond && makeDisposable();
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare const cond: boolean;
+using foo = cond || makeDisposable();
+    `,
+    `
+declare function makeDisposable(): Disposable | undefined;
+declare const cond: boolean;
+using foo = makeDisposable() || cond;
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare const cond: boolean;
+using foo = makeDisposable() || cond;
+    `,
+    `
+declare function makeDisposable(): Disposable | undefined;
+declare const cond: boolean;
+using foo = makeDisposable() || makeDisposable();
+    `,
+    `
+declare function makeDisposable(): Disposable;
+const foo = () => {
+  return makeDisposable();
+};
+    `,
+    `
+declare function makeDisposable(): Disposable;
+class Foo {
+  method() {
+    return makeDisposable();
+  }
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+function foo(items: number[]) {
+  for (const item of items) {
+    const x = makeDisposable();
+    x[Symbol.dispose]();
+  }
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+function foo(x: number) {
+  switch (x) {
+    case 1: {
+      const d1 = makeDisposable();
+      d1[Symbol.dispose]();
+      break;
+    }
+    default: {
+      const d2 = makeDisposable();
+      return d2;
+    }
+  }
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+declare const cond: true | undefined;
+const foo = cond && makeDisposable();
+foo?.[Symbol.dispose]();
+    `,
+    `
+declare function makeDisposable(): Disposable;
+let foo = makeDisposable();
+foo[Symbol.dispose]();
+    `,
+    `
+declare function makeDisposable(): Disposable;
+function outer() {
+  const x = makeDisposable();
+  function inner() {
+    return x;
+  }
+  return x;
+}
+    `,
+
+    `
+declare function makeDisposable(): Disposable;
+function foo(items: number[]) {
+  for (const item of items) {
+    const x = makeDisposable();
+    if (item > 0) {
+      x[Symbol.dispose]();
+    } else {
+      return x;
+    }
+  }
+}
+    `,
+    `
+declare function makeDisposable(): Disposable;
+let foo;
+if (Math.random() > 0.5) {
+  foo = makeDisposable();
+} else {
+  foo = makeDisposable();
+}
+foo[Symbol.dispose]();
+    `,
+    `
+declare function makeDisposable(): Disposable;
+let foo;
+if (Math.random() > 0.5) {
+  foo = makeDisposable();
+} else {
+  foo = makeDisposable();
+}
+using bar = foo;
+    `,
+    `
+declare function makeDisposable(): Disposable;
+const foo = makeDisposable();
+using bar = foo;
+    `,
+  ],
+  invalid: [
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+makeDisposable();
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+const foo = makeDisposable();
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+let foo = makeDisposable();
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+interface MyDisposable extends Disposable {
+  prop: string;
+}
+declare function makeDisposable(): MyDisposable;
+makeDisposable().prop;
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+declare function acceptsAnything(v: unknown): void;
+acceptsAnything(makeDisposable());
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+function foo() {
+  const x = makeDisposable();
+  if (Math.random() > 0.5) {
+    return x;
+  }
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+function foo() {
+  const x = makeDisposable();
+  if (Math.random() > 0.5) {
+    x[Symbol.dispose]();
+  }
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+function outer() {
+  const x = makeDisposable();
+  function inner() {
+    return x;
+  }
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+interface MyDisposable extends Disposable {
+  prop: string;
+}
+declare function makeDisposable(): MyDisposable;
+function foo() {
+  const x = makeDisposable();
+  console.log(x.prop);
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare class MyDisposable implements Disposable {
+  [Symbol.dispose](): void;
+}
+new MyDisposable();
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+function foo(items: number[]) {
+  for (const item of items) {
+    const x = makeDisposable();
+    if (item > 0) {
+      continue;
+    }
+    x[Symbol.dispose]();
+  }
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+function foo(x: number) {
+  switch (x) {
+    case 1: {
+      const d1 = makeDisposable();
+      break;
+    }
+    default: {
+      const d2 = makeDisposable();
+      return d2;
+    }
+  }
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+function foo(items: number[]) {
+  for (const item of items) {
+    const x = makeDisposable();
+    if (item > 0) {
+      x[Symbol.dispose]();
+    }
+  }
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+function foo(items: number[]) {
+  for (const item of items) {
+    const x = makeDisposable();
+  }
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+function foo(items: number[]) {
+  for (const item of items) {
+    makeDisposable();
+  }
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function f(): void;
+declare function makeDisposable(): Disposable;
+using foo = (makeDisposable(), f());
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+declare const cond: boolean;
+using foo = makeDisposable() && cond;
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+class Foo {
+  method(): unknown {
+    return makeDisposable();
+  }
+}
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+let foo = makeDisposable();
+foo = makeDisposable();
+foo[Symbol.dispose]();
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+let foo;
+if (Math.random() > 0.5) {
+  foo = makeDisposable();
+} else {
+  foo = makeDisposable();
+}
+if (Math.random() > 0.5) {
+  foo = 42;
+}
+
+using bar = foo;
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+let foo;
+if (Math.random() > 0.5) {
+  foo = makeDisposable();
+} else {
+  foo = makeDisposable();
+}
+if (Math.random() > 0.5) {
+  foo = makeDisposable();
+}
+
+using bar = foo;
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    {
+      code: `
+declare function makeDisposable(): Disposable;
+let foo;
+if (Math.random() > 0.5) {
+  foo = makeDisposable();
+} else {
+  foo = makeDisposable();
+}
+if (Math.random() > 0.5) {
+  throw new Error('oops');
+}
+
+using bar = foo;
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+  ],
+});
