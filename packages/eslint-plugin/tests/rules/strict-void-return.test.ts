@@ -999,6 +999,58 @@ ruleTester.run('strict-void-return', rule, {
       ],
     },
     {
+      code: `
+        declare function foo(cb: () => void): void;
+        foo(async () => /* before */ Promise.resolve(true) /* after */);
+      `,
+      errors: [
+        {
+          column: 22,
+          line: 3,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+        declare function foo(cb: () => void): void;
+        foo( () => /* before */ void Promise.resolve(true) /* after */);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function foo(cb: () => void): void;
+        foo(
+          async () => /* before */ {
+            /* inside */
+          } /* after */,
+        );
+      `,
+      errors: [
+        {
+          column: 20,
+          line: 4,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+        declare function foo(cb: () => void): void;
+        foo(
+           () => void (async () => /* before */ {
+            /* inside */
+          })() /* after */,
+        );
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: noFormat`
         declare function foo(cb: () => void): void;
         foo(() => {
@@ -1007,13 +1059,7 @@ ruleTester.run('strict-void-return', rule, {
           }
         });
       `,
-      errors: [
-        {
-          column: 13,
-          line: 5,
-          messageId: 'nonVoidReturn',
-        },
-      ],
+      errors: [{ column: 13, line: 5, messageId: 'nonVoidReturn' }],
     },
     {
       code: `

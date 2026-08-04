@@ -558,14 +558,25 @@ export default util.createRule<Options, MessageId>({
       funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): Generator<TSESLint.RuleFix> {
       yield* makeSyncFuncFix(fixer, funcNode);
-      // Wrap body in async IIFE
-      const bodyRange = util.getRangeWithParens(funcNode.body, sourceCode);
+      // Wrap body in async IIFE.
+      // This preserves the node kind (normal/arrow) for the _outer_ function
+      // and uses an arrow function for the _inner_ function,
+      // so that `this` will always refer to the same value as before.
       if (funcNode.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-        yield fixer.insertTextBeforeRange(bodyRange, 'void (async () => ');
-        yield fixer.insertTextAfterRange(bodyRange, ')()');
+        const arrowToken = util.nullThrows(
+          sourceCode.getTokenBefore(funcNode.body, {
+            filter: token => token.value === '=>',
+          }),
+          util.NullThrowsReasons.MissingToken(
+            'arrow token',
+            'before arrow function body',
+          ),
+        );
+        yield fixer.insertTextAfter(arrowToken, ' void (async () =>');
+        yield fixer.insertTextAfter(funcNode, ')()');
       } else {
-        yield fixer.insertTextBeforeRange(bodyRange, '{ (async () => ');
-        yield fixer.insertTextAfterRange(bodyRange, ')(); }');
+        yield fixer.insertTextBefore(funcNode.body, '{ (async () => ');
+        yield fixer.insertTextAfter(funcNode.body, ')(); }');
       }
     }
   },

@@ -14,7 +14,6 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  getRangeWithParens,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -164,18 +163,22 @@ export default createRule<Options, MessageId>({
               if (!canFix(arrowFunction)) {
                 return null;
               }
-              const innerBodyRange = arrowFunction.body.range;
-              const fullBodyRange = getRangeWithParens(
-                arrowFunction.body,
-                context.sourceCode,
+              const arrowToken = nullThrows(
+                context.sourceCode.getTokenBefore(arrowFunction.body, {
+                  filter: token => token.value === '=>',
+                }),
+                NullThrowsReasons.MissingToken(
+                  'arrow token',
+                  'before arrow function body',
+                ),
               );
               return [
                 fixer.replaceTextRange(
-                  [fullBodyRange[0], innerBodyRange[0]],
-                  '{ ',
+                  [arrowToken.range[1], arrowFunction.body.range[0]],
+                  ' { ',
                 ),
                 fixer.replaceTextRange(
-                  [innerBodyRange[1], fullBodyRange[1]],
+                  [arrowFunction.body.range[1], arrowFunction.range[1]],
                   '; }',
                 ),
               ];
