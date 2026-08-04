@@ -8,7 +8,7 @@ getDisposable();
 function foo() {
   const disposable = getDisposable();
         ~~~~~~~~~~ This value creates a Disposable that is not guaranteed to be disposed. It must be declared with 'using'/'await using', returned, passed to a function accepting a disposable, or explicitly disposed on every code path.
-  // `disposable` is never used again and never disposed
+  // `disposable` is never disposed
 }
 
 function bar() {
@@ -17,7 +17,7 @@ function bar() {
   if (Math.random() > 0.5) {
     disposable[Symbol.dispose]();
   }
-  // not handled on every path
+  // not disposed on every path
 }
 
 Correct
@@ -39,5 +39,60 @@ function bar() {
   }
 }
 
+function baz() {
+  const disposable = getDisposable();
+  if (Math.random() > 0.5) {
+    disposable[Symbol.dispose]();
+  } else {
+    disposable[Symbol.dispose]();
+  }
+}
+
 declare function acceptsDisposable(d: Disposable): void;
 acceptsDisposable(getDisposable());
+
+Incorrect
+
+function* generateNumbers() {
+  try {
+    yield 1;
+    yield 2;
+    yield 3;
+  } finally {
+    console.log('Cleaning up');
+  }
+}
+
+function doSomething() {
+  const numbers = generateNumbers();
+        ~~~~~~~ This value creates a Disposable that is not guaranteed to be disposed. It must be declared with 'using'/'await using', returned, passed to a function accepting a disposable, or explicitly disposed on every code path.
+  const res1 = numbers.next();
+  // The generator is never exhausted nor disposed,
+  // so "Cleaning up" is never logged.
+}
+
+Correct
+
+function* generateNumbers() {
+  try {
+    yield 1;
+    yield 2;
+    yield 3;
+  } finally {
+    console.log('Cleaning up');
+  }
+}
+
+function doSomething() {
+  using numbers = generateNumbers();
+  const res1 = numbers.next();
+  // Before the function exits, the iterator is disposed.
+  // Logs "Cleaning up".
+}
+
+function logAll() {
+  // Iteration runs the generator to completion, which also runs its cleanup.
+  for (const value of generateNumbers()) {
+    console.log(value);
+  }
+}

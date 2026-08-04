@@ -333,6 +333,161 @@ if (Math.random() > 0.5) {
 
 using bar = foo;
     `,
+    // iteration handles disposable iterables: for...of
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+for (const x of makeIterableDisposable()) {
+  console.log(x);
+}
+    `,
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+const it = makeIterableDisposable();
+for (const x of it) {
+  console.log(x);
+}
+    `,
+    // for await...of handles sync-disposable async-iterables
+    `
+interface AsyncIterableDisposable extends Disposable, AsyncIterable<number> {}
+declare function makeAsyncIterableDisposable(): AsyncIterableDisposable;
+async function f() {
+  for await (const x of makeAsyncIterableDisposable()) {
+    console.log(x);
+  }
+}
+    `,
+    // for await...of also handles sync iterables
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+async function f() {
+  const it = makeIterableDisposable();
+  for await (const x of it) {
+    console.log(x);
+  }
+}
+    `,
+    // array spread
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+const arr = [...makeIterableDisposable()];
+    `,
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+const it = makeIterableDisposable();
+const arr = [...it];
+    `,
+    // array destructuring
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+const [...nums] = makeIterableDisposable();
+    `,
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+const it = makeIterableDisposable();
+const [first] = it;
+    `,
+    // partial (even empty) destructuring closes the iterator via
+    // IteratorClose, the same way an early \`break\` out of \`for...of\` does
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+const [] = makeIterableDisposable();
+    `,
+    // array destructuring assignment
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+const it = makeIterableDisposable();
+let first;
+[first] = it;
+    `,
+    // call and new argument spread
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+declare function sum(...nums: number[]): number;
+sum(...makeIterableDisposable());
+    `,
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+declare function sum(...nums: number[]): number;
+const it = makeIterableDisposable();
+sum(...it);
+    `,
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+class Holder {
+  constructor(...nums: number[]) {}
+}
+new Holder(...makeIterableDisposable());
+    `,
+    // yield* delegation
+    `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+function* gen() {
+  yield* makeIterableDisposable();
+}
+    `,
+    `
+interface AsyncIterableDisposable extends Disposable, AsyncIterable<number> {}
+declare function makeAsyncIterableDisposable(): AsyncIterableDisposable;
+async function* gen() {
+  yield* makeAsyncIterableDisposable();
+}
+    `,
+    // async-disposable sync-iterables are handled by sync iteration too
+    `
+interface IterableAsyncDisposable extends AsyncDisposable, Iterable<number> {}
+declare function makeIterableAsyncDisposable(): IterableAsyncDisposable;
+for (const x of makeIterableAsyncDisposable()) {
+  console.log(x);
+}
+    `,
+    // async-disposable async-iterables are handled by async iteration
+    `
+interface AsyncIterableAsyncDisposable
+  extends AsyncDisposable, AsyncIterable<number> {}
+declare function makeAsyncIterableAsyncDisposable(): AsyncIterableAsyncDisposable;
+async function f() {
+  for await (const x of makeAsyncIterableAsyncDisposable()) {
+    console.log(x);
+  }
+}
+    `,
+    // a manually-advanced generator, correctly managed with \`using\`, from
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator/Symbol.dispose
+    `
+function* generateNumbers() {
+  try {
+    yield 1;
+    yield 2;
+    yield 3;
+  } finally {
+    console.log('Cleaning up');
+  }
+}
+
+function doSomething() {
+  using numbers = generateNumbers();
+  const res1 = numbers.next();
+  // Not iterating the rest of the numbers
+  // Before the function exits, the iterator is disposed
+  // Logs "Cleaning up"
+}
+
+doSomething();
+    `,
   ],
   invalid: [
     {
@@ -627,6 +782,57 @@ makeDisposable() satisfies {};
 declare function makeDisposable(): Disposable;
 
 makeDisposable() as {};
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    // object spread copies properties; it does not iterate
+    {
+      code: `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+const obj = { ...makeIterableDisposable() };
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    // sync iteration does not handle an async-only iterable
+    {
+      code: `
+interface AsyncIterableDisposable extends Disposable, AsyncIterable<number> {}
+declare function makeAsyncIterableDisposable(): AsyncIterableDisposable;
+const arr = [...makeAsyncIterableDisposable()];
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    // a disposable iterable that is never iterated is still misused
+    {
+      code: `
+interface IterableDisposable extends Disposable, Iterable<number> {}
+declare function makeIterableDisposable(): IterableDisposable;
+const it = makeIterableDisposable();
+      `,
+      errors: [{ messageId: 'misusedDisposable' }],
+    },
+    // manually advancing a generator with .next() is not iteration syntax;
+    // without \`using\`, the generator's cleanup never runs. This is the
+    // mistake the MDN Iterator[Symbol.dispose] example exists to prevent.
+    {
+      code: `
+function* generateNumbers() {
+  try {
+    yield 1;
+    yield 2;
+    yield 3;
+  } finally {
+    console.log('Cleaning up');
+  }
+}
+
+function doSomething() {
+  const numbers = generateNumbers();
+  const res1 = numbers.next();
+}
+
+doSomething();
       `,
       errors: [{ messageId: 'misusedDisposable' }],
     },

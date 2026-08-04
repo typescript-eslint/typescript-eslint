@@ -10,16 +10,15 @@ import TabItem from '@theme/TabItem';
 > See **https://typescript-eslint.io/rules/no-misused-disposable** for documentation.
 
 [Explicit resource management](https://github.com/tc39/proposal-explicit-resource-management) introduces `Disposable` and `AsyncDisposable` objects, along with `using` and `await using` declarations to dispose of them automatically at the end of a scope.
-A `Disposable` (or `AsyncDisposable`) that is created but never disposed of defeats the purpose of the API: any cleanup logic in its `[Symbol.dispose]()`/`[Symbol.asyncDispose]()` method silently never runs.
+A `Disposable` (or `AsyncDisposable`) that is created but never disposed of may be an error, since its `[Symbol.dispose]()`/`[Symbol.asyncDispose]()` method never runs.
 
-This rule reports disposable-producing expressions (calls, `new` expressions) whose result isn't handled in one of the following ways:
+This rule reports disposable-producing expressions (calls, `new` expressions) whose result isn't handled in one of the following ways, in every reachable code path:
 
-- Declared with a `using` or `await using` declaration
-- `return`ed (directly, or via a variable that is later returned)
-- Passed to a function or constructor whose parameter type accepts a disposable
-- Explicitly disposed by calling `[Symbol.dispose]()`/`[Symbol.asyncDispose]()` on every code path
-
-Because handling can be conditional, this rule uses [code path analysis](https://eslint.org/docs/latest/extend/code-path-analysis) to require handling on _every_ reachable code path out of the disposable's scope, not just some of them.
+- Assigned to a `using` or `await using` declaration
+- `return`ed, if the function signature returns a disposable
+- Passed as an argument to a function whose parameter type accepts a disposable
+- Explicitly disposed by calling `[Symbol.dispose]()`/`[Symbol.asyncDispose]()`
+- Iterated, if the disposable is an iterable (see [Iterators](#iterators))
 
 ## Examples
 
@@ -33,7 +32,7 @@ getDisposable();
 
 function foo() {
   const disposable = getDisposable();
-  // `disposable` is never used again and never disposed
+  // `disposable` is never disposed
 }
 
 function bar() {
@@ -41,7 +40,7 @@ function bar() {
   if (Math.random() > 0.5) {
     disposable[Symbol.dispose]();
   }
-  // not handled on every path
+  // not disposed on every path
 }
 ```
 
@@ -66,8 +65,89 @@ function bar() {
   }
 }
 
+function baz() {
+  const disposable = getDisposable();
+  if (Math.random() > 0.5) {
+    disposable[Symbol.dispose]();
+  } else {
+    disposable[Symbol.dispose]();
+  }
+}
+
 declare function acceptsDisposable(d: Disposable): void;
 acceptsDisposable(getDisposable());
+```
+
+</TabItem>
+</Tabs>
+
+## Iterators
+
+The built-in iterator protocol integrates with explicit resource management: [`Iterator.prototype[Symbol.dispose]()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator/Symbol.dispose) calls the iterator's `return()` method, running any pending cleanup — for example, a generator's `finally` blocks.
+This means every built-in iterator object — generator objects, collection iterators such as `map.values()`, and iterator helpers — is technically a `Disposable`.
+
+Iterating such a value already ensures the iterator gets cleaned up, since iteration syntax closes the iterator when it completes or exits early.
+This rule therefore treats iteration syntax itself as a valid way of handling a disposable iterable:
+
+- `for...of` and `for await...of` loops
+- Spreading into an array, call, or `new` expression (`[...iterable]`, `fn(...iterable)`)
+- Array destructuring (`const [first] = iterable;`) — note that even partial destructuring exhausts and closes the iterator; it's not necessary to do `const [first, ...rest] = iterable;`
+- `yield*` delegation
+
+Sync iteration handles sync iterables; `for await...of` (and `yield*` in async generators) handles both sync and async iterables.
+
+An iterator that is advanced manually with `.next()`, on the other hand, is not necessarily exhausted, so its cleanup may never run.
+Declare it with `using` instead:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function* generateNumbers() {
+  try {
+    yield 1;
+    yield 2;
+    yield 3;
+  } finally {
+    console.log('Cleaning up');
+  }
+}
+
+function doSomething() {
+  const numbers = generateNumbers();
+  const res1 = numbers.next();
+  // The generator is never exhausted nor disposed,
+  // so "Cleaning up" is never logged.
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function* generateNumbers() {
+  try {
+    yield 1;
+    yield 2;
+    yield 3;
+  } finally {
+    console.log('Cleaning up');
+  }
+}
+
+function doSomething() {
+  using numbers = generateNumbers();
+  const res1 = numbers.next();
+  // Before the function exits, the iterator is disposed.
+  // Logs "Cleaning up".
+}
+
+function logAll() {
+  // Iteration runs the generator to completion, which also runs its cleanup.
+  for (const value of generateNumbers()) {
+    console.log(value);
+  }
+}
 ```
 
 </TabItem>

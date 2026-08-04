@@ -30,12 +30,7 @@ interface FunctionInfo {
   upper: FunctionInfo | null;
 }
 
-// BIG TODO - all iterators apparently are Disposable (why??).
-// So we need to find some way to detect that and not report them all over.
-// Perhaps if a disposable is created that is also an iterator, iteration should
-// be a form a handling it?
-
-// also - vi.spy() sort of stuff triggers all over.
+// TODO - vi.spy() sort of stuff triggers all over.
 // This might be big pain.
 
 export default createRule({
@@ -109,6 +104,111 @@ export default createRule({
       return tsutils
         .unionConstituents(type)
         .some(part => getDisposeKind(part) != null);
+    }
+
+    function typeIsIterable(
+      type: ts.Type,
+      iteratorKind: 'asyncIterator' | 'iterator',
+    ): boolean {
+      return tsutils
+        .unionConstituents(type)
+        .some(
+          part =>
+            tsutils.getWellKnownSymbolPropertyOfType(
+              part,
+              iteratorKind,
+              checker,
+            ) != null,
+        );
+    }
+
+    function isEnclosingFunctionAsync(node: TSESTree.Node): boolean {
+      let current = node.parent;
+      while (current != null) {
+        switch (current.type) {
+          case AST_NODE_TYPES.ArrowFunctionExpression:
+          case AST_NODE_TYPES.FunctionDeclaration:
+          case AST_NODE_TYPES.FunctionExpression:
+            return current.async;
+          default:
+            current = current.parent;
+        }
+      }
+      return false;
+    }
+
+    /**
+     * Checks whether `target` sits in a syntactic position that iterates it.
+     * Iterating a disposable iterable hands its lifecycle over to the
+     * iteration protocol (which closes the iterator on completion or early
+     * exit), so it counts as handling the disposable.
+     *
+     * Sync iteration handles sync iterables (whether sync- or
+     * async-disposable). Async iteration (`for await`, delegation inside an
+     * async generator) handles both sync and async iterables. An
+     * async-only iterable is not handled by sync iteration (which would be
+     * a type error to begin with).
+     */
+    function isHandledByIteration(target: TSESTree.Node): boolean {
+      const { parent } = target;
+      if (parent == null) {
+        return false;
+      }
+
+      let isAsyncIteration: boolean;
+      switch (parent.type) {
+        case AST_NODE_TYPES.ForOfStatement:
+          if (parent.right !== target) {
+            return false;
+          }
+          isAsyncIteration = parent.await;
+          break;
+        case AST_NODE_TYPES.SpreadElement:
+          // Object spread (`{ ...value }`) copies own properties; it does
+          // not iterate.
+          if (
+            parent.parent.type !== AST_NODE_TYPES.ArrayExpression &&
+            parent.parent.type !== AST_NODE_TYPES.CallExpression &&
+            parent.parent.type !== AST_NODE_TYPES.NewExpression
+          ) {
+            return false;
+          }
+          isAsyncIteration = false;
+          break;
+        case AST_NODE_TYPES.VariableDeclarator:
+          if (
+            parent.init !== target ||
+            parent.id.type !== AST_NODE_TYPES.ArrayPattern
+          ) {
+            return false;
+          }
+          isAsyncIteration = false;
+          break;
+        case AST_NODE_TYPES.AssignmentExpression:
+          if (
+            parent.right !== target ||
+            parent.operator !== '=' ||
+            parent.left.type !== AST_NODE_TYPES.ArrayPattern
+          ) {
+            return false;
+          }
+          isAsyncIteration = false;
+          break;
+        case AST_NODE_TYPES.YieldExpression:
+          if (!parent.delegate) {
+            return false;
+          }
+          isAsyncIteration = isEnclosingFunctionAsync(parent);
+          break;
+        default:
+          return false;
+      }
+
+      const type = services.getTypeAtLocation(target);
+      if (typeIsIterable(type, 'iterator')) {
+        return true;
+      }
+      return isAsyncIteration && typeIsIterable(type, 'asyncIterator');
     }
 
     /** Skips parenthesization and control-flow-transparent wrapper expressions. */
@@ -214,6 +314,10 @@ export default createRule({
 
       if (parent.type === AST_NODE_TYPES.ReturnStatement) {
         return isEscapingReturnArgument(target as TSESTree.Expression);
+      }
+
+      if (isHandledByIteration(target)) {
+        return true;
       }
 
       return isEscapingCallArgument(target);
