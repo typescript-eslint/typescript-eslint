@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { CodePathListener } from '@typescript-eslint/utils/ts-eslint';
 import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -13,11 +14,16 @@ interface TrackedVariable {
   /** The segments active at the point the variable was declared. */
   declaredSegments: TSESLint.CodePathSegment[];
   disposeKind: DisposeKind;
+  /**
+   * Segments in which the variable was handled (disposed or escaped).
+   * Since a segment is a straight-line run of code, every execution that
+   * passes through such a segment handles the value.
+   */
+  handledSegmentIds: Set<string>;
   reportNode: TSESTree.Node;
 }
 
 interface FunctionInfo {
-  codePath: TSESLint.CodePath;
   currentSegments: Set<TSESLint.CodePathSegment>;
   /** Variables declared (and tracked) within this code path. */
   trackedVariables: Map<number, TrackedVariable>;
@@ -55,57 +61,35 @@ export default createRule({
 
     let funcInfo: FunctionInfo | null = null;
 
-    // Per-segment, per-tracked-variable "handled" state. Keyed by
-    // `${segment.id}:${variable.$id}`.
-    const handledAtSegment = new Map<string, boolean>();
-
     function currentFuncInfo(): FunctionInfo {
       return nullThrows(funcInfo, 'expected to be inside of a code path');
     }
 
-    function segmentKey(
-      segment: TSESLint.CodePathSegment,
-      variableId: number,
-    ): string {
-      return `${segment.id}:${String(variableId)}`;
-    }
-
-    /** Checks whether `target` is reachable from any of `from` by following `nextSegments`. */
-    function isSegmentReachableFromAny(
-      from: TSESLint.CodePathSegment[],
-      target: TSESLint.CodePathSegment,
-    ): boolean {
-      const visited = new Set<string>();
-      const stack = [...from];
+    /**
+     * Computes the set of segments that some execution path can reach with
+     * the tracked disposable still unhandled: forward reachability from the
+     * declaration site(s), stopped at any segment where the value was
+     * handled. Loops need no special treatment -- a cycle just stops
+     * expanding once its segments are visited.
+     */
+    function computeUnhandledSegmentIds(tracked: TrackedVariable): Set<string> {
+      const unhandled = new Set<string>();
+      const stack = tracked.declaredSegments.filter(
+        segment => !tracked.handledSegmentIds.has(segment.id),
+      );
       while (stack.length > 0) {
         const segment = nullThrows(stack.pop(), 'stack is non-empty');
-        if (segment === target) {
-          return true;
-        }
-        if (visited.has(segment.id)) {
+        if (unhandled.has(segment.id)) {
           continue;
         }
-        visited.add(segment.id);
-        stack.push(...segment.nextSegments);
+        unhandled.add(segment.id);
+        for (const next of segment.nextSegments) {
+          if (!tracked.handledSegmentIds.has(next.id)) {
+            stack.push(next);
+          }
+        }
       }
-      return false;
-    }
-
-    /**
-     * A segment is considered handled for `variableId`
-     * if the variable's declaration can't reach it (the variable was never
-     * live on that path, so there is nothing to require), or if it was
-     * explicitly marked handled.
-     */
-    function isHandledAtSegment(
-      segment: TSESLint.CodePathSegment,
-      variable: TrackedVariable,
-      variableId: number,
-    ): boolean {
-      return (
-        !isSegmentReachableFromAny(variable.declaredSegments, segment) ||
-        handledAtSegment.get(segmentKey(segment, variableId)) === true
-      );
+      return unhandled;
     }
 
     function getDisposeKind(type: ts.Type): DisposeKind | undefined {
@@ -294,12 +278,12 @@ export default createRule({
       });
     }
 
-    function markHandled(variableId: number): void {
+    function markHandled(tracked: TrackedVariable): void {
       for (const segment of currentFuncInfo().currentSegments) {
         // why is the segment.reachable check necessary?
         // No tests fail if it's removed.
         if (segment.reachable) {
-          handledAtSegment.set(segmentKey(segment, variableId), true);
+          tracked.handledSegmentIds.add(segment.id);
         }
       }
     }
@@ -324,15 +308,15 @@ export default createRule({
         isImmediatelyHandled(node) ||
         isManualDisposeCall(node, info.disposeKind)
       ) {
-        markHandled(variable.$id);
+        markHandled(info);
       }
     }
 
     /**
-     * If `variableId`'s currently tracked disposable (if any) is still live
-     * (unhandled) on the current segments, it's about to be overwritten and
-     * lost -- report it immediately, since its fate can't depend on
-     * anything that happens after this point.
+     * If `variableId`'s currently tracked disposable (if any) may still be
+     * live (unhandled) on some path reaching the current segments, it's
+     * about to be overwritten and lost -- report it immediately, since its
+     * fate can't depend on anything that happens after this point.
      */
     function reportIfOverwritingLiveTrackedVariable(variableId: number): void {
       const info = currentFuncInfo();
@@ -341,8 +325,9 @@ export default createRule({
         return;
       }
 
-      const stillLive = [...info.currentSegments].some(
-        segment => !isHandledAtSegment(segment, existing, variableId),
+      const unhandledSegmentIds = computeUnhandledSegmentIds(existing);
+      const stillLive = [...info.currentSegments].some(segment =>
+        unhandledSegmentIds.has(segment.id),
       );
       if (stillLive) {
         context.report({
@@ -375,6 +360,11 @@ export default createRule({
       const existing = info.trackedVariables.get(variable.$id);
       if (existing != null) {
         existing.declaredSegments.push(...info.currentSegments);
+        // The newly assigned value is not handled as of this point, even if
+        // the previous value was already handled within these segments.
+        for (const segment of info.currentSegments) {
+          existing.handledSegmentIds.delete(segment.id);
+        }
         existing.reportNode = id;
         return;
       }
@@ -382,6 +372,7 @@ export default createRule({
       info.trackedVariables.set(variable.$id, {
         declaredSegments: [...info.currentSegments],
         disposeKind,
+        handledSegmentIds: new Set(),
         reportNode: id,
       });
     }
@@ -463,46 +454,15 @@ export default createRule({
       });
     }
 
-    /** Updates a single segment's "handled" state from its `prevSegments`. */
-    function updateHandledFromPrevSegments(
-      segment: TSESLint.CodePathSegment,
-      trackedVariables: Map<number, TrackedVariable>,
-    ): void {
-      for (const [variableId, variable] of trackedVariables) {
-        const handled =
-          segment.prevSegments.length > 0 &&
-          segment.prevSegments.every(prev =>
-            isHandledAtSegment(prev, variable, variableId),
-          );
-        if (handled) {
-          handledAtSegment.set(segmentKey(segment, variableId), true);
-        }
-      }
-    }
-
-    const codePathListeners: Partial<{
-      onCodePathEnd: (codePath: TSESLint.CodePath) => void;
-      onCodePathSegmentEnd: (segment: TSESLint.CodePathSegment) => void;
-      onCodePathSegmentLoop: (
-        fromSegment: TSESLint.CodePathSegment,
-        toSegment: TSESLint.CodePathSegment,
-      ) => void;
-      onCodePathSegmentStart: (segment: TSESLint.CodePathSegment) => void;
-      onCodePathStart: (codePath: TSESLint.CodePath) => void;
-      onUnreachableCodePathSegmentEnd: (
-        segment: TSESLint.CodePathSegment,
-      ) => void;
-      onUnreachableCodePathSegmentStart: (
-        segment: TSESLint.CodePathSegment,
-      ) => void;
-    }> = {
+    const codePathListeners: CodePathListener = {
       onCodePathEnd(codePath) {
         const info = currentFuncInfo();
-        for (const [variableId, tracked] of info.trackedVariables) {
-          const allFinalSegmentsHandled = codePath.finalSegments.every(
-            segment => isHandledAtSegment(segment, tracked, variableId),
+        for (const tracked of info.trackedVariables.values()) {
+          const unhandledSegmentIds = computeUnhandledSegmentIds(tracked);
+          const someFinalSegmentUnhandled = codePath.finalSegments.some(
+            segment => unhandledSegmentIds.has(segment.id),
           );
-          if (!allFinalSegmentsHandled) {
+          if (someFinalSegmentUnhandled) {
             context.report({
               node: tracked.reportNode,
               messageId: 'misusedDisposable',
@@ -514,26 +474,14 @@ export default createRule({
       onCodePathSegmentEnd(segment) {
         currentFuncInfo().currentSegments.delete(segment);
       },
-      onCodePathSegmentLoop(fromSegment, toSegment) {
-        const info = currentFuncInfo();
-        info.codePath.traverseSegments(
-          { first: toSegment, last: fromSegment },
-          segment => {
-            updateHandledFromPrevSegments(segment, info.trackedVariables);
-          },
-        );
-      },
       onCodePathSegmentStart(segment) {
-        const info = currentFuncInfo();
-        info.currentSegments.add(segment);
-        updateHandledFromPrevSegments(segment, info.trackedVariables);
+        currentFuncInfo().currentSegments.add(segment);
       },
-      onCodePathStart(codePath) {
+      onCodePathStart() {
         funcInfo = {
-          codePath,
           currentSegments: new Set(),
           trackedVariables: new Map(),
-          upper: funcInfo,
+          upper: funcInfo, // previous funcInfo
         };
       },
       onUnreachableCodePathSegmentEnd(segment) {
