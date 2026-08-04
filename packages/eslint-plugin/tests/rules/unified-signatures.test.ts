@@ -1334,7 +1334,6 @@ function f(x: number | boolean): void;
       ],
     },
     {
-      // Repeated references are deduplicated only when they resolve to the same alias.
       code: `
 type Alias = string;
 function f(x: Alias): void;
@@ -1356,7 +1355,6 @@ function f(x: Alias | number): void;
       ],
     },
     {
-      // An alias and the type it denotes are distinct syntax and remain distinct.
       code: `
 type Name = string;
 function f(x: Name): void;
@@ -1378,7 +1376,6 @@ function f(x: string | Name): void;
       ],
     },
     {
-      // Type parameters with the same position in each overload correspond.
       code: `
 function f<T>(x: T): void;
 function f<T>(x: T | string): void;
@@ -1399,7 +1396,6 @@ function f<T>(x: T | string): void;
       ],
     },
     {
-      // Pipes in string literals are not union separators.
       code: `
 function f(x: 'a|b'): void;
 function f(x: 'a|b' | string): void;
@@ -1420,7 +1416,6 @@ function f(x: 'a|b' | string): void;
       ],
     },
     {
-      // Comments and whitespace do not make structurally identical members distinct.
       code: `
 function f(x: string /* first */ | number): void;
 function f(x: number | /* second */ string): void;
@@ -1441,7 +1436,6 @@ function f(x: number | /* second */ string): void;
       ],
     },
     {
-      // Intersections remain a single union member.
       code: noFormat`
 function f(x: string & { brand: true }): void;
 function f(x: number | string & { brand: true }): void;
@@ -1462,7 +1456,6 @@ function f(x: number | string & { brand: true }): void;
       ],
     },
     {
-      // Function and conditional types are parenthesized when rendered in a union.
       code: `
 function f<T, U>(x: () => void): void;
 function f<T, U>(x: T extends U ? string : number): void;
@@ -1483,7 +1476,6 @@ function f<T, U>(x: T extends U ? string : number): void;
       ],
     },
     {
-      // Constructor types are likewise parenthesized when rendered in a union.
       code: `
 interface Value {}
 function f(x: new () => Value): void;
@@ -1505,7 +1497,6 @@ function f(x: string): void;
       ],
     },
     {
-      // A larger overload group still renders only the compared pair's members.
       code: `
 interface I {
   f(x: string | number): void;
@@ -1524,6 +1515,89 @@ interface I {
           endColumn: 24,
           endLine: 4,
           line: 4,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+function f(x: 'a' | 'b'): void;
+function f(x: 'b' | 'c'): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: "'a' | 'b' | 'c'",
+          },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+function f(x: Array<string> | boolean): void;
+function f(x: Array<number> | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: 'Array<string> | boolean | Array<number>',
+          },
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+function f(x: Promise | boolean): void;
+function f(x: Promise<string> | boolean): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: 'Promise | boolean | Promise<string>',
+          },
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Namespace {
+  export type Value = string;
+}
+function f(x: Namespace.Value): void;
+function f(x: Namespace.Value | string): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: 'Namespace.Value | string',
+          },
+          endColumn: 39,
+          endLine: 6,
+          line: 6,
           messageId: 'singleParameterDifference',
         },
       ],
