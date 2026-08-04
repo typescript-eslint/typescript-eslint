@@ -542,6 +542,53 @@ export default createRule<Options, MessageIds>({
       return type.getCallSignatures().some(hasTypeParams);
     }
 
+    function isWeakInferenceArgument(
+      argument: TSESTree.CallExpressionArgument,
+    ): boolean {
+      const argumentType = services.getTypeAtLocation(argument);
+      return (
+        isTypeFlagSet(argumentType, ts.TypeFlags.Any | ts.TypeFlags.Never) ||
+        isEmptyObjectType(argumentType)
+      );
+    }
+
+    function signatureNeedsContextualReturnType(
+      expression: TSESTree.CallExpression,
+      signature: ts.Signature,
+    ): boolean {
+      const typeParameters = signature.getTypeParameters();
+      if (typeParameters == null) {
+        return false;
+      }
+
+      const returnType = signature.getReturnType();
+      const returnedTypeParameters = typeParameters.filter(typeParameter =>
+        typeContains(returnType, type => type === typeParameter),
+      );
+      if (returnedTypeParameters.length === 0) {
+        return false;
+      }
+
+      const parameters = signature.getParameters();
+      for (const [index, argument] of expression.arguments.entries()) {
+        if (index >= parameters.length || !isWeakInferenceArgument(argument)) {
+          continue;
+        }
+
+        const parameter = parameters[index];
+        const parameterType = checker.getTypeOfSymbol(parameter);
+        if (
+          returnedTypeParameters.some(typeParameter =>
+            typeContains(parameterType, type => type === typeParameter),
+          )
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     function isContextuallyTypedGenericCall(
       expression: TSESTree.Expression,
     ): boolean {
@@ -560,47 +607,9 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      return signatures.some(signature => {
-        const typeParameters = signature.getTypeParameters();
-        if (typeParameters == null) {
-          return false;
-        }
-
-        const returnedTypeParameters = typeParameters.filter(typeParameter =>
-          typeContains(
-            signature.getReturnType(),
-            type => type === typeParameter,
-          ),
-        );
-        if (returnedTypeParameters.length === 0) {
-          return false;
-        }
-
-        const parameters = signature.getParameters();
-        return expression.arguments.some((argument, index) => {
-          const argumentType = services.getTypeAtLocation(argument);
-          if (
-            !isTypeFlagSet(
-              argumentType,
-              ts.TypeFlags.Any | ts.TypeFlags.Never,
-            ) &&
-            !isEmptyObjectType(argumentType)
-          ) {
-            return false;
-          }
-
-          if (index >= parameters.length) {
-            return false;
-          }
-          const parameter = parameters[index];
-          return returnedTypeParameters.some(typeParameter =>
-            typeContains(
-              checker.getTypeOfSymbol(parameter),
-              type => type === typeParameter,
-            ),
-          );
-        });
-      });
+      return signatures.some(signature =>
+        signatureNeedsContextualReturnType(expression, signature),
+      );
     }
 
     function isArgumentToOverloadedFunction(
