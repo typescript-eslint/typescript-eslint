@@ -403,8 +403,6 @@ export default createRule<Options, MessageIds>({
         ]),
       );
 
-      return nodesAreEqual(a, b);
-
       function nodesAreEqual(left: unknown, right: unknown): boolean {
         if (left === right) {
           return true;
@@ -413,7 +411,7 @@ export default createRule<Options, MessageIds>({
           return false;
         }
         if (typeof left !== 'object') {
-          return left === right;
+          return false;
         }
         if (Array.isArray(left) || Array.isArray(right)) {
           return (
@@ -424,18 +422,18 @@ export default createRule<Options, MessageIds>({
           );
         }
 
-        const leftNode = left as Record<string, unknown>;
-        const rightNode = right as Record<string, unknown>;
-        if (leftNode.type !== rightNode.type) {
+        const leftType = getObjectProperty(left, 'type');
+        const rightType = getObjectProperty(right, 'type');
+        if (leftType !== rightType) {
           return false;
         }
 
         if (
-          leftNode.type === AST_NODE_TYPES.TSTypeReference &&
-          rightNode.type === AST_NODE_TYPES.TSTypeReference
+          leftType === AST_NODE_TYPES.TSTypeReference &&
+          rightType === AST_NODE_TYPES.TSTypeReference
         ) {
-          const leftName = leftNode.typeName;
-          const rightName = rightNode.typeName;
+          const leftName = getObjectProperty(left, 'typeName');
+          const rightName = getObjectProperty(right, 'typeName');
           if (!typeReferenceNamesAreEqual(leftName, rightName)) {
             return false;
           }
@@ -449,19 +447,20 @@ export default createRule<Options, MessageIds>({
           'raw',
           'tokens',
         ]);
-        const keys = new Set([
-          ...Object.keys(leftNode),
-          ...Object.keys(rightNode),
-        ]);
+        const keys = new Set([...Object.keys(left), ...Object.keys(right)]);
         for (const key of keys) {
           if (
             ignoredKeys.has(key) ||
-            (key === 'typeName' &&
-              leftNode.type === AST_NODE_TYPES.TSTypeReference)
+            (key === 'typeName' && leftType === AST_NODE_TYPES.TSTypeReference)
           ) {
             continue;
           }
-          if (!nodesAreEqual(leftNode[key], rightNode[key])) {
+          if (
+            !nodesAreEqual(
+              getObjectProperty(left, key),
+              getObjectProperty(right, key),
+            )
+          ) {
             return false;
           }
         }
@@ -499,9 +498,16 @@ export default createRule<Options, MessageIds>({
         return (
           typeof value === 'object' &&
           value != null &&
-          (value as { type?: unknown }).type === AST_NODE_TYPES.Identifier
+          'type' in value &&
+          value.type === AST_NODE_TYPES.Identifier
         );
       }
+
+      function getObjectProperty(value: object, key: string): unknown {
+        return Reflect.get(value, key) as unknown;
+      }
+
+      return nodesAreEqual(a, b);
     }
 
     function isThisParam(param: TSESTree.Parameter | undefined): boolean {
