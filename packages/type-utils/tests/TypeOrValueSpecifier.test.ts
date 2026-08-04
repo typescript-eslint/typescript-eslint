@@ -569,6 +569,14 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'package', name: ['Node', 'Symbol'], package: 'other-package' },
       ],
       [
+        'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
+        {
+          from: 'package',
+          name: 'BabelCodeFrameOptions',
+          package: '@babel/code',
+        },
+      ],
+      [
         'interface Node {prop: string}; type Test = Node;',
         { from: 'package', name: 'Node', package: 'typescript' },
       ],

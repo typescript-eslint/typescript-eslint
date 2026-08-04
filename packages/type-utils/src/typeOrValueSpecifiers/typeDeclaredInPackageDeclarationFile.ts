@@ -33,15 +33,19 @@ function typeDeclaredInDeclarationFile(
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
-  // Handle scoped packages: if the name starts with @, remove it and replace / with __
-  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
+  // Handle scoped packages: @scope/package types are published as @types/scope__package.
+  const packageNames = [
+    packageName,
+    `@types/${packageName.replace(/^@([^/]+)\//, '$1__')}`,
+  ];
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
       packageIdName != null &&
-      matcher.test(packageIdName) &&
+      packageNames.some(
+        name => packageIdName === name || packageIdName.startsWith(`${name}/`),
+      ) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
