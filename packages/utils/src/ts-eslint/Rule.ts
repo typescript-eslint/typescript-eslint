@@ -738,6 +738,58 @@ export interface RuleListenerExtension {
   */
 }
 
+/**
+ * These methods exist on the {@link RuleListener} object in ESLint, but are intentionally omitted from the RuleListener
+ * type because they cause unresolvable compiler errors: https://github.com/typescript-eslint/typescript-eslint/issues/6993
+ *
+ * Consider merging the objects like so to satisfy the type system:
+ *
+ * ```ts
+ * export default createRule({
+ *   // ...
+ *   create(context) {
+ *     const codePathListener: CodePathListener = {
+ *       onCodePathStart(codePath, node) {
+ *         // ...
+ *       },
+ *       onCodePathEnd(codePath, node) {
+ *         // ...
+ *       },
+ *     };
+ *
+ *     return {
+ *       ...(codePathListener as TSESLint.RuleListener),
+ *
+ *       ExpressionStatement(node) {
+ *         // ...
+ *       },
+ *       // other selectors...
+ *     };
+ *   },
+ * });
+ * ```
+ */
+export interface CodePathListener {
+  onCodePathStart?: (codePath: CodePath, node: TSESTree.Node) => void;
+  onCodePathEnd?: (codePath: CodePath, node: TSESTree.Node) => void;
+  onCodePathSegmentEnd?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  onCodePathSegmentStart?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  onUnreachableCodePathSegmentEnd?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  onUnreachableCodePathSegmentStart?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+}
+
 export type RuleListener = RuleListenerBaseSelectors &
   RuleListenerCatchAllBaseCase &
   RuleListenerExitSelectors;
