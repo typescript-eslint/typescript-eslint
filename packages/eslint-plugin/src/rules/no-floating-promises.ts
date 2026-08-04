@@ -137,9 +137,7 @@ export default createRule<Options, MessageId>({
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
     return {
-      'ArrowFunctionExpression:has(> UnaryExpression)'(
-        node: TSESTree.ArrowFunctionExpression,
-      ): void {
+      ArrowFunctionExpression(node): void {
         if (node.body.type === AST_NODE_TYPES.UnaryExpression) {
           checkNode(node.body, node.body);
         }
