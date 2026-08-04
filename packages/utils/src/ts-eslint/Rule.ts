@@ -451,11 +451,7 @@ export interface CodePath {
 
   traverseSegments(
     options: CodePathTraversalOptions,
-    callback: (
-      this: CodePath,
-      segment: CodePathSegment,
-      controller: CodePathSegmentTraversalCallback,
-    ) => void,
+    callback: CodePathSegmentTraversalCallback,
   ): void;
 }
 
