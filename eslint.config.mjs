@@ -388,6 +388,8 @@ export default defineConfig(
           'vitest/prefer-to-contain': 'error',
           'vitest/prefer-to-have-length': 'error',
           'vitest/valid-expect': 'error',
+          // TODO - handle the vi.spy() cases
+          '@typescript-eslint/no-misused-disposable': 'off',
         },
         settings: { vitest: { typecheck: true } },
       },
