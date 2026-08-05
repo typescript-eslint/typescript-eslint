@@ -115,6 +115,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -127,6 +129,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -142,6 +146,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 20,
+          endLine: 3,
           line: 2,
           messageId: 'tsDirectiveComment',
         },
@@ -157,6 +163,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 22,
+          endLine: 3,
           line: 2,
           messageId: 'tsDirectiveComment',
         },
@@ -172,6 +180,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 23,
+          endLine: 3,
           line: 2,
           messageId: 'tsDirectiveComment',
         },
@@ -187,6 +197,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error', minimumDescriptionLength: 10 },
+          endColumn: 29,
+          endLine: 3,
           line: 2,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -207,6 +219,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error', minimumDescriptionLength: 25 },
+          endColumn: 43,
+          endLine: 3,
           line: 2,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -229,6 +243,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          endColumn: 31,
+          endLine: 3,
           line: 2,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -250,6 +266,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          endColumn: 35,
+          endLine: 3,
           line: 2,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -271,6 +289,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error', minimumDescriptionLength: 3 },
+          endColumn: 35,
+          endLine: 3,
           line: 2,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -287,6 +307,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -299,6 +321,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 40,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -311,6 +335,8 @@ ruleTester.run('ts-expect-error', rule, {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -328,6 +354,8 @@ if (false) {
         {
           column: 3,
           data: { directive: 'expect-error' },
+          endColumn: 46,
+          endLine: 3,
           line: 3,
           messageId: 'tsDirectiveComment',
         },
@@ -341,6 +369,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 23,
+          endLine: 2,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -354,6 +384,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 23,
+          endLine: 2,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -366,6 +398,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 23,
+          endLine: 2,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -378,6 +412,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 23,
+          endLine: 2,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -390,6 +426,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error' },
+          endColumn: 23,
+          endLine: 2,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -402,6 +440,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error', minimumDescriptionLength: 3 },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -418,6 +458,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error', minimumDescriptionLength: 10 },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -435,6 +477,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error', minimumDescriptionLength: 25 },
+          endColumn: 40,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -454,6 +498,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -472,6 +518,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          endColumn: 44,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -490,6 +538,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'expect-error', minimumDescriptionLength: 3 },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -622,6 +672,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -639,6 +691,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -658,6 +712,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -674,6 +730,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -694,6 +752,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 15,
+          endLine: 3,
           line: 2,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -717,6 +777,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 16,
+          endLine: 3,
           line: 2,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -740,6 +802,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 3,
           line: 2,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -760,6 +824,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -780,6 +846,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 23,
+          endLine: 3,
           line: 2,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -808,6 +876,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 37,
+          endLine: 3,
           line: 2,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -835,6 +905,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -851,6 +923,8 @@ ruleTester.run('ts-ignore', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -872,6 +946,8 @@ if (false) {
       errors: [
         {
           column: 3,
+          endColumn: 40,
+          endLine: 3,
           line: 3,
           messageId: 'tsIgnoreInsteadOfExpectError',
           suggestions: [
@@ -894,6 +970,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'ignore', minimumDescriptionLength: 3 },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -906,6 +984,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'ignore', minimumDescriptionLength: 3 },
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -918,6 +998,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'ignore', minimumDescriptionLength: 3 },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -930,6 +1012,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'ignore', minimumDescriptionLength: 25 },
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -949,6 +1033,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'ignore', format: '^: TS\\d+ because .+$' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -967,6 +1053,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'ignore', format: '^: TS\\d+ because .+$' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -985,6 +1073,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'ignore', minimumDescriptionLength: 3 },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -1070,6 +1160,8 @@ const b: string = a;
         {
           column: 1,
           data: { directive: 'nocheck' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -1082,6 +1174,8 @@ const b: string = a;
         {
           column: 1,
           data: { directive: 'nocheck' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -1093,6 +1187,8 @@ const b: string = a;
         {
           column: 1,
           data: { directive: 'nocheck' },
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -1104,6 +1200,8 @@ const b: string = a;
         {
           column: 1,
           data: { directive: 'nocheck', minimumDescriptionLength: 3 },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -1116,6 +1214,8 @@ const b: string = a;
         {
           column: 1,
           data: { directive: 'nocheck', minimumDescriptionLength: 25 },
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -1135,6 +1235,8 @@ const b: string = a;
         {
           column: 1,
           data: { directive: 'nocheck', format: '^: TS\\d+ because .+$' },
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -1153,6 +1255,8 @@ const b: string = a;
         {
           column: 1,
           data: { directive: 'nocheck', format: '^: TS\\d+ because .+$' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -1171,6 +1275,8 @@ const b: string = a;
         {
           column: 1,
           data: { directive: 'nocheck', minimumDescriptionLength: 3 },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -1192,6 +1298,8 @@ const a: true = false;
         {
           column: 2,
           data: { directive: 'nocheck', minimumDescriptionLength: 3 },
+          endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'tsDirectiveComment',
         },
@@ -1273,6 +1381,8 @@ ruleTester.run('ts-check', rule, {
         {
           column: 1,
           data: { directive: 'check' },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -1285,6 +1395,8 @@ ruleTester.run('ts-check', rule, {
         {
           column: 1,
           data: { directive: 'check' },
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveComment',
         },
@@ -1302,6 +1414,8 @@ if (false) {
         {
           column: 3,
           data: { directive: 'check' },
+          endColumn: 39,
+          endLine: 3,
           line: 3,
           messageId: 'tsDirectiveComment',
         },
@@ -1314,6 +1428,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'check', minimumDescriptionLength: 3 },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -1326,6 +1442,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'check', minimumDescriptionLength: 25 },
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },
@@ -1345,6 +1463,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'check', format: '^: TS\\d+ because .+$' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -1363,6 +1483,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'check', format: '^: TS\\d+ because .+$' },
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
         },
@@ -1381,6 +1503,8 @@ if (false) {
         {
           column: 1,
           data: { directive: 'check', minimumDescriptionLength: 3 },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'tsDirectiveCommentRequiresDescription',
         },

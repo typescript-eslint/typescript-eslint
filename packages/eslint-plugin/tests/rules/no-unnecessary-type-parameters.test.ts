@@ -419,6 +419,8 @@ const f = <T,>(
   getValue: (v: NoInfer<T>) => NoInfer<T>,
 ) => {};
     `,
+
+    "<T extends string>(t: T) => t as { [K in 'a' as T]: 0 };",
   ],
 
   invalid: [

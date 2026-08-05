@@ -121,7 +121,7 @@ export function typescriptIntegrationTest(
     const [result] = await Promise.allSettled([
       execFile(
         'pnpm',
-        ['exec', 'tsc', '--noEmit', '--skipLibCheck', ...tscArgs],
+        ['exec', 'tsc6', '--noEmit', '--skipLibCheck', ...tscArgs],
         {
           cwd: testFolder,
           shell: true,

@@ -10211,6 +10211,41 @@ const x = Boolean(a ?? b);
     },
     {
       code: `
+function outer() {
+  const Boolean = (x: unknown) => x;
+
+  return (a: string | null, b: string) => Boolean(a || b);
+}
+      `,
+      errors: [
+        {
+          column: 53,
+          endColumn: 55,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function outer() {
+  const Boolean = (x: unknown) => x;
+
+  return (a: string | null, b: string) => Boolean(a ?? b);
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 

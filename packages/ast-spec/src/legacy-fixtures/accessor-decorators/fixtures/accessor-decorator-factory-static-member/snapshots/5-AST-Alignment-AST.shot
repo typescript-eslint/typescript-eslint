@@ -1,5 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > legacy-fixtures > accessor-decorators > accessor-decorator-factory-static-member > AST Alignment - AST`]
-Snapshot Diff:
-Compared values have no visual difference.

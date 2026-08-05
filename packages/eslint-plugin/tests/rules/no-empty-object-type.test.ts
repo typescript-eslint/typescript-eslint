@@ -81,6 +81,8 @@ class Derived {}
         {
           column: 11,
           data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noEmptyInterface',
           suggestions: [
@@ -103,6 +105,8 @@ class Derived {}
         {
           column: 11,
           data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noEmptyInterface',
           suggestions: [
@@ -133,6 +137,8 @@ class Other {}
       errors: [
         {
           column: 11,
+          endColumn: 18,
+          endLine: 6,
           line: 6,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
@@ -165,6 +171,8 @@ class Derived {}
       errors: [
         {
           column: 11,
+          endColumn: 18,
+          endLine: 6,
           line: 6,
           messageId: 'noEmptyInterfaceWithSuper',
         },
@@ -183,6 +191,8 @@ const derived = class Derived {};
       errors: [
         {
           column: 11,
+          endColumn: 18,
+          endLine: 6,
           line: 6,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
@@ -213,6 +223,8 @@ interface Derived extends Base {}
       errors: [
         {
           column: 11,
+          endColumn: 18,
+          endLine: 6,
           line: 6,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
@@ -235,6 +247,8 @@ type Derived = Base
       errors: [
         {
           column: 11,
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
@@ -252,6 +266,7 @@ type Derived = Base
         {
           column: 11,
           endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
@@ -265,6 +280,7 @@ type Derived = Base
           column: 39,
           data: { option: 'allowObjectTypes' },
           endColumn: 41,
+          endLine: 1,
           line: 1,
           messageId: 'noEmptyObject',
           suggestions: [
@@ -292,6 +308,8 @@ interface Base extends Array<Derived> {}
       errors: [
         {
           column: 11,
+          endColumn: 15,
+          endLine: 5,
           line: 5,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
@@ -316,6 +334,8 @@ interface Base extends R {}
       errors: [
         {
           column: 11,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
@@ -335,6 +355,8 @@ type Base = R
       errors: [
         {
           column: 11,
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [

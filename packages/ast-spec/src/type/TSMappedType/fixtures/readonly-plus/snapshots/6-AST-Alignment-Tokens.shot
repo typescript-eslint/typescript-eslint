@@ -1,5 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > type > TSMappedType > readonly-plus > AST Alignment - Token`]
-Snapshot Diff:
-Compared values have no visual difference.
