@@ -30,13 +30,12 @@ Before — one case bundling two assertions:
 {
   code: `
 declare const a: string | undefined;
-declare const b: string | undefined;
 a!;
-b!.length;
+const x = a!;
   `,
   errors: [
-    { column: 1, endColumn: 3, endLine: 4, line: 4, messageId: 'noNonNull' },
-    { column: 1, endColumn: 3, endLine: 5, line: 5, messageId: 'noNonNull' },
+    { column: 1, endColumn: 3, endLine: 3, line: 3, messageId: 'noNonNull' },
+    { column: 11, endColumn: 13, endLine: 4, line: 4, messageId: 'noNonNull' },
   ],
 },
 ```
@@ -55,11 +54,11 @@ a!;
 },
 {
   code: `
-declare const b: string | undefined;
-b!.length;
+declare const a: string | undefined;
+const x = a!;
   `,
   errors: [
-    { column: 1, endColumn: 3, endLine: 3, line: 3, messageId: 'noNonNull' },
+    { column: 11, endColumn: 13, endLine: 3, line: 3, messageId: 'noNonNull' },
   ],
 },
 ```
