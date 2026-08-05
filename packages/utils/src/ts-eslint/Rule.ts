@@ -136,6 +136,15 @@ export interface RuleMetaData<
   type: 'layout' | 'problem' | 'suggestion';
 
   /**
+   * Languages supported by this rule in the format `"plugin/language"`.
+   * Use `"*"` for any language or `"plugin/*"` for any language from a specific plugin.
+   *
+   * @example
+   * ['js/js', 'markdown/gfm', 'json/jsonc', 'css/css']
+   */
+  languages?: string[] | undefined;
+
+  /**
    * Specifies default options for the rule. If present, any user-provided options in their config will be merged on top of them recursively.
    * This merging will be applied directly to `context.options`.
    * If you want backwards-compatible support for earlier ESLint version, consider using the top-level `defaultOptions` instead.
