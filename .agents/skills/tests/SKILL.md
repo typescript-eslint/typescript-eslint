@@ -107,6 +107,6 @@ These are the most common review findings. Scan for what the rule under change a
 
 ## Things to verify before finishing
 
-- Run the rule's tests from `packages/eslint-plugin` with `pnpm vitest <rule-name>`. Not `pnpm run test` — that resolves to the workspace-root `repo:test` task and ignores the filter.
+- Run the rule's tests from `packages/eslint-plugin` with `pnpm vitest <rule-name>`.
 - Remove any `only: true` used while developing, and any stray `console.log` — both fail CI.
 - Lint enforces the formatting mechanics (Prettier-formatted snippets, alphabetized case keys, static cases), and `plugin-test-formatting` has an autofix — run lint rather than hand-formatting.
