@@ -97,7 +97,7 @@ For any rule change, check whether these need cases — they are the most common
 
 ## Things to verify before finishing
 
-- Run the rule's tests from `packages/eslint-plugin` with `pnpm run test <rule-name>`; extra arguments pass through to vitest.
+- Run the rule's tests from `packages/eslint-plugin` with `pnpm vitest <rule-name>`. Not `pnpm run test` — that resolves to the workspace-root `repo:test` task and ignores the filter.
 - Remove any `only: true` used while developing, and any stray `console.log` — both fail CI.
 - Every new or changed branch in the rule has a covering case; PRs aim for 100% coverage of touched code.
 - Lint enforces the formatting mechanics (Prettier-formatted snippets, alphabetized case keys, static cases, error positions), and `plugin-test-formatting` has an autofix — run lint rather than hand-formatting.
