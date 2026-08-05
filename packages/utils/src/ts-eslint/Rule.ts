@@ -111,10 +111,12 @@ export interface RuleMetaData<
    * Specifies whether rules can return suggestions. Omit if there is no suggestions
    */
   hasSuggestions?: boolean;
-  /**
-   * Languages supported by this rule.
-   * See: https://github.com/eslint/rfcs/blob/main/designs/2025-rule-languages/README.md
-   */
+	/**
+	 * Languages supported by this rule in the format `"plugin/language"`.
+	 * Use `"*"` for any language or `"plugin/*"` for any language from a specific plugin.
+	 * @example
+	 * ["js/js", "markdown/gfm", "json/jsonc", "css/css"]
+	 */
   languages?: string[] | undefined;
   /**
    * A map of messages which the rule can report.
