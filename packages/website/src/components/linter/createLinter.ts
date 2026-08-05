@@ -8,6 +8,7 @@ import type {
 import type * as ts from 'typescript';
 
 import type {
+  ConfigFileType,
   ErrorGroup,
   TabType,
 } from '../../../../website/src/components/types';
@@ -41,6 +42,7 @@ export interface CreateLinter {
   >;
   triggerFix(filename: string): Linter.FixReport | undefined;
   triggerLint(filename: string): void;
+  updateFileType(fileType?: ConfigFileType): void;
   updateParserOptions(sourceType?: SourceType): void;
   registerFile: RegisterFile;
 }
@@ -52,10 +54,12 @@ export function createLinter(
   onMarkersChange: React.Dispatch<
     React.SetStateAction<Record<TabType, ErrorGroup[]>>
   >,
+  fileType?: ConfigFileType,
 ): CreateLinter {
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
   let compilerOptions: ts.CompilerOptions = {};
+  let currentFileType = fileType;
   const parser = createParser(
     system,
     compilerOptions,
@@ -159,6 +163,11 @@ export function createLinter(
       sourceType ?? 'module';
   };
 
+  const updateFileType = (fileType?: ConfigFileType): void => {
+    currentFileType = fileType;
+    applyTSConfig('/tsconfig.json');
+  };
+
   const applyEslintConfig = (fileName: string): void => {
     try {
       const file = system.readFile(fileName) ?? '{}';
@@ -190,7 +199,7 @@ export function createLinter(
     try {
       const file = system.readFile(fileName) ?? '{}';
       const parsed = parseTSConfig(file).compilerOptions;
-      compilerOptions = createCompilerOptions(parsed);
+      compilerOptions = createCompilerOptions(parsed, currentFileType);
       console.log('[Editor] Updating', fileName, compilerOptions);
       parser.updateConfig(compilerOptions);
     } catch (e) {
@@ -259,6 +268,7 @@ export function createLinter(
     rules,
     triggerFix,
     triggerLint,
+    updateFileType,
     updateParserOptions,
   };
 }

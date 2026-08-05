@@ -12,6 +12,7 @@ import type { CommonEditorProps } from './types';
 
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createEventsBinder } from '../lib/createEventsBinder';
+import { parseTSConfig } from '../lib/parseConfig';
 import { createFileSystem } from '../linter/bridge';
 import { createLinter } from '../linter/createLinter';
 import { createTwoslashInlayProvider } from './createProvideTwoslashInlay';
@@ -46,7 +47,10 @@ export const useSandboxServices = (
 
     sandboxSingleton(props.ts)
       .then(async ({ lintUtils, main, sandboxFactory }) => {
-        const compilerOptions = createCompilerOptions();
+        const compilerOptions = createCompilerOptions(
+          parseTSConfig(props.tsconfig).compilerOptions,
+          props.fileType,
+        );
 
         sandboxInstance = sandboxFactory.createTypeScriptSandbox(
           {
@@ -120,6 +124,7 @@ export const useSandboxServices = (
           lintUtils,
           sandboxInstance.tsvfs,
           props.onMarkersChange,
+          props.fileType,
         );
         onModelCreate.register(webLinter.registerFile);
 

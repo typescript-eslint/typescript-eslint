@@ -127,11 +127,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   useEffect(() => {
     const config = createCompilerOptions(
       parseTSConfig(tsconfig).compilerOptions,
+      fileType,
     );
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
       config as Monaco.languages.typescript.CompilerOptions,
     );
-  }, [monaco, tsconfig]);
+    webLinter.updateFileType(fileType);
+  }, [fileType, monaco, tsconfig, webLinter]);
 
   useEffect(() => {
     if (editor.getModel()?.uri.path !== tabs[activeTab].uri.path) {
