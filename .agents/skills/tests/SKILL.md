@@ -81,7 +81,7 @@ Test code should not narrate what the snippet already shows. The comments that d
 
 ## Assert precisely
 
-- Every error asserts `messageId` plus all of `line`, `column`, `endLine`, and `endColumn` — lint requires the full location in new tests via `eslint-plugin/require-test-error-positions`. Raw `message` strings are not part of the test case types; use `messageId`.
+- Every error asserts `messageId` plus all of `line`, `column`, `endLine`, and `endColumn`. Raw `message` strings are not part of the test case types; use `messageId`. Do not rely on lint to catch a missing location: `eslint-plugin/require-test-error-positions` only sees files that call `new RuleTester()` directly, not the `createRuleTesterWithTypes()` helper, so typed-rule tests are unenforced.
 - When the message has `{{placeholder}}`s, also assert `data` so the rendered message is checked.
 - `output: null` asserts the rule applies no fix; a string `output` repeats the whole snippet with identical indentation; an array `output` asserts multi-pass fixes.
 - Suggestions are asserted per error as `suggestions: [{ messageId, output }]` (plus `data` when the suggestion message has placeholders); each suggestion `output` stands alone rather than building on other fixes.
@@ -109,4 +109,4 @@ These are the most common review findings. Scan for what the rule under change a
 
 - Run the rule's tests from `packages/eslint-plugin` with `pnpm vitest <rule-name>`. Not `pnpm run test` — that resolves to the workspace-root `repo:test` task and ignores the filter.
 - Remove any `only: true` used while developing, and any stray `console.log` — both fail CI.
-- Lint enforces the formatting mechanics (Prettier-formatted snippets, alphabetized case keys, static cases, error positions), and `plugin-test-formatting` has an autofix — run lint rather than hand-formatting.
+- Lint enforces the formatting mechanics (Prettier-formatted snippets, alphabetized case keys, static cases), and `plugin-test-formatting` has an autofix — run lint rather than hand-formatting.
