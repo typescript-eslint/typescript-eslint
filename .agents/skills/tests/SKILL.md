@@ -7,15 +7,12 @@ description: Write rule test cases the way this repo expects — one logical uni
 
 Rule tests use `@typescript-eslint/rule-tester`: each `packages/eslint-plugin/tests/rules/<rule-name>.test.ts` calls `ruleTester.run('<rule-name>', rule, { valid, invalid })` with literal arrays of cases. Small, precise, self-contained cases keep failure reports readable and reviews fast.
 
-## When to use
-
-Use this when adding or changing test cases for a lint rule — a new rule, a bug fix, or an option change — or when reviewing rule tests.
-
 ## Setting up the tester
 
 - Typed rules use `createRuleTesterWithTypes()` from `../RuleTester`, which defaults to `projectService: true` with `tsconfigRootDir` pointing at the shared `tests/fixtures` directory. Untyped rules use `new RuleTester()` directly.
 - A case that depends on a specific compiler flag passes per-case `languageOptions.parserOptions` with `project: './tsconfig.<flag>.json'`, `projectService: false`, and `tsconfigRootDir: getFixturesRootDir()`.
 - Enable JSX per case via `parserOptions: { ecmaFeatures: { jsx: true } }`; the tester then parses the code as `react.tsx`. Set `filename` explicitly only when the rule's behavior depends on it.
+- For anything not covered below — `dependencyConstraints`, the full case and `output` API — see the [Rule Tester docs](../../../docs/packages/Rule_Tester.mdx).
 
 ## Do not over-test
 
@@ -109,11 +106,3 @@ For any rule change, check whether these need cases — they are the most common
 - Remove any `only: true` used while developing, and any stray `console.log` — both fail CI.
 - Every new or changed branch in the rule has a covering case; PRs aim for 100% coverage of touched code.
 - Lint enforces the formatting mechanics (Prettier-formatted snippets, alphabetized case keys, static cases, error positions), and `plugin-test-formatting` has an autofix — run lint rather than hand-formatting.
-
-## Reference
-
-- Origin: issue #12570, split from #12370.
-- [Contributing: Pull Requests](../../../docs/contributing/Pull_Requests.mdx) — granular unit tests, coverage expectations.
-- [Contributing: Local Development](../../../docs/contributing/Local_Development.mdx) — running and filtering tests.
-- [Rule Tester docs](../../../docs/packages/Rule_Tester.mdx) — full API for cases, `output`, suggestions, and dependency constraints.
-- [Maintenance: Pull Requests](../../../docs/maintenance/Pull_Requests.mdx) — the review checklist these conventions come from.
