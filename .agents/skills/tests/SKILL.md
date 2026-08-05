@@ -66,7 +66,7 @@ When reasonable, a behavior change includes both `valid` and `invalid` coverage:
 ## Static, self-contained code only
 
 - `valid` and `invalid` are fully literal arrays: no cases generated with `.map()`, spreads, shared snippet constants, or `${}` interpolation (lint enforces this via `@typescript-eslint/internal/no-dynamic-tests`). Repeating a similar snippet across cases is fine — a reviewer or a failure report should never have to compute what code a case ran.
-- Every snippet declares what it uses (`declare const`, minimal types or classes) rather than relying on ambient globals, and contains nothing beyond what the behavior under test needs.
+- Every snippet declares the symbols it introduces (`declare const`, minimal types or classes) and contains nothing beyond what the behavior under test needs. Standard lib globals like `Promise`, `Array`, and `console` are used directly; `declare global` is for the rare case needing an ambient symbol the lib does not provide.
 - Use the `noFormat` template tag only when a case deliberately tests formatting that Prettier would normalize away, and only on `code`.
 
 ## Comments only when they add meaning
