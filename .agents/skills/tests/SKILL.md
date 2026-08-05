@@ -18,7 +18,8 @@ Add the fewest cases that pin down the change. The suite is already large and CI
 
 - Read the neighboring cases first; do not re-cover what they already cover.
 - One case per behavior is enough — do not enumerate every operator, union member, or option permutation of a behavior already pinned by another case.
-- Cover the branches the change touches, not nearby untouched behavior.
+- Cover the branches the change touches — PRs aim for 100% coverage of touched code — and stop there, not at nearby untouched behavior.
+- Pair a new `invalid` case with a `valid` neighbor showing where reporting stops; that boundary is what regressions cross.
 
 ## One logical unit per test case
 
@@ -63,19 +64,18 @@ const x = a!;
 },
 ```
 
-When reasonable, a behavior change includes both `valid` and `invalid` coverage: a false-positive fix adds valid cases reproducing the false positive, and newly reported behavior adds invalid cases — where useful, with a valid neighbor showing where reporting correctly stops.
-
 ## Static, self-contained code only
 
 - `valid` and `invalid` are fully literal arrays: no cases generated with `.map()`, spreads, shared snippet constants, or `${}` interpolation (lint enforces this via `@typescript-eslint/internal/no-dynamic-tests`). Repeating a similar snippet across cases is fine — a reviewer or a failure report should never have to compute what code a case ran.
 - Every snippet declares the symbols it introduces (`declare const`, minimal types or classes) and contains nothing beyond what the behavior under test needs. Standard lib globals like `Promise`, `Array`, and `console` are used directly; `declare global` is for the rare case needing an ambient symbol the lib does not provide.
 - Use the `noFormat` template tag only when a case deliberately tests formatting that Prettier would normalize away, and only on `code`.
+- Valid cases are plain strings unless they need `options` or `languageOptions`.
 
 ## Comments only when they add meaning
 
 Test code should not narrate what the snippet already shows. The comments that do belong:
 
-- an issue URL directly above regression cases, e.g. `// https://github.com/typescript-eslint/typescript-eslint/issues/11683`
+- an issue URL above a case whose point is not obvious from the code — a subtle repro, or one with a long discussion behind it. Not every regression case needs one. e.g. `// https://github.com/typescript-eslint/typescript-eslint/issues/11683`
 - a `// TODO:` linking the tracking issue next to a `skip: true` case
 - a short group label when a long array of cases switches topic
 
@@ -85,21 +85,28 @@ Test code should not narrate what the snippet already shows. The comments that d
 - When the message has `{{placeholder}}`s, also assert `data` so the rendered message is checked.
 - `output: null` asserts the rule applies no fix; a string `output` repeats the whole snippet with identical indentation; an array `output` asserts multi-pass fixes.
 - Suggestions are asserted per error as `suggestions: [{ messageId, output }]` (plus `data` when the suggestion message has placeholders); each suggestion `output` stands alone rather than building on other fixes.
-- Valid cases are plain strings unless they need `options` or `languageOptions`.
+- An error that carries suggestions **must** assert `suggestions`; omitting it fails the case even when every position is right.
 
-## Edge cases worth covering
+## Syntax worth probing
 
-For any rule change, check whether these need cases — they are the most common review findings:
+These are the most common review findings. Scan for what the rule under change actually touches — most rules touch two or three of these, not all of them:
 
 - generics and constrained type parameters
 - parenthesized expressions and unusual whitespace
 - unions and intersections
-- syntax that parses but is a type error in TypeScript must not crash the rule
-- fixes and suggestions must not delete `//` or `/* */` comments — include a case with a comment inside the fixed range
+- `any`, `unknown`, and `never`
+- optional chaining and nullish coalescing
+- `enum`, `namespace`, and `declare module`
+- class members: `readonly`, `#private`, `abstract`
+- `as` and `satisfies`
+
+## Invariants to protect
+
+- Syntax that parses but is a type error in TypeScript must not crash the rule.
+- A fix or suggestion must not delete `//` or `/* */` comments — if the rule has a fixer, include a case with a comment inside the fixed range.
 
 ## Things to verify before finishing
 
 - Run the rule's tests from `packages/eslint-plugin` with `pnpm vitest <rule-name>`. Not `pnpm run test` — that resolves to the workspace-root `repo:test` task and ignores the filter.
 - Remove any `only: true` used while developing, and any stray `console.log` — both fail CI.
-- Every new or changed branch in the rule has a covering case; PRs aim for 100% coverage of touched code.
 - Lint enforces the formatting mechanics (Prettier-formatted snippets, alphabetized case keys, static cases, error positions), and `plugin-test-formatting` has an autofix — run lint rather than hand-formatting.
