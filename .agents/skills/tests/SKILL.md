@@ -7,12 +7,10 @@ description: Write rule test cases the way this repo expects — one logical uni
 
 Rule tests use `@typescript-eslint/rule-tester`: each `packages/eslint-plugin/tests/rules/<rule-name>.test.ts` calls `ruleTester.run('<rule-name>', rule, { valid, invalid })` with literal arrays of cases. Small, precise, self-contained cases keep failure reports readable and reviews fast.
 
-## Setting up the tester
+## Tester options
 
-- Typed rules use `createRuleTesterWithTypes()` from `../RuleTester`, which defaults to `projectService: true` with `tsconfigRootDir` pointing at the shared `tests/fixtures` directory. Untyped rules use `new RuleTester()` directly.
-- A case that depends on a specific compiler flag passes per-case `languageOptions.parserOptions` with `project: './tsconfig.<flag>.json'`, `projectService: false`, and `tsconfigRootDir: getFixturesRootDir()`.
-- Enable JSX per case via `parserOptions: { ecmaFeatures: { jsx: true } }`; the tester then parses the code as `react.tsx`. Set `filename` explicitly only when the rule's behavior depends on it.
-- For anything not covered below — `dependencyConstraints`, the full case and `output` API — see the [Rule Tester docs](../../../docs/packages/Rule_Tester.mdx).
+- Per-case `languageOptions.parserOptions` overrides the file's tester: `{ ecmaFeatures: { jsx: true } }` parses the snippet as `react.tsx`; pinning a compiler flag needs `project: './tsconfig.<flag>.json'` plus `projectService: false` and `tsconfigRootDir: getFixturesRootDir()`.
+- For the full valid/invalid case and assertion option tables, see the [Rule Tester docs](../../../docs/packages/Rule_Tester.mdx).
 
 ## Do not over-test
 
