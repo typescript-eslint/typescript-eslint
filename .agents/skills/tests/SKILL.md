@@ -17,6 +17,14 @@ Use this when adding or changing test cases for a lint rule — a new rule, a bu
 - A case that depends on a specific compiler flag passes per-case `languageOptions.parserOptions` with `project: './tsconfig.<flag>.json'`, `projectService: false`, and `tsconfigRootDir: getFixturesRootDir()`.
 - Enable JSX per case via `parserOptions: { ecmaFeatures: { jsx: true } }`; the tester then parses the code as `react.tsx`. Set `filename` explicitly only when the rule's behavior depends on it.
 
+## Do not over-test
+
+Add the fewest cases that pin down the change. The suite is already large and CI time is a real constraint, so a case that cannot fail for a reason the change introduced is pure cost.
+
+- Read the neighboring cases first; do not re-cover what they already cover.
+- One case per behavior is enough — do not enumerate every operator, union member, or option permutation of a behavior already pinned by another case.
+- Cover the branches the change touches, not nearby untouched behavior.
+
 ## One logical unit per test case
 
 Prefer one logical behavior per test case and, when reasonable, one error per `invalid` case. When several inputs exercise the same behavior, write several small cases — then a failing case names exactly what broke.
