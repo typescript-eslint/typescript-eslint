@@ -112,6 +112,11 @@ export interface RuleMetaData<
    */
   hasSuggestions?: boolean;
   /**
+   * Languages supported by this rule.
+   * See: https://github.com/eslint/rfcs/blob/main/designs/2025-rule-languages/README.md
+   */
+  languages?: string[] | undefined;
+  /**
    * A map of messages which the rule can report.
    * The key is the messageId, and the string is the parameterized error string.
    * See: https://eslint.org/docs/developer-guide/working-with-rules#messageids

@@ -21,6 +21,7 @@ describe(ESLintUtils.RuleCreator, () => {
           description: 'some description',
           recommended: 'yes',
         },
+        languages: ['js/js', 'markdown/gfm'],
         messages: {
           foo: 'some message',
         },
@@ -35,6 +36,7 @@ describe(ESLintUtils.RuleCreator, () => {
         recommended: 'yes',
         url: 'test/test',
       },
+      languages: ['js/js', 'markdown/gfm'],
       messages: {
         foo: 'some message',
       },
