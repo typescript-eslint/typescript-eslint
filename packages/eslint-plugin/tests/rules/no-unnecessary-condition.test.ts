@@ -1073,6 +1073,18 @@ function foo<T extends { a?: number; b?: boolean }>(obj: T, key: 'a' | 'b') {
   obj[key] ??= 1;
 }
     `,
+    // A single literal key doesn't produce a collapsed write type
+    `
+declare const foo: { bar?: number; baz?: string };
+foo['bar'] ??= 1;
+    `,
+    // An array index key doesn't resolve to a declared property, so the
+    // checker-provided type is used (and array accesses are skipped anyway)
+    `
+declare const arr: number[];
+declare const key: 0 | 1;
+arr[key] ??= 1;
+    `,
     `
 enum Keys {
   A = 'A',
