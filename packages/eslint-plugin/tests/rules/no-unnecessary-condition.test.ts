@@ -1024,6 +1024,55 @@ type Key = 'baz' | 'qux';
 declare const key: Key;
 foo.bar[key] ??= 1;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12556
+    `
+type Fields = {
+  hello?: number;
+  world?: boolean;
+};
+
+let fields: Fields = {};
+
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+    `,
+    `
+declare const foo: { bar?: number; baz?: string };
+declare const key: 'bar' | 'baz';
+foo[key] ??= undefined;
+    `,
+    `
+declare const foo: { bar?: number; baz?: string };
+declare const key: 'bar' | 'baz';
+foo[key] ||= 1;
+    `,
+    `
+declare const foo: { bar?: number; baz?: string };
+declare const key: 'bar' | 'baz';
+foo[key] &&= 1;
+    `,
+    `
+declare const foo: { bar: number; baz: string };
+declare const key: 'bar' | 'baz';
+foo[key] ||= 1;
+    `,
+    `
+declare const foo: { bar: number; baz: string };
+declare const key: 'bar' | 'baz';
+foo[key] &&= 1;
+    `,
+    `
+declare const foo: { bar?: number; baz?: string };
+type Key = keyof typeof foo;
+declare const key: Key;
+foo[key] ??= 1;
+    `,
+    `
+function foo<T extends { a?: number; b?: boolean }>(obj: T, key: 'a' | 'b') {
+  obj[key] ??= 1;
+}
+    `,
     `
 enum Keys {
   A = 'A',
@@ -3500,6 +3549,72 @@ foo &&= null;
           messageId: 'alwaysFalsy',
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12556
+    {
+      code: `
+declare const foo: { bar: number; baz: string };
+declare const key: 'bar' | 'baz';
+foo[key] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: 'x'; baz: 'y' };
+declare const key: 'bar' | 'baz';
+foo[key] ||= 'z';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: null; baz: undefined };
+declare const key: 'bar' | 'baz';
+foo[key] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: [number, boolean];
+declare const key: 0 | 1;
+foo[key] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
     },
     {
       code: `

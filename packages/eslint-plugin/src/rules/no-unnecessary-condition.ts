@@ -343,6 +343,58 @@ export default createRule<Options, MessageId>({
     }
 
     /**
+     * In a write position (the left-hand side of `&&=`, `||=`, or `??=`),
+     * TypeScript resolves the type of `obj[key]` as the *intersection* of the
+     * types of the properties that `key` may select. When `key` is a union of
+     * literal keys that select properties with different types — e.g.
+     * `key: 'a' | 'b'` on `{ a?: number; b?: boolean }` — that intersection
+     * collapses to `undefined` or `never`, which would make this rule report a
+     * false positive even though the runtime *read* value is
+     * `number | boolean | undefined` and the assignment is therefore
+     * meaningful.
+     *
+     * Returns the types of the properties that `key` may select (i.e. the
+     * type of `node` as it would be read), or `undefined` when the
+     * checker-provided type is accurate (i.e. the node isn't a computed
+     * member expression with a union of literal keys).
+     */
+    function getTypesAtLocationAsRead(
+      node: TSESTree.Expression,
+    ): readonly ts.Type[] | undefined {
+      if (node.type !== AST_NODE_TYPES.MemberExpression || !node.computed) {
+        return undefined;
+      }
+      const keyType = getConstrainedTypeAtLocation(services, node.property);
+      if (!keyType.isUnion()) {
+        return undefined;
+      }
+      const objectType = getConstrainedTypeAtLocation(services, node.object);
+      const propertyTypes: ts.Type[] = [];
+      for (const key of keyType.types) {
+        if (!key.isStringLiteral() && !key.isNumberLiteral()) {
+          // The checker doesn't collapse the write type for non-literal keys,
+          // so the checker-provided type is accurate.
+          return undefined;
+        }
+        const propertyName = key.isStringLiteral()
+          ? key.value
+          : String(key.value);
+        const propertyType = getTypeOfPropertyOfName(
+          checker,
+          objectType,
+          propertyName,
+        );
+        if (propertyType == null) {
+          // The key selects a property that doesn't exist on the type, which
+          // is a type error in valid code; keep the checker-provided type.
+          return undefined;
+        }
+        propertyTypes.push(propertyType);
+      }
+      return propertyTypes;
+    }
+
+    /**
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
      */
@@ -350,6 +402,7 @@ export default createRule<Options, MessageId>({
       expression: TSESTree.Expression,
       isUnaryNotArgument = false,
       node = expression,
+      typeOverride?: readonly ts.Type[],
     ): void {
       // Check if the node is Unary Negation expression and handle it
       if (
@@ -379,18 +432,20 @@ export default createRule<Options, MessageId>({
         return checkNode(expression.right);
       }
 
-      const type = getConstrainedTypeAtLocation(services, expression);
+      const types = typeOverride ?? [
+        getConstrainedTypeAtLocation(services, expression),
+      ];
 
-      if (isConditionalAlwaysNecessary(type)) {
+      if (types.some(isConditionalAlwaysNecessary)) {
         return;
       }
       let messageId: MessageId | null = null;
 
-      if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
+      if (types.every(type => isTypeFlagSet(type, ts.TypeFlags.Never))) {
         messageId = 'never';
-      } else if (!isPossiblyTruthy(type)) {
+      } else if (!types.some(isPossiblyTruthy)) {
         messageId = !isUnaryNotArgument ? 'alwaysFalsy' : 'alwaysTruthy';
-      } else if (!isPossiblyFalsy(type)) {
+      } else if (!types.some(isPossiblyFalsy)) {
         messageId = !isUnaryNotArgument ? 'alwaysTruthy' : 'alwaysFalsy';
       }
 
@@ -399,27 +454,34 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function checkNodeForNullish(node: TSESTree.Expression): void {
-      const type = getConstrainedTypeAtLocation(services, node);
+    function checkNodeForNullish(
+      node: TSESTree.Expression,
+      typeOverride?: readonly ts.Type[],
+    ): void {
+      const types = typeOverride ?? [
+        getConstrainedTypeAtLocation(services, node),
+      ];
 
       // Conditional is always necessary if it involves `any`, `unknown` or a naked type parameter
       if (
-        isTypeFlagSet(
-          type,
-          ts.TypeFlags.Any |
-            ts.TypeFlags.Unknown |
-            ts.TypeFlags.TypeParameter |
-            ts.TypeFlags.TypeVariable,
+        types.some(type =>
+          isTypeFlagSet(
+            type,
+            ts.TypeFlags.Any |
+              ts.TypeFlags.Unknown |
+              ts.TypeFlags.TypeParameter |
+              ts.TypeFlags.TypeVariable,
+          ),
         )
       ) {
         return;
       }
 
       let messageId: MessageId | null = null;
-      if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
+      if (types.every(type => isTypeFlagSet(type, ts.TypeFlags.Never))) {
         messageId = 'never';
       } else if (
-        !isPossiblyNullish(type) &&
+        !types.some(isPossiblyNullish) &&
         !(
           node.type === AST_NODE_TYPES.MemberExpression &&
           isNullableMemberExpression(node)
@@ -439,7 +501,7 @@ export default createRule<Options, MessageId>({
         ) {
           messageId = 'neverNullish';
         }
-      } else if (isAlwaysNullish(type)) {
+      } else if (types.every(isAlwaysNullish)) {
         messageId = 'alwaysNullish';
       }
 
@@ -911,9 +973,14 @@ export default createRule<Options, MessageId>({
       // Similar to checkLogicalExpressionForUnnecessaryConditionals, since
       // a ||= b is equivalent to a || (a = b)
       if (['&&=', '||='].includes(node.operator)) {
-        checkNode(node.left);
+        checkNode(
+          node.left,
+          /* isUnaryNotArgument */ false,
+          node.left,
+          getTypesAtLocationAsRead(node.left),
+        );
       } else if (node.operator === '??=') {
-        checkNodeForNullish(node.left);
+        checkNodeForNullish(node.left, getTypesAtLocationAsRead(node.left));
       }
     }
 
