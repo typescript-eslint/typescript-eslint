@@ -63,6 +63,7 @@
     "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
+    "minimatch": "*",
     "rimraf": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
