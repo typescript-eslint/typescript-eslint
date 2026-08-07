@@ -30,6 +30,13 @@ export interface RuleMetaDataDocs {
    * Mark this rule as feature-frozen.
    */
   frozen?: boolean;
+
+  /**
+   * The dialects of the languages that the rule is intended to lint.
+   * @example
+   * ["JavaScript", "TypeScript"]
+   */
+  dialects?: string[] | undefined;
 }
 
 export interface ExternalSpecifier {
