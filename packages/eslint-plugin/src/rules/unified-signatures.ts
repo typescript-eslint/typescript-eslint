@@ -141,8 +141,8 @@ export default createRule<Options, MessageIds>({
             const { p0, p1 } = unify;
             const lineOfOtherOverload = only2 ? undefined : p0.loc.start.line;
 
-            const type0 = getParameterType(p0);
-            const type1 = getParameterType(p1);
+            const typeAnnotation0 = getParameterTypeAnnotation(p0);
+            const typeAnnotation1 = getParameterTypeAnnotation(p1);
 
             context.report({
               loc: p1.loc,
@@ -151,8 +151,8 @@ export default createRule<Options, MessageIds>({
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
                 types: getUnifiedTypeText(
-                  type0,
-                  type1,
+                  typeAnnotation0,
+                  typeAnnotation1,
                   unify.typeParameters0,
                   unify.typeParameters1,
                 ),
@@ -314,7 +314,7 @@ export default createRule<Options, MessageIds>({
         : undefined;
     }
 
-    function getParameterType(
+    function getParameterTypeAnnotation(
       parameter: TSESTree.Parameter,
     ): TSESTree.TypeNode | undefined {
       return (
