@@ -330,8 +330,11 @@ export default createRule<Options, MessageIds>({
       typeParameters0?: TSESTree.TSTypeParameterDeclaration,
       typeParameters1?: TSESTree.TSTypeParameterDeclaration,
     ): string {
-      if (type0 == null || type1 == null) {
-        return '';
+      if (type0 == null) {
+        return getUnionMemberText(type1!);
+      }
+      if (type1 == null) {
+        return getUnionMemberText(type0);
       }
 
       const members = [

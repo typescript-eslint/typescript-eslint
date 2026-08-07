@@ -1335,6 +1335,38 @@ function f(x: number | boolean): void;
     },
     {
       code: `
+function f(value): void;
+function f(value: string): void;
+      `,
+      errors: [
+        {
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: 'string',
+          },
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
+function f(value: string): void;
+function f(value): void;
+      `,
+      errors: [
+        {
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: 'string',
+          },
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
+      code: `
 type Alias = string;
 function f(x: Alias): void;
 function f(x: Alias | number): void;
