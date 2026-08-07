@@ -4,11 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
-import type {
-  ImplicitLibVariableOptions,
-  LibDefinition,
-  Variable,
-} from '../variable';
+import type { LibDefinition, LibVariableOptions, Variable } from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -39,24 +35,20 @@ export interface ReferencerOptions extends VisitorOptions {
   lib: Lib[];
 }
 
-type ImplicitVariableMap = ReadonlyMap<string, ImplicitLibVariableOptions>;
+type ImplicitVariableMap = ReadonlyMap<string, LibVariableOptions>;
 
 const implicitVariablesByLibSet = new Map<string, ImplicitVariableMap>();
 
 function mergeImplicitVariableOptions(
-  existing: ImplicitLibVariableOptions,
-  incoming: ImplicitLibVariableOptions,
-): ImplicitLibVariableOptions {
-  const existingIsTypeVariable = existing.isTypeVariable ?? false;
-  const existingIsValueVariable = existing.isValueVariable ?? false;
-  const incomingIsTypeVariable = incoming.isTypeVariable ?? false;
-  const incomingIsValueVariable = incoming.isValueVariable ?? false;
-  const isTypeVariable = existingIsTypeVariable || incomingIsTypeVariable;
-  const isValueVariable = existingIsValueVariable || incomingIsValueVariable;
+  existing: LibVariableOptions,
+  incoming: LibVariableOptions,
+): LibVariableOptions {
+  const isTypeVariable = existing.isTypeVariable || incoming.isTypeVariable;
+  const isValueVariable = existing.isValueVariable || incoming.isValueVariable;
 
   if (
-    existingIsTypeVariable === isTypeVariable &&
-    existingIsValueVariable === isValueVariable
+    existing.isTypeVariable === isTypeVariable &&
+    existing.isValueVariable === isValueVariable
   ) {
     return existing;
   }
@@ -104,7 +96,7 @@ export class Referencer extends Visitor {
   private defineImplicitGlobal(
     globalScope: GlobalScope,
     name: string,
-    options: ImplicitLibVariableOptions,
+    options: LibVariableOptions,
   ): void {
     const existingVariable = globalScope.set.get(name);
     if (!existingVariable) {
@@ -126,7 +118,7 @@ export class Referencer extends Visitor {
       return cached;
     }
 
-    const implicitVariables = new Map<string, ImplicitLibVariableOptions>();
+    const implicitVariables = new Map<string, LibVariableOptions>();
     for (const lib of this.resolveLibDefinitions()) {
       for (const [name, options] of lib.variables) {
         const existing = implicitVariables.get(name);
@@ -202,7 +194,7 @@ export class Referencer extends Visitor {
   private upgradeVariableToImplicitLibVariable(
     globalScope: GlobalScope,
     existingVariable: Variable,
-    options: ImplicitLibVariableOptions,
+    options: LibVariableOptions,
   ): void {
     const implicitVariable = new ImplicitLibVariable(
       globalScope,
