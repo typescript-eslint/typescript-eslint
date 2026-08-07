@@ -11,7 +11,6 @@ import type { Equal } from '../util';
 import {
   arraysAreEqual,
   createRule,
-  getTextWithParentheses,
   isParenthesized,
   nullThrows,
 } from '../util';
@@ -376,13 +375,13 @@ export default createRule<Options, MessageIds>({
     }
 
     function getUnionMemberText(type: TSESTree.TypeNode): string {
-      const text = getTextWithParentheses(context.sourceCode, type);
+      const text = context.sourceCode.getText(type);
       const needsParentheses =
         type.type === AST_NODE_TYPES.TSConditionalType ||
         type.type === AST_NODE_TYPES.TSConstructorType ||
         type.type === AST_NODE_TYPES.TSFunctionType;
 
-      return needsParentheses && !isParenthesized(type, context.sourceCode)
+      return needsParentheses || isParenthesized(type, context.sourceCode)
         ? `(${text})`
         : text;
     }

@@ -1468,6 +1468,22 @@ function f(x: number | /* second */ string): void;
       ],
     },
     {
+      code: `
+declare function fn(a: number): void;
+declare function fn(a: (/* before */ string /* after */)): void;
+      `,
+      errors: [
+        {
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: 'number | (string)',
+          },
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
       code: noFormat`
 function f(x: string & { brand: true }): void;
 function f(x: number | string & { brand: true }): void;
