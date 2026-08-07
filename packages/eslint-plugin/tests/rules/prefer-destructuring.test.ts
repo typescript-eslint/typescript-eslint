@@ -7,18 +7,18 @@ ruleTester.run('prefer-destructuring', rule, {
   valid: [
     // type annotated
     `
-      declare const object: { foo: string };
-      var foo: string = object.foo;
+declare const object: { foo: string };
+var foo: string = object.foo;
     `,
     `
-      declare const array: number[];
-      const bar: number = array[0];
+declare const array: number[];
+const bar: number = array[0];
     `,
     // enforceForDeclarationWithTypeAnnotation: true
     {
       code: `
-        declare const object: { foo: string };
-        var { foo } = object;
+declare const object: { foo: string };
+var { foo } = object;
       `,
       options: [
         { object: true },
@@ -27,8 +27,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        declare const object: { foo: string };
-        var { foo }: { foo: number } = object;
+declare const object: { foo: string };
+var { foo }: { foo: number } = object;
       `,
       options: [
         { object: true },
@@ -37,8 +37,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        declare const array: number[];
-        var [foo] = array;
+declare const array: number[];
+var [foo] = array;
       `,
       options: [
         { array: true },
@@ -47,8 +47,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        declare const array: number[];
-        var [foo]: [foo: number] = array;
+declare const array: number[];
+var [foo]: [foo: number] = array;
       `,
       options: [
         { object: true },
@@ -57,8 +57,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        declare const object: { bar: string };
-        var foo: unknown = object.bar;
+declare const object: { bar: string };
+var foo: unknown = object.bar;
       `,
       options: [
         { object: true },
@@ -67,8 +67,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        declare const object: { foo: string };
-        var { foo: bar } = object;
+declare const object: { foo: string };
+var { foo: bar } = object;
       `,
       options: [
         { object: true },
@@ -77,8 +77,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        declare const object: { foo: boolean };
-        var { foo: bar }: { foo: boolean } = object;
+declare const object: { foo: boolean };
+var { foo: bar }: { foo: boolean } = object;
       `,
       options: [
         { object: true },
@@ -87,15 +87,15 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        declare class Foo {
-          foo: string;
-        }
+declare class Foo {
+  foo: string;
+}
 
-        class Bar extends Foo {
-          static foo() {
-            var foo: any = super.foo;
-          }
-        }
+class Bar extends Foo {
+  static foo() {
+    var foo: any = super.foo;
+  }
+}
       `,
       options: [
         { object: true },
@@ -105,49 +105,49 @@ ruleTester.run('prefer-destructuring', rule, {
 
     // numeric property for iterable / non-iterable
     `
-      let x: { 0: unknown };
-      let y = x[0];
+let x: { 0: unknown };
+let y = x[0];
     `,
     `
-      let x: { 0: unknown };
-      y = x[0];
+let x: { 0: unknown };
+y = x[0];
     `,
     `
-      let x: unknown;
-      let y = x[0];
+let x: unknown;
+let y = x[0];
     `,
     `
-      let x: unknown;
-      y = x[0];
+let x: unknown;
+y = x[0];
     `,
     `
-      let x: { 0: unknown } | unknown[];
-      let y = x[0];
+let x: { 0: unknown } | unknown[];
+let y = x[0];
     `,
     `
-      let x: { 0: unknown } | unknown[];
-      y = x[0];
+let x: { 0: unknown } | unknown[];
+y = x[0];
     `,
     `
-      let x: { 0: unknown } & (() => void);
-      let y = x[0];
+let x: { 0: unknown } & (() => void);
+let y = x[0];
     `,
     `
-      let x: { 0: unknown } & (() => void);
-      y = x[0];
+let x: { 0: unknown } & (() => void);
+y = x[0];
     `,
     `
-      let x: Record<number, unknown>;
-      let y = x[0];
+let x: Record<number, unknown>;
+let y = x[0];
     `,
     `
-      let x: Record<number, unknown>;
-      y = x[0];
+let x: Record<number, unknown>;
+y = x[0];
     `,
     {
       code: `
-        let x: { 0: unknown };
-        let { 0: y } = x;
+let x: { 0: unknown };
+let { 0: y } = x;
       `,
       options: [
         { array: true, object: true },
@@ -156,8 +156,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: unknown };
-        ({ 0: y } = x);
+let x: { 0: unknown };
+({ 0: y } = x);
       `,
       options: [
         { array: true, object: true },
@@ -166,22 +166,22 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: unknown };
-        let y = x[0];
+let x: { 0: unknown };
+let y = x[0];
       `,
       options: [{ array: true }, { enforceForRenamedProperties: true }],
     },
     {
       code: `
-        let x: { 0: unknown };
-        y = x[0];
+let x: { 0: unknown };
+y = x[0];
       `,
       options: [{ array: true }, { enforceForRenamedProperties: true }],
     },
     {
       code: `
-        let x: { 0: unknown };
-        let y = x[0];
+let x: { 0: unknown };
+let y = x[0];
       `,
       options: [
         {
@@ -193,8 +193,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: unknown };
-        y = x[0];
+let x: { 0: unknown };
+y = x[0];
       `,
       options: [
         {
@@ -206,9 +206,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: Record<number, unknown>;
-        let i: number = 0;
-        y = x[i];
+let x: Record<number, unknown>;
+let i: number = 0;
+y = x[i];
       `,
       options: [
         { array: true, object: false },
@@ -217,9 +217,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: Record<number, unknown>;
-        let i: 0 = 0;
-        y = x[i];
+let x: Record<number, unknown>;
+let i: 0 = 0;
+y = x[i];
       `,
       options: [
         { array: true, object: false },
@@ -228,9 +228,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: Record<number, unknown>;
-        let i: 0 | 1 | 2 = 0;
-        y = x[i];
+let x: Record<number, unknown>;
+let i: 0 | 1 | 2 = 0;
+y = x[i];
       `,
       options: [
         { array: true, object: false },
@@ -239,9 +239,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: unknown[];
-        let i: number = 0;
-        y = x[i];
+let x: unknown[];
+let i: number = 0;
+y = x[i];
       `,
       options: [
         { array: true, object: false },
@@ -250,9 +250,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: unknown[];
-        let i: 0 = 0;
-        y = x[i];
+let x: unknown[];
+let i: 0 = 0;
+y = x[i];
       `,
       options: [
         { array: true, object: false },
@@ -261,9 +261,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: unknown[];
-        let i: 0 | 1 | 2 = 0;
-        y = x[i];
+let x: unknown[];
+let i: 0 | 1 | 2 = 0;
+y = x[i];
       `,
       options: [
         { array: true, object: false },
@@ -272,9 +272,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: unknown[];
-        let i: number = 0;
-        y = x[i];
+let x: unknown[];
+let i: number = 0;
+y = x[i];
       `,
       options: [
         { array: true, object: true },
@@ -283,8 +283,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: unknown };
-        y += x[0];
+let x: { 0: unknown };
+y += x[0];
       `,
       options: [
         { array: true, object: true },
@@ -293,14 +293,14 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        class Bar {
-          public [0]: unknown;
-        }
-        class Foo extends Bar {
-          static foo() {
-            let y = super[0];
-          }
-        }
+class Bar {
+  public [0]: unknown;
+}
+class Foo extends Bar {
+  static foo() {
+    let y = super[0];
+  }
+}
       `,
       options: [
         { array: true, object: true },
@@ -309,14 +309,14 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        class Bar {
-          public [0]: unknown;
-        }
-        class Foo extends Bar {
-          static foo() {
-            y = super[0];
-          }
-        }
+class Bar {
+  public [0]: unknown;
+}
+class Foo extends Bar {
+  static foo() {
+    y = super[0];
+  }
+}
       `,
       options: [
         { array: true, object: true },
@@ -326,104 +326,104 @@ ruleTester.run('prefer-destructuring', rule, {
 
     // already destructured
     `
-      let xs: unknown[] = [1];
-      let [x] = xs;
+let xs: unknown[] = [1];
+let [x] = xs;
     `,
     `
-      const obj: { x: unknown } = { x: 1 };
-      const { x } = obj;
+const obj: { x: unknown } = { x: 1 };
+const { x } = obj;
     `,
     `
-      var obj: { x: unknown } = { x: 1 };
-      var { x: y } = obj;
+var obj: { x: unknown } = { x: 1 };
+var { x: y } = obj;
     `,
     `
-      let obj: { x: unknown } = { x: 1 };
-      let key: 'x' = 'x';
-      let { [key]: foo } = obj;
+let obj: { x: unknown } = { x: 1 };
+let key: 'x' = 'x';
+let { [key]: foo } = obj;
     `,
     `
-      const obj: { x: unknown } = { x: 1 };
-      let x: unknown;
-      ({ x } = obj);
+const obj: { x: unknown } = { x: 1 };
+let x: unknown;
+({ x } = obj);
     `,
 
     // valid unless enforceForRenamedProperties is true
     `
-      let obj: { x: unknown } = { x: 1 };
-      let y = obj.x;
+let obj: { x: unknown } = { x: 1 };
+let y = obj.x;
     `,
     `
-      var obj: { x: unknown } = { x: 1 };
-      var y: unknown;
-      y = obj.x;
+var obj: { x: unknown } = { x: 1 };
+var y: unknown;
+y = obj.x;
     `,
     `
-      const obj: { x: unknown } = { x: 1 };
-      const y = obj['x'];
+const obj: { x: unknown } = { x: 1 };
+const y = obj['x'];
     `,
     `
-      let obj: Record<string, unknown> = {};
-      let key = 'abc';
-      var y = obj[key];
+let obj: Record<string, unknown> = {};
+let key = 'abc';
+var y = obj[key];
     `,
 
     // shorthand operators shouldn't be reported;
     `
-      let obj: { x: number } = { x: 1 };
-      let x = 10;
-      x += obj.x;
+let obj: { x: number } = { x: 1 };
+let x = 10;
+x += obj.x;
     `,
     `
-      let obj: { x: boolean } = { x: false };
-      let x = true;
-      x ||= obj.x;
+let obj: { x: boolean } = { x: false };
+let x = true;
+x ||= obj.x;
     `,
     `
-      const xs: number[] = [1];
-      let x = 3;
-      x *= xs[0];
+const xs: number[] = [1];
+let x = 3;
+x *= xs[0];
     `,
 
     // optional chaining shouldn't be reported
     `
-      let xs: unknown[] | undefined;
-      let x = xs?.[0];
+let xs: unknown[] | undefined;
+let x = xs?.[0];
     `,
     `
-      let obj: Record<string, unknown> | undefined;
-      let x = obj?.x;
+let obj: Record<string, unknown> | undefined;
+let x = obj?.x;
     `,
 
     // private identifiers
     `
-      class C {
-        #foo: string;
+class C {
+  #foo: string;
 
-        method() {
-          const foo: unknown = this.#foo;
-        }
-      }
+  method() {
+    const foo: unknown = this.#foo;
+  }
+}
     `,
     `
-      class C {
-        #foo: string;
+class C {
+  #foo: string;
 
-        method() {
-          let foo: unknown;
-          foo = this.#foo;
-        }
-      }
+  method() {
+    let foo: unknown;
+    foo = this.#foo;
+  }
+}
     `,
     {
       code: `
-        class C {
-          #foo: string;
+class C {
+  #foo: string;
 
-          method() {
-            const bar: unknown = this.#foo;
-          }
-        }
+  method() {
+    const bar: unknown = this.#foo;
+  }
+}
       `,
       options: [
         { array: true, object: true },
@@ -432,14 +432,14 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        class C {
-          #foo: string;
+class C {
+  #foo: string;
 
-          method(another: C) {
-            let bar: unknown;
-            bar: unknown = another.#foo;
-          }
-        }
+  method(another: C) {
+    let bar: unknown;
+    bar: unknown = another.#foo;
+  }
+}
       `,
       options: [
         { array: true, object: true },
@@ -448,13 +448,13 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        class C {
-          #foo: string;
+class C {
+  #foo: string;
 
-          method() {
-            const foo: unknown = this.#foo;
-          }
-        }
+  method() {
+    const foo: unknown = this.#foo;
+  }
+}
       `,
       options: [
         { array: true, object: true },
@@ -513,8 +513,8 @@ ruleTester.run('prefer-destructuring', rule, {
     // numeric property for iterable / non-iterable
     {
       code: `
-        let x: { [Symbol.iterator]: unknown };
-        let y = x[0];
+let x: { [Symbol.iterator]: unknown };
+let y = x[0];
       `,
       errors: [
         {
@@ -526,8 +526,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { [Symbol.iterator]: unknown };
-        y = x[0];
+let x: { [Symbol.iterator]: unknown };
+y = x[0];
       `,
       errors: [
         {
@@ -539,8 +539,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: [1, 2, 3];
-        let y = x[0];
+let x: [1, 2, 3];
+let y = x[0];
       `,
       errors: [
         {
@@ -552,8 +552,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: [1, 2, 3];
-        y = x[0];
+let x: [1, 2, 3];
+y = x[0];
       `,
       errors: [
         {
@@ -565,10 +565,10 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        function* it() {
-          yield 1;
-        }
-        let y = it()[0];
+function* it() {
+  yield 1;
+}
+let y = it()[0];
       `,
       errors: [
         {
@@ -580,10 +580,10 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        function* it() {
-          yield 1;
-        }
-        y = it()[0];
+function* it() {
+  yield 1;
+}
+y = it()[0];
       `,
       errors: [
         {
@@ -595,8 +595,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: any;
-        let y = x[0];
+let x: any;
+let y = x[0];
       `,
       errors: [
         {
@@ -608,8 +608,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: any;
-        y = x[0];
+let x: any;
+y = x[0];
       `,
       errors: [
         {
@@ -621,8 +621,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: string[] | { [Symbol.iterator]: unknown };
-        let y = x[0];
+let x: string[] | { [Symbol.iterator]: unknown };
+let y = x[0];
       `,
       errors: [
         {
@@ -634,8 +634,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: string[] | { [Symbol.iterator]: unknown };
-        y = x[0];
+let x: string[] | { [Symbol.iterator]: unknown };
+y = x[0];
       `,
       errors: [
         {
@@ -647,8 +647,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: object & unknown[];
-        let y = x[0];
+let x: object & unknown[];
+let y = x[0];
       `,
       errors: [
         {
@@ -660,8 +660,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: object & unknown[];
-        y = x[0];
+let x: object & unknown[];
+y = x[0];
       `,
       errors: [
         {
@@ -673,8 +673,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: string };
-        let y = x[0];
+let x: { 0: string };
+let y = x[0];
       `,
       errors: [
         {
@@ -687,8 +687,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: string };
-        y = x[0];
+let x: { 0: string };
+y = x[0];
       `,
       errors: [
         {
@@ -701,8 +701,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: string };
-        let y = x[0];
+let x: { 0: string };
+let y = x[0];
       `,
       errors: [
         {
@@ -721,8 +721,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: string };
-        y = x[0];
+let x: { 0: string };
+y = x[0];
       `,
       errors: [
         {
@@ -741,9 +741,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: Record<number, unknown>;
-        let i: number = 0;
-        y = x[i];
+let x: Record<number, unknown>;
+let i: number = 0;
+y = x[i];
       `,
       errors: [
         {
@@ -759,9 +759,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: Record<number, unknown>;
-        let i: 0 = 0;
-        y = x[i];
+let x: Record<number, unknown>;
+let i: 0 = 0;
+y = x[i];
       `,
       errors: [
         {
@@ -777,9 +777,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: Record<number, unknown>;
-        let i: 0 | 1 | 2 = 0;
-        y = x[i];
+let x: Record<number, unknown>;
+let i: 0 | 1 | 2 = 0;
+y = x[i];
       `,
       errors: [
         {
@@ -795,9 +795,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: unknown[];
-        let i: number = 0;
-        y = x[i];
+let x: unknown[];
+let i: number = 0;
+y = x[i];
       `,
       errors: [
         {
@@ -813,9 +813,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: unknown[];
-        let i: 0 = 0;
-        y = x[i];
+let x: unknown[];
+let i: 0 = 0;
+y = x[i];
       `,
       errors: [
         {
@@ -831,9 +831,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: unknown[];
-        let i: 0 | 1 | 2 = 0;
-        y = x[i];
+let x: unknown[];
+let i: 0 | 1 | 2 = 0;
+y = x[i];
       `,
       errors: [
         {
@@ -849,8 +849,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: unknown } | unknown[];
-        let y = x[0];
+let x: { 0: unknown } | unknown[];
+let y = x[0];
       `,
       errors: [
         {
@@ -863,8 +863,8 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let x: { 0: unknown } | unknown[];
-        y = x[0];
+let x: { 0: unknown } | unknown[];
+y = x[0];
       `,
       errors: [
         {
@@ -879,8 +879,8 @@ ruleTester.run('prefer-destructuring', rule, {
     // auto fixes
     {
       code: `
-        let obj = { foo: 'bar' };
-        const foo = obj.foo;
+let obj = { foo: 'bar' };
+const foo = obj.foo;
       `,
       errors: [
         {
@@ -889,15 +889,15 @@ ruleTester.run('prefer-destructuring', rule, {
         },
       ],
       output: `
-        let obj = { foo: 'bar' };
-        const {foo} = obj;
+let obj = { foo: 'bar' };
+const {foo} = obj;
       `,
     },
     {
       code: `
-        let obj = { foo: 'bar' };
-        var x: null = null;
-        const foo = (x, obj).foo;
+let obj = { foo: 'bar' };
+var x: null = null;
+const foo = (x, obj).foo;
       `,
       errors: [
         {
@@ -906,9 +906,9 @@ ruleTester.run('prefer-destructuring', rule, {
         },
       ],
       output: `
-        let obj = { foo: 'bar' };
-        var x: null = null;
-        const {foo} = (x, obj);
+let obj = { foo: 'bar' };
+var x: null = null;
+const {foo} = (x, obj);
       `,
     },
     {
@@ -923,9 +923,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        const obj = { foo: 'bar' };
-        let a: any;
-        var foo = (a = obj).foo;
+const obj = { foo: 'bar' };
+let a: any;
+var foo = (a = obj).foo;
       `,
       errors: [
         {
@@ -934,15 +934,15 @@ ruleTester.run('prefer-destructuring', rule, {
         },
       ],
       output: `
-        const obj = { foo: 'bar' };
-        let a: any;
-        var {foo} = a = obj;
+const obj = { foo: 'bar' };
+let a: any;
+var {foo} = a = obj;
       `,
     },
     {
       code: `
-        const obj = { asdf: { qwer: null } };
-        const qwer = obj.asdf.qwer;
+const obj = { asdf: { qwer: null } };
+const qwer = obj.asdf.qwer;
       `,
       errors: [
         {
@@ -951,14 +951,14 @@ ruleTester.run('prefer-destructuring', rule, {
         },
       ],
       output: `
-        const obj = { asdf: { qwer: null } };
-        const {qwer} = obj.asdf;
+const obj = { asdf: { qwer: null } };
+const {qwer} = obj.asdf;
       `,
     },
     {
       code: `
-        const obj = { foo: 100 };
-        const /* comment */ foo = obj.foo;
+const obj = { foo: 100 };
+const /* comment */ foo = obj.foo;
       `,
       errors: [
         {
@@ -967,16 +967,16 @@ ruleTester.run('prefer-destructuring', rule, {
         },
       ],
       output: `
-        const obj = { foo: 100 };
-        const /* comment */ {foo} = obj;
+const obj = { foo: 100 };
+const /* comment */ {foo} = obj;
       `,
     },
 
     // enforceForRenamedProperties: true
     {
       code: `
-        let obj = { foo: 'bar' };
-        const x = obj.foo;
+let obj = { foo: 'bar' };
+const x = obj.foo;
       `,
       errors: [
         {
@@ -989,9 +989,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let obj = { foo: 'bar' };
-        let x: unknown;
-        x = obj.foo;
+let obj = { foo: 'bar' };
+let x: unknown;
+x = obj.foo;
       `,
       errors: [
         {
@@ -1004,9 +1004,9 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let obj: Record<string, unknown>;
-        let key = 'abc';
-        const x = obj[key];
+let obj: Record<string, unknown>;
+let key = 'abc';
+const x = obj[key];
       `,
       errors: [
         {
@@ -1019,10 +1019,10 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
-        let obj: Record<string, unknown>;
-        let key = 'abc';
-        let x: unknown;
-        x = obj[key];
+let obj: Record<string, unknown>;
+let key = 'abc';
+let x: unknown;
+x = obj[key];
       `,
       errors: [
         {

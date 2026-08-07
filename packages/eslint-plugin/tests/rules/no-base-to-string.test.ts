@@ -130,80 +130,80 @@ ruleTester.run('no-base-to-string', rule, {
     '(function () {}).toString();',
 
     `
-      declare const a: {
-        [Symbol.toPrimitive](): string;
-      };
+declare const a: {
+  [Symbol.toPrimitive](): string;
+};
 
-      \`\${a}\`;
+\`\${a}\`;
     `,
     `
-      declare const a: {
-        valueOf(): string;
-      };
+declare const a: {
+  valueOf(): string;
+};
 
-      \`\${a}\`;
+\`\${a}\`;
     `,
 
     // variable toString() and template
     `
-      let value = '';
-      value.toString();
-      let text = \`\${value}\`;
+let value = '';
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = 'text';
-      value.toString();
-      let text = \`\${value}\`;
+let value = 'text';
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = true;
-      value.toString();
-      let text = \`\${value}\`;
+let value = true;
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = false;
-      value.toString();
-      let text = \`\${value}\`;
+let value = false;
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = 1;
-      value.toString();
-      let text = \`\${value}\`;
+let value = 1;
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = 1n;
-      value.toString();
-      let text = \`\${value}\`;
+let value = 1n;
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = [];
-      value.toString();
-      let text = \`\${value}\`;
+let value = [];
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = /regex/;
-      value.toString();
-      let text = \`\${value}\`;
+let value = /regex/;
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = __dirname === 'foobar';
-      value.toString();
-      let text = \`\${value}\`;
+let value = __dirname === 'foobar';
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = {}.constructor();
-      value.toString();
-      let text = \`\${value}\`;
+let value = {}.constructor();
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = () => {};
-      value.toString();
-      let text = \`\${value}\`;
+let value = () => {};
+value.toString();
+let text = \`\${value}\`;
     `,
     `
-      let value = function () {};
-      value.toString();
-      let text = \`\${value}\`;
+let value = function () {};
+value.toString();
+let text = \`\${value}\`;
     `,
 
     // String()
@@ -297,14 +297,10 @@ function tag() {}
 tag\`\${{}}\`;
     `,
     `
-      function tag() {}
-      tag\`\${{}}\`;
-    `,
-    `
-      interface Brand {}
-      function test(v: string & Brand): string {
-        return \`\${v}\`;
-      }
+interface Brand {}
+function test(v: string & Brand): string {
+  return \`\${v}\`;
+}
     `,
     "'' += new Error();",
     "'' += new URL();",
@@ -369,17 +365,17 @@ error.toString();
     },
     {
       code: `
-        class BaseError extends Error {
-          code?: string;
-        }
+class BaseError extends Error {
+  code?: string;
+}
 
-        class Boom<T> extends BaseError {
-          details: T;
-        }
+class Boom<T> extends BaseError {
+  details: T;
+}
 
-        function bar<T>(error: Boom<T>) {
-          console.log(error.toString());
-        }
+function bar<T>(error: Boom<T>) {
+  console.log(error.toString());
+}
       `,
     },
     {
@@ -1053,8 +1049,8 @@ function foo<T>(x: T) {
     },
     {
       code: `
-        let someObjectOrString = Math.random() ? { a: true } : 'text';
-        someObjectOrString.toString();
+let someObjectOrString = Math.random() ? { a: true } : 'text';
+someObjectOrString.toString();
       `,
       errors: [
         {
@@ -1068,8 +1064,8 @@ function foo<T>(x: T) {
     },
     {
       code: `
-        let someObjectOrString = Math.random() ? { a: true } : 'text';
-        someObjectOrString.toLocaleString();
+let someObjectOrString = Math.random() ? { a: true } : 'text';
+someObjectOrString.toLocaleString();
       `,
       errors: [
         {
@@ -1083,8 +1079,8 @@ function foo<T>(x: T) {
     },
     {
       code: `
-        let someObjectOrString = Math.random() ? { a: true } : 'text';
-        someObjectOrString + '';
+let someObjectOrString = Math.random() ? { a: true } : 'text';
+someObjectOrString + '';
       `,
       errors: [
         {
@@ -1098,8 +1094,8 @@ function foo<T>(x: T) {
     },
     {
       code: `
-        let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
-        someObjectOrObject.toString();
+let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
+someObjectOrObject.toString();
       `,
       errors: [
         {
@@ -1113,8 +1109,8 @@ function foo<T>(x: T) {
     },
     {
       code: `
-        let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
-        someObjectOrObject.toLocaleString();
+let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
+someObjectOrObject.toLocaleString();
       `,
       errors: [
         {
@@ -1128,8 +1124,8 @@ function foo<T>(x: T) {
     },
     {
       code: `
-        let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
-        someObjectOrObject + '';
+let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
+someObjectOrObject + '';
       `,
       errors: [
         {
@@ -1143,11 +1139,11 @@ function foo<T>(x: T) {
     },
     {
       code: `
-        interface A {}
-        interface B {}
-        function test(intersection: A & B): string {
-          return \`\${intersection}\`;
-        }
+interface A {}
+interface B {}
+function test(intersection: A & B): string {
+  return \`\${intersection}\`;
+}
       `,
       errors: [
         {
@@ -1221,7 +1217,7 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        [{}, {}].join('');
+[{}, {}].join('');
       `,
       errors: [
         {
@@ -1235,8 +1231,8 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        const array = [{}, {}];
-        array.join('');
+const array = [{}, {}];
+array.join('');
       `,
       errors: [
         {
@@ -1250,10 +1246,10 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class A {
-          a: string;
-        }
-        [new A(), 'str'].join('');
+class A {
+  a: string;
+}
+[new A(), 'str'].join('');
       `,
       errors: [
         {
@@ -1267,11 +1263,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: (string | Foo)[];
-        array.join('');
+class Foo {
+  foo: string;
+}
+declare const array: (string | Foo)[];
+array.join('');
       `,
       errors: [
         {
@@ -1285,11 +1281,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: (string & Foo) | (string | Foo)[];
-        array.join('');
+class Foo {
+  foo: string;
+}
+declare const array: (string & Foo) | (string | Foo)[];
+array.join('');
       `,
       errors: [
         {
@@ -1303,14 +1299,14 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        class Bar {
-          bar: string;
-        }
-        declare const array: Foo[] & Bar[];
-        array.join('');
+class Foo {
+  foo: string;
+}
+class Bar {
+  bar: string;
+}
+declare const array: Foo[] & Bar[];
+array.join('');
       `,
       errors: [
         {
@@ -1324,11 +1320,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: string[] | Foo[];
-        array.join('');
+class Foo {
+  foo: string;
+}
+declare const array: string[] | Foo[];
+array.join('');
       `,
       errors: [
         {
@@ -1342,11 +1338,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [string, Foo];
-        tuple.join('');
+class Foo {
+  foo: string;
+}
+declare const tuple: [string, Foo];
+tuple.join('');
       `,
       errors: [
         {
@@ -1360,11 +1356,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo, Foo];
-        tuple.join('');
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo, Foo];
+tuple.join('');
       `,
       errors: [
         {
@@ -1378,11 +1374,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo | string, string];
-        tuple.join('');
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo | string, string];
+tuple.join('');
       `,
       errors: [
         {
@@ -1396,11 +1392,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [string, string] | [Foo, Foo];
-        tuple.join('');
+class Foo {
+  foo: string;
+}
+declare const tuple: [string, string] | [Foo, Foo];
+tuple.join('');
       `,
       errors: [
         {
@@ -1414,11 +1410,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo, string] & [Foo, Foo];
-        tuple.join('');
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo, string] & [Foo, Foo];
+tuple.join('');
       `,
       errors: [
         {
@@ -1432,8 +1428,8 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        const array = ['string', { foo: 'bar' }];
-        array.join('');
+const array = ['string', { foo: 'bar' }];
+array.join('');
       `,
       errors: [
         {
@@ -1454,10 +1450,10 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        type Bar = Record<string, string>;
-        function foo<T extends string | Bar>(array: T[]) {
-          return array.join();
-        }
+type Bar = Record<string, string>;
+function foo<T extends string | Bar>(array: T[]) {
+  return array.join();
+}
       `,
       errors: [
         {
@@ -1472,7 +1468,7 @@ declare const foo: Bar & Foo;
 
     {
       code: `
-        String([{}, {}]);
+String([{}, {}]);
       `,
       errors: [
         {
@@ -1486,8 +1482,8 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        const array = [{}, {}];
-        String(array);
+const array = [{}, {}];
+String(array);
       `,
       errors: [
         {
@@ -1501,10 +1497,10 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class A {
-          a: string;
-        }
-        String([new A(), 'str']);
+class A {
+  a: string;
+}
+String([new A(), 'str']);
       `,
       errors: [
         {
@@ -1518,11 +1514,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: (string | Foo)[];
-        String(array);
+class Foo {
+  foo: string;
+}
+declare const array: (string | Foo)[];
+String(array);
       `,
       errors: [
         {
@@ -1536,11 +1532,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: (string & Foo) | (string | Foo)[];
-        String(array);
+class Foo {
+  foo: string;
+}
+declare const array: (string & Foo) | (string | Foo)[];
+String(array);
       `,
       errors: [
         {
@@ -1554,14 +1550,14 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        class Bar {
-          bar: string;
-        }
-        declare const array: Foo[] & Bar[];
-        String(array);
+class Foo {
+  foo: string;
+}
+class Bar {
+  bar: string;
+}
+declare const array: Foo[] & Bar[];
+String(array);
       `,
       errors: [
         {
@@ -1575,11 +1571,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: string[] | Foo[];
-        String(array);
+class Foo {
+  foo: string;
+}
+declare const array: string[] | Foo[];
+String(array);
       `,
       errors: [
         {
@@ -1593,11 +1589,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [string, Foo];
-        String(tuple);
+class Foo {
+  foo: string;
+}
+declare const tuple: [string, Foo];
+String(tuple);
       `,
       errors: [
         {
@@ -1611,11 +1607,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo, Foo];
-        String(tuple);
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo, Foo];
+String(tuple);
       `,
       errors: [
         {
@@ -1629,11 +1625,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo | string, string];
-        String(tuple);
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo | string, string];
+String(tuple);
       `,
       errors: [
         {
@@ -1647,11 +1643,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [string, string] | [Foo, Foo];
-        String(tuple);
+class Foo {
+  foo: string;
+}
+declare const tuple: [string, string] | [Foo, Foo];
+String(tuple);
       `,
       errors: [
         {
@@ -1665,11 +1661,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo, string] & [Foo, Foo];
-        String(tuple);
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo, string] & [Foo, Foo];
+String(tuple);
       `,
       errors: [
         {
@@ -1683,8 +1679,8 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        const array = ['string', { foo: 'bar' }];
-        String(array);
+const array = ['string', { foo: 'bar' }];
+String(array);
       `,
       errors: [
         {
@@ -1705,10 +1701,10 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        type Bar = Record<string, string>;
-        function foo<T extends string | Bar>(array: T[]) {
-          return String(array);
-        }
+type Bar = Record<string, string>;
+function foo<T extends string | Bar>(array: T[]) {
+  return String(array);
+}
       `,
       errors: [
         {
@@ -1722,15 +1718,15 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        declare const a:
-          | {
-              [Symbol.toPrimitive](): string;
-            }
-          | {
-              other: true;
-            };
+declare const a:
+  | {
+      [Symbol.toPrimitive](): string;
+    }
+  | {
+      other: true;
+    };
 
-        \`\${a}\`;
+\`\${a}\`;
       `,
       errors: [
         {
@@ -1744,15 +1740,15 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        declare const a:
-          | {
-              valueOf(): string;
-            }
-          | {
-              other: true;
-            };
+declare const a:
+  | {
+      valueOf(): string;
+    }
+  | {
+      other: true;
+    };
 
-        \`\${a}\`;
+\`\${a}\`;
       `,
       errors: [
         {
@@ -1766,7 +1762,7 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        [{}, {}].toString();
+[{}, {}].toString();
       `,
       errors: [
         {
@@ -1780,8 +1776,8 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        const array = [{}, {}];
-        array.toString();
+const array = [{}, {}];
+array.toString();
       `,
       errors: [
         {
@@ -1795,10 +1791,10 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class A {
-          a: string;
-        }
-        [new A(), 'str'].toString();
+class A {
+  a: string;
+}
+[new A(), 'str'].toString();
       `,
       errors: [
         {
@@ -1812,11 +1808,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: (string | Foo)[];
-        array.toString();
+class Foo {
+  foo: string;
+}
+declare const array: (string | Foo)[];
+array.toString();
       `,
       errors: [
         {
@@ -1830,11 +1826,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: (string & Foo) | (string | Foo)[];
-        array.toString();
+class Foo {
+  foo: string;
+}
+declare const array: (string & Foo) | (string | Foo)[];
+array.toString();
       `,
       errors: [
         {
@@ -1848,14 +1844,14 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        class Bar {
-          bar: string;
-        }
-        declare const array: Foo[] & Bar[];
-        array.toString();
+class Foo {
+  foo: string;
+}
+class Bar {
+  bar: string;
+}
+declare const array: Foo[] & Bar[];
+array.toString();
       `,
       errors: [
         {
@@ -1869,11 +1865,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: string[] | Foo[];
-        array.toString();
+class Foo {
+  foo: string;
+}
+declare const array: string[] | Foo[];
+array.toString();
       `,
       errors: [
         {
@@ -1887,11 +1883,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [string, Foo];
-        tuple.toString();
+class Foo {
+  foo: string;
+}
+declare const tuple: [string, Foo];
+tuple.toString();
       `,
       errors: [
         {
@@ -1905,11 +1901,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo, Foo];
-        tuple.toString();
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo, Foo];
+tuple.toString();
       `,
       errors: [
         {
@@ -1923,11 +1919,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo | string, string];
-        tuple.toString();
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo | string, string];
+tuple.toString();
       `,
       errors: [
         {
@@ -1941,11 +1937,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [string, string] | [Foo, Foo];
-        tuple.toString();
+class Foo {
+  foo: string;
+}
+declare const tuple: [string, string] | [Foo, Foo];
+tuple.toString();
       `,
       errors: [
         {
@@ -1959,11 +1955,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo, string] & [Foo, Foo];
-        tuple.toString();
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo, string] & [Foo, Foo];
+tuple.toString();
       `,
       errors: [
         {
@@ -1977,8 +1973,8 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        const array = ['string', { foo: 'bar' }];
-        array.toString();
+const array = ['string', { foo: 'bar' }];
+array.toString();
       `,
       errors: [
         {
@@ -1999,10 +1995,10 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        type Bar = Record<string, string>;
-        function foo<T extends string | Bar>(array: T[]) {
-          return array.toString();
-        }
+type Bar = Record<string, string>;
+function foo<T extends string | Bar>(array: T[]) {
+  return array.toString();
+}
       `,
       errors: [
         {
@@ -2017,7 +2013,7 @@ declare const foo: Bar & Foo;
 
     {
       code: `
-        \`\${[{}, {}]}\`;
+\`\${[{}, {}]}\`;
       `,
       errors: [
         {
@@ -2031,8 +2027,8 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        const array = [{}, {}];
-        \`\${array}\`;
+const array = [{}, {}];
+\`\${array}\`;
       `,
       errors: [
         {
@@ -2046,10 +2042,10 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class A {
-          a: string;
-        }
-        \`\${[new A(), 'str']}\`;
+class A {
+  a: string;
+}
+\`\${[new A(), 'str']}\`;
       `,
       errors: [
         {
@@ -2063,11 +2059,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: (string | Foo)[];
-        \`\${array}\`;
+class Foo {
+  foo: string;
+}
+declare const array: (string | Foo)[];
+\`\${array}\`;
       `,
       errors: [
         {
@@ -2081,11 +2077,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: (string & Foo) | (string | Foo)[];
-        \`\${array}\`;
+class Foo {
+  foo: string;
+}
+declare const array: (string & Foo) | (string | Foo)[];
+\`\${array}\`;
       `,
       errors: [
         {
@@ -2099,14 +2095,14 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        class Bar {
-          bar: string;
-        }
-        declare const array: Foo[] & Bar[];
-        \`\${array}\`;
+class Foo {
+  foo: string;
+}
+class Bar {
+  bar: string;
+}
+declare const array: Foo[] & Bar[];
+\`\${array}\`;
       `,
       errors: [
         {
@@ -2120,11 +2116,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const array: string[] | Foo[];
-        \`\${array}\`;
+class Foo {
+  foo: string;
+}
+declare const array: string[] | Foo[];
+\`\${array}\`;
       `,
       errors: [
         {
@@ -2138,11 +2134,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [string, Foo];
-        \`\${tuple}\`;
+class Foo {
+  foo: string;
+}
+declare const tuple: [string, Foo];
+\`\${tuple}\`;
       `,
       errors: [
         {
@@ -2156,11 +2152,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo, Foo];
-        \`\${tuple}\`;
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo, Foo];
+\`\${tuple}\`;
       `,
       errors: [
         {
@@ -2174,11 +2170,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo | string, string];
-        \`\${tuple}\`;
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo | string, string];
+\`\${tuple}\`;
       `,
       errors: [
         {
@@ -2192,11 +2188,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [string, string] | [Foo, Foo];
-        \`\${tuple}\`;
+class Foo {
+  foo: string;
+}
+declare const tuple: [string, string] | [Foo, Foo];
+\`\${tuple}\`;
       `,
       errors: [
         {
@@ -2210,11 +2206,11 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        class Foo {
-          foo: string;
-        }
-        declare const tuple: [Foo, string] & [Foo, Foo];
-        \`\${tuple}\`;
+class Foo {
+  foo: string;
+}
+declare const tuple: [Foo, string] & [Foo, Foo];
+\`\${tuple}\`;
       `,
       errors: [
         {
@@ -2228,8 +2224,8 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        const array = ['string', { foo: 'bar' }];
-        \`\${array}\`;
+const array = ['string', { foo: 'bar' }];
+\`\${array}\`;
       `,
       errors: [
         {
@@ -2250,10 +2246,10 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        type Bar = Record<string, string>;
-        function foo<T extends string | Bar>(array: T[]) {
-          return \`\${array}\`;
-        }
+type Bar = Record<string, string>;
+function foo<T extends string | Bar>(array: T[]) {
+  return \`\${array}\`;
+}
       `,
       errors: [
         {
@@ -2268,10 +2264,10 @@ declare const foo: Bar & Foo;
 
     {
       code: `
-        type Bar = Record<string, string>;
-        function foo<T extends string | Bar>(array: T[]) {
-          array[0].toString();
-        }
+type Bar = Record<string, string>;
+function foo<T extends string | Bar>(array: T[]) {
+  array[0].toString();
+}
       `,
       errors: [
         {
@@ -2285,10 +2281,10 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
-        type Bar = Record<string, string>;
-        function foo<T extends string | Bar>(value: T) {
-          value.toString();
-        }
+type Bar = Record<string, string>;
+function foo<T extends string | Bar>(value: T) {
+  value.toString();
+}
       `,
       errors: [
         {
@@ -2318,11 +2314,11 @@ foo.toString();
     },
     {
       code: `
-        type Bar = Record<string, string>;
-        function foo<T extends string | Bar>(array: T[]) {
-          return array;
-        }
-        foo([{ foo: 'foo' }]).join();
+type Bar = Record<string, string>;
+function foo<T extends string | Bar>(array: T[]) {
+  return array;
+}
+foo([{ foo: 'foo' }]).join();
       `,
       errors: [
         {
@@ -2336,11 +2332,11 @@ foo.toString();
     },
     {
       code: `
-        type Bar = Record<string, string>;
-        function foo<T extends string | Bar>(array: T[]) {
-          return array;
-        }
-        foo([{ foo: 'foo' }, 'bar']).join();
+type Bar = Record<string, string>;
+function foo<T extends string | Bar>(array: T[]) {
+  return array;
+}
+foo([{ foo: 'foo' }, 'bar']).join();
       `,
       errors: [
         {
@@ -2455,13 +2451,13 @@ a.toString();
     },
     {
       code: `
-        interface Base {}
-        interface Left extends Base {}
-        interface Right extends Base {}
-        interface Diamond extends Left, Right {}
+interface Base {}
+interface Left extends Base {}
+interface Right extends Base {}
+interface Diamond extends Left, Right {}
 
-        declare const d: Diamond;
-        d.toString();
+declare const d: Diamond;
+d.toString();
       `,
       errors: [
         {
@@ -2477,9 +2473,9 @@ a.toString();
     // no declarations for their synthesized properties.
     {
       code: `
-        type Mapped = { [K in 'toString']: () => string };
-        declare const x: Mapped;
-        '' + x;
+type Mapped = { [K in 'toString']: () => string };
+declare const x: Mapped;
+'' + x;
       `,
       errors: [
         {

@@ -8,114 +8,114 @@ const ruleTester = createRuleTesterWithTypes();
 ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
   valid: [
     `
-      Promise.resolve().catch((err: unknown) => {
-        throw err;
-      });
+Promise.resolve().catch((err: unknown) => {
+  throw err;
+});
     `,
     `
-      let x = Math.random() ? 'ca' + 'tch' : 'catch';
-      Promise.resolve()[x]((err: Error) => {});
+let x = Math.random() ? 'ca' + 'tch' : 'catch';
+Promise.resolve()[x]((err: Error) => {});
     `,
     `
-      Promise.resolve().then(
-        () => {},
-        (err: unknown) => {
-          throw err;
-        },
-      );
+Promise.resolve().then(
+  () => {},
+  (err: unknown) => {
+    throw err;
+  },
+);
     `,
     `
-      Promise.resolve().catch(() => {
-        throw new Error();
-      });
+Promise.resolve().catch(() => {
+  throw new Error();
+});
     `,
     `
-      Promise.reject(new Error()).catch("not this rule's problem");
+Promise.reject(new Error()).catch("not this rule's problem");
     `,
     `
-      declare const crappyHandler: (() => void) | 2;
-      Promise.reject(new Error()).catch(crappyHandler);
-    `,
-
-    `
-      Promise.resolve().catch((...args: [unknown]) => {
-        throw args[0];
-      });
-    `,
-    `
-      Promise.resolve().catch((...args: [a: unknown]) => {
-        const err = args[0];
-      });
+declare const crappyHandler: (() => void) | 2;
+Promise.reject(new Error()).catch(crappyHandler);
     `,
 
     `
-      Promise.resolve().catch((...args: readonly unknown[]) => {
-        throw args[0];
-      });
+Promise.resolve().catch((...args: [unknown]) => {
+  throw args[0];
+});
+    `,
+    `
+Promise.resolve().catch((...args: [a: unknown]) => {
+  const err = args[0];
+});
     `,
 
     `
-      declare const notAPromise: { catch: (f: Function) => void };
-      notAPromise.catch((...args: [a: string, string]) => {
-        throw args[0];
-      });
-    `,
-    `
-      declare const catchArgs: [(x: unknown) => void];
-      Promise.reject(new Error()).catch(...catchArgs);
+Promise.resolve().catch((...args: readonly unknown[]) => {
+  throw args[0];
+});
     `,
 
     `
-      declare const catchArgs: [
-        string | (() => never),
-        (shouldntFlag: string) => void,
-        number,
-      ];
-      Promise.reject(new Error()).catch(...catchArgs);
+declare const notAPromise: { catch: (f: Function) => void };
+notAPromise.catch((...args: [a: string, string]) => {
+  throw args[0];
+});
     `,
     `
-      declare const catchArgs: ['not callable'];
-      Promise.reject(new Error()).catch(...catchArgs);
+declare const catchArgs: [(x: unknown) => void];
+Promise.reject(new Error()).catch(...catchArgs);
+    `,
+
+    `
+declare const catchArgs: [
+  string | (() => never),
+  (shouldntFlag: string) => void,
+  number,
+];
+Promise.reject(new Error()).catch(...catchArgs);
     `,
     `
-      declare const emptySpread: [];
-      Promise.reject(new Error()).catch(...emptySpread);
+declare const catchArgs: ['not callable'];
+Promise.reject(new Error()).catch(...catchArgs);
     `,
     `
-      Promise.resolve().catch(
-        (
-          ...err: [unknown, string | ((number | unknown) & { b: () => void }), string]
-        ) => {
-          throw err;
-        },
-      );
+declare const emptySpread: [];
+Promise.reject(new Error()).catch(...emptySpread);
     `,
     `
-      declare const notAMemberExpression: (...args: any[]) => {};
-      notAMemberExpression(
-        'This helps get 100% code cov',
-        "but doesn't test anything useful related to the rule.",
-      );
+Promise.resolve().catch(
+  (
+    ...err: [unknown, string | ((number | unknown) & { b: () => void }), string]
+  ) => {
+    throw err;
+  },
+);
     `,
     `
-      Promise.resolve().catch((...[args]: [unknown]) => {
-        console.log(args);
-      });
+declare const notAMemberExpression: (...args: any[]) => {};
+notAMemberExpression(
+  'This helps get 100% code cov',
+  "but doesn't test anything useful related to the rule.",
+);
     `,
     `
-      Promise.resolve().catch((...{ find }: [unknown]) => {
-        console.log(find);
-      });
+Promise.resolve().catch((...[args]: [unknown]) => {
+  console.log(args);
+});
+    `,
+    `
+Promise.resolve().catch((...{ find }: [unknown]) => {
+  console.log(find);
+});
     `,
     'Promise.resolve.then();',
     'Promise.resolve().then(() => {});',
     `
-      declare const singleTupleArg: [() => void];
-      Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
+declare const singleTupleArg: [() => void];
+Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
     `,
     `
-      declare const arrayArg: (() => void)[];
-      Promise.resolve().then(...arrayArg, error => {});
+declare const arrayArg: (() => void)[];
+Promise.resolve().then(...arrayArg, error => {});
     `,
     `
 declare let iPromiseImAPromise: Promise<any>;
@@ -198,8 +198,8 @@ Promise.resolve().catch((err: unknown) => {
 
     {
       code: `
-        let method = 'catch';
-        Promise.resolve()[method]((error: Error) => {});
+let method = 'catch';
+Promise.resolve()[method]((error: Error) => {});
       `,
       errors: [
         {
@@ -208,8 +208,8 @@ Promise.resolve().catch((err: unknown) => {
             {
               messageId: 'wrongTypeAnnotationSuggestion',
               output: `
-        let method = 'catch';
-        Promise.resolve()[method]((error: unknown) => {});
+let method = 'catch';
+Promise.resolve()[method]((error: unknown) => {});
       `,
             },
           ],
