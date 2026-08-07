@@ -1116,7 +1116,35 @@ if (f()) {
     `,
     {
       code: `
-declare const f: () => number | Promise<number>;
+declare const f: () => boolean | Promise<boolean>;
+if (f()) {
+}
+      `,
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'none',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: () => boolean | Promise<void>;
+if (f()) {
+}
+      `,
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'none',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: () => boolean | Promise<void>;
 if (f()) {
 }
       `,
@@ -1131,7 +1159,8 @@ if (f()) {
     {
       code: `
 type MyUnion = number | string | undefined;
-declare const f: () => MyUnion | Promise<MyUnion>;
+type PromiseUnion = string | number;
+declare const f: () => MyUnion | Promise<PromiseUnion>;
 if (f()) {
 }
       `,
@@ -1145,7 +1174,7 @@ if (f()) {
     },
     {
       code: `
-declare const f: () => string[] | Promise<string[]>;
+declare const f: () => string[] | Promise<number[]>;
 if (f()) {
 }
       `,
@@ -1159,7 +1188,7 @@ if (f()) {
     },
     {
       code: `
-declare const f: () => [number, string] | Promise<[number, string]>;
+declare const f: () => [number, string] | Promise<[string, number]>;
 if (f()) {
 }
       `,
@@ -1173,7 +1202,7 @@ if (f()) {
     },
     {
       code: `
-declare const f: () => (() => void) | Promise<() => void>;
+declare const f: () => (() => void) | Promise<() => number>;
 if (f()) {
 }
       `,
@@ -1190,37 +1219,12 @@ if (f()) {
 interface MyInterface {
   name: string;
 }
-declare const f: () => MyInterface | Promise<MyInterface>;
-if (f()) {
+
+interface PromiseInterface {
+  age: string;
 }
-      `,
-      options: [
-        {
-          checksConditionals: {
-            flagUnions: 'strict',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-type MyType<T> = { value: T };
-declare const f: () => MyType<number> | Promise<MyType<number>>;
-if (f()) {
-}
-      `,
-      options: [
-        {
-          checksConditionals: {
-            flagUnions: 'strict',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-type T = number | string | undefined;
-declare const f: () => T | Promise<T>;
+
+declare const f: () => MyInterface | Promise<PromiseInterface>;
 if (f()) {
 }
       `,
@@ -1256,22 +1260,6 @@ if (await fn()) {
         {
           checksConditionals: {
             flagUnions: 'all',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-type MyType<T> = { value: T };
-type PromiseType<T> = { value: T };
-declare const f: () => MyType<number> | Promise<PromiseType<number>>;
-if (f()) {
-}
-      `,
-      options: [
-        {
-          checksConditionals: {
-            flagUnions: 'strict',
           },
         },
       ],
@@ -2891,30 +2879,7 @@ using e = d;
     },
     {
       code: `
-declare const f: () => boolean | Promise<void>;
-if (f()) {
-}
-      `,
-      errors: [
-        {
-          column: 5,
-          endColumn: 8,
-          endLine: 3,
-          line: 3,
-          messageId: 'conditional',
-        },
-      ],
-      options: [
-        {
-          checksConditionals: {
-            flagUnions: 'all',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare const f: () => boolean | Promise<void>;
+declare const f: () => number | Promise<number>;
 if (f()) {
 }
       `,
@@ -2938,8 +2903,7 @@ if (f()) {
     {
       code: `
 type MyUnion = number | string | undefined;
-type PromiseUnion = string | number;
-declare const f: () => MyUnion | Promise<PromiseUnion>;
+declare const f: () => MyUnion | Promise<MyUnion>;
 if (f()) {
 }
       `,
@@ -2947,8 +2911,8 @@ if (f()) {
         {
           column: 5,
           endColumn: 8,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'conditional',
         },
       ],
@@ -2962,30 +2926,7 @@ if (f()) {
     },
     {
       code: `
-declare const f: () => string[] | Promise<number[]>;
-if (f()) {
-}
-      `,
-      errors: [
-        {
-          column: 5,
-          endColumn: 8,
-          endLine: 3,
-          line: 3,
-          messageId: 'conditional',
-        },
-      ],
-      options: [
-        {
-          checksConditionals: {
-            flagUnions: 'strict',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare const f: () => [number, string] | Promise<[string, number]>;
+declare const f: () => string[] | Promise<string[]>;
 if (f()) {
 }
       `,
@@ -3008,7 +2949,30 @@ if (f()) {
     },
     {
       code: `
-declare const f: () => (() => void) | Promise<() => number>;
+declare const f: () => [number, string] | Promise<[number, string]>;
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: () => (() => void) | Promise<() => void>;
 if (f()) {
 }
       `,
@@ -3034,12 +2998,7 @@ if (f()) {
 interface MyInterface {
   name: string;
 }
-
-interface PromiseInterface {
-  age: string;
-}
-
-declare const f: () => MyInterface | Promise<PromiseInterface>;
+declare const f: () => MyInterface | Promise<MyInterface>;
 if (f()) {
 }
       `,
@@ -3047,8 +3006,8 @@ if (f()) {
         {
           column: 5,
           endColumn: 8,
-          endLine: 11,
-          line: 11,
+          endLine: 6,
+          line: 6,
           messageId: 'conditional',
         },
       ],
@@ -3056,6 +3015,102 @@ if (f()) {
         {
           checksConditionals: {
             flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type MyType<T> = { value: T };
+declare const f: () => MyType<number> | Promise<MyType<number>>;
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'conditional',
+        },
+      ],
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type T = number | string | undefined;
+declare const f: () => T | Promise<T>;
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'conditional',
+        },
+      ],
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type MyType<T> = { value: T };
+type PromiseType<T> = { value: T };
+declare const f: () => MyType<number> | Promise<PromiseType<number>>;
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'conditional',
+        },
+      ],
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: () => boolean | Promise<void>;
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'all',
           },
         },
       ],

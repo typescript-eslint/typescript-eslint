@@ -9,10 +9,11 @@
         "description": "Whether to warn when a Promise is provided to conditional statements.",
         "oneOf": [
           {
-            "description": "Whether to disable checking conditionals.",
+            "description": "Whether to check conditionals.",
             "type": "boolean"
           },
           {
+            "additionalProperties": false,
             "description": "Detailed settings for conditional inspection.",
             "properties": {
               "flagUnions": {
@@ -83,7 +84,7 @@ type Options = [
     checksConditionals?:
       /**
        * Whether to warn when a Promise is provided to conditional statements.
-       * Whether to disable checking conditionals.
+       * Whether to check conditionals.
        */
       | boolean
       /** Detailed settings for conditional inspection. */
@@ -94,7 +95,6 @@ type Options = [
             | 'strict'
             /** Configures how union types containing Promise-like types are checked. */
             | 'all';
-          [k: string]: unknown;
         };
     /** Whether to warn when `...` spreading a `Promise`. */
     checksSpreads?: boolean;

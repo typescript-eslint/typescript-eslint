@@ -74,30 +74,10 @@ if (await fn()) {
 
 ##### `'strict'`
 
-Reports an error when a union contains a Promise-like type and its resolved type does not exactly match the other union constituents.
+Reports an error only when a union contains a Promise-like type and its resolved type exactly matches the other union constituents.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
-
-```ts option='{ "checksConditionals": { "flagUnions": "strict" } }'
-const fn: () => Promise<boolean> | string = () =>
-  Math.random() > 0.5 ? Promise.resolve(true) : 'hello';
-if (fn()) {
-  // Do something
-}
-
-type MyBox<T> = { value: T };
-type PromiseBox<T> = { value: T };
-
-const fn: () => Promise<PromiseBox<number>> | MyBox<string> = () =>
-  Math.random() > 0.5 ? Promise.resolve({ value: 23 }) : { value: 'Hello' };
-if (fn()) {
-  // Do something
-}
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
 
 ```ts option='{ "checksConditionals": { "flagUnions": "strict" } }'
 const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
@@ -112,6 +92,25 @@ type PromiseBox<T> = { value: T };
 const fn: () => Promise<PromiseBox<number>> | MyBox<number> = () =>
   Promise.resolve({ value: 23 });
 if (fn()) {
+  // Do something
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "checksConditionals": { "flagUnions": "strict" } }'
+const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
+if (await fn()) {
+  // Do something
+}
+
+type MyBox<T> = { value: T };
+type PromiseBox<T> = { value: T };
+
+const fn: () => Promise<PromiseBox<number>> | MyBox<number> = () =>
+  Promise.resolve({ value: 23 });
+if (await fn()) {
   // Do something
 }
 ```

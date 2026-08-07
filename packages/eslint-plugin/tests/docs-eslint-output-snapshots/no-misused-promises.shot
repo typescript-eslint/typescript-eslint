@@ -18,30 +18,9 @@ if (await fn()) {
 Incorrect
 Options: { "checksConditionals": { "flagUnions": "strict" } }
 
-const fn: () => Promise<boolean> | string = () =>
-  Math.random() > 0.5 ? Promise.resolve(true) : 'hello';
-  ~~~~~~~~~~~~~~~~~~~ Expected non-Promise value in a boolean conditional.
-if (fn()) {
-    ~~~~ Expected non-Promise value in a boolean conditional.
-  // Do something
-}
-
-type MyBox<T> = { value: T };
-type PromiseBox<T> = { value: T };
-
-const fn: () => Promise<PromiseBox<number>> | MyBox<string> = () =>
-  Math.random() > 0.5 ? Promise.resolve({ value: 23 }) : { value: 'Hello' };
-  ~~~~~~~~~~~~~~~~~~~ Expected non-Promise value in a boolean conditional.
-if (fn()) {
-    ~~~~ Expected non-Promise value in a boolean conditional.
-  // Do something
-}
-
-Correct
-Options: { "checksConditionals": { "flagUnions": "strict" } }
-
 const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
 if (fn()) {
+    ~~~~ Expected non-Promise value in a boolean conditional.
   // Do something
 }
 
@@ -52,6 +31,24 @@ type PromiseBox<T> = { value: T };
 const fn: () => Promise<PromiseBox<number>> | MyBox<number> = () =>
   Promise.resolve({ value: 23 });
 if (fn()) {
+    ~~~~ Expected non-Promise value in a boolean conditional.
+  // Do something
+}
+
+Correct
+Options: { "checksConditionals": { "flagUnions": "strict" } }
+
+const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
+if (await fn()) {
+  // Do something
+}
+
+type MyBox<T> = { value: T };
+type PromiseBox<T> = { value: T };
+
+const fn: () => Promise<PromiseBox<number>> | MyBox<number> = () =>
+  Promise.resolve({ value: 23 });
+if (await fn()) {
   // Do something
 }
 

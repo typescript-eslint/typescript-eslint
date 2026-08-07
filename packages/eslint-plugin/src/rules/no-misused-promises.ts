@@ -119,10 +119,11 @@ export default createRule<Options, MessageId>({
             oneOf: [
               {
                 type: 'boolean',
-                description: 'Whether to disable checking conditionals.',
+                description: 'Whether to check conditionals.',
               },
               {
                 type: 'object',
+                additionalProperties: false,
                 description: 'Detailed settings for conditional inspection.',
                 properties: {
                   flagUnions: {
@@ -210,17 +211,17 @@ export default createRule<Options, MessageId>({
 
     const conditionalChecks: TSESLint.RuleListener = {
       'CallExpression > MemberExpression': checkArrayPredicates,
-      ConditionalExpression: checkTestConditional(flagUnionsOption),
-      DoWhileStatement: checkTestConditional(flagUnionsOption),
-      ForStatement: checkTestConditional(flagUnionsOption),
-      IfStatement: checkTestConditional(flagUnionsOption),
+      ConditionalExpression: checkTestConditional(),
+      DoWhileStatement: checkTestConditional(),
+      ForStatement: checkTestConditional(),
+      IfStatement: checkTestConditional(),
       LogicalExpression: (node: TSESTree.LogicalExpression) => {
-        checkConditional(node, flagUnionsOption);
+        checkConditional(node);
       },
       'UnaryExpression[operator="!"]'(node: TSESTree.UnaryExpression) {
-        checkConditional(node.argument, flagUnionsOption, true);
+        checkConditional(node.argument, true);
       },
-      WhileStatement: checkTestConditional(flagUnionsOption),
+      WhileStatement: checkTestConditional(),
     };
 
     checksVoidReturn = parseChecksVoidReturn(checksVoidReturn);
@@ -319,7 +320,7 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function checkTestConditional(flagUnionsOption: FlagUnionsOptions) {
+    function checkTestConditional() {
       return (
         node:
           | TSESTree.ConditionalExpression
@@ -329,7 +330,7 @@ export default createRule<Options, MessageId>({
           | TSESTree.WhileStatement,
       ): void => {
         if (node.test) {
-          checkConditional(node.test, flagUnionsOption, true);
+          checkConditional(node.test, true);
         }
       };
     }
@@ -342,7 +343,6 @@ export default createRule<Options, MessageId>({
      */
     function checkConditional(
       node: TSESTree.Expression,
-      flagUnionsOption: FlagUnionsOptions,
       isTestExpr = false,
     ): void {
       // prevent checking the same node multiple times
@@ -354,11 +354,11 @@ export default createRule<Options, MessageId>({
       if (node.type === AST_NODE_TYPES.LogicalExpression) {
         // ignore the left operand for nullish coalescing expressions not in a context of a test expression
         if (node.operator !== '??' || isTestExpr) {
-          checkConditional(node.left, flagUnionsOption, isTestExpr);
+          checkConditional(node.left, isTestExpr);
         }
         // we ignore the right operand when not in a context of a test expression
         if (isTestExpr) {
-          checkConditional(node.right, flagUnionsOption, isTestExpr);
+          checkConditional(node.right, isTestExpr);
         }
         return;
       }
@@ -371,14 +371,12 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      if (flagUnionsOption === 'all' && isSometimesThenable(checker, tsNode)) {
-        context.report({
-          node,
-          messageId: 'conditional',
-        });
-      } else if (
-        flagUnionsOption === 'strict' &&
-        !hasMatchingPromiseTypeArgument(checker, tsNode)
+      if (
+        (flagUnionsOption === 'none' && isAlwaysThenable(checker, tsNode)) ||
+        (flagUnionsOption === 'all' && isSometimesThenable(checker, tsNode)) ||
+        (flagUnionsOption === 'strict' &&
+          isSometimesThenable(checker, tsNode) &&
+          hasMatchingPromiseTypeArgument(checker, tsNode))
       ) {
         context.report({
           node,
@@ -1185,8 +1183,11 @@ function getPromiseTypeArguments(
   checker: ts.TypeChecker,
   type: ts.Type,
 ): ts.Type[] {
-  const typeReference = type as ts.TypeReference;
-  const typeArgument = checker.getTypeArguments(typeReference)[0];
+  const typeArgument = checker.getAwaitedType(type);
+  if (!typeArgument) {
+    return [];
+  }
+
   return tsutils.unionConstituents(typeArgument);
 }
 
