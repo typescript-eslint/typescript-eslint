@@ -30,8 +30,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: false,
--             params: Array [
-+             parameters: Array [
+              params: Array [
                 Identifier {
                   type: 'Identifier',
                   decorators: Array [],
@@ -41,8 +40,7 @@ Snapshot Diff:
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSFunctionType {
                       type: 'TSFunctionType',
--                     params: Array [
-+                     parameters: Array [
+                      params: Array [
                         Identifier {
                           type: 'Identifier',
                           decorators: Array [],
@@ -116,8 +114,7 @@ Snapshot Diff:
                           },
                         },
                       ],
--                     returnType: TSTypeAnnotation {
-+                     typeAnnotation: TSTypeAnnotation {
+                      returnType: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSVoidKeyword {
                           type: 'TSVoidKeyword',
@@ -158,9 +155,7 @@ Snapshot Diff:
                 },
               ],
               readonly: false,
--             returnType: TSTypeAnnotation {
-+             static: false,
-+             typeAnnotation: TSTypeAnnotation {
+              returnType: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSVoidKeyword {
                   type: 'TSVoidKeyword',
@@ -178,7 +173,7 @@ Snapshot Diff:
                   end: { column: 65, line: 4 },
                 },
               },
--             static: false,
+              static: false,
 
               range: [97, 161],
               loc: {
@@ -218,9 +213,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 164],
+-   range: [73, 164],
++   range: [0, 164],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

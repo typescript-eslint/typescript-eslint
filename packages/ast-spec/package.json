@@ -42,13 +42,11 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.27.1",
-    "@babel/core": "^7.28.5",
-    "@babel/eslint-parser": "^7.28.5",
-    "@babel/parser": "^7.28.5",
+    "@babel/code-frame": "^8.0.0",
+    "@babel/core": "^8.0.1",
+    "@babel/eslint-parser": "^8.0.1",
+    "@babel/parser": "^8.0.4",
     "@microsoft/api-extractor": "^7.55.2",
-    "@types/babel__code-frame": "catalog:",
-    "@types/babel__core": "^7.20.5",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",

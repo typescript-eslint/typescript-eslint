@@ -29,8 +29,8 @@ Program {
         },
       },
       implements: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSClassImplements {
+          type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
             decorators: [],
@@ -73,9 +73,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 154],
+  range: [0, 154],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

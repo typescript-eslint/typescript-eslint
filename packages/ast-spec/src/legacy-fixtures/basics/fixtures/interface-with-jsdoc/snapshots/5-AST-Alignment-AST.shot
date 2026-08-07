@@ -30,8 +30,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: false,
--             params: Array [
-+             parameters: Array [
+              params: Array [
                 Identifier {
                   type: 'Identifier',
                   decorators: Array [],
@@ -86,9 +85,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 150],
+-   range: [73, 150],
++   range: [0, 150],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 10 },
     },
   }
