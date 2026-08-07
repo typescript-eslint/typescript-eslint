@@ -1,4 +1,8 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -9,14 +13,17 @@ import {
   getConstrainedTypeAtLocation,
   getFunctionHeadLoc,
   getParserServices,
+  getStaticMemberAccessValue,
   isArrayMethodCallWithPredicate,
   isFunction,
   isPromiseLike,
   isRestParameterDeclaration,
+  NodeWithKey,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
 import { parseFinallyCall } from '../util/promiseUtils';
+import { ParserWeakMapESTreeToTSNode } from '../../../typescript-estree/src/parser-options';
 
 export type Options = [
   {
@@ -516,9 +523,6 @@ export default createRule<Options, MessageId>({
           });
         }
       } else if (ts.isMethodDeclaration(tsNode)) {
-        if (ts.isComputedPropertyName(tsNode.name)) {
-          return;
-        }
         const obj = tsNode.parent;
 
         // Below condition isn't satisfied unless something goes wrong,
@@ -538,10 +542,27 @@ export default createRule<Options, MessageId>({
         if (objType == null) {
           return;
         }
-        const propertySymbol = tsutils
-          .unionConstituents(objType)
-          .map(t => checker.getPropertyOfType(t, tsNode.name.getText()))
-          .find(p => p);
+
+        const staticAccessValue = getStaticMemberAccessValue(node, context);
+        if (staticAccessValue == null) {
+          return;
+        }
+
+        const symbol = checker.getTypeAtLocation(obj.parent).getSymbol();
+        const staticSymbolsMap = getSymbolsToStaticSymbols(
+          services,
+          checker,
+          context,
+          symbol ? [symbol] : [],
+        );
+
+        const propertySymbol = getMemberIfExists(
+          objType,
+          staticAccessValue,
+          checker,
+          staticSymbolsMap,
+        );
+
         if (propertySymbol == null) {
           return;
         }
@@ -634,6 +655,18 @@ export default createRule<Options, MessageId>({
         return;
       }
 
+      const symbols = getHeritageSymbols(
+        checker,
+        services.esTreeNodeToTSNodeMap,
+        node,
+      ).filter(symbol => symbol !== undefined);
+      const staticSymbolsMap = getSymbolsToStaticSymbols(
+        services,
+        checker,
+        context,
+        symbols,
+      );
+
       for (const nodeMember of tsNode.members) {
         const memberName = nodeMember.name?.getText();
         if (memberName == null) {
@@ -652,11 +685,31 @@ export default createRule<Options, MessageId>({
           continue;
         }
 
+        const staticAccessValue = getStaticMemberAccessValue(
+          node as NodeWithKey,
+          context,
+        );
+
+        if (staticAccessValue == null) {
+          continue;
+        }
+
         for (const heritageType of heritageTypes) {
+          const heritageMember = getMemberIfExists(
+            heritageType,
+            staticAccessValue,
+            checker,
+            staticSymbolsMap,
+          );
+
+          if (heritageMember == null) {
+            continue;
+          }
+
           checkHeritageTypeForMemberReturningVoid(
             nodeMember,
             heritageType,
-            memberName,
+            heritageMember,
           );
         }
       }
@@ -672,12 +725,8 @@ export default createRule<Options, MessageId>({
     function checkHeritageTypeForMemberReturningVoid(
       nodeMember: ts.Node,
       heritageType: ts.Type,
-      memberName: string,
+      heritageMember: ts.Symbol,
     ): void {
-      const heritageMember = getMemberIfExists(heritageType, memberName);
-      if (heritageMember == null) {
-        return;
-      }
       const memberType = checker.getTypeOfSymbolAtLocation(
         heritageMember,
         nodeMember,
@@ -1030,17 +1079,39 @@ function getHeritageTypes(
 }
 
 /**
- * @returns The member with the given name in `type`, if it exists.
+ * @returns The member with the given name or known-symbol in `type`, if it exists.
  */
 function getMemberIfExists(
   type: ts.Type,
-  memberName: string,
+  staticAccessValue: string | symbol,
+  checker: ts.TypeChecker,
+  staticSymbolsMap: Map<symbol, ts.Symbol>,
 ): ts.Symbol | undefined {
-  const escapedMemberName = ts.escapeLeadingUnderscores(memberName);
-  const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
-  return (
-    symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
-  );
+  if (typeof staticAccessValue === 'string') {
+    const escapedMemberName = ts.escapeLeadingUnderscores(staticAccessValue);
+    const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
+    return (
+      symbolMemberMatch ??
+      tsutils
+        .unionConstituents(type)
+        .map(t => checker.getPropertyOfType(t, staticAccessValue))
+        .find(p => p)
+    );
+  }
+
+  const wellKnownSymbolName = getWellKnownStringOfSymbol(staticAccessValue);
+
+  if (wellKnownSymbolName != null) {
+    return tsutils.getWellKnownSymbolPropertyOfType(
+      type,
+      wellKnownSymbolName,
+      checker,
+    );
+  }
+
+  const symbol = staticSymbolsMap.get(staticAccessValue);
+  staticSymbolsMap.delete(staticAccessValue);
+  return symbol;
 }
 
 function isStaticMember(node: TSESTree.Node): boolean {
@@ -1102,4 +1173,108 @@ function hasWellKnownSymbolWithVoidReturn(
         checker.getTypeOfSymbolAtLocation(symbol, node),
       );
     });
+}
+
+function getWellKnownStringOfSymbol(symbol: symbol): string | null {
+  const globalSymbolKeys = Object.getOwnPropertyNames(Symbol);
+
+  for (const key of globalSymbolKeys) {
+    if (symbol === Symbol[key as keyof typeof Symbol]) {
+      return key;
+    }
+  }
+
+  return null;
+}
+
+function isValidSymbolDeclaration(
+  declaration: ts.Declaration,
+): declaration is
+  | ts.InterfaceDeclaration
+  | ts.ClassDeclaration
+  | ts.ClassExpression
+  | ts.TypeLiteralNode
+  | ts.InterfaceDeclaration {
+  if (
+    ts.isInterfaceDeclaration(declaration) ||
+    ts.isClassDeclaration(declaration) ||
+    ts.isClassExpression(declaration) ||
+    ts.isTypeLiteralNode(declaration) ||
+    ts.isInterfaceDeclaration(declaration)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function getHeritageSymbols(
+  checker: ts.TypeChecker,
+  treeNodeToTSNode: ParserWeakMapESTreeToTSNode<TSESTree.Node>,
+  node:
+    | TSESTree.ClassExpression
+    | TSESTree.TSInterfaceDeclaration
+    | TSESTree.ClassDeclaration,
+) {
+  const nodeToSymbols = (
+    node: TSESTree.TSInterfaceHeritage | TSESTree.TSClassImplements,
+  ) => {
+    const tsNode = treeNodeToTSNode.get(node);
+    return checker.getSymbolAtLocation(tsNode?.expression ?? tsNode);
+  };
+
+  if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
+    return node.extends.map(nodeToSymbols);
+  }
+
+  const implementedSymbols = node.implements.map(nodeToSymbols);
+
+  if (node.superClass) {
+    const superClassSymbol = checker.getSymbolAtLocation(
+      treeNodeToTSNode.get(node.superClass),
+    );
+
+    return [...implementedSymbols, superClassSymbol];
+  }
+
+  return implementedSymbols;
+}
+
+function getSymbolsToStaticSymbols(
+  services: ParserServicesWithTypeInformation,
+  checker: ts.TypeChecker,
+  context: TSESLint.RuleContext<MessageId, Options>,
+  symbols: ts.Symbol[],
+) {
+  const staticSymbolsMap = new Map<symbol, ts.Symbol>();
+  for (const symbol of symbols) {
+    const declaration = symbol.declarations?.[0];
+    if (declaration && isValidSymbolDeclaration(declaration)) {
+      const members = declaration.members;
+
+      for (const member of members) {
+        const node = services.tsNodeToESTreeNodeMap.get(member);
+
+        if (isStaticMember(node) || !member.name) {
+          continue;
+        }
+
+        const staticAccessValue = getStaticMemberAccessValue(
+          node as NodeWithKey,
+          context,
+        );
+
+        if (typeof staticAccessValue === 'symbol') {
+          if (member.name) {
+            const symbol = checker.getSymbolAtLocation(member.name);
+            if (symbol) {
+              staticSymbolsMap.set(staticAccessValue, symbol);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return staticSymbolsMap;
 }
