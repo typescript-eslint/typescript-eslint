@@ -48,7 +48,18 @@ Program {
                 },
               },
               in: false,
-              name: "T",
+              name: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "T",
+                optional: false,
+
+                range: [7, 8],
+                loc: {
+                  start: { column: 7, line: 1 },
+                  end: { column: 8, line: 1 },
+                },
+              },
               out: false,
 
               range: [1, 18],

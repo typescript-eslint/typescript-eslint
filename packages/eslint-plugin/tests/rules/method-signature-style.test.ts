@@ -49,87 +49,77 @@ interface Test {
     'type Test = { set f(value: number): void };',
     {
       code: `
-        interface Test {
-          f(a: string): number;
-        }
+interface Test {
+  f(a: string): number;
+}
       `,
       options: ['method'],
     },
     {
       code: `
-        interface Test {
-          ['f'](a: boolean): void;
-        }
+interface Test {
+  ['f'](a: boolean): void;
+}
       `,
       options: ['method'],
     },
     {
       code: `
-        interface Test {
-          f<T>(a: T): T;
-        }
+interface Test {
+  f<T>(a: T): T;
+}
       `,
       options: ['method'],
     },
     {
       code: `
-        interface Test {
-          ['f']<T extends {}>(a: T, b: T): T;
-        }
+interface Test {
+  ['f']<T extends {}>(a: T, b: T): T;
+}
       `,
       options: ['method'],
     },
     {
       code: `
-        interface Test {
-          'f!'</* a */ T>(/* b */ x: any /* c */): void;
-        }
+interface Test {
+  'f!'</* a */ T>(/* b */ x: any /* c */): void;
+}
       `,
       options: ['method'],
     },
     {
       code: `
-        type Test = { f(a: string): number };
+type Test = { f(a: string): number };
       `,
       options: ['method'],
     },
     {
       code: `
-        type Test = { ['f']?(a: boolean): void };
+type Test = { ['f']?(a: boolean): void };
       `,
       options: ['method'],
     },
     {
       code: `
-        type Test = { f?<T>(a?: T): T };
+type Test = { f?<T>(a?: T): T };
       `,
       options: ['method'],
     },
     {
       code: `
-        type Test = { ['f']?<T>(a: T, b: T): T };
-      `,
-      options: ['method'],
-    },
-    `
-      interface Test {
-        get f(): number;
-      }
-    `,
-    `
-      interface Test {
-        set f(value: number): void;
-      }
-    `,
-    {
-      code: `
-        type Test = { get f(): number };
+type Test = { ['f']?<T>(a: T, b: T): T };
       `,
       options: ['method'],
     },
     {
       code: `
-        type Test = { set f(value: number): void };
+type Test = { get f(): number };
+      `,
+      options: ['method'],
+    },
+    {
+      code: `
+type Test = { set f(value: number): void };
       `,
       options: ['method'],
     },
@@ -137,295 +127,331 @@ interface Test {
   invalid: [
     {
       code: `
-        interface Test {
-          f(a: string): number;
-        }
+interface Test {
+  f(a: string): number;
+}
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 32,
+          column: 3,
+          endColumn: 24,
           endLine: 3,
           line: 3,
           messageId: 'errorMethod',
         },
       ],
       output: `
-        interface Test {
-          f: (a: string) => number;
-        }
+interface Test {
+  f: (a: string) => number;
+}
       `,
     },
     {
       code: `
-        interface Test {
-          ['f'](a: boolean): void;
-        }
+interface Test {
+  ['f'](a: boolean): void;
+}
       `,
       errors: [
         {
-          column: 11,
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: `
+interface Test {
+  ['f']: (a: boolean) => void;
+}
+      `,
+    },
+    {
+      code: `
+interface Test {
+  f<T>(a: T): T;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: `
+interface Test {
+  f: <T>(a: T) => T;
+}
+      `,
+    },
+    {
+      code: `
+interface Test {
+  ['f']<T extends {}>(a: T, b: T): T;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: `
+interface Test {
+  ['f']: <T extends {}>(a: T, b: T) => T;
+}
+      `,
+    },
+    {
+      code: `
+interface Test {
+  'f!'</* a */ T>(/* b */ x: any /* c */): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 49,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorMethod',
+        },
+      ],
+      output: `
+interface Test {
+  'f!': </* a */ T>(/* b */ x: any /* c */) => void;
+}
+      `,
+    },
+    {
+      code: `
+type Test = { f(a: string): number };
+      `,
+      errors: [
+        {
+          column: 15,
           endColumn: 35,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'errorMethod',
         },
       ],
       output: `
-        interface Test {
-          ['f']: (a: boolean) => void;
-        }
+type Test = { f: (a: string) => number };
       `,
     },
     {
       code: `
-        interface Test {
-          f<T>(a: T): T;
-        }
+type Test = { ['f']?(a: boolean): void };
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 25,
-          endLine: 3,
-          line: 3,
+          column: 15,
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
           messageId: 'errorMethod',
         },
       ],
       output: `
-        interface Test {
-          f: <T>(a: T) => T;
-        }
+type Test = { ['f']?: (a: boolean) => void };
       `,
     },
     {
       code: `
-        interface Test {
-          ['f']<T extends {}>(a: T, b: T): T;
-        }
+type Test = { f?<T>(a?: T): T };
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 46,
-          endLine: 3,
-          line: 3,
+          column: 15,
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
           messageId: 'errorMethod',
         },
       ],
       output: `
-        interface Test {
-          ['f']: <T extends {}>(a: T, b: T) => T;
-        }
+type Test = { f?: <T>(a?: T) => T };
       `,
     },
     {
       code: `
-        interface Test {
-          'f!'</* a */ T>(/* b */ x: any /* c */): void;
-        }
+type Test = { ['f']?<T>(a: T, b: T): T };
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 57,
-          endLine: 3,
-          line: 3,
+          column: 15,
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
           messageId: 'errorMethod',
         },
       ],
       output: `
-        interface Test {
-          'f!': </* a */ T>(/* b */ x: any /* c */) => void;
-        }
+type Test = { ['f']?: <T>(a: T, b: T) => T };
       `,
     },
     {
       code: `
-        type Test = { f(a: string): number };
+interface Test {
+  f: (a: string) => number;
+}
       `,
       errors: [
         {
-          column: 23,
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method'],
+      output: `
+interface Test {
+  f(a: string): number;
+}
+      `,
+    },
+    {
+      code: `
+interface Test {
+  ['f']: (a: boolean) => void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method'],
+      output: `
+interface Test {
+  ['f'](a: boolean): void;
+}
+      `,
+    },
+    {
+      code: `
+interface Test {
+  f: <T>(a: T) => T;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method'],
+      output: `
+interface Test {
+  f<T>(a: T): T;
+}
+      `,
+    },
+    {
+      code: `
+interface Test {
+  ['f']: <T extends {}>(a: T, b: T) => T;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method'],
+      output: `
+interface Test {
+  ['f']<T extends {}>(a: T, b: T): T;
+}
+      `,
+    },
+    {
+      code: `
+interface Test {
+  'f!': </* a */ T>(/* b */ x: any /* c */) => void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 53,
+          endLine: 3,
+          line: 3,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method'],
+      output: `
+interface Test {
+  'f!'</* a */ T>(/* b */ x: any /* c */): void;
+}
+      `,
+    },
+    {
+      code: `
+type Test = { f: (a: string) => number };
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
+          messageId: 'errorProperty',
+        },
+      ],
+      options: ['method'],
+      output: `
+type Test = { f(a: string): number };
+      `,
+    },
+    {
+      code: `
+type Test = { ['f']?: (a: boolean) => void };
+      `,
+      errors: [
+        {
+          column: 15,
           endColumn: 43,
           endLine: 2,
           line: 2,
-          messageId: 'errorMethod',
-        },
-      ],
-      output: `
-        type Test = { f: (a: string) => number };
-      `,
-    },
-    {
-      code: `
-        type Test = { ['f']?(a: boolean): void };
-      `,
-      errors: [
-        {
-          column: 23,
-          endColumn: 47,
-          endLine: 2,
-          line: 2,
-          messageId: 'errorMethod',
-        },
-      ],
-      output: `
-        type Test = { ['f']?: (a: boolean) => void };
-      `,
-    },
-    {
-      code: `
-        type Test = { f?<T>(a?: T): T };
-      `,
-      errors: [
-        {
-          column: 23,
-          endColumn: 38,
-          endLine: 2,
-          line: 2,
-          messageId: 'errorMethod',
-        },
-      ],
-      output: `
-        type Test = { f?: <T>(a?: T) => T };
-      `,
-    },
-    {
-      code: `
-        type Test = { ['f']?<T>(a: T, b: T): T };
-      `,
-      errors: [
-        {
-          column: 23,
-          endColumn: 47,
-          endLine: 2,
-          line: 2,
-          messageId: 'errorMethod',
-        },
-      ],
-      output: `
-        type Test = { ['f']?: <T>(a: T, b: T) => T };
-      `,
-    },
-    {
-      code: `
-        interface Test {
-          f: (a: string) => number;
-        }
-      `,
-      errors: [
-        {
-          column: 11,
-          endColumn: 36,
-          endLine: 3,
-          line: 3,
           messageId: 'errorProperty',
         },
       ],
       options: ['method'],
       output: `
-        interface Test {
-          f(a: string): number;
-        }
+type Test = { ['f']?(a: boolean): void };
       `,
     },
     {
       code: `
-        interface Test {
-          ['f']: (a: boolean) => void;
-        }
+type Test = { f?: <T>(a?: T) => T };
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 39,
-          endLine: 3,
-          line: 3,
-          messageId: 'errorProperty',
-        },
-      ],
-      options: ['method'],
-      output: `
-        interface Test {
-          ['f'](a: boolean): void;
-        }
-      `,
-    },
-    {
-      code: `
-        interface Test {
-          f: <T>(a: T) => T;
-        }
-      `,
-      errors: [
-        {
-          column: 11,
-          endColumn: 29,
-          endLine: 3,
-          line: 3,
-          messageId: 'errorProperty',
-        },
-      ],
-      options: ['method'],
-      output: `
-        interface Test {
-          f<T>(a: T): T;
-        }
-      `,
-    },
-    {
-      code: `
-        interface Test {
-          ['f']: <T extends {}>(a: T, b: T) => T;
-        }
-      `,
-      errors: [
-        {
-          column: 11,
-          endColumn: 50,
-          endLine: 3,
-          line: 3,
-          messageId: 'errorProperty',
-        },
-      ],
-      options: ['method'],
-      output: `
-        interface Test {
-          ['f']<T extends {}>(a: T, b: T): T;
-        }
-      `,
-    },
-    {
-      code: `
-        interface Test {
-          'f!': </* a */ T>(/* b */ x: any /* c */) => void;
-        }
-      `,
-      errors: [
-        {
-          column: 11,
-          endColumn: 61,
-          endLine: 3,
-          line: 3,
-          messageId: 'errorProperty',
-        },
-      ],
-      options: ['method'],
-      output: `
-        interface Test {
-          'f!'</* a */ T>(/* b */ x: any /* c */): void;
-        }
-      `,
-    },
-    {
-      code: `
-        type Test = { f: (a: string) => number };
-      `,
-      errors: [
-        {
-          column: 23,
-          endColumn: 47,
+          column: 15,
+          endColumn: 34,
           endLine: 2,
           line: 2,
           messageId: 'errorProperty',
@@ -433,17 +459,17 @@ interface Test {
       ],
       options: ['method'],
       output: `
-        type Test = { f(a: string): number };
+type Test = { f?<T>(a?: T): T };
       `,
     },
     {
       code: `
-        type Test = { ['f']?: (a: boolean) => void };
+type Test = { ['f']?: <T>(a: T, b: T) => T };
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 51,
+          column: 15,
+          endColumn: 43,
           endLine: 2,
           line: 2,
           messageId: 'errorProperty',
@@ -451,43 +477,7 @@ interface Test {
       ],
       options: ['method'],
       output: `
-        type Test = { ['f']?(a: boolean): void };
-      `,
-    },
-    {
-      code: `
-        type Test = { f?: <T>(a?: T) => T };
-      `,
-      errors: [
-        {
-          column: 23,
-          endColumn: 42,
-          endLine: 2,
-          line: 2,
-          messageId: 'errorProperty',
-        },
-      ],
-      options: ['method'],
-      output: `
-        type Test = { f?<T>(a?: T): T };
-      `,
-    },
-    {
-      code: `
-        type Test = { ['f']?: <T>(a: T, b: T) => T };
-      `,
-      errors: [
-        {
-          column: 23,
-          endColumn: 51,
-          endLine: 2,
-          line: 2,
-          messageId: 'errorProperty',
-        },
-      ],
-      options: ['method'],
-      output: `
-        type Test = { ['f']?<T>(a: T, b: T): T };
+type Test = { ['f']?<T>(a: T, b: T): T };
       `,
     },
     {
@@ -552,14 +542,14 @@ interface Test {
     },
     {
       code: `
-        interface Test {
-          readonly f: (a: string) => number;
-        }
+interface Test {
+  readonly f: (a: string) => number;
+}
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 45,
+          column: 3,
+          endColumn: 37,
           endLine: 3,
           line: 3,
           messageId: 'errorProperty',
@@ -567,9 +557,9 @@ interface Test {
             {
               messageId: 'convertToMethodSignature',
               output: `
-        interface Test {
-          f(a: string): number;
-        }
+interface Test {
+  f(a: string): number;
+}
       `,
             },
           ],

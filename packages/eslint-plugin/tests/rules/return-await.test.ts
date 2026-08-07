@@ -10,42 +10,42 @@ ruleTester.run('return-await', rule, {
   valid: [
     'return;', // No function in scope, so behave like return in a commonjs module
     `
-      function test() {
-        return;
-      }
+function test() {
+  return;
+}
     `,
     `
-      function test() {
-        return 1;
-      }
+function test() {
+  return 1;
+}
     `,
     `
-      async function test() {
-        return;
-      }
+async function test() {
+  return;
+}
     `,
     `
-      async function test() {
-        return 1;
-      }
+async function test() {
+  return 1;
+}
     `,
     'const test = () => 1;',
     'const test = async () => 1;',
     `
-      async function test() {
-        return Promise.resolve(1);
-      }
+async function test() {
+  return Promise.resolve(1);
+}
     `,
     `
-      async function test() {
-        try {
-          return await Promise.resolve(1);
-        } catch (e) {
-          return await Promise.resolve(2);
-        } finally {
-          console.log('cleanup');
-        }
-      }
+async function test() {
+  try {
+    return await Promise.resolve(1);
+  } catch (e) {
+    return await Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
     `,
     `
 const fn = (): any => null;
@@ -70,49 +70,49 @@ async function test(unknownParam: unknown) {
     `,
     {
       code: `
-        async function test() {
-          if (Math.random() < 0.33) {
-            return await Promise.resolve(1);
-          } else if (Math.random() < 0.5) {
-            return Promise.resolve(2);
-          }
+async function test() {
+  if (Math.random() < 0.33) {
+    return await Promise.resolve(1);
+  } else if (Math.random() < 0.5) {
+    return Promise.resolve(2);
+  }
 
-          try {
-          } catch (e) {
-            return await Promise.resolve(3);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+  try {
+  } catch (e) {
+    return await Promise.resolve(3);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
       options: ['error-handling-correctness-only'],
     },
     `
-      async function test() {
-        try {
-          const one = await Promise.resolve(1);
-          return one;
-        } catch (e) {
-          const two = await Promise.resolve(2);
-          return two;
-        } finally {
-          console.log('cleanup');
-        }
-      }
+async function test() {
+  try {
+    const one = await Promise.resolve(1);
+    return one;
+  } catch (e) {
+    const two = await Promise.resolve(2);
+    return two;
+  } finally {
+    console.log('cleanup');
+  }
+}
     `,
     {
       code: `
-        function test() {
-          return 1;
-        }
+function test() {
+  return 1;
+}
       `,
       options: ['in-try-catch'],
     },
     {
       code: `
-        async function test() {
-          return 1;
-        }
+async function test() {
+  return 1;
+}
       `,
       options: ['in-try-catch'],
     },
@@ -126,73 +126,73 @@ async function test(unknownParam: unknown) {
     },
     {
       code: `
-        async function test() {
-          return Promise.resolve(1);
-        }
+async function test() {
+  return Promise.resolve(1);
+}
       `,
       options: ['in-try-catch'],
     },
     {
       code: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return await Promise.resolve(1);
+  } catch (e) {
+    return await Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
       options: ['in-try-catch'],
     },
     {
       code: `
-        async function test() {
-          try {
-            throw 'foo';
-          } catch (e) {
-            return Promise.resolve(1);
-          }
-        }
+async function test() {
+  try {
+    throw 'foo';
+  } catch (e) {
+    return Promise.resolve(1);
+  }
+}
       `,
       options: ['in-try-catch'],
     },
     {
       code: `
-        async function test() {
-          try {
-            throw 'foo';
-          } catch (e) {
-            throw 'foo2';
-          } finally {
-            return Promise.resolve(1);
-          }
-        }
+async function test() {
+  try {
+    throw 'foo';
+  } catch (e) {
+    throw 'foo2';
+  } finally {
+    return Promise.resolve(1);
+  }
+}
       `,
       options: ['in-try-catch'],
     },
     {
       code: `
-        async function test() {
-          try {
-            const one = await Promise.resolve(1);
-            return one;
-          } catch (e) {
-            const two = await Promise.resolve(2);
-            return two;
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    const one = await Promise.resolve(1);
+    return one;
+  } catch (e) {
+    const two = await Promise.resolve(2);
+    return two;
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
       options: ['in-try-catch'],
     },
     {
       code: `
-        async function test() {
-          return Promise.resolve(1);
-        }
+async function test() {
+  return Promise.resolve(1);
+}
       `,
       options: ['never'],
     },
@@ -202,23 +202,23 @@ async function test(unknownParam: unknown) {
     },
     {
       code: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return Promise.resolve(1);
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
       options: ['never'],
     },
     {
       code: `
-        async function test() {
-          return await Promise.resolve(1);
-        }
+async function test() {
+  return await Promise.resolve(1);
+}
       `,
       options: ['always'],
     },
@@ -228,58 +228,58 @@ async function test(unknownParam: unknown) {
     },
     {
       code: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return await Promise.resolve(1);
+  } catch (e) {
+    return await Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
       options: ['always'],
     },
     {
       code: `
-        declare function foo(): Promise<boolean>;
+declare function foo(): Promise<boolean>;
 
-        function bar(baz: boolean): Promise<boolean> | boolean {
-          if (baz) {
-            return true;
-          } else {
-            return foo();
-          }
-        }
+function bar(baz: boolean): Promise<boolean> | boolean {
+  if (baz) {
+    return true;
+  } else {
+    return foo();
+  }
+}
       `,
       options: ['always'],
     },
     {
       code: `
-        async function test(): Promise<string> {
-          const res = await Promise.resolve('{}');
-          try {
-            return JSON.parse(res);
-          } catch (error) {
-            return res;
-          }
-        }
+async function test(): Promise<string> {
+  const res = await Promise.resolve('{}');
+  try {
+    return JSON.parse(res);
+  } catch (error) {
+    return res;
+  }
+}
       `,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8663
     {
       code: `
-        async function test() {
-          const res = await Promise.resolve('{}');
-          try {
-            async function nested() {
-              return Promise.resolve('ok');
-            }
-            return await nested();
-          } catch (error) {
-            return Promise.resolve('error');
-          }
-        }
+async function test() {
+  const res = await Promise.resolve('{}');
+  try {
+    async function nested() {
+      return Promise.resolve('ok');
+    }
+    return await nested();
+  } catch (error) {
+    return Promise.resolve('error');
+  }
+}
       `,
     },
     {
@@ -489,9 +489,9 @@ class C<R extends unknown> {
   invalid: [
     {
       code: `
-        async function test() {
-          return await 1;
-        }
+async function test() {
+  return await 1;
+}
       `,
       errors: [
         {
@@ -500,17 +500,17 @@ class C<R extends unknown> {
         },
       ],
       output: `
-        async function test() {
-          return 1;
-        }
+async function test() {
+  return 1;
+}
       `,
     },
     {
       code: `
-        async function test() {
-          const foo = 1;
-          return await { foo };
-        }
+async function test() {
+  const foo = 1;
+  return await { foo };
+}
       `,
       errors: [
         {
@@ -519,18 +519,18 @@ class C<R extends unknown> {
         },
       ],
       output: `
-        async function test() {
-          const foo = 1;
-          return { foo };
-        }
+async function test() {
+  const foo = 1;
+  return { foo };
+}
       `,
     },
     {
       code: `
-        async function test() {
-          const foo = 1;
-          return await foo;
-        }
+async function test() {
+  const foo = 1;
+  return await foo;
+}
       `,
       errors: [
         {
@@ -539,10 +539,10 @@ class C<R extends unknown> {
         },
       ],
       output: `
-        async function test() {
-          const foo = 1;
-          return foo;
-        }
+async function test() {
+  const foo = 1;
+  return foo;
+}
       `,
     },
     {
@@ -578,15 +578,15 @@ class C<R extends unknown> {
 
     {
       code: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return Promise.resolve(1);
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
       errors: [
         {
@@ -596,15 +596,15 @@ class C<R extends unknown> {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return await Promise.resolve(1);
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
             },
           ],
@@ -616,15 +616,15 @@ class C<R extends unknown> {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return Promise.resolve(1);
+  } catch (e) {
+    return await Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
             },
           ],
@@ -635,15 +635,15 @@ class C<R extends unknown> {
     },
     {
       code: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return Promise.resolve(1);
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
       errors: [
         {
@@ -653,15 +653,15 @@ class C<R extends unknown> {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return await Promise.resolve(1);
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
             },
           ],
@@ -673,15 +673,15 @@ class C<R extends unknown> {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return Promise.resolve(1);
+  } catch (e) {
+    return await Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
             },
           ],
@@ -692,15 +692,15 @@ class C<R extends unknown> {
     },
     {
       code: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return Promise.resolve(1);
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
       errors: [
         {
@@ -710,15 +710,15 @@ class C<R extends unknown> {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return await Promise.resolve(1);
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
             },
           ],
@@ -730,15 +730,15 @@ class C<R extends unknown> {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return Promise.resolve(1);
+  } catch (e) {
+    return await Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
             },
           ],
@@ -750,9 +750,9 @@ class C<R extends unknown> {
 
     {
       code: `
-        async function test() {
-          return await Promise.resolve(1);
-        }
+async function test() {
+  return await Promise.resolve(1);
+}
       `,
       errors: [
         {
@@ -761,16 +761,16 @@ class C<R extends unknown> {
         },
       ],
       output: `
-        async function test() {
-          return Promise.resolve(1);
-        }
+async function test() {
+  return Promise.resolve(1);
+}
       `,
     },
     {
       code: `
-        async function test() {
-          return await 1;
-        }
+async function test() {
+  return await 1;
+}
       `,
       errors: [
         {
@@ -780,9 +780,9 @@ class C<R extends unknown> {
       ],
       options: ['in-try-catch'],
       output: `
-        async function test() {
-          return 1;
-        }
+async function test() {
+  return 1;
+}
       `,
     },
     {
@@ -809,9 +809,9 @@ class C<R extends unknown> {
     },
     {
       code: `
-        async function test() {
-          return await Promise.resolve(1);
-        }
+async function test() {
+  return await Promise.resolve(1);
+}
       `,
       errors: [
         {
@@ -821,16 +821,16 @@ class C<R extends unknown> {
       ],
       options: ['in-try-catch'],
       output: `
-        async function test() {
-          return Promise.resolve(1);
-        }
+async function test() {
+  return Promise.resolve(1);
+}
       `,
     },
     {
       code: `
-        async function test() {
-          return await 1;
-        }
+async function test() {
+  return await 1;
+}
       `,
       errors: [
         {
@@ -840,22 +840,22 @@ class C<R extends unknown> {
       ],
       options: ['never'],
       output: `
-        async function test() {
-          return 1;
-        }
+async function test() {
+  return 1;
+}
       `,
     },
     {
       code: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return await Promise.resolve(1);
+  } catch (e) {
+    return await Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
       errors: [
         {
@@ -865,15 +865,15 @@ class C<R extends unknown> {
             {
               messageId: 'disallowedPromiseAwaitSuggestion',
               output: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return Promise.resolve(1);
+  } catch (e) {
+    return await Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
             },
           ],
@@ -885,15 +885,15 @@ class C<R extends unknown> {
             {
               messageId: 'disallowedPromiseAwaitSuggestion',
               output: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
+async function test() {
+  try {
+    return await Promise.resolve(1);
+  } catch (e) {
+    return Promise.resolve(2);
+  } finally {
+    console.log('cleanup');
+  }
+}
       `,
             },
           ],
@@ -904,9 +904,9 @@ class C<R extends unknown> {
     },
     {
       code: `
-        async function test() {
-          return await Promise.resolve(1);
-        }
+async function test() {
+  return await Promise.resolve(1);
+}
       `,
       errors: [
         {
@@ -916,16 +916,16 @@ class C<R extends unknown> {
       ],
       options: ['never'],
       output: `
-        async function test() {
-          return Promise.resolve(1);
-        }
+async function test() {
+  return Promise.resolve(1);
+}
       `,
     },
     {
       code: `
-        async function test() {
-          return await 1;
-        }
+async function test() {
+  return await 1;
+}
       `,
       errors: [
         {
@@ -935,16 +935,16 @@ class C<R extends unknown> {
       ],
       options: ['always'],
       output: `
-        async function test() {
-          return 1;
-        }
+async function test() {
+  return 1;
+}
       `,
     },
     {
       code: `
-        async function test() {
-          return Promise.resolve(1);
-        }
+async function test() {
+  return Promise.resolve(1);
+}
       `,
       errors: [
         {
@@ -954,9 +954,9 @@ class C<R extends unknown> {
       ],
       options: ['always'],
       output: `
-        async function test() {
-          return await Promise.resolve(1);
-        }
+async function test() {
+  return await Promise.resolve(1);
+}
       `,
     },
     {
@@ -1158,19 +1158,19 @@ async function test<T>(): Promise<T> {
     },
     {
       code: `
-        async function test() {
-          try {
-            const callback1 = function () {};
-            const callback2 = async function () {};
-            function callback3() {}
-            async function callback4() {}
-            const callback5 = () => {};
-            const callback6 = async () => {};
-            return Promise.resolve('try');
-          } finally {
-            return Promise.resolve('finally');
-          }
-        }
+async function test() {
+  try {
+    const callback1 = function () {};
+    const callback2 = async function () {};
+    function callback3() {}
+    async function callback4() {}
+    const callback5 = () => {};
+    const callback6 = async () => {};
+    return Promise.resolve('try');
+  } finally {
+    return Promise.resolve('finally');
+  }
+}
       `,
       errors: [
         {
@@ -1180,19 +1180,19 @@ async function test<T>(): Promise<T> {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        async function test() {
-          try {
-            const callback1 = function () {};
-            const callback2 = async function () {};
-            function callback3() {}
-            async function callback4() {}
-            const callback5 = () => {};
-            const callback6 = async () => {};
-            return await Promise.resolve('try');
-          } finally {
-            return Promise.resolve('finally');
-          }
-        }
+async function test() {
+  try {
+    const callback1 = function () {};
+    const callback2 = async function () {};
+    function callback3() {}
+    async function callback4() {}
+    const callback5 = () => {};
+    const callback6 = async () => {};
+    return await Promise.resolve('try');
+  } finally {
+    return Promise.resolve('finally');
+  }
+}
       `,
             },
           ],
@@ -1202,12 +1202,12 @@ async function test<T>(): Promise<T> {
     },
     {
       code: `
-        async function bar() {}
-        async function foo() {
-          try {
-            return undefined || bar();
-          } catch {}
-        }
+async function bar() {}
+async function foo() {
+  try {
+    return undefined || bar();
+  } catch {}
+}
       `,
       errors: [
         {
@@ -1217,12 +1217,12 @@ async function test<T>(): Promise<T> {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        async function bar() {}
-        async function foo() {
-          try {
-            return await (undefined || bar());
-          } catch {}
-        }
+async function bar() {}
+async function foo() {
+  try {
+    return await (undefined || bar());
+  } catch {}
+}
       `,
             },
           ],
@@ -1232,12 +1232,12 @@ async function test<T>(): Promise<T> {
     },
     {
       code: `
-        async function bar() {}
-        async function foo() {
-          try {
-            return bar() || undefined || bar();
-          } catch {}
-        }
+async function bar() {}
+async function foo() {
+  try {
+    return bar() || undefined || bar();
+  } catch {}
+}
       `,
       errors: [
         {
@@ -1247,12 +1247,12 @@ async function test<T>(): Promise<T> {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        async function bar() {}
-        async function foo() {
-          try {
-            return await (bar() || undefined || bar());
-          } catch {}
-        }
+async function bar() {}
+async function foo() {
+  try {
+    return await (bar() || undefined || bar());
+  } catch {}
+}
       `,
             },
           ],
@@ -1356,16 +1356,16 @@ async function func3() {
     },
     {
       code: `
-        class X {
-          async bar() {
-            return;
-          }
-          async func2() {
-            try {
-              return this.bar();
-            } catch {}
-          }
-        }
+class X {
+  async bar() {
+    return;
+  }
+  async func2() {
+    try {
+      return this.bar();
+    } catch {}
+  }
+}
       `,
       errors: [
         {
@@ -1375,16 +1375,16 @@ async function func3() {
             {
               messageId: 'requiredPromiseAwaitSuggestion',
               output: `
-        class X {
-          async bar() {
-            return;
-          }
-          async func2() {
-            try {
-              return await this.bar();
-            } catch {}
-          }
-        }
+class X {
+  async bar() {
+    return;
+  }
+  async func2() {
+    try {
+      return await this.bar();
+    } catch {}
+  }
+}
       `,
             },
           ],
@@ -1394,17 +1394,17 @@ async function func3() {
     },
     {
       code: `
-        async function test() {
-          const res = await Promise.resolve('{}');
-          try {
-            async function nested() {
-              return Promise.resolve('ok');
-            }
-            return await nested();
-          } catch (error) {
-            return await Promise.resolve('error');
-          }
-        }
+async function test() {
+  const res = await Promise.resolve('{}');
+  try {
+    async function nested() {
+      return Promise.resolve('ok');
+    }
+    return await nested();
+  } catch (error) {
+    return await Promise.resolve('error');
+  }
+}
       `,
       errors: [
         {
@@ -1413,17 +1413,17 @@ async function func3() {
         },
       ],
       output: `
-        async function test() {
-          const res = await Promise.resolve('{}');
-          try {
-            async function nested() {
-              return Promise.resolve('ok');
-            }
-            return await nested();
-          } catch (error) {
-            return Promise.resolve('error');
-          }
-        }
+async function test() {
+  const res = await Promise.resolve('{}');
+  try {
+    async function nested() {
+      return Promise.resolve('ok');
+    }
+    return await nested();
+  } catch (error) {
+    return Promise.resolve('error');
+  }
+}
       `,
     },
     {

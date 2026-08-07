@@ -471,9 +471,9 @@ export class Test {
     },
     {
       code: `
-        export function foo(outer: string) {
-          return function (inner: string): void {};
-        }
+export function foo(outer: string) {
+  return function (inner: string): void {};
+}
       `,
       options: [
         {
@@ -484,11 +484,11 @@ export class Test {
     // https://github.com/typescript-eslint/typescript-eslint/issues/1552
     {
       code: `
-        export type Ensurer = (blocks: TFBlock[]) => TFBlock[];
+export type Ensurer = (blocks: TFBlock[]) => TFBlock[];
 
-        export const myEnsurer: Ensurer = blocks => {
-          return blocks;
-        };
+export const myEnsurer: Ensurer = blocks => {
+  return blocks;
+};
       `,
       options: [
         {

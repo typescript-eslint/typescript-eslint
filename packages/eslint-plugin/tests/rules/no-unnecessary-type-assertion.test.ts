@@ -32,29 +32,29 @@ if (
 }
     `,
     `
-      const c = 1;
-      let z = c as number;
+const c = 1;
+let z = c as number;
     `,
     `
-      const c = 1;
-      let z = c as const;
+const c = 1;
+let z = c as const;
     `,
     `
-      const c = 1;
-      let z = c as 1;
+const c = 1;
+let z = c as 1;
     `,
     `
-      type Bar = 'bar';
-      const data = {
-        x: 'foo' as 'foo',
-        y: 'bar' as Bar,
-      };
+type Bar = 'bar';
+const data = {
+  x: 'foo' as 'foo',
+  y: 'bar' as Bar,
+};
     `,
     "[1, 2, 3, 4, 5].map(x => [x, 'A' + x] as [number, string]);",
     `
-      let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
-        x => [x, 'A' + x] as [number, string],
-      );
+let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
+  x => [x, 'A' + x] as [number, string],
+);
     `,
     'let y = 1 as 1;',
     'const foo = 3 as number;',
@@ -189,8 +189,8 @@ class T {
 }
     `,
     `
-      declare const y: number | null;
-      console.log(y!);
+declare const y: number | null;
+console.log(y!);
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/529
     `
@@ -939,24 +939,24 @@ const x: E | undefined = o?.fn(n => n | 0, 0 as E);
     },
     {
       code: `
-        type Foo = 3;
-        const foo = <Foo>3;
+type Foo = 3;
+const foo = <Foo>3;
       `,
-      errors: [{ column: 21, line: 3, messageId: 'unnecessaryAssertion' }],
+      errors: [{ column: 13, line: 3, messageId: 'unnecessaryAssertion' }],
       output: `
-        type Foo = 3;
-        const foo = 3;
+type Foo = 3;
+const foo = 3;
       `,
     },
     {
       code: `
-        type Foo = 3;
-        const foo = 3 as Foo;
+type Foo = 3;
+const foo = 3 as Foo;
       `,
-      errors: [{ column: 21, line: 3, messageId: 'unnecessaryAssertion' }],
+      errors: [{ column: 13, line: 3, messageId: 'unnecessaryAssertion' }],
       output: `
-        type Foo = 3;
-        const foo = 3;
+type Foo = 3;
+const foo = 3;
       `,
     },
     {
@@ -1094,13 +1094,13 @@ bar + 1;
     },
     {
       code: `
-        declare const y: number;
-        console.log(y!);
+declare const y: number;
+console.log(y!);
       `,
       errors: [{ messageId: 'unnecessaryAssertion' }],
       output: `
-        declare const y: number;
-        console.log(y);
+declare const y: number;
+console.log(y);
       `,
     },
     {

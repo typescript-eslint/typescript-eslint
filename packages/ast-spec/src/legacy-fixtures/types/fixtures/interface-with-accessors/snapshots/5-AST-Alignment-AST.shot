@@ -30,12 +30,9 @@ Snapshot Diff:
               },
               kind: 'get',
               optional: false,
--             params: Array [],
-+             parameters: Array [],
+              params: Array [],
               readonly: false,
--             returnType: TSTypeAnnotation {
-+             static: false,
-+             typeAnnotation: TSTypeAnnotation {
+              returnType: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
                   type: 'TSNumberKeyword',
@@ -53,7 +50,7 @@ Snapshot Diff:
                   end: { column: 20, line: 4 },
                 },
               },
--             static: false,
+              static: false,
 
               range: [93, 112],
               loc: {
@@ -78,8 +75,7 @@ Snapshot Diff:
               },
               kind: 'set',
               optional: false,
--             params: Array [
-+             parameters: Array [
+              params: Array [
                 Identifier {
                   type: 'Identifier',
                   decorators: Array [],
@@ -181,9 +177,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 161],
+-   range: [73, 161],
++   range: [0, 161],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 7 },
     },
   }

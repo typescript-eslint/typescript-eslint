@@ -16,8 +16,8 @@ ruleTester.run('restrict-plus-operands', rule, {
     'let foo = 1n + 1n;',
     'let foo = BigInt(1) + 1n;',
     `
-      let foo = 1n;
-      foo + 2n;
+let foo = 1n;
+foo + 2n;
     `,
     `
 function test(s: string, n: number): number {
@@ -54,11 +54,11 @@ let pair: { first: number; second: string } = { first: 5, second: '10' };
 let foo = ('5.5' as string) + pair.second;
     `,
     `
-      const foo =
-        'hello' +
-        (someBoolean ? 'a' : 'b') +
-        (() => (someBoolean ? 'c' : 'd'))() +
-        'e';
+const foo =
+  'hello' +
+  (someBoolean ? 'a' : 'b') +
+  (() => (someBoolean ? 'c' : 'd'))() +
+  'e';
     `,
     'const balls = true;',
     'balls === true;',
@@ -161,9 +161,9 @@ const x = a + b;
     `,
     {
       code: `
-        declare const a: RegExp;
-        declare const b: string;
-        const x = a + b;
+declare const a: RegExp;
+declare const b: string;
+const x = a + b;
       `,
       options: [
         {
@@ -177,9 +177,9 @@ const x = a + b;
     },
     {
       code: `
-        const a = /regexp/;
-        declare const b: string;
-        const x = a + b;
+const a = /regexp/;
+declare const b: string;
+const x = a + b;
       `,
       options: [
         {
@@ -740,12 +740,12 @@ let combined = value + 0;
     },
     {
       code: `
-        let foo = 1n;
-        foo + 1;
+let foo = 1n;
+foo + 1;
       `,
       errors: [
         {
-          column: 9,
+          column: 1,
           data: {
             left: 'bigint',
             right: 'number',
@@ -757,12 +757,12 @@ let combined = value + 0;
     },
     {
       code: `
-        let foo = 1;
-        foo + 1n;
+let foo = 1;
+foo + 1n;
       `,
       errors: [
         {
-          column: 9,
+          column: 1,
           data: {
             left: 'number',
             right: 'bigint',
@@ -887,13 +887,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: \`template\${number}\`;
-        declare const b: number;
-        const x = a + b;
+declare const a: \`template\${number}\`;
+declare const b: number;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             left: 'string',
             right: 'number',
@@ -915,13 +915,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: never;
-        declare const b: string;
-        const x = a + b;
+declare const a: never;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'never',
@@ -942,13 +942,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: never & string;
-        declare const b: string;
-        const x = a + b;
+declare const a: never & string;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'never',
@@ -969,13 +969,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: boolean & string;
-        declare const b: string;
-        const x = a + b;
+declare const a: boolean & string;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'never',
@@ -996,13 +996,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: any & string;
-        declare const b: string;
-        const x = a + b;
+declare const a: any & string;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'any',
@@ -1023,13 +1023,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: { a: 1 } & { b: 2 };
-        declare const b: string;
-        const x = a + b;
+declare const a: { a: 1 } & { b: 2 };
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: '{ a: 1; } & { b: 2; }',
@@ -1050,16 +1050,16 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        interface A {
-          a: 1;
-        }
-        declare const a: A;
-        declare const b: string;
-        const x = a + b;
+interface A {
+  a: 1;
+}
+declare const a: A;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'A',
@@ -1080,19 +1080,19 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        interface A {
-          a: 1;
-        }
-        interface A2 extends A {
-          b: 2;
-        }
-        declare const a: A2;
-        declare const b: string;
-        const x = a + b;
+interface A {
+  a: 1;
+}
+interface A2 extends A {
+  b: 2;
+}
+declare const a: A2;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'A2',
@@ -1113,14 +1113,14 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        type A = { a: 1 } & { b: 2 };
-        declare const a: A;
-        declare const b: string;
-        const x = a + b;
+type A = { a: 1 } & { b: 2 };
+declare const a: A;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'A',
@@ -1141,13 +1141,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: { a: 1 } & { b: 2 };
-        declare const b: number;
-        const x = a + b;
+declare const a: { a: 1 } & { b: 2 };
+declare const b: number;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: '{ a: 1; } & { b: 2; }',
@@ -1168,13 +1168,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: never;
-        declare const b: bigint;
-        const x = a + b;
+declare const a: never;
+declare const b: bigint;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'never',
@@ -1195,13 +1195,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: any;
-        declare const b: bigint;
-        const x = a + b;
+declare const a: any;
+declare const b: bigint;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'any',
@@ -1222,13 +1222,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: { a: 1 } & { b: 2 };
-        declare const b: bigint;
-        const x = a + b;
+declare const a: { a: 1 } & { b: 2 };
+declare const b: bigint;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: '{ a: 1; } & { b: 2; }',
@@ -1249,13 +1249,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: RegExp;
-        declare const b: string;
-        const x = a + b;
+declare const a: RegExp;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'RegExp',
@@ -1276,13 +1276,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        const a = /regexp/;
-        declare const b: string;
-        const x = a + b;
+const a = /regexp/;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'RegExp',
@@ -1303,13 +1303,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: Symbol;
-        declare const b: string;
-        const x = a + b;
+declare const a: Symbol;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'Symbol',
@@ -1330,13 +1330,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: symbol;
-        declare const b: string;
-        const x = a + b;
+declare const a: symbol;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'symbol',
@@ -1357,13 +1357,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        declare const a: unique symbol;
-        declare const b: string;
-        const x = a + b;
+declare const a: unique symbol;
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'unique symbol',
@@ -1384,13 +1384,13 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-        const a = Symbol('');
-        declare const b: string;
-        const x = a + b;
+const a = Symbol('');
+declare const b: string;
+const x = a + b;
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             stringLike: 'string',
             type: 'unique symbol',
