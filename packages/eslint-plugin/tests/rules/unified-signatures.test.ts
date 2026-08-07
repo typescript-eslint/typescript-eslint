@@ -1340,11 +1340,15 @@ function f(value: string): void;
       `,
       errors: [
         {
+          column: 12,
           data: {
             failureStringStart:
               'These overloads can be combined into one signature',
             types: 'string',
           },
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
           messageId: 'singleParameterDifference',
         },
       ],
@@ -1356,11 +1360,15 @@ function f(value): void;
       `,
       errors: [
         {
+          column: 12,
           data: {
             failureStringStart:
               'These overloads can be combined into one signature',
             types: 'string',
           },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'singleParameterDifference',
         },
       ],
@@ -1468,17 +1476,21 @@ function f(x: number | /* second */ string): void;
       ],
     },
     {
-      code: `
+      code: noFormat`
 declare function fn(a: number): void;
 declare function fn(a: (/* before */ string /* after */)): void;
       `,
       errors: [
         {
+          column: 21,
           data: {
             failureStringStart:
               'These overloads can be combined into one signature',
             types: 'number | (string)',
           },
+          endColumn: 57,
+          endLine: 3,
+          line: 3,
           messageId: 'singleParameterDifference',
         },
       ],

@@ -330,7 +330,9 @@ export default createRule<Options, MessageIds>({
       typeParameters1?: TSESTree.TSTypeParameterDeclaration,
     ): string {
       if (type0 == null) {
-        return getUnionMemberText(type1!);
+        return getUnionMemberText(
+          nullThrows(type1, 'Expected the other parameter type to be defined'),
+        );
       }
       if (type1 == null) {
         return getUnionMemberText(type0);
