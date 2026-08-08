@@ -1238,6 +1238,21 @@ if (f()) {
     },
     {
       code: `
+type Recursive = Promise<Recursive>;
+declare const f: () => boolean | Recursive;
+if (f()) {
+}
+      `,
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
 declare const f: boolean | string;
 if (f()) {
 }
