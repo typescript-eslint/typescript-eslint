@@ -1216,10 +1216,6 @@ function isSameTypes(
   }
 
   for (const sourceType of sourceTypes) {
-    if (!tsutils.isObjectType(sourceType)) {
-      continue;
-    }
-
     if (!isSameObject(checker, targetTypes, sourceType)) {
       return false;
     }
