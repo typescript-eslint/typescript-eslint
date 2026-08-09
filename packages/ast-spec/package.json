@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "8.65.0",
+  "version": "8.66.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -42,15 +42,13 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.27.1",
-    "@babel/core": "^7.28.5",
-    "@babel/eslint-parser": "^7.28.5",
-    "@babel/parser": "^7.28.5",
+    "@babel/code-frame": "^8.0.0",
+    "@babel/core": "^8.0.1",
+    "@babel/eslint-parser": "^8.0.1",
+    "@babel/parser": "^8.0.4",
     "@microsoft/api-extractor": "^7.55.2",
-    "@types/babel__code-frame": "catalog:",
-    "@types/babel__core": "^7.20.5",
     "@typescript-eslint/typescript-estree": "workspace:*",
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/pretty-format": "catalog:",
     "@vitest/utils": "catalog:",
@@ -71,7 +69,7 @@
     ],
     "targets": {
       "build": {
-        "command": "tsc -b tsconfig.build.json && api-extractor run --local --config=api-extractor.json",
+        "command": "tsc6 -b tsconfig.build.json && api-extractor run --local --config=api-extractor.json",
         "options": {
           "cwd": "{projectRoot}"
         },

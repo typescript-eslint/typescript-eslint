@@ -23,8 +23,7 @@ Snapshot Diff:
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSFunctionType {
                   type: 'TSFunctionType',
--                 params: Array [
-+                 parameters: Array [
+                  params: Array [
                     Identifier {
                       type: 'Identifier',
                       decorators: Array [],
@@ -68,8 +67,7 @@ Snapshot Diff:
                       },
                     },
                   ],
--                 returnType: TSTypeAnnotation {
-+                 typeAnnotation: TSTypeAnnotation {
+                  returnType: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSTypeReference {
                       type: 'TSTypeReference',
@@ -106,19 +104,18 @@ Snapshot Diff:
                         type: 'TSTypeParameter',
                         const: false,
                         in: false,
--                       name: Identifier {
--                         type: 'Identifier',
--                         decorators: Array [],
--                         name: 'T',
--                         optional: false,
--
--                         range: [81, 82],
--                         loc: {
--                           start: { column: 8, line: 3 },
--                           end: { column: 9, line: 3 },
--                         },
--                       },
-+                       name: 'T',
+                        name: Identifier {
+                          type: 'Identifier',
+                          decorators: Array [],
+                          name: 'T',
+                          optional: false,
+
+                          range: [81, 82],
+                          loc: {
+                            start: { column: 8, line: 3 },
+                            end: { column: 9, line: 3 },
+                          },
+                        },
                         out: false,
 
                         range: [81, 82],
@@ -177,9 +174,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 96],
+-   range: [73, 96],
++   range: [0, 96],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

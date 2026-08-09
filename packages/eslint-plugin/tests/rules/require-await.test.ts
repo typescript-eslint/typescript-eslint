@@ -21,7 +21,7 @@ const numberOne = function (): number {
     `,
     // Non-async arrow function expression (concise-body)
     `
-      const numberOne = (): number => 1;
+const numberOne = (): number => 1;
     `,
     // Non-async arrow function expression (block-body)
     `
@@ -204,44 +204,44 @@ async function* foo(): Promise<string> {
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/5458
     `
-      async function* f() {
-        let x!: Omit<
-          {
-            [Symbol.asyncIterator](): AsyncIterator<any>;
-          },
-          'z'
-        >;
-        yield* x;
-      }
+async function* f() {
+  let x!: Omit<
+    {
+      [Symbol.asyncIterator](): AsyncIterator<any>;
+    },
+    'z'
+  >;
+  yield* x;
+}
     `,
     `
-      const fn = async () => {
-        await using foo = new Bar();
-      };
+const fn = async () => {
+  await using foo = new Bar();
+};
     `,
     `
-      async function* test1() {
-        yield Promise.resolve(1);
-      }
+async function* test1() {
+  yield Promise.resolve(1);
+}
     `,
     `
-      function asyncFunction() {
-        return Promise.resolve(1);
-      }
-      async function* test1() {
-        yield asyncFunction();
-      }
+function asyncFunction() {
+  return Promise.resolve(1);
+}
+async function* test1() {
+  yield asyncFunction();
+}
     `,
     `
-      declare const asyncFunction: () => Promise<void>;
-      async function* test1() {
-        yield asyncFunction();
-      }
+declare const asyncFunction: () => Promise<void>;
+async function* test1() {
+  yield asyncFunction();
+}
     `,
     `
-      async function* test1() {
-        yield new Promise(() => {});
-      }
+async function* test1() {
+  yield new Promise(() => {});
+}
     `,
   ],
 
@@ -345,11 +345,11 @@ function values(): Array<number> {
     {
       // non-async function with await inside async function without await
       code: `
-        async function foo() {
-          function nested() {
-            await doSomething();
-          }
-        }
+async function foo() {
+  function nested() {
+    await doSomething();
+  }
+}
       `,
       errors: [
         {
@@ -361,11 +361,11 @@ function values(): Array<number> {
             {
               messageId: 'removeAsync',
               output: `
-        function foo() {
-          function nested() {
-            await doSomething();
-          }
-        }
+function foo() {
+  function nested() {
+    await doSomething();
+  }
+}
       `,
             },
           ],
@@ -596,9 +596,9 @@ function* asyncGenerator() {
     },
     {
       code: `
-        const fn = async () => {
-          using foo = new Bar();
-        };
+const fn = async () => {
+  using foo = new Bar();
+};
       `,
       errors: [
         {
@@ -610,9 +610,9 @@ function* asyncGenerator() {
             {
               messageId: 'removeAsync',
               output: `
-        const fn = () => {
-          using foo = new Bar();
-        };
+const fn = () => {
+  using foo = new Bar();
+};
       `,
             },
           ],
@@ -621,10 +621,10 @@ function* asyncGenerator() {
     },
     {
       code: `
-        // intentional TS error
-        async function* foo(): Promise<number> {
-          yield 1;
-        }
+// intentional TS error
+async function* foo(): Promise<number> {
+  yield 1;
+}
       `,
       errors: [
         {
@@ -636,10 +636,10 @@ function* asyncGenerator() {
             {
               messageId: 'removeAsync',
               output: `
-        // intentional TS error
-        function* foo(): Promise<number> {
-          yield 1;
-        }
+// intentional TS error
+function* foo(): Promise<number> {
+  yield 1;
+}
       `,
             },
           ],
@@ -648,9 +648,9 @@ function* asyncGenerator() {
     },
     {
       code: `
-        async function* foo(): AsyncGenerator {
-          yield 1;
-        }
+async function* foo(): AsyncGenerator {
+  yield 1;
+}
       `,
       errors: [
         {
@@ -662,9 +662,9 @@ function* asyncGenerator() {
             {
               messageId: 'removeAsync',
               output: `
-        function* foo(): Generator {
-          yield 1;
-        }
+function* foo(): Generator {
+  yield 1;
+}
       `,
             },
           ],
@@ -673,9 +673,9 @@ function* asyncGenerator() {
     },
     {
       code: `
-        async function* foo(): AsyncGenerator<number> {
-          yield 1;
-        }
+async function* foo(): AsyncGenerator<number> {
+  yield 1;
+}
       `,
       errors: [
         {
@@ -687,9 +687,9 @@ function* asyncGenerator() {
             {
               messageId: 'removeAsync',
               output: `
-        function* foo(): Generator<number> {
-          yield 1;
-        }
+function* foo(): Generator<number> {
+  yield 1;
+}
       `,
             },
           ],
@@ -774,11 +774,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        async function* run() {
-          await new Promise(resolve => setTimeout(resolve, 100));
-          yield 'Hello';
-          console.log('World');
-        }
+async function* run() {
+  await new Promise(resolve => setTimeout(resolve, 100));
+  yield 'Hello';
+  console.log('World');
+}
       `,
     },
     {
@@ -814,9 +814,9 @@ for await (let num of asyncIterable) {
   invalid: [
     {
       code: `
-        async function foo() {
-          doSomething();
-        }
+async function foo() {
+  doSomething();
+}
       `,
       errors: [
         {
@@ -826,9 +826,9 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        function foo() {
-          doSomething();
-        }
+function foo() {
+  doSomething();
+}
       `,
             },
           ],
@@ -837,9 +837,9 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        (async function () {
-          doSomething();
-        });
+(async function () {
+  doSomething();
+});
       `,
       errors: [
         {
@@ -849,9 +849,9 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        (function () {
-          doSomething();
-        });
+(function () {
+  doSomething();
+});
       `,
             },
           ],
@@ -860,9 +860,9 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        async () => {
-          doSomething();
-        };
+async () => {
+  doSomething();
+};
       `,
       errors: [
         {
@@ -872,9 +872,9 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        () => {
-          doSomething();
-        };
+() => {
+  doSomething();
+};
       `,
             },
           ],
@@ -895,11 +895,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        ({
-          async foo() {
-            doSomething();
-          },
-        });
+({
+  async foo() {
+    doSomething();
+  },
+});
       `,
       errors: [
         {
@@ -909,11 +909,11 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        ({
-          foo() {
-            doSomething();
-          },
-        });
+({
+  foo() {
+    doSomething();
+  },
+});
       `,
             },
           ],
@@ -922,11 +922,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        class A {
-          async foo() {
-            doSomething();
-          }
-        }
+class A {
+  async foo() {
+    doSomething();
+  }
+}
       `,
       errors: [
         {
@@ -936,11 +936,11 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        class A {
-          foo() {
-            doSomething();
-          }
-        }
+class A {
+  foo() {
+    doSomething();
+  }
+}
       `,
             },
           ],
@@ -949,11 +949,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        class A {
-          public async foo() {
-            doSomething();
-          }
-        }
+class A {
+  public async foo() {
+    doSomething();
+  }
+}
       `,
       errors: [
         {
@@ -963,11 +963,11 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        class A {
-          public foo() {
-            doSomething();
-          }
-        }
+class A {
+  public foo() {
+    doSomething();
+  }
+}
       `,
             },
           ],
@@ -976,11 +976,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        (class {
-          async foo() {
-            doSomething();
-          }
-        });
+(class {
+  async foo() {
+    doSomething();
+  }
+});
       `,
       errors: [
         {
@@ -990,11 +990,11 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        (class {
-          foo() {
-            doSomething();
-          }
-        });
+(class {
+  foo() {
+    doSomething();
+  }
+});
       `,
             },
           ],
@@ -1003,11 +1003,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        (class {
-          async ''() {
-            doSomething();
-          }
-        });
+(class {
+  async ''() {
+    doSomething();
+  }
+});
       `,
       errors: [
         {
@@ -1017,11 +1017,11 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        (class {
-          ''() {
-            doSomething();
-          }
-        });
+(class {
+  ''() {
+    doSomething();
+  }
+});
       `,
             },
           ],
@@ -1030,11 +1030,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        async function foo() {
-          async () => {
-            await doSomething();
-          };
-        }
+async function foo() {
+  async () => {
+    await doSomething();
+  };
+}
       `,
       errors: [
         {
@@ -1044,11 +1044,11 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        function foo() {
-          async () => {
-            await doSomething();
-          };
-        }
+function foo() {
+  async () => {
+    await doSomething();
+  };
+}
       `,
             },
           ],
@@ -1057,11 +1057,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        async function foo() {
-          await (async () => {
-            doSomething();
-          });
-        }
+async function foo() {
+  await (async () => {
+    doSomething();
+  });
+}
       `,
       errors: [
         {
@@ -1071,11 +1071,11 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        async function foo() {
-          await (() => {
-            doSomething();
-          });
-        }
+async function foo() {
+  await (() => {
+    doSomething();
+  });
+}
       `,
             },
           ],
@@ -1084,11 +1084,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        const obj = {
-          async: async function foo() {
-            bar();
-          },
-        };
+const obj = {
+  async: async function foo() {
+    bar();
+  },
+};
       `,
       errors: [
         {
@@ -1098,11 +1098,11 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        const obj = {
-          async: function foo() {
-            bar();
-          },
-        };
+const obj = {
+  async: function foo() {
+    bar();
+  },
+};
       `,
             },
           ],
@@ -1192,12 +1192,12 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        class A {
-          foo() {}
-          async [bar]() {
-            baz;
-          }
-        }
+class A {
+  foo() {}
+  async [bar]() {
+    baz;
+  }
+}
       `,
       errors: [
         {
@@ -1207,12 +1207,12 @@ for await (let num of asyncIterable) {
             {
               messageId: 'removeAsync',
               output: `
-        class A {
-          foo() {}
-          [bar]() {
-            baz;
-          }
-        }
+class A {
+  foo() {}
+  [bar]() {
+    baz;
+  }
+}
       `,
             },
           ],
