@@ -1,10 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  ASTUtils,
-} from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
@@ -30,8 +26,6 @@ type Unify =
       kind: 'single-parameter-difference';
       p0: TSESTree.Parameter;
       p1: TSESTree.Parameter;
-      typeParameters0?: TSESTree.TSTypeParameterDeclaration;
-      typeParameters1?: TSESTree.TSTypeParameterDeclaration;
     };
 
 /**
@@ -149,12 +143,7 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                types: getUnifiedTypeText(
-                  typeAnnotation0,
-                  typeAnnotation1,
-                  unify.typeParameters0,
-                  unify.typeParameters1,
-                ),
+                types: getUnifiedTypeText(typeAnnotation0, typeAnnotation1),
               },
             });
             break;
@@ -307,8 +296,6 @@ export default createRule<Options, MessageIds>({
             kind: 'single-parameter-difference',
             p0: a,
             p1: b,
-            typeParameters0: signature0.typeParameters,
-            typeParameters1: signature1.typeParameters,
           }
         : undefined;
     }
@@ -326,8 +313,6 @@ export default createRule<Options, MessageIds>({
     function getUnifiedTypeText(
       type0: TSESTree.TypeNode | undefined,
       type1: TSESTree.TypeNode | undefined,
-      typeParameters0?: TSESTree.TSTypeParameterDeclaration,
-      typeParameters1?: TSESTree.TSTypeParameterDeclaration,
     ): string {
       if (type0 == null) {
         return getUnionMemberText(
@@ -338,35 +323,17 @@ export default createRule<Options, MessageIds>({
         return getUnionMemberText(type0);
       }
 
-      const members = [
-        ...getUnionMembers(type0).map(type => ({
-          type,
-          typeParameters: typeParameters0,
-        })),
-        ...getUnionMembers(type1).map(type => ({
-          type,
-          typeParameters: typeParameters1,
-        })),
-      ];
+      const members = [...getUnionMembers(type0), ...getUnionMembers(type1)];
       const uniqueMembers: typeof members = [];
 
       for (const member of members) {
-        if (
-          !uniqueMembers.some(other =>
-            typeNodesAreEqual(
-              other.type,
-              member.type,
-              other.typeParameters,
-              member.typeParameters,
-            ),
-          )
-        ) {
+        if (!uniqueMembers.some(other => typesAreEqual(other, member))) {
           uniqueMembers.push(member);
         }
       }
 
       return uniqueMembers
-        .map(member => getUnionMemberText(member.type))
+        .map(member => getUnionMemberText(member))
         .join(' | ');
     }
 
@@ -386,132 +353,6 @@ export default createRule<Options, MessageIds>({
       return needsParentheses || isParenthesized(type, context.sourceCode)
         ? `(${text})`
         : text;
-    }
-
-    function typeNodesAreEqual(
-      a: TSESTree.TypeNode,
-      b: TSESTree.TypeNode,
-      typeParameters0?: TSESTree.TSTypeParameterDeclaration,
-      typeParameters1?: TSESTree.TSTypeParameterDeclaration,
-    ): boolean {
-      const typeParameterIndices0 = new Map(
-        typeParameters0?.params.map((parameter, index) => [
-          parameter.name.name,
-          index,
-        ]),
-      );
-      const typeParameterIndices1 = new Map(
-        typeParameters1?.params.map((parameter, index) => [
-          parameter.name.name,
-          index,
-        ]),
-      );
-
-      function nodesAreEqual(left: unknown, right: unknown): boolean {
-        if (left === right) {
-          return true;
-        }
-        if (left == null || right == null || typeof left !== typeof right) {
-          return false;
-        }
-        if (typeof left !== 'object') {
-          return false;
-        }
-        if (Array.isArray(left) || Array.isArray(right)) {
-          return (
-            Array.isArray(left) &&
-            Array.isArray(right) &&
-            left.length === right.length &&
-            left.every((value, index) => nodesAreEqual(value, right[index]))
-          );
-        }
-
-        const leftType = getObjectProperty(left, 'type');
-        const rightType = getObjectProperty(right, 'type');
-        if (leftType !== rightType) {
-          return false;
-        }
-
-        if (
-          leftType === AST_NODE_TYPES.TSTypeReference &&
-          rightType === AST_NODE_TYPES.TSTypeReference
-        ) {
-          const leftName = getObjectProperty(left, 'typeName');
-          const rightName = getObjectProperty(right, 'typeName');
-          if (!typeReferenceNamesAreEqual(leftName, rightName)) {
-            return false;
-          }
-        }
-
-        const ignoredKeys = new Set([
-          'comments',
-          'loc',
-          'parent',
-          'range',
-          'raw',
-          'tokens',
-        ]);
-        const keys = new Set([...Object.keys(left), ...Object.keys(right)]);
-        for (const key of keys) {
-          if (
-            ignoredKeys.has(key) ||
-            (key === 'typeName' && leftType === AST_NODE_TYPES.TSTypeReference)
-          ) {
-            continue;
-          }
-          if (
-            !nodesAreEqual(
-              getObjectProperty(left, key),
-              getObjectProperty(right, key),
-            )
-          ) {
-            return false;
-          }
-        }
-        return true;
-      }
-
-      function typeReferenceNamesAreEqual(
-        left: unknown,
-        right: unknown,
-      ): boolean {
-        if (!isIdentifierNode(left) || !isIdentifierNode(right)) {
-          return nodesAreEqual(left, right);
-        }
-
-        const leftIndex = typeParameterIndices0.get(left.name);
-        const rightIndex = typeParameterIndices1.get(right.name);
-        if (leftIndex != null || rightIndex != null) {
-          return leftIndex === rightIndex;
-        }
-
-        return (
-          left.name === right.name &&
-          ASTUtils.findVariable(
-            context.sourceCode.getScope(left),
-            left.name,
-          ) ===
-            ASTUtils.findVariable(
-              context.sourceCode.getScope(right),
-              right.name,
-            )
-        );
-      }
-
-      function isIdentifierNode(value: unknown): value is TSESTree.Identifier {
-        return (
-          typeof value === 'object' &&
-          value != null &&
-          'type' in value &&
-          value.type === AST_NODE_TYPES.Identifier
-        );
-      }
-
-      function getObjectProperty(value: object, key: string): unknown {
-        return Reflect.get(value, key) as unknown;
-      }
-
-      return nodesAreEqual(a, b);
     }
 
     function isThisParam(param: TSESTree.Parameter | undefined): boolean {
@@ -703,15 +544,20 @@ export default createRule<Options, MessageIds>({
     }
 
     function typesAreEqual(
-      a: TSESTree.TSTypeAnnotation | undefined,
-      b: TSESTree.TSTypeAnnotation | undefined,
+      a: TSESTree.TSTypeAnnotation | TSESTree.TypeNode | undefined,
+      b: TSESTree.TSTypeAnnotation | TSESTree.TypeNode | undefined,
     ): boolean {
+      const typeA =
+        a?.type === AST_NODE_TYPES.TSTypeAnnotation ? a.typeAnnotation : a;
+      const typeB =
+        b?.type === AST_NODE_TYPES.TSTypeAnnotation ? b.typeAnnotation : b;
+
       return (
-        a === b ||
-        (a != null &&
-          b != null &&
-          context.sourceCode.getText(a.typeAnnotation) ===
-            context.sourceCode.getText(b.typeAnnotation))
+        typeA === typeB ||
+        (typeA != null &&
+          typeB != null &&
+          context.sourceCode.getText(typeA) ===
+            context.sourceCode.getText(typeB))
       );
     }
 

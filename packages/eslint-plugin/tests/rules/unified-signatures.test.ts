@@ -1496,6 +1496,28 @@ declare function fn(a: (/* before */ string /* after */)): void;
       ],
     },
     {
+      // To avoid complex type comparisons when resolving #12504, allows duplicate union members when comments make their source text differ.
+      code: noFormat`
+function f(x: string & { brand: true }): void;
+function f(x: number | string & /* brand */ { brand: true }): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types:
+              'string & { brand: true } | number | string & /* brand */ { brand: true }',
+          },
+          endColumn: 60,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
       code: noFormat`
 function f(x: string & { brand: true }): void;
 function f(x: number | string & { brand: true }): void;
