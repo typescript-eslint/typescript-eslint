@@ -375,7 +375,6 @@ export default createRule<Options, MessageId>({
         (flagUnionsOption === 'none' && isAlwaysThenable(checker, tsNode)) ||
         (flagUnionsOption === 'all' && isSometimesThenable(checker, tsNode)) ||
         (flagUnionsOption === 'strict' &&
-          isSometimesThenable(checker, tsNode) &&
           hasMatchingPromiseTypeArgument(checker, tsNode))
       ) {
         context.report({
@@ -1164,84 +1163,24 @@ function hasMatchingPromiseTypeArgument(
   }
 
   const anotherTypes = subTypes.filter(type => type !== promiseType);
-  const promiseTypeArgumentSubTypes = getPromiseTypeArguments(
-    checker,
-    promiseType,
+  const awaitedType = checker.getAwaitedType(promiseType);
+
+  if (!awaitedType) {
+    return false;
+  }
+
+  const awaitedTypes = tsutils.unionConstituents(awaitedType);
+
+  return (
+    anotherTypes.length === awaitedTypes.length &&
+    anotherTypes.every(type =>
+      awaitedTypes.some(
+        awaited =>
+          checker.isTypeAssignableTo(type, awaited) &&
+          checker.isTypeAssignableTo(awaited, type),
+      ),
+    )
   );
-
-  if (isSameTypes(checker, promiseTypeArgumentSubTypes, anotherTypes)) {
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * @returns The constituent types of the Promise type argument
- */
-function getPromiseTypeArguments(
-  checker: ts.TypeChecker,
-  type: ts.Type,
-): ts.Type[] {
-  const typeArgument = checker.getAwaitedType(type);
-  if (!typeArgument) {
-    return [];
-  }
-
-  return tsutils.unionConstituents(typeArgument);
-}
-
-function mergeFlags(types: ts.Type[]) {
-  return types.reduce((flags, type) => flags | type.flags, 0);
-}
-
-/**
- * Merges the flags of the types to check whether they are the same types.
- * If any of the types are objects, checks whether there are mutually assignable object types.
- */
-function isSameTypes(
-  checker: ts.TypeChecker,
-  sourceTypes: ts.Type[],
-  targetTypes: ts.Type[],
-) {
-  const objectType = sourceTypes.find(type => tsutils.isObjectType(type));
-
-  const isSameFlags = mergeFlags(sourceTypes) === mergeFlags(targetTypes);
-  if (!isSameFlags) {
-    return false;
-  }
-
-  if (!objectType) {
-    return true;
-  }
-
-  for (const sourceType of sourceTypes) {
-    if (!isSameObject(checker, targetTypes, sourceType)) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-/**
- * Checks whether the source contains an object type that is mutually assignable to the target.
- */
-function isSameObject(
-  checker: ts.TypeChecker,
-  sourceTypes: ts.Type[],
-  targetType: ts.Type,
-) {
-  return sourceTypes.some(sourceType => {
-    if (
-      checker.isTypeAssignableTo(targetType, sourceType) &&
-      checker.isTypeAssignableTo(sourceType, targetType)
-    ) {
-      return true;
-    }
-
-    return false;
-  });
 }
 
 function parseFlagUnionsOption(

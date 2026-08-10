@@ -1279,6 +1279,22 @@ if (await fn()) {
         },
       ],
     },
+    {
+      code: `
+type MyUnion = number | string;
+type PromiseUnion = string | number | undefined;
+declare const f: () => MyUnion | Promise<PromiseUnion>;
+if (f()) {
+}
+      `,
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
   ],
 
   invalid: [
