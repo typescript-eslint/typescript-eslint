@@ -21,6 +21,11 @@ type Unify =
       kind: 'single-parameter-difference';
       p0: TSESTree.Parameter;
       p1: TSESTree.Parameter;
+    }
+  | {
+      kind: 'all-parameters-are-same';
+      signature0: SignatureDefinition;
+      signature1: SignatureDefinition;
     };
 
 /**
@@ -42,6 +47,7 @@ type ContainingNode =
 
 type SignatureDefinition =
   | TSESTree.FunctionExpression
+  | TSESTree.FunctionDeclaration
   | TSESTree.TSCallSignatureDeclaration
   | TSESTree.TSConstructSignatureDeclaration
   | TSESTree.TSDeclareFunction
@@ -54,7 +60,8 @@ type MethodDefinition =
 export type MessageIds =
   | 'omittingRestParameter'
   | 'omittingSingleParameter'
-  | 'singleParameterDifference';
+  | 'singleParameterDifference'
+  | 'allParametersAreSame';
 
 export type Options = [
   {
@@ -79,6 +86,7 @@ export default createRule<Options, MessageIds>({
         '{{failureStringStart}} with an optional parameter.',
       singleParameterDifference:
         '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
+      allParametersAreSame: '{{failureStringStart}} with identical parameters.',
     },
     schema: [
       {
@@ -170,7 +178,28 @@ export default createRule<Options, MessageIds>({
                 failureStringStart: failureStringStart(lineOfOtherOverload),
               },
             });
+
+            break;
           }
+
+          case 'all-parameters-are-same': {
+            const { signature0, signature1 } = unify;
+            const lineOfOtherOverload = only2
+              ? undefined
+              : signature0.loc.start.line;
+
+            context.report({
+              node: signature1,
+              messageId: 'allParametersAreSame',
+              data: {
+                failureStringStart: failureStringStart(lineOfOtherOverload),
+              },
+            });
+            break;
+          }
+
+          default:
+            unify satisfies never;
         }
       }
     }
@@ -209,7 +238,7 @@ export default createRule<Options, MessageIds>({
       }
 
       return a.params.length === b.params.length
-        ? signaturesDifferBySingleParameter(a.params, b.params)
+        ? signaturesHaveSameAmountOfParameters(a, b)
         : signaturesDifferByOptionalOrRestParameter(a, b);
     }
 
@@ -256,13 +285,16 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    /** Detect `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`. */
-    function signaturesDifferBySingleParameter(
-      types1: readonly TSESTree.Parameter[],
-      types2: readonly TSESTree.Parameter[],
+    /**
+     * Detect no difference, i.e. `a(x: number, y: string)` and `a(x: number, y: string)`,
+     * or one param difference, i.e. `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`.
+     * */
+    function signaturesHaveSameAmountOfParameters(
+      signature0: SignatureDefinition,
+      signature1: SignatureDefinition,
     ): Unify | undefined {
-      const firstParam1 = types1[0];
-      const firstParam2 = types2[0];
+      const firstParam1 = signature0.params[0];
+      const firstParam2 = signature1.params[0];
 
       // exempt signatures with `this: void` from the rule
       if (isThisVoidParam(firstParam1) || isThisVoidParam(firstParam2)) {
@@ -270,27 +302,31 @@ export default createRule<Options, MessageIds>({
       }
 
       const index = getIndexOfFirstDifference(
-        types1,
-        types2,
+        signature0.params,
+        signature1.params,
         parametersAreEqual,
       );
       if (index == null) {
-        return undefined;
+        return {
+          kind: 'all-parameters-are-same',
+          signature0,
+          signature1,
+        };
       }
 
       // If remaining arrays are equal, the signatures differ by just one parameter type
       if (
         !arraysAreEqual(
-          types1.slice(index + 1),
-          types2.slice(index + 1),
+          signature0.params.slice(index + 1),
+          signature1.params.slice(index + 1),
           parametersAreEqual,
         )
       ) {
         return undefined;
       }
 
-      const a = types1[index];
-      const b = types2[index];
+      const a = signature0.params[index];
+      const b = signature1.params[index];
       // Can unify `a?: string` and `b?: number`. Can't unify `...args: string[]` and `...args: number[]`.
       // See https://github.com/Microsoft/TypeScript/issues/5077
       return parametersHaveEqualSigils(a, b) &&
