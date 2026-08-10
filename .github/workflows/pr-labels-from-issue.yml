@@ -18,7 +18,7 @@ jobs:
     name: Copy labels from the linked issues
     runs-on: ubuntu-slim
     permissions:
-      issues: read # To read the labels of the linked issues.
+      issues: read
       pull-requests: write
 
     steps:
