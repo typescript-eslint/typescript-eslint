@@ -1,5 +1,26 @@
 import * as ts from 'typescript';
 
+function packageNameMatches(
+  configuredPackageName: string,
+  declaredPackageName: string,
+): boolean {
+  const typesPackageName = declaredPackageName.startsWith('@types/')
+    ? declaredPackageName.slice('@types/'.length)
+    : undefined;
+  const scopeSeparatorIndex = typesPackageName?.indexOf('__') ?? -1;
+  const normalizedDeclaredPackageName =
+    typesPackageName == null
+      ? declaredPackageName
+      : scopeSeparatorIndex === -1
+        ? typesPackageName
+        : `@${typesPackageName.slice(0, scopeSeparatorIndex)}/${typesPackageName.slice(scopeSeparatorIndex + 2)}`;
+
+  return (
+    normalizedDeclaredPackageName === configuredPackageName ||
+    normalizedDeclaredPackageName.startsWith(`${configuredPackageName}/`)
+  );
+}
+
 function findParentModuleDeclaration(
   node: ts.Node,
 ): ts.ModuleDeclaration | undefined {
@@ -22,10 +43,11 @@ function typeDeclaredInDeclareModule(
   packageName: string,
   declarations: ts.Node[],
 ): boolean {
-  return declarations.some(
-    declaration =>
-      findParentModuleDeclaration(declaration)?.name.text === packageName,
-  );
+  return declarations.some(declaration => {
+    const moduleName = findParentModuleDeclaration(declaration)?.name.text;
+
+    return moduleName != null && packageNameMatches(packageName, moduleName);
+  });
 }
 
 function typeDeclaredInDeclarationFile(
@@ -33,15 +55,11 @@ function typeDeclaredInDeclarationFile(
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
-  // Handle scoped packages: if the name starts with @, remove it and replace / with __
-  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
-
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
       packageIdName != null &&
-      matcher.test(packageIdName) &&
+      packageNameMatches(packageName, packageIdName) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
