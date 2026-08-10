@@ -18,14 +18,14 @@ type Unify =
       otherSignature: SignatureDefinition;
     }
   | {
-      kind: 'single-parameter-difference';
-      p0: TSESTree.Parameter;
-      p1: TSESTree.Parameter;
-    }
-  | {
       kind: 'all-parameters-are-same';
       signature0: SignatureDefinition;
       signature1: SignatureDefinition;
+    }
+  | {
+      kind: 'single-parameter-difference';
+      p0: TSESTree.Parameter;
+      p1: TSESTree.Parameter;
     };
 
 /**
@@ -46,7 +46,6 @@ type ContainingNode =
   TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration;
 
 type SignatureDefinition =
-  | TSESTree.FunctionExpression
   | TSESTree.FunctionDeclaration
   | TSESTree.TSCallSignatureDeclaration
   | TSESTree.TSConstructSignatureDeclaration
@@ -58,10 +57,10 @@ type MethodDefinition =
   TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition;
 
 export type MessageIds =
+  | 'allParametersAreSame'
   | 'omittingRestParameter'
   | 'omittingSingleParameter'
-  | 'singleParameterDifference'
-  | 'allParametersAreSame';
+  | 'singleParameterDifference';
 
 export type Options = [
   {
@@ -81,12 +80,12 @@ export default createRule<Options, MessageIds>({
       recommended: 'strict',
     },
     messages: {
+      allParametersAreSame: '{{failureStringStart}} with identical parameters.',
       omittingRestParameter: '{{failureStringStart}} with a rest parameter.',
       omittingSingleParameter:
         '{{failureStringStart}} with an optional parameter.',
       singleParameterDifference:
         '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
-      allParametersAreSame: '{{failureStringStart}} with identical parameters.',
     },
     schema: [
       {
@@ -288,7 +287,7 @@ export default createRule<Options, MessageIds>({
     /**
      * Detect no difference, i.e. `a(x: number, y: string)` and `a(x: number, y: string)`,
      * or one param difference, i.e. `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`.
-     * */
+     */
     function signaturesHaveSameAmountOfParameters(
       signature0: SignatureDefinition,
       signature1: SignatureDefinition,
