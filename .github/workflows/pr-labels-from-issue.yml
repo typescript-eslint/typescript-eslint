@@ -1,0 +1,94 @@
+name: PR Labels From Issue
+
+on:
+  # WARNING: Using pull_request_target here because we need write permissions to add labels to fork PRs.
+  #
+  # NEVER EVER execute any code from the fork (including checkout, install, scripts, etc.)
+  pull_request_target:
+    types: [opened, edited] # zizmor: ignore[dangerous-triggers] See warning above.
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  pr_labels_from_issue:
+    name: Copy labels from the linked issues
+    runs-on: ubuntu-slim
+    permissions:
+      issues: read # To read the labels of the linked issues.
+      pull-requests: write
+
+    steps:
+      # Uses the GitHub API instead of checkout, so no fork code ever touches the runner.
+      - name: Add labels matching the linked issues
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const ALLOWED_LABELS = [
+              'bug',
+              'documentation',
+              'enhancement',
+              'preset config change',
+              'repo maintenance',
+            ];
+
+            const ALLOWED_LABEL_PREFIXES = ['package:', 'enhancement:'];
+
+            const isAllowed = name =>
+              ALLOWED_LABELS.includes(name) ||
+              ALLOWED_LABEL_PREFIXES.some(prefix => name.startsWith(prefix));
+
+            const query = `
+              query ($owner: String!, $repo: String!, $number: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $number) {
+                    closingIssuesReferences(first: 10) {
+                      nodes {
+                        repository {
+                          nameWithOwner
+                        }
+                        labels(first: 100) {
+                          nodes {
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+
+            const { repository } = await github.graphql(query, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              number: context.issue.number,
+            });
+
+            // Filter out issue labels from other repositories, for the edge case
+            // of a typescript-eslint PR that closes an issue in a different repo.
+            const nameWithOwner = `${context.repo.owner}/${context.repo.repo}`;
+
+            const issues = repository.pullRequest.closingIssuesReferences.nodes.filter(
+              issue => issue.repository.nameWithOwner === nameWithOwner,
+            );
+
+            const labels = new Set(
+              issues
+                .flatMap(issue => issue.labels.nodes.map(label => label.name))
+                .filter(isAllowed),
+            );
+
+            if (labels.size === 0) {
+              return;
+            }
+
+            await github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: [...labels],
+            });
