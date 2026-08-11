@@ -237,7 +237,10 @@ export default createRule<Options, MessageIds>({
       }
 
       return (
-        typesAreEqual(a.returnType, b.returnType) &&
+        typesAreEqual(
+          a.returnType?.typeAnnotation,
+          b.returnType?.typeAnnotation,
+        ) &&
         // Must take the same type parameters.
         // If one uses a type parameter (from outside) and the other doesn't, they shouldn't be joined.
         arraysAreEqual(aTypeParams, bTypeParams, typeParametersAreEqual) &&
@@ -394,16 +397,12 @@ export default createRule<Options, MessageIds>({
       }
 
       for (let i = 0; i < minLength; i++) {
-        const sig1i = sig1[i];
-        const sig2i = sig2[i];
-        const typeAnnotation1 = isTSParameterProperty(sig1i)
-          ? sig1i.parameter.typeAnnotation
-          : sig1i.typeAnnotation;
-        const typeAnnotation2 = isTSParameterProperty(sig2i)
-          ? sig2i.parameter.typeAnnotation
-          : sig2i.typeAnnotation;
-
-        if (!typesAreEqual(typeAnnotation1, typeAnnotation2)) {
+        if (
+          !typesAreEqual(
+            getParameterTypeAnnotation(sig1[i]),
+            getParameterTypeAnnotation(sig2[i]),
+          )
+        ) {
           return undefined;
         }
       }
@@ -481,16 +480,12 @@ export default createRule<Options, MessageIds>({
       a: TSESTree.Parameter,
       b: TSESTree.Parameter,
     ): boolean {
-      const typeAnnotationA = isTSParameterProperty(a)
-        ? a.parameter.typeAnnotation
-        : a.typeAnnotation;
-      const typeAnnotationB = isTSParameterProperty(b)
-        ? b.parameter.typeAnnotation
-        : b.typeAnnotation;
-
       return (
         parametersHaveEqualSigils(a, b) &&
-        typesAreEqual(typeAnnotationA, typeAnnotationB)
+        typesAreEqual(
+          getParameterTypeAnnotation(a),
+          getParameterTypeAnnotation(b),
+        )
       );
     }
 
@@ -532,20 +527,14 @@ export default createRule<Options, MessageIds>({
     }
 
     function typesAreEqual(
-      a: TSESTree.TSTypeAnnotation | TSESTree.TypeNode | undefined,
-      b: TSESTree.TSTypeAnnotation | TSESTree.TypeNode | undefined,
+      a: TSESTree.TypeNode | undefined,
+      b: TSESTree.TypeNode | undefined,
     ): boolean {
-      const typeA =
-        a?.type === AST_NODE_TYPES.TSTypeAnnotation ? a.typeAnnotation : a;
-      const typeB =
-        b?.type === AST_NODE_TYPES.TSTypeAnnotation ? b.typeAnnotation : b;
-
       return (
-        typeA === typeB ||
-        (typeA != null &&
-          typeB != null &&
-          context.sourceCode.getText(typeA) ===
-            context.sourceCode.getText(typeB))
+        a === b ||
+        (a != null &&
+          b != null &&
+          context.sourceCode.getText(a) === context.sourceCode.getText(b))
       );
     }
 
