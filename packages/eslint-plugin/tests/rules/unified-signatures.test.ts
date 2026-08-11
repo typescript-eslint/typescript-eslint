@@ -1496,7 +1496,7 @@ declare function fn(a: (/* before */ string /* after */)): void;
       ],
     },
     {
-      // To avoid complex type comparisons when resolving #12504, allows duplicate union members when comments make their source text differ.
+      // To avoid complex type comparisons when resolving #12504, allow duplicate union members when their source text differs.
       code: noFormat`
 function f(x: string & { brand: true }): void;
 function f(x: number | string & /* brand */ { brand: true }): void;
