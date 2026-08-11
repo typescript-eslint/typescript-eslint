@@ -3555,6 +3555,44 @@ foo.bar ?? 1;
     },
     {
       code: `
+declare const record: Record<string, number>;
+record.toString ?? (() => '');
+record['toString'] ?? (() => '');
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const record: { missing: number } & Record<string, number>;
+record.m\\u0069ssing ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar()?.toExponential();

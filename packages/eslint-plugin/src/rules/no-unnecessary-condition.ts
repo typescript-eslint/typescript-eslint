@@ -323,17 +323,10 @@ export default createRule<Options, MessageId>({
         const propertyType = services.getTypeAtLocation(node.property);
         return isNullablePropertyType(objectType, propertyType);
       }
-      const property = node.property;
+      const propertySymbol = services.getSymbolAtLocation(node.property);
 
-      // Get the actual property name, to account for private properties (this.#prop).
-      const propertyName = context.sourceCode.getText(property);
-
-      const propertyType = objectType
-        .getProperties()
-        .find(prop => prop.name === propertyName);
-
-      if (propertyType) {
-        return tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional);
+      if (propertySymbol) {
+        return tsutils.isSymbolFlagSet(propertySymbol, ts.SymbolFlags.Optional);
       }
 
       return isNullablePropertyType(objectType, checker.getStringType());
