@@ -303,11 +303,9 @@ export default createRule<Options, MessageIds>({
     function getParameterTypeAnnotation(
       parameter: TSESTree.Parameter,
     ): TSESTree.TypeNode | undefined {
-      return (
-        isTSParameterProperty(parameter)
-          ? parameter.parameter.typeAnnotation
-          : parameter.typeAnnotation
-      )?.typeAnnotation;
+      return isTSParameterProperty(parameter)
+        ? parameter.parameter.typeAnnotation?.typeAnnotation
+        : parameter.typeAnnotation?.typeAnnotation;
     }
 
     function getUnifiedTypeText(
