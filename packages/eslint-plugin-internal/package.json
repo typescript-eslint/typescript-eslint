@@ -47,7 +47,16 @@
       "lint": {
         "command": "eslint"
       },
-      "typecheck:tsgo": {}
+      "typecheck:tsgo": {},
+      "test": {
+        "configurations": {
+          "project-service": {
+            "env": {
+              "TYPESCRIPT_ESLINT_PROJECT_SERVICE": "true"
+            }
+          }
+        }
+      }
     }
   }
 }

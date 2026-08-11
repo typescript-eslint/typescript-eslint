@@ -128,6 +128,15 @@
           "cwd": "{projectRoot}"
         },
         "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --exclude-entrypoints use-at-your-own-risk/raw-plugin --exclude-entrypoints use-at-your-own-risk/rules --ignore-rules named-exports"
+      },
+      "test": {
+        "configurations": {
+          "node18": {
+            "env": {
+              "TSESLINT_CI_NODE_VARIANT": "18"
+            }
+          }
+        }
       }
     }
   }
