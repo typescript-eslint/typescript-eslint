@@ -4,12 +4,7 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
-import {
-  arraysAreEqual,
-  createRule,
-  isParenthesized,
-  nullThrows,
-} from '../util';
+import { arraysAreEqual, createRule, nullThrows } from '../util';
 
 interface Failure {
   only2: boolean;
@@ -345,9 +340,7 @@ export default createRule<Options, MessageIds>({
         type.type === AST_NODE_TYPES.TSConstructorType ||
         type.type === AST_NODE_TYPES.TSFunctionType;
 
-      return needsParentheses || isParenthesized(type, context.sourceCode)
-        ? `(${text})`
-        : text;
+      return needsParentheses ? `(${text})` : text;
     }
 
     function isThisParam(param: TSESTree.Parameter | undefined): boolean {
