@@ -333,7 +333,7 @@ jobs:
   # the `main` job; this job only covers the Windows-specific runs.
   plugin_unit_tests:
     # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
-    name: Run Unit Tests
+    name: Run Unit Tests on Windows
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [affected-for-github-hosted-tests]
     if: ${{ needs['affected-for-github-hosted-tests'].outputs.is_plugin_affected == 'true' }}
@@ -375,7 +375,7 @@ jobs:
   # Linux (with coverage) unit tests run distributed on Nx Agents in the `main`
   # job; this job only covers the Windows-specific runs.
   unit_tests:
-    name: Run Unit Tests
+    name: Run Unit Tests on Windows
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [affected-for-github-hosted-tests]
     if: ${{ needs['affected-for-github-hosted-tests'].outputs.windows_unit_tests_packages != '[]' && needs['affected-for-github-hosted-tests'].outputs.windows_unit_tests_packages != '' }}

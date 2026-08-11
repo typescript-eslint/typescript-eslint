@@ -28,35 +28,9 @@ dte:
   enabled-by-default: false
   distribute-on: 13 linux-medium-js, 4 linux-medium-node18-js
 
-  # IMPORTANT: task hashes are computed on the coordinator (Node 24), so a
-  # task that lands on the wrong agent tier would poison the remote cache
-  # silently. The rules below must therefore cover EVERY distributed target —
-  # a task that matches no rule may be assigned to ANY tier, including the
-  # Node 18 one. If a new target starts being distributed (including as a
-  # task-graph dependency), it MUST be added to the second rule.
-  assignment-rules:
-    # Test variants that must execute under Node 18. This rule is more
-    # specific (target + configuration) than the catch-all below, so it takes
-    # precedence for these tasks.
-    - targets:
-        - test
-      configurations:
-        - node18
-        - project-service
-      run-on:
-        - agent: linux-medium-node18-js
-
-    # Everything else runs on the default Node 24 tier.
-    - targets:
-        - build
-        - copy-ast-spec
-        - lint
-        - test
-        - typecheck
-        - 'typecheck:tsgo'
-        - attw-check
-      run-on:
-        - agent: linux-medium-js
+  # The Nx Cloud API requires this to be a file path, not inline rules. See
+  # the routing and cache-safety notes inside the referenced file.
+  assignment-rules: .nx/assignment-rules.yaml
 
 nx-agents:
   # NX_-prefixed variables are forwarded automatically; CI is a declared input
