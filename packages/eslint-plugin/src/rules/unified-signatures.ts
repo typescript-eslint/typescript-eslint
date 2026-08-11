@@ -323,7 +323,7 @@ export default createRule<Options, MessageIds>({
       }
 
       const members = [...getUnionMembers(type0), ...getUnionMembers(type1)];
-      const uniqueMembers: typeof members = [];
+      const uniqueMembers: TSESTree.TypeNode[] = [];
 
       for (const member of members) {
         if (!uniqueMembers.some(other => typesAreEqual(other, member))) {
