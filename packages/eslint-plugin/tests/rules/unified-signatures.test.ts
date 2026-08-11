@@ -1313,7 +1313,6 @@ function f(this: string | number, a: boolean): void {}
       ],
     },
     {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/12504
       code: `
 function f(x: string | number): void;
 function f(x: number | boolean): void;
