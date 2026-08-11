@@ -4,10 +4,10 @@ launch-templates:
     image: 'ubuntu22.04-node24.14-v1'
     init-steps:
       - name: Checkout
-        uses: 'nx-cloud-workflows/v5/workflow-steps/checkout/main.yaml'
+        uses: 'nrwl/nx-cloud-workflows/v6/workflow-steps/checkout/main.yaml'
 
       - name: Restore Node Modules Cache
-        uses: 'nx-cloud-workflows/v5/workflow-steps/cache/main.yaml'
+        uses: 'nrwl/nx-cloud-workflows/v6/workflow-steps/cache/main.yaml'
         inputs:
           key: 'pnpm-lock.yaml'
           paths: 'node_modules'
@@ -38,10 +38,10 @@ launch-templates:
     image: 'ubuntu22.04-node24.14-v1'
     init-steps:
       - name: Checkout
-        uses: 'nx-cloud-workflows/v5/workflow-steps/checkout/main.yaml'
+        uses: 'nrwl/nx-cloud-workflows/v6/workflow-steps/checkout/main.yaml'
 
       - name: Install Node.js 18
-        uses: 'nx-cloud-workflows/v5/workflow-steps/install-node/main.yaml'
+        uses: 'nrwl/nx-cloud-workflows/v6/workflow-steps/install-node/main.yaml'
         inputs:
           node_version: '18'
 
