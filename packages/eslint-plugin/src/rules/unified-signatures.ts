@@ -312,13 +312,14 @@ export default createRule<Options, MessageIds>({
       type0: TSESTree.TypeNode | undefined,
       type1: TSESTree.TypeNode | undefined,
     ): string {
-      if (type0 == null) {
+      // When a signature's parameter has no type annotation
+      if (type0 == null || type1 == null) {
         return getUnionMemberText(
-          nullThrows(type1, 'Expected the other parameter type to be defined'),
+          nullThrows(
+            type0 ?? type1,
+            'Expected a type annotation for one of the parameters, but both were undefined',
+          ),
         );
-      }
-      if (type1 == null) {
-        return getUnionMemberText(type0);
       }
 
       const members = [...getUnionMembers(type0), ...getUnionMembers(type1)];
