@@ -292,11 +292,7 @@ export default createRule<Options, MessageIds>({
       // See https://github.com/Microsoft/TypeScript/issues/5077
       return parametersHaveEqualSigils(a, b) &&
         a.type !== AST_NODE_TYPES.RestElement
-        ? {
-            kind: 'single-parameter-difference',
-            p0: a,
-            p1: b,
-          }
+        ? { kind: 'single-parameter-difference', p0: a, p1: b }
         : undefined;
     }
 
