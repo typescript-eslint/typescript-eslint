@@ -332,14 +332,11 @@ export default createRule<Options, MessageId>({
         .getProperties()
         .find(prop => prop.name === propertyName);
 
-      if (
-        propertyType &&
-        tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional)
-      ) {
-        return true;
+      if (propertyType) {
+        return tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional);
       }
 
-      return false;
+      return isNullablePropertyType(objectType, checker.getStringType());
     }
 
     /**

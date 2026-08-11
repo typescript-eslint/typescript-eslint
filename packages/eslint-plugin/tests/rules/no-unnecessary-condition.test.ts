@@ -1065,6 +1065,26 @@ declare let foo: number;
 foo &&= 1;
     `,
     `
+declare const read: Record<string, number>;
+read['missing'] ?? 1;
+read.missing ?? 1;
+
+declare let assignment: Record<string, number>;
+assignment['missing'] ??= 1;
+assignment.missing ??= 1;
+
+declare const key: string;
+read[key] ?? 1;
+assignment[key] ??= 1;
+    `,
+    {
+      code: `
+declare let assignment: Record<string, number>;
+assignment.missing ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    `
 function foo<T extends object>(arg: T, key: keyof T): void {
   arg[key] ??= 'default';
 }
@@ -3505,6 +3525,22 @@ foo &&= null;
       code: `
 declare const foo: { bar: number };
 foo.bar ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const foo: { bar: number } & Record<string, number>;
+foo.bar ?? 1;
       `,
       errors: [
         {
