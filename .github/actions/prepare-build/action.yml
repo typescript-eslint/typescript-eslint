@@ -1,6 +1,13 @@
 name: 'Prepare: Build'
 description: 'Prepares the repo for a job by running the build'
-# inputs:  - no inputs
+inputs:
+  # NOTE: Windows jobs relocate the checkout onto a Dev Drive, which is a different
+  # volume, so the cache paths below have to follow it. Defaults to '.', which keeps
+  # the resolved paths identical to what they were before this input existed.
+  working-directory:
+    description: 'Override the working directory to run the build in'
+    required: false
+    default: '.'
 # outputs: - no outputs
 
 runs:
@@ -10,8 +17,8 @@ runs:
       id: build-cache
       with:
         path: |
-          packages/*/dist
-          dist
+          ${{ inputs.working-directory }}/packages/*/dist
+          ${{ inputs.working-directory }}/dist
         key: ${{ runner.os }}-build-${{ github.ref }}-${{ github.run_id }}
         # We don't want to share builds across runs even for the same branch
         # because each commit can have different build artifacts and we don't
@@ -23,12 +30,14 @@ runs:
     - name: Build AST Spec
       if: steps['build-cache'].outputs.cache-hit == 'true'
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       run: |
         pnpm exec nx run types:build
 
     - name: Build
       if: steps['build-cache'].outputs.cache-hit != 'true'
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       # Website will be built by the Netlify GitHub App
       run: |
         pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint

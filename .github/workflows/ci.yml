@@ -416,12 +416,40 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
+      # Windows install is dominated by filesystem work -- ~17s extracting the pnpm
+      # store cache and ~18s linking 1882 packages -- most of which is Defender
+      # scanning every write. A Dev Drive is ReFS and, when trusted, puts Defender
+      # into async mode.
+      #
+      # `workspace-copy` moves the checkout onto the drive and `npm_config_store_dir`
+      # moves the pnpm store alongside it. Both are required: pnpm only hardlinks
+      # within a volume, so relocating just one would silently downgrade the install
+      # to copying ~966MB and end up slower than doing nothing.
+      #
+      # `mount-path` is pinned because the build cache below stores absolute paths;
+      # left to its default the action picks an arbitrary drive letter per job, and
+      # a shard that got E: could not restore a cache saved by a shard that got F:.
+      - name: Setup Dev Drive
+        if: runner.os == 'Windows'
+        uses: samypr100/setup-dev-drive@562171fe8df7401fdf582d766cd3b6ab80d5b1a0 # v4.1.0
+        with:
+          drive-size: 8GB
+          drive-format: ReFS
+          mount-path: 'C:\devdrive'
+          workspace-copy: true
+          trusted-dev-drive: true
+          env-mapping: |
+            npm_config_store_dir,{{ DEV_DRIVE }}/.pnpm-store
+
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ matrix.node-version }}
+          working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
       - name: Build
         uses: ./.github/actions/prepare-build
+        with:
+          working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
 
       # collect coverage on just the primary node version and on linux
       # we don't collect coverage on the old node versions or other OSs so that they run faster
@@ -432,6 +460,7 @@ jobs:
           CI: true
       - name: Run unit tests for ${{ matrix.package.name }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
+        working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
         run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
         env:
           CI: true
@@ -488,12 +517,29 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
+      # See the equivalent step in `plugin_unit_tests` for why the workspace and the
+      # pnpm store both have to move onto the drive, and why `mount-path` is pinned.
+      - name: Setup Dev Drive
+        if: runner.os == 'Windows'
+        uses: samypr100/setup-dev-drive@562171fe8df7401fdf582d766cd3b6ab80d5b1a0 # v4.1.0
+        with:
+          drive-size: 8GB
+          drive-format: ReFS
+          mount-path: 'C:\devdrive'
+          workspace-copy: true
+          trusted-dev-drive: true
+          env-mapping: |
+            npm_config_store_dir,{{ DEV_DRIVE }}/.pnpm-store
+
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ matrix.node-version }}
+          working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
       - name: Build
         uses: ./.github/actions/prepare-build
+        with:
+          working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
 
       # collect coverage on just linux
       # we don't collect coverage on other OSs so that they run faster
@@ -505,6 +551,7 @@ jobs:
           PACKAGE: ${{ matrix.package }}
       - name: Run unit tests for ${{ matrix.package }}
         if: matrix.os != 'ubuntu-latest'
+        working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
         run: pnpm exec nx test "$PACKAGE"
         env:
           CI: true
