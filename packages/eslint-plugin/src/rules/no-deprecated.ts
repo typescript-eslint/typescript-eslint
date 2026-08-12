@@ -333,6 +333,22 @@ export default createRule<Options, MessageIds>({
       return getJsDocDeprecation(symbol);
     }
 
+    function getObjectLiteralPropertyDeprecation(
+      node: TSESTree.Identifier,
+    ): string | undefined {
+      if (node.parent.parent?.type !== AST_NODE_TYPES.ObjectExpression) {
+        return;
+      }
+      const contextualType = services.getContextualType(node.parent.parent);
+      if (!contextualType) {
+        return;
+      }
+
+      const symbol = contextualType.getProperty(node.name);
+
+      return getJsDocDeprecation(symbol);
+    }
+
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
@@ -344,6 +360,10 @@ export default createRule<Options, MessageIds>({
         node.type !== AST_NODE_TYPES.Super
       ) {
         return getJSXAttributeDeprecation(node.parent.parent, node.name);
+      }
+
+      if (isObjectLiteralPropertyKey(node)) {
+        return getObjectLiteralPropertyDeprecation(node);
       }
 
       if (
@@ -372,7 +392,10 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
-      if (isDeclaration(node) || isInsideImport(node)) {
+      if (
+        (isDeclaration(node) && !isObjectLiteralPropertyKey(node)) ||
+        isInsideImport(node)
+      ) {
         return;
       }
 
@@ -506,4 +529,16 @@ function getReportedNodeName(node: IdentifierLike): string {
   }
 
   return node.name;
+}
+
+function isObjectLiteralPropertyKey(
+  node: TSESTree.Node,
+): node is TSESTree.Identifier {
+  return (
+    node.type === AST_NODE_TYPES.Identifier &&
+    node.parent.type === AST_NODE_TYPES.Property &&
+    node.parent.key === node &&
+    !node.parent.computed &&
+    node.parent.parent.type === AST_NODE_TYPES.ObjectExpression
+  );
 }
