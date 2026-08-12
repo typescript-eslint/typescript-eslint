@@ -1,24 +1,35 @@
 Incorrect
 Options: { "checksConditionals": { "flagUnions": "all" } }
 
-const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
+declare function fn(): Promise<boolean> | boolean;
 if (fn()) {
     ~~~~ Expected non-Promise value in a boolean conditional.
+  // Do something
+}
+
+declare function fn<T>(arg: T): Promise<T> | string;
+if (fn(false)) {
+    ~~~~~~~~~ Expected non-Promise value in a boolean conditional.
   // Do something
 }
 
 Correct
 Options: { "checksConditionals": { "flagUnions": "all" } }
 
-const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
+declare function fn(): Promise<boolean> | boolean;
 if (await fn()) {
+  // Do something
+}
+
+declare function fn<T>(arg: T): Promise<T> | string;
+if (await fn(false)) {
   // Do something
 }
 
 Incorrect
 Options: { "checksConditionals": { "flagUnions": "strict" } }
 
-const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
+declare function fn(): Promise<boolean> | boolean;
 if (fn()) {
     ~~~~ Expected non-Promise value in a boolean conditional.
   // Do something
@@ -28,8 +39,7 @@ type MyBox<T> = { value: T };
 type PromiseBox<T> = { value: T };
 
 // These types are structurally identical.
-const fn: () => Promise<PromiseBox<number>> | MyBox<number> = () =>
-  Promise.resolve({ value: 23 });
+declare function fn(): Promise<PromiseBox<number>> | MyBox<number>;
 if (fn()) {
     ~~~~ Expected non-Promise value in a boolean conditional.
   // Do something
@@ -38,7 +48,7 @@ if (fn()) {
 Correct
 Options: { "checksConditionals": { "flagUnions": "strict" } }
 
-const fn: () => Promise<boolean> | boolean = () => Promise.resolve(true);
+declare function fn(): Promise<boolean> | boolean;
 if (await fn()) {
   // Do something
 }
@@ -46,8 +56,8 @@ if (await fn()) {
 type MyBox<T> = { value: T };
 type PromiseBox<T> = { value: T };
 
-const fn: () => Promise<PromiseBox<number>> | MyBox<number> = () =>
-  Promise.resolve({ value: 23 });
+// These types are structurally identical.
+declare function fn(): Promise<PromiseBox<number>> | MyBox<number>;
 if (await fn()) {
   // Do something
 }

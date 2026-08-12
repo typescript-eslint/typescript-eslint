@@ -207,21 +207,19 @@ export default createRule<Options, MessageId>({
 
     const checkedNodes = new Set<TSESTree.Node>();
 
-    const flagUnionsOption = parseFlagUnionsOption(checksConditionals);
+    const flagUnionsOption = normalizeFlagUnionsOption(checksConditionals);
 
     const conditionalChecks: TSESLint.RuleListener = {
       'CallExpression > MemberExpression': checkArrayPredicates,
-      ConditionalExpression: checkTestConditional(),
-      DoWhileStatement: checkTestConditional(),
-      ForStatement: checkTestConditional(),
-      IfStatement: checkTestConditional(),
-      LogicalExpression: (node: TSESTree.LogicalExpression) => {
-        checkConditional(node);
-      },
+      ConditionalExpression: checkTestConditional,
+      DoWhileStatement: checkTestConditional,
+      ForStatement: checkTestConditional,
+      IfStatement: checkTestConditional,
+      LogicalExpression: checkConditional,
       'UnaryExpression[operator="!"]'(node: TSESTree.UnaryExpression) {
         checkConditional(node.argument, true);
       },
-      WhileStatement: checkTestConditional(),
+      WhileStatement: checkTestConditional,
     };
 
     checksVoidReturn = parseChecksVoidReturn(checksVoidReturn);
@@ -320,19 +318,17 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function checkTestConditional() {
-      return (
-        node:
-          | TSESTree.ConditionalExpression
-          | TSESTree.DoWhileStatement
-          | TSESTree.ForStatement
-          | TSESTree.IfStatement
-          | TSESTree.WhileStatement,
-      ): void => {
-        if (node.test) {
-          checkConditional(node.test, true);
-        }
-      };
+    function checkTestConditional(
+      node:
+        | TSESTree.ConditionalExpression
+        | TSESTree.DoWhileStatement
+        | TSESTree.ForStatement
+        | TSESTree.IfStatement
+        | TSESTree.WhileStatement,
+    ): void {
+      if (node.test) {
+        checkConditional(node.test, true);
+      }
     }
 
     /**
@@ -372,8 +368,13 @@ export default createRule<Options, MessageId>({
       }
 
       if (
+        // none -> Report `Promise` but not `Promise | ...`
         (flagUnionsOption === 'none' && isAlwaysThenable(checker, tsNode)) ||
+        //
+        // all -> Report `Promise` and `Promise | ...`
         (flagUnionsOption === 'all' && isSometimesThenable(checker, tsNode)) ||
+        //
+        // strict -> Report `Promise<T> | T` but not `Promise<T> | NotT`
         (flagUnionsOption === 'strict' &&
           hasMatchingPromiseTypeArgument(checker, tsNode))
       ) {
@@ -1155,26 +1156,32 @@ function hasMatchingPromiseTypeArgument(
 ) {
   const type = checker.getTypeAtLocation(node);
 
-  const subTypes = tsutils.unionConstituents(checker.getApparentType(type));
+  const unionConstituents = tsutils.unionConstituents(
+    checker.getApparentType(type),
+  );
 
-  const promiseType = subTypes.find(type => type.getProperty('then'));
-  if (!promiseType || !tsutils.isThenableType(checker, node, promiseType)) {
+  const promiseType = unionConstituents.find(type =>
+    tsutils.isThenableType(checker, node, type),
+  );
+  if (!promiseType) {
     return false;
   }
 
-  const anotherTypes = subTypes.filter(type => type !== promiseType);
+  const nonPromiseUnionConstituents = unionConstituents.filter(
+    type => type !== promiseType,
+  );
   const awaitedType = checker.getAwaitedType(promiseType);
 
   if (!awaitedType) {
     return false;
   }
 
-  const awaitedTypes = tsutils.unionConstituents(awaitedType);
+  const awaitedTypeConstituents = tsutils.unionConstituents(awaitedType);
 
   return (
-    anotherTypes.length === awaitedTypes.length &&
-    anotherTypes.every(type =>
-      awaitedTypes.some(
+    nonPromiseUnionConstituents.length === awaitedTypeConstituents.length &&
+    nonPromiseUnionConstituents.every(type =>
+      awaitedTypeConstituents.some(
         awaited =>
           checker.isTypeAssignableTo(type, awaited) &&
           checker.isTypeAssignableTo(awaited, type),
@@ -1183,7 +1190,7 @@ function hasMatchingPromiseTypeArgument(
   );
 }
 
-function parseFlagUnionsOption(
+function normalizeFlagUnionsOption(
   checksConditionals: boolean | ChecksConditionalsOptions | undefined,
 ): FlagUnionsOptions {
   if (!checksConditionals || checksConditionals === true) {
