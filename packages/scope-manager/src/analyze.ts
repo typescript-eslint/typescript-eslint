@@ -68,6 +68,7 @@ export interface AnalyzeOptions {
 
 const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   childVisitorKeys: visitorKeys,
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- -- `Required<AnalyzeOptions>` makes this mandatory until it is removed in v10
   emitDecoratorMetadata: false,
   globalReturn: false,
   impliedStrict: false,
@@ -87,6 +88,7 @@ export function analyze(
   const options: Required<AnalyzeOptions> = {
     childVisitorKeys:
       providedOptions?.childVisitorKeys ?? DEFAULT_OPTIONS.childVisitorKeys,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- -- `Required<AnalyzeOptions>` makes this mandatory until it is removed in v10
     emitDecoratorMetadata: false,
     globalReturn: providedOptions?.globalReturn ?? DEFAULT_OPTIONS.globalReturn,
     impliedStrict:
