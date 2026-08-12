@@ -1,5 +1,30 @@
 import * as ts from 'typescript';
 
+function getCanonicalPackageName(packageName: string): string {
+  if (!packageName.startsWith('@types/')) {
+    return packageName;
+  }
+
+  const typesPackageName = packageName.slice('@types/'.length);
+  const scopeSeparatorIndex = typesPackageName.indexOf('__');
+  if (scopeSeparatorIndex === -1) {
+    return typesPackageName;
+  }
+
+  return `@${typesPackageName.slice(0, scopeSeparatorIndex)}/${typesPackageName.slice(scopeSeparatorIndex + 2)}`;
+}
+
+function packageNameMatches(
+  expectedPackageName: string,
+  actualPackageName: string,
+): boolean {
+  const canonicalPackageName = getCanonicalPackageName(actualPackageName);
+  return (
+    canonicalPackageName === expectedPackageName ||
+    canonicalPackageName.startsWith(`${expectedPackageName}/`)
+  );
+}
+
 function findParentModuleDeclaration(
   node: ts.Node,
 ): ts.ModuleDeclaration | undefined {
@@ -33,15 +58,11 @@ function typeDeclaredInDeclarationFile(
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
-  // Handle scoped packages: if the name starts with @, remove it and replace / with __
-  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
-
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
       packageIdName != null &&
-      matcher.test(packageIdName) &&
+      packageNameMatches(packageName, packageIdName) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
