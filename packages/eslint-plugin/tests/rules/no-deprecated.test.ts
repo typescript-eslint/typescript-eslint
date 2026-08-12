@@ -732,6 +732,14 @@ const {
   foo: { notDeprecatedProperty: deprecatedProperty },
 } = a;
     `,
+    `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+declare function func(x: A): void;
+func({ deprecatedField: 'string' });
+    `,
   ],
   invalid: [
     {
@@ -3796,26 +3804,6 @@ const x: A = { deprecatedField: 'string' };
           endColumn: 31,
           endLine: 6,
           line: 6,
-          messageId: 'deprecated',
-        },
-      ],
-    },
-    {
-      code: `
-interface A {
-  /** @deprecated */
-  deprecatedField: string;
-}
-declare function func(x: A): void;
-func({ deprecatedField: 'string' });
-      `,
-      errors: [
-        {
-          column: 8,
-          data: { name: 'deprecatedField' },
-          endColumn: 23,
-          endLine: 7,
-          line: 7,
           messageId: 'deprecated',
         },
       ],

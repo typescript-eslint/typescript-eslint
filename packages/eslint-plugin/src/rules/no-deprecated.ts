@@ -531,6 +531,18 @@ function getReportedNodeName(node: IdentifierLike): string {
   return node.name;
 }
 
+/**
+ * Whether the node is the key of a non-computed property in an object literal
+ * that is assigned to a variable, such as `const x: Foo = { key: 1 }`.
+ *
+ * Such a key refers to a property of the object literal's contextual type,
+ * rather than declaring a new property of its own.
+ *
+ * Object literals in other positions also have a contextual type (call
+ * arguments, `return` statements, array elements), but they are deliberately
+ * left out of scope: covering all of them produces a very large number of new
+ * reports.
+ */
 function isObjectLiteralPropertyKey(
   node: TSESTree.Node,
 ): node is TSESTree.Identifier {
@@ -539,6 +551,31 @@ function isObjectLiteralPropertyKey(
     node.parent.type === AST_NODE_TYPES.Property &&
     node.parent.key === node &&
     !node.parent.computed &&
-    node.parent.parent.type === AST_NODE_TYPES.ObjectExpression
+    node.parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
+    isObjectExpressionAssignedToVariable(node.parent.parent)
   );
+}
+
+function isObjectExpressionAssignedToVariable(
+  node: TSESTree.ObjectExpression,
+): boolean {
+  switch (node.parent.type) {
+    case AST_NODE_TYPES.VariableDeclarator:
+      return node.parent.init === node;
+
+    case AST_NODE_TYPES.AssignmentExpression:
+      return node.parent.right === node;
+
+    case AST_NODE_TYPES.Property:
+      if (
+        node.parent.value === node &&
+        node.parent.parent.type === AST_NODE_TYPES.ObjectExpression
+      ) {
+        return isObjectExpressionAssignedToVariable(node.parent.parent);
+      }
+      return false;
+
+    default:
+      return false;
+  }
 }
