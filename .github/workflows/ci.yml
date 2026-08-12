@@ -410,6 +410,9 @@ jobs:
             { name: 'eslint-plugin', params: '--shard=3/4' },
             { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
+    env:
+      # Relative to GITHUB_WORKSPACE -- see the Setup Dev Drive step for why.
+      WORKDIR: ${{ startsWith(matrix.os, 'windows') && '../devdrive/typescript-eslint' || '.' }}
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -435,7 +438,13 @@ jobs:
         with:
           drive-size: 8GB
           drive-format: ReFS
-          mount-path: 'C:\devdrive'
+          # Mounted as a SIBLING of the checkout, not on its own drive letter.
+          # pnpm/action-setup resolves package_json_file as path.join(GITHUB_WORKSPACE, input),
+          # so the path handed to prepare-install must be RELATIVE to GITHUB_WORKSPACE -- and a
+          # relative path cannot cross drive letters. An absolute 'C:\devdrive' silently built a
+          # bogus path, the read threw, and pnpm reported "No pnpm version is specified".
+          # Files under this mount point still live on the ReFS volume, so Defender stays async.
+          mount-path: '../devdrive'
           workspace-copy: true
           trusted-dev-drive: true
           env-mapping: |
@@ -445,11 +454,11 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ matrix.node-version }}
-          working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
+          working-directory: ${{ env.WORKDIR }}
       - name: Build
         uses: ./.github/actions/prepare-build
         with:
-          working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
+          working-directory: ${{ env.WORKDIR }}
 
       # collect coverage on just the primary node version and on linux
       # we don't collect coverage on the old node versions or other OSs so that they run faster
@@ -460,7 +469,7 @@ jobs:
           CI: true
       - name: Run unit tests for ${{ matrix.package.name }}
         if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
-        working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
+        working-directory: ${{ env.WORKDIR }}
         run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
         env:
           CI: true
@@ -511,6 +520,8 @@ jobs:
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
+      # Relative to GITHUB_WORKSPACE -- see the Setup Dev Drive step for why.
+      WORKDIR: ${{ startsWith(matrix.os, 'windows') && '../devdrive/typescript-eslint' || '.' }}
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -525,7 +536,13 @@ jobs:
         with:
           drive-size: 8GB
           drive-format: ReFS
-          mount-path: 'C:\devdrive'
+          # Mounted as a SIBLING of the checkout, not on its own drive letter.
+          # pnpm/action-setup resolves package_json_file as path.join(GITHUB_WORKSPACE, input),
+          # so the path handed to prepare-install must be RELATIVE to GITHUB_WORKSPACE -- and a
+          # relative path cannot cross drive letters. An absolute 'C:\devdrive' silently built a
+          # bogus path, the read threw, and pnpm reported "No pnpm version is specified".
+          # Files under this mount point still live on the ReFS volume, so Defender stays async.
+          mount-path: '../devdrive'
           workspace-copy: true
           trusted-dev-drive: true
           env-mapping: |
@@ -535,11 +552,11 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ matrix.node-version }}
-          working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
+          working-directory: ${{ env.WORKDIR }}
       - name: Build
         uses: ./.github/actions/prepare-build
         with:
-          working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
+          working-directory: ${{ env.WORKDIR }}
 
       # collect coverage on just linux
       # we don't collect coverage on other OSs so that they run faster
@@ -551,7 +568,7 @@ jobs:
           PACKAGE: ${{ matrix.package }}
       - name: Run unit tests for ${{ matrix.package }}
         if: matrix.os != 'ubuntu-latest'
-        working-directory: ${{ env.DEV_DRIVE_WORKSPACE || '.' }}
+        working-directory: ${{ env.WORKDIR }}
         run: pnpm exec nx test "$PACKAGE"
         env:
           CI: true
