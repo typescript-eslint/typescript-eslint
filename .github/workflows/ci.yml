@@ -455,6 +455,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           working-directory: ${{ env.WORKDIR }}
+          # @actions/glob rejects '..' in patterns, and WORKDIR points outside
+          # GITHUB_WORKSPACE on Windows. The lockfile only seeds the cache key and the
+          # Dev Drive copy is byte-identical, so key off the original checkout instead.
+          cache-dependency-path: pnpm-lock.yaml
       - name: Build
         uses: ./.github/actions/prepare-build
         with:
@@ -553,6 +557,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           working-directory: ${{ env.WORKDIR }}
+          # @actions/glob rejects '..' in patterns, and WORKDIR points outside
+          # GITHUB_WORKSPACE on Windows. The lockfile only seeds the cache key and the
+          # Dev Drive copy is byte-identical, so key off the original checkout instead.
+          cache-dependency-path: pnpm-lock.yaml
       - name: Build
         uses: ./.github/actions/prepare-build
         with:

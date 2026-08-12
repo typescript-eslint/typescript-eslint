@@ -19,6 +19,15 @@ inputs:
     description: 'Override the working directory to run the installation in'
     required: false
     default: '.'
+  # The lockfile is only used to compute the pnpm store cache key, so it does not have
+  # to sit in `working-directory`. Windows jobs need to separate the two: they install
+  # into a Dev Drive mounted outside GITHUB_WORKSPACE, and while `package_json_file` is
+  # resolved with path.join (so `..` is fine), `cache_dependency_path` is a glob pattern
+  # and @actions/glob rejects `..` outright. Defaults to the previous behaviour.
+  cache-dependency-path:
+    description: 'Override the lockfile path used for the pnpm store cache key. Defaults to <working-directory>/pnpm-lock.yaml'
+    required: false
+    default: ''
 
 # outputs: - no outputs
 
@@ -35,7 +44,7 @@ runs:
       with:
         cache: true
         package_json_file: ${{ inputs.working-directory }}/package.json
-        cache_dependency_path: ${{ inputs.working-directory }}/pnpm-lock.yaml
+        cache_dependency_path: ${{ inputs.cache-dependency-path || format('{0}/pnpm-lock.yaml', inputs.working-directory) }}
 
     - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
