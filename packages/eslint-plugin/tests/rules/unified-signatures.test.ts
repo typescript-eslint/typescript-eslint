@@ -1475,6 +1475,26 @@ function f(x: number | /* second */ string): void;
       ],
     },
     {
+      code: noFormat`
+declare function fn(a: number): void;
+declare function fn(a: (/* before */ string /* after */)): void;
+      `,
+      errors: [
+        {
+          column: 21,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: 'number | string',
+          },
+          endColumn: 57,
+          endLine: 3,
+          line: 3,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+    },
+    {
       // To avoid complex type comparisons when resolving #12504, allow duplicate union members when their source text differs.
       code: noFormat`
 function f(x: string & { brand: true }): void;
