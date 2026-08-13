@@ -407,8 +407,7 @@ jobs:
             { name: 'eslint-plugin', params: '--shard=3/4' },
             { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
-        # Windows CI skips the rules tests (see the package's vitest config), so there
-        # isn't enough left to be worth sharding -- run it as a single unsharded job.
+        # Windows CI skips the rules tests so there isn't enough left to be worth sharding.
         include:
           - os: windows-latest
             node-version: 24
