@@ -16,9 +16,11 @@ export const vitestBaseConfig = {
     globals: true,
     include: ['**/*.test.?(c|m)ts?(x)'],
 
-    reporters: process.env.GITHUB_ACTIONS
-      ? [['default', { summary: false }], ['github-actions']]
-      : [['default']],
+    reporters: isWindowsCI()
+      ? ['minimal']
+      : process.env.GITHUB_ACTIONS
+        ? [['default', { summary: false }], ['github-actions']]
+        : [['default']],
 
     setupFiles: ['console-fail-test/setup'],
 
@@ -31,3 +33,7 @@ export const vitestBaseConfig = {
     watch: false,
   },
 } as const satisfies ViteUserConfig;
+
+function isWindowsCI() {
+  return process.platform === 'win32' && Boolean(process.env.CI);
+}
