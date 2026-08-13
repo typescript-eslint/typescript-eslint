@@ -3455,6 +3455,37 @@ foo ??= null;
     },
     {
       code: `
+declare const foo: { bar: null };
+foo.bar ??= null;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Record<string, undefined>;
+declare const key: string;
+foo[key] ??= undefined;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      code: `
 type Fields = {
   hello?: undefined;
   world?: null;
