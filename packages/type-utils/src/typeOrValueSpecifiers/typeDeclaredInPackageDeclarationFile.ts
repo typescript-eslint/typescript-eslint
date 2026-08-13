@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+import * as tsutils from 'ts-api-utils';
 
 function findParentModuleDeclaration(
   node: ts.Node,
@@ -72,7 +73,7 @@ function exportSpecifierMatchesDeclaration(
 ): boolean {
   const symbol = checker.getSymbolAtLocation(specifier.name);
   const exportedSymbol =
-    symbol != null && symbol.flags & ts.SymbolFlags.Alias
+    symbol != null && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
       ? checker.getAliasedSymbol(symbol)
       : symbol;
 
