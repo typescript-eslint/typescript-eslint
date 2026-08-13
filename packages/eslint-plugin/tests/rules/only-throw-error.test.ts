@@ -502,6 +502,47 @@ throw error;
     },
     {
       code: `
+import { ReexportedError } from 'reexported-error/star';
+declare const error: ReexportedError;
+throw error;
+      `,
+      errors: [{ messageId: 'object' }],
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'ReexportedError',
+              package: 'reexported-error/star',
+            },
+          ],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+import { errors } from 'reexported-error/namespace';
+throw new errors.ReexportedError();
+      `,
+      errors: [{ messageId: 'object' }],
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'ReexportedError',
+              package: 'reexported-error/namespace',
+            },
+          ],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
 class Foo {}
 class CustomError extends Foo {}
 throw new CustomError();
