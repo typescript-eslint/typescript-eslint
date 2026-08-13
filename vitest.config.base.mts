@@ -17,7 +17,7 @@ export const vitestBaseConfig = {
     include: ['**/*.test.?(c|m)ts?(x)'],
 
     reporters: isWindowsCI()
-      ? ['minimal']
+      ? ['dot']
       : process.env.GITHUB_ACTIONS
         ? [['default', { summary: false }], ['github-actions']]
         : [['default']],
