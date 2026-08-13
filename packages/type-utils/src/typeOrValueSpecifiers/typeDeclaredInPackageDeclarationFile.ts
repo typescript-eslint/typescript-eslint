@@ -1,5 +1,5 @@
-import * as ts from 'typescript';
 import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 function findParentModuleDeclaration(
   node: ts.Node,
