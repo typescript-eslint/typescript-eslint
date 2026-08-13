@@ -57,12 +57,16 @@ function typeDeclaredInDeclarationFile(
 
 function symbolHasDeclaration(
   declarations: ts.Node[],
-  symbol: ts.Symbol | undefined,
+  symbol: ts.Symbol,
 ): boolean {
-  return (
-    symbol
-      ?.getDeclarations()
-      ?.some(declaration => declarations.includes(declaration)) ?? false
+  const symbolDeclarations = symbol.getDeclarations();
+  /* istanbul ignore if -- defensive for unresolved export specifiers. */
+  if (symbolDeclarations == null) {
+    return false;
+  }
+
+  return symbolDeclarations.some(declaration =>
+    declarations.includes(declaration),
   );
 }
 
@@ -72,12 +76,18 @@ function exportSpecifierMatchesDeclaration(
   specifier: ts.ExportSpecifier,
 ): boolean {
   const symbol = checker.getSymbolAtLocation(specifier.name);
-  const exportedSymbol =
-    symbol != null && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
-      ? checker.getAliasedSymbol(symbol)
-      : symbol;
+  /* istanbul ignore if -- TypeScript provides symbols for parsed export specifiers. */
+  if (symbol == null) {
+    return false;
+  }
 
-  return symbolHasDeclaration(declarations, exportedSymbol);
+  /* istanbul ignore else -- named export specifiers are aliases; keep a fallback for checker edge cases. */
+  if (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
+    const exportedSymbol = checker.getAliasedSymbol(symbol);
+    return symbolHasDeclaration(declarations, exportedSymbol);
+  }
+
+  return symbolHasDeclaration(declarations, symbol);
 }
 
 function typeReExportedFromDeclarationFile(
