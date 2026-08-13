@@ -47,11 +47,15 @@ function typeDeclaredInDeclarationFile(
 ): boolean {
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
-    return (
-      packageIdName != null &&
-      packageNameMatches(packageName, packageIdName) &&
-      program.isSourceFileFromExternalLibrary(declaration)
-    );
+    if (packageIdName == null) {
+      return false;
+    }
+
+    if (!packageNameMatches(packageName, packageIdName)) {
+      return false;
+    }
+
+    return program.isSourceFileFromExternalLibrary(declaration);
   });
 }
 
@@ -103,22 +107,31 @@ function typeReExportedFromDeclarationFile(
     }
 
     const packageIdName = program.sourceFileToPackageName.get(sourceFile.path);
-    if (
-      packageIdName == null ||
-      !packageNameMatches(packageName, packageIdName)
-    ) {
+    if (packageIdName == null) {
       return false;
     }
 
-    return sourceFile.statements.some(
-      statement =>
-        ts.isExportDeclaration(statement) &&
-        statement.exportClause != null &&
-        ts.isNamedExports(statement.exportClause) &&
-        statement.exportClause.elements.some(specifier =>
-          exportSpecifierMatchesDeclaration(declarations, checker, specifier),
-        ),
-    );
+    if (!packageNameMatches(packageName, packageIdName)) {
+      return false;
+    }
+
+    return sourceFile.statements.some(statement => {
+      if (!ts.isExportDeclaration(statement)) {
+        return false;
+      }
+
+      if (statement.exportClause == null) {
+        return false;
+      }
+
+      if (!ts.isNamedExports(statement.exportClause)) {
+        return false;
+      }
+
+      return statement.exportClause.elements.some(specifier =>
+        exportSpecifierMatchesDeclaration(declarations, checker, specifier),
+      );
+    });
   });
 }
 
