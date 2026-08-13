@@ -107,7 +107,7 @@
     "typescript-eslint": "workspace:^",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@10.34.4+sha512.8768be55200ae3f2226b6527fcca2687e14bc4e5f12d7721a0f25da3df47915177058648db4177baf348120fa0ba2752d8d8d93f6beaf1fe64ae18da8de961af",
+  "packageManager": "pnpm@12.0.0-rc.4+sha512.fa63460388a28f017d3c83c54d2666407ed9bde12b214ad6fa0e94b9fcb3e9c7e8d702b119034597a5aa1e8362199ca2d19aa860f6dafdd4a1ddb7ad322294cb",
   "nx": {
     "name": "repo",
     "includedScripts": [
