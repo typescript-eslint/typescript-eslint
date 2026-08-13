@@ -45,6 +45,9 @@ node_modules/
 !packages/eslint-plugin/tests/fixtures/node_modules/
 !packages/eslint-plugin/tests/fixtures/node_modules/reexported-error/
 !packages/eslint-plugin/tests/fixtures/node_modules/reexported-error/**
+!packages/type-utils/tests/fixtures/node_modules/
+!packages/type-utils/tests/fixtures/node_modules/reexported-error/
+!packages/type-utils/tests/fixtures/node_modules/reexported-error/**
 jspm_packages/
 
 # Optional npm cache directory

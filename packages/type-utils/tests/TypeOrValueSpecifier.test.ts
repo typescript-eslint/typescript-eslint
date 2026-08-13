@@ -431,6 +431,14 @@ describe('TypeOrValueSpecifier', () => {
           package: 'assert',
         },
       ],
+      [
+        'import type { ReexportedError } from "reexported-error/public"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported-error/public',
+        },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -575,6 +583,22 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: 'TsNode', package: 'typescript' },
+      ],
+      [
+        'import type { ReexportedError } from "reexported-error/star"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported-error/star',
+        },
+      ],
+      [
+        'import type { errors } from "reexported-error/namespace"; type Test = errors.ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported-error/namespace',
+        },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
