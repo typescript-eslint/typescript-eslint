@@ -55,13 +55,13 @@ Reports all union types containing Promise-like types.
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "checksConditionals": { "flagUnions": "all" } }'
-declare function fn(): Promise<boolean> | boolean;
-if (fn()) {
+declare function unionFn(): Promise<boolean> | boolean;
+if (unionFn()) {
   // Do something
 }
 
-declare function fn<T>(arg: T): Promise<T> | string;
-if (fn(false)) {
+declare function genericFn<T>(arg: T): Promise<T> | string;
+if (genericFn(false)) {
   // Do something
 }
 ```
@@ -70,13 +70,13 @@ if (fn(false)) {
 <TabItem value="✅ Correct">
 
 ```ts option='{ "checksConditionals": { "flagUnions": "all" } }'
-declare function fn(): Promise<boolean> | boolean;
-if (await fn()) {
+declare function unionFn(): Promise<boolean> | boolean;
+if (await unionFn()) {
   // Do something
 }
 
-declare function fn<T>(arg: T): Promise<T> | string;
-if (await fn(false)) {
+declare function genericFn<T>(arg: T): Promise<T> | string;
+if (await genericFn(false)) {
   // Do something
 }
 ```
@@ -92,8 +92,8 @@ Reports only when a union contains a Promise-like type whose awaited type exactl
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "checksConditionals": { "flagUnions": "strict" } }'
-declare function fn(): Promise<boolean> | boolean;
-if (fn()) {
+declare function unionFn(): Promise<boolean> | boolean;
+if (unionFn()) {
   // Do something
 }
 
@@ -101,8 +101,8 @@ type MyBox<T> = { value: T };
 type PromiseBox<T> = { value: T };
 
 // These types are structurally identical.
-declare function fn(): Promise<PromiseBox<number>> | MyBox<number>;
-if (fn()) {
+declare function structuralFn(): Promise<PromiseBox<number>> | MyBox<number>;
+if (structuralFn()) {
   // Do something
 }
 ```
@@ -111,8 +111,8 @@ if (fn()) {
 <TabItem value="✅ Correct">
 
 ```ts option='{ "checksConditionals": { "flagUnions": "strict" } }'
-declare function fn(): Promise<boolean> | boolean;
-if (await fn()) {
+declare function unionFn(): Promise<boolean> | boolean;
+if (await unionFn()) {
   // Do something
 }
 
@@ -120,8 +120,8 @@ type MyBox<T> = { value: T };
 type PromiseBox<T> = { value: T };
 
 // These types are structurally identical.
-declare function fn(): Promise<PromiseBox<number>> | MyBox<number>;
-if (await fn()) {
+declare function structuralFn(): Promise<PromiseBox<number>> | MyBox<number>;
+if (await structuralFn()) {
   // Do something
 }
 ```
