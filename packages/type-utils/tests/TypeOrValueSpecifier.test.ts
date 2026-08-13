@@ -439,6 +439,14 @@ describe('TypeOrValueSpecifier', () => {
           package: 'reexported-error/public',
         },
       ],
+      [
+        'import type { ReexportedError } from "reexported-error/mixed"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported-error/mixed',
+        },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
