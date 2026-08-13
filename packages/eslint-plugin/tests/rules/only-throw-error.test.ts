@@ -182,6 +182,26 @@ throw createError();
     },
     {
       code: `
+import { ReexportedError } from 'reexported-error/public';
+declare const error: ReexportedError;
+throw error;
+      `,
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'ReexportedError',
+              package: 'reexported-error/public',
+            },
+          ],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
 function func<T1, T2>() {
   let err: Promise<T1> | Promise<T2>;
   throw err;
@@ -456,6 +476,27 @@ throw new CustomError();
       errors: [
         {
           messageId: 'object',
+        },
+      ],
+    },
+    {
+      code: `
+import { ReexportedError } from 'reexported-error/public';
+declare const error: ReexportedError;
+throw error;
+      `,
+      errors: [{ messageId: 'object' }],
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: 'ReexportedError',
+              package: 'other-package',
+            },
+          ],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
         },
       ],
     },

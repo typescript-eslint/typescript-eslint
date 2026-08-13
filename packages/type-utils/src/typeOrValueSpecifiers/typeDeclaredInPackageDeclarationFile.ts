@@ -28,21 +28,85 @@ function typeDeclaredInDeclareModule(
   );
 }
 
-function typeDeclaredInDeclarationFile(
+function packageNameMatches(
   packageName: string,
-  declarationFiles: ts.SourceFile[],
-  program: ts.Program,
+  packageIdName: string,
 ): boolean {
   // Handle scoped packages: if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
   const matcher = new RegExp(`${packageName}|${typesPackageName}`);
+  return matcher.test(packageIdName);
+}
+
+function typeDeclaredInDeclarationFile(
+  packageName: string,
+  declarationFiles: ts.SourceFile[],
+  program: ts.Program,
+): boolean {
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
       packageIdName != null &&
-      matcher.test(packageIdName) &&
+      packageNameMatches(packageName, packageIdName) &&
       program.isSourceFileFromExternalLibrary(declaration)
+    );
+  });
+}
+
+function symbolHasDeclaration(
+  declarations: ts.Node[],
+  symbol: ts.Symbol | undefined,
+): boolean {
+  return (
+    symbol
+      ?.getDeclarations()
+      ?.some(declaration => declarations.includes(declaration)) ?? false
+  );
+}
+
+function exportSpecifierMatchesDeclaration(
+  declarations: ts.Node[],
+  checker: ts.TypeChecker,
+  specifier: ts.ExportSpecifier,
+): boolean {
+  const symbol = checker.getSymbolAtLocation(specifier.name);
+  const exportedSymbol =
+    symbol != null && symbol.flags & ts.SymbolFlags.Alias
+      ? checker.getAliasedSymbol(symbol)
+      : symbol;
+
+  return symbolHasDeclaration(declarations, exportedSymbol);
+}
+
+function typeReExportedFromDeclarationFile(
+  packageName: string,
+  declarations: ts.Node[],
+  program: ts.Program,
+): boolean {
+  const checker = program.getTypeChecker();
+
+  return program.getSourceFiles().some(sourceFile => {
+    if (!program.isSourceFileFromExternalLibrary(sourceFile)) {
+      return false;
+    }
+
+    const packageIdName = program.sourceFileToPackageName.get(sourceFile.path);
+    if (
+      packageIdName == null ||
+      !packageNameMatches(packageName, packageIdName)
+    ) {
+      return false;
+    }
+
+    return sourceFile.statements.some(
+      statement =>
+        ts.isExportDeclaration(statement) &&
+        statement.exportClause != null &&
+        ts.isNamedExports(statement.exportClause) &&
+        statement.exportClause.elements.some(specifier =>
+          exportSpecifierMatchesDeclaration(declarations, checker, specifier),
+        ),
     );
   });
 }
@@ -55,6 +119,7 @@ export function typeDeclaredInPackageDeclarationFile(
 ): boolean {
   return (
     typeDeclaredInDeclareModule(packageName, declarations) ||
-    typeDeclaredInDeclarationFile(packageName, declarationFiles, program)
+    typeDeclaredInDeclarationFile(packageName, declarationFiles, program) ||
+    typeReExportedFromDeclarationFile(packageName, declarations, program)
   );
 }
