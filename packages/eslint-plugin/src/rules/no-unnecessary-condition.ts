@@ -50,6 +50,12 @@ function isPossiblyNullish(type: ts.Type): boolean {
     .some(t => isNullishType(t) || isTypeFlagSet(t, ts.TypeFlags.Void));
 }
 
+function isPossiblyNonNullish(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .some(t => !isNullishType(t) && !isTypeFlagSet(t, ts.TypeFlags.Void));
+}
+
 function toStaticValue(
   type: ts.Type,
 ):
@@ -342,6 +348,55 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    function getComputedMemberPropertyTypes(
+      node: TSESTree.MemberExpression,
+    ): ts.Type[] | undefined {
+      if (!node.computed) {
+        return undefined;
+      }
+
+      const objectType = getConstrainedTypeAtLocation(services, node.object);
+      const propertyType = getConstrainedTypeAtLocation(
+        services,
+        node.property,
+      );
+      const propertyTypes: ts.Type[] = [];
+
+      for (const keyType of tsutils.unionConstituents(propertyType)) {
+        if (!keyType.isStringLiteral() && !keyType.isNumberLiteral()) {
+          return undefined;
+        }
+
+        const selectedType = getTypeOfPropertyOfName(
+          checker,
+          objectType,
+          String(keyType.value),
+        );
+        if (!selectedType) {
+          return undefined;
+        }
+
+        propertyTypes.push(selectedType);
+      }
+
+      return propertyTypes;
+    }
+
+    function hasPossiblyNonNullishComputedMemberProperty(
+      node: TSESTree.Expression,
+    ): boolean {
+      if (node.type !== AST_NODE_TYPES.MemberExpression) {
+        return false;
+      }
+
+      // Computed assignment targets can be typed as a write-side intersection.
+      // Inspect the selected property read types before reporting `??=` as always nullish.
+      return (
+        getComputedMemberPropertyTypes(node)?.some(isPossiblyNonNullish) ??
+        false
+      );
+    }
+
     /**
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
@@ -439,7 +494,10 @@ export default createRule<Options, MessageId>({
         ) {
           messageId = 'neverNullish';
         }
-      } else if (isAlwaysNullish(type)) {
+      } else if (
+        isAlwaysNullish(type) &&
+        !hasPossiblyNonNullishComputedMemberProperty(node)
+      ) {
         messageId = 'alwaysNullish';
       }
 
