@@ -334,17 +334,15 @@ export default createRule<Options, MessageIds>({
     }
 
     function getObjectLiteralPropertyDeprecation(
-      node: TSESTree.Identifier,
+      objectExpression: TSESTree.ObjectExpression,
+      propertyName: string,
     ): string | undefined {
-      if (node.parent.parent?.type !== AST_NODE_TYPES.ObjectExpression) {
-        return;
-      }
-      const contextualType = services.getContextualType(node.parent.parent);
+      const contextualType = services.getContextualType(objectExpression);
       if (!contextualType) {
         return;
       }
 
-      const symbol = contextualType.getProperty(node.name);
+      const symbol = contextualType.getProperty(propertyName);
 
       return getJsDocDeprecation(symbol);
     }
@@ -363,7 +361,10 @@ export default createRule<Options, MessageIds>({
       }
 
       if (isObjectLiteralPropertyKey(node)) {
-        return getObjectLiteralPropertyDeprecation(node);
+        return getObjectLiteralPropertyDeprecation(
+          node.parent.parent,
+          node.name,
+        );
       }
 
       if (
@@ -545,7 +546,9 @@ function getReportedNodeName(node: IdentifierLike): string {
  */
 function isObjectLiteralPropertyKey(
   node: TSESTree.Node,
-): node is TSESTree.Identifier {
+): node is TSESTree.Identifier & {
+  parent: TSESTree.Property & { parent: TSESTree.ObjectExpression };
+} {
   return (
     node.type === AST_NODE_TYPES.Identifier &&
     node.parent.type === AST_NODE_TYPES.Property &&
@@ -567,13 +570,11 @@ function isObjectExpressionAssignedToVariable(
       return node.parent.right === node;
 
     case AST_NODE_TYPES.Property:
-      if (
+      return (
         node.parent.value === node &&
-        node.parent.parent.type === AST_NODE_TYPES.ObjectExpression
-      ) {
-        return isObjectExpressionAssignedToVariable(node.parent.parent);
-      }
-      return false;
+        node.parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
+        isObjectExpressionAssignedToVariable(node.parent.parent)
+      );
 
     default:
       return false;
