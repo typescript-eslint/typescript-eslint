@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { isParenthesized } from './astUtils';
 
-export function isAtArrowFunctionBodyStart(
+export function isStartOfArrowFunctionBody(
   node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
 ): boolean {

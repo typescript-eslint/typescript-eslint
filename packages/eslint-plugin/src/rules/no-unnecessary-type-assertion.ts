@@ -16,8 +16,8 @@ import {
   getDeclaration,
   getModifiers,
   getParserServices,
-  isAtArrowFunctionBodyStart,
   isNullableType,
+  isStartOfArrowFunctionBody,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -829,7 +829,7 @@ export default createRule<Options, MessageIds>({
             isAtExpressionStatementStart(node);
           const breaksArrowFunctionBody =
             firstOperandToken.value === '{' &&
-            isAtArrowFunctionBodyStart(node, context.sourceCode);
+            isStartOfArrowFunctionBody(node, context.sourceCode);
           const needsParens =
             breaksExpressionStatement || breaksArrowFunctionBody;
 
