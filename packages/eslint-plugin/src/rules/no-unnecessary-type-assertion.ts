@@ -1,5 +1,5 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import type {
   ReportFixFunction,
   RuleFix,
@@ -16,8 +16,8 @@ import {
   getDeclaration,
   getModifiers,
   getParserServices,
+  isAtArrowFunctionBodyStart,
   isNullableType,
-  isParenthesized,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -35,32 +35,6 @@ function isAtExpressionStatementStart(node: TSESTree.Node): boolean {
     }
     if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
       return true;
-    }
-    current = parent;
-  }
-}
-
-function isAtArrowFunctionBodyStart(
-  node: TSESTree.Node,
-  sourceCode: TSESLint.SourceCode,
-): boolean {
-  let current: TSESTree.Node = node;
-  while (true) {
-    if (isParenthesized(current, sourceCode)) {
-      return false;
-    }
-    const { parent } = current;
-    if (parent == null) {
-      return false;
-    }
-    if (
-      parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-      parent.body === current
-    ) {
-      return true;
-    }
-    if (parent.range[0] !== current.range[0]) {
-      return false;
     }
     current = parent;
   }
