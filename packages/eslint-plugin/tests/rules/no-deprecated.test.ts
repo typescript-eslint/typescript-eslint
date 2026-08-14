@@ -3810,6 +3810,48 @@ const x: A = { deprecatedField: 'string' };
     },
     {
       code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+let x: A;
+x = { deprecatedField: 'string' };
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { name: 'deprecatedField' },
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+interface B {
+  nested: A;
+}
+const y: B = { nested: { deprecatedField: 'string' } };
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { name: 'deprecatedField' },
+          endColumn: 41,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
 const a = {
   /** @deprecated */
   b: 'string',
