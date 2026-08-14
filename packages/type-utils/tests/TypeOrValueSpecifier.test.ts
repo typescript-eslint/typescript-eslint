@@ -608,6 +608,14 @@ describe('TypeOrValueSpecifier', () => {
           package: 'reexported-error/namespace',
         },
       ],
+      [
+        'import type { ReexportedError } from "reexported-error/public"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported.error/public',
+        },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -937,11 +945,41 @@ describe('TypeOrValueSpecifier', () => {
     it.each<[string, TypeOrValueSpecifier[]]>([
       ['interface Foo {prop: string}; type Test = Foo;', ['Foo', 'Hoge']],
       ['type Test = RegExp;', ['RegExp', 'BigInt']],
+      [
+        'import type { ReexportedError } from "reexported-error/public"; type Test = ReexportedError;',
+        [
+          {
+            from: 'package',
+            name: 'OtherError',
+            package: 'reexported-error/public',
+          },
+          {
+            from: 'package',
+            name: 'ReexportedError',
+            package: 'reexported-error/public',
+          },
+        ],
+      ],
     ])('matches a matching universal string specifiers', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier[]]>([
       ['interface Foo {prop: string}; type Test = Foo;', ['Bar', 'Hoge']],
       ['type Test = RegExp;', ['Foo', 'BigInt']],
+      [
+        'import type { ReexportedError } from "reexported-error/star"; type Test = ReexportedError;',
+        [
+          {
+            from: 'package',
+            name: 'ReexportedError',
+            package: 'reexported-error/star',
+          },
+          {
+            from: 'package',
+            name: ['ReexportedError'],
+            package: 'reexported-error/star',
+          },
+        ],
+      ],
     ])(
       "doesn't match a mismatched universal string specifiers",
       runTestNegative,

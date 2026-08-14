@@ -36,8 +36,45 @@ function packageNameMatches(
   // Handle scoped packages: if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
-  return matcher.test(packageIdName);
+  return (
+    packageIdName.includes(packageName) ||
+    packageIdName.includes(typesPackageName)
+  );
+}
+
+const reExportSourceFilesCache = new WeakMap<
+  ts.Program,
+  Map<string, ts.SourceFile[]>
+>();
+
+function getExternalSourceFilesForPackage(
+  packageName: string,
+  program: ts.Program,
+): ts.SourceFile[] {
+  let packageCache = reExportSourceFilesCache.get(program);
+  if (packageCache == null) {
+    packageCache = new Map();
+    reExportSourceFilesCache.set(program, packageCache);
+  }
+
+  const cached = packageCache.get(packageName);
+  if (cached != null) {
+    return cached;
+  }
+
+  const sourceFiles = program.getSourceFiles().filter(sourceFile => {
+    if (!program.isSourceFileFromExternalLibrary(sourceFile)) {
+      return false;
+    }
+
+    const packageIdName = program.sourceFileToPackageName.get(sourceFile.path);
+    return (
+      packageIdName != null && packageNameMatches(packageName, packageIdName)
+    );
+  });
+
+  packageCache.set(packageName, sourceFiles);
+  return sourceFiles;
 }
 
 function typeDeclaredInDeclarationFile(
@@ -101,38 +138,26 @@ function typeReExportedFromDeclarationFile(
 ): boolean {
   const checker = program.getTypeChecker();
 
-  return program.getSourceFiles().some(sourceFile => {
-    if (!program.isSourceFileFromExternalLibrary(sourceFile)) {
-      return false;
-    }
+  return getExternalSourceFilesForPackage(packageName, program).some(
+    sourceFile =>
+      sourceFile.statements.some(statement => {
+        if (!ts.isExportDeclaration(statement)) {
+          return false;
+        }
 
-    const packageIdName = program.sourceFileToPackageName.get(sourceFile.path);
-    if (packageIdName == null) {
-      return false;
-    }
+        if (statement.exportClause == null) {
+          return false;
+        }
 
-    if (!packageNameMatches(packageName, packageIdName)) {
-      return false;
-    }
+        if (!ts.isNamedExports(statement.exportClause)) {
+          return false;
+        }
 
-    return sourceFile.statements.some(statement => {
-      if (!ts.isExportDeclaration(statement)) {
-        return false;
-      }
-
-      if (statement.exportClause == null) {
-        return false;
-      }
-
-      if (!ts.isNamedExports(statement.exportClause)) {
-        return false;
-      }
-
-      return statement.exportClause.elements.some(specifier =>
-        exportSpecifierMatchesDeclaration(declarations, checker, specifier),
-      );
-    });
-  });
+        return statement.exportClause.elements.some(specifier =>
+          exportSpecifierMatchesDeclaration(declarations, checker, specifier),
+        );
+      }),
+  );
 }
 
 export function typeDeclaredInPackageDeclarationFile(
