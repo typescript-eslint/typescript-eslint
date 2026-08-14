@@ -10,8 +10,11 @@ import {
   getParserServices,
   isAwaitExpression,
   isAwaitKeyword,
+  isOpeningBraceToken,
+  isStartOfArrowFunctionBody,
   needsToBeAwaited,
   nullThrows,
+  NullThrowsReasons,
   isHigherPrecedenceThanAwait,
 } from '../util';
 
@@ -236,7 +239,7 @@ export default createRule({
     function removeAwait(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.Expression,
-    ): TSESLint.RuleFix | null {
+    ): TSESLint.RuleFix | TSESLint.RuleFix[] | null {
       // Should always be an await node; but let's be safe.
       /* istanbul ignore if */ if (!isAwaitExpression(node)) {
         return null;
@@ -258,7 +261,24 @@ export default createRule({
         endAt = nextToken.range[0];
       }
 
-      return fixer.removeRange([startAt, endAt]);
+      const rangeRemovalFix = fixer.removeRange([startAt, endAt]);
+
+      const firstOperandToken = nullThrows(
+        context.sourceCode.getTokenAfter(awaitToken),
+        NullThrowsReasons.MissingToken('operand', 'await expression'),
+      );
+      const shouldWrapInParentheses =
+        isOpeningBraceToken(firstOperandToken) &&
+        isStartOfArrowFunctionBody(node, context.sourceCode);
+      if (shouldWrapInParentheses) {
+        return [
+          rangeRemovalFix,
+          fixer.insertTextBefore(node.argument, '('),
+          fixer.insertTextAfter(node.argument, ')'),
+        ];
+      }
+
+      return rangeRemovalFix;
     }
 
     function insertAwait(

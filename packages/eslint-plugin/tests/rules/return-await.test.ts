@@ -563,8 +563,7 @@ async function test() {
           messageId: 'nonPromiseAwait',
         },
       ],
-      // TODO: FIXME
-      output: 'const test = async () => { a: 1 };',
+      output: 'const test = async () => ({ a: 1 });',
     },
     {
       code: 'const test = async () => await { a: 1 }.a;',
@@ -574,8 +573,7 @@ async function test() {
           messageId: 'nonPromiseAwait',
         },
       ],
-      // TODO: FIXME
-      output: 'const test = async () => { a: 1 }.a;',
+      output: 'const test = async () => ({ a: 1 }.a);',
     },
     {
       code: noFormat`const test = async () => await ({ a: 1 });`,
@@ -631,8 +629,7 @@ const test = async () => (cond ? { a: 1 } : 2);
           messageId: 'nonPromiseAwait',
         },
       ],
-      // TODO: FIXME
-      output: 'const test = async () => /* comment */ { a: 1 };',
+      output: 'const test = async () => /* comment */ ({ a: 1 });',
     },
     {
       code: 'const test = async () => await Promise.resolve(1);',
@@ -652,8 +649,7 @@ const test = async () => (cond ? { a: 1 } : 2);
           messageId: 'disallowedPromiseAwait',
         },
       ],
-      // TODO: FIXME
-      output: 'const test = async () => { then(cb: () => void) {} };',
+      output: 'const test = async () => ({ then(cb: () => void) {} });',
     },
 
     {
