@@ -556,6 +556,64 @@ async function test() {
       output: 'const test = async () => 1;',
     },
     {
+      code: 'const test = async () => await { a: 1 };',
+      errors: [
+        {
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      // TODO: FIXME
+      output: 'const test = async () => { a: 1 };',
+    },
+    {
+      code: 'const test = async () => await { a: 1 }.a;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      // TODO: FIXME
+      output: 'const test = async () => { a: 1 }.a;',
+    },
+    {
+      code: noFormat`const test = async () => await ({ a: 1 });`,
+      errors: [
+        {
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: 'const test = async () => ({ a: 1 });',
+    },
+    {
+      code: noFormat`const test = async () => (await { a: 1 });`,
+      errors: [
+        {
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: 'const test = async () => ({ a: 1 });',
+    },
+    {
+      code: `
+declare const cond: boolean;
+const test = async () => (cond ? await { a: 1 } : 2);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: `
+declare const cond: boolean;
+const test = async () => (cond ? { a: 1 } : 2);
+      `,
+    },
+    {
       code: 'const test = async () => await /* comment */ 1;',
       errors: [
         {
@@ -566,6 +624,17 @@ async function test() {
       output: 'const test = async () => /* comment */ 1;',
     },
     {
+      code: 'const test = async () => await /* comment */ { a: 1 };',
+      errors: [
+        {
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      // TODO: FIXME
+      output: 'const test = async () => /* comment */ { a: 1 };',
+    },
+    {
       code: 'const test = async () => await Promise.resolve(1);',
       errors: [
         {
@@ -574,6 +643,17 @@ async function test() {
         },
       ],
       output: 'const test = async () => Promise.resolve(1);',
+    },
+    {
+      code: 'const test = async () => await { then(cb: () => void) {} };',
+      errors: [
+        {
+          line: 1,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+      // TODO: FIXME
+      output: 'const test = async () => { then(cb: () => void) {} };',
     },
 
     {
