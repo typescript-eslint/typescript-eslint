@@ -1107,7 +1107,7 @@ function* yieldNumbers() {
   yield 2;
   yield 3;
 }
-for  (const value of yieldNumbers()) {
+for (const value of yieldNumbers()) {
   console.log(value);
 }
       `,
@@ -1139,7 +1139,7 @@ function* yieldNumberPromises() {
   yield Promise.resolve(2);
   yield Promise.resolve(3);
 }
-for  (const value of yieldNumberPromises()) {
+for (const value of yieldNumberPromises()) {
   console.log(value);
 }
       `,
