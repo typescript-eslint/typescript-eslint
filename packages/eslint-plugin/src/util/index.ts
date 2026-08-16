@@ -5,6 +5,7 @@ export * from './baseTypeUtils';
 export * from './collectUnusedVariables';
 export * from './createRule';
 export * from './FunctionSignature';
+export * from './getAwaitTokenRemovalRange';
 export * from './getBaseTypesOfClassMember';
 export * from './getFixOrSuggest';
 export * from './getFunctionHeadLoc';
