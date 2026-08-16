@@ -888,6 +888,87 @@ const test = async () => (cond ?  { a: 1 } : 2);
     },
     {
       code: `
+async function test() {
+  await { a: 1 };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              // FIXME
+              output: `
+async function test() {
+   { a: 1 };
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await function () {};
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              // FIXME
+              output: `
+async function test() {
+   function () {};
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await class {};
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              // FIXME
+              output: `
+async function test() {
+   class {};
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 class NonPromise extends Array {}
 await new NonPromise();
       `,
