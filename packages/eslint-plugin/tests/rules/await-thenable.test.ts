@@ -697,6 +697,9 @@ Promise.all([
       code: 'await 0;',
       errors: [
         {
+          column: 1,
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'await',
           suggestions: [
@@ -712,6 +715,9 @@ Promise.all([
       code: "await 'value';",
       errors: [
         {
+          column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'await',
           suggestions: [
@@ -727,6 +733,9 @@ Promise.all([
       code: "async () => await (Math.random() > 0.5 ? '' : 0);",
       errors: [
         {
+          column: 13,
+          endColumn: 49,
+          endLine: 1,
           line: 1,
           messageId: 'await',
           suggestions: [
@@ -742,6 +751,9 @@ Promise.all([
       code: noFormat`async () => await(Math.random() > 0.5 ? '' : 0);`,
       errors: [
         {
+          column: 13,
+          endColumn: 48,
+          endLine: 1,
           line: 1,
           messageId: 'await',
           suggestions: [
@@ -970,6 +982,9 @@ await new NonPromise();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'await',
           suggestions: [
@@ -997,6 +1012,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 17,
+          endLine: 8,
           line: 8,
           messageId: 'await',
           suggestions: [
@@ -1024,6 +1042,9 @@ await callback?.();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'await',
           suggestions: [
@@ -1045,6 +1066,9 @@ await obj.a?.b?.();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'await',
           suggestions: [
@@ -1066,6 +1090,9 @@ await obj?.a.b.c?.();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'await',
           suggestions: [
@@ -1129,6 +1156,10 @@ for await (const value of yieldNumberPromises()) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 49,
+          endLine: 7,
+          line: 7,
           messageId: 'forAwaitOfNonAsyncIterable',
           suggestions: [
             {
@@ -1355,6 +1386,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1366,6 +1401,10 @@ Promise.race(x);
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1377,6 +1416,10 @@ Promise.allSettled(x);
       `,
       errors: [
         {
+          column: 20,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1388,6 +1431,10 @@ Promise.any(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1400,6 +1447,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1411,6 +1462,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1422,6 +1477,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1433,6 +1492,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1445,6 +1508,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1456,6 +1523,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1467,6 +1538,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1479,6 +1554,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1490,6 +1569,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1501,6 +1584,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1512,6 +1599,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1525,6 +1616,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1541,6 +1636,10 @@ Promise.all(x());
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 16,
+          endLine: 8,
+          line: 8,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1555,6 +1654,10 @@ Promise.all(x());
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1569,6 +1672,10 @@ Promise.all(x());
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1580,6 +1687,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1591,6 +1702,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1602,6 +1717,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1614,6 +1733,7 @@ Promise.all([Promise.resolve(1), 2, Promise.resolve(3)]);
         {
           column: 34,
           endColumn: 35,
+          endLine: 2,
           line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
@@ -1627,12 +1747,14 @@ Promise.all([1, 2, Promise.resolve(3)]);
         {
           column: 14,
           endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
         {
           column: 17,
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
@@ -1646,6 +1768,7 @@ Promise.all([...[1, 2, 3]]);
         {
           column: 14,
           endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
