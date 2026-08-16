@@ -17,7 +17,7 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
-  isStartOfArrowFunctionBody,
+  isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatement,
   isTypeFlagSet,
   nullThrows,
@@ -822,11 +822,13 @@ export default createRule<Options, MessageIds>({
           const breaksExpressionStatement =
             ['{', 'function', 'class'].includes(firstOperandToken.value) &&
             isStartOfExpressionStatement(node);
-          const breaksArrowFunctionBody =
-            firstOperandToken.value === '{' &&
-            isStartOfArrowFunctionBody(node, context.sourceCode);
           const needsParens =
-            breaksExpressionStatement || breaksArrowFunctionBody;
+            breaksExpressionStatement ||
+            isStartOfArrowFunctionBodyNeedingParentheses(
+              node,
+              firstOperandToken,
+              context.sourceCode,
+            );
 
           const fixes: RuleFix[] = [];
           if (needsParens) {
