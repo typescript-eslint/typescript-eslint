@@ -1168,7 +1168,7 @@ async function foo() {
               output: `
 declare const disposable: Disposable;
 async function foo() {
-   using d = disposable;
+  using d = disposable;
 }
       `,
             },
@@ -1196,7 +1196,7 @@ async function foo() {
               messageId: 'removeAwait',
               output: `
 async function foo() {
-   using _ = {
+  using _ = {
     async [Symbol.dispose]() {},
   };
 }
