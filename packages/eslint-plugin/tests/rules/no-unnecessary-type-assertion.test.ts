@@ -34,6 +34,11 @@ declare const value: object;
 value as unknown as typeof recursiveMethod;
     `,
     `
+function castToSubtype<T extends string>(value: string): T {
+  return value as T;
+}
+    `,
+    `
 import { TSESTree } from '@typescript-eslint/utils';
 declare const member: TSESTree.TSEnumMember;
 if (
