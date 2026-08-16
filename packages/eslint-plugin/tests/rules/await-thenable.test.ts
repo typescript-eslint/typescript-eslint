@@ -902,10 +902,9 @@ async function test() {
           suggestions: [
             {
               messageId: 'removeAwait',
-              // FIXME
               output: `
 async function test() {
-   { a: 1 };
+   ({ a: 1 });
 }
       `,
             },
@@ -929,10 +928,9 @@ async function test() {
           suggestions: [
             {
               messageId: 'removeAwait',
-              // FIXME
               output: `
 async function test() {
-   function () {};
+   (function () {});
 }
       `,
             },
@@ -956,10 +954,9 @@ async function test() {
           suggestions: [
             {
               messageId: 'removeAwait',
-              // FIXME
               output: `
 async function test() {
-   class {};
+   (class {});
 }
       `,
             },
