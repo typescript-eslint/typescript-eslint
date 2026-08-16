@@ -10,8 +10,7 @@ import {
   getParserServices,
   isAwaitExpression,
   isAwaitKeyword,
-  isOpeningBraceToken,
-  isStartOfArrowFunctionBody,
+  isStartOfArrowFunctionBodyNeedingParentheses,
   needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
@@ -267,10 +266,13 @@ export default createRule({
         context.sourceCode.getTokenAfter(awaitToken),
         NullThrowsReasons.MissingToken('operand', 'await expression'),
       );
-      const shouldWrapInParentheses =
-        isOpeningBraceToken(firstOperandToken) &&
-        isStartOfArrowFunctionBody(node, context.sourceCode);
-      if (shouldWrapInParentheses) {
+      if (
+        isStartOfArrowFunctionBodyNeedingParentheses(
+          node,
+          firstOperandToken,
+          context.sourceCode,
+        )
+      ) {
         return [
           awaitRemovalFix,
           fixer.insertTextBefore(node.argument, '('),
