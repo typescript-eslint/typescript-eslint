@@ -7,6 +7,7 @@ import * as tsutils from 'ts-api-utils';
 import {
   Awaitable,
   createRule,
+  getAwaitTokenRemovalRange,
   getConstrainedTypeAtLocation,
   getFixOrSuggest,
   getParserServices,
@@ -85,7 +86,13 @@ export default createRule<[], MessageId>({
                     NullThrowsReasons.MissingToken('await', 'await expression'),
                   );
 
-                  const awaitRemovalFix = fixer.remove(awaitKeyword);
+                  const awaitTokenRemovalRange = getAwaitTokenRemovalRange(
+                    context.sourceCode,
+                    awaitKeyword,
+                  );
+                  const awaitRemovalFix = fixer.removeRange(
+                    awaitTokenRemovalRange,
+                  );
 
                   const firstOperandToken = nullThrows(
                     context.sourceCode.getTokenAfter(awaitKeyword),
