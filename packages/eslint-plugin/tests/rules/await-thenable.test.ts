@@ -754,6 +754,141 @@ Promise.all([
       ],
     },
     {
+      code: 'const test = async () => await { a: 1 };',
+      errors: [
+        {
+          column: 26,
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              // FIXME
+              output: 'const test = async () =>  { a: 1 };',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await { a: 1 }.a;',
+      errors: [
+        {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              // FIXME
+              output: 'const test = async () =>  { a: 1 }.a;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`const test = async () => await ({ a: 1 });`,
+      errors: [
+        {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () =>  ({ a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`const test = async () => (await { a: 1 });`,
+      errors: [
+        {
+          column: 27,
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => ( { a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const cond: boolean;
+const test = async () => (cond ? await { a: 1 } : 2);
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 48,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const cond: boolean;
+const test = async () => (cond ?  { a: 1 } : 2);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await /* comment */ 1;',
+      errors: [
+        {
+          column: 26,
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () =>  /* comment */ 1;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await /* comment */ { a: 1 };',
+      errors: [
+        {
+          column: 26,
+          endColumn: 54,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              // FIXME
+              output: 'const test = async () =>  /* comment */ { a: 1 };',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
 class NonPromise extends Array {}
 await new NonPromise();
