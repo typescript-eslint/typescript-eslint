@@ -261,7 +261,7 @@ export default createRule({
         endAt = nextToken.range[0];
       }
 
-      const rangeRemovalFix = fixer.removeRange([startAt, endAt]);
+      const awaitRemovalFix = fixer.removeRange([startAt, endAt]);
 
       const firstOperandToken = nullThrows(
         context.sourceCode.getTokenAfter(awaitToken),
@@ -272,13 +272,13 @@ export default createRule({
         isStartOfArrowFunctionBody(node, context.sourceCode);
       if (shouldWrapInParentheses) {
         return [
-          rangeRemovalFix,
+          awaitRemovalFix,
           fixer.insertTextBefore(node.argument, '('),
           fixer.insertTextAfter(node.argument, ')'),
         ];
       }
 
-      return rangeRemovalFix;
+      return awaitRemovalFix;
     }
 
     function insertAwait(
