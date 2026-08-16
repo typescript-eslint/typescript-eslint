@@ -920,6 +920,15 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    function wouldSameTypeBeInferred(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      castType: ts.Type,
+    ): boolean {
+      return isTypeLiteral(castType)
+        ? isImplicitlyNarrowedLiteralDeclaration(node)
+        : !isConstAssertion(node.typeAnnotation);
+    }
+
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -953,11 +962,8 @@ export default createRule<Options, MessageIds>({
           uncastType,
           castType,
         );
-        const wouldSameTypeBeInferred = castTypeIsLiteral
-          ? isImplicitlyNarrowedLiteralDeclaration(node)
-          : !typeAnnotationIsConstAssertion;
 
-        if (typeIsUnchanged && wouldSameTypeBeInferred) {
+        if (typeIsUnchanged && wouldSameTypeBeInferred(node, castType)) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
