@@ -480,7 +480,8 @@ export default createRule<Options, MessageIds>({
 
       if (
         isTypeUnchanged(node, innerExpression, originalType, castType) &&
-        !isTypeFlagSet(castType, ts.TypeFlags.Any)
+        !isTypeFlagSet(castType, ts.TypeFlags.Any) &&
+        wouldSameTypeBeInferred(node, castType)
       ) {
         return 'unnecessaryAssertion';
       }

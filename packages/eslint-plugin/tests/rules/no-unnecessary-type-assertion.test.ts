@@ -57,6 +57,7 @@ let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
 );
     `,
     'let y = 1 as 1;',
+    'let y = 1 as any as 1;',
     'const foo = 3 as number;',
     'const foo = <number>3;',
     `
