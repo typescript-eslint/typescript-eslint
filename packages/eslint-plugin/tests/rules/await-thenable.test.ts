@@ -765,8 +765,7 @@ Promise.all([
           suggestions: [
             {
               messageId: 'removeAwait',
-              // FIXME
-              output: 'const test = async () =>  { a: 1 };',
+              output: 'const test = async () =>  ({ a: 1 });',
             },
           ],
         },
@@ -784,8 +783,7 @@ Promise.all([
           suggestions: [
             {
               messageId: 'removeAwait',
-              // FIXME
-              output: 'const test = async () =>  { a: 1 }.a;',
+              output: 'const test = async () =>  ({ a: 1 }.a);',
             },
           ],
         },
@@ -882,7 +880,7 @@ const test = async () => (cond ?  { a: 1 } : 2);
             {
               messageId: 'removeAwait',
               // FIXME
-              output: 'const test = async () =>  /* comment */ { a: 1 };',
+              output: 'const test = async () =>  /* comment */ ({ a: 1 });',
             },
           ],
         },
