@@ -22,6 +22,7 @@ export * from './isNodeEqual';
 export * from './isNullLiteral';
 export * from './isStartOfArrowFunctionBodyNeedingParentheses';
 export * from './isStartOfExpressionStatement';
+export * from './isStartOfExpressionStatementNeedingParentheses';
 export * from './isUndefinedIdentifier';
 export * from './misc';
 export * from './needsPrecedingSemiColon';

@@ -18,7 +18,7 @@ import {
   getParserServices,
   isNullableType,
   isStartOfArrowFunctionBodyNeedingParentheses,
-  isStartOfExpressionStatement,
+  isStartOfExpressionStatementNeedingParentheses,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -819,11 +819,11 @@ export default createRule<Options, MessageIds>({
             context.sourceCode.getTokenAfter(closingAngleBracket),
             NullThrowsReasons.MissingToken('operand', 'type assertion'),
           );
-          const breaksExpressionStatement =
-            ['{', 'function', 'class'].includes(firstOperandToken.value) &&
-            isStartOfExpressionStatement(node);
           const needsParens =
-            breaksExpressionStatement ||
+            isStartOfExpressionStatementNeedingParentheses(
+              node,
+              firstOperandToken,
+            ) ||
             isStartOfArrowFunctionBodyNeedingParentheses(
               node,
               firstOperandToken,
