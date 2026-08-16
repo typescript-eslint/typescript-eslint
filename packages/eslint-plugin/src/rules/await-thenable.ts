@@ -12,6 +12,7 @@ import {
   getParserServices,
   isAwaitKeyword,
   isStartOfArrowFunctionBodyNeedingParentheses,
+  isStartOfExpressionStatementNeedingParentheses,
   isTypeAnyType,
   needsToBeAwaited,
   nullThrows,
@@ -98,6 +99,10 @@ export default createRule<[], MessageId>({
                       node,
                       firstOperandToken,
                       context.sourceCode,
+                    ) ||
+                    isStartOfExpressionStatementNeedingParentheses(
+                      node,
+                      firstOperandToken,
                     )
                   ) {
                     return [
