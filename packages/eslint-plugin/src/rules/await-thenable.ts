@@ -205,7 +205,10 @@ export default createRule<[], MessageId>({
                     context.sourceCode.getFirstToken(node, isAwaitKeyword),
                     NullThrowsReasons.MissingToken('await', 'for await loop'),
                   );
-                  return fixer.remove(awaitToken);
+
+                  return fixer.removeRange(
+                    getAwaitTokenRemovalRange(context.sourceCode, awaitToken),
+                  );
                 },
               },
             ],
