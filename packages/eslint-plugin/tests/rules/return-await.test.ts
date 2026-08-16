@@ -559,6 +559,9 @@ async function test() {
       code: 'const test = async () => await { a: 1 };',
       errors: [
         {
+          column: 26,
+          endColumn: 40,
+          endLine: 1,
           line: 1,
           messageId: 'nonPromiseAwait',
         },
@@ -569,6 +572,9 @@ async function test() {
       code: 'const test = async () => await { a: 1 }.a;',
       errors: [
         {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'nonPromiseAwait',
         },
@@ -579,6 +585,9 @@ async function test() {
       code: noFormat`const test = async () => await ({ a: 1 });`,
       errors: [
         {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'nonPromiseAwait',
         },
@@ -589,6 +598,9 @@ async function test() {
       code: noFormat`const test = async () => (await { a: 1 });`,
       errors: [
         {
+          column: 27,
+          endColumn: 41,
+          endLine: 1,
           line: 1,
           messageId: 'nonPromiseAwait',
         },
@@ -602,6 +614,9 @@ const test = async () => (cond ? await { a: 1 } : 2);
       `,
       errors: [
         {
+          column: 34,
+          endColumn: 48,
+          endLine: 3,
           line: 3,
           messageId: 'nonPromiseAwait',
         },
@@ -625,6 +640,9 @@ const test = async () => (cond ? { a: 1 } : 2);
       code: 'const test = async () => await /* comment */ { a: 1 };',
       errors: [
         {
+          column: 26,
+          endColumn: 54,
+          endLine: 1,
           line: 1,
           messageId: 'nonPromiseAwait',
         },
@@ -645,6 +663,9 @@ const test = async () => (cond ? { a: 1 } : 2);
       code: 'const test = async () => await { then(cb: () => void) {} };',
       errors: [
         {
+          column: 26,
+          endColumn: 59,
+          endLine: 1,
           line: 1,
           messageId: 'disallowedPromiseAwait',
         },
