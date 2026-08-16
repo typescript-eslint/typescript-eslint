@@ -21,6 +21,18 @@ const optionsWithExactOptionalPropertyTypes = {
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12705
+    `
+type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
+  options: NewOptions,
+) => RecursiveMethod<Options & NewOptions>) &
+  ((command: string) => Promise<void>);
+
+declare const recursiveMethod: RecursiveMethod;
+declare const value: object;
+
+value as unknown as typeof recursiveMethod;
+    `,
     `
 import { TSESTree } from '@typescript-eslint/utils';
 declare const member: TSESTree.TSEnumMember;
