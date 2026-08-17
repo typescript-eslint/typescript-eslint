@@ -269,21 +269,10 @@ export default createRule<Options, MessageIds>({
         (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
           !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
         (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
-        containsAny(uncast)
+        containsAny(uncast) ||
+        containsAny(cast) ||
+        (containsTypeVariable(cast) && !containsTypeVariable(uncast))
       ) {
-        return false;
-      }
-
-      try {
-        if (containsAny(cast)) {
-          return false;
-        }
-      } catch {
-        // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/12705
-        return false;
-      }
-
-      if (containsTypeVariable(cast) && !containsTypeVariable(uncast)) {
         return false;
       }
 
@@ -372,7 +361,18 @@ export default createRule<Options, MessageIds>({
     }
 
     function containsAny(type: ts.Type): boolean {
-      return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
+      try {
+        return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
+      } catch (error) {
+        // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/12705
+        if (
+          error instanceof RangeError &&
+          error.message === 'Maximum call stack size exceeded'
+        ) {
+          return true;
+        }
+        throw error;
+      }
     }
 
     function containsTypeVariable(type: ts.Type): boolean {
