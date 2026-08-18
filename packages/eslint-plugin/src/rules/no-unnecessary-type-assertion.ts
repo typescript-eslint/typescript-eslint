@@ -1,5 +1,5 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import type {
   ReportFixFunction,
   RuleFix,
@@ -17,54 +17,12 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
-  isParenthesized,
+  isStartOfArrowFunctionBody,
+  isStartOfExpressionStatement,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
-
-function isAtExpressionStatementStart(node: TSESTree.Node): boolean {
-  let current: TSESTree.Node = node;
-  while (true) {
-    const { parent } = current;
-    if (parent == null) {
-      return false;
-    }
-    if (parent.range[0] !== current.range[0]) {
-      return false;
-    }
-    if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
-      return true;
-    }
-    current = parent;
-  }
-}
-
-function isAtArrowFunctionBodyStart(
-  node: TSESTree.Node,
-  sourceCode: TSESLint.SourceCode,
-): boolean {
-  let current: TSESTree.Node = node;
-  while (true) {
-    if (isParenthesized(current, sourceCode)) {
-      return false;
-    }
-    const { parent } = current;
-    if (parent == null) {
-      return false;
-    }
-    if (
-      parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-      parent.body === current
-    ) {
-      return true;
-    }
-    if (parent.range[0] !== current.range[0]) {
-      return false;
-    }
-    current = parent;
-  }
-}
 
 export type Options = [
   {
@@ -852,10 +810,10 @@ export default createRule<Options, MessageIds>({
           );
           const breaksExpressionStatement =
             ['{', 'function', 'class'].includes(firstOperandToken.value) &&
-            isAtExpressionStatementStart(node);
+            isStartOfExpressionStatement(node);
           const breaksArrowFunctionBody =
             firstOperandToken.value === '{' &&
-            isAtArrowFunctionBodyStart(node, context.sourceCode);
+            isStartOfArrowFunctionBody(node, context.sourceCode);
           const needsParens =
             breaksExpressionStatement || breaksArrowFunctionBody;
 
