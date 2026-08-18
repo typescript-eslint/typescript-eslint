@@ -23,7 +23,7 @@ jobs:
     # Only run if it was the renovate bot that opened the PR (otherwise we'll create a loop)
     if: github.event.pull_request.user.login == 'renovate[bot]'
     name: Run prettier formatting if required
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
