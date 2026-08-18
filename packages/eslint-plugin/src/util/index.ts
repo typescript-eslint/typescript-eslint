@@ -19,6 +19,7 @@ export * from './isAssignee';
 export * from './isConditionalTest';
 export * from './isNodeEqual';
 export * from './isNullLiteral';
+export * from './isStartOfArrowFunctionBody';
 export * from './isStartOfExpressionStatement';
 export * from './isUndefinedIdentifier';
 export * from './misc';
