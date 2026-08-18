@@ -424,7 +424,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
+const a = '1';
       \`,
     },
   ],
@@ -530,7 +530,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
+const a = '1';
       \`,
     },
   ],
@@ -576,7 +576,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
+const a = '1';
       \`,
     },
   ],
@@ -584,58 +584,7 @@ ruleTester.run({
       `,
       ],
     },
-    // templateStringRequiresIndent
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-  const a = "1";
-      \`,
-    },
-  ],
-});
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            indent: 8,
-          },
-          endColumn: 8,
-          endLine: 7,
-          line: 5,
-          messageId: 'templateStringRequiresIndent',
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    \`
-    const a = "1";
-    \`,
-  ],
-});
-      `,
-      errors: [
-        {
-          column: 5,
-          data: {
-            indent: 6,
-          },
-          endColumn: 6,
-          endLine: 6,
-          line: 4,
-          messageId: 'templateStringRequiresIndent',
-        },
-      ],
-      output: null,
-    },
-    // templateStringMinimumIndent
+    // indented code is reformatted to have no indent
     {
       code: `
 ruleTester.run({
@@ -652,16 +601,24 @@ ruleTester.run({
       errors: [
         {
           column: 13,
-          data: {
-            indent: 8,
-          },
           endColumn: 8,
           endLine: 8,
           line: 5,
-          messageId: 'templateStringMinimumIndent',
+          messageId: 'invalidFormatting',
         },
       ],
-      output: null,
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: \`
+const a = '1';
+const b = '2';
+      \`,
+    },
+  ],
+});
+      `,
     },
     // invalidFormatting
     {
@@ -691,8 +648,8 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
-        const b = '2';
+const a = '1';
+const b = '2';
       \`,
     },
   ],
@@ -725,7 +682,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = \\\`\\\${a}\\\`;
+const a = \\\`\\\${a}\\\`;
       \`,
     },
   ],
@@ -794,43 +751,6 @@ ruleTester.run({
 async function foo() {}
 async function bar() {}
 \`,
-    },
-  ],
-});
-      `,
-    },
-    {
-      code: noFormat`
-ruleTester.run({
-  valid: [
-    {
-      code:
-      noFormat\`
-        async function bar() {}
-        async function foo() {}
-      \`,
-    },
-  ],
-});
-      `,
-      errors: [
-        {
-          column: 7,
-          endColumn: 8,
-          endLine: 9,
-          line: 6,
-          messageId: 'noUnnecessaryNoFormat',
-        },
-      ],
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code:
-      \`
-        async function bar() {}
-        async function foo() {}
-      \`,
     },
   ],
 });
@@ -1049,7 +969,7 @@ foo;
     },
     {
       code: \`
-      foo
+foo;
       \`,
     },
   ],
@@ -1064,7 +984,7 @@ foo;
     },
     {
       code: \`
-      foo
+foo;
       \`,
     },
   ],
@@ -1469,9 +1389,6 @@ ruleTester.run({
   valid: [
     'const a = 1;',
     \`
-      const a = 1;
-    \`,
-    \`
 const a = 1;
     \`,
     noFormat\`const x=1;\`,
@@ -1487,17 +1404,7 @@ ruleTester.run({
   ],
 });
     `,
-    `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-        const a = 1;
-      \`,
-    },
-  ],
-});
-    `,
+
     `
 ruleTester.run({
   valid: [
@@ -1524,27 +1431,6 @@ const a = 1;
                   {
                     messageId: 'bar',
                     output: 'const a = 1;',
-                  },
-                ],
-              }
-            ]
-          },
-          {
-            code: \`
-              const a = 1;
-            \`,
-            output: \`
-              const a = 1;
-            \`,
-            errors: [
-              {
-                messageId: 'foo',
-                suggestions: [
-                  {
-                    messageId: 'bar',
-                    output: \`
-                      const a = 1;
-                    \`,
                   },
                 ],
               }
@@ -1589,15 +1475,30 @@ ruleTester.run({
       options: [{ formatWithPrettier: false }],
     },
 
-    // empty lines are valid when everything else is indented
+    // noFormat is necessary when the test code is intentionally indented
+    noFormat`
+ruleTester.run({
+  valid: [
+    {
+      code:
+      noFormat\`
+        async function bar() {}
+        async function foo() {}
+      \`,
+    },
+  ],
+});
+    `,
+
+    // empty lines are valid
     `
 ruleTester.run({
   valid: [
     {
       code: \`
-        const a = 1;
+const a = 1;
 
-        const b = 1;
+const b = 1;
       \`,
     },
   ],

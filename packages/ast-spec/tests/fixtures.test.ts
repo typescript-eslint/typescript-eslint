@@ -2,7 +2,7 @@ import { glob } from 'glob';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { VitestSnapshotEnvironment } from 'vitest/snapshot';
+import { VitestSnapshotEnvironment } from 'vitest/runtime';
 
 import type { Fixture } from './util/parsers/parser-types.js';
 

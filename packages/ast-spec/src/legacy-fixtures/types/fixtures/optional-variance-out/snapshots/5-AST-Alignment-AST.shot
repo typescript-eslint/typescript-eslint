@@ -25,10 +25,8 @@ Snapshot Diff:
         },
         typeAnnotation: TSFunctionType {
           type: 'TSFunctionType',
--         params: Array [],
--         returnType: TSTypeAnnotation {
-+         parameters: Array [],
-+         typeAnnotation: TSTypeAnnotation {
+          params: Array [],
+          returnType: TSTypeAnnotation {
             type: 'TSTypeAnnotation',
             typeAnnotation: TSTypeReference {
               type: 'TSTypeReference',
@@ -72,19 +70,18 @@ Snapshot Diff:
               type: 'TSTypeParameter',
               const: false,
               in: false,
--             name: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'T',
--               optional: false,
--
--               range: [91, 92],
--               loc: {
--                 start: { column: 18, line: 3 },
--                 end: { column: 19, line: 3 },
--               },
--             },
-+             name: 'T',
+              name: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'T',
+                optional: false,
+
+                range: [91, 92],
+                loc: {
+                  start: { column: 18, line: 3 },
+                  end: { column: 19, line: 3 },
+                },
+              },
               out: true,
 
               range: [87, 92],
@@ -111,9 +108,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 105],
+-   range: [73, 105],
++   range: [0, 105],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

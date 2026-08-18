@@ -183,42 +183,33 @@ Program {
                       end: { column: 23, line: 5 },
                     },
                   },
-                  TSParenthesizedType {
-                    type: "TSParenthesizedType",
-                    typeAnnotation: TSIntersectionType {
-                      type: "TSIntersectionType",
-                      types: [
-                        TSStringKeyword {
-                          type: "TSStringKeyword",
+                  TSIntersectionType {
+                    type: "TSIntersectionType",
+                    types: [
+                      TSStringKeyword {
+                        type: "TSStringKeyword",
 
-                          range: [173, 179],
-                          loc: {
-                            start: { column: 27, line: 5 },
-                            end: { column: 33, line: 5 },
-                          },
+                        range: [173, 179],
+                        loc: {
+                          start: { column: 27, line: 5 },
+                          end: { column: 33, line: 5 },
                         },
-                        TSBooleanKeyword {
-                          type: "TSBooleanKeyword",
-
-                          range: [182, 189],
-                          loc: {
-                            start: { column: 36, line: 5 },
-                            end: { column: 43, line: 5 },
-                          },
-                        },
-                      ],
-
-                      range: [173, 189],
-                      loc: {
-                        start: { column: 27, line: 5 },
-                        end: { column: 43, line: 5 },
                       },
-                    },
+                      TSBooleanKeyword {
+                        type: "TSBooleanKeyword",
 
-                    range: [172, 190],
+                        range: [182, 189],
+                        loc: {
+                          start: { column: 36, line: 5 },
+                          end: { column: 43, line: 5 },
+                        },
+                      },
+                    ],
+
+                    range: [173, 189],
                     loc: {
-                      start: { column: 26, line: 5 },
-                      end: { column: 44, line: 5 },
+                      start: { column: 27, line: 5 },
+                      end: { column: 43, line: 5 },
                     },
                   },
                 ],
@@ -277,42 +268,33 @@ Program {
               typeAnnotation: TSUnionType {
                 type: "TSUnionType",
                 types: [
-                  TSParenthesizedType {
-                    type: "TSParenthesizedType",
-                    typeAnnotation: TSIntersectionType {
-                      type: "TSIntersectionType",
-                      types: [
-                        TSNumberKeyword {
-                          type: "TSNumberKeyword",
+                  TSIntersectionType {
+                    type: "TSIntersectionType",
+                    types: [
+                      TSNumberKeyword {
+                        type: "TSNumberKeyword",
 
-                          range: [210, 216],
-                          loc: {
-                            start: { column: 18, line: 6 },
-                            end: { column: 24, line: 6 },
-                          },
+                        range: [210, 216],
+                        loc: {
+                          start: { column: 18, line: 6 },
+                          end: { column: 24, line: 6 },
                         },
-                        TSStringKeyword {
-                          type: "TSStringKeyword",
-
-                          range: [219, 225],
-                          loc: {
-                            start: { column: 27, line: 6 },
-                            end: { column: 33, line: 6 },
-                          },
-                        },
-                      ],
-
-                      range: [210, 225],
-                      loc: {
-                        start: { column: 18, line: 6 },
-                        end: { column: 33, line: 6 },
                       },
-                    },
+                      TSStringKeyword {
+                        type: "TSStringKeyword",
 
-                    range: [209, 226],
+                        range: [219, 225],
+                        loc: {
+                          start: { column: 27, line: 6 },
+                          end: { column: 33, line: 6 },
+                        },
+                      },
+                    ],
+
+                    range: [210, 225],
                     loc: {
-                      start: { column: 17, line: 6 },
-                      end: { column: 34, line: 6 },
+                      start: { column: 18, line: 6 },
+                      end: { column: 33, line: 6 },
                     },
                   },
                   TSBooleanKeyword {
@@ -367,9 +349,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 238],
+  range: [0, 238],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 7 },
   },
 }

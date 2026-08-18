@@ -458,6 +458,12 @@ function collectTypeParameterUsageCounts(
           // They have properties, so we need to avoid double-counting.
           visitType(type.templateType ?? type.constraintType, false);
         }
+
+        // TS doesn't count mapped types key remapping (`{[K in 'a' as T]: K}`)
+        // but handles this under `MappedType.nameType`, so we need to visit that too.
+        if (type.nameType) {
+          visitType(type.nameType, false);
+        }
       }
 
       visitType(type.getNumberIndexType(), true);
@@ -549,6 +555,7 @@ interface MappedType extends ts.ObjectType {
   constraintType?: ts.Type;
   templateType?: ts.Type;
   typeParameter: ts.Type;
+  nameType?: ts.Type;
 }
 
 function isMappedType(type: ts.Type): type is MappedType {

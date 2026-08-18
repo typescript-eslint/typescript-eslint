@@ -1425,19 +1425,19 @@ declare let x: (bigint & { __brand?: any }) | undefined;
       options: [{ ignorePrimitives: true }],
     },
     `
-      declare let x: never;
-      declare let y: number;
-      x || y;
+declare let x: never;
+declare let y: number;
+x || y;
     `,
     `
-      declare let x: never;
-      declare let y: number;
-      x ? x : y;
+declare let x: never;
+declare let y: number;
+x ? x : y;
     `,
     `
-      declare let x: never;
-      declare let y: number;
-      !x ? y : x;
+declare let x: never;
+declare let y: number;
+!x ? y : x;
     `,
     `
 interface Box {
@@ -10206,6 +10206,41 @@ const x = Boolean(a ?? b);
       options: [
         {
           ignoreBooleanCoercion: false,
+        },
+      ],
+    },
+    {
+      code: `
+function outer() {
+  const Boolean = (x: unknown) => x;
+
+  return (a: string | null, b: string) => Boolean(a || b);
+}
+      `,
+      errors: [
+        {
+          column: 53,
+          endColumn: 55,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+function outer() {
+  const Boolean = (x: unknown) => x;
+
+  return (a: string | null, b: string) => Boolean(a ?? b);
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
         },
       ],
     },

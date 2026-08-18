@@ -35,6 +35,7 @@ import type {
 
 import { config } from './config-helper';
 import { getTSConfigRootDirFromStack } from './getTSConfigRootDirFromStack';
+import { extensions, globs } from './globs';
 
 export type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
@@ -240,6 +241,8 @@ module.exports = config(
 export default {
   config,
   configs,
+  extensions,
+  globs,
   parser,
   plugin,
 };
@@ -251,6 +254,8 @@ export {
   type InfiniteDepthConfigWithExtends,
   type ConfigArray,
 } from './config-helper';
+
+export { extensions, globs } from './globs';
 
 // https://github.com/typescript-eslint/typescript-eslint/issues/12134
 export type {

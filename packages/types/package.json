@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.65.0",
+  "version": "8.67.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -46,7 +46,7 @@
     "attw-check": "pnpm -w exec nx attw-check"
   },
   "devDependencies": {
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
@@ -70,9 +70,6 @@
       "build": {
         "dependsOn": [
           "copy-ast-spec"
-        ],
-        "inputs": [
-          "{projectRoot}/src/generated/**/*"
         ]
       },
       "copy-ast-spec": {
