@@ -16,7 +16,7 @@ jobs:
   apply:
     name: Apply Labels
     if: github.event.workflow_run.conclusion == 'success'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     permissions:
       actions: read
