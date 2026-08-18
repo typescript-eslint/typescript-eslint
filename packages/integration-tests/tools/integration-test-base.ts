@@ -3,9 +3,6 @@ import * as path from 'node:path';
 
 import { execFile, FIXTURES_DESTINATION_DIR } from './pack-packages.js';
 
-// make sure that vitest doesn't timeout the test
-vi.setConfig({ testTimeout: 60_000 });
-
 function integrationTest(
   testName: string,
   testFilename: string,
