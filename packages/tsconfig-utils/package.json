@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/tsconfig-utils",
-  "version": "8.66.0",
+  "version": "8.67.0",
   "description": "Utilities for collecting TSConfigs for linting scenarios.",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",

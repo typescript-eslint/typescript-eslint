@@ -75,19 +75,18 @@ Snapshot Diff:
                       type: 'TSTypeParameter',
                       const: false,
                       in: false,
--                     name: Identifier {
--                       type: 'Identifier',
--                       decorators: Array [],
--                       name: 'U',
--                       optional: false,
--
--                       range: [108, 109],
--                       loc: {
--                         start: { column: 35, line: 3 },
--                         end: { column: 36, line: 3 },
--                       },
--                     },
-+                     name: 'U',
+                      name: Identifier {
+                        type: 'Identifier',
+                        decorators: Array [],
+                        name: 'U',
+                        optional: false,
+
+                        range: [108, 109],
+                        loc: {
+                          start: { column: 35, line: 3 },
+                          end: { column: 36, line: 3 },
+                        },
+                      },
                       out: false,
 
                       range: [108, 109],
@@ -143,19 +142,18 @@ Snapshot Diff:
                       type: 'TSTypeParameter',
                       const: false,
                       in: false,
--                     name: Identifier {
--                       type: 'Identifier',
--                       decorators: Array [],
--                       name: 'U',
--                       optional: false,
--
--                       range: [120, 121],
--                       loc: {
--                         start: { column: 47, line: 3 },
--                         end: { column: 48, line: 3 },
--                       },
--                     },
-+                     name: 'U',
+                      name: Identifier {
+                        type: 'Identifier',
+                        decorators: Array [],
+                        name: 'U',
+                        optional: false,
+
+                        range: [120, 121],
+                        loc: {
+                          start: { column: 47, line: 3 },
+                          end: { column: 48, line: 3 },
+                        },
+                      },
                       out: false,
 
                       range: [120, 121],
@@ -237,19 +235,18 @@ Snapshot Diff:
               type: 'TSTypeParameter',
               const: false,
               in: false,
--             name: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'T',
--               optional: false,
--
--               range: [82, 83],
--               loc: {
--                 start: { column: 9, line: 3 },
--                 end: { column: 10, line: 3 },
--               },
--             },
-+             name: 'T',
+              name: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'T',
+                optional: false,
+
+                range: [82, 83],
+                loc: {
+                  start: { column: 9, line: 3 },
+                  end: { column: 10, line: 3 },
+                },
+              },
               out: false,
 
               range: [82, 83],
@@ -276,9 +273,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 137],
+-   range: [73, 137],
++   range: [0, 137],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

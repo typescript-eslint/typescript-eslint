@@ -22,10 +22,8 @@ Snapshot Diff:
         },
         declare: false,
         extends: Array [
--         TSInterfaceHeritage {
--           type: 'TSInterfaceHeritage',
-+         TSExpressionWithTypeArguments {
-+           type: 'TSExpressionWithTypeArguments',
+          TSInterfaceHeritage {
+            type: 'TSInterfaceHeritage',
             expression: Identifier {
               type: 'Identifier',
               decorators: Array [],
@@ -45,10 +43,8 @@ Snapshot Diff:
               end: { column: 25, line: 3 },
             },
           },
--         TSInterfaceHeritage {
--           type: 'TSInterfaceHeritage',
-+         TSExpressionWithTypeArguments {
-+           type: 'TSExpressionWithTypeArguments',
+          TSInterfaceHeritage {
+            type: 'TSInterfaceHeritage',
             expression: Identifier {
               type: 'Identifier',
               decorators: Array [],
@@ -91,9 +87,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 107],
+-   range: [73, 107],
++   range: [0, 107],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

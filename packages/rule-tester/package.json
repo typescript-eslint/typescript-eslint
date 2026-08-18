@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/rule-tester",
-  "version": "8.66.0",
+  "version": "8.67.0",
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",

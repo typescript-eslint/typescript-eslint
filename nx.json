@@ -17,6 +17,7 @@
     {
       "plugin": "@nx/vitest",
       "exclude": ["*"],
+      "outputs": ["{projectRoot}/coverage", "{projectRoot}/**/*.shot"],
       "options": {
         "testTargetName": "test",
         "typecheckTargetName": "vitest:typecheck"
@@ -69,6 +70,7 @@
       "options": {
         "config": "vitest.config.mts"
       },
+      "inputs": ["default", "{workspaceRoot}/vitest.config.base.mts"],
       "outputs": ["{projectRoot}/coverage"]
     },
     "attw-check": {

@@ -23,20 +23,7 @@ Snapshot Diff:
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
                   type: 'TSTypeReference',
--                 typeArguments: TSTypeParameterInstantiation {
-+                 typeName: Identifier {
-+                   type: 'Identifier',
-+                   decorators: Array [],
-+                   name: 'X',
-+                   optional: false,
-+
-+                   range: [80, 81],
-+                   loc: {
-+                     start: { column: 7, line: 3 },
-+                     end: { column: 8, line: 3 },
-+                   },
-+                 },
-+                 typeParameters: TSTypeParameterInstantiation {
+                  typeArguments: TSTypeParameterInstantiation {
                     type: 'TSTypeParameterInstantiation',
                     params: Array [
                       TSNeverKeyword {
@@ -54,18 +41,18 @@ Snapshot Diff:
                     loc: {
                       start: { column: 8, line: 3 },
                       end: { column: 15, line: 3 },
--                   },
--                 },
--                 typeName: Identifier {
--                   type: 'Identifier',
--                   decorators: Array [],
--                   name: 'X',
--                   optional: false,
--
--                   range: [80, 81],
--                   loc: {
--                     start: { column: 7, line: 3 },
--                     end: { column: 8, line: 3 },
+                    },
+                  },
+                  typeName: Identifier {
+                    type: 'Identifier',
+                    decorators: Array [],
+                    name: 'X',
+                    optional: false,
+
+                    range: [80, 81],
+                    loc: {
+                      start: { column: 7, line: 3 },
+                      end: { column: 8, line: 3 },
                     },
                   },
 
@@ -148,8 +135,7 @@ Snapshot Diff:
             },
           },
           optional: false,
--         typeArguments: TSTypeParameterInstantiation {
-+         typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSNeverKeyword {
@@ -186,9 +172,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 117],
+-   range: [73, 117],
++   range: [0, 117],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 5 },
     },
   }

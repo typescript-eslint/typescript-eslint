@@ -18,7 +18,7 @@ Program {
       },
       typeAnnotation: TSFunctionType {
         type: "TSFunctionType",
-        parameters: [
+        params: [
           Identifier {
             type: "Identifier",
             decorators: [],
@@ -62,7 +62,7 @@ Program {
             },
           },
         ],
-        typeAnnotation: TSTypeAnnotation {
+        returnType: TSTypeAnnotation {
           type: "TSTypeAnnotation",
           typeAnnotation: TSTypeReference {
             type: "TSTypeReference",
@@ -106,7 +106,18 @@ Program {
             type: "TSTypeParameter",
             const: false,
             in: true,
-            name: "T",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [95, 96],
+              loc: {
+                start: { column: 22, line: 3 },
+                end: { column: 23, line: 3 },
+              },
+            },
             out: true,
 
             range: [88, 96],
@@ -133,9 +144,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 113],
+  range: [0, 113],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

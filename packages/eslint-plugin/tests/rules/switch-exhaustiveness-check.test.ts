@@ -2901,22 +2901,22 @@ switch (literal) {
     },
     {
       code: `
-        export namespace A {
-          export enum B {
-            C,
-            D,
-          }
-        }
-        declare const foo: A.B;
-        switch (foo) {
-          case A.B.C: {
-            break;
-          }
-        }
+export namespace A {
+  export enum B {
+    C,
+    D,
+  }
+}
+declare const foo: A.B;
+switch (foo) {
+  case A.B.C: {
+    break;
+  }
+}
       `,
       errors: [
         {
-          column: 17,
+          column: 9,
           data: {
             missingBranches: 'A.B.D',
           },
@@ -2926,19 +2926,19 @@ switch (literal) {
             {
               messageId: 'addMissingCases',
               output: `
-        export namespace A {
-          export enum B {
-            C,
-            D,
-          }
-        }
-        declare const foo: A.B;
-        switch (foo) {
-          case A.B.C: {
-            break;
-          }
-          case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
-        }
+export namespace A {
+  export enum B {
+    C,
+    D,
+  }
+}
+declare const foo: A.B;
+switch (foo) {
+  case A.B.C: {
+    break;
+  }
+  case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
+}
       `,
             },
           ],
@@ -2947,17 +2947,17 @@ switch (literal) {
     },
     {
       code: `
-        import { A } from './switch-exhaustiveness-check';
-        declare const foo: A.B;
-        switch (foo) {
-          case A.B.C: {
-            break;
-          }
-        }
+import { A } from './switch-exhaustiveness-check';
+declare const foo: A.B;
+switch (foo) {
+  case A.B.C: {
+    break;
+  }
+}
       `,
       errors: [
         {
-          column: 17,
+          column: 9,
           data: {
             missingBranches: 'A.B.D',
           },
@@ -2967,14 +2967,14 @@ switch (literal) {
             {
               messageId: 'addMissingCases',
               output: `
-        import { A } from './switch-exhaustiveness-check';
-        declare const foo: A.B;
-        switch (foo) {
-          case A.B.C: {
-            break;
-          }
-          case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
-        }
+import { A } from './switch-exhaustiveness-check';
+declare const foo: A.B;
+switch (foo) {
+  case A.B.C: {
+    break;
+  }
+  case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
+}
       `,
             },
           ],

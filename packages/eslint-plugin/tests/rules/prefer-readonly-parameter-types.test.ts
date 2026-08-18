@@ -25,15 +25,15 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     'function foo(arg: null) {}',
     'function foo(arg: undefined) {}',
     `
-      const symb = Symbol('a');
-      function foo(arg: typeof symb) {}
+const symb = Symbol('a');
+function foo(arg: typeof symb) {}
     `,
     `
-      enum Enum {
-        a,
-        b,
-      }
-      function foo(arg: Enum) {}
+enum Enum {
+  a,
+  b,
+}
+function foo(arg: Enum) {}
     `,
 
     // arrays
@@ -62,21 +62,21 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     'function foo(arg: Readonly<{ foo: readonly string[] }>) {}',
     'function foo(arg: Readonly<{ foo(): void }>) {}',
     `
-      function foo(arg: {
-        readonly foo: {
-          readonly bar: string;
-        };
-      }) {}
+function foo(arg: {
+  readonly foo: {
+    readonly bar: string;
+  };
+}) {}
     `,
     `
-      function foo(arg: { readonly [k: string]: string }) {}
+function foo(arg: { readonly [k: string]: string }) {}
     `,
     `
-      function foo(arg: { readonly [k: number]: string }) {}
+function foo(arg: { readonly [k: number]: string }) {}
     `,
     `
-      interface Empty {}
-      function foo(arg: Empty) {}
+interface Empty {}
+function foo(arg: Empty) {}
     `,
 
     // weird other cases
@@ -94,84 +94,84 @@ type Test = (() => void) & {
 function foo(arg: Test) {}
     `,
     `
-      interface Test extends ReadonlyArray<string> {
-        readonly property: boolean;
-      }
-      function foo(arg: Readonly<Test>) {}
+interface Test extends ReadonlyArray<string> {
+  readonly property: boolean;
+}
+function foo(arg: Readonly<Test>) {}
     `,
     `
-      type Test = readonly string[] & {
-        readonly property: boolean;
-      };
-      function foo(arg: Readonly<Test>) {}
+type Test = readonly string[] & {
+  readonly property: boolean;
+};
+function foo(arg: Readonly<Test>) {}
     `,
     `
-      type Test = string & number;
-      function foo(arg: Test) {}
+type Test = string & number;
+function foo(arg: Test) {}
     `,
 
     // declaration merging
     `
-      class Foo {
-        readonly bang = 1;
-      }
-      interface Foo {
-        readonly prop: string;
-      }
-      interface Foo {
-        readonly prop2: string;
-      }
-      function foo(arg: Foo) {}
+class Foo {
+  readonly bang = 1;
+}
+interface Foo {
+  readonly prop: string;
+}
+interface Foo {
+  readonly prop2: string;
+}
+function foo(arg: Foo) {}
     `,
     // method made readonly via Readonly<T>
     `
-      class Foo {
-        method() {}
-      }
-      function foo(arg: Readonly<Foo>) {}
+class Foo {
+  method() {}
+}
+function foo(arg: Readonly<Foo>) {}
     `,
     // immutable methods
     `
-      type MyType = Readonly<{
-        prop: string;
-        method(): string;
-      }>;
-      function foo(arg: MyType) {}
+type MyType = Readonly<{
+  prop: string;
+  method(): string;
+}>;
+function foo(arg: MyType) {}
     `,
     `
-      type MyType = {
-        readonly prop: string;
-        readonly method: () => string;
-      };
-      function bar(arg: MyType) {}
+type MyType = {
+  readonly prop: string;
+  readonly method: () => string;
+};
+function bar(arg: MyType) {}
     `,
     // PrivateIdentifier is exempt from this rule
     {
       code: `
-        class Foo {
-          #privateField = 'foo';
-          #privateMember() {}
-        }
-        function foo(arg: Foo) {}
+class Foo {
+  #privateField = 'foo';
+  #privateMember() {}
+}
+function foo(arg: Foo) {}
       `,
     },
     {
       code: `
-        class HasText {
-          readonly #text: string;
-        }
+class HasText {
+  readonly #text: string;
+}
 
-        export function onDone(task: HasText): void {}
+export function onDone(task: HasText): void {}
       `,
     },
     // methods treated as readonly
     {
       code: `
-        type MyType = {
-          readonly prop: string;
-          method(): string;
-        };
-        function foo(arg: MyType) {}
+type MyType = {
+  readonly prop: string;
+  method(): string;
+};
+function foo(arg: MyType) {}
       `,
       options: [
         {
@@ -181,10 +181,10 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        class Foo {
-          method() {}
-        }
-        function foo(arg: Foo) {}
+class Foo {
+  method() {}
+}
+function foo(arg: Foo) {}
       `,
       options: [
         {
@@ -194,10 +194,10 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        interface Foo {
-          method(): void;
-        }
-        function foo(arg: Foo) {}
+interface Foo {
+  method(): void;
+}
+function foo(arg: Foo) {}
       `,
       options: [
         {
@@ -208,8 +208,8 @@ function foo(arg: Test) {}
     // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
     {
       code: `
-        function foo(arg: ReadonlySet<string>) {}
-        function bar(arg: ReadonlyMap<string, string>) {}
+function foo(arg: ReadonlySet<string>) {}
+function bar(arg: ReadonlyMap<string, string>) {}
       `,
       options: [
         {
@@ -220,96 +220,96 @@ function foo(arg: Test) {}
     // parameter properties should work fine
     {
       code: `
-        class Foo {
-          constructor(
-            private arg1: readonly string[],
-            public arg2: readonly string[],
-            protected arg3: readonly string[],
-            readonly arg4: readonly string[],
-          ) {}
-        }
+class Foo {
+  constructor(
+    private arg1: readonly string[],
+    public arg2: readonly string[],
+    protected arg3: readonly string[],
+    readonly arg4: readonly string[],
+  ) {}
+}
       `,
       options: [{ checkParameterProperties: true }],
     },
     {
       code: `
-        class Foo {
-          constructor(
-            private arg1: string[],
-            public arg2: string[],
-            protected arg3: string[],
-            readonly arg4: string[],
-          ) {}
-        }
+class Foo {
+  constructor(
+    private arg1: string[],
+    public arg2: string[],
+    protected arg3: string[],
+    readonly arg4: string[],
+  ) {}
+}
       `,
       options: [{ checkParameterProperties: false }],
     },
 
     // type functions
     `
-      interface Foo {
-        (arg: readonly string[]): void;
-      }
+interface Foo {
+  (arg: readonly string[]): void;
+}
     `, // TSCallSignatureDeclaration
     `
-      interface Foo {
-        new (arg: readonly string[]): void;
-      }
+interface Foo {
+  new (arg: readonly string[]): void;
+}
     `, // TSConstructSignatureDeclaration
     noFormat`class Foo { foo(arg: readonly string[]): void; };`, // TSEmptyBodyFunctionExpression
     'function foo(arg: readonly string[]);', // TSDeclareFunction
     'type Foo = (arg: readonly string[]) => void;', // TSFunctionType
     `
-      interface Foo {
-        foo(arg: readonly string[]): void;
-      }
+interface Foo {
+  foo(arg: readonly string[]): void;
+}
     `, // TSMethodSignature
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/1665
     // directly recursive interface
     `
-      interface Foo {
-        readonly prop: Foo;
-      }
-      function foo(arg: Foo) {}
+interface Foo {
+  readonly prop: Foo;
+}
+function foo(arg: Foo) {}
     `,
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/3396
     // directly recursive union type
     `
-      type MyType = string | readonly MyType[];
+type MyType = string | readonly MyType[];
 
-      function foo<A extends MyType[]>(a: A): MyType[] {
-        return [];
-      }
+function foo<A extends MyType[]>(a: A): MyType[] {
+  return [];
+}
     `,
     // indirectly recursive
     `
-      interface Foo {
-        readonly prop: Bar;
-      }
-      interface Bar {
-        readonly prop: Foo;
-      }
-      function foo(arg: Foo) {}
+interface Foo {
+  readonly prop: Bar;
+}
+interface Bar {
+  readonly prop: Foo;
+}
+function foo(arg: Foo) {}
     `,
     `
-      interface Foo {
-        prop: Readonly<Bar>;
-      }
-      interface Bar {
-        prop: Readonly<Foo>;
-      }
-      function foo(arg: Readonly<Foo>) {}
+interface Foo {
+  prop: Readonly<Bar>;
+}
+interface Bar {
+  prop: Readonly<Foo>;
+}
+function foo(arg: Readonly<Foo>) {}
     `,
     `
-      const sym = Symbol('sym');
+const sym = Symbol('sym');
 
-      interface WithSymbol {
-        [sym]: number;
-      }
+interface WithSymbol {
+  [sym]: number;
+}
 
-      const willNotCrash = (foo: Readonly<WithSymbol>) => {};
+const willNotCrash = (foo: Readonly<WithSymbol>) => {};
     `,
     `
 type TaggedBigInt = bigint & {
@@ -421,15 +421,15 @@ function custom1(arg: TaggedFunction) {}
     `,
     {
       code: `
-        type Callback<T> = (options: T) => void;
+type Callback<T> = (options: T) => void;
 
-        declare const acceptsCallback: <T>(callback: Callback<T>) => void;
+declare const acceptsCallback: <T>(callback: Callback<T>) => void;
 
-        interface CallbackOptions {
-          prop: string;
-        }
+interface CallbackOptions {
+  prop: string;
+}
 
-        acceptsCallback<CallbackOptions>(options => {});
+acceptsCallback<CallbackOptions>(options => {});
       `,
       options: [
         {
@@ -439,11 +439,11 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        interface Obj {
-          readonly [K: string]: Obj;
-        }
+interface Obj {
+  readonly [K: string]: Obj;
+}
 
-        function foo(event: Obj): void {}
+function foo(event: Obj): void {}
       `,
       name: 'circular readonly types (Bug: #4476)',
       options: [
@@ -456,15 +456,15 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        interface Obj1 {
-          readonly [K: string]: Obj2;
-        }
+interface Obj1 {
+  readonly [K: string]: Obj2;
+}
 
-        interface Obj2 {
-          readonly [K: string]: Obj1;
-        }
+interface Obj2 {
+  readonly [K: string]: Obj1;
+}
 
-        function foo(event: Obj1): void {}
+function foo(event: Obj1): void {}
       `,
       name: 'circular readonly types (Bug: #5875)',
       options: [
@@ -478,11 +478,11 @@ function custom1(arg: TaggedFunction) {}
     // Allowlist
     {
       code: `
-        interface Foo {
-          readonly prop: RegExp;
-        }
+interface Foo {
+  readonly prop: RegExp;
+}
 
-        function foo(arg: Foo) {}
+function foo(arg: Foo) {}
       `,
       options: [
         {
@@ -492,11 +492,11 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        interface Foo {
-          prop: RegExp;
-        }
+interface Foo {
+  prop: RegExp;
+}
 
-        function foo(arg: Readonly<Foo>) {}
+function foo(arg: Readonly<Foo>) {}
       `,
       options: [
         {
@@ -506,11 +506,11 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        interface Foo {
-          prop: string;
-        }
+interface Foo {
+  prop: string;
+}
 
-        function foo(arg: Foo) {}
+function foo(arg: Foo) {}
       `,
       options: [
         {
@@ -520,14 +520,14 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        interface Bar {
-          prop: string;
-        }
-        interface Foo {
-          readonly prop: Bar;
-        }
+interface Bar {
+  prop: string;
+}
+interface Foo {
+  readonly prop: Bar;
+}
 
-        function foo(arg: Foo) {}
+function foo(arg: Foo) {}
       `,
       options: [
         {
@@ -537,14 +537,14 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        interface Bar {
-          prop: string;
-        }
-        interface Foo {
-          readonly prop: Bar;
-        }
+interface Bar {
+  prop: string;
+}
+interface Foo {
+  readonly prop: Bar;
+}
 
-        function foo(arg: Foo) {}
+function foo(arg: Foo) {}
       `,
       options: [
         {
@@ -554,24 +554,24 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        interface ViewStyle {
-          field1: number;
-        }
-        type Falsy = undefined | null | false | '';
-        
-        interface RecursiveArray<T> extends Array<
-          T | ReadonlyArray<T> | RecursiveArray<T>
-        > {}
-        
-        type RegisteredStyle<T> = number & { __registeredStyleBrand: T };
-        
-        type StyleProp<T> =
-          | T
-          | RegisteredStyle<T>
-          | RecursiveArray<T | RegisteredStyle<T> | Falsy>
-          | Falsy;
-        
-        function process(arg1: ViewStyle, arg2: StyleProp<ViewStyle>): void {}
+interface ViewStyle {
+  field1: number;
+}
+type Falsy = undefined | null | false | '';
+
+interface RecursiveArray<T> extends Array<
+  T | ReadonlyArray<T> | RecursiveArray<T>
+> {}
+
+type RegisteredStyle<T> = number & { __registeredStyleBrand: T };
+
+type StyleProp<T> =
+  | T
+  | RegisteredStyle<T>
+  | RecursiveArray<T | RegisteredStyle<T> | Falsy>
+  | Falsy;
+
+function process(arg1: ViewStyle, arg2: StyleProp<ViewStyle>): void {}
       `,
       options: [
         {
@@ -581,11 +581,11 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        type MyArray<T> = T | T[] | null;
-        interface Item {
-          value: string;
-        }
-        function process(items: MyArray<Item>): void {}
+type MyArray<T> = T | T[] | null;
+interface Item {
+  value: string;
+}
+function process(items: MyArray<Item>): void {}
       `,
       options: [
         {
@@ -595,18 +595,18 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        declare function foo<T>(callback: (arg: T) => void): void;
-        foo<readonly string[]>(arg => {});
+declare function foo<T>(callback: (arg: T) => void): void;
+foo<readonly string[]>(arg => {});
       `,
       name: 'type inference with readonly type',
     },
     {
       code: `
-        type MyReadonlyType = Readonly<{
-          prop: string;
-        }>;
+type MyReadonlyType = Readonly<{
+  prop: string;
+}>;
 
-        function foo(arg: MyReadonlyType) {}
+function foo(arg: MyReadonlyType) {}
       `,
       name: 'type alias not in allow list but is readonly',
       options: [
@@ -714,16 +714,16 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        function foo(arg: {
-          readonly foo: {
-            bar: string;
-          };
-        }) {}
+function foo(arg: {
+  readonly foo: {
+    bar: string;
+  };
+}) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 10,
+          column: 14,
+          endColumn: 2,
           endLine: 6,
           line: 2,
           messageId: 'shouldBeReadonly',
@@ -733,12 +733,12 @@ function custom1(arg: TaggedFunction) {}
     // object index signatures
     {
       code: `
-        function foo(arg: { [key: string]: string }) {}
+function foo(arg: { [key: string]: string }) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 52,
+          column: 14,
+          endColumn: 44,
           endLine: 2,
           line: 2,
           messageId: 'shouldBeReadonly',
@@ -747,12 +747,12 @@ function custom1(arg: TaggedFunction) {}
     },
     {
       code: `
-        function foo(arg: { [key: number]: string }) {}
+function foo(arg: { [key: number]: string }) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 52,
+          column: 14,
+          endColumn: 44,
           endLine: 2,
           line: 2,
           messageId: 'shouldBeReadonly',
@@ -798,15 +798,15 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        interface Test extends Array<string> {
-          readonly property: boolean;
-        }
-        function foo(arg: Test) {}
+interface Test extends Array<string> {
+  readonly property: boolean;
+}
+function foo(arg: Test) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 31,
+          column: 14,
+          endColumn: 23,
           endLine: 5,
           line: 5,
           messageId: 'shouldBeReadonly',
@@ -815,15 +815,15 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        interface Test extends Array<string> {
-          property: boolean;
-        }
-        function foo(arg: Test) {}
+interface Test extends Array<string> {
+  property: boolean;
+}
+function foo(arg: Test) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 31,
+          column: 14,
+          endColumn: 23,
           endLine: 5,
           line: 5,
           messageId: 'shouldBeReadonly',
@@ -834,40 +834,40 @@ function foo(arg: Test) {}
     // parameter properties should work fine
     {
       code: `
-        class Foo {
-          constructor(
-            private arg1: string[],
-            public arg2: string[],
-            protected arg3: string[],
-            readonly arg4: string[],
-          ) {}
-        }
+class Foo {
+  constructor(
+    private arg1: string[],
+    public arg2: string[],
+    protected arg3: string[],
+    readonly arg4: string[],
+  ) {}
+}
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 35,
+          column: 13,
+          endColumn: 27,
           endLine: 4,
           line: 4,
           messageId: 'shouldBeReadonly',
         },
         {
-          column: 20,
-          endColumn: 34,
+          column: 12,
+          endColumn: 26,
           endLine: 5,
           line: 5,
           messageId: 'shouldBeReadonly',
         },
         {
-          column: 23,
-          endColumn: 37,
+          column: 15,
+          endColumn: 29,
           endLine: 6,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
         {
-          column: 22,
-          endColumn: 36,
+          column: 14,
+          endColumn: 28,
           endLine: 7,
           line: 7,
           messageId: 'shouldBeReadonly',
@@ -877,20 +877,20 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        class Foo {
-          constructor(
-            private arg1: readonly string[],
-            public arg2: readonly string[],
-            protected arg3: readonly string[],
-            readonly arg4: readonly string[],
-            arg5: string[],
-          ) {}
-        }
+class Foo {
+  constructor(
+    private arg1: readonly string[],
+    public arg2: readonly string[],
+    protected arg3: readonly string[],
+    readonly arg4: readonly string[],
+    arg5: string[],
+  ) {}
+}
       `,
       errors: [
         {
-          column: 13,
-          endColumn: 27,
+          column: 5,
+          endColumn: 19,
           endLine: 8,
           line: 8,
           messageId: 'shouldBeReadonly',
@@ -903,14 +903,14 @@ function foo(arg: Test) {}
     {
       // TSCallSignatureDeclaration
       code: `
-        interface Foo {
-          (arg: string[]): void;
-        }
+interface Foo {
+  (arg: string[]): void;
+}
       `,
       errors: [
         {
-          column: 12,
-          endColumn: 25,
+          column: 4,
+          endColumn: 17,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -918,14 +918,14 @@ function foo(arg: Test) {}
     {
       // TSConstructSignatureDeclaration
       code: `
-        interface Foo {
-          new (arg: string[]): void;
-        }
+interface Foo {
+  new (arg: string[]): void;
+}
       `,
       errors: [
         {
-          column: 16,
-          endColumn: 29,
+          column: 8,
+          endColumn: 21,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -966,14 +966,14 @@ function foo(arg: Test) {}
     {
       // TSMethodSignature
       code: `
-        interface Foo {
-          foo(arg: string[]): void;
-        }
+interface Foo {
+  foo(arg: string[]): void;
+}
       `,
       errors: [
         {
-          column: 15,
-          endColumn: 28,
+          column: 7,
+          endColumn: 20,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -983,15 +983,15 @@ function foo(arg: Test) {}
     // directly recursive
     {
       code: `
-        interface Foo {
-          prop: Foo;
-        }
-        function foo(arg: Foo) {}
+interface Foo {
+  prop: Foo;
+}
+function foo(arg: Foo) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 30,
+          column: 14,
+          endColumn: 22,
           line: 5,
           messageId: 'shouldBeReadonly',
         },
@@ -999,15 +999,15 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        interface Foo {
-          prop: Foo;
-        }
-        function foo(arg: Readonly<Foo>) {}
+interface Foo {
+  prop: Foo;
+}
+function foo(arg: Readonly<Foo>) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 40,
+          column: 14,
+          endColumn: 32,
           line: 5,
           messageId: 'shouldBeReadonly',
         },
@@ -1016,18 +1016,18 @@ function foo(arg: Test) {}
     // indirectly recursive
     {
       code: `
-        interface Foo {
-          prop: Bar;
-        }
-        interface Bar {
-          readonly prop: Foo;
-        }
-        function foo(arg: Foo) {}
+interface Foo {
+  prop: Bar;
+}
+interface Bar {
+  readonly prop: Foo;
+}
+function foo(arg: Foo) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 30,
+          column: 14,
+          endColumn: 22,
           line: 8,
           messageId: 'shouldBeReadonly',
         },
@@ -1035,18 +1035,18 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        interface Foo {
-          prop: Bar;
-        }
-        interface Bar {
-          readonly prop: Foo;
-        }
-        function foo(arg: Readonly<Foo>) {}
+interface Foo {
+  prop: Bar;
+}
+interface Bar {
+  readonly prop: Foo;
+}
+function foo(arg: Readonly<Foo>) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 40,
+          column: 14,
+          endColumn: 32,
           line: 8,
           messageId: 'shouldBeReadonly',
         },
@@ -1054,18 +1054,18 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        interface Foo {
-          prop: Readonly<Bar>;
-        }
-        interface Bar {
-          prop: Readonly<Foo>;
-        }
-        function foo(arg: Foo) {}
+interface Foo {
+  prop: Readonly<Bar>;
+}
+interface Bar {
+  prop: Readonly<Foo>;
+}
+function foo(arg: Foo) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 30,
+          column: 14,
+          endColumn: 22,
           line: 8,
           messageId: 'shouldBeReadonly',
         },
@@ -1090,18 +1090,18 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        const sym = Symbol('sym');
+const sym = Symbol('sym');
 
-        interface WithSymbol {
-          [sym]: number;
-        }
+interface WithSymbol {
+  [sym]: number;
+}
 
-        const willNot = (foo: WithSymbol) => {};
+const willNot = (foo: WithSymbol) => {};
       `,
       errors: [
         {
-          column: 26,
-          endColumn: 41,
+          column: 18,
+          endColumn: 33,
           line: 8,
           messageId: 'shouldBeReadonly',
         },
@@ -1109,20 +1109,20 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        type Callback<T> = (options: T) => void;
+type Callback<T> = (options: T) => void;
 
-        declare const acceptsCallback: <T>(callback: Callback<T>) => void;
+declare const acceptsCallback: <T>(callback: Callback<T>) => void;
 
-        interface CallbackOptions {
-          prop: string;
-        }
+interface CallbackOptions {
+  prop: string;
+}
 
-        acceptsCallback<CallbackOptions>((options: CallbackOptions) => {});
+acceptsCallback<CallbackOptions>((options: CallbackOptions) => {});
       `,
       errors: [
         {
-          column: 43,
-          endColumn: 67,
+          column: 35,
+          endColumn: 59,
           line: 10,
           messageId: 'shouldBeReadonly',
         },
@@ -1136,16 +1136,16 @@ function foo(arg: Test) {}
     // Mutable methods.
     {
       code: `
-        type MyType = {
-          readonly prop: string;
-          method(): string;
-        };
-        function foo(arg: MyType) {}
+type MyType = {
+  readonly prop: string;
+  method(): string;
+};
+function foo(arg: MyType) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 33,
+          column: 14,
+          endColumn: 25,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
@@ -1154,35 +1154,35 @@ function foo(arg: Test) {}
     // https://github.com/typescript-eslint/typescript-eslint/issues/3405
     {
       code: `
-        type MyType<T> = {
-          [K in keyof T]: 'cat' | 'dog' | T[K];
-        };
+type MyType<T> = {
+  [K in keyof T]: 'cat' | 'dog' | T[K];
+};
 
-        function method<A extends any[] = string[]>(value: MyType<A>) {
-          return value;
-        }
+function method<A extends any[] = string[]>(value: MyType<A>) {
+  return value;
+}
 
-        method(['cat', 'dog']);
-        method<'mouse'[]>(['cat', 'mouse']);
+method(['cat', 'dog']);
+method<'mouse'[]>(['cat', 'mouse']);
       `,
       errors: [{ line: 6, messageId: 'shouldBeReadonly' }],
     },
     {
       code: `
-        declare const fooFactory: <T>(x: readonly T[]) => (f: (x: T) => void) => void;
-        fooFactory([{ abc: 42 }])(x => {});
+declare const fooFactory: <T>(x: readonly T[]) => (f: (x: T) => void) => void;
+fooFactory([{ abc: 42 }])(x => {});
       `,
       errors: [{ line: 3, messageId: 'shouldBeReadonly' }],
     },
     // Allowlist
     {
       code: `
-        function foo(arg: RegExp) {}
+function foo(arg: RegExp) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 33,
+          column: 14,
+          endColumn: 25,
           line: 2,
           messageId: 'shouldBeReadonly',
         },
@@ -1195,16 +1195,16 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        interface Foo {
-          readonly prop: RegExp;
-        }
+interface Foo {
+  readonly prop: RegExp;
+}
 
-        function foo(arg: Foo) {}
+function foo(arg: Foo) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 30,
+          column: 14,
+          endColumn: 22,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
@@ -1217,16 +1217,16 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        interface Foo {
-          readonly prop: RegExp;
-        }
+interface Foo {
+  readonly prop: RegExp;
+}
 
-        function foo(arg: Foo) {}
+function foo(arg: Foo) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 30,
+          column: 14,
+          endColumn: 22,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
@@ -1239,16 +1239,16 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        interface Foo {
-          readonly prop: RegExp;
-        }
+interface Foo {
+  readonly prop: RegExp;
+}
 
-        function foo(arg: Foo) {}
+function foo(arg: Foo) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 30,
+          column: 14,
+          endColumn: 22,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
@@ -1261,12 +1261,12 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        function foo(arg: RegExp) {}
+function foo(arg: RegExp) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 33,
+          column: 14,
+          endColumn: 25,
           line: 2,
           messageId: 'shouldBeReadonly',
         },
@@ -1289,12 +1289,12 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        function foo(arg: RegExp) {}
+function foo(arg: RegExp) {}
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 33,
+          column: 14,
+          endColumn: 25,
           line: 2,
           messageId: 'shouldBeReadonly',
         },
@@ -1307,13 +1307,13 @@ function foo(arg: Test) {}
     },
     {
       code: `
-        declare function foo<T>(callback: (arg: T) => void): void;
-        foo<string[]>(arg => {});
+declare function foo<T>(callback: (arg: T) => void): void;
+foo<string[]>(arg => {});
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 26,
+          column: 15,
+          endColumn: 18,
           line: 3,
           messageId: 'shouldBeReadonly',
         },
