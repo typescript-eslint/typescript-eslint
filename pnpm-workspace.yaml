@@ -34,14 +34,12 @@ catalog:
   rimraf: ^5.0.10
   tsx: ^4.7.2
   typescript: '>=4.8.4 <6.1.0'
+  vite: ^7.3.0
   vitest: ^4.0.18
   yaml: ^2.8.2
 
+# The typescript version range is very loose, allowing pnpm to install 5.8.2,
+# which is the version that's being used by `@microsoft/api-extractor`, so we
+# override it.
 overrides:
-  # The typescript version range is very loose, allowing pnpm to install 5.8.2,
-  # which is the version that's being used by `@microsoft/api-extractor`, so we
-  # override it.
   typescript: 'npm:@typescript/typescript6@6.0.2'
-
-  # Vite 8 doesn't support Node 18.
-  vite: ^7.3.0
