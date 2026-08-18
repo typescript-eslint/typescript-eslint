@@ -871,9 +871,9 @@ myAsyncFunction();
     "document.addEventListener('click', () => void fetch('/api/click'));",
 
     `
-      document.addEventListener('click', () => {
-        void fetch('/api/click');
-      });
+document.addEventListener('click', () => {
+  void fetch('/api/click');
+});
     `,
 
     // This code makes TypeScript type checker to crash with infinite recursion
@@ -5724,14 +5724,14 @@ await (async () => {
 
     {
       code: `
-        document.addEventListener('click', () => {
-          void fetch('/api/click');
-        });
+document.addEventListener('click', () => {
+  void fetch('/api/click');
+});
       `,
       errors: [
         {
-          column: 11,
-          endColumn: 36,
+          column: 3,
+          endColumn: 28,
           endLine: 3,
           line: 3,
           messageId: 'floating',
@@ -5739,9 +5739,9 @@ await (async () => {
             {
               messageId: 'floatingFixAwait',
               output: `
-        document.addEventListener('click', () => {
-          await fetch('/api/click');
-        });
+document.addEventListener('click', () => {
+  await fetch('/api/click');
+});
       `,
             },
           ],
