@@ -343,7 +343,7 @@ jobs:
         run: pnpm exec nx run ast-spec:clean-fixtures
 
       - name: Regenerate ast-spec fixture snapshots
-        run: pnpm exec nx test ast-spec -u
+        run: pnpm exec nx test ast-spec -u --skip-nx-cache
         env:
           CI: true
 
@@ -380,7 +380,7 @@ jobs:
         run: pnpm exec nx run scope-manager:clean-fixtures
 
       - name: Regenerate scope-manager fixture snapshots
-        run: pnpm exec nx test scope-manager -u
+        run: pnpm exec nx test scope-manager -u --skip-nx-cache
         env:
           CI: true
 
