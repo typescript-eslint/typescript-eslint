@@ -18,6 +18,11 @@ type Unify =
       otherSignature: SignatureDefinition;
     }
   | {
+      kind: 'all-parameters-are-same';
+      signature0: SignatureDefinition;
+      signature1: SignatureDefinition;
+    }
+  | {
       kind: 'single-parameter-difference';
       p0: TSESTree.Parameter;
       p1: TSESTree.Parameter;
@@ -52,6 +57,7 @@ type MethodDefinition =
   TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition;
 
 export type MessageIds =
+  | 'allParametersAreSame'
   | 'omittingRestParameter'
   | 'omittingSingleParameter'
   | 'singleParameterDifference';
@@ -74,6 +80,7 @@ export default createRule<Options, MessageIds>({
       recommended: 'strict',
     },
     messages: {
+      allParametersAreSame: '{{failureStringStart}} with identical parameters.',
       omittingRestParameter: '{{failureStringStart}} with a rest parameter.',
       omittingSingleParameter:
         '{{failureStringStart}} with an optional parameter.',
@@ -160,7 +167,25 @@ export default createRule<Options, MessageIds>({
                 failureStringStart: failureStringStart(lineOfOtherOverload),
               },
             });
+            break;
           }
+          case 'all-parameters-are-same': {
+            const { signature0, signature1 } = unify;
+            const lineOfOtherOverload = only2
+              ? undefined
+              : signature0.loc.start.line;
+
+            context.report({
+              node: signature1,
+              messageId: 'allParametersAreSame',
+              data: {
+                failureStringStart: failureStringStart(lineOfOtherOverload),
+              },
+            });
+            break;
+          }
+          default:
+            unify satisfies never;
         }
       }
     }
@@ -199,7 +224,7 @@ export default createRule<Options, MessageIds>({
       }
 
       return a.params.length === b.params.length
-        ? signaturesDifferBySingleParameter(a, b)
+        ? signaturesHaveSameAmountOfParameters(a, b)
         : signaturesDifferByOptionalOrRestParameter(a, b);
     }
 
@@ -249,8 +274,11 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    /** Detect `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`. */
-    function signaturesDifferBySingleParameter(
+    /**
+     * Detect no difference, i.e. `a(x: number, y: string)` and `a(x: number, y: string)`,
+     * or one param difference, i.e. `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`.
+     */
+    function signaturesHaveSameAmountOfParameters(
       signature0: SignatureDefinition,
       signature1: SignatureDefinition,
     ): Unify | undefined {
@@ -270,7 +298,11 @@ export default createRule<Options, MessageIds>({
         parametersAreEqual,
       );
       if (index == null) {
-        return undefined;
+        return {
+          kind: 'all-parameters-are-same',
+          signature0,
+          signature1,
+        };
       }
 
       // If remaining arrays are equal, the signatures differ by just one parameter type
