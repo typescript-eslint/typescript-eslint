@@ -2790,5 +2790,18 @@ async function* cb() {
       `,
       errors: [{ column: 10, line: 5, messageId: 'nonVoidFunc' }],
     },
+    {
+      code: `
+class Base {
+  static run(): void {}
+}
+class Child extends Base {
+  static run() {
+    return 1;
+  }
+}
+      `,
+      errors: [{ column: 5, line: 7, messageId: 'nonVoidReturn' }],
+    },
   ],
 });

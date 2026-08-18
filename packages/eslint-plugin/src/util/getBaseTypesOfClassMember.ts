@@ -2,7 +2,8 @@ import type {
   TSESTree,
   ParserServicesWithTypeInformation,
 } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
+
+import * as ts from 'typescript';
 
 /**
  * Given a member of a class which extends another class or implements an interface,
@@ -26,9 +27,19 @@ export function* getBaseTypesOfClassMember(
     return;
   }
   const classNode = memberTsNode.parent as ts.ClassLikeDeclaration;
+  const isStaticMember = memberNode.static;
   for (const clauseNode of classNode.heritageClauses ?? []) {
+    if (
+      isStaticMember &&
+      clauseNode.token === ts.SyntaxKind.ImplementsKeyword
+    ) {
+      // `implements` constrains only the instance side of a class.
+      continue;
+    }
     for (const baseTypeNode of clauseNode.types) {
-      const baseType = checker.getTypeAtLocation(baseTypeNode);
+      const baseType = checker.getTypeAtLocation(
+        isStaticMember ? baseTypeNode.expression : baseTypeNode,
+      );
       const baseMemberSymbol = checker.getPropertyOfType(
         baseType,
         memberSymbol.name,
