@@ -72,6 +72,14 @@ Sometimes the cheap and expensive conditions are combined in one `&&`. Order the
 ) {
 ```
 
+## Do the shared work once
+
+The other recurring cost is repeated work across nodes. A visitor that walks the scope chain, or rebuilds a set of names, once per reported node does that work as many times as the rule fires — and real files reach many dozens or hundreds of matching variables.
+
+When a visitor derives the same data on every call, hoist it into a `Map` or `Set` created once in `create()` and consulted per node. Generating a non-colliding name is the usual example: collecting every declared name and then looping to find a free suffix costs a full walk per report, where a `Map<string, number>` of how many collisions each base name has already had answers it in one lookup.
+
+The same caution applies to caches, in the other direction: a cache keyed on a node only pays off if the same node is asked about more than once.
+
 ## Things to verify before claiming a win
 
 - **No behavior change.** Reordering must not change what the rule reports. Re-run the rule's existing tests; they should pass unchanged. If a test would need editing, the reorder changed behavior and is wrong.
@@ -83,4 +91,4 @@ Sometimes the cheap and expensive conditions are combined in one `&&`. Order the
 ## Reference
 
 - Pattern origin: PR #12296 (defer type checks to improve rule performance) and issue #12370.
-- [Performance troubleshooting docs](../../docs/troubleshooting/typed-linting/Performance.mdx).
+- [Performance troubleshooting docs](../../../docs/troubleshooting/typed-linting/Performance.mdx).
