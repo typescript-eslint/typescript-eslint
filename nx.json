@@ -17,6 +17,7 @@
     {
       "plugin": "@nx/vitest",
       "exclude": ["*"],
+      "outputs": ["{projectRoot}/coverage", "{projectRoot}/**/*.shot"],
       "options": {
         "testTargetName": "test",
         "typecheckTargetName": "vitest:typecheck"
@@ -50,7 +51,7 @@
       "executor": "nx:run-commands",
       "dependsOn": ["build", "^typecheck:tsgo"],
       "options": {
-        "command": "tsgo --build --emitDeclarationOnly",
+        "command": "tsc --build --emitDeclarationOnly",
         "cwd": "{projectRoot}"
       },
       "outputs": ["{projectRoot}/dist"]
@@ -107,5 +108,6 @@
   "nxCloudId": "60b38765e74d975e3faae5ad",
   "sync": {
     "applyChanges": true
-  }
+  },
+  "analytics": false
 }

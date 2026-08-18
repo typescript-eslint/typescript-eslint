@@ -10,8 +10,7 @@ Snapshot Diff:
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
           async: false,
@@ -99,8 +98,7 @@ Snapshot Diff:
       },
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
           async: false,
@@ -188,8 +186,7 @@ Snapshot Diff:
       },
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: FunctionDeclaration {
           type: 'FunctionDeclaration',
           async: false,
@@ -350,9 +347,11 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
-    range: [73, 220],
+-   range: [73, 220],
++   range: [0, 220],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 8 },
     },
   }

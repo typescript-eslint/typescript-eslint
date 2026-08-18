@@ -1,0 +1,57 @@
+name: Slop Unlink Issues
+
+on:
+  # WARNING: Using pull_request_target here because we need write permissions to
+  # edit PRs from forks.
+  #
+  # NEVER EVER execute any code from the fork (including checkout, install, scripts, etc.)
+  pull_request_target:
+    types: [closed] # zizmor: ignore[dangerous-triggers] See warning above.
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  unlink-issues:
+    name: Unlink Issues
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    # Include only non-merged PRs with AI slop labels.
+    if: >-
+      github.event.pull_request.merged == false
+      && (contains(github.event.pull_request.labels.*.name, 'AI Slop')
+      || contains(github.event.pull_request.labels.*.name, 'spam:automated-account')
+      || contains(github.event.pull_request.labels.*.name, 'spam:community-flagged')
+      || contains(github.event.pull_request.labels.*.name, 'spam:likely-slop')
+      || contains(github.event.pull_request.labels.*.name, 'spam:mixed-signals'))
+
+    steps:
+      # There is no API to unlink an issue from a PR, so we need to manually edit
+      # the PR description and replace the linked issues with a placeholder.
+      - name: Unlink issues from slop PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          issues=$(gh pr view "$PR" --repo "$REPO" --json closingIssuesReferences --jq '.closingIssuesReferences[].number')
+
+          if [ -z "$issues" ]; then
+            echo 'No linked issues.'
+            exit 0
+          fi
+
+          echo "Unlinking: $issues"
+
+          body=$(gh pr view "$PR" --repo "$REPO" --json body --jq .body)
+
+          for issue in $issues; do
+            body=$(printf '%s' "$body" | perl -pe "s/#$issue\b/#~$issue~/g")
+          done
+
+          gh pr edit "$PR" --repo "$REPO" --body "$body"

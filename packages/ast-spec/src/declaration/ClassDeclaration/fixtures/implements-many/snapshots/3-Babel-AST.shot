@@ -29,8 +29,8 @@ Program {
         },
       },
       implements: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSClassImplements {
+          type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
             decorators: [],
@@ -50,8 +50,8 @@ Program {
             end: { column: 27, line: 1 },
           },
         },
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSClassImplements {
+          type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
             decorators: [],
@@ -71,8 +71,8 @@ Program {
             end: { column: 37, line: 1 },
           },
         },
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSClassImplements {
+          type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
             decorators: [],

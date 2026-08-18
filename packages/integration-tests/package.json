@@ -19,7 +19,7 @@
     "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "devDependencies": {
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "vitest": "catalog:",

@@ -1,3 +1,75 @@
+## 8.67.0 (2026-08-10)
+
+### 🚀 Features
+
+- **typescript-eslint:** export basic globs for using tseslint ([#12105](https://github.com/typescript-eslint/typescript-eslint/pull/12105))
+
+### ❤️ Thank You
+
+- Claude Sonnet 5
+- Evyatar Daud @StyleShit
+- Josh Goldberg
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.67.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.66.0 (2026-08-03)
+
+### 🚀 Features
+
+- **typescript-estree:** handle import.defer() as ImportExpression ([#12609](https://github.com/typescript-eslint/typescript-eslint/pull/12609))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-conversion] ignore shadowed built-ins ([#12590](https://github.com/typescript-eslint/typescript-eslint/pull/12590))
+- **eslint-plugin:** [prefer-nullish-coalescing] handle shadowed Boolean calls ([#12591](https://github.com/typescript-eslint/typescript-eslint/pull/12591))
+- **eslint-plugin:** [no-useless-default-assignment] don't report defaults used by other overloads ([#12607](https://github.com/typescript-eslint/typescript-eslint/pull/12607))
+- **eslint-plugin:** [no-unnecessary-type-parameters] check MappedType key remapping ([#12588](https://github.com/typescript-eslint/typescript-eslint/pull/12588))
+- **eslint-plugin:** [class-literal-property-style] preserve type annotations and don't drop decorators ([#12617](https://github.com/typescript-eslint/typescript-eslint/pull/12617))
+- **website:** list `onUnsupportedTypeScriptVersion` in parser options ([#12585](https://github.com/typescript-eslint/typescript-eslint/pull/12585))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Kirk Waiblinger @kirkwaiblinger
+- Steffen Schroeder
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.66.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.65.0 (2026-07-20)
+
+### 🚀 Features
+
+- add warning when TS 7 is detected ([#12529](https://github.com/typescript-eslint/typescript-eslint/pull/12529))
+- **eslint-plugin:** [no-restricted-imports] deprecate extension rule ([#12527](https://github.com/typescript-eslint/typescript-eslint/pull/12527), [#19562](https://github.com/typescript-eslint/typescript-eslint/issues/19562), [#11889](https://github.com/typescript-eslint/typescript-eslint/issues/11889))
+- **eslint-plugin:** [no-shadow] specialized error on enum declaration and member shadowing ([#12578](https://github.com/typescript-eslint/typescript-eslint/pull/12578))
+- **parser:** add onUnsupportedTypeScriptVersion option to error on unsupported TypeScript versions ([#12465](https://github.com/typescript-eslint/typescript-eslint/pull/12465))
+- **typescript-estree:** throw for invalid import defer syntax ([#12552](https://github.com/typescript-eslint/typescript-eslint/pull/12552))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-string-starts-ends-with] handle escaped $ ending regex literals ([#12515](https://github.com/typescript-eslint/typescript-eslint/pull/12515))
+- **eslint-plugin:** [unbound-method] report unbound methods accessed via member expression on union types ([#12448](https://github.com/typescript-eslint/typescript-eslint/pull/12448))
+- **eslint-plugin:** [no-unnecessary-parameter-property-assignment] don't flag computed assignments with a variable key ([#12568](https://github.com/typescript-eslint/typescript-eslint/pull/12568))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- Serhii Leniv @Serhii-Leniv
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.65.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.64.0 (2026-07-13)
 
 ### 🚀 Features

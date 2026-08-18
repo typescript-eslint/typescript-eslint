@@ -1,5 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > legacy-fixtures > basics > function-with-object-type-with-optional-properties > AST Alignment - Token`]
-Snapshot Diff:
-Compared values have no visual difference.
