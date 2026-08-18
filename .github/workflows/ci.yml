@@ -185,6 +185,9 @@ jobs:
             run: pnpm run stylelint
             working-directory: packages/website
 
+          - name: Run Deduplicate Check
+            run: pnpm run deduplicate
+
   lint_with_build:
     name: Lint with build
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
@@ -194,7 +197,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lint-task: ['deduplicate', 'typecheck', 'typecheck:tsgo', 'knip']
+        lint-task: ['typecheck', 'typecheck:tsgo', 'knip']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
