@@ -495,6 +495,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'nonPromiseAwait',
         },
@@ -514,6 +517,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'nonPromiseAwait',
         },
@@ -534,6 +540,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'nonPromiseAwait',
         },
@@ -549,6 +558,9 @@ async function test() {
       code: 'const test = async () => await 1;',
       errors: [
         {
+          column: 26,
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'nonPromiseAwait',
         },
@@ -556,9 +568,83 @@ async function test() {
       output: 'const test = async () => 1;',
     },
     {
+      code: 'const test = async () => await { a: 1 };',
+      errors: [
+        {
+          column: 26,
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: 'const test = async () => ({ a: 1 });',
+    },
+    {
+      code: 'const test = async () => await { a: 1 }.a;',
+      errors: [
+        {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: 'const test = async () => ({ a: 1 }.a);',
+    },
+    {
+      code: noFormat`const test = async () => await ({ a: 1 });`,
+      errors: [
+        {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: 'const test = async () => ({ a: 1 });',
+    },
+    {
+      code: noFormat`const test = async () => (await { a: 1 });`,
+      errors: [
+        {
+          column: 27,
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: 'const test = async () => ({ a: 1 });',
+    },
+    {
+      code: `
+declare const cond: boolean;
+const test = async () => (cond ? await { a: 1 } : 2);
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 48,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: `
+declare const cond: boolean;
+const test = async () => (cond ? { a: 1 } : 2);
+      `,
+    },
+    {
       code: 'const test = async () => await /* comment */ 1;',
       errors: [
         {
+          column: 26,
+          endColumn: 47,
+          endLine: 1,
           line: 1,
           messageId: 'nonPromiseAwait',
         },
@@ -566,14 +652,43 @@ async function test() {
       output: 'const test = async () => /* comment */ 1;',
     },
     {
+      code: 'const test = async () => await /* comment */ { a: 1 };',
+      errors: [
+        {
+          column: 26,
+          endColumn: 54,
+          endLine: 1,
+          line: 1,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: 'const test = async () => /* comment */ ({ a: 1 });',
+    },
+    {
       code: 'const test = async () => await Promise.resolve(1);',
       errors: [
         {
+          column: 26,
+          endColumn: 50,
+          endLine: 1,
           line: 1,
           messageId: 'disallowedPromiseAwait',
         },
       ],
       output: 'const test = async () => Promise.resolve(1);',
+    },
+    {
+      code: 'const test = async () => await { then(cb: () => void) {} };',
+      errors: [
+        {
+          column: 26,
+          endColumn: 59,
+          endLine: 1,
+          line: 1,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+      output: 'const test = async () => ({ then(cb: () => void) {} });',
     },
 
     {
@@ -590,6 +705,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 30,
+          endLine: 4,
           line: 4,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -610,6 +728,9 @@ async function test() {
           ],
         },
         {
+          column: 12,
+          endColumn: 30,
+          endLine: 6,
           line: 6,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -647,6 +768,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 30,
+          endLine: 4,
           line: 4,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -667,6 +791,9 @@ async function test() {
           ],
         },
         {
+          column: 12,
+          endColumn: 30,
+          endLine: 6,
           line: 6,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -704,6 +831,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 30,
+          endLine: 4,
           line: 4,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -724,6 +854,9 @@ async function test() {
           ],
         },
         {
+          column: 12,
+          endColumn: 30,
+          endLine: 6,
           line: 6,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -756,6 +889,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'disallowedPromiseAwait',
         },
@@ -774,6 +910,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'nonPromiseAwait',
         },
@@ -789,6 +928,9 @@ async function test() {
       code: 'const test = async () => await 1;',
       errors: [
         {
+          column: 26,
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'nonPromiseAwait',
         },
@@ -800,6 +942,9 @@ async function test() {
       code: 'const test = async () => await Promise.resolve(1);',
       errors: [
         {
+          column: 26,
+          endColumn: 50,
+          endLine: 1,
           line: 1,
           messageId: 'disallowedPromiseAwait',
         },
@@ -815,6 +960,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'disallowedPromiseAwait',
         },
@@ -834,6 +982,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'nonPromiseAwait',
         },
@@ -859,6 +1010,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 36,
+          endLine: 4,
           line: 4,
           messageId: 'disallowedPromiseAwait',
           suggestions: [
@@ -879,6 +1033,9 @@ async function test() {
           ],
         },
         {
+          column: 12,
+          endColumn: 36,
+          endLine: 6,
           line: 6,
           messageId: 'disallowedPromiseAwait',
           suggestions: [
@@ -910,6 +1067,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'disallowedPromiseAwait',
         },
@@ -929,6 +1089,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'nonPromiseAwait',
         },
@@ -948,6 +1111,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'requiredPromiseAwait',
         },
@@ -963,6 +1129,9 @@ async function test() {
       code: 'const test = async () => Promise.resolve(1);',
       errors: [
         {
+          column: 26,
+          endColumn: 44,
+          endLine: 1,
           line: 1,
           messageId: 'requiredPromiseAwait',
         },
@@ -982,10 +1151,16 @@ async function buzz() {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 31,
+          endLine: 7,
           line: 7,
           messageId: 'requiredPromiseAwait',
         },
         {
+          column: 34,
+          endColumn: 39,
+          endLine: 7,
           line: 7,
           messageId: 'requiredPromiseAwait',
         },
@@ -1016,18 +1191,30 @@ async function buzz() {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 18,
+          endLine: 9,
           line: 9,
           messageId: 'requiredPromiseAwait',
         },
         {
+          column: 21,
+          endColumn: 26,
+          endLine: 9,
           line: 9,
           messageId: 'requiredPromiseAwait',
         },
         {
+          column: 15,
+          endColumn: 20,
+          endLine: 10,
           line: 10,
           messageId: 'requiredPromiseAwait',
         },
         {
+          column: 23,
+          endColumn: 28,
+          endLine: 10,
           line: 10,
           messageId: 'requiredPromiseAwait',
         },
@@ -1056,10 +1243,16 @@ async function buzz() {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 33,
+          endLine: 5,
           line: 5,
           messageId: 'nonPromiseAwait',
         },
         {
+          column: 36,
+          endColumn: 41,
+          endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
         },
@@ -1082,10 +1275,16 @@ const buzz = async () => ((await foo()) ? bar() : baz());
       `,
       errors: [
         {
+          column: 43,
+          endColumn: 48,
+          endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
         },
         {
+          column: 51,
+          endColumn: 56,
+          endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
         },
@@ -1106,10 +1305,16 @@ const buzz = async () => ((await foo()) ? await 1 : bar());
       `,
       errors: [
         {
+          column: 43,
+          endColumn: 50,
+          endLine: 4,
           line: 4,
           messageId: 'nonPromiseAwait',
         },
         {
+          column: 53,
+          endColumn: 58,
+          endLine: 4,
           line: 4,
           messageId: 'requiredPromiseAwait',
         },
@@ -1135,6 +1340,9 @@ async function test<T>(): Promise<T> {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 36,
+          endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1174,6 +1382,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 34,
+          endLine: 10,
           line: 10,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1211,6 +1422,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 30,
+          endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1241,6 +1455,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 39,
+          endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1271,6 +1488,9 @@ async function func1() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 25,
+          endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1301,6 +1521,9 @@ async function func2() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1333,6 +1556,9 @@ async function func3() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 21,
+          endLine: 7,
           line: 7,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1369,6 +1595,9 @@ class X {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 24,
+          endLine: 8,
           line: 8,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1408,6 +1637,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 42,
+          endLine: 10,
           line: 10,
           messageId: 'disallowedPromiseAwait',
         },
@@ -1440,6 +1672,9 @@ async function f() {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 30,
+          endLine: 7,
           line: 7,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1476,6 +1711,9 @@ async function f() {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 30,
+          endLine: 7,
           line: 7,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1516,6 +1754,9 @@ async function f() {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 32,
+          endLine: 9,
           line: 9,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1556,6 +1797,9 @@ async function f() {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 32,
+          endLine: 7,
           line: 7,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1593,6 +1837,9 @@ async function f() {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 32,
+          endLine: 7,
           line: 7,
           messageId: 'requiredPromiseAwait',
           suggestions: [
@@ -1629,6 +1876,9 @@ async function f() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 30,
+          endLine: 7,
           line: 7,
           messageId: 'requiredPromiseAwait',
         },
@@ -1662,6 +1912,9 @@ async function outerFunction() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 27,
+          endLine: 11,
           line: 11,
           messageId: 'disallowedPromiseAwait',
         },
@@ -1697,6 +1950,9 @@ async function outerFunction() {
       `,
       errors: [
         {
+          column: 37,
+          endColumn: 52,
+          endLine: 10,
           line: 10,
           messageId: 'disallowedPromiseAwait',
         },
@@ -1723,6 +1979,9 @@ async function wrapper<T extends number>(value: T) {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'nonPromiseAwait',
         },
@@ -1743,6 +2002,9 @@ class C<T> {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'nonPromiseAwait',
         },
@@ -1765,6 +2027,9 @@ class C<R extends number> {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'nonPromiseAwait',
         },
