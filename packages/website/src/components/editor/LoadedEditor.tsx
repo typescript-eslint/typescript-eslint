@@ -129,6 +129,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       parseTSConfig(tsconfig).compilerOptions,
     );
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- monaco is only available as a type import here
       config as Monaco.languages.typescript.CompilerOptions,
     );
   }, [monaco, tsconfig]);
@@ -329,6 +330,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     setDecorations(prevDecorations =>
       tabs.code.deltaDecorations(
         prevDecorations,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- monaco is only available as a type import here
         selectedRange && showAST
           ? [
               {
