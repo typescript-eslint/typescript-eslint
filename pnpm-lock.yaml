@@ -78,6 +78,7 @@ catalogs:
 
 overrides:
   typescript: npm:@typescript/typescript6@6.0.2
+  vite: ^7.3.0
 
 importers:
 
@@ -3243,7 +3244,7 @@ packages:
     resolution: {integrity: sha512-tkFtJOOSq8BTRqTSmUwX7WLewuXHMxA28hP4ZCqfu8YAgCySnGyNqQqx/W0QOC1MSvvpIHFMUbSqZvV/UduOiA==}
     peerDependencies:
       '@nx/eslint': 22.7.6
-      vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+      vite: ^7.3.0
       vitest: ^1.0.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
     peerDependenciesMeta:
       '@nx/eslint':
@@ -4648,7 +4649,7 @@ packages:
     resolution: {integrity: sha512-v0xaezt+DKEmKfaxg133ldzADrwLGd7Ze1MfQQTYfvs8OqZIwbxyxaYURivwV7sWy5fqn3rH5uOrSp07bp44Ow==}
     peerDependencies:
       msw: ^2.4.9
-      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
+      vite: ^7.3.0
     peerDependenciesMeta:
       msw:
         optional: true
@@ -9935,7 +9936,7 @@ packages:
       '@vitest/ui': 4.1.10
       happy-dom: '*'
       jsdom: '*'
-      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
+      vite: ^7.3.0
     peerDependenciesMeta:
       '@edge-runtime/vm':
         optional: true
