@@ -369,7 +369,7 @@ export default createRule<Options, MessageIds>({
           error instanceof RangeError &&
           error.message === 'Maximum call stack size exceeded'
         ) {
-          return true;
+          return false;
         }
         throw error;
       }
