@@ -412,6 +412,87 @@ function f(this: void | {}, a: boolean): void {}
   invalid: [
     {
       code: `
+declare function f(a: number): void;
+declare function f(a: number): void;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'allParametersAreSame',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(a: number): void;
+declare function f(a: number): void;
+declare function f(a: string): string;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 2 can be combined into one signature',
+          },
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'allParametersAreSame',
+        },
+      ],
+    },
+    {
+      code: `
+function f(a: number): void;
+function f(a: number): void;
+function f(a: number): void {}
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'allParametersAreSame',
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  f(a: number): void;
+  f(a: number): void;
+  f(a: number): void {}
+}
+      `,
+      errors: [
+        {
+          column: 4,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'allParametersAreSame',
+        },
+      ],
+    },
+    {
+      code: `
 function f(a: number): void;
 function f(b: string): void;
 function f(a: number | string): void {}
