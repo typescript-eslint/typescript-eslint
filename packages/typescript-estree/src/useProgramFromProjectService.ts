@@ -15,7 +15,11 @@ import type { MutableParseSettings } from './parseSettings';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import { createNoProgram } from './create-program/createSourceFile';
-import { DEFAULT_EXTRA_FILE_EXTENSIONS } from './create-program/shared';
+import {
+  DEFAULT_EXTRA_FILE_EXTENSIONS,
+  getCanonicalFileName,
+  getCanonicalRealPath,
+} from './create-program/shared';
 import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
 
 const RELOAD_THROTTLE_MS = 250;
@@ -51,13 +55,18 @@ const updateExtraFileExtensions = (
   }
 };
 
+interface OpenedClientFile {
+  filePathAbsolute: string;
+  opened: ts.server.OpenConfiguredProjectResult;
+}
+
 function openClientFileFromProjectService(
   defaultProjectMatchedFiles: Set<string>,
   isDefaultProjectAllowed: boolean,
   filePathAbsolute: string,
   parseSettings: Readonly<MutableParseSettings>,
   serviceAndSettings: ProjectServiceAndMetadata,
-): ts.server.OpenConfiguredProjectResult {
+): OpenedClientFile {
   const opened = openClientFileAndMaybeReload();
 
   log('Result from attempting to open client file: %o', opened);
@@ -75,6 +84,11 @@ function openClientFileFromProjectService(
       );
     }
   } else {
+    const fromSymlinkedPath = openFromSymlinkedPath();
+    if (fromSymlinkedPath) {
+      return fromSymlinkedPath;
+    }
+
     const wasNotFound = `${parseSettings.filePath} was not found by the project service`;
 
     const fileExtension = path.extname(parseSettings.filePath);
@@ -145,15 +159,47 @@ If you absolutely need more files included, set parserOptions.projectService.max
     }
   }
 
-  return opened;
+  return { filePathAbsolute, opened };
 
-  function openClientFile(): ts.server.OpenConfiguredProjectResult {
+  function openClientFile(
+    fileName = filePathAbsolute,
+  ): ts.server.OpenConfiguredProjectResult {
     return serviceAndSettings.service.openClientFile(
-      filePathAbsolute,
+      fileName,
       parseSettings.codeFullText,
       /* scriptKind */ undefined,
       parseSettings.tsconfigRootDir,
     );
+  }
+
+  /**
+   * A file reachable through a symlink can be in a project only under the
+   * symlinked path, in which case the project service doesn't know it by the
+   * path it's being linted under.
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/2987
+   */
+  function openFromSymlinkedPath(): OpenedClientFile | undefined {
+    if (isDefaultProjectAllowed) {
+      return undefined;
+    }
+
+    const symlinkedFilePath = getSymlinkedFilePathInProjects(
+      serviceAndSettings.service,
+      filePathAbsolute,
+    );
+    if (symlinkedFilePath == null) {
+      return undefined;
+    }
+
+    log(
+      'Retrying with the path a project knows the file by: %s',
+      symlinkedFilePath,
+    );
+    const reopened = openClientFile(symlinkedFilePath);
+
+    return reopened.configFileName
+      ? { filePathAbsolute: symlinkedFilePath, opened: reopened }
+      : undefined;
   }
 
   function openClientFileAndMaybeReload(): ts.server.OpenConfiguredProjectResult {
@@ -180,6 +226,36 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
     return opened;
   }
+}
+
+/**
+ * Searches the loaded projects for a path that refers to the same file on disk
+ * as `filePathAbsolute`, but that a project knows the file by.
+ */
+function getSymlinkedFilePathInProjects(
+  service: ts.server.ProjectService,
+  filePathAbsolute: string,
+): string | undefined {
+  const canonicalBaseName = getCanonicalFileName(
+    path.basename(filePathAbsolute),
+  );
+  const canonicalRealPath = getCanonicalRealPath(filePathAbsolute);
+
+  for (const project of service.configuredProjects.values()) {
+    for (const fileName of project.getFileNames(
+      /* excludeFilesFromExternalLibraries */ true,
+      /* excludeConfigFiles */ true,
+    )) {
+      if (
+        getCanonicalFileName(path.basename(fileName)) === canonicalBaseName &&
+        getCanonicalRealPath(fileName) === canonicalRealPath
+      ) {
+        return fileName;
+      }
+    }
+  }
+
+  return undefined;
 }
 
 function createNoProgramWithProjectService(
@@ -310,7 +386,7 @@ export function useProgramFromProjectService(
   log('Opened project service file: %o', opened);
 
   return retrieveASTAndProgramFor(
-    filePathAbsolute,
+    opened ? opened.filePathAbsolute : filePathAbsolute,
     parseSettings,
     serviceAndSettings,
   );

@@ -35,6 +35,7 @@ function createMockProjectService() {
   const setHostConfiguration = vi.fn();
   const reloadProjects = vi.fn();
   const service = {
+    configuredProjects: new Map<string, ts.server.ConfiguredProject>(),
     getDefaultProjectForFile: () => ({
       getLanguageService: () => ({
         getProgram: mockGetProgram,
