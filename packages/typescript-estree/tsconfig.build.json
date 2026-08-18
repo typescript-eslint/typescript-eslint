@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.build.json",
-  "compilerOptions": {
-    "sourceMap": true
-  },
   "references": [
     {
       "path": "../project-service/tsconfig.build.json"

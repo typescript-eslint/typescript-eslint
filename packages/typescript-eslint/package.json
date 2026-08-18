@@ -4,6 +4,7 @@
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",

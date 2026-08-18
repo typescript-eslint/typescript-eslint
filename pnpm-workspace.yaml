@@ -4,6 +4,13 @@ packages:
 minimumReleaseAge: 10080 # 7 days in minutes, matches renovate
 blockExoticSubdeps: true
 
+allowBuilds:
+  '@swc/core': false
+  core-js: false
+  core-js-pure: false
+  esbuild: false
+  nx: false
+
 trustPolicy: 'no-downgrade'
 trustPolicyExclude:
   - detect-port@1.6.1
