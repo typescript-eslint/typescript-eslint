@@ -400,10 +400,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        exclude:
-          - os: windows-latest
-            node-version: 18
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 24]
         package:
@@ -413,6 +410,11 @@ jobs:
             { name: 'eslint-plugin', params: '--shard=3/4' },
             { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
+        # Windows CI skips the rules tests so there isn't enough left to be worth sharding.
+        include:
+          - os: windows-latest
+            node-version: 24
+            package: { name: 'eslint-plugin', params: '' }
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
