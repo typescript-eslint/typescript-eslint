@@ -107,7 +107,10 @@ jobs:
             // `eslint-plugin` runs in its own sharded job; gate it with a boolean.
             const isPluginAffected = affected.includes('eslint-plugin');
 
-            const affectedUnitTests = affected.filter((pkg) => pkg !== 'eslint-plugin');
+            // Packages that have their own tests CI job.
+            const EXCLUDED_PACKAGES = ['eslint-plugin', 'integration-tests'];
+
+            const affectedUnitTests = affected.filter((pkg) => !EXCLUDED_PACKAGES.includes(pkg));
             const affectedProjectService = projectServicePackages.filter((pkg) => affected.includes(pkg));
 
             core.setOutput('is_plugin_affected', isPluginAffected);
