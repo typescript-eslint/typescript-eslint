@@ -5,7 +5,7 @@ BabelError
   2 |
   3 | interface Foo {
 > 4 |   [fff?: number]: string;
-    |        ^ Unexpected token (4:7)
+    |       ^ Unexpected token (4:6)
   5 | }
   6 |
   

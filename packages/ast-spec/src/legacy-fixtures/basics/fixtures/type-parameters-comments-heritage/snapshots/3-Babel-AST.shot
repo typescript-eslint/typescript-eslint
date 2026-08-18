@@ -41,7 +41,7 @@ Program {
           end: { column: 44, line: 3 },
         },
       },
-      superTypeParameters: TSTypeParameterInstantiation {
+      superTypeArguments: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
         params: [
           TSTypeReference {
@@ -80,7 +80,18 @@ Program {
             type: "TSTypeParameter",
             const: false,
             in: false,
-            name: "A",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "A",
+              optional: false,
+
+              range: [93, 94],
+              loc: {
+                start: { column: 20, line: 3 },
+                end: { column: 21, line: 3 },
+              },
+            },
             out: false,
 
             range: [93, 94],
@@ -144,7 +155,7 @@ Program {
           end: { column: 13, line: 6 },
         },
       },
-      superTypeParameters: TSTypeParameterInstantiation {
+      superTypeArguments: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
         params: [
           TSTypeReference {
@@ -203,7 +214,18 @@ Program {
               },
             },
             in: false,
-            name: "A",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "A",
+              optional: false,
+
+              range: [168, 169],
+              loc: {
+                start: { column: 12, line: 5 },
+                end: { column: 13, line: 5 },
+              },
+            },
             out: false,
 
             range: [168, 183],
@@ -241,8 +263,8 @@ Program {
       },
       declare: false,
       extends: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSInterfaceHeritage {
+          type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
             decorators: [],
@@ -255,7 +277,7 @@ Program {
               end: { column: 49, line: 7 },
             },
           },
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
@@ -314,7 +336,18 @@ Program {
             type: "TSTypeParameter",
             const: false,
             in: false,
-            name: "A",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "A",
+              optional: false,
+
+              range: [259, 260],
+              loc: {
+                start: { column: 24, line: 7 },
+                end: { column: 25, line: 7 },
+              },
+            },
             out: false,
 
             range: [259, 260],
@@ -352,8 +385,8 @@ Program {
       },
       declare: false,
       extends: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSInterfaceHeritage {
+          type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
             decorators: [],
@@ -366,7 +399,7 @@ Program {
               end: { column: 13, line: 10 },
             },
           },
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
@@ -445,7 +478,18 @@ Program {
               },
             },
             in: false,
-            name: "A",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "A",
+              optional: false,
+
+              range: [339, 340],
+              loc: {
+                start: { column: 12, line: 9 },
+                end: { column: 13, line: 9 },
+              },
+            },
             out: false,
 
             range: [339, 354],
@@ -472,9 +516,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 406],
+  range: [0, 406],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 11 },
   },
 }

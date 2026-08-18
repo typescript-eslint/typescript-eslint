@@ -29,23 +29,23 @@ function foo(x: { a?: () => void }) {
     "const x = import('./foo');",
     // https://github.com/typescript-eslint/typescript-eslint/issues/1825
     `
-      let foo: any = 23;
-      String(foo); // ERROR: Unsafe call of an any typed value
+let foo: any = 23;
+String(foo); // ERROR: Unsafe call of an any typed value
     `,
     // TS 3.9 changed this to be safe
     `
-      function foo<T extends any>(x: T) {
-        x();
-      }
+function foo<T extends any>(x: T) {
+  x();
+}
     `,
     `
-      // create a scope since it's illegal to declare a duplicate identifier
-      // 'Function' in the global script scope.
-      {
-        type Function = () => void;
-        const notGlobalFunctionType: Function = (() => {}) as Function;
-        notGlobalFunctionType();
-      }
+// create a scope since it's illegal to declare a duplicate identifier
+// 'Function' in the global script scope.
+{
+  type Function = () => void;
+  const notGlobalFunctionType: Function = (() => {}) as Function;
+  notGlobalFunctionType();
+}
     `,
     `
 interface SurprisinglySafe extends Function {
@@ -78,11 +78,11 @@ safe();
     `,
     // Function has type FunctionConstructor, so it's not within this rule's purview
     `
-      new Function('lol');
+new Function('lol');
     `,
     // Function has type FunctionConstructor, so it's not within this rule's purview
     `
-      Function('lol');
+Function('lol');
     `,
   ],
   invalid: [

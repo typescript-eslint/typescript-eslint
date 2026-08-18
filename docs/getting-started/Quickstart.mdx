@@ -51,7 +51,7 @@ This code will enable our [recommended configuration](../users/Shared_Configurat
 - [`// @ts-check` enables TypeScript](https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html#ts-check) to typecheck the config file, which improves editor support and can help catch errors when authoring your ESLint config.
   It's also fine to leave this off if it causes problems with your TypeScript setup.
 - `defineConfig(...)` is an optional helper function built in to current versions of ESLint. See [the ESLint configuration docs](https://eslint.org/docs/latest/use/configure/configuration-files) for more detail.
-- `files`/`extends`: this setup is an optional feature of `defineConfig(...)` that restricts the `extends` configs to JS and TS files, and can be modified to suite your project's needs.
+- `files`/`extends`: this setup is an optional feature of `defineConfig(...)` that restricts the `extends` configs to JS and TS files, and can be modified to suit your project's needs.
   We recommend this in order to avoid issues if you enable ESLint to run on other file types such as CSS or Markdown files, but it's entirely optional.
   To enable linting for all standard JS and TS file extensions, consider using `files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}']`.
   See the [Framework FAQs](../troubleshooting/faqs/Frameworks.mdx) to use typescript-eslint on file types other than those.

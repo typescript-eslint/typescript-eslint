@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.65.0",
+  "version": "8.67.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/typescript-estree": "workspace:*",
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/pretty-format": "catalog:",
     "eslint": "catalog:",
