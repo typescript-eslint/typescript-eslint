@@ -74,11 +74,11 @@ Sometimes the cheap and expensive conditions are combined in one `&&`. Order the
 
 ## Do the shared work once
 
-The other recurring cost is repeated work across nodes. A visitor that walks the scope chain, or rebuilds a set of names, once per reported node does that work as many times as the rule fires — and real files reach many dozens or hundreds of matching variables.
+A visitor that walks the scope chain or rebuilds a set of names once per reported node repeats that work every time the rule fires, and real files reach hundreds of matching variables.
 
-When a visitor derives the same data on every call, hoist it into a `Map` or `Set` created once in `create()` and consulted per node. Generating a non-colliding name is the usual example: collecting every declared name and then looping to find a free suffix costs a full walk per report, where a `Map<string, number>` of how many collisions each base name has already had answers it in one lookup.
+When a visitor derives the same data on every call, hoist it into a `Map` or `Set` built once in `create()`. Generating a non-colliding name is the usual example: collecting every declared name then looping for a free suffix costs a full walk per report, where a `Map<string, number>` of collisions per base name answers it in one lookup.
 
-The same caution applies to caches, in the other direction: a cache keyed on a node only pays off if the same node is asked about more than once.
+The reverse caution applies to caches: one keyed on a node only pays off if the same node is asked about twice.
 
 ## Things to verify before claiming a win
 

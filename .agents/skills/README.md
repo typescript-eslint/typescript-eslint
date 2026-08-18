@@ -12,11 +12,11 @@ skills/<name>/SKILL.md
 
 ## What these skills are not
 
-They describe structure, naming, testing, and documentation conventions. They are **not** correctness tools: measured against a held-out sample of real reviews, they found none of the reviewer's bug reports — missed syntax variants, escaped identifier names, unsound inference assumptions. Those need a human reading types, a playground repro, and the issue history.
+They cover structure, naming, testing, and documentation conventions. They are **not** correctness tools: measured against a held-out sample of real reviews, they found none of the reviewer's bug reports — missed syntax variants, escaped identifier names, unsound inference assumptions.
 
-Two further classes sit outside reach of anything reading a diff: defects visible only in rendered output, such as a docs code block importing the wrong file, and decisions about project policy, such as what a label should mean when two reviewers disagree.
+Two more classes sit outside reach of anything reading a diff: defects visible only in rendered output, and decisions about project policy.
 
-Treat a skill's output as a first pass over style and structure, never as a substitute for review.
+Treat a skill's output as a first pass over style and structure, not a substitute for review.
 
 ## Available skills
 
