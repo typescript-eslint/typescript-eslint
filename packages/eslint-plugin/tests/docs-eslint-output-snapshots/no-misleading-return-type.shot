@@ -1,0 +1,51 @@
+Incorrect
+
+function getName(): string | null {
+                  ~~~~~~~~~~~~~~~ Return type 'string | null' includes 'null', which the function never returns.
+  return 'Bea';
+}
+
+function getStatus(done: boolean): 'idle' | 'loading' | 'errored' {
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Return type '"idle" | "loading" | "errored"' includes '"errored"', which the function never returns.
+  if (done) {
+    return 'idle';
+  }
+  return 'loading';
+}
+
+async function fetchCount(): Promise<number | null> {
+                           ~~~~~~~~~~~~~~~~~~~~~~~~ Return type 'Promise<number | null>' includes 'null', which the function never returns.
+  return 42;
+}
+
+function createValues(): Array<string | null> {
+                       ~~~~~~~~~~~~~~~~~~~~~~ Return type '(string | null)[]' includes 'null', which the function never returns.
+  return ['ready'];
+}
+
+Correct
+
+function getName(): string {
+  return 'Bea';
+}
+
+function getStatus(done: boolean): 'idle' | 'loading' {
+  if (done) {
+    return 'idle';
+  }
+  return 'loading';
+}
+
+async function fetchCount(): Promise<number> {
+  return 42;
+}
+
+function getMessage(done: boolean): string {
+  return done ? 'complete' : 'pending';
+}
+
+function firstItem(items: string[]): string | undefined {
+  // Indexed access may produce undefined. TypeScript models that possibility
+  // explicitly when `noUncheckedIndexedAccess` is enabled.
+  return items[0];
+}

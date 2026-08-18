@@ -1,0 +1,127 @@
+---
+description: 'Disallow return type annotations that include types the function never returns.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misleading-return-type** for documentation.
+
+An explicit return type annotation that is wider than what the function actually returns misleads callers into handling cases that can never happen.
+This commonly happens after refactoring: a code path is removed, but the return type annotation keeps the now-impossible union constituent.
+
+```ts
+function random(param: string): string | null {
+  return 'has param';
+}
+
+const rand = random('value');
+
+if (rand === null) {
+  // This branch is unreachable, but neither the type checker
+  // nor the linter can tell you that.
+  throw new Error('...');
+}
+```
+
+This rule reports analyzable union constituents in return type annotations that the function implementation can never return.
+Primitive annotations such as `string`, `number`, and `boolean` intentionally remain abstractions over their literal values; the rule does not require them to be rewritten as literal unions.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function getName(): string | null {
+  return 'Bea';
+}
+
+function getStatus(done: boolean): 'idle' | 'loading' | 'errored' {
+  if (done) {
+    return 'idle';
+  }
+  return 'loading';
+}
+
+async function fetchCount(): Promise<number | null> {
+  return 42;
+}
+
+function createValues(): Array<string | null> {
+  return ['ready'];
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function getName(): string {
+  return 'Bea';
+}
+
+function getStatus(done: boolean): 'idle' | 'loading' {
+  if (done) {
+    return 'idle';
+  }
+  return 'loading';
+}
+
+async function fetchCount(): Promise<number> {
+  return 42;
+}
+
+function getMessage(done: boolean): string {
+  return done ? 'complete' : 'pending';
+}
+
+function firstItem(items: string[]): string | undefined {
+  // Indexed access may produce undefined. TypeScript models that possibility
+  // explicitly when `noUncheckedIndexedAccess` is enabled.
+  return items[0];
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Fixing Reports
+
+To keep the implementation checked against a contract without widening what callers see, prefer `satisfies` on the returned value over a return type annotation:
+
+```ts
+type Status = 'idle' | 'loading' | 'errored';
+
+function getStatus(done: boolean) {
+  return (done ? 'idle' : 'loading') satisfies Status;
+}
+```
+
+The return value is still validated against `Status`, but callers see the narrower inferred type `'idle' | 'loading'`.
+If your project requires annotations through [`explicit-function-return-type`](./explicit-function-return-type.mdx), narrow the annotation to what the function returns instead.
+
+## Limitations
+
+To avoid false positives, this rule intentionally does not check:
+
+- `undefined` and `void` union constituents when either [`strictNullChecks`](https://www.typescriptlang.org/tsconfig/#strictNullChecks) or [`noUncheckedIndexedAccess`](https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess) is disabled. With both options enabled, the rule checks them like other constituents. If either option is disabled, unchecked index access can produce `undefined` at runtime even when the type checker exposes only the element type.
+- Overload implementation signatures: they must be wide enough to cover every overload.
+- Return annotations that mirror an inherited or contextual contract, and class members in decorator-affected classes: their implementation body does not define the whole caller-visible contract.
+- A whole enum named by one type reference: TypeScript widens a returned enum member to that enum. Explicit unions of enum members can still be checked.
+- Generic conditional, mapped, index, or indexed-access types that remain unresolved before type parameters are instantiated.
+- Flow narrowing of property and element reads beyond their declared access type: getters, aliases, and function calls can invalidate that narrowing in ways TypeScript's control-flow analysis does not model.
+- Generator return and input channels (`TReturn` and `TNext`): callers can supply values through `generator.return(value)` and `generator.next(value)`, so those channels are not determined solely by the implementation body. The yielded-value channel is checked for synchronous and asynchronous iterables, including resolvable `yield*` delegation.
+- Expressions whose runtime possibilities cannot be recovered safely, such as unresolved narrowing assertions, escaped Promise resolvers, direct `eval`, or analysis that exceeds the rule's bounded work limits.
+
+## When Not To Use It
+
+If your codebase intentionally annotates wider return types to reserve room for future implementations of public APIs, this rule will report those annotations.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific cases instead of disabling this rule entirely.
+
+## Related To
+
+- [`explicit-function-return-type`](./explicit-function-return-type.mdx)
+- [`no-redundant-type-constituents`](./no-redundant-type-constituents.mdx)
