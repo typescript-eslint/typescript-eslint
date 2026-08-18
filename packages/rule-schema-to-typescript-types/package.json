@@ -12,6 +12,7 @@
   },
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "engines": {

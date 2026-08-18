@@ -4,6 +4,7 @@
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",

@@ -4,6 +4,7 @@
   "description": "Type utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",

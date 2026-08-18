@@ -4,6 +4,7 @@
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
