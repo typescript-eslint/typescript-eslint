@@ -1,3 +1,4 @@
+import fsSync from 'node:fs';
 import fs from 'node:fs/promises';
 import * as os from 'node:os';
 import path from 'node:path';
@@ -19,6 +20,7 @@ beforeAll(async () => {
 
 afterEach(() => {
   clearCaches();
+  vi.restoreAllMocks();
 });
 
 afterAll(async () => {
@@ -129,6 +131,57 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
     });
 
     expect(result.services.program).toBeDefined();
+  });
+
+  it('rechecks a symlinked file after deletion invalidation', async () => {
+    const tmpDir = await createProjectWithSymlinkedDirectory();
+    const config = {
+      project: ['./tsconfig.json'],
+      projectService: false,
+      tsconfigRootDir: tmpDir,
+    } satisfies Parameters<typeof parseAndGenerateServices>[1];
+
+    parseAndGenerateServices(CODE, {
+      ...config,
+      filePath: path.join(tmpDir, 'apps', 'app', 'src', 'index.ts'),
+    });
+
+    const newFilePath = path.join(tmpDir, 'libs', 'lib', 'src', 'new.ts');
+    const existingFilePath = path.join(
+      tmpDir,
+      'libs',
+      'lib',
+      'src',
+      'index.ts',
+    );
+    const symlinkedExistingFilePath = path.join(
+      tmpDir,
+      'apps',
+      'app',
+      'libs',
+      'lib',
+      'src',
+      'index.ts',
+    );
+    const existsSync = fsSync.existsSync;
+    let createdNewFile = false;
+    vi.spyOn(fsSync, 'existsSync').mockImplementation(filePath => {
+      if (!createdNewFile && filePath === symlinkedExistingFilePath) {
+        fsSync.renameSync(existingFilePath, newFilePath);
+        createdNewFile = true;
+        return false;
+      }
+      return existsSync(filePath);
+    });
+
+    expect(() =>
+      parseAndGenerateServices(CODE, {
+        ...config,
+        filePath: newFilePath,
+      }),
+    ).toThrow('However, that TSConfig does not include this file.');
+
+    expect(createdNewFile).toBe(true);
   });
 
   it('returns a program when the project service is enabled and the file is only in the project under a symlinked path', async () => {
