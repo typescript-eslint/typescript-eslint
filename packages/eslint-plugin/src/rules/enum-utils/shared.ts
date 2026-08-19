@@ -1,7 +1,7 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isTypeFlagSet } from '../../util';
+import { isNumberLike, isStringLike, isTypeFlagSet } from '../../util';
 
 /*
  * If passed an enum member, returns the type of the parent. Otherwise,
@@ -125,36 +125,6 @@ function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
     (leftEnumValueTypes.has(ts.TypeFlags.Number) && isNumberLike(rightType)) ||
     (leftEnumValueTypes.has(ts.TypeFlags.String) && isStringLike(rightType))
   );
-}
-
-function isNumberLike(type: ts.Type): boolean {
-  return tsutils
-    .unionConstituents(type)
-    .every(unionPart =>
-      tsutils
-        .intersectionConstituents(unionPart)
-        .some(intersectionPart =>
-          tsutils.isTypeFlagSet(
-            intersectionPart,
-            ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
-          ),
-        ),
-    );
-}
-
-function isStringLike(type: ts.Type): boolean {
-  return tsutils
-    .unionConstituents(type)
-    .every(unionPart =>
-      tsutils
-        .intersectionConstituents(unionPart)
-        .some(intersectionPart =>
-          tsutils.isTypeFlagSet(
-            intersectionPart,
-            ts.TypeFlags.String | ts.TypeFlags.StringLike,
-          ),
-        ),
-    );
 }
 
 /**
