@@ -51,9 +51,9 @@ jobs:
   affected-for-github-hosted-tests:
     name: Determine Affected Projects for GitHub-hosted Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
     outputs:
       is_plugin_affected: ${{ steps.filter.outputs.is_plugin_affected }}
       unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
@@ -97,7 +97,10 @@ jobs:
             // `eslint-plugin` runs in its own sharded job; gate it with a boolean.
             const isPluginAffected = affected.includes('eslint-plugin');
 
-            const affectedUnitTests = affected.filter((pkg) => pkg !== 'eslint-plugin');
+            // Packages that have their own tests CI job.
+            const EXCLUDED_PACKAGES = ['eslint-plugin', 'integration-tests'];
+
+            const affectedUnitTests = affected.filter((pkg) => !EXCLUDED_PACKAGES.includes(pkg));
 
             // Packages that have no (or we don't care about their) platform-specific,
             // runtime behavior, so skipping them on Windows to have fewer jobs to run.
@@ -335,7 +338,7 @@ jobs:
   # the `main` job; this job only covers the Windows-specific runs.
   plugin_unit_tests:
     # Note -- intentionally use the same name shape as unit_tests just so everything looks uniform in the checks section
-    name: Run Unit Tests on Windows (Node ${{ matrix.node-version }}, ${{ matrix.package.name }}, ${{ matrix.package.params }})
+    name: Run Unit Tests on Windows (Node ${{ matrix.node-version }}, eslint-plugin)
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [affected-for-github-hosted-tests]
     if: ${{ needs['affected-for-github-hosted-tests'].outputs.is_plugin_affected == 'true' }}
@@ -346,13 +349,6 @@ jobs:
         # just run on the latest supported version on Windows; the Nx Agents
         # runs cover the oldest supported version on Linux
         node-version: [24]
-        package:
-          [
-            { name: 'eslint-plugin', params: '--shard=1/4' },
-            { name: 'eslint-plugin', params: '--shard=2/4' },
-            { name: 'eslint-plugin', params: '--shard=3/4' },
-            { name: 'eslint-plugin', params: '--shard=4/4' },
-          ]
     env:
       NX_CI_EXECUTION_ENV: 'windows-latest - Node ${{ matrix.node-version }}'
     steps:
@@ -368,9 +364,10 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      # we don't collect coverage on Windows so that the runs are faster
-      - name: Run unit tests for ${{ matrix.package.name }}
-        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
+      # Windows CI skips the rules tests so there isn't enough left to be worth sharding.
+      # We don't collect coverage on Windows so that the runs are faster.
+      - name: Run unit tests for eslint-plugin
+        run: pnpm exec nx test eslint-plugin
         env:
           CI: true
 
@@ -425,13 +422,11 @@ jobs:
       # stylelint, dedupe, knip) and the coordinator-local generate-configs
       # check via Nx Agents.
       - main
-
-      # Temporarily make these optional until we figure out why it's sometimes failing in CI.
-      # - ast_spec_snapshots_clean
-      # - scope_manager_snapshots_clean
+      - ast_spec_snapshots_clean
+      - scope_manager_snapshots_clean
       - plugin_unit_tests
       - unit_tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Fail if any dependency failed or was cancelled
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
@@ -443,7 +438,7 @@ jobs:
     # All coverage (including the eslint-plugin per-shard reports) is produced
     # by the distributed unit tests in the `main` job.
     needs: [main]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0

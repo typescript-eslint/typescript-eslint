@@ -4,6 +4,7 @@
   "description": "Standalone TypeScript project service wrapper for linting.",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
