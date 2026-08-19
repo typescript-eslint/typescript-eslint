@@ -35,10 +35,13 @@ launch-templates:
   # rules in .nx/ci-config.yaml.
   linux-medium-node18-js:
     # Larger class than the Node 24 tier: Node 18 has no module compile cache,
-    # so the first type-aware test of each vitest file pays a TS program
-    # initialization cost that exceeds the 10s test timeout on `medium` (the
-    # legacy GitHub-hosted runners for these shards had 4 vCPUs).
-    resource-class: 'docker_linux_amd64/large'
+    # so type-aware rule tests pay a TS program initialization cost that
+    # brushes the 10s vitest testTimeout. `medium` timed out 48 tests across
+    # 3 shards; `large` left exactly one marginal timeout (the recursive-type
+    # guard test from #12711). The legacy GitHub-hosted runners for these
+    # shards had 4 vCPUs; this class restores per-test CPU headroom without
+    # touching the shared testTimeout.
+    resource-class: 'docker_linux_amd64/large+'
     image: 'ubuntu22.04-node24.14-v1'
     init-steps:
       - name: Checkout
