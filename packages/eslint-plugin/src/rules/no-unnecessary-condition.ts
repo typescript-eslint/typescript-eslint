@@ -130,9 +130,6 @@ function isOnlyUsedForTruthiness(node: TSESTree.Expression): boolean {
     case AST_NODE_TYPES.WhileStatement:
       return parent.test === node;
 
-    case AST_NODE_TYPES.ExpressionStatement:
-      return true;
-
     case AST_NODE_TYPES.LogicalExpression:
       return (
         (parent.operator === '&&' && parent.left === node) ||
