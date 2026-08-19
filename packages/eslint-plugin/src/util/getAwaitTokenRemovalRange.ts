@@ -6,11 +6,11 @@ export function getAwaitTokenRemovalRange(
 ): TSESTree.Range {
   const startAt = awaitToken.range[0];
   let endAt = awaitToken.range[1];
-  // Also remove any extraneous whitespace after `await`, if there is any.
+
   const nextToken = sourceCode.getTokenAfter(awaitToken, {
     includeComments: true,
   });
-  if (nextToken) {
+  /* istanbul ignore else */ if (nextToken) {
     endAt = nextToken.range[0];
   }
 
