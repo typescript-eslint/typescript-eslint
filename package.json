@@ -108,7 +108,7 @@
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.0.0-rc.6",
+  "packageManager": "pnpm@10.34.5",
   "nx": {
     "name": "repo",
     "includedScripts": [
