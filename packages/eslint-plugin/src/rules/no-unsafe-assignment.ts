@@ -344,6 +344,7 @@ export default createRule({
 
     return {
       'AccessorProperty[value != null]'(
+        // eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type
         node: { value: NonNullable<unknown> } & TSESTree.AccessorProperty,
       ): void {
         checkAssignment(
@@ -372,6 +373,7 @@ export default createRule({
         }
       },
       'PropertyDefinition[value != null]'(
+        // eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type
         node: { value: NonNullable<unknown> } & TSESTree.PropertyDefinition,
       ): void {
         checkAssignment(

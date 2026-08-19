@@ -11,6 +11,7 @@ export default createRule({
     docs: {
       description:
         'Disallow type operations that resolve to the "empty object" type',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

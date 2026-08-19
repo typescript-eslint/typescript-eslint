@@ -37,6 +37,7 @@ export function isJSXFileType(fileType: string): boolean {
  * @param ast the AST object
  * @returns copy of the AST object
  */
+// eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type
 export function deeplyCopy<T extends NonNullable<unknown>>(ast: T): T {
   return omitDeep(ast) as T;
 }
