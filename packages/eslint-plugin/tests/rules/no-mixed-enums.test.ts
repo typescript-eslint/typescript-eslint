@@ -302,8 +302,36 @@ function foo() {
   return Bar;
 }
     `,
+    `
+namespace Test {
+  export enum Bar {
+    A = 1,
+  }
+}
+namespace Test {
+  export const baz = 2;
+}
+    `,
   ],
   invalid: [
+    {
+      code: `
+export enum Fruit {
+  Apple = 0,
+}
+export enum Fruit {
+  Banana = 'banana',
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 20,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
     {
       code: `
 enum Fruit {
