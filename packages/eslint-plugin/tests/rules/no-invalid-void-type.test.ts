@@ -122,9 +122,9 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'let voidPromise: Promise<void> = new Promise<void>(() => {});',
     'let voidMap: Map<string, void> = new Map<string, void>();',
     `
-      function returnsVoidPromiseDirectly(): Promise<void> {
-        return Promise.resolve();
-      }
+function returnsVoidPromiseDirectly(): Promise<void> {
+  return Promise.resolve();
+}
     `,
     'async function returnsVoidPromiseAsync(): Promise<void> {}',
     'type UnionType = string | number;',
@@ -135,9 +135,9 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'const arrowGeneric1 = <T = void,>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
     `
-      class ClassName {
-        accessor propName: number;
-      }
+class ClassName {
+  accessor propName: number;
+}
     `,
     `
 function f(): void;
@@ -466,15 +466,15 @@ export function f(x?: string): string | void {
     },
     {
       code: `
-        interface Interface {
-          lambda: () => void;
-          voidProp: void;
-        }
+interface Interface {
+  lambda: () => void;
+  voidProp: void;
+}
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 25,
+          column: 13,
+          endColumn: 17,
           endLine: 4,
           line: 4,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -483,14 +483,14 @@ export function f(x?: string): string | void {
     },
     {
       code: `
-        class ClassName {
-          private readonly propName: void;
-        }
+class ClassName {
+  private readonly propName: void;
+}
       `,
       errors: [
         {
-          column: 38,
-          endColumn: 42,
+          column: 30,
+          endColumn: 34,
           endLine: 3,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -499,14 +499,14 @@ export function f(x?: string): string | void {
     },
     {
       code: `
-        class ClassName {
-          accessor propName: void;
-        }
+class ClassName {
+  accessor propName: void;
+}
       `,
       errors: [
         {
-          column: 30,
-          endColumn: 34,
+          column: 22,
+          endColumn: 26,
           endLine: 3,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -527,15 +527,15 @@ export function f(x?: string): string | void {
     },
     {
       code: `
-        type VoidType = void;
-        class OtherClassName {
-          private propName: VoidType;
-        }
+type VoidType = void;
+class OtherClassName {
+  private propName: VoidType;
+}
       `,
       errors: [
         {
-          column: 25,
-          endColumn: 29,
+          column: 17,
+          endColumn: 21,
           endLine: 2,
           line: 2,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -604,14 +604,14 @@ export function f(x?: string): string | void {
     },
     {
       code: `
-        type MappedType<T> = {
-          [K in keyof T]: void;
-        };
+type MappedType<T> = {
+  [K in keyof T]: void;
+};
       `,
       errors: [
         {
-          column: 27,
-          endColumn: 31,
+          column: 19,
+          endColumn: 23,
           endLine: 3,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',
@@ -620,14 +620,14 @@ export function f(x?: string): string | void {
     },
     {
       code: `
-        type ConditionalType<T> = {
-          [K in keyof T]: T[K] extends string ? void : string;
-        };
+type ConditionalType<T> = {
+  [K in keyof T]: T[K] extends string ? void : string;
+};
       `,
       errors: [
         {
-          column: 49,
-          endColumn: 53,
+          column: 41,
+          endColumn: 45,
           endLine: 3,
           line: 3,
           messageId: 'invalidVoidNotReturnOrGeneric',

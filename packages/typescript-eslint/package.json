@@ -1,9 +1,10 @@
 {
   "name": "typescript-eslint",
-  "version": "8.66.0",
+  "version": "8.67.0",
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
@@ -63,6 +64,7 @@
     "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
+    "minimatch": "*",
     "rimraf": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

@@ -10,19 +10,15 @@ Snapshot Diff:
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
           abstract: true,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [
--             TSAbstractMethodDefinition {
--               type: 'TSAbstractMethodDefinition',
-+             MethodDefinition {
-+               type: 'MethodDefinition',
-+               abstract: true,
+              TSAbstractMethodDefinition {
+                type: 'TSAbstractMethodDefinition',
                 computed: false,
                 decorators: Array [],
                 key: Identifier {
@@ -41,12 +37,10 @@ Snapshot Diff:
                 optional: false,
                 override: false,
                 static: false,
--               value: TSEmptyBodyFunctionExpression {
--                 type: 'TSEmptyBodyFunctionExpression',
-+               value: FunctionExpression {
-+                 type: 'FunctionExpression',
+                value: TSEmptyBodyFunctionExpression {
+                  type: 'TSEmptyBodyFunctionExpression',
                   async: false,
--                 body: null,
+                  body: null,
                   declare: false,
                   expression: false,
                   generator: false,
@@ -56,20 +50,7 @@ Snapshot Diff:
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSTypeReference {
                       type: 'TSTypeReference',
--                     typeArguments: TSTypeParameterInstantiation {
-+                     typeName: Identifier {
-+                       type: 'Identifier',
-+                       decorators: Array [],
-+                       name: 'Promise',
-+                       optional: false,
-+
-+                       range: [139, 146],
-+                       loc: {
-+                         start: { column: 27, line: 4 },
-+                         end: { column: 34, line: 4 },
-+                       },
-+                     },
-+                     typeParameters: TSTypeParameterInstantiation {
+                      typeArguments: TSTypeParameterInstantiation {
                         type: 'TSTypeParameterInstantiation',
                         params: Array [
                           TSStringKeyword {
@@ -87,18 +68,18 @@ Snapshot Diff:
                         loc: {
                           start: { column: 34, line: 4 },
                           end: { column: 42, line: 4 },
--                       },
--                     },
--                     typeName: Identifier {
--                       type: 'Identifier',
--                       decorators: Array [],
--                       name: 'Promise',
--                       optional: false,
--
--                       range: [139, 146],
--                       loc: {
--                         start: { column: 27, line: 4 },
--                         end: { column: 34, line: 4 },
+                        },
+                      },
+                      typeName: Identifier {
+                        type: 'Identifier',
+                        decorators: Array [],
+                        name: 'Promise',
+                        optional: false,
+
+                        range: [139, 146],
+                        loc: {
+                          start: { column: 27, line: 4 },
+                          end: { column: 34, line: 4 },
                         },
                       },
 
@@ -173,9 +154,11 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
-    range: [73, 158],
+-   range: [73, 158],
++   range: [0, 158],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

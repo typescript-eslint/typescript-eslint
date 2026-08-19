@@ -142,7 +142,18 @@ Program {
               },
             },
             in: false,
-            name: "X",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "X",
+              optional: false,
+
+              range: [84, 85],
+              loc: {
+                start: { column: 11, line: 3 },
+                end: { column: 12, line: 3 },
+              },
+            },
             out: false,
 
             range: [84, 96],
@@ -169,9 +180,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 123],
+  range: [0, 123],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 6 },
   },
 }

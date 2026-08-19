@@ -169,8 +169,8 @@ throw new Map();
     },
     {
       code: `
-        import { createError } from 'errors';
-        throw createError();
+import { createError } from 'errors';
+throw createError();
       `,
       options: [
         {
