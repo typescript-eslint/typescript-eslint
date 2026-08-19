@@ -48,4 +48,4 @@ jobs:
       - name: Backfill labels
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node tools/scripts/backfill-pr-labels-from-issue.mts
+        run: node tools/scripts/backfill-pr-labels-from-issue.mts --apply
