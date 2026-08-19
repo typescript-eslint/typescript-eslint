@@ -1318,6 +1318,31 @@ class Foo {
       ],
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
+
+    // fields whose initializers reference members by dynamic computed name are still reported
+    {
+      code: `
+declare const key: string;
+class Foo {
+  b: number = 42;
+  a: number = this[key];
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 25,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
   ],
   valid: [
     // Without grouping

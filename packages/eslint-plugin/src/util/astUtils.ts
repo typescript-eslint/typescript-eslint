@@ -81,7 +81,7 @@ export function forEachReturnStatement<T>(
   }
 }
 
-export function isESTreeNodeLike(node: unknown): node is TSESTree.Node {
+function isESTreeNodeLike(node: unknown): node is TSESTree.Node {
   return (
     typeof node === 'object' &&
     node != null &&

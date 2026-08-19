@@ -4,15 +4,16 @@
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import naturalCompare from 'natural-compare';
 
 import {
   createRule,
+  forEachChildESTree,
   getNameFromIndexSignature,
   getNameFromMember,
-  isESTreeNodeLike,
   MemberNameType,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 export type MessageIds =
@@ -512,41 +513,45 @@ function getThisPropertyName(node: TSESTree.MemberExpression): string | null {
     : null;
 }
 
-function collectImmediateThisPropertyNames(
+function isEvaluatedLater(
   node: TSESTree.Node,
+  initializer: TSESTree.Expression,
+): boolean {
+  for (
+    let current = node;
+    current !== initializer.parent;
+    current = nullThrows(current.parent, NullThrowsReasons.MissingParent)
+  ) {
+    if (
+      current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+      current.type === AST_NODE_TYPES.ClassBody ||
+      current.type === AST_NODE_TYPES.FunctionExpression
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function collectImmediateThisPropertyNames(
+  initializer: TSESTree.Expression,
   names: Set<string>,
 ): void {
-  if (
-    node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-    node.type === AST_NODE_TYPES.ClassBody ||
-    node.type === AST_NODE_TYPES.FunctionExpression
-  ) {
-    return;
-  }
-
-  if (
-    node.type === AST_NODE_TYPES.MemberExpression &&
-    node.object.type === AST_NODE_TYPES.ThisExpression
-  ) {
-    const name = getThisPropertyName(node);
-    if (name != null) {
-      names.add(name);
-    }
-  }
-
-  for (const key of visitorKeys[node.type] ?? []) {
-    const child: unknown = node[key as keyof typeof node];
-
-    if (Array.isArray(child)) {
-      for (const item of child) {
-        if (isESTreeNodeLike(item)) {
-          collectImmediateThisPropertyNames(item, names);
-        }
+  forEachChildESTree(initializer, node => {
+    if (
+      node.type === AST_NODE_TYPES.MemberExpression &&
+      node.object.type === AST_NODE_TYPES.ThisExpression &&
+      !isEvaluatedLater(node, initializer)
+    ) {
+      const name = getThisPropertyName(node);
+      if (name != null) {
+        names.add(name);
       }
-    } else if (isESTreeNodeLike(child)) {
-      collectImmediateThisPropertyNames(child, names);
     }
-  }
+
+    return null;
+  });
 }
 
 function isBlockedByEarlierMemberReferences(
