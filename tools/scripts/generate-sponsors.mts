@@ -3,13 +3,22 @@ import type { SponsorData } from '@site/src/components/home/FinancialContributor
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-import { PACKAGES_WEBSITE } from './paths.mts';
+import { mergeSponsors } from './merge-sponsors.mts';
+import { PACKAGES_WEBSITE, TOOLS_DATA } from './paths.mts';
 
-const excludedNames = new Set([
-  'Josh Goldberg', // Team member 💖
-]);
+interface OutOfBandDonation {
+  image: string;
+  name: string;
+  source: string;
+  totalDonations: number;
+  website: string;
+}
 
-const filteredTerms = ['casino', 'deepnude', 'tiktok'];
+/* Unauthenticated GitHub requests are limited to 60 per hour, which the thanks.dev donor list
+   alone can exceed. */
+const gitHubHeaders: HeadersInit = process.env.GITHUB_TOKEN
+  ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
+  : {};
 
 const jsonApiFetch = async <T,>(
   api: string,
@@ -37,7 +46,7 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
             imageUrl: string;
             name: string;
             website: string | null;
-          };
+          } | null;
           totalDonations: { valueInCents: number };
         }[];
       };
@@ -82,15 +91,12 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
   return Object.entries(
     groupBy(
       data.collective.members.nodes,
-      ({ account }) => account.name || account.id,
+      /* Members who donated incognito are reported with a null account. */
+      ({ account }) => account?.name || account?.id || '',
     ),
   ).flatMap(([id, members]) => {
-    const [
-      {
-        account: { website, ...account },
-      },
-    ] = members;
-    return website
+    const [{ account }] = members;
+    return account?.website
       ? {
           id,
           image: account.imageUrl,
@@ -99,7 +105,7 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
             (sum, { totalDonations }) => sum + totalDonations.valueInCents,
             0,
           ),
-          website,
+          website: account.website,
         }
       : [];
   });
@@ -120,7 +126,7 @@ const thanksDevSponsorsPromise = jsonApiFetch<
             Record<'avatar_url' | 'blog', string> & {
               name: string | null;
             }
-          >(`github.com/users/${id}`);
+          >(`github.com/users/${id}`, { headers: gitHubHeaders });
           return name
             ? {
                 id,
@@ -135,24 +141,28 @@ const thanksDevSponsorsPromise = jsonApiFetch<
   ).flat(),
 );
 
-const sponsors = (
-  await Promise.all<SponsorData[]>([
+const outOfBandSponsors = (
+  JSON.parse(
+    fs.readFileSync(
+      path.join(TOOLS_DATA, 'out-of-band-donations.json'),
+      'utf8',
+    ),
+  ) as OutOfBandDonation[]
+).map(({ image, name, totalDonations, website }) => ({
+  id: name,
+  image,
+  name,
+  totalDonations,
+  website,
+}));
+
+const sponsors = mergeSponsors([
+  ...(await Promise.all<SponsorData[]>([
     openCollectiveSponsorsPromise,
     thanksDevSponsorsPromise,
-  ])
-)
-  .flat()
-  .filter(
-    ({ id, name, totalDonations }) =>
-      !(
-        filteredTerms.some(filteredTerm =>
-          name.toLowerCase().includes(filteredTerm),
-        ) ||
-        excludedNames.has(id) ||
-        totalDonations < 10000
-      ),
-  )
-  .sort((a, b) => b.totalDonations - a.totalDonations);
+  ])),
+  outOfBandSponsors,
+]);
 
 fs.writeFileSync(
   path.join(PACKAGES_WEBSITE, 'data', 'sponsors.json'),

@@ -161,6 +161,15 @@
       },
       "clean": {
         "command": "rimraf dist/ coverage/ .eslintcache"
+      },
+      "test": {
+        "command": "vitest",
+        "options": {
+          "config": "tools/vitest.config.mts"
+        },
+        "outputs": [
+          "{projectRoot}/tools/coverage"
+        ]
       }
     }
   }
