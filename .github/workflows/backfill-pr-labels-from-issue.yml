@@ -1,0 +1,51 @@
+# One-time backfill for the PR Labels From Issue workflow.
+#
+# Runs on the PR that adds this file, so the label changes are attributed to
+# github-actions[bot]. This only works from a branch on the base repo - a fork
+# PR gets a read-only token and the label adds would fail.
+#
+# Delete this workflow and tools/scripts/backfill-pr-labels-from-issue.mts once
+# the backfill has run.
+name: Backfill PR Labels From Issue
+
+on:
+  # NOTE: Never use pull_request_target here - it would hand write permissions
+  # to fork code.
+  pull_request:
+    paths:
+      - .github/workflows/backfill-pr-labels-from-issue.yml
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  backfill:
+    name: Copy labels from the linked issues to open PRs
+    runs-on: ubuntu-slim
+    permissions:
+      contents: read
+      issues: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+
+      # No install needed - the script only uses Node built-ins, and Node runs
+      # the .mts file directly via its built-in type stripping.
+      #
+      # Drop --apply to only log what would change.
+      - name: Backfill labels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node tools/scripts/backfill-pr-labels-from-issue.mts
