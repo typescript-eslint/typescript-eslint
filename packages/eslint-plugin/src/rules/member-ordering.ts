@@ -512,10 +512,6 @@ function getThisPropertyName(node: TSESTree.MemberExpression): string | null {
     : null;
 }
 
-/**
- * Reads inside functions and nested class bodies are skipped: they either run
- * later or read a different `this`, so they don't constrain declaration order.
- */
 function collectImmediateThisPropertyNames(
   node: TSESTree.Node,
   names: Set<string>,
@@ -553,13 +549,6 @@ function collectImmediateThisPropertyNames(
   }
 }
 
-/**
- * Class fields are initialized in declaration order, so a field that reads one
- * of the fields it would be sorted before can't be moved there.
- *
- * @param fromIndex the start of the range of members it would be moved before.
- * @param toIndex the end of the range of members it would be moved before.
- */
 function isBlockedByEarlierMemberReferences(
   member: Member,
   members: Member[],
@@ -988,8 +977,6 @@ export default createRule<Options, MessageIds>({
         // Note: Not all members have names
         if (name) {
           if (naturalOutOfOrder(name, previousName, order)) {
-            // Leaving previousName as-is keeps later members compared against
-            // the last member that could actually be sorted.
             if (
               isBlockedByEarlierMemberReferences(
                 member,
