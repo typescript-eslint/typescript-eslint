@@ -119,10 +119,6 @@ function booleanComparison(
   }
 }
 
-/**
- * Whether only the truthiness of the node's value can be observed, meaning its
- * value is discarded once it's known to be truthy.
- */
 function isOnlyUsedForTruthiness(node: TSESTree.Expression): boolean {
   const parent = node.parent;
 

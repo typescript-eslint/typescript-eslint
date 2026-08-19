@@ -556,7 +556,6 @@ declare const b2: true;
 const x = b1 && b2;
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2128
     `
 function test(foo?: boolean, bar?: boolean) {
   return (foo && 'foo') || (bar && 'bar');
