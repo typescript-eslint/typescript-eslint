@@ -1269,6 +1269,58 @@ class Foo {
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
 
+    // references in regular functions are deferred
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: () => number = function () {
+    return this.b;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 5,
+          endLine: 6,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // references in nested classes do not refer to the containing class
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a = class {
+    value = this.b;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 5,
+          endLine: 6,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
     // fields referencing members they would not be moved before are still reported
     {
       code: `
@@ -3015,6 +3067,17 @@ class Foo {
 class Foo {
   b: number = 42;
   a: number = this['b'];
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose array initializers reference earlier fields
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a = [this.b, ,];
 }
       `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
