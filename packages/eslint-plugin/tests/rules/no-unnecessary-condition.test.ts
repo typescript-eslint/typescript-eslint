@@ -556,6 +556,17 @@ declare const b2: true;
 const x = b1 && b2;
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2128
+    `
+function test(foo?: boolean, bar?: boolean) {
+  return (foo && 'foo') || (bar && 'bar');
+}
+    `,
+    `
+declare const b1: boolean;
+declare const b2: boolean;
+const x = (b1 && 'b1') || b2;
+    `,
     {
       code: `
 while (true) {}
@@ -1539,6 +1550,23 @@ if (b1 || b2 || true) {
         { column: 11, line: 6, messageId: 'alwaysFalsy' },
         { column: 17, line: 8, messageId: 'alwaysTruthy' },
       ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if ((b1 && 'b1') || b2) {
+}
+      `,
+      errors: [{ column: 12, line: 4, messageId: 'alwaysTruthy' }],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+const t1 = b1 && 'b1' && b2;
+      `,
+      errors: [{ column: 18, line: 4, messageId: 'alwaysTruthy' }],
     },
 
     // Generic type params

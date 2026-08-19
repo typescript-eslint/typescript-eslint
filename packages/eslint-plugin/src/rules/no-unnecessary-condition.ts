@@ -118,6 +118,39 @@ function booleanComparison(
       return left >= right;
   }
 }
+
+/**
+ * Whether only the truthiness of the node's value can be observed, meaning its
+ * value is discarded once it's known to be truthy.
+ */
+function isOnlyUsedForTruthiness(node: TSESTree.Expression): boolean {
+  const parent = node.parent;
+
+  switch (parent.type) {
+    case AST_NODE_TYPES.ConditionalExpression:
+    case AST_NODE_TYPES.DoWhileStatement:
+    case AST_NODE_TYPES.ForStatement:
+    case AST_NODE_TYPES.IfStatement:
+    case AST_NODE_TYPES.WhileStatement:
+      return parent.test === node;
+
+    case AST_NODE_TYPES.ExpressionStatement:
+      return true;
+
+    case AST_NODE_TYPES.LogicalExpression:
+      return (
+        (parent.operator === '&&' && parent.left === node) ||
+        isOnlyUsedForTruthiness(parent)
+      );
+
+    case AST_NODE_TYPES.UnaryExpression:
+      return parent.operator === '!';
+
+    default:
+      return false;
+  }
+}
+
 // #endregion
 
 type LegacyAllowConstantLoopConditions = boolean;
@@ -376,7 +409,10 @@ export default createRule<Options, MessageId>({
         expression.type === AST_NODE_TYPES.LogicalExpression &&
         expression.operator !== '??'
       ) {
-        return checkNode(expression.right);
+        if (isOnlyUsedForTruthiness(expression)) {
+          checkNode(expression.right);
+        }
+        return;
       }
 
       const type = getConstrainedTypeAtLocation(services, expression);
