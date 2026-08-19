@@ -4,10 +4,6 @@ packages:
 minimumReleaseAge: 10080 # 7 days in minutes, matches renovate
 blockExoticSubdeps: true
 
-publicHoistPattern:
-  - '@docusaurus/plugin-content-blog'
-  - '@docusaurus/theme-common'
-
 allowBuilds:
   '@swc/core': false
   core-js: false

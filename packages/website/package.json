@@ -1,10 +1,6 @@
 {
   "name": "website",
   "private": true,
-  "bundledDependencies": [
-    "@docusaurus/plugin-content-blog",
-    "@docusaurus/theme-common"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -35,10 +31,12 @@
     "@docusaurus/core": "~3.10.2",
     "@docusaurus/faster": "^3.10.2",
     "@docusaurus/plugin-client-redirects": "~3.10.2",
+    "@docusaurus/plugin-content-blog": "~3.10.2",
     "@docusaurus/plugin-content-docs": "~3.10.2",
     "@docusaurus/plugin-pwa": "~3.10.2",
     "@docusaurus/preset-classic": "~3.10.2",
     "@docusaurus/remark-plugin-npm2yarn": "~3.10.2",
+    "@docusaurus/theme-common": "~3.10.2",
     "@mdx-js/react": "^3.1.0",
     "@typescript-eslint/parser": "workspace:*",
     "@typescript-eslint/website-eslint": "workspace:*",
