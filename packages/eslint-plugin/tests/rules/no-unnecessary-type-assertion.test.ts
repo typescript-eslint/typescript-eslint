@@ -1,4 +1,10 @@
+import * as parser from '@typescript-eslint/parser';
 import { noFormat } from '@typescript-eslint/rule-tester';
+import { TSESLint } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
+import { describe, expect, it, vi } from 'vitest';
+
+import type * as util from '../../src/util';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
@@ -2913,4 +2919,65 @@ maybeFn?.(s);
       `,
     },
   ],
+});
+
+describe('error handling', () => {
+  it.each([
+    { error: new Error('unexpected error'), name: 'non-RangeError' },
+    {
+      error: new RangeError('unexpected range error'),
+      name: 'RangeError with a different message',
+    },
+  ])('rethrows $name', async ({ error }) => {
+    vi.resetModules();
+    vi.doMock('../../src/util', async () => {
+      const actual = await vi.importActual<typeof util>('../../src/util');
+      return {
+        ...actual,
+        isTypeFlagSet(type: ts.Type, flags: ts.TypeFlags): boolean {
+          if (flags === ts.TypeFlags.Any) {
+            throw error;
+          }
+          return actual.isTypeFlagSet(type, flags);
+        },
+      };
+    });
+
+    const { default: ruleWithMockedTypeFlagCheck } =
+      (await import('../../src/rules/no-unnecessary-type-assertion.js')) as unknown as {
+        default: typeof rule;
+      };
+    const linter = new TSESLint.Linter({ configType: 'flat' });
+    const config: TSESLint.FlatConfig.Config = {
+      files: ['**/*.ts'],
+      languageOptions: {
+        parser,
+        parserOptions: {
+          project: './tsconfig.json',
+          tsconfigRootDir: rootDir,
+        },
+      },
+      plugins: {
+        '@typescript-eslint': {
+          rules: {
+            'no-unnecessary-type-assertion': ruleWithMockedTypeFlagCheck,
+          },
+        },
+      },
+      rules: {
+        '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+      },
+    };
+
+    try {
+      expect(() =>
+        linter.verify('const value = 1 as number;', config, {
+          filename: `${rootDir}/file.ts`,
+        }),
+      ).toThrow(error);
+    } finally {
+      vi.doUnmock('../../src/util');
+      vi.resetModules();
+    }
+  });
 });
