@@ -68,6 +68,7 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
     const tmpDir = await createProjectWithSymlinkedDirectory();
 
     const result = parseAndGenerateServices(CODE, {
+      disallowAutomaticSingleRunInference: true,
       filePath: path.join(tmpDir, 'libs', 'lib', 'src', 'index.ts'),
       project: ['./tsconfig.json'],
       projectService: false,
@@ -81,6 +82,7 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
     const tmpDir = await createProjectWithSymlinkedDirectory();
 
     const result = parseAndGenerateServices(CODE, {
+      disallowAutomaticSingleRunInference: true,
       filePath: path.join(
         tmpDir,
         'apps',
@@ -104,6 +106,7 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
     await fs.symlink(tmpDir, linkedTmpDir, 'dir');
 
     const result = parseAndGenerateServices(CODE, {
+      disallowAutomaticSingleRunInference: true,
       filePath: path.join(linkedTmpDir, 'apps', 'app', 'src', 'index.ts'),
       project: ['./tsconfig.json'],
       projectService: false,
@@ -116,6 +119,7 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
   it('returns a program for a symlinked file when another file created the program', async () => {
     const tmpDir = await createProjectWithSymlinkedDirectory();
     const config = {
+      disallowAutomaticSingleRunInference: true,
       project: ['./tsconfig.json'],
       projectService: false,
       tsconfigRootDir: tmpDir,
@@ -136,6 +140,7 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
   it('rechecks a symlinked file after deletion invalidation', async () => {
     const tmpDir = await createProjectWithSymlinkedDirectory();
     const config = {
+      disallowAutomaticSingleRunInference: true,
       project: ['./tsconfig.json'],
       projectService: false,
       tsconfigRootDir: tmpDir,
@@ -200,6 +205,7 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
     const tmpDir = await createProjectWithSymlinkedDirectory();
 
     const result = parseAndGenerateServices(CODE, {
+      disallowAutomaticSingleRunInference: true,
       filePath: path.join(tmpDir, 'libs', 'lib', 'src', 'index.ts'),
       project: true,
       projectService: false,
