@@ -9,7 +9,8 @@ import TabItem from '@theme/TabItem';
 
 ## How do I use typescript-eslint in a JavaScript project?
 
-Our rules run on JavaScript files, and several of them are useful even if you never write TypeScript.
+Our rules can run on JavaScript files, and many are useful even if you never write TypeScript code.
+Typed rules can still use TypeScript type information to operate on non-TypeScript files.
 
 For example, [`no-deprecated`](/rules/no-deprecated) reports uses of anything marked with a JSDoc `@deprecated` tag, and [`naming-convention`](/rules/naming-convention) enforces naming styles on any identifier.
 Rules that match only TypeScript syntax, such as [`no-explicit-any`](/rules/no-explicit-any), will not report on JavaScript files.
