@@ -96,6 +96,21 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
     expect(result.services.program).toBeDefined();
   });
 
+  it('returns a program when the file is linted through a symlinked project directory', async () => {
+    const tmpDir = await createProjectWithSymlinkedDirectory();
+    const linkedTmpDir = `${tmpDir}-link`;
+    await fs.symlink(tmpDir, linkedTmpDir, 'dir');
+
+    const result = parseAndGenerateServices(CODE, {
+      filePath: path.join(linkedTmpDir, 'apps', 'app', 'src', 'index.ts'),
+      project: ['./tsconfig.json'],
+      projectService: false,
+      tsconfigRootDir: tmpDir,
+    });
+
+    expect(result.services.program).toBeDefined();
+  });
+
   it('returns a program for a symlinked file when another file created the program', async () => {
     const tmpDir = await createProjectWithSymlinkedDirectory();
     const config = {

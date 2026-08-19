@@ -16,9 +16,9 @@ import type { MutableParseSettings } from './parseSettings';
 import { createProjectProgram } from './create-program/createProjectProgram';
 import { createNoProgram } from './create-program/createSourceFile';
 import {
+  createSymlinkedDirectories,
   DEFAULT_EXTRA_FILE_EXTENSIONS,
-  getCanonicalFileName,
-  getCanonicalRealPath,
+  getPathToSameFile,
 } from './create-program/shared';
 import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
 
@@ -236,22 +236,19 @@ function getSymlinkedFilePathInProjects(
   service: ts.server.ProjectService,
   filePathAbsolute: string,
 ): string | undefined {
-  const canonicalBaseName = getCanonicalFileName(
-    path.basename(filePathAbsolute),
-  );
-  const canonicalRealPath = getCanonicalRealPath(filePathAbsolute);
-
   for (const project of service.configuredProjects.values()) {
-    for (const fileName of project.getFileNames(
-      /* excludeFilesFromExternalLibraries */ true,
-      /* excludeConfigFiles */ true,
-    )) {
-      if (
-        getCanonicalFileName(path.basename(fileName)) === canonicalBaseName &&
-        getCanonicalRealPath(fileName) === canonicalRealPath
-      ) {
-        return fileName;
-      }
+    const symlinkedDirectories = createSymlinkedDirectories(
+      project.getFileNames(
+        /* excludeFilesFromExternalLibraries */ true,
+        /* excludeConfigFiles */ true,
+      ),
+    );
+    const symlinkedFilePath = getPathToSameFile(
+      symlinkedDirectories,
+      filePathAbsolute,
+    );
+    if (symlinkedFilePath != null) {
+      return symlinkedFilePath;
     }
   }
 

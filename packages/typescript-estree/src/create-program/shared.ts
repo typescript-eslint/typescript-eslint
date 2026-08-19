@@ -99,39 +99,66 @@ export function getCanonicalRealPath(filePath: string): CanonicalPath {
   return getCanonicalFileName(getRealPath(filePath));
 }
 
+/**
+ * Maps the canonical real path of each directory that is only reachable through
+ * a symlink to the path it's referred to by.
+ *
+ * TypeScript de-duplicates directories by real path when it expands a TSConfig's
+ * `include`s, so a directory reachable both directly and through a symlink is
+ * only visited once. Files under it then exist in the project solely under
+ * whichever of the two paths was visited first.
+ * https://github.com/typescript-eslint/typescript-eslint/issues/2987
+ */
+export function createSymlinkedDirectories(
+  fileNames: Iterable<string>,
+): ReadonlyMap<CanonicalPath, string> {
+  const directories = new Set(
+    [...fileNames].map(fileName => path.dirname(fileName)),
+  );
+
+  return new Map(
+    [...directories]
+      .map(directory => [directory, getRealPath(directory)] as const)
+      .filter(([directory, realPath]) => directory !== realPath)
+      .map(([directory, realPath]) => [
+        getCanonicalFileName(realPath),
+        directory,
+      ]),
+  );
+}
+
+/**
+ * Resolves the path a symlinked directory's files are referred to by, for a path
+ * that refers to the same file on disk.
+ */
+export function getPathToSameFile(
+  symlinkedDirectories: ReadonlyMap<CanonicalPath, string>,
+  filePath: string,
+): string | undefined {
+  const realPath = getRealPath(filePath);
+  const directory = symlinkedDirectories.get(
+    getCanonicalFileName(path.dirname(realPath)),
+  );
+
+  return directory == null
+    ? undefined
+    : path.join(directory, path.basename(realPath));
+}
+
 const programSymlinkedDirectories = new WeakMap<
   ts.Program,
   ReadonlyMap<CanonicalPath, string>
 >();
 
-/**
- * Maps the canonical real path of each of the program's directories that is only
- * reachable through a symlink to the path the program knows it by.
- *
- * TypeScript de-duplicates directories by real path when it expands a TSConfig's
- * `include`s, so a directory reachable both directly and through a symlink is
- * only visited once. Files under it then exist in the program solely under
- * whichever of the two paths was visited first.
- * https://github.com/typescript-eslint/typescript-eslint/issues/2987
- */
 function getSymlinkedDirectories(
   program: ts.Program,
 ): ReadonlyMap<CanonicalPath, string> {
   let symlinkedDirectories = programSymlinkedDirectories.get(program);
   if (!symlinkedDirectories) {
-    const directories = new Set(
-      program
-        .getSourceFiles()
-        .map(sourceFile => path.dirname(sourceFile.fileName)),
-    );
-    symlinkedDirectories = new Map(
-      [...directories]
-        .map(directory => [directory, getRealPath(directory)] as const)
-        .filter(([directory, realPath]) => directory !== realPath)
-        .map(([directory, realPath]) => [
-          getCanonicalFileName(realPath),
-          directory,
-        ]),
+    // Only a project's root files can be under a directory it knows by a
+    // symlinked path: files pulled in by imports resolve to their real path.
+    symlinkedDirectories = createSymlinkedDirectories(
+      program.getRootFileNames(),
     );
     programSymlinkedDirectories.set(program, symlinkedDirectories);
   }
@@ -158,15 +185,14 @@ export function getSourceFileFromProgram(
     return fromRealPath;
   }
 
-  const symlinkedDirectory = getSymlinkedDirectories(program).get(
-    getCanonicalFileName(path.dirname(realPath)),
+  const symlinkedFilePath = getPathToSameFile(
+    getSymlinkedDirectories(program),
+    filePath,
   );
 
-  return symlinkedDirectory == null
+  return symlinkedFilePath == null
     ? undefined
-    : program.getSourceFile(
-        path.join(symlinkedDirectory, path.basename(realPath)),
-      );
+    : program.getSourceFile(symlinkedFilePath);
 }
 
 const DEFINITION_EXTENSIONS = [
