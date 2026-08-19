@@ -27,8 +27,10 @@ type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
   options: NewOptions,
 ) => RecursiveMethod<Options & NewOptions>) &
   ((command: string) => Promise<void>);
+
 declare const recursiveMethod: RecursiveMethod;
 declare const value: object;
+
 value as unknown as typeof recursiveMethod;
     `,
     `
