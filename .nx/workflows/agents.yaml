@@ -34,7 +34,11 @@ launch-templates:
   # project-service test variants). Routing is enforced by the assignment
   # rules in .nx/ci-config.yaml.
   linux-medium-node18-js:
-    resource-class: 'docker_linux_amd64/medium'
+    # Larger class than the Node 24 tier: Node 18 has no module compile cache,
+    # so the first type-aware test of each vitest file pays a TS program
+    # initialization cost that exceeds the 10s test timeout on `medium` (the
+    # legacy GitHub-hosted runners for these shards had 4 vCPUs).
+    resource-class: 'docker_linux_amd64/large'
     image: 'ubuntu22.04-node24.14-v1'
     init-steps:
       - name: Checkout
