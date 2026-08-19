@@ -1,0 +1,62 @@
+---
+description: 'Disallow type operations that resolve to the "empty object" type.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-generated-empty-object-type** for documentation.
+
+The `{}`, or "empty object" type, allows any value except `null` and `undefined`.
+It is rarely what you want it to be: even primitives such as `0` and `""` are assignable to it.
+
+[`no-empty-object-type`](./no-empty-object-type.mdx) reports `{}` written out by hand.
+This rule instead reports type operations that _resolve_ to `{}`, which is usually a sign that the operation went wrong.
+For example, `Omit<T, K>` distributes over a union, so `Omit<null | { name: string }, 'name'>` silently resolves to `{}` rather than the intended object type.
+
+This rule only checks type references that are passed type arguments, such as `Omit<T, K>`, since those are the type operations that can hide an unexpected `{}` behind a name.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+type Data = { name: string; num: number };
+type NullableData = null | Data;
+
+type Unexpected = Omit<NullableData, 'name'>;
+
+declare function doSomething<T extends Omit<NullableData, 'name'>>(
+  param: T,
+): void;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+type Data = { name: string; num: number };
+type NullableData = null | Data;
+
+type Expected = Omit<NonNullable<NullableData>, 'name'>;
+
+declare function doSomething<T extends Omit<Data, 'name'>>(param: T): void;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If you intentionally rely on type operations producing `{}`, such as to describe "any non-nullish value", this rule may not be for you.
+Note that `NonNullable<unknown>` is a more explicit way to write that type, and is still reported by this rule.
+
+Because this rule has to ask TypeScript for the resolved type of every generic type reference, it is more expensive than most rules.
+If linting performance matters more to you than catching these bugs, you might not want to enable this rule.
+
+## Related To
+
+- [`no-empty-object-type`](./no-empty-object-type.mdx)
