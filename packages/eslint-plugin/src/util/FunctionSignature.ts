@@ -28,6 +28,10 @@ type RestType =
       typeArguments: readonly ts.Type[];
     };
 
+/**
+ * Tracks checking the parameters of a single function signature.
+ * This allows rules to "consume" parameters and check for unsafe comparisons.
+ */
 export class FunctionSignature {
   private hasConsumedArguments = false;
 

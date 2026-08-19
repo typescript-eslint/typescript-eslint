@@ -124,6 +124,10 @@ foo(...spread, 1 as any);
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 24,
+          endLine: 5,
+          line: 5,
           messageId: 'unsafeArgument',
         },
       ],
@@ -136,6 +140,10 @@ foo('a', 'b', 1 as any);
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
           messageId: 'unsafeArgument',
         },
       ],
