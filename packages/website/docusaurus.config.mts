@@ -13,6 +13,7 @@ import { version } from '@typescript-eslint/parser/package.json';
 import { blogFooter } from './plugins/blog-footer';
 import { faqData } from './plugins/faq-data';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
+import { parseFrontMatter } from './plugins/rule-og-images/parseFrontMatter';
 import { rulesMeta } from './rulesMeta';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
@@ -371,12 +372,14 @@ const config: Config = {
     rules: rulesMeta,
   },
   favicon: 'img/favicon.ico',
+  markdown: { parseFrontMatter },
   onBrokenAnchors: 'ignore',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   organizationName: 'typescript-eslint',
   plugins: [
     './plugins/recent-blog-posts/index.ts',
+    './plugins/rule-og-images/index.ts',
     ...[
       'ast-spec',
       'project-service',

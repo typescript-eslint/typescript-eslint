@@ -16,6 +16,7 @@ import { insertNewRuleReferences } from './insertions/insertNewRuleReferences';
 import { insertResources } from './insertions/insertResources';
 import { insertRuleDescription } from './insertions/insertRuleDescription';
 import { insertRuleOptions } from './insertions/insertRuleOptions';
+import { insertSocialImageAlt } from './insertions/insertSocialImageAlt';
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
 
@@ -41,6 +42,7 @@ export const generatedRuleDocs: Plugin = () => {
 
     insertWhenNotToUseIt(page);
     insertResources(page);
+    insertSocialImageAlt(page);
     insertRuleOptions(page);
     addESLintHashToCodeBlocksMeta(page, eslintrc);
     insertExtensionNotice(page, rule, file.stem);
