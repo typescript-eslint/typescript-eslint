@@ -319,7 +319,18 @@ export default createRule<Options, MessageIds>({
     }
 
     function containsAny(type: ts.Type): boolean {
-      return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
+      try {
+        return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
+      } catch (error) {
+        // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/12705
+        if (
+          error instanceof RangeError &&
+          error.message === 'Maximum call stack size exceeded'
+        ) {
+          return false;
+        }
+        throw error;
+      }
     }
 
     function containsTypeVariable(type: ts.Type): boolean {
