@@ -4,12 +4,14 @@
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import naturalCompare from 'natural-compare';
 
 import {
   createRule,
   getNameFromIndexSignature,
   getNameFromMember,
+  isESTreeNodeLike,
   MemberNameType,
 } from '../util';
 
@@ -491,6 +493,98 @@ function isMemberOptional(node: Member): boolean {
   return false;
 }
 
+function getMemberInitializer(node: Member): TSESTree.Expression | null {
+  switch (node.type) {
+    case AST_NODE_TYPES.AccessorProperty:
+    case AST_NODE_TYPES.PropertyDefinition:
+      return node.value;
+  }
+  return null;
+}
+
+function getThisPropertyName(node: TSESTree.MemberExpression): string | null {
+  if (!node.computed) {
+    return node.property.name;
+  }
+  return node.property.type === AST_NODE_TYPES.Literal &&
+    typeof node.property.value === 'string'
+    ? node.property.value
+    : null;
+}
+
+/**
+ * Reads inside functions and nested class bodies are skipped: they either run
+ * later or read a different `this`, so they don't constrain declaration order.
+ */
+function collectImmediateThisPropertyNames(
+  node: TSESTree.Node,
+  names: Set<string>,
+): void {
+  if (
+    node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+    node.type === AST_NODE_TYPES.ClassBody ||
+    node.type === AST_NODE_TYPES.FunctionExpression
+  ) {
+    return;
+  }
+
+  if (
+    node.type === AST_NODE_TYPES.MemberExpression &&
+    node.object.type === AST_NODE_TYPES.ThisExpression
+  ) {
+    const name = getThisPropertyName(node);
+    if (name != null) {
+      names.add(name);
+    }
+  }
+
+  for (const key of visitorKeys[node.type] ?? []) {
+    const child: unknown = node[key as keyof typeof node];
+
+    if (Array.isArray(child)) {
+      for (const item of child) {
+        if (isESTreeNodeLike(item)) {
+          collectImmediateThisPropertyNames(item, names);
+        }
+      }
+    } else if (isESTreeNodeLike(child)) {
+      collectImmediateThisPropertyNames(child, names);
+    }
+  }
+}
+
+/**
+ * Class fields are initialized in declaration order, so a field that reads one
+ * of the fields it would be sorted before can't be moved there.
+ *
+ * @param fromIndex the start of the range of members it would be moved before.
+ * @param toIndex the end of the range of members it would be moved before.
+ */
+function isBlockedByEarlierMemberReferences(
+  member: Member,
+  members: Member[],
+  fromIndex: number,
+  toIndex: number,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  const initializer = getMemberInitializer(member);
+  if (!initializer) {
+    return false;
+  }
+
+  const referencedNames = new Set<string>();
+  collectImmediateThisPropertyNames(initializer, referencedNames);
+
+  return members.slice(fromIndex, toIndex).some(other => {
+    const otherName = getMemberName(other, sourceCode);
+    return (
+      otherName != null &&
+      getMemberInitializer(other) != null &&
+      referencedNames.has(otherName)
+    );
+  });
+}
+
 /**
  * Gets the calculated rank using the provided method definition.
  * The algorithm is as follows:
@@ -884,15 +978,30 @@ export default createRule<Options, MessageIds>({
       order: AlphabeticalOrder,
     ): boolean {
       let previousName = '';
+      let previousIndex = 0;
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
-      members.forEach(member => {
+      members.forEach((member, index) => {
         const name = getMemberName(member, context.sourceCode);
 
         // Note: Not all members have names
         if (name) {
           if (naturalOutOfOrder(name, previousName, order)) {
+            // Leaving previousName as-is keeps later members compared against
+            // the last member that could actually be sorted.
+            if (
+              isBlockedByEarlierMemberReferences(
+                member,
+                members,
+                previousIndex,
+                index,
+                context.sourceCode,
+              )
+            ) {
+              return;
+            }
+
             context.report({
               node: member,
               messageId: 'incorrectOrder',
@@ -906,6 +1015,7 @@ export default createRule<Options, MessageIds>({
           }
 
           previousName = name;
+          previousIndex = index;
         }
       });
 

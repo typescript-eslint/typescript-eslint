@@ -1244,6 +1244,80 @@ class Foo {
         },
       ],
     },
+
+    // fields referencing later members are still reported (deferred reference)
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: () => number = () => this.b;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields referencing members they would not be moved before are still reported
+    {
+      code: `
+class Foo {
+  a: number = 1;
+  c: number = 2;
+  b: number = this.a;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 22,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields after a field that cannot be moved are compared against the last movable field
+    {
+      code: `
+class Foo {
+  c: number = 1;
+  a: number = this.c;
+  b: number = 2;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
   ],
   valid: [
     // Without grouping
@@ -2851,6 +2925,86 @@ const foo = class Foo {
 };
       `,
       options: [{ typeLiterals: { order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference earlier fields
+    {
+      code: `
+class Foo {
+  readonly b: number = 42;
+  readonly c: number = 100;
+  readonly a: number = this.b + this.c;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference earlier fields + default member types
+    {
+      code: `
+class Foo {
+  readonly b: number = 42;
+  readonly c: number = 100;
+  readonly a: number = this.b + this.c;
+}
+      `,
+      options: [{ default: { order: 'alphabetically' } }],
+    },
+
+    // static fields whose initializers reference earlier static fields
+    {
+      code: `
+class Foo {
+  static b: number = 42;
+  static a: number = this.b;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // private fields whose initializers reference earlier private fields
+    {
+      code: `
+class Foo {
+  #b: number = 42;
+  #a: number = this.#b;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // auto accessors whose initializers reference earlier auto accessors
+    {
+      code: `
+class Foo {
+  accessor b: number = 42;
+  accessor a: number = this.b;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference earlier fields by computed name
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: number = this['b'];
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference earlier fields that cannot be moved
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: number = this.b;
+  a2: number = this.a;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
   ],
 });

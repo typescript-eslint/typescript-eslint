@@ -548,3 +548,22 @@ interface Foo {
   c: string;
   b?: number;
 }
+
+Incorrect
+Options: {"default":{"order":"alphabetically"}}
+
+class Foo {
+  b: number = 42;
+  c: number = 100;
+  a: number = 0;
+  ~~~~~~~~~~~~~~ Member a should be declared before member c.
+}
+
+Correct
+Options: {"default":{"order":"alphabetically"}}
+
+class Foo {
+  b: number = 42;
+  c: number = 100;
+  a: number = this.b + this.c;
+}

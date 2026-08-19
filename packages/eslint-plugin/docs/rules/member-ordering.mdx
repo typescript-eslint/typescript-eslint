@@ -86,6 +86,9 @@ Other allowed values are:
 - `natural`: Same as `alphabetically`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
 - `natural-case-insensitive`: Same as `alphabetically-case-insensitive`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
 
+Sorting never asks for a class field to be moved before a field its initializer reads.
+See [Sorting Fields That Reference Other Fields](#sorting-fields-that-reference-other-fields).
+
 ### Default configuration
 
 The default configuration looks as follows:
@@ -1120,6 +1123,37 @@ interface Foo {
   a: boolean;
   c: string;
   b?: number;
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Sorting Fields That Reference Other Fields
+
+Class fields are initialized in the order they are declared.
+A field whose initializer reads another field of the same class is therefore not reported when sorting it earlier would move it before a field it reads.
+Reads inside functions and nested classes don't count: those run later, so they don't restrict where the field may be declared.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{"default":{"order":"alphabetically"}}'
+class Foo {
+  b: number = 42;
+  c: number = 100;
+  a: number = 0;
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{"default":{"order":"alphabetically"}}'
+class Foo {
+  b: number = 42;
+  c: number = 100;
+  a: number = this.b + this.c;
 }
 ```
 
