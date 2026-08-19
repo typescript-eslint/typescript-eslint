@@ -1,10 +1,19 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule } from '../util';
+
+function isNonCallVoidArgument(node: TSESTree.Expression): boolean {
+  const current =
+    node.type === AST_NODE_TYPES.ChainExpression ? node.expression : node;
+  return (
+    current.type === AST_NODE_TYPES.Identifier ||
+    current.type === AST_NODE_TYPES.MemberExpression
+  );
+}
 
 export type Options = [
   {
@@ -89,6 +98,18 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
             data: { type: checker.typeToString(argType) },
             suggest: [{ messageId: 'removeVoid', fix }],
           });
+        } else if (isNonCallVoidArgument(node.argument)) {
+          const isOnlyNever = unionParts.every(part =>
+            tsutils.isTypeFlagSet(part, ts.TypeFlags.Never),
+          );
+          if (!isOnlyNever) {
+            context.report({
+              node,
+              messageId: 'meaninglessVoidOperator',
+              data: { type: checker.typeToString(argType) },
+              fix,
+            });
+          }
         }
       },
     };

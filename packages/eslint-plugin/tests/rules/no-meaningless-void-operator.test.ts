@@ -11,16 +11,31 @@ ruleTester.run('no-meaningless-void-operator', rule, {
 function foo() {}
 foo(); // nothing to discard
 
-function bar(x: number) {
-  void x;
+function bar(): number {
   return 2;
 }
-void bar(); // discarding a number
+void bar();
     `,
     `
 function bar(x: never) {
   void x;
 }
+    `,
+    `
+declare function getValue(): string;
+void getValue();
+    `,
+    `
+declare const box: { getValue(): string };
+void box.getValue();
+    `,
+    `
+declare const box: { value: string };
+void box.value.toUpperCase();
+    `,
+    `
+declare const box: { method(): string } | undefined;
+void box?.method();
     `,
   ],
   invalid: [
@@ -50,6 +65,79 @@ void foo();
       output: `
 function foo() {}
 foo();
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12214
+    {
+      code: `
+declare const box: { value: string };
+void box;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string };
+box;
+      `,
+    },
+    {
+      code: `
+declare const box: { value: string };
+void box.value;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string };
+box.value;
+      `,
+    },
+    {
+      code: `
+declare const box: { value: string } | undefined;
+void box?.value;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string } | undefined;
+box?.value;
+      `,
+    },
+    {
+      code: `
+function bar(x: number) {
+  void x;
+  return 2;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+function bar(x: number) {
+  x;
+  return 2;
+}
       `,
     },
     {
