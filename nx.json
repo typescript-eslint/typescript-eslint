@@ -70,8 +70,7 @@
       "options": {
         "config": "vitest.config.mts"
       },
-      "inputs": ["default", "{workspaceRoot}/vitest.config.base.mts"],
-      "outputs": ["{projectRoot}/coverage"]
+      "inputs": ["default", "{workspaceRoot}/vitest.config.base.mts"]
     },
     "attw-check": {
       "cache": false,
