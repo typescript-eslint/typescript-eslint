@@ -145,7 +145,8 @@
   },
   "nxCloudId": "60b38765e74d975e3faae5ad",
   "sync": {
-    "applyChanges": true
+    "applyChanges": true,
+    "disabledTaskSyncGenerators": ["@nx/js:typescript-sync"]
   },
   "analytics": false
 }
