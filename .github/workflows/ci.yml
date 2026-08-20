@@ -126,7 +126,11 @@ jobs:
       # This value keys the `overrides` section of .nx/ci-config.yaml — it is
       # what enables distributed execution for this job and nothing else.
       NX_CI_EXECUTION_ENV: 'nx-agents-main'
-      NX_CLOUD_CONTINUOUS_ASSIGNMENT: true
+      # Continuous assignment is disabled while Nx Cloud investigates an
+      # orchestrator race: 3 of 4 runs on 2026-08-20 had a command stall with
+      # zero task assignments until the 3600s client bailout (executions
+      # miZ0PWM8kp and alkcb8POn6, plus stuck parser/utils:typecheck earlier).
+      NX_CLOUD_CONTINUOUS_ASSIGNMENT: false
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
