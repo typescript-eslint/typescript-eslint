@@ -4,7 +4,7 @@ import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule } from '../util';
+import { createRule, nullThrows } from '../util';
 
 export type Options = [
   {
@@ -123,14 +123,12 @@ function unwrapVoidArgument(node: TSESTree.Expression): TSESTree.Expression {
         current = current.expression;
         continue;
 
-      case AST_NODE_TYPES.SequenceExpression: {
-        const last = current.expressions.at(-1);
-        if (last == null) {
-          return current;
-        }
-        current = last;
+      case AST_NODE_TYPES.SequenceExpression:
+        current = nullThrows(
+          current.expressions.at(-1),
+          'Expected SequenceExpression to have at least one expression',
+        );
         continue;
-      }
 
       default:
         return current;

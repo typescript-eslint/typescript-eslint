@@ -141,6 +141,23 @@ box?.value;
     {
       code: `
 declare const box: { value: string };
+void (<string>box.value);
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string };
+(<string>box.value);
+      `,
+    },
+    {
+      code: `
+declare const box: { value: string };
 void (box.value as string);
       `,
       errors: [
