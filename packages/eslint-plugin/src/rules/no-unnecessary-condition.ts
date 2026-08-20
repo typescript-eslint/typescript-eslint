@@ -574,6 +574,53 @@ export default createRule<Options, MessageId>({
       checkNode(node.test);
     }
 
+    /**
+     * Determines whether an array predicate callback passed as a direct type
+     * guard reference (e.g. `arr.filter(isNotNil)`) is unnecessary because the
+     * array element type already satisfies the predicate.
+     */
+    function isUnnecessaryTypeGuardCallback(
+      node: TSESTree.CallExpression,
+      callback: TSESTree.CallExpressionArgument,
+    ): boolean {
+      if (callback.type === AST_NODE_TYPES.SpreadElement) {
+        return false;
+      }
+
+      const predicateParameter = services
+        .getResolvedSignature(node)
+        ?.getParameters()[0];
+      if (predicateParameter == null) {
+        return false;
+      }
+
+      const predicateSignatures = tsutils.getCallSignaturesOfType(
+        checker.getTypeOfSymbol(predicateParameter),
+      );
+      if (predicateSignatures.length !== 1) {
+        return false;
+      }
+
+      const predicateSignature = predicateSignatures[0];
+      const predicate = checker.getTypePredicateOfSignature(predicateSignature);
+      if (predicate?.kind !== ts.TypePredicateKind.Identifier) {
+        return false;
+      }
+
+      // The predicate parameter's narrowed type `S` is constrained to a subtype
+      // of the element type, so the guard is unnecessary exactly when the
+      // element type is already assignable to it.
+      const elementType = checker.getTypeOfSymbol(
+        predicateSignature.getParameters()[predicate.parameterIndex],
+      );
+      return (
+        !tsutils.isTypeFlagSet(
+          elementType,
+          ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+        ) && checker.isTypeAssignableTo(elementType, predicate.type)
+      );
+    }
+
     function checkCallExpression(node: TSESTree.CallExpression): void {
       if (checkTypePredicates) {
         const truthinessAssertedArgument = findTruthinessAssertedArgument(
@@ -658,6 +705,19 @@ export default createRule<Options, MessageId>({
           //   any function with a single return statement
           // (Value to complexity ratio is dubious however)
         }
+
+        // Unnecessary type guard passed directly as the callback like `arr.filter(isNotNil)` on a `string[]`
+        if (
+          checkTypePredicates &&
+          isUnnecessaryTypeGuardCallback(node, callback)
+        ) {
+          return context.report({
+            node: callback,
+            messageId: 'typeGuardAlreadyIsType',
+            data: { typeGuardOrAssertionFunction: 'type guard' },
+          });
+        }
+
         // Otherwise just do type analysis on the function as a whole.
         const returnTypes = tsutils
           .getCallSignaturesOfType(
