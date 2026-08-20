@@ -48,6 +48,7 @@
     "typecheck": {
       "inputs": [
         "...",
+        "^production",
         "{projectRoot}/vitest.config.mts",
         "{workspaceRoot}/vitest.config.mts",
         "{workspaceRoot}/tsconfig.build.json",
@@ -70,6 +71,9 @@
       "outputs": ["{projectRoot}/dist"],
       "inputs": [
         "default",
+        "^production",
+        "{workspaceRoot}/vitest.config.mts",
+        "{workspaceRoot}/vitest.config.base.mts",
         {
           "dependentTasksOutputFiles": "**/*",
           "transitive": true

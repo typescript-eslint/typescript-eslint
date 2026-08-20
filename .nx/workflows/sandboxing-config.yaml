@@ -11,3 +11,10 @@
 # projects are declared inputs via `dependentTasksOutputFiles` instead.
 exclude-reads:
   - '**/*.tsbuildinfo'
+
+# The same incremental-state files are also written outside declared task
+# outputs (e.g. tsconfig.spec.tsbuildinfo emitted next to spec output).
+# They are compiler-internal state, not a task product other tasks may
+# depend on, so undeclared writes to them are noise, not cache corruption.
+exclude-writes:
+  - '**/*.tsbuildinfo'
