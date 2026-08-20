@@ -34,14 +34,9 @@ const fruit: Fruit = someNumber; // No error
 ```
 
 TypeScript also permits numeric literals that happen to coincide with a member's value, which makes code depend on what an enum's members are set to rather than what they are called.
-Incrementing or otherwise doing arithmetic on an enum-typed value has the same effect, since the result is a plain number that need not match any member.
-String enums are checked more strictly, but a type assertion still bypasses those checks.
+Incrementing or otherwise doing arithmetic on an enum-typed value has the same effect, since the result is a plain number that might not match any enum member.
 
-Requiring enum members to be referred to by name:
-
-- makes a codebase more resilient to enum members changing values.
-- allows code IDEs to use the "Rename Symbol" feature to quickly rename an enum member.
-- aligns code to the proper enum semantics of referring to members by name and treating their values as implementation details.
+This rule reports on any of those "unsafe" enum assignments that might only happen to match on enum member values.
 
 ## Examples
 
@@ -57,24 +52,17 @@ declare const someNumber: number;
 
 // Fruit.Apple is set to 0, so TypeScript allows this literal.
 const fruit: Fruit = 0;
+```
 
-function takesFruit(value: Fruit) {}
-takesFruit(someNumber);
-
-function getFruit(): Fruit {
-  return someNumber;
-}
-
-let mutated: Fruit = Fruit.Apple;
-mutated++;
-mutated += 1;
-
+```ts
 enum Vegetable {
   Asparagus = 'asparagus',
 }
 
-// A type assertion bypasses TypeScript's stricter string enum checks.
-const vegetable = 'asparagus' as Vegetable;
+let mutated: Vegetable = Vegetable.Asparagus;
+
+mutated++;
+mutated += 1;
 ```
 
 </TabItem>
@@ -86,22 +74,15 @@ enum Fruit {
 }
 
 const fruit: Fruit = Fruit.Apple;
+```
 
-function takesFruit(value: Fruit) {}
-takesFruit(Fruit.Apple);
-
-function getFruit(): Fruit {
-  return Fruit.Apple;
-}
-
-let reassigned: Fruit = Fruit.Apple;
-reassigned = Fruit.Apple;
-
+```ts
 enum Vegetable {
   Asparagus = 'asparagus',
 }
 
-const vegetable: Vegetable = Vegetable.Asparagus;
+let reassigned: Vegetable = Vegetable.Asparagus;
+reassigned = Vegetable.Asparagus;
 ```
 
 </TabItem>
@@ -109,14 +90,12 @@ const vegetable: Vegetable = Vegetable.Asparagus;
 
 ## When Not To Use It
 
-Combining enum members with bitwise operators is allowed by this rule, including with `|=`, `&=`, and `^=`.
-Computing flag values with other arithmetic is not.
-If your codebase derives enum values that way, this rule will be difficult to adhere to.
+If your codebase intentionally derives enum values with non-bitwise operators, such as `+=`, this rule will be difficult to adhere to.
+Consider using bitwise operators like `|=`, `&=`, and `^=` for those cases.
 
 Sometimes, you may want to ingest a value from an API or user input, then use it as an enum throughout your application.
 While validating the input, it may be appropriate to disable the rule.
 Alternately, you might consider making use of a validation library like [Zod](https://zod.dev/?id=native-enums).
-See further discussion of treating enums as opaque in [#8557](https://github.com/typescript-eslint/typescript-eslint/issues/8557).
 
 In the case of relying on third party enums that are only imported as `type`s, their members aren't available to refer to by name.
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments) for those specific situations instead of completely disabling this rule.

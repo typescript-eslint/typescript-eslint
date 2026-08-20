@@ -21,8 +21,6 @@ import {
 
 const bitwiseBinaryOperators = new Set(['&', '<<', '>>', '>>>', '^', '|']);
 
-// These assign their right side through, so they are checked like a plain `=`.
-// Every other compound operator computes a new number from the enum value.
 const valueAssigningOperators = new Set([
   '&&=',
   '&=',
@@ -63,35 +61,32 @@ export default createRule({
     const checker = services.program.getTypeChecker();
     const suppressedNestedReportRoots = new WeakSet<TSESTree.Node>();
 
+    function getConstraintType(type: ts.Type) {
+      return checker.getBaseConstraintOfType(type) ?? type;
+    }
+
+    function getContextualTypeForExpression(node: TSESTree.Expression) {
+      return getContextualType(
+        checker,
+        services.esTreeNodeToTSNodeMap.get(node) as ts.Expression,
+      );
+    }
+
+    function getTypeArguments(type: ts.Type) {
+      return tsutils.isTypeReference(type)
+        ? checker.getTypeArguments(type)
+        : [];
+    }
+
     function hasSharedEnumType(
       type: ts.Type,
       expectedEnumTypes: readonly ts.Type[],
     ) {
       const typeEnumTypes = new Set(getEnumTypes(checker, type));
 
-      for (const expectedEnumType of expectedEnumTypes) {
-        if (typeEnumTypes.has(expectedEnumType)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    function getTsExpression(node: TSESTree.Expression): ts.Expression {
-      return services.esTreeNodeToTSNodeMap.get(node) as ts.Expression;
-    }
-
-    function getContextualTypeForExpression(node: TSESTree.Expression) {
-      return getContextualType(checker, getTsExpression(node));
-    }
-
-    function getTypeArguments(type: ts.Type): readonly ts.Type[] {
-      if (!tsutils.isTypeReference(type)) {
-        return [];
-      }
-
-      return checker.getTypeArguments(type);
+      return expectedEnumTypes.some(expectedEnumType =>
+        typeEnumTypes.has(expectedEnumType),
+      );
     }
 
     function isSafeEnumBitwiseExpression(
@@ -136,7 +131,7 @@ export default createRule({
       }
 
       const unwrappedExpression = unwrapTsExpression(
-        getTsExpression(expression),
+        services.esTreeNodeToTSNodeMap.get(expression) as ts.Expression,
       );
       if (!ts.isBinaryExpression(unwrappedExpression)) {
         return false;
@@ -237,16 +232,10 @@ export default createRule({
     }
 
     function getReportDataForTypes(types: readonly ts.Type[]) {
-      const enumNames = new Set<string>();
-
-      for (const type of types) {
-        for (const enumName of getExpectedEnumNames(type)) {
-          enumNames.add(enumName);
-        }
-      }
-
       return {
-        enumNames: formatEnumNames([...enumNames].sort()),
+        enumNames: formatEnumNames(
+          types.flatMap(type => getExpectedEnumNames(type)).sort(),
+        ),
       };
     }
 
@@ -316,7 +305,7 @@ export default createRule({
         const constrainedReceiverType = getConstraintType(receiverType);
 
         if (
-          !isTypeParameterType(receiverType) &&
+          !tsutils.isTypeFlagSet(receiverType, ts.TypeFlags.TypeParameter) &&
           (checker.isArrayType(constrainedReceiverType) ||
             checker.isTupleType(constrainedReceiverType))
         ) {
@@ -324,11 +313,10 @@ export default createRule({
         }
       }
 
-      if (hasDeepEnumAssignmentMismatch(senderType, receiverType)) {
-        if (isSafeEnumBitwiseExpression(senderNode, receiverType)) {
-          return false;
-        }
-
+      if (
+        hasDeepEnumAssignmentMismatch(senderType, receiverType) &&
+        !isSafeEnumBitwiseExpression(senderNode, receiverType)
+      ) {
         reportWithSuppressedNestedRoots(
           senderNode,
           reportingNode,
@@ -339,18 +327,6 @@ export default createRule({
       }
 
       return false;
-    }
-
-    function checkAssignment(
-      receiverNode: TSESTree.Node,
-      senderNode: TSESTree.Expression,
-      reportingNode: TSESTree.Node,
-    ) {
-      return checkAssignmentWithReceiverType(
-        services.getTypeAtLocation(receiverNode),
-        senderNode,
-        reportingNode,
-      );
     }
 
     function checkContextualAssignment(
@@ -365,21 +341,6 @@ export default createRule({
         senderNode,
         reportingNode,
       );
-    }
-
-    function getConstraintType(type: ts.Type) {
-      return checker.getBaseConstraintOfType(type) ?? type;
-    }
-
-    function isTypeParameterType(type: ts.Type) {
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.TypeParameter);
-    }
-
-    function getEffectiveArgumentReceiverType(
-      _argument: TSESTree.Expression,
-      parameterType: ts.Type,
-    ) {
-      return parameterType;
     }
 
     function hasDeepEnumAssignmentMismatch(
@@ -636,7 +597,7 @@ export default createRule({
           const constrainedParameterType = getConstraintType(parameterType);
 
           if (
-            !isTypeParameterType(parameterType) &&
+            !tsutils.isTypeFlagSet(parameterType, ts.TypeFlags.TypeParameter) &&
             (checker.isArrayType(constrainedParameterType) ||
               checker.isTupleType(constrainedParameterType))
           ) {
@@ -644,21 +605,16 @@ export default createRule({
           }
         }
 
-        const receiverType = getEffectiveArgumentReceiverType(
-          argument,
-          parameterType,
-        );
-
         const argumentType = services.getTypeAtLocation(argument);
         if (
-          hasDeepEnumAssignmentMismatch(argumentType, receiverType) &&
-          !isSafeEnumBitwiseExpression(argument, receiverType)
+          hasDeepEnumAssignmentMismatch(argumentType, parameterType) &&
+          !isSafeEnumBitwiseExpression(argument, parameterType)
         ) {
           reportWithSuppressedNestedRoots(
             argument,
             argument,
             'unsafeEnumArgument',
-            [receiverType],
+            [parameterType],
           );
         }
       }
@@ -677,7 +633,11 @@ export default createRule({
           checkObjectDestructurePattern(assignee, value);
           return;
         default:
-          checkAssignment(assignee, value, node);
+          checkAssignmentWithReceiverType(
+            services.getTypeAtLocation(assignee),
+            value,
+            node,
+          );
           return;
       }
     }
@@ -858,7 +818,11 @@ export default createRule({
           return;
         }
 
-        checkAssignment(node, node.value, node);
+        checkAssignmentWithReceiverType(
+          services.getTypeAtLocation(node),
+          node.value,
+          node,
+        );
       },
       ArrayExpression(node) {
         if (
@@ -922,7 +886,11 @@ export default createRule({
         }
 
         if (valueAssigningOperators.has(node.operator)) {
-          checkAssignment(node.left, node.right, node);
+          checkAssignmentWithReceiverType(
+            services.getTypeAtLocation(node.left),
+            node.right,
+            node,
+          );
           return;
         }
 
@@ -1004,7 +972,11 @@ export default createRule({
         node: TSESTree.PropertyDefinition & { value: NonNullable<unknown> },
       ) {
         if (!checkImplementedMemberAssignment(node, node.value, node)) {
-          checkAssignment(node, node.value, node);
+          checkAssignmentWithReceiverType(
+            services.getTypeAtLocation(node),
+            node.value,
+            node,
+          );
         }
       },
       ReturnStatement(node) {
