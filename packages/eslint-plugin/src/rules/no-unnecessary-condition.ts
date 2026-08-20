@@ -228,7 +228,7 @@ export default createRule<Options, MessageId>({
     {
       allowConstantLoopConditions: 'never',
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-      checkTypePredicates: false,
+      checkTypePredicates: true,
     },
   ],
   create(
