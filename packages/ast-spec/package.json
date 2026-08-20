@@ -103,6 +103,15 @@
       "test": {
         "dependsOn": [
           "typecheck"
+        ],
+        "inputs": [
+          "...",
+          "{workspaceRoot}/packages/typescript-estree/src/**/*.ts",
+          "{workspaceRoot}/packages/typescript-estree/tsconfig.build.json",
+          "{workspaceRoot}/packages/project-service/tsconfig.build.json",
+          "{workspaceRoot}/packages/tsconfig-utils/tsconfig.build.json",
+          "{workspaceRoot}/packages/types/tsconfig.build.json",
+          "{workspaceRoot}/packages/visitor-keys/tsconfig.build.json"
         ]
       }
     }

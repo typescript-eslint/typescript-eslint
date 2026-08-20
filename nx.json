@@ -45,6 +45,20 @@
     }
   },
   "targetDefaults": {
+    "typecheck": {
+      "inputs": [
+        "...",
+        "{projectRoot}/vitest.config.mts",
+        "{workspaceRoot}/vitest.config.mts",
+        "{workspaceRoot}/tsconfig.build.json",
+        "{workspaceRoot}/tsconfig.spec.json",
+        "{workspaceRoot}/vitest.config.base.mts",
+        {
+          "dependentTasksOutputFiles": "**/*",
+          "transitive": true
+        }
+      ]
+    },
     "typecheck:tsgo": {
       "cache": true,
       "executor": "nx:run-commands",
@@ -53,7 +67,14 @@
         "command": "tsc --build --emitDeclarationOnly",
         "cwd": "{projectRoot}"
       },
-      "outputs": ["{projectRoot}/dist"]
+      "outputs": ["{projectRoot}/dist"],
+      "inputs": [
+        "default",
+        {
+          "dependentTasksOutputFiles": "**/*",
+          "transitive": true
+        }
+      ]
     },
     "lint": {
       "cache": false,
@@ -69,7 +90,15 @@
       "options": {
         "config": "vitest.config.mts"
       },
-      "inputs": ["default", "{workspaceRoot}/vitest.config.base.mts"],
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/vitest.config.base.mts",
+        {
+          "dependentTasksOutputFiles": "**/*",
+          "transitive": true
+        }
+      ],
       "outputs": ["{projectRoot}/coverage", "{projectRoot}/**/*.shot"]
     },
     "attw-check": {
@@ -86,6 +115,11 @@
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": [
       "{workspaceRoot}/.github/workflows/ci.yml",
+      "{workspaceRoot}/.nx/workflows/sandboxing-config.yaml",
+      "{workspaceRoot}/tsconfig.base.json",
+      "{workspaceRoot}/tsconfig.build.json",
+      "{workspaceRoot}/tsconfig.json",
+      "{workspaceRoot}/tsconfig.spec.json",
       {
         "runtime": "node -v"
       },

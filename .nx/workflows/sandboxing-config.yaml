@@ -1,0 +1,13 @@
+# Sandbox reconciliation exclusions for Nx Cloud.
+# See https://nx.dev/docs/features/ci-features/sandboxing#excluding-paths
+#
+# Keep this list minimal: a read exclusion silences the missing-input check
+# for the matched paths, so only paths whose CONTENTS can never affect a
+# correct cache result belong here.
+
+# tsc/tsgo read back their own incremental state before overwriting it.
+# The contents are a compiler-internal cache (absolute paths, timestamps),
+# never a semantic input. Dependency tsbuildinfo files consumed across
+# projects are declared inputs via `dependentTasksOutputFiles` instead.
+exclude-reads:
+  - '**/*.tsbuildinfo'

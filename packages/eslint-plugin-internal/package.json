@@ -55,7 +55,11 @@
               "TYPESCRIPT_ESLINT_PROJECT_SERVICE": "true"
             }
           }
-        }
+        },
+        "inputs": [
+          "...",
+          "{workspaceRoot}/.prettierrc.json"
+        ]
       }
     }
   }

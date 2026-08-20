@@ -79,11 +79,26 @@
         "dependsOn": [
           "ast-spec:build"
         ],
+        "inputs": [
+          "default",
+          "{workspaceRoot}/.npmrc",
+          "{workspaceRoot}/.prettierignore",
+          "{workspaceRoot}/pnpm-lock.yaml",
+          {
+            "dependentTasksOutputFiles": "**/*"
+          }
+        ],
         "options": {
           "cwd": "{projectRoot}"
         },
         "outputs": [
           "{projectRoot}/src/generated"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "copy-ast-spec",
+          "^build"
         ]
       },
       "lint": {
