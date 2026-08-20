@@ -1,5 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > special > Decorator > decorator-class-member-super-without-parens > AST Alignment - Token`]
-Snapshot Diff:
-Compared values have no visual difference.

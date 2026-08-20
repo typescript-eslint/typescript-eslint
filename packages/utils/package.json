@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "8.65.0",
+  "version": "8.67.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
@@ -70,7 +71,7 @@
     "typescript": ">=4.8.4 <6.1.0"
   },
   "devDependencies": {
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",

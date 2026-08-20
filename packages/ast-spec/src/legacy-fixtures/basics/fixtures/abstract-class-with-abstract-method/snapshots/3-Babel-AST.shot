@@ -3,16 +3,15 @@ Program {
   body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         abstract: true,
         body: ClassBody {
           type: "ClassBody",
           body: [
-            MethodDefinition {
-              type: "MethodDefinition",
-              abstract: true,
+            TSAbstractMethodDefinition {
+              type: "TSAbstractMethodDefinition",
               computed: false,
               decorators: [],
               key: Identifier {
@@ -31,9 +30,10 @@ Program {
               optional: false,
               override: false,
               static: false,
-              value: FunctionExpression {
-                type: "FunctionExpression",
+              value: TSEmptyBodyFunctionExpression {
+                type: "TSEmptyBodyFunctionExpression",
                 async: false,
+                body: null,
                 declare: false,
                 expression: false,
                 generator: false,
@@ -43,19 +43,7 @@ Program {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSTypeReference {
                     type: "TSTypeReference",
-                    typeName: Identifier {
-                      type: "Identifier",
-                      decorators: [],
-                      name: "Promise",
-                      optional: false,
-
-                      range: [139, 146],
-                      loc: {
-                        start: { column: 27, line: 4 },
-                        end: { column: 34, line: 4 },
-                      },
-                    },
-                    typeParameters: TSTypeParameterInstantiation {
+                    typeArguments: TSTypeParameterInstantiation {
                       type: "TSTypeParameterInstantiation",
                       params: [
                         TSStringKeyword {
@@ -73,6 +61,18 @@ Program {
                       loc: {
                         start: { column: 34, line: 4 },
                         end: { column: 42, line: 4 },
+                      },
+                    },
+                    typeName: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "Promise",
+                      optional: false,
+
+                      range: [139, 146],
+                      loc: {
+                        start: { column: 27, line: 4 },
+                        end: { column: 34, line: 4 },
                       },
                     },
 
@@ -147,9 +147,9 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 158],
+  range: [0, 158],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 6 },
   },
 }

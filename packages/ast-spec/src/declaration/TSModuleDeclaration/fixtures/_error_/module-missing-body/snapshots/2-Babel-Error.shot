@@ -3,6 +3,6 @@
 exports[`AST Fixtures > declaration > TSModuleDeclaration > _error_ > module-missing-body > Babel - Error`]
 BabelError
 > 1 | module F;
-    |         ^ Unexpected token, expected "{" (1:8)
+    | ^ `module ... {}` declarations must have a string name. Use `namespace ... {}` instead. (1:0)
   2 |
   

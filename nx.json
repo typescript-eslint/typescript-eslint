@@ -50,7 +50,7 @@
       "executor": "nx:run-commands",
       "dependsOn": ["build", "^typecheck:tsgo"],
       "options": {
-        "command": "tsgo --build --emitDeclarationOnly",
+        "command": "tsc --build --emitDeclarationOnly",
         "cwd": "{projectRoot}"
       },
       "outputs": ["{projectRoot}/dist"]
@@ -69,7 +69,8 @@
       "options": {
         "config": "vitest.config.mts"
       },
-      "outputs": ["{projectRoot}/coverage"]
+      "inputs": ["default", "{workspaceRoot}/vitest.config.base.mts"],
+      "outputs": ["{projectRoot}/coverage", "{projectRoot}/**/*.shot"]
     },
     "attw-check": {
       "cache": false,
@@ -107,5 +108,6 @@
   "nxCloudId": "60b38765e74d975e3faae5ad",
   "sync": {
     "applyChanges": true
-  }
+  },
+  "analytics": false
 }

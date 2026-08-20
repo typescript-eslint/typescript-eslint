@@ -35,6 +35,30 @@ export function hasBaseTypes(type: Type): type is InterfaceType {
   );
 }
 
+export function isNumberLike(type: Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .every(unionPart =>
+      tsutils
+        .intersectionConstituents(unionPart)
+        .some(intersectionPart =>
+          tsutils.isTypeFlagSet(intersectionPart, ts.TypeFlags.NumberLike),
+        ),
+    );
+}
+
+export function isStringLike(type: Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .every(unionPart =>
+      tsutils
+        .intersectionConstituents(unionPart)
+        .some(intersectionPart =>
+          tsutils.isTypeFlagSet(intersectionPart, ts.TypeFlags.StringLike),
+        ),
+    );
+}
+
 /**
  * Recursively checks if a type or any of its base types matches the provided
  * matcher function.

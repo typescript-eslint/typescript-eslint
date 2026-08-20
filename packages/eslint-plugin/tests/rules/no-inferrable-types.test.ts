@@ -129,6 +129,8 @@ class Foo {
           data: {
             type: 'bigint',
           },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -143,6 +145,8 @@ class Foo {
           data: {
             type: 'bigint',
           },
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -157,6 +161,8 @@ class Foo {
           data: {
             type: 'bigint',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -171,6 +177,8 @@ class Foo {
           data: {
             type: 'bigint',
           },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -185,6 +193,8 @@ class Foo {
           data: {
             type: 'bigint',
           },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -199,6 +209,8 @@ class Foo {
           data: {
             type: 'bigint',
           },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -213,6 +225,8 @@ class Foo {
           data: {
             type: 'boolean',
           },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -227,6 +241,8 @@ class Foo {
           data: {
             type: 'boolean',
           },
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -241,6 +257,8 @@ class Foo {
           data: {
             type: 'boolean',
           },
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -255,6 +273,8 @@ class Foo {
           data: {
             type: 'boolean',
           },
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -269,6 +289,8 @@ class Foo {
           data: {
             type: 'boolean',
           },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -283,6 +305,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -297,6 +321,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -311,6 +337,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -325,6 +353,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -339,6 +369,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -353,6 +385,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -367,6 +401,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -381,6 +417,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -395,6 +433,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -409,6 +449,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -423,6 +465,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -437,6 +481,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -451,6 +497,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -465,6 +513,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -479,6 +529,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -493,6 +545,8 @@ class Foo {
           data: {
             type: 'null',
           },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -507,6 +561,8 @@ class Foo {
           data: {
             type: 'RegExp',
           },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -521,6 +577,8 @@ class Foo {
           data: {
             type: 'RegExp',
           },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -535,6 +593,8 @@ class Foo {
           data: {
             type: 'RegExp',
           },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -549,6 +609,8 @@ class Foo {
           data: {
             type: 'RegExp',
           },
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -563,6 +625,8 @@ class Foo {
           data: {
             type: 'string',
           },
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -577,6 +641,8 @@ class Foo {
           data: {
             type: 'string',
           },
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -591,6 +657,8 @@ class Foo {
           data: {
             type: 'string',
           },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -605,6 +673,8 @@ class Foo {
           data: {
             type: 'string',
           },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -619,6 +689,8 @@ class Foo {
           data: {
             type: 'symbol',
           },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -633,6 +705,8 @@ class Foo {
           data: {
             type: 'symbol',
           },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -647,6 +721,8 @@ class Foo {
           data: {
             type: 'undefined',
           },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -661,6 +737,8 @@ class Foo {
           data: {
             type: 'undefined',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -677,6 +755,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -696,6 +776,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -704,6 +786,8 @@ class Foo {
           data: {
             type: 'boolean',
           },
+          endColumn: 45,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -712,6 +796,8 @@ class Foo {
           data: {
             type: 'string',
           },
+          endColumn: 64,
+          endLine: 1,
           line: 1,
           messageId: 'noInferrableType',
         },
@@ -738,6 +824,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'noInferrableType',
         },
@@ -746,6 +834,8 @@ class Foo {
           data: {
             type: 'boolean',
           },
+          endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'noInferrableType',
         },
@@ -754,6 +844,8 @@ class Foo {
           data: {
             type: 'string',
           },
+          endColumn: 21,
+          endLine: 5,
           line: 5,
           messageId: 'noInferrableType',
         },
@@ -784,6 +876,8 @@ class Foo {
           data: {
             type: 'boolean',
           },
+          endColumn: 39,
+          endLine: 3,
           line: 3,
           messageId: 'noInferrableType',
         },
@@ -812,6 +906,8 @@ class Foo {
           data: {
             type: 'number',
           },
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'noInferrableType',
         },

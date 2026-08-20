@@ -256,10 +256,9 @@ Program {
             },
             kind: "method",
             optional: false,
-            parameters: [],
+            params: [],
             readonly: false,
-            static: false,
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
                 type: "TSVoidKeyword",
@@ -277,6 +276,7 @@ Program {
                 end: { column: 13, line: 9 },
               },
             },
+            static: false,
 
             range: [182, 194],
             loc: {
@@ -301,7 +301,7 @@ Program {
             },
             kind: "method",
             optional: true,
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -340,8 +340,7 @@ Program {
               },
             ],
             readonly: false,
-            static: false,
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
                 type: "TSVoidKeyword",
@@ -359,6 +358,7 @@ Program {
                 end: { column: 21, line: 10 },
               },
             },
+            static: false,
 
             range: [197, 217],
             loc: {
@@ -383,7 +383,7 @@ Program {
             },
             kind: "method",
             optional: true,
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -422,8 +422,7 @@ Program {
               },
             ],
             readonly: false,
-            static: false,
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
                 type: "TSVoidKeyword",
@@ -441,6 +440,7 @@ Program {
                 end: { column: 23, line: 11 },
               },
             },
+            static: false,
 
             range: [220, 242],
             loc: {
@@ -465,7 +465,7 @@ Program {
             },
             kind: "method",
             optional: false,
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -504,8 +504,7 @@ Program {
               },
             ],
             readonly: false,
-            static: false,
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
                 type: "TSVoidKeyword",
@@ -523,6 +522,7 @@ Program {
                 end: { column: 23, line: 12 },
               },
             },
+            static: false,
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
               params: [
@@ -530,7 +530,18 @@ Program {
                   type: "TSTypeParameter",
                   const: false,
                   in: false,
-                  name: "J",
+                  name: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "J",
+                    optional: false,
+
+                    range: [249, 250],
+                    loc: {
+                      start: { column: 6, line: 12 },
+                      end: { column: 7, line: 12 },
+                    },
+                  },
                   out: false,
 
                   range: [249, 250],
@@ -556,7 +567,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -582,7 +593,7 @@ Program {
                 },
               },
             ],
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
@@ -609,7 +620,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -635,7 +646,7 @@ Program {
                 },
               },
             ],
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
@@ -660,7 +671,18 @@ Program {
                   type: "TSTypeParameter",
                   const: false,
                   in: false,
-                  name: "F",
+                  name: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "F",
+                    optional: false,
+
+                    range: [298, 299],
+                    loc: {
+                      start: { column: 7, line: 14 },
+                      end: { column: 8, line: 14 },
+                    },
+                  },
                   out: false,
 
                   range: [298, 299],
@@ -716,9 +738,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 319],
+  range: [0, 319],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 16 },
   },
 }
