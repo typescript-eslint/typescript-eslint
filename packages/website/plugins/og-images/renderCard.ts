@@ -1,4 +1,3 @@
-import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type { CSSProperties, ReactElement, ReactNode } from 'react';
 import type { Font } from 'satori';
 
@@ -19,6 +18,12 @@ const colors = {
   pillBorder: '#c7d2fe',
   title: '#111827',
 };
+
+export interface Card {
+  description: string | undefined;
+  labels: string[];
+  title: string;
+}
 
 interface CardAssets {
   fonts: Font[];
@@ -60,38 +65,30 @@ function div(style: CSSProperties, ...children: ReactNode[]): ReactElement {
   );
 }
 
-function getAttributes(rule: ESLintPluginRuleModule): string[] {
-  const { deprecated, docs, fixable, hasSuggestions } = rule.meta;
-  const recommended =
-    typeof docs.recommended === 'object'
-      ? docs.recommended.recommended === true
-        ? 'recommended'
-        : 'strict'
-      : docs.recommended;
-
-  return [
-    recommended,
-    docs.requiresTypeChecking && 'type information',
-    fixable && 'fixable',
-    hasSuggestions && 'suggestions',
-    docs.extendsBaseRule && 'extension',
-    deprecated && 'deprecated',
-  ].filter(attribute => typeof attribute === 'string');
+// Inter has no emoji glyphs, so any emoji left in the text renders as tofu.
+function stripEmoji(text: string): string {
+  return text
+    .replaceAll(/\p{Extended_Pictographic}|\u200D|\uFE0F/gu, '')
+    .replaceAll(/\s+/g, ' ')
+    .replaceAll(/ ([!,.:;?])/g, '$1')
+    .trim();
 }
 
-function getTitleFontSize(ruleName: string): number {
-  if (ruleName.length > 32) {
+function getTitleFontSize(title: string): number {
+  if (title.length > 32) {
     return 56;
   }
 
-  return ruleName.length > 24 ? 66 : 76;
+  return title.length > 24 ? 66 : 76;
 }
 
-export async function renderRuleCard(
-  ruleName: string,
-  rule: ESLintPluginRuleModule,
-): Promise<Buffer> {
+export async function renderCard({
+  description,
+  labels,
+  title,
+}: Card): Promise<Buffer> {
   const { fonts, logo } = await (assets ??= loadAssets());
+  const cardTitle = stripEmoji(title);
 
   const svg = await satori(
     div(
@@ -126,25 +123,26 @@ export async function renderRuleCard(
           div(
             {
               color: colors.title,
-              fontSize: getTitleFontSize(ruleName),
+              fontSize: getTitleFontSize(cardTitle),
               fontWeight: 700,
               letterSpacing: -1,
             },
-            ruleName,
+            cardTitle,
           ),
-          div(
-            {
-              color: colors.description,
-              fontSize: 32,
-              lineHeight: 1.4,
-              marginTop: 20,
-            },
-            rule.meta.docs.description.replaceAll('`', ''),
-          ),
+          description &&
+            div(
+              {
+                color: colors.description,
+                fontSize: 32,
+                lineHeight: 1.4,
+                marginTop: 20,
+              },
+              stripEmoji(description),
+            ),
         ),
         div(
           { alignItems: 'center', gap: 16 },
-          ...getAttributes(rule).map(attribute =>
+          ...labels.map(label =>
             div(
               {
                 backgroundColor: colors.pillBackground,
@@ -155,7 +153,7 @@ export async function renderRuleCard(
                 fontWeight: 700,
                 padding: '8px 24px',
               },
-              attribute,
+              label,
             ),
           ),
           div(

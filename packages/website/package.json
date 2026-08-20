@@ -65,6 +65,7 @@
   "devDependencies": {
     "@docusaurus/mdx-loader": "^3.9.2",
     "@docusaurus/types": "^3.9.2",
+    "@docusaurus/utils": "^3.9.2",
     "@fontsource/inter": "^5.3.0",
     "@resvg/resvg-wasm": "^2.6.2",
     "@types/history": "^4.7.11",

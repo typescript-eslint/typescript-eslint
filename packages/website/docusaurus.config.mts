@@ -13,7 +13,8 @@ import { version } from '@typescript-eslint/parser/package.json';
 import { blogFooter } from './plugins/blog-footer';
 import { faqData } from './plugins/faq-data';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
-import { parseFrontMatter } from './plugins/rule-og-images/parseFrontMatter';
+import { parseFrontMatter } from './plugins/og-images/parseFrontMatter';
+import { socialImageAlt } from './plugins/og-images/socialImageAlt';
 import { rulesMeta } from './rulesMeta';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
@@ -32,7 +33,7 @@ const presetClassicOptions: PresetClassicOptions = {
     remarkPlugins,
   },
   docs: {
-    beforeDefaultRemarkPlugins: [generatedRuleDocs],
+    beforeDefaultRemarkPlugins: [generatedRuleDocs, socialImageAlt],
     breadcrumbs: false,
     editUrl: `${githubUrl}/edit/main/packages/website/`,
     exclude: ['TEMPLATE.md'],
@@ -51,7 +52,7 @@ const presetClassicOptions: PresetClassicOptions = {
 };
 
 const pluginContentDocsOptions: PluginContentDocsOptions = {
-  beforeDefaultRemarkPlugins: [faqData],
+  beforeDefaultRemarkPlugins: [faqData, socialImageAlt],
   breadcrumbs: false,
   editUrl: `${githubUrl}/edit/main/packages/website/`,
   id: 'base-docs',
@@ -379,7 +380,7 @@ const config: Config = {
   organizationName: 'typescript-eslint',
   plugins: [
     './plugins/recent-blog-posts/index.ts',
-    './plugins/rule-og-images/index.ts',
+    './plugins/og-images/index.ts',
     ...[
       'ast-spec',
       'project-service',
