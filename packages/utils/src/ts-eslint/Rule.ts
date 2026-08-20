@@ -35,6 +35,8 @@ export interface RuleMetaDataDocs {
    * The dialects of the languages that the rule is intended to lint.
    * @example
    * ["JavaScript", "TypeScript"]
+   *
+   * since ESLint 10.2.0
    */
   dialects?: string[] | undefined;
 }
@@ -123,6 +125,8 @@ export interface RuleMetaData<
    * Use `"*"` for any language or `"plugin/*"` for any language from a specific plugin.
    * @example
    * ["js/js", "markdown/gfm", "json/jsonc", "css/css"]
+   *
+   * since ESLint 10.2.0
    */
   languages?: string[] | undefined;
   /**
