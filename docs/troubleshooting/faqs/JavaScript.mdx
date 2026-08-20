@@ -9,16 +9,13 @@ import TabItem from '@theme/TabItem';
 
 ## How do I use typescript-eslint in a JavaScript project?
 
-Our rules can run on JavaScript files, and many are useful even if you never write TypeScript code.
-Typed rules can still use TypeScript type information to operate on non-TypeScript files.
+typescript-eslint rules can run on JavaScript files, and many are useful even if you never write TypeScript code.
 
 For example, [`no-deprecated`](/rules/no-deprecated) reports uses of anything marked with a JSDoc `@deprecated` tag, and [`naming-convention`](/rules/naming-convention) enforces naming styles on any identifier.
 Rules that match only TypeScript syntax, such as [`no-explicit-any`](/rules/no-explicit-any), will not report on JavaScript files.
 
-ESLint rules don't check file extensions, though, so if one of ours reports something that makes no sense in JavaScript, see [One of my lint rules isn't working correctly on a pure JavaScript file](#one-of-my-lint-rules-isnt-working-correctly-on-a-pure-javascript-file) below.
-
-Setup is the same as in [Getting Started](../../getting-started/Quickstart.mdx), with `files` pointing at your JavaScript file extensions.
-You do still need to install `typescript`, as our parser calls into the TypeScript compiler to parse every file, JavaScript included.
+The setup is essentially the same as in [Getting Started](../../getting-started/Quickstart.mdx), just with `files` configured to include JavaScript file extensions.
+You do still need to install `typescript`, as typescript-eslint loads TypeScript even when you're not using type-aware rules.
 
 ```bash npm2yarn
 npm install --save-dev eslint @eslint/js typescript typescript-eslint
@@ -54,6 +51,8 @@ TypeScript leaves them out unless [`allowJs`](https://www.typescriptlang.org/tsc
 
 Without that, every linted file reports a parsing error saying it "was not found by the project service".
 
+In a JavaScript-only project, you can use a [`jsconfig.json`](https://code.visualstudio.com/docs/languages/jsconfig) file instead of a `tsconfig.json`, which implies `allowJs` by default.
+
 Typed rules then work off the types TypeScript infers, including the ones it reads from JSDoc comments.
 [`no-deprecated`](/rules/no-deprecated) is a good example, as it needs no type annotations at all:
 
@@ -63,12 +62,12 @@ export function getUser() {}
 
 getUser();
 ~~~~~~~
-// 4:1 - 4:8 `getUser` is deprecated. Use `fetchUser` instead  @typescript-eslint/no-deprecated
+// 4:1 - 4:8 `getUser` is deprecated. Use `fetchUser` instead. @typescript-eslint/no-deprecated
 ```
 
 ### How do I use JSDoc types?
 
-TypeScript reads JSDoc type tags in JavaScript files, and our rules work off the types it infers from them.
+TypeScript reads JSDoc type tags in JavaScript files, and typescript-eslint rules work off the types it infers from them.
 No extra configuration is needed for that beyond the typed linting setup above:
 
 ```js title="eslint.config.mjs"
@@ -94,10 +93,10 @@ With that in place, annotating a parameter resolves the `no-unsafe-*` reports it
 ```js title="src/shout.js"
 export function shout(value) {
   return value.toUpperCase();
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 2:10 - 2:27 Unsafe call of an `any` typed value. @typescript-eslint/no-unsafe-call
   // 2:16 - 2:27 Unsafe member access .toUpperCase on an `any` value. @typescript-eslint/no-unsafe-member-access
-  // 2:3  - 2:30 Unsafe return of a value of type `any` @typescript-eslint/no-unsafe-return
+  // 2:3  - 2:30 Unsafe return of a value of type `any`. @typescript-eslint/no-unsafe-return
 }
 
 /** @param {string} value */
@@ -106,7 +105,7 @@ export function shoutTyped(value) {
 }
 ```
 
-As of writing this, JSDoc type assertions are invisible to our rules ([#1682](https://github.com/typescript-eslint/typescript-eslint/issues/1682)).
+At the time of writing, JSDoc type assertions are not fully supported by typescript-eslint rules ([#1682](https://github.com/typescript-eslint/typescript-eslint/issues/1682)).
 TypeScript applies the asserted type, but typescript-eslint is currently unaware of these assertions, so rules still read the non-asserted type of the expression:
 
 ```js title="src/config.js"
@@ -120,8 +119,26 @@ export function readPort(value) {
 }
 ```
 
-Rules that look for type annotation syntax can't be satisfied by JSDoc.
-For example, [`explicit-function-return-type`](/rules/explicit-function-return-type) and [`explicit-module-boundary-types`](/rules/explicit-module-boundary-types) report "Missing return type on function" on a function with a `@returns` tag, since JavaScript has nowhere to put the annotation they're looking for.
+<details>
+<summary>Why JSDoc assertions aren't fully supported</summary>
+
+A `/** @type {T} */ (expression)` assertion has no AST node of its own, so a rule asking for the type of that expression generally receives the type of `expression` rather than `T`.
+
+It isn't a complete breakdown, though.
+TypeScript still attaches the right types to the nodes typescript-eslint does see:
+
+```js
+const config = /** @type {{ port: number }} */ (value);
+//                                              ^? any
+
+config.port;
+//     ^? number
+```
+
+</details>
+
+JSDoc types will usually work, but are not supported by some rules that expect TypeScript syntax to be present.
+For example, [`explicit-function-return-type`](/rules/explicit-function-return-type) and [`explicit-module-boundary-types`](/rules/explicit-module-boundary-types) report "Missing return type on function" on a function with a `@returns` tag, since they only look for genuine TypeScript type syntax.
 
 ## One of my lint rules isn't working correctly on a pure JavaScript file
 
