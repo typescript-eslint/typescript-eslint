@@ -297,109 +297,33 @@ declare const foo: { bar: () => { baz: number } | null | undefined };
 foo.bar === null || foo.bar?.() === null || foo.bar?.().baz;
       `,
     },
-  ],
-  // but if the type is just `| null` - then it covers the cases and is
-  // a valid conversion
-  invalid: [
+    // a chain that *ends* on `=== null` can't be converted either - the chain
+    // short-circuits to `true` when the operand is `null`, whereas the optional
+    // chain compares `undefined === null` and evaluates to `false`
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11840
     {
       code: `
 declare const foo: { bar: number } | null;
 foo === null || foo.bar === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 33,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: number } | null;
-foo?.bar === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
 declare const foo: { bar: { baz: number } | null };
 foo.bar === null || foo.bar.baz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 41,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: { baz: number } | null };
-foo.bar?.baz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
 declare const foo: (() => number) | null;
 foo === null || foo() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 31,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: (() => number) | null;
-foo?.() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
 declare const foo: { bar: (() => number) | null };
 foo.bar === null || foo.bar() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 39,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: (() => number) | null };
-foo.bar?.() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -409,25 +333,6 @@ foo === null ||
   foo.bar.baz === null ||
   foo.bar.baz.buzz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 28,
-          endLine: 6,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: { baz: { buzz: number } | null } | null } | null;
-foo?.bar?.baz?.buzz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -436,77 +341,18 @@ declare const foo: {
 };
 foo.bar === null || foo.bar.baz === null || foo.bar.baz.buzz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 70,
-          endLine: 5,
-          line: 5,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: {
-  bar: { baz: { buzz: number } | null } | null;
-};
-foo.bar?.baz?.buzz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
 declare const foo: { bar: { baz: { buzz: number } } | null } | null;
 foo === null || foo.bar === null || foo.bar.baz.buzz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 62,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: { baz: { buzz: number } } | null } | null;
-foo?.bar?.baz.buzz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
 declare const foo: { bar: { baz: { buzz: number } } | null };
 foo.bar === null || foo.bar.baz.buzz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 46,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: { baz: { buzz: number } } | null };
-foo.bar?.baz.buzz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -517,25 +363,6 @@ foo === null ||
   foo.bar.baz === null ||
   foo.bar.baz.buzz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 28,
-          endLine: 7,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: { baz: { buzz: number } | null } | null } | null;
-foo?.bar?.baz?.buzz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -545,25 +372,6 @@ foo.bar === null ||
   foo.bar.baz === null ||
   foo.bar.baz.buzz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 28,
-          endLine: 6,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: { baz: { buzz: number } | null } | null } | null;
-foo.bar?.baz?.buzz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -576,28 +384,6 @@ foo === null ||
   foo[bar].baz === null ||
   foo[bar].baz.buzz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 29,
-          endLine: 9,
-          line: 6,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const bar: string;
-declare const foo: {
-  [k: string]: { baz: { buzz: number } | null } | null;
-} | null;
-foo?.[bar]?.baz?.buzz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -607,28 +393,6 @@ declare const foo: {
 } | null;
 foo === null || foo[bar].baz === null || foo[bar].baz.buzz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 68,
-          endLine: 6,
-          line: 6,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const bar: string;
-declare const foo: {
-  [k: string]: { baz: { buzz: number } | null } | null;
-} | null;
-foo?.[bar].baz?.buzz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -636,26 +400,6 @@ declare const bar: { baz: string };
 declare const foo: { [k: string]: { buzz: number } | null } | null;
 foo === null || foo[bar.baz] === null || foo[bar.baz].buzz === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 68,
-          endLine: 4,
-          line: 4,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const bar: { baz: string };
-declare const foo: { [k: string]: { buzz: number } | null } | null;
-foo?.[bar.baz]?.buzz === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -667,27 +411,6 @@ foo === null ||
   foo.bar.baz === null ||
   foo.bar.baz.buzz() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 30,
-          endLine: 8,
-          line: 5,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: {
-  bar: { baz: { buzz: () => number } | null } | null;
-} | null;
-foo?.bar?.baz?.buzz() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -702,29 +425,6 @@ foo === null ||
   foo.bar.baz.buzz === null ||
   foo.bar.baz.buzz() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 30,
-          endLine: 11,
-          line: 7,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: {
-  bar: {
-    baz: { buzz: (() => number) | null } | null;
-  } | null;
-} | null;
-foo?.bar?.baz?.buzz?.() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -736,77 +436,18 @@ foo.bar === null ||
   foo.bar.baz.buzz === null ||
   foo.bar.baz.buzz() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 30,
-          endLine: 8,
-          line: 5,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: {
-  bar: { baz: { buzz: (() => number) | null } | null } | null;
-};
-foo.bar?.baz?.buzz?.() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
 declare const foo: { bar: { baz: { buzz: () => number } } | null } | null;
 foo === null || foo.bar === null || foo.bar.baz.buzz() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 64,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: { baz: { buzz: () => number } } | null } | null;
-foo?.bar?.baz.buzz() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
 declare const foo: { bar: { baz: { buzz: () => number } } | null };
 foo.bar === null || foo.bar.baz.buzz() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 48,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: { baz: { buzz: () => number } } | null };
-foo.bar?.baz.buzz() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -818,27 +459,6 @@ foo === null ||
   foo.bar.baz.buzz === null ||
   foo.bar.baz.buzz() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 30,
-          endLine: 8,
-          line: 5,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: {
-  bar: { baz: { buzz: (() => number) | null } } | null;
-} | null;
-foo?.bar?.baz.buzz?.() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -851,27 +471,6 @@ foo.bar === null ||
   foo.bar().baz.buzz === null ||
   foo.bar().baz.buzz() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 32,
-          endLine: 9,
-          line: 5,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: {
-  bar: () => { baz: { buzz: (() => number) | null } | null } | null;
-};
-foo.bar?.()?.baz?.buzz?.() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -884,28 +483,6 @@ foo === null ||
   foo.bar.baz === null ||
   foo.bar.baz[buzz]() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 31,
-          endLine: 9,
-          line: 6,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const buzz: string;
-declare const foo: {
-  bar: { baz: { [k: string]: () => number } | null } | null;
-} | null;
-foo?.bar?.baz?.[buzz]() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -921,30 +498,6 @@ foo === null ||
   foo.bar.baz[buzz] === null ||
   foo.bar.baz[buzz]() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 31,
-          endLine: 12,
-          line: 8,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const buzz: string;
-declare const foo: {
-  bar: {
-    baz: { [k: string]: (() => number) | null } | null;
-  } | null;
-} | null;
-foo?.bar?.baz?.[buzz]?.() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -960,30 +513,6 @@ foo === null ||
   foo?.bar.baz[buzz] === null ||
   foo?.bar.baz[buzz]() === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 32,
-          endLine: 12,
-          line: 8,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const buzz: string;
-declare const foo: {
-  bar: {
-    baz: { [k: string]: (() => number) | null } | null;
-  } | null;
-} | null;
-foo?.bar?.baz?.[buzz]?.() === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
@@ -991,76 +520,79 @@ declare const buzz: string;
 declare const foo: { bar: { baz: { [k: string]: number } | null } } | null;
 foo === null || foo?.bar.baz === null || foo?.bar.baz[buzz] === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 69,
-          endLine: 4,
-          line: 4,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const buzz: string;
-declare const foo: { bar: { baz: { [k: string]: number } | null } } | null;
-foo?.bar.baz?.[buzz] === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
 declare const foo: (() => { bar: number } | null) | null;
 foo === null || foo?.() === null || foo?.().bar === null;
       `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 57,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: (() => { bar: number } | null) | null;
-foo?.()?.bar === null;
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: `
 declare const foo: { bar: () => { baz: number } | null };
 foo.bar === null || foo.bar?.() === null || foo.bar?.().baz === null;
       `,
+    },
+  ],
+  // `=== null` operands are still convertible when something else ends the
+  // chain, because then the ending comparison decides the value
+  invalid: [
+    {
+      code: `
+declare const foo: { bar: number | undefined } | null;
+foo === null || foo.bar === undefined;
+      `,
       errors: [
         {
           column: 1,
-          endColumn: 69,
+          endColumn: 38,
           endLine: 3,
           line: 3,
           messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-declare const foo: { bar: () => { baz: number } | null };
-foo.bar?.()?.baz === null;
-      `,
-            },
-          ],
         },
       ],
-      output: null,
+      output: `
+declare const foo: { bar: number | undefined } | null;
+foo?.bar === undefined;
+      `,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz: number } | null } | null;
+foo === null || foo.bar === null || foo.bar.baz == null;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 56,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferOptionalChain',
+        },
+      ],
+      output: `
+declare const foo: { bar: { baz: number } | null } | null;
+foo?.bar?.baz == null;
+      `,
+    },
+    {
+      code: `
+declare const foo: { bar: number } | null;
+foo === null || !foo.bar;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferOptionalChain',
+        },
+      ],
+      output: `
+declare const foo: { bar: number } | null;
+!foo?.bar;
+      `,
     },
   ],
 });

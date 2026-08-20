@@ -919,7 +919,10 @@ null != foo &&
 null != foo?.bar?.baz;
       `,
     },
-    // We should retain the split strict equals check if it's the last operand
+    // the chain can't end on the `!== null` half of a split strict equals
+    // check - `undefined !== null` is `true`, where the chain short-circuited
+    // to `false` - so the chain stops at the operand before it
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11840
     {
       code: `
 null != foo &&
@@ -931,22 +934,19 @@ null != foo &&
       errors: [
         {
           column: 1,
-          endColumn: 23,
-          endLine: 5,
+          endColumn: 33,
+          endLine: 3,
           line: 2,
           messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-null !== foo?.bar?.baz &&
-  'undefined' !== typeof foo.bar.baz;
-      `,
-            },
-          ],
+          suggestions: null,
         },
       ],
-      output: null,
+      output: `
+'undefined' !== typeof foo?.bar &&
+  null !== foo.bar &&
+  null !== foo.bar.baz &&
+  'undefined' !== typeof foo.bar.baz;
+      `,
     },
     {
       code: `
@@ -959,22 +959,19 @@ foo != null &&
       errors: [
         {
           column: 1,
-          endColumn: 23,
-          endLine: 5,
+          endColumn: 33,
+          endLine: 3,
           line: 2,
           messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-foo?.bar?.baz !== null &&
-  typeof foo.bar.baz !== 'undefined';
-      `,
-            },
-          ],
+          suggestions: null,
         },
       ],
-      output: null,
+      output: `
+typeof foo?.bar !== 'undefined' &&
+  foo.bar !== null &&
+  foo.bar.baz !== null &&
+  typeof foo.bar.baz !== 'undefined';
+      `,
     },
     {
       code: `
@@ -987,22 +984,19 @@ null != foo &&
       errors: [
         {
           column: 1,
-          endColumn: 23,
-          endLine: 5,
+          endColumn: 33,
+          endLine: 3,
           line: 2,
           messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-null !== foo?.bar?.baz &&
-  undefined !== foo.bar.baz;
-      `,
-            },
-          ],
+          suggestions: null,
         },
       ],
-      output: null,
+      output: `
+'undefined' !== typeof foo?.bar &&
+  null !== foo.bar &&
+  null !== foo.bar.baz &&
+  undefined !== foo.bar.baz;
+      `,
     },
     {
       code: `
@@ -1015,22 +1009,19 @@ foo != null &&
       errors: [
         {
           column: 1,
-          endColumn: 23,
-          endLine: 5,
+          endColumn: 33,
+          endLine: 3,
           line: 2,
           messageId: 'preferOptionalChain',
-          suggestions: [
-            {
-              messageId: 'optionalChainSuggest',
-              output: `
-foo?.bar?.baz !== null &&
-  foo.bar.baz !== undefined;
-      `,
-            },
-          ],
+          suggestions: null,
         },
       ],
-      output: null,
+      output: `
+typeof foo?.bar !== 'undefined' &&
+  foo.bar !== null &&
+  foo.bar.baz !== null &&
+  foo.bar.baz !== undefined;
+      `,
     },
     {
       code: `
@@ -2050,6 +2041,19 @@ declare const x: 0n | { a: string };
     `
 declare const x: void | (() => void);
 x && x();
+    `,
+    // a chain that ends on a strict null comparison isn't convertible - it
+    // short-circuits to `true`, where `foo?.bar === null` compares
+    // `undefined === null` and evaluates to `false`
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11840
+    `
+declare const foo: { bar: number | null } | undefined;
+foo === undefined || foo.bar === null;
+    `,
+    `
+declare const foo: { bar: number | null } | undefined;
+declare const unrelated: boolean;
+foo !== undefined && foo.bar !== null && unrelated;
     `,
   ],
 });

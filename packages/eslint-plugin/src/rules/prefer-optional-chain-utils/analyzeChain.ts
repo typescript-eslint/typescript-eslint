@@ -682,6 +682,35 @@ function getReportDescriptor(
   }
 }
 
+/**
+ * A logical chain short-circuits as soon as one of its operands is nullish -
+ * `||` evaluates to `true` and `&&` to `false`. The optional chain that
+ * replaces it has no such escape hatch: it evaluates the final comparison with
+ * `undefined` on the left-hand side instead. So the final operand has to
+ * produce that same short-circuit value, or the chain changes behavior.
+ *
+ * `x === null || x.y === null` is the case this rules out - it short-circuits
+ * to `true` when `x` is nullish, whereas `x?.y === null` compares
+ * `undefined === null` and yields `false`.
+ */
+function isValidChainTerminator(
+  operator: '&&' | '||',
+  comparisonType: NullishComparisonType,
+): boolean {
+  switch (comparisonType) {
+    // `undefined === null` is `false`, but `||` short-circuited to `true`
+    case NullishComparisonType.StrictEqualNull:
+      return operator === '&&';
+
+    // `undefined !== null` is `true`, but `&&` short-circuited to `false`
+    case NullishComparisonType.NotStrictEqualNull:
+      return operator === '||';
+
+    default:
+      return true;
+  }
+}
+
 export function analyzeChain(
   context: RuleContext<
     PreferOptionalChainMessageIds,
@@ -722,6 +751,22 @@ export function analyzeChain(
   const maybeReportThenReset = (
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
+    // the operand a chain ends on decides the value of the optional chain we
+    // would produce, so trailing operands that wouldn't reproduce the
+    // short-circuit value of the logical expression can't be part of the report
+    if (!lastChain) {
+      while (subChain.length > 0) {
+        const lastOperand = nullThrows(
+          [subChain.at(-1)].flat().at(-1),
+          'a chain operand group always has at least one operand',
+        );
+        if (isValidChainTerminator(operator, lastOperand.comparisonType)) {
+          break;
+        }
+        subChain.pop();
+      }
+    }
+
     if (subChain.length + (lastChain ? 1 : 0) > 1) {
       const subChainFlat = subChain.flat();
       const maybeNullishNodes = lastChain
