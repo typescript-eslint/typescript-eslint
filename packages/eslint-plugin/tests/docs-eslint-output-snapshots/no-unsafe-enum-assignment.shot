@@ -10,28 +10,18 @@ declare const someNumber: number;
 const fruit: Fruit = 0;
       ~~~~~~~~~~~~~~~~ The value assigned here does not have a shared enum type with the expected enum 'Fruit'.
 
-function takesFruit(value: Fruit) {}
-takesFruit(someNumber);
-           ~~~~~~~~~~ The argument passed here does not have a shared enum type with the expected enum 'Fruit'.
-
-function getFruit(): Fruit {
-  return someNumber;
-  ~~~~~~~~~~~~~~~~~~ The value returned here does not have a shared enum type with the expected enum 'Fruit'.
-}
-
-let mutated: Fruit = Fruit.Apple;
-mutated++;
-~~~~~~~~~ This mutation can produce a value outside of the expected enum 'Fruit'.
-mutated += 1;
-~~~~~~~~~~~~ This mutation can produce a value outside of the expected enum 'Fruit'.
+Incorrect
 
 enum Vegetable {
   Asparagus = 'asparagus',
 }
 
-// A type assertion bypasses TypeScript's stricter string enum checks.
-const vegetable = 'asparagus' as Vegetable;
-                  ~~~~~~~~~~~~~~~~~~~~~~~~ The value asserted here does not have a shared enum type with the expected enum 'Vegetable'.
+let mutated: Vegetable = Vegetable.Asparagus;
+
+mutated++;
+~~~~~~~~~ This mutation can produce a value outside of the expected enum 'Vegetable'.
+mutated += 1;
+~~~~~~~~~~~~ This mutation can produce a value outside of the expected enum 'Vegetable'.
 
 Correct
 
@@ -41,18 +31,11 @@ enum Fruit {
 
 const fruit: Fruit = Fruit.Apple;
 
-function takesFruit(value: Fruit) {}
-takesFruit(Fruit.Apple);
-
-function getFruit(): Fruit {
-  return Fruit.Apple;
-}
-
-let reassigned: Fruit = Fruit.Apple;
-reassigned = Fruit.Apple;
+Correct
 
 enum Vegetable {
   Asparagus = 'asparagus',
 }
 
-const vegetable: Vegetable = Vegetable.Asparagus;
+let reassigned: Vegetable = Vegetable.Asparagus;
+reassigned = Vegetable.Asparagus;
