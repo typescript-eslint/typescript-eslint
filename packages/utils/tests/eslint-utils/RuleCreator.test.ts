@@ -19,8 +19,10 @@ describe(ESLintUtils.RuleCreator, () => {
       meta: {
         docs: {
           description: 'some description',
+          dialects: ['JavaScript', 'TypeScript'],
           recommended: 'yes',
         },
+        languages: ['js/js', 'markdown/gfm'],
         messages: {
           foo: 'some message',
         },
@@ -32,9 +34,11 @@ describe(ESLintUtils.RuleCreator, () => {
     expect(rule.meta).toEqual({
       docs: {
         description: 'some description',
+        dialects: ['JavaScript', 'TypeScript'],
         recommended: 'yes',
         url: 'test/test',
       },
+      languages: ['js/js', 'markdown/gfm'],
       messages: {
         foo: 'some message',
       },

@@ -360,7 +360,11 @@ const redirects: PluginRedirectOptions = {
 const config: Config = {
   baseUrl: '/',
   future: {
-    experimental_faster: true,
+    faster: true,
+    v4: {
+      // `faster: true` enables `ssgWorkerThreads`, which requires this flag.
+      removeLegacyPostBuildHeadAttribute: true,
+    },
   },
   tagline: 'Powerful static analysis for JavaScript and TypeScript.',
   title: 'typescript-eslint',
@@ -373,10 +377,14 @@ const config: Config = {
     rules: rulesMeta,
   },
   favicon: 'img/favicon.ico',
-  markdown: { parseFrontMatter },
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'throw',
+    },
+    parseFrontMatter,
+  },
   onBrokenAnchors: 'ignore',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
   organizationName: 'typescript-eslint',
   plugins: [
     './plugins/recent-blog-posts/index.ts',
