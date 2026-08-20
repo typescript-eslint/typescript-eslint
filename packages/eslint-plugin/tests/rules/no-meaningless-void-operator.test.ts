@@ -37,6 +37,26 @@ void box.value.toUpperCase();
 declare const box: { method(): string } | undefined;
 void box?.method();
     `,
+    `
+declare function getValue(): string | void;
+void getValue();
+    `,
+    `
+declare function getValue(): string | undefined;
+void getValue();
+    `,
+    `
+declare const box: { method?: () => string };
+void box.method?.();
+    `,
+    `
+declare function getValue(): string;
+void (getValue() as string);
+    `,
+    `
+declare const box: { value: never };
+void box.value;
+    `,
   ],
   invalid: [
     {
@@ -67,7 +87,6 @@ function foo() {}
 foo();
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12214
     {
       code: `
 declare const box: { value: string };
@@ -121,23 +140,108 @@ box?.value;
     },
     {
       code: `
-function bar(x: number) {
-  void x;
-  return 2;
-}
+declare const box: { value: string };
+void (box.value as string);
       `,
       errors: [
         {
-          column: 3,
+          column: 1,
           line: 3,
           messageId: 'meaninglessVoidOperator',
         },
       ],
       output: `
-function bar(x: number) {
-  x;
-  return 2;
-}
+declare const box: { value: string };
+(box.value as string);
+      `,
+    },
+    {
+      code: `
+declare const box: { value: string };
+void (box.value satisfies string);
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string };
+(box.value satisfies string);
+      `,
+    },
+    {
+      code: `
+declare const box: { value: string };
+void box.value!;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const box: { value: string };
+box.value!;
+      `,
+    },
+    {
+      code: `
+declare const wrapper: { box?: { value: string } };
+void wrapper?.box?.value!;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare const wrapper: { box?: { value: string } };
+wrapper?.box?.value!;
+      `,
+    },
+    {
+      code: `
+declare function fn(): void;
+declare const box: { value: string };
+void (fn(), box.value);
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function fn(): void;
+declare const box: { value: string };
+(fn(), box.value);
+      `,
+    },
+    {
+      code: `
+declare function fn(): void;
+declare const box: { value: string };
+void (fn(), box.value)!;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 4,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+declare function fn(): void;
+declare const box: { value: string };
+(fn(), box.value)!;
       `,
     },
     {
@@ -158,6 +262,30 @@ function bar(x: never) {
 function bar(x: never) {
   x;
 }
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkNever: true }],
+      output: null,
+    },
+    {
+      code: `
+declare const box: { value: never };
+void box.value;
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+          suggestions: [
+            {
+              messageId: 'removeVoid',
+              output: `
+declare const box: { value: never };
+box.value;
       `,
             },
           ],

@@ -24,3 +24,7 @@ function bar(x: number) {
   return x * 2;
 }
 void bar(1);
+
+declare const box: { value: string };
+box;
+box.value;

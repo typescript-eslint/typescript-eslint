@@ -16,9 +16,6 @@ For example, it is recommended as one way of suppressing [`@typescript-eslint/no
 This rule helps an authors catch API changes where previously a value was being discarded at a call site, but the callee changed so it no longer returns a value.
 When combined with [no-unused-expressions](https://eslint.org/docs/rules/no-unused-expressions), it also helps _readers_ of the code by ensuring consistency: a statement that looks like `void foo();` is **always** discarding a return value, and a statement that looks like `foo();` is **never** discarding a return value.
 This rule reports on any `void` operator whose argument is already of type `void` or `undefined`.
-It also reports `void` on identifiers and member access (`void box`, `void box.value`), where there is no call whose return value is being discarded. Value-returning calls such as `void bar()` remain allowed.
-
-## Examples
 
 ## Examples
 
@@ -49,6 +46,10 @@ function bar(x: number) {
   return x * 2;
 }
 void bar(1);
+
+declare const box: { value: string };
+box;
+box.value;
 ```
 
 </TabItem>

@@ -6,15 +6,6 @@ import * as ts from 'typescript';
 
 import { createRule } from '../util';
 
-function isNonCallVoidArgument(node: TSESTree.Expression): boolean {
-  const current =
-    node.type === AST_NODE_TYPES.ChainExpression ? node.expression : node;
-  return (
-    current.type === AST_NODE_TYPES.Identifier ||
-    current.type === AST_NODE_TYPES.MemberExpression
-  );
-}
-
 export type Options = [
   {
     checkNever: boolean;
@@ -98,20 +89,51 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
             data: { type: checker.typeToString(argType) },
             suggest: [{ messageId: 'removeVoid', fix }],
           });
-        } else if (isNonCallVoidArgument(node.argument)) {
-          const isOnlyNever = unionParts.every(part =>
-            tsutils.isTypeFlagSet(part, ts.TypeFlags.Never),
-          );
-          if (!isOnlyNever) {
-            context.report({
-              node,
-              messageId: 'meaninglessVoidOperator',
-              data: { type: checker.typeToString(argType) },
-              fix,
-            });
-          }
+        } else if (
+          unwrapVoidArgument(node.argument).type !==
+            AST_NODE_TYPES.CallExpression &&
+          !unionParts.every(part =>
+            tsutils.isTypeFlagSet(
+              part,
+              ts.TypeFlags.Void | ts.TypeFlags.Undefined | ts.TypeFlags.Never,
+            ),
+          )
+        ) {
+          context.report({
+            node,
+            messageId: 'meaninglessVoidOperator',
+            data: { type: checker.typeToString(argType) },
+            fix,
+          });
         }
       },
     };
   },
 });
+
+function unwrapVoidArgument(node: TSESTree.Expression): TSESTree.Expression {
+  let current = node;
+  while (true) {
+    switch (current.type) {
+      case AST_NODE_TYPES.ChainExpression:
+      case AST_NODE_TYPES.TSAsExpression:
+      case AST_NODE_TYPES.TSNonNullExpression:
+      case AST_NODE_TYPES.TSSatisfiesExpression:
+      case AST_NODE_TYPES.TSTypeAssertion:
+        current = current.expression;
+        continue;
+
+      case AST_NODE_TYPES.SequenceExpression: {
+        const last = current.expressions.at(-1);
+        if (last == null) {
+          return current;
+        }
+        current = last;
+        continue;
+      }
+
+      default:
+        return current;
+    }
+  }
+}
