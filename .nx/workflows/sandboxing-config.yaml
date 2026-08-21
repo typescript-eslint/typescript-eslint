@@ -21,14 +21,15 @@ exclude-writes:
 
 # The spec programs emit declarations for the ROOT vitest config files, which
 # land at dist/vitest.config*.d.mts (workspace-root sources map to the root of
-# the shared outDir). The content is deterministic — it is derived only from
-# the tracked root vitest configs — so these accesses cannot corrupt a cache
-# result. tsconfig-utils:typecheck:tsgo declares them as outputs instead; the
-# non-tsgo variant cannot (project-level outputs would replace the
-# plugin-inferred output set), hence the write exclusion here.
+# the shared outDir). These must stay EXCLUDED, not declared as outputs:
+# declaring them makes cache restores materialize them workspace-wide, where
+# any program that includes the root vitest configs (e.g. ast-spec:test's
+# vitest typecheck) rejects them as stale compiler output ("has not been
+# built from source"). The content is deterministic — derived only from the
+# tracked root vitest configs — so discarding the writes cannot corrupt a
+# cache result.
 task-exclusions:
   - project: tsconfig-utils
-    target: typecheck
     exclude-writes:
       - 'dist/vitest.config.d.mts'
       - 'dist/vitest.config.base.d.mts'
