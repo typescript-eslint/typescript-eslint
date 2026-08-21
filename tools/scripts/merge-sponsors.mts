@@ -8,9 +8,6 @@ const filteredTerms = ['casino', 'deepnude', 'tiktok'];
 
 const minimumTotalDonations = 10_000;
 
-/* Sources don't share account identifiers: Open Collective has its own account IDs, thanks.dev
-   reports GitHub and GitLab logins, and out-of-band donations have no identifier at all. Names
-   normalized down to their alphanumeric characters are the one field every source agrees on. */
 const sponsorKey = (name: string): string =>
   name.toLowerCase().replaceAll(/[^a-z0-9]/g, '');
 
