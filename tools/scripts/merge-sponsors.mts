@@ -8,11 +8,13 @@ const filteredTerms = ['casino', 'deepnude', 'tiktok'];
 
 const minimumTotalDonations = 10_000;
 
+/* cspell:disable */
 const preferredNames = new Map([
   ['canonicaljuju', 'Canonical'],
   ['charmedkubernetes', 'Canonical'],
   ['notion', 'Notion'],
 ]);
+/* cspell:enable */
 
 const sponsorKey = (name: string): string =>
   name.toLowerCase().replaceAll(/[^a-z0-9]/g, '');
