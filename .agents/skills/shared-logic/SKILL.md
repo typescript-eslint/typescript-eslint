@@ -17,7 +17,7 @@ Signals:
 - it carries the same explanatory comments as its twin;
 - it answers a question any rule might ask — _"does this class extend a specified base?"_, _"is this expression higher precedence than `await`?"_
 
-Homes, in order of scope: `packages/eslint-plugin/src/util` for rule helpers, `packages/type-utils/src` for anything about `ts.Type`, `packages/utils/src` for what plugin consumers need too.
+Consider placing these, in order of scope: `packages/eslint-plugin/src/util` for rule helpers, `packages/type-utils/src` for anything about `ts.Type`, `packages/utils/src` for what plugin consumers need too.
 
 **This does not extend to repeated boilerplate outside rule logic.** Identical blocks across package entry points, near-identical CI jobs, parallel config files, and repeated test scaffolding are normal here and are not raised in review. Flag duplication only when both copies are logic that could drift apart into a bug.
 

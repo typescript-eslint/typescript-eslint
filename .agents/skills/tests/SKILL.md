@@ -141,6 +141,32 @@ it('unescapes identifiers', () => {
 
 Split into three `it()`s named for what each asserts. Where cases are numerous and near-identical, `it.each` makes a readable table.
 
+```ts
+it('decodes the escape when given a unicode escape sequence', () => {
+  expect(unescapeUnicodeIdentifier('\\u0061')).toBe('a');
+});
+
+it('returns the input unchanged when given text with no escapes', () => {
+  expect(unescapeUnicodeIdentifier('foo')).toBe('foo');
+});
+
+it('returns the input unchanged when given a malformed escape', () => {
+  expect(unescapeUnicodeIdentifier('\\u00ZZ')).toBe('\\u00ZZ');
+});
+```
+
+or:
+
+```ts
+it.each([
+  { expected: 'a', text: '\\u0061' },
+  { expected: 'foo', text: 'foo' },
+  { expected: '\\u00ZZ', text: '\\u00ZZ' },
+])('returns $expected when given $text', ({ expected, text }) => {
+  expect(unescapeUnicodeIdentifier(text)).toBe(expected);
+});
+```
+
 **Prefer one unified assertion to many small ones.** A run of individual `expect`s fails one at a time; a single `toStrictEqual` with `expect.objectContaining` shows the whole diff.
 
 ```ts

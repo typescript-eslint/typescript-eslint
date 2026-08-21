@@ -25,7 +25,7 @@ Distinct messages for distinct situations are worth the extra entries; generatin
 
 - **Be as specific as the report.** A suggestion removing an unused _import_ is `removeUnusedImport`, not `removeUnusedVariable`.
 - **Never print a full type.** Large types read as noise, and there is no plumbing for rich type printing. Where a type must appear use `checker.typeToString`, never `node.getText()` — which drags in comments and JSDoc and mishandles composed types like an interface extending another.
-- **Read the rendered message out loud.** "Unsafe call of a(n) unresolved due to error typed value." parses only if you already know the rule. Check it in the deploy-preview playground.
+- **Read the rendered message out loud.** Reports should read like straightforward understandable English. They shouldn't sound like complex technical jargon or only make sense if the reader deeply knows the rule. "Unsafe call of a(n) unresolved due to error typed value." parses only if you already know the rule.
 - **Watch for ambiguity as logic grows.** Once a rule reports nested cases, a message naming one type may no longer locate the problem.
 - **Don't reuse an identifier that could shadow.** A message mentioning `map` confuses a user with their own `map` in scope.
 
@@ -42,6 +42,8 @@ Option names are plural where they name a set — `checkLiteralConstAssertions`,
 
 Then: **does the option need to exist?** Options are permanent complexity and a new rule has no real-world usage to justify them. Ship the smallest surface that solves the issue and add options when users ask.
 
+If we don't want to start with a complex version of an option, we can always make it an optional boolean to start. Then later we can expand to a union of literals and/or an options object.
+
 Don't add an option covering something another rule already does, and don't add `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`-style escape hatches to new rules — they are [being removed](https://github.com/typescript-eslint/typescript-eslint/issues/9891).
 
 ## Scope: one PR, one purpose
@@ -51,8 +53,6 @@ What draws this request is narrow: **unrelated refactors** of code the PR did no
 Extra test cases are not scope creep, nor are docs improvements alongside a fix. A `docs:` PR that also tightens some test options is fine. Do not raise scope on additive changes that only improve coverage.
 
 Don't ask for a force-push or rebase to tidy this up; keeping git history pristine is explicitly not a task we ask of authors — see [Pull Requests](https://typescript-eslint.io/contributing/pull-requests).
-
-Where an option or default is contested, check the linked issue for consensus and link the votes before implementing.
 
 ## New rules, presets, and semver
 

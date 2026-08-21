@@ -39,7 +39,7 @@ ESLint applies up to ten passes, so if two fixes overlap and only one lands, the
 
 ## Suggestions versus fixes
 
-Use a `fix` when the rewrite preserves behavior in every reported case. Anything that could change behavior, or where more than one reasonable rewrite exists, is a `suggestions` entry. A rule with suggestions must declare `hasSuggestions: true`, and each suggestion's `output` stands alone rather than building on another's.
+Use a `fix` when the rewrite preserves behavior in every reported case. Anything that could change behavior, or where more than one reasonable rewrite exists, or when the ability to fix safely is not guaranteed, is a `suggestions` entry. A rule with suggestions must declare `hasSuggestions: true`, and each suggestion's `output` stands alone rather than building on another's.
 
 ## Testing a fixer
 
