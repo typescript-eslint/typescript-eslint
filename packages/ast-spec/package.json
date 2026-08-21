@@ -84,7 +84,7 @@
       },
       "typecheck": {
         "outputs": [
-          "{workspaceRoot}/dist",
+          "{workspaceRoot}/dist/packages/ast-spec",
           "{projectRoot}/dist"
         ],
         "dependsOn": [
@@ -102,7 +102,7 @@
       },
       "typecheck:tsgo": {
         "outputs": [
-          "{workspaceRoot}/dist",
+          "{workspaceRoot}/dist/packages/ast-spec",
           "{projectRoot}/dist"
         ],
         "dependsOn": [

@@ -18,3 +18,24 @@ exclude-reads:
 # depend on, so undeclared writes to them are noise, not cache corruption.
 exclude-writes:
   - '**/*.tsbuildinfo'
+
+# The spec programs emit declarations for the ROOT vitest config files, which
+# land at dist/vitest.config*.d.mts (workspace-root sources map to the root of
+# the shared outDir). The content is deterministic — it is derived only from
+# the tracked root vitest configs — so these accesses cannot corrupt a cache
+# result. tsconfig-utils:typecheck:tsgo declares them as outputs instead; the
+# non-tsgo variant cannot (project-level outputs would replace the
+# plugin-inferred output set), hence the write exclusion here.
+task-exclusions:
+  - project: tsconfig-utils
+    target: typecheck
+    exclude-writes:
+      - 'dist/vitest.config.d.mts'
+      - 'dist/vitest.config.base.d.mts'
+  # ast-spec's typecheck can observe the same deterministic declarations when
+  # a prior task on the agent emitted them; tsconfig-utils is not in its
+  # dependency chain, so no input declaration can cover the read.
+  - project: ast-spec
+    target: 'typecheck:tsgo'
+    exclude-reads:
+      - 'dist/vitest.config.base.d.mts'

@@ -67,7 +67,14 @@
       "clean"
     ],
     "targets": {
-      "typecheck:tsgo": {},
+      "typecheck:tsgo": {
+        "outputs": [
+          "{projectRoot}/dist",
+          "{workspaceRoot}/dist/packages/tsconfig-utils",
+          "{workspaceRoot}/dist/vitest.config.d.mts",
+          "{workspaceRoot}/dist/vitest.config.base.d.mts"
+        ]
+      },
       "attw-check": {}
     }
   }
