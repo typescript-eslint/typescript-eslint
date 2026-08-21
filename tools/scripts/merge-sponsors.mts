@@ -8,20 +8,41 @@ const filteredTerms = ['casino', 'deepnude', 'tiktok'];
 
 const minimumTotalDonations = 10_000;
 
+const preferredNames = new Map([
+  ['canonicaljuju', 'Canonical'],
+  ['charmedkubernetes', 'Canonical'],
+  ['notion', 'Notion'],
+]);
+
 const sponsorKey = (name: string): string =>
   name.toLowerCase().replaceAll(/[^a-z0-9]/g, '');
 
 export const mergeSponsors = (sources: SponsorData[][]): SponsorData[] => {
   const merged = new Map<string, SponsorData>();
+  const renamed = new Set<string>();
 
   for (const sponsor of sources.flat()) {
-    const key = sponsorKey(sponsor.name);
+    const sourceKey = sponsorKey(sponsor.name);
+    const name = preferredNames.get(sourceKey) ?? sponsor.name;
+    const key = sponsorKey(name);
+    const isRenamed = key !== sourceKey;
     const existing = merged.get(key);
 
-    if (existing) {
-      existing.totalDonations += sponsor.totalDonations;
-    } else {
-      merged.set(key, { ...sponsor });
+    if (!existing) {
+      merged.set(key, { ...sponsor, name });
+      if (isRenamed) {
+        renamed.add(key);
+      }
+      continue;
+    }
+
+    existing.totalDonations += sponsor.totalDonations;
+
+    if (!isRenamed && renamed.has(key)) {
+      renamed.delete(key);
+      existing.id = sponsor.id;
+      existing.image = sponsor.image;
+      existing.website = sponsor.website;
     }
   }
 

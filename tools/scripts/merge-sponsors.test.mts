@@ -77,6 +77,77 @@ describe('mergeSponsors', () => {
     ]);
   });
 
+  it('uses the preferred name when a source reports another form of it', () => {
+    const actual = mergeSponsors([
+      [createSponsor({ id: 'notion', name: 'notion' })],
+    ]);
+
+    expect(actual).toEqual([createSponsor({ id: 'notion', name: 'Notion' })]);
+  });
+
+  it('merges donations when sponsors share a preferred name', () => {
+    const actual = mergeSponsors([
+      [
+        createSponsor({
+          id: 'canonical',
+          name: 'Canonical',
+          totalDonations: 17_078,
+        }),
+        createSponsor({
+          id: 'juju',
+          name: 'Canonical Juju',
+          totalDonations: 12_267,
+        }),
+      ],
+      [
+        createSponsor({
+          id: 'charmed-kubernetes',
+          name: 'Charmed Kubernetes',
+          totalDonations: 47_342,
+        }),
+      ],
+    ]);
+
+    expect(actual).toEqual([
+      createSponsor({
+        id: 'canonical',
+        name: 'Canonical',
+        totalDonations: 76_687,
+      }),
+    ]);
+  });
+
+  it('keeps details from the sponsor named by a preferred name when others merge into it', () => {
+    const actual = mergeSponsors([
+      [
+        createSponsor({
+          id: 'juju',
+          image: 'https://avatars.githubusercontent.com/juju.png',
+          name: 'Canonical Juju',
+          website: 'https://discourse.charmhub.io',
+        }),
+      ],
+      [
+        createSponsor({
+          id: 'canonical',
+          image: 'https://avatars.githubusercontent.com/canonical.png',
+          name: 'Canonical',
+          website: 'https://canonical.com',
+        }),
+      ],
+    ]);
+
+    expect(actual).toEqual([
+      createSponsor({
+        id: 'canonical',
+        image: 'https://avatars.githubusercontent.com/canonical.png',
+        name: 'Canonical',
+        totalDonations: 200_000,
+        website: 'https://canonical.com',
+      }),
+    ]);
+  });
+
   it('includes a sponsor when only its merged total reaches the threshold', () => {
     const actual = mergeSponsors([
       [createSponsor({ name: 'Codecov', totalDonations: 6_000 })],

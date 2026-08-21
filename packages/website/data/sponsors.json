@@ -58,7 +58,7 @@
   {
     "id": "notion",
     "image": "https://images.opencollective.com/notion/27766b0/logo.png",
-    "name": "notion",
+    "name": "Notion",
     "totalDonations": 600000,
     "website": "https://www.notion.so"
   },
@@ -175,6 +175,13 @@
     "website": "https://doberman.co"
   },
   {
+    "id": "canonical",
+    "image": "https://avatars.githubusercontent.com/u/53057619?v=4",
+    "name": "Canonical",
+    "totalDonations": 76687,
+    "website": "https://canonical.com"
+  },
+  {
     "id": "Codiga",
     "image": "https://images.opencollective.com/codiga/1065f9f/logo.png",
     "name": "Codiga",
@@ -236,13 +243,6 @@
     "name": "Joe Alden",
     "totalDonations": 48000,
     "website": "https://joealden.com/"
-  },
-  {
-    "id": "charmed-kubernetes",
-    "image": "https://avatars.githubusercontent.com/u/49082977?v=4",
-    "name": "Charmed Kubernetes",
-    "totalDonations": 47342,
-    "website": "https://www.ubuntu.com/kubernetes"
   },
   {
     "id": "Trevor Burnham",
@@ -350,13 +350,6 @@
     "website": "https://celebrate.company"
   },
   {
-    "id": "canonical",
-    "image": "https://avatars.githubusercontent.com/u/53057619?v=4",
-    "name": "Canonical",
-    "totalDonations": 17078,
-    "website": "https://canonical.com"
-  },
-  {
     "id": "Balsa",
     "image": "https://images.opencollective.com/balsa/77de498/logo.png",
     "name": "Balsa",
@@ -383,13 +376,6 @@
     "name": "Codecov",
     "totalDonations": 12830,
     "website": "https://codecov.io/"
-  },
-  {
-    "id": "juju",
-    "image": "https://avatars.githubusercontent.com/u/4604548?v=4",
-    "name": "Canonical Juju",
-    "totalDonations": 12267,
-    "website": "https://discourse.charmhub.io"
   },
   {
     "id": "Gianfranco Palumbo",
