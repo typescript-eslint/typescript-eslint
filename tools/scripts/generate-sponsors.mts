@@ -1,5 +1,6 @@
 import type { SponsorData } from '@site/src/components/home/FinancialContributors/types.ts';
 
+import { getGitHubAuthToken } from 'get-github-auth-token';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
@@ -14,8 +15,17 @@ interface OutOfBandDonation {
   website: string;
 }
 
-const gitHubHeaders: HeadersInit = process.env.GITHUB_TOKEN
-  ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
+const gitHubAuth = await getGitHubAuthToken();
+
+if (!gitHubAuth.succeeded) {
+  console.warn(
+    'Could not resolve a GitHub token; requests may be rate limited.',
+    gitHubAuth.error,
+  );
+}
+
+const gitHubHeaders = gitHubAuth.succeeded
+  ? { Authorization: `Bearer ${gitHubAuth.token.trim()}` }
   : {};
 
 const jsonApiFetch = async <T,>(
