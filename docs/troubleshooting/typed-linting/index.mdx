@@ -196,7 +196,7 @@ Note also:
 
 - TSConfigs don't include `.js` files by default.
   Enabling [`allowJs`](https://www.typescriptlang.org/tsconfig/#allowJs) or [`checkJs`](https://www.typescriptlang.org/tsconfig/#checkJs) is required to do so.
-- The project service _only_ looks at `tsconfig.json` files.
+- The project service _only_ looks at `tsconfig.json` and `jsconfig.json` files.
   It does not look at `tsconfig.eslint.json` or other coincidentally-similarly-named files.
 
 If these steps don't work for you, please [file an issue on typescript-eslint's typescript-estree package](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=enhancement%2Ctriage&projects=&template=07-enhancement-other.yaml&title=Enhancement%3A+%3Ca+short+description+of+my+proposal%3E) telling us your use case and why you need more out-of-project files linted.
