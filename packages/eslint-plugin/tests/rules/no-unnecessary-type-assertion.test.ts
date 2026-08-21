@@ -1,13 +1,7 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
-import { vi } from 'vitest';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
-
-// The RecursiveMethod valid case (#12711) instantiates an expensive recursive
-// type; on runtimes without a module compile cache (Node 18) it can exceed the
-// shared 10s testTimeout.
-vi.setConfig({ testTimeout: 30_000 });
 
 const rootDir = getFixturesRootDir();
 
