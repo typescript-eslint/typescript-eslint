@@ -21,8 +21,6 @@ env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
   NX_VERBOSE_LOGGING: false
-  # Temporarily enabled to debug the Nx Agents launch template resolution
-  NX_CLOUD_VERBOSE_LOGGING: 'true'
 
 defaults:
   run:
@@ -32,14 +30,17 @@ defaults:
 # Workflow for how the CI spawns jobs:
 # 1) The `main` job starts an Nx Cloud CI run and distributes all Linux Nx
 #    task execution onto Nx Agents (see .nx/ci-config.yaml and
-#    .nx/workflows/agents.yaml): build, typecheck, lint,
-#    attw-check, unit + integration tests, the Node 18 eslint-plugin shards
-#    (test --configuration=node18) and the project-service test variants
-#    (test --configuration=project-service), which assignment rules route to
-#    a Node 18 agent tier. Non-Nx checks (prettier, cspell, markdownlint,
-#    stylelint, dedupe, knip) run on the coordinator, recorded via
-#    `nx-cloud record`. generate-configs runs coordinator-local because its
-#    check inspects the local working tree via git.
+#    .nx/workflows/agents.yaml) in two waves: first a single multi-target
+#    command (build, typecheck, typecheck:tsgo, lint, attw-check) whose task
+#    graph Nx schedules with maximum parallelism, then all test invocations
+#    (eslint-plugin Node 24 coverage shards + Node 18 shards, the
+#    project-service test variants, integration tests and the affected unit
+#    tests) as concurrent Nx clients feeding the same run group. Assignment
+#    rules route the node18-configuration variants to a Node 18 agent tier.
+#    Non-Nx checks (prettier, cspell, markdownlint, stylelint, dedupe, knip)
+#    run on the coordinator, recorded via `nx-cloud record`. generate-configs
+#    runs coordinator-local because its check inspects the local working tree
+#    via git.
 # 2) Windows matrices and the snapshot-cleanliness checks (which mutate +
 #    inspect the local working tree) remain as regular GitHub-hosted jobs.
 #
@@ -177,35 +178,31 @@ jobs:
       - name: Run Dedupe Check
         run: pnpm exec nx-cloud record -- pnpm run deduplicate
 
-      # Nx commands below distribute their tasks onto the Nx Agents. Task
-      # ordering (e.g. everything depending on build) is modeled in the Nx
-      # task graph, so agents schedule builds before dependent tasks.
-      - name: Build
-        run: pnpm exec nx run-many -t build --exclude website website-eslint
-
-      - name: Typecheck
-        run: pnpm exec nx run-many -t typecheck typecheck:tsgo
+      # One command, one task graph: Nx computes the dependencies between all
+      # of these targets (builds before typechecks/lints/attw etc.) and the
+      # agents schedule them with maximum parallelism. attw-check needs no
+      # exclusions here because only the 13 publishable packages declare the
+      # target. Note that per-task CLI overrides (like `-- --coverage`) cannot
+      # be used on a multi-target command, which is why the test invocations
+      # below remain separate clients.
+      - name: Build, typecheck, lint, attw
+        run: pnpm exec nx run-many -t build typecheck typecheck:tsgo lint attw-check
 
       # knip analyzes build outputs, so it runs after the distributed build
       # (task outputs are copied back to this job as they complete).
       - name: Run Knip
         run: pnpm exec nx-cloud record -- pnpm knip
 
-      - name: Lint eslint-plugin
-        run: pnpm lint --projects=eslint-plugin --concurrency=auto
-
-      - name: Lint
-        run: pnpm lint --exclude eslint-plugin
-
-      - name: Are The Types Wrong?
-        run: pnpm attw-check
-
-      # The vitest shards of a project are separate task invocations, so they
-      # are launched concurrently and each is picked up by an agent. Assignment
-      # rules route the node18-configuration shards to the Node 18 agent tier.
-      # Coverage is written to a per-shard directory so that the shards' output
-      # directories do not clobber each other when copied back to this job.
-      - name: Run eslint-plugin unit tests (sharded, Node 24 with coverage + Node 18)
+      # Each invocation below needs different runtime overrides (shard args,
+      # coverage directories, --configuration variants), so they cannot join a
+      # single run-many. Instead they all launch concurrently as parallel Nx
+      # clients feeding the same run group; every dependency task is already a
+      # cache hit from the command above, so agents go straight to the tests.
+      # Assignment rules route the node18-configuration shards to the Node 18
+      # agent tier. Coverage is written to a per-shard directory so that the
+      # shards' output directories do not clobber each other when copied back
+      # to this job.
+      - name: Run all unit and integration tests
         run: |
           pids=()
           for shard in 1 2 3 4; do
@@ -214,26 +211,17 @@ jobs:
             pnpm exec nx test eslint-plugin --configuration=node18 -- --shard="$shard/4" &
             pids+=($!)
           done
+          pnpm exec nx run-many -t test --configuration=project-service --projects=eslint-plugin-internal,typescript-estree --coverage=false &
+          pids+=($!)
+          pnpm run test-integration &
+          pids+=($!)
+          pnpm exec nx affected -t test --exclude eslint-plugin integration-tests -- --coverage &
+          pids+=($!)
           status=0
           for pid in "${pids[@]}"; do
             wait "$pid" || status=1
           done
           exit "$status"
-        env:
-          CI: true
-
-      - name: Run unit tests with project service
-        run: pnpm exec nx run-many -t test --configuration=project-service --projects=eslint-plugin-internal,typescript-estree --coverage=false
-        env:
-          CI: true
-
-      - name: Run integration tests
-        run: pnpm run test-integration
-        env:
-          CI: true
-
-      - name: Run unit tests
-        run: pnpm exec nx affected -t test --exclude eslint-plugin integration-tests -- --coverage
         env:
           CI: true
 

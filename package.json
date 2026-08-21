@@ -112,7 +112,6 @@
   "nx": {
     "name": "repo",
     "includedScripts": [
-      "attw-check",
       "generate-configs",
       "generate-lib",
       "generate-sponsors"
