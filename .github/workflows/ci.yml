@@ -162,20 +162,32 @@ jobs:
         run: pnpm exec nx-cloud start-nx-agents
 
       # Non-Nx checks run locally on this job and are recorded to Nx Cloud.
-      # None of these need the build.
+      # None of these need the build. They run as background steps so they
+      # overlap with the distributed wave below — the coordinator is mostly
+      # idle while orchestrating DTE, so this parallelism is free.
       - name: Run Spell Check
+        id: spell_check
+        background: true
         run: pnpm exec nx-cloud record -- pnpm run check-spelling
 
       - name: Run Format Check
+        id: format_check
+        background: true
         run: pnpm exec nx-cloud record -- pnpm run check-format
 
       - name: Run Markdown Lint
+        id: markdown_lint
+        background: true
         run: pnpm exec nx-cloud record -- pnpm run lint-markdown
 
       - name: Run Stylelint
+        id: stylelint
+        background: true
         run: pnpm exec nx-cloud record -- pnpm --dir packages/website run stylelint
 
       - name: Run Dedupe Check
+        id: dedupe_check
+        background: true
         run: pnpm exec nx-cloud record -- pnpm run deduplicate
 
       # One command, one task graph: Nx computes the dependencies between all
@@ -187,6 +199,10 @@ jobs:
       # below remain separate clients.
       - name: Build, typecheck, lint, attw
         run: pnpm exec nx run-many -t build typecheck typecheck:tsgo lint attw-check
+
+      - name: Wait for static checks
+        wait:
+          [spell_check, format_check, markdown_lint, stylelint, dedupe_check]
 
       # knip analyzes build outputs, so it runs after the distributed build
       # (task outputs are copied back to this job as they complete).
