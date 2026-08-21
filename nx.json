@@ -93,7 +93,7 @@
       }
     },
     "test": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "repo:typecheck-spec-config"],
       "options": {
         "config": "vitest.config.mts"
       },

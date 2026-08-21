@@ -120,7 +120,8 @@
       },
       "test": {
         "dependsOn": [
-          "typecheck"
+          "typecheck",
+          "repo:typecheck-spec-config"
         ],
         "inputs": [
           "...",

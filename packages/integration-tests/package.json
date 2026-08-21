@@ -36,7 +36,8 @@
               "tag:npm:public"
             ],
             "target": "build"
-          }
+          },
+          "repo:typecheck-spec-config"
         ]
       },
       "lint": {

@@ -161,6 +161,21 @@
       },
       "clean": {
         "command": "rimraf dist/ coverage/ .eslintcache"
+      },
+      "typecheck-spec-config": {
+        "command": "tsc --build tsconfig.spec.json",
+        "cache": true,
+        "inputs": [
+          "sharedGlobals",
+          "{workspaceRoot}/vitest.config.mts",
+          "{workspaceRoot}/vitest.config.base.mts",
+          "{workspaceRoot}/package.json"
+        ],
+        "outputs": [
+          "{workspaceRoot}/dist/vitest.config.d.mts",
+          "{workspaceRoot}/dist/vitest.config.base.d.mts",
+          "{workspaceRoot}/dist/tsconfig.spec.tsbuildinfo"
+        ]
       }
     }
   }

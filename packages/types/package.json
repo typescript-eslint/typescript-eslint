@@ -98,7 +98,8 @@
       "test": {
         "dependsOn": [
           "copy-ast-spec",
-          "^build"
+          "^build",
+          "repo:typecheck-spec-config"
         ]
       },
       "lint": {
