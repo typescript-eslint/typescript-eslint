@@ -14,8 +14,6 @@ interface OutOfBandDonation {
   website: string;
 }
 
-/* Unauthenticated GitHub requests are limited to 60 per hour, which the thanks.dev donor list
-   alone can exceed. */
 const gitHubHeaders: HeadersInit = process.env.GITHUB_TOKEN
   ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
   : {};
@@ -91,7 +89,6 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
   return Object.entries(
     groupBy(
       data.collective.members.nodes,
-      /* Members who donated incognito are reported with a null account. */
       ({ account }) => account?.name || account?.id || '',
     ),
   ).flatMap(([id, members]) => {
