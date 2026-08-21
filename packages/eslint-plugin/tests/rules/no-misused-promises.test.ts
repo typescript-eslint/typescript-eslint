@@ -1,4 +1,5 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-misused-promises';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -3124,7 +3125,7 @@ const obj: O = {
     },
     {
       code: `
-const testSymbol = Symbol.for("test symbol");
+const testSymbol = Symbol.for('test symbol');
 
 type O = {
   [testSymbol]: () => void;
@@ -3267,7 +3268,7 @@ interface MyInterface {
 }
 
 interface MySubinterface extends MyInterface {
-  'stringLiteral'(): Promise<void>;
+  stringLiteral(): Promise<void>;
 }
       `,
       errors: [

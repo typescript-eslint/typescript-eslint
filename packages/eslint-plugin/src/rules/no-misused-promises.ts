@@ -8,6 +8,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { NodeWithKey } from '../util';
+
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -18,12 +20,10 @@ import {
   isFunction,
   isPromiseLike,
   isRestParameterDeclaration,
-  NodeWithKey,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
 import { parseFinallyCall } from '../util/promiseUtils';
-import { ParserWeakMapESTreeToTSNode } from '../../../typescript-estree/src/parser-options';
 
 export type Options = [
   {
@@ -655,11 +655,9 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      const symbols = getHeritageSymbols(
-        checker,
-        services.esTreeNodeToTSNodeMap,
-        node,
-      ).filter(symbol => symbol !== undefined);
+      const symbols = getHeritageSymbols(checker, services, node).filter(
+        symbol => symbol != null,
+      );
       const staticSymbolsMap = getSymbolsToStaticSymbols(
         services,
         checker,
@@ -1190,13 +1188,11 @@ function getWellKnownStringOfSymbol(symbol: symbol): string | null {
 function isValidSymbolDeclaration(
   declaration: ts.Declaration,
 ): declaration is
-  | ts.InterfaceDeclaration
   | ts.ClassDeclaration
   | ts.ClassExpression
-  | ts.TypeLiteralNode
-  | ts.InterfaceDeclaration {
+  | ts.InterfaceDeclaration
+  | ts.TypeLiteralNode {
   if (
-    ts.isInterfaceDeclaration(declaration) ||
     ts.isClassDeclaration(declaration) ||
     ts.isClassExpression(declaration) ||
     ts.isTypeLiteralNode(declaration) ||
@@ -1210,17 +1206,17 @@ function isValidSymbolDeclaration(
 
 function getHeritageSymbols(
   checker: ts.TypeChecker,
-  treeNodeToTSNode: ParserWeakMapESTreeToTSNode<TSESTree.Node>,
+  services: ParserServicesWithTypeInformation,
   node:
+    | TSESTree.ClassDeclaration
     | TSESTree.ClassExpression
-    | TSESTree.TSInterfaceDeclaration
-    | TSESTree.ClassDeclaration,
+    | TSESTree.TSInterfaceDeclaration,
 ) {
   const nodeToSymbols = (
-    node: TSESTree.TSInterfaceHeritage | TSESTree.TSClassImplements,
+    node: TSESTree.TSClassImplements | TSESTree.TSInterfaceHeritage,
   ) => {
-    const tsNode = treeNodeToTSNode.get(node);
-    return checker.getSymbolAtLocation(tsNode?.expression ?? tsNode);
+    const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+    return checker.getSymbolAtLocation(tsNode.expression);
   };
 
   if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
@@ -1231,7 +1227,7 @@ function getHeritageSymbols(
 
   if (node.superClass) {
     const superClassSymbol = checker.getSymbolAtLocation(
-      treeNodeToTSNode.get(node.superClass),
+      services.esTreeNodeToTSNodeMap.get(node.superClass),
     );
 
     return [...implementedSymbols, superClassSymbol];
@@ -1248,11 +1244,15 @@ function getSymbolsToStaticSymbols(
 ) {
   const staticSymbolsMap = new Map<symbol, ts.Symbol>();
   for (const symbol of symbols) {
-    const declaration = symbol.declarations?.[0];
+    const declaration = symbol.getDeclarations()?.[0];
     if (declaration && isValidSymbolDeclaration(declaration)) {
       const members = declaration.members;
 
       for (const member of members) {
+        if (!services.tsNodeToESTreeNodeMap.has(member)) {
+          continue;
+        }
+
         const node = services.tsNodeToESTreeNodeMap.get(member);
 
         if (isStaticMember(node) || !member.name) {
@@ -1265,11 +1265,9 @@ function getSymbolsToStaticSymbols(
         );
 
         if (typeof staticAccessValue === 'symbol') {
-          if (member.name) {
-            const symbol = checker.getSymbolAtLocation(member.name);
-            if (symbol) {
-              staticSymbolsMap.set(staticAccessValue, symbol);
-            }
+          const symbol = checker.getSymbolAtLocation(member.name);
+          if (symbol) {
+            staticSymbolsMap.set(staticAccessValue, symbol);
           }
         }
       }
