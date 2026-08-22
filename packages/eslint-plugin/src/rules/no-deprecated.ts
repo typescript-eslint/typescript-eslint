@@ -333,6 +333,20 @@ export default createRule<Options, MessageIds>({
       return getJsDocDeprecation(symbol);
     }
 
+    function getObjectLiteralPropertyDeprecation(
+      objectExpression: TSESTree.ObjectExpression,
+      propertyName: string,
+    ): string | undefined {
+      const contextualType = services.getContextualType(objectExpression);
+      if (!contextualType) {
+        return;
+      }
+
+      const symbol = contextualType.getProperty(propertyName);
+
+      return getJsDocDeprecation(symbol);
+    }
+
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
@@ -344,6 +358,13 @@ export default createRule<Options, MessageIds>({
         node.type !== AST_NODE_TYPES.Super
       ) {
         return getJSXAttributeDeprecation(node.parent.parent, node.name);
+      }
+
+      if (isObjectLiteralPropertyKey(node)) {
+        return getObjectLiteralPropertyDeprecation(
+          node.parent.parent,
+          node.name,
+        );
       }
 
       if (
@@ -372,7 +393,10 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
-      if (isDeclaration(node) || isInsideImport(node)) {
+      if (
+        (isDeclaration(node) && !isObjectLiteralPropertyKey(node)) ||
+        isInsideImport(node)
+      ) {
         return;
       }
 
@@ -506,4 +530,53 @@ function getReportedNodeName(node: IdentifierLike): string {
   }
 
   return node.name;
+}
+
+/**
+ * Whether the node is the key of a non-computed property in an object literal
+ * that is assigned to a variable, such as `const x: Foo = { key: 1 }`.
+ *
+ * Such a key refers to a property of the object literal's contextual type,
+ * rather than declaring a new property of its own.
+ *
+ * Object literals in other positions also have a contextual type (call
+ * arguments, `return` statements, array elements), but they are deliberately
+ * left out of scope: covering all of them produces a very large number of new
+ * reports.
+ */
+function isObjectLiteralPropertyKey(
+  node: TSESTree.Node,
+): node is TSESTree.Identifier & {
+  parent: TSESTree.Property & { parent: TSESTree.ObjectExpression };
+} {
+  return (
+    node.type === AST_NODE_TYPES.Identifier &&
+    node.parent.type === AST_NODE_TYPES.Property &&
+    node.parent.key === node &&
+    !node.parent.computed &&
+    node.parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
+    isObjectExpressionAssignedToVariable(node.parent.parent)
+  );
+}
+
+function isObjectExpressionAssignedToVariable(
+  node: TSESTree.ObjectExpression,
+): boolean {
+  switch (node.parent.type) {
+    case AST_NODE_TYPES.VariableDeclarator:
+      return node.parent.init === node;
+
+    case AST_NODE_TYPES.AssignmentExpression:
+      return node.parent.right === node;
+
+    case AST_NODE_TYPES.Property:
+      return (
+        node.parent.value === node &&
+        node.parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
+        isObjectExpressionAssignedToVariable(node.parent.parent)
+      );
+
+    default:
+      return false;
+  }
 }
