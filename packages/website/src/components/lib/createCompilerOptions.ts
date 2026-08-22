@@ -8,11 +8,11 @@ export function createCompilerOptions(
 ): ts.CompilerOptions {
   const config = window.ts.convertCompilerOptionsFromJson(
     {
+      allowJs: true,
       jsx: 'preserve',
       module: 'esnext',
       target: 'esnext',
       ...tsConfig,
-      allowJs: true,
       baseUrl: undefined,
       lib: Array.isArray(tsConfig.lib) ? tsConfig.lib : undefined,
       moduleDetection: undefined,
