@@ -7,6 +7,7 @@ import type {
 import type * as ts from 'typescript';
 
 import { parseForESLint } from '@typescript-eslint/parser';
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import Ajv from 'ajv';
 import * as path from 'node:path';
 
@@ -117,9 +118,17 @@ function getTypes(
 
   const checker = services.program.getTypeChecker();
 
-  const declaration = ast.body[
-    declarationIndex
-  ] as TSESTree.VariableDeclaration;
+  const node = ast.body[declarationIndex];
+
+  const declaration =
+    node.type === AST_NODE_TYPES.FunctionDeclaration
+      ? node.body.body.find(
+          (stmt): stmt is TSESTree.VariableDeclaration =>
+            stmt.type === AST_NODE_TYPES.VariableDeclaration,
+        )
+      : (node as TSESTree.VariableDeclaration);
+
+  assert.isDefined(declaration, 'Could not find a VariableDeclaration node');
 
   const declarator = declaration.declarations[0];
 

@@ -653,13 +653,14 @@ const {
       code: 'const x: { y: Set<Set<Set<string>>> } = { y: new Set<Set<Set<any>>>() };',
       errors: [
         {
-          column: 43,
+          column: 7,
           data: {
-            receiver: '`Set<Set<Set<string>>>`',
-            sender: '`Set<Set<Set<any>>>`',
+            path: 'y',
+            receiver: '`{ y: Set<Set<Set<string>>>; }`',
+            sender: '`{ y: Set<Set<Set<any>>>; }`',
           },
-          endColumn: 70,
-          messageId: 'unsafeAssignment',
+          endColumn: 72,
+          messageId: 'unsafeAssignmentWithPath',
         },
       ],
     },
@@ -734,10 +735,58 @@ const foo: Foo = { bar };
       `,
       errors: [
         {
-          column: 20,
-          endColumn: 23,
+          column: 7,
+          data: {
+            path: 'bar',
+            receiver: '`Foo`',
+            sender: '`{ bar: any; }`',
+          },
+          endColumn: 25,
           line: 4,
-          messageId: 'anyAssignment',
+          messageId: 'unsafeAssignmentWithPath',
+        },
+      ],
+    },
+    {
+      // Deeply nested path: bar.a
+      code: `
+type Foo = { bar: { a: number } };
+type Inner = { a: any };
+declare const bar: Inner;
+const foo: Foo = { bar };
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            path: 'bar.a',
+            receiver: '`Foo`',
+            sender: '`{ bar: Inner; }`',
+          },
+          endColumn: 25,
+          line: 5,
+          messageId: 'unsafeAssignmentWithPath',
+        },
+      ],
+    },
+    {
+      // Simple variable assignment: no path available (not an object literal)
+      code: `
+type Foo = { bar: number };
+declare const x: { bar: any };
+const foo: Foo = x;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            path: 'bar',
+            receiver: '`Foo`',
+            sender: '`{ bar: any; }`',
+          },
+          endColumn: 19,
+          line: 4,
+          messageId: 'unsafeAssignmentWithPath',
         },
       ],
     },
