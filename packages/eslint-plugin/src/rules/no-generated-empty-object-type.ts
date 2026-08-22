@@ -28,7 +28,7 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function isEmptyObjectType(type: ts.Type): boolean {
+    function isEmptyObjectType(type: ts.Type) {
       return (
         tsutils.isObjectType(type) &&
         !tsutils.isObjectFlagSet(
@@ -48,13 +48,10 @@ export default createRule({
     return {
       TSTypeReference(node): void {
         if (
-          !node.typeArguments ||
-          node.parent.type === AST_NODE_TYPES.TSIntersectionType
+          node.typeArguments &&
+          node.parent.type !== AST_NODE_TYPES.TSIntersectionType &&
+          isEmptyObjectType(services.getTypeAtLocation(node))
         ) {
-          return;
-        }
-
-        if (isEmptyObjectType(services.getTypeAtLocation(node))) {
           context.report({
             node,
             messageId: 'noGeneratedEmptyObjectType',
