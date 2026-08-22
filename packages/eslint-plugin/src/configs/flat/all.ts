@@ -83,6 +83,7 @@ export default (
       'no-magic-numbers': 'off',
       '@typescript-eslint/no-magic-numbers': 'error',
       '@typescript-eslint/no-meaningless-void-operator': 'error',
+      '@typescript-eslint/no-misused-disposable': 'error',
       '@typescript-eslint/no-misused-new': 'error',
       '@typescript-eslint/no-misused-promises': 'error',
       '@typescript-eslint/no-misused-spread': 'error',
