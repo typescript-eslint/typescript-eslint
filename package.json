@@ -60,10 +60,10 @@
     "@eslint/compat": "^2.0.2",
     "@eslint/config-helpers": "^0.7.0",
     "@eslint/js": "catalog:",
-    "@nx/devkit": "22.7.6",
-    "@nx/js": "22.7.6",
-    "@nx/vitest": "22.7.6",
-    "@nx/workspace": "22.7.6",
+    "@nx/devkit": "23.1.1",
+    "@nx/js": "23.1.1",
+    "@nx/vitest": "23.1.1",
+    "@nx/workspace": "23.1.1",
     "@swc/core": "^1.15.8",
     "@types/debug": "^4.1.12",
     "@types/natural-compare": "catalog:",
@@ -98,7 +98,7 @@
     "knip": "6.32.0",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.49.0",
-    "nx": "22.7.6",
+    "nx": "23.1.1",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "semver": "7.8.0",
@@ -112,7 +112,6 @@
   "nx": {
     "name": "repo",
     "includedScripts": [
-      "attw-check",
       "generate-configs",
       "generate-lib",
       "generate-sponsors"
@@ -162,6 +161,21 @@
       },
       "clean": {
         "command": "rimraf dist/ coverage/ .eslintcache"
+      },
+      "typecheck-spec-config": {
+        "command": "tsc --build tsconfig.spec.json",
+        "cache": true,
+        "inputs": [
+          "sharedGlobals",
+          "{workspaceRoot}/vitest.config.mts",
+          "{workspaceRoot}/vitest.config.base.mts",
+          "{workspaceRoot}/package.json"
+        ],
+        "outputs": [
+          "{workspaceRoot}/dist/vitest.config.d.mts",
+          "{workspaceRoot}/dist/vitest.config.base.d.mts",
+          "{workspaceRoot}/dist/tsconfig.spec.tsbuildinfo"
+        ]
       }
     }
   }

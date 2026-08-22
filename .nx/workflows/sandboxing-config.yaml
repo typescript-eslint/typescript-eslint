@@ -1,0 +1,42 @@
+# Sandbox reconciliation exclusions for Nx Cloud.
+# See https://nx.dev/docs/features/ci-features/sandboxing#excluding-paths
+#
+# Keep this list minimal: a read exclusion silences the missing-input check
+# for the matched paths, so only paths whose CONTENTS can never affect a
+# correct cache result belong here.
+
+# tsc/tsgo read back their own incremental state before overwriting it.
+# The contents are a compiler-internal cache (absolute paths, timestamps),
+# never a semantic input. Dependency tsbuildinfo files consumed across
+# projects are declared inputs via `dependentTasksOutputFiles` instead.
+exclude-reads:
+  - '**/*.tsbuildinfo'
+
+# The same incremental-state files are also written outside declared task
+# outputs (e.g. tsconfig.spec.tsbuildinfo emitted next to spec output).
+# They are compiler-internal state, not a task product other tasks may
+# depend on, so undeclared writes to them are noise, not cache corruption.
+exclude-writes:
+  - '**/*.tsbuildinfo'
+
+# The spec programs emit declarations for the ROOT vitest config files, which
+# land at dist/vitest.config*.d.mts (workspace-root sources map to the root of
+# the shared outDir). These must stay EXCLUDED, not declared as outputs:
+# declaring them makes cache restores materialize them workspace-wide, where
+# any program that includes the root vitest configs (e.g. ast-spec:test's
+# vitest typecheck) rejects them as stale compiler output ("has not been
+# built from source"). The content is deterministic — derived only from the
+# tracked root vitest configs — so discarding the writes cannot corrupt a
+# cache result.
+task-exclusions:
+  - project: tsconfig-utils
+    exclude-writes:
+      - 'dist/vitest.config.d.mts'
+      - 'dist/vitest.config.base.d.mts'
+  # ast-spec's typecheck can observe the same deterministic declarations when
+  # a prior task on the agent emitted them; tsconfig-utils is not in its
+  # dependency chain, so no input declaration can cover the read.
+  - project: ast-spec
+    target: 'typecheck:tsgo'
+    exclude-reads:
+      - 'dist/vitest.config.base.d.mts'

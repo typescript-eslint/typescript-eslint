@@ -19,6 +19,12 @@ const vitestConfig = mergeConfig(
       exclude: isWindowsCI()
         ? [...configDefaults.exclude, './rules/**/*', './eslint-rules/**/*']
         : undefined,
+
+      // The Node 18 CI tier has no module compile cache, so type-aware rule
+      // tests pay a TS program initialization cost that can push individual
+      // tests past the shared 10s default.
+      testTimeout:
+        process.env.TSESLINT_CI_NODE_VARIANT === '18' ? 30_000 : undefined,
     },
   }),
 );

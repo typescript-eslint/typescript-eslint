@@ -1,0 +1,32 @@
+# Referenced by `dte.assignment-rules` in .nx/ci-config.yaml.
+#
+# IMPORTANT: task hashes are computed on the coordinator (Node 24), so a task
+# that lands on the wrong agent tier would poison the remote cache silently.
+# The rules below must therefore cover EVERY distributed target — a task that
+# matches no rule may be assigned to ANY tier, including the Node 18 one. If
+# a new target starts being distributed (including as a task-graph
+# dependency), it MUST be added to the second rule.
+#
+# More specific rules take precedence, and ties go to the rule listed first,
+# so the Node 18 rule (target + configuration) must stay above the catch-all.
+assignment-rules:
+  # Test variants that must execute under Node 18.
+  - targets:
+      - test
+    configurations:
+      - node18
+      - project-service
+    run-on:
+      - agent: linux-medium-node18-js
+
+  # Everything else runs on the default Node 24 tier.
+  - targets:
+      - build
+      - copy-ast-spec
+      - lint
+      - test
+      - typecheck
+      - 'typecheck:tsgo'
+      - attw-check
+    run-on:
+      - agent: linux-medium-js

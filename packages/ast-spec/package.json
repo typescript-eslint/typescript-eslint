@@ -84,25 +84,53 @@
       },
       "typecheck": {
         "outputs": [
-          "{workspaceRoot}/dist",
+          "{workspaceRoot}/dist/packages/ast-spec",
           "{projectRoot}/dist"
         ],
         "dependsOn": [
           "typescript-estree:build"
+        ],
+        "inputs": [
+          "...",
+          "{workspaceRoot}/packages/typescript-estree/src/**/*.ts",
+          "{workspaceRoot}/packages/typescript-estree/tsconfig.build.json",
+          "{workspaceRoot}/packages/project-service/tsconfig.build.json",
+          "{workspaceRoot}/packages/tsconfig-utils/tsconfig.build.json",
+          "{workspaceRoot}/packages/types/tsconfig.build.json",
+          "{workspaceRoot}/packages/visitor-keys/tsconfig.build.json"
         ]
       },
       "typecheck:tsgo": {
         "outputs": [
-          "{workspaceRoot}/dist",
+          "{workspaceRoot}/dist/packages/ast-spec",
           "{projectRoot}/dist"
         ],
         "dependsOn": [
           "typescript-estree:build"
+        ],
+        "inputs": [
+          "...",
+          "{workspaceRoot}/packages/typescript-estree/src/**/*.ts",
+          "{workspaceRoot}/packages/typescript-estree/tsconfig.build.json",
+          "{workspaceRoot}/packages/project-service/tsconfig.build.json",
+          "{workspaceRoot}/packages/tsconfig-utils/tsconfig.build.json",
+          "{workspaceRoot}/packages/types/tsconfig.build.json",
+          "{workspaceRoot}/packages/visitor-keys/tsconfig.build.json"
         ]
       },
       "test": {
         "dependsOn": [
-          "typecheck"
+          "typecheck",
+          "repo:typecheck-spec-config"
+        ],
+        "inputs": [
+          "...",
+          "{workspaceRoot}/packages/typescript-estree/src/**/*.ts",
+          "{workspaceRoot}/packages/typescript-estree/tsconfig.build.json",
+          "{workspaceRoot}/packages/project-service/tsconfig.build.json",
+          "{workspaceRoot}/packages/tsconfig-utils/tsconfig.build.json",
+          "{workspaceRoot}/packages/types/tsconfig.build.json",
+          "{workspaceRoot}/packages/visitor-keys/tsconfig.build.json"
         ]
       }
     }
