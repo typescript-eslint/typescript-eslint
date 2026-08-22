@@ -30,7 +30,7 @@ import {
 
 // #region
 
-const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+const nullishFlag: ts.TypeFlags = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
 
 function isNullishType(type: ts.Type): boolean {
   return tsutils.isTypeFlagSet(type, nullishFlag);
