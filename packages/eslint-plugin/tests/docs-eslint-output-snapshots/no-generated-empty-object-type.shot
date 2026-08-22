@@ -1,25 +1,18 @@
 Incorrect
 
-type Data = { name: string; num: number };
+type Data = { name: string; value: number };
 type NullableData = null | Data;
 
+// `Omit<null>` becomes {}, so this is `{} | { value: number }`, or `{}`
 type Unexpected = Omit<NullableData, 'name'>;
                   ~~~~~~~~~~~~~~~~~~~~~~~~~~ This type resolves to `{}`, which allows any non-nullish value, including literals like `0` and `""`.
                                              - If you want a type meaning "any object", you probably want `object` instead.
                                              - If you want a type meaning "any value", you probably want `unknown` instead.
 
-declare function doSomething<T extends Omit<NullableData, 'name'>>(
-                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~ This type resolves to `{}`, which allows any non-nullish value, including literals like `0` and `""`.
-                                                                  - If you want a type meaning "any object", you probably want `object` instead.
-                                                                  - If you want a type meaning "any value", you probably want `unknown` instead.
-  param: T,
-): void;
-
 Correct
 
-type Data = { name: string; num: number };
+type Data = { name: string; value: number };
 type NullableData = null | Data;
 
+// This is effectively Omit<Data, 'name'>, which is { value: number }
 type Expected = Omit<NonNullable<NullableData>, 'name'>;
-
-declare function doSomething<T extends Omit<Data, 'name'>>(param: T): void;
