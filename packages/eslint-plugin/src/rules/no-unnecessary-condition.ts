@@ -50,6 +50,16 @@ function isPossiblyNullish(type: ts.Type): boolean {
     .some(t => isNullishType(t) || isTypeFlagSet(t, ts.TypeFlags.Void));
 }
 
+/**
+ * Note that this differs from {@link isNullableType} in that it doesn't consider
+ * `any` or `unknown` to be nullable.
+ */
+function isPossiblyNonNullish(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .some(t => !isNullishType(t) && !isTypeFlagSet(t, ts.TypeFlags.Void));
+}
+
 function toStaticValue(
   type: ts.Type,
 ):
@@ -332,14 +342,72 @@ export default createRule<Options, MessageId>({
         .getProperties()
         .find(prop => prop.name === propertyName);
 
-      if (
-        propertyType &&
+      return (
+        propertyType != null &&
         tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional)
-      ) {
-        return true;
+      );
+    }
+
+    /**
+     * Obtains the property types of the computed member expression
+     * @param node The member expression
+     * @returns The property types, unless the node isn't computed.
+     */
+    function getComputedMemberPropertyTypes(
+      node: TSESTree.MemberExpression,
+    ): ts.Type[] | undefined {
+      if (!node.computed) {
+        return undefined;
       }
 
-      return false;
+      const objectType = getConstrainedTypeAtLocation(services, node.object);
+      const propertyType = getConstrainedTypeAtLocation(
+        services,
+        node.property,
+      );
+      const propertyTypes: ts.Type[] = [];
+
+      for (const keyType of tsutils.unionConstituents(propertyType)) {
+        if (!keyType.isStringLiteral() && !keyType.isNumberLiteral()) {
+          return undefined;
+        }
+
+        const selectedType = getTypeOfPropertyOfName(
+          checker,
+          objectType,
+          String(keyType.value),
+        );
+
+        if (!selectedType) {
+          return undefined;
+        }
+
+        propertyTypes.push(selectedType);
+      }
+
+      return propertyTypes;
+    }
+
+    /**
+     * Verify if the node may have non-nullish properties
+     * @param node The node to verify
+     * @returns If it may have non-nullish properties, unless the node isn't a
+     * MemberExpression
+     */
+    function hasPossiblyNonNullishComputedMemberProperty(
+      node: TSESTree.Expression,
+    ): boolean {
+      if (node.type !== AST_NODE_TYPES.MemberExpression) {
+        return false;
+      }
+
+      const propertyTypes = getComputedMemberPropertyTypes(node);
+
+      if (propertyTypes == null) {
+        return false;
+      }
+
+      return propertyTypes.some(isPossiblyNonNullish);
     }
 
     /**
@@ -439,7 +507,10 @@ export default createRule<Options, MessageId>({
         ) {
           messageId = 'neverNullish';
         }
-      } else if (isAlwaysNullish(type)) {
+      } else if (
+        isAlwaysNullish(type) &&
+        !hasPossiblyNonNullishComputedMemberProperty(node)
+      ) {
         messageId = 'alwaysNullish';
       }
 
