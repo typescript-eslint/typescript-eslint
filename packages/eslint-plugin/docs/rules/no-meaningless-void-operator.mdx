@@ -19,8 +19,6 @@ This rule reports on any `void` operator whose argument is already of type `void
 
 ## Examples
 
-## Examples
-
 <Tabs>
 <TabItem value="❌ Incorrect">
 
@@ -29,6 +27,10 @@ void (() => {})();
 
 function foo() {}
 void foo();
+
+declare const box: { value: string };
+void box;
+void box.value;
 ```
 
 </TabItem>
@@ -41,10 +43,13 @@ function foo() {}
 foo(); // nothing to discard
 
 function bar(x: number) {
-  void x; // discarding a number
-  return 2;
+  return x * 2;
 }
-void bar(1); // discarding a number
+void bar(1);
+
+declare const box: { value: string };
+box;
+box.value;
 ```
 
 </TabItem>

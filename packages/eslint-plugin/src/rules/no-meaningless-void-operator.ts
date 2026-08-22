@@ -1,10 +1,10 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule } from '../util';
+import { createRule, nullThrows } from '../util';
 
 export type Options = [
   {
@@ -89,8 +89,49 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
             data: { type: checker.typeToString(argType) },
             suggest: [{ messageId: 'removeVoid', fix }],
           });
+        } else if (
+          unwrapVoidArgument(node.argument).type !==
+            AST_NODE_TYPES.CallExpression &&
+          !unionParts.every(part =>
+            tsutils.isTypeFlagSet(
+              part,
+              ts.TypeFlags.Void | ts.TypeFlags.Undefined | ts.TypeFlags.Never,
+            ),
+          )
+        ) {
+          context.report({
+            node,
+            messageId: 'meaninglessVoidOperator',
+            data: { type: checker.typeToString(argType) },
+            fix,
+          });
         }
       },
     };
   },
 });
+
+function unwrapVoidArgument(node: TSESTree.Expression): TSESTree.Expression {
+  let current = node;
+  while (true) {
+    switch (current.type) {
+      case AST_NODE_TYPES.ChainExpression:
+      case AST_NODE_TYPES.TSAsExpression:
+      case AST_NODE_TYPES.TSNonNullExpression:
+      case AST_NODE_TYPES.TSSatisfiesExpression:
+      case AST_NODE_TYPES.TSTypeAssertion:
+        current = current.expression;
+        continue;
+
+      case AST_NODE_TYPES.SequenceExpression:
+        current = nullThrows(
+          current.expressions.at(-1),
+          'Expected SequenceExpression to have at least one expression',
+        );
+        continue;
+
+      default:
+        return current;
+    }
+  }
+}
