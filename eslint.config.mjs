@@ -471,6 +471,12 @@ export default defineConfig(
       'eslint-plugin/no-meta-replaced-by': 'off',
       'eslint-plugin/require-meta-default-options': 'off',
     },
+
+    settings: {
+      'eslint-plugin': {
+        ruleTesterConstructors: ['RuleTester', 'createRuleTesterWithTypes'],
+      },
+    },
   },
   {
     name: 'configs-and-rules',
