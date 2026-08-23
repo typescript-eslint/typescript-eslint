@@ -1,29 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/await-thenable.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 36
-    }
-  },
-  "packages/eslint-plugin/tests/rules/consistent-type-exports.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 19
-    }
-  },
-  "packages/eslint-plugin/tests/rules/dot-notation.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 26
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-array-delete.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 22
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-base-to-string.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 94
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-confusing-void-expression.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 58
