@@ -17,9 +17,8 @@ function bar(): number {
 void bar();
     `,
     `
-function bar(x: never) {
-  void x;
-}
+declare function fail(): never;
+void fail();
     `,
     `
 declare function getValue(): string;
@@ -53,9 +52,19 @@ void box.method?.();
 declare function getValue(): string;
 void (getValue() as string);
     `,
+    'void 0;',
     `
-declare const box: { value: never };
-void box.value;
+declare const promise: Promise<number>;
+void promise;
+    `,
+    `
+declare const thenable: { then(onFulfilled: () => void): void };
+void thenable;
+    `,
+    `
+void new Promise<void>(resolve => {
+  resolve();
+});
     `,
   ],
   invalid: [
@@ -96,7 +105,7 @@ void box;
         {
           column: 1,
           line: 3,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -113,7 +122,7 @@ void box.value;
         {
           column: 1,
           line: 3,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -130,7 +139,7 @@ void box?.value;
         {
           column: 1,
           line: 3,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -147,7 +156,7 @@ void (<string>box.value);
         {
           column: 1,
           line: 3,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -164,7 +173,7 @@ void (box.value as string);
         {
           column: 1,
           line: 3,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -181,7 +190,7 @@ void (box.value satisfies string);
         {
           column: 1,
           line: 3,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -198,7 +207,7 @@ void box.value!;
         {
           column: 1,
           line: 3,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -215,7 +224,7 @@ void wrapper?.box?.value!;
         {
           column: 1,
           line: 3,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -233,7 +242,7 @@ void (fn(), box.value);
         {
           column: 1,
           line: 4,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -252,7 +261,7 @@ void (fn(), box.value)!;
         {
           column: 1,
           line: 4,
-          messageId: 'meaninglessVoidOperator',
+          messageId: 'meaninglessVoidOnNonCall',
         },
       ],
       output: `
@@ -271,21 +280,14 @@ function bar(x: never) {
         {
           column: 3,
           line: 3,
-          messageId: 'meaninglessVoidOperator',
-          suggestions: [
-            {
-              messageId: 'removeVoid',
-              output: `
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
 function bar(x: never) {
   x;
 }
       `,
-            },
-          ],
-        },
-      ],
-      options: [{ checkNever: true }],
-      output: null,
     },
     {
       code: `
@@ -296,13 +298,30 @@ void box.value;
         {
           column: 1,
           line: 3,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare const box: { value: never };
+box.value;
+      `,
+    },
+    {
+      code: `
+declare function fail(): never;
+void fail();
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
           messageId: 'meaninglessVoidOperator',
           suggestions: [
             {
               messageId: 'removeVoid',
               output: `
-declare const box: { value: never };
-box.value;
+declare function fail(): never;
+fail();
       `,
             },
           ],

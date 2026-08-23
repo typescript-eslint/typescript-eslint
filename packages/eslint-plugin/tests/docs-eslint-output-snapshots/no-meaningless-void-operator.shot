@@ -9,9 +9,9 @@ void foo();
 
 declare const box: { value: string };
 void box;
-~~~~~~~~ void operator shouldn't be used on { value: string; }; it should convey that a return value is being ignored
+~~~~~~~~ void operator is useless here; it should only discard a call's return value
 void box.value;
-~~~~~~~~~~~~~~ void operator shouldn't be used on string; it should convey that a return value is being ignored
+~~~~~~~~~~~~~~ void operator is useless here; it should only discard a call's return value
 
 Correct
 
@@ -28,3 +28,6 @@ void bar(1);
 declare const box: { value: string };
 box;
 box.value;
+
+declare const promise: Promise<number>;
+void promise;

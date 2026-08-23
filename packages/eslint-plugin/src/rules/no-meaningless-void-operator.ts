@@ -12,7 +12,10 @@ export type Options = [
   },
 ];
 
-export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
+export default createRule<
+  Options,
+  'meaninglessVoidOnNonCall' | 'meaninglessVoidOperator' | 'removeVoid'
+>({
   name: 'no-meaningless-void-operator',
   meta: {
     type: 'suggestion',
@@ -25,6 +28,8 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
     fixable: 'code',
     hasSuggestions: true,
     messages: {
+      meaninglessVoidOnNonCall:
+        "void operator is useless here; it should only discard a call's return value",
       meaninglessVoidOperator:
         "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",
       removeVoid: "Remove 'void'",
@@ -58,6 +63,28 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           ]);
         };
 
+        const inner = unwrapVoidArgument(node.argument);
+        if (inner.type !== AST_NODE_TYPES.CallExpression) {
+          // `void 0` is a common undefined idiom, not a discarded call.
+          if (inner.type === AST_NODE_TYPES.Literal) {
+            return;
+          }
+
+          const tsArgument = services.esTreeNodeToTSNodeMap.get(node.argument);
+          const argType = services.getTypeAtLocation(node.argument);
+          // Allow `void promiseValue` so this rule does not fight no-floating-promises.
+          if (tsutils.isThenableType(checker, tsArgument, argType)) {
+            return;
+          }
+
+          context.report({
+            node,
+            messageId: 'meaninglessVoidOnNonCall',
+            fix,
+          });
+          return;
+        }
+
         const argType = services.getTypeAtLocation(node.argument);
         const unionParts = tsutils.unionConstituents(argType);
         if (
@@ -88,22 +115,6 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
             messageId: 'meaninglessVoidOperator',
             data: { type: checker.typeToString(argType) },
             suggest: [{ messageId: 'removeVoid', fix }],
-          });
-        } else if (
-          unwrapVoidArgument(node.argument).type !==
-            AST_NODE_TYPES.CallExpression &&
-          !unionParts.every(part =>
-            tsutils.isTypeFlagSet(
-              part,
-              ts.TypeFlags.Void | ts.TypeFlags.Undefined | ts.TypeFlags.Never,
-            ),
-          )
-        ) {
-          context.report({
-            node,
-            messageId: 'meaninglessVoidOperator',
-            data: { type: checker.typeToString(argType) },
-            fix,
           });
         }
       },
