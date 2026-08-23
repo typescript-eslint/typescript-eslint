@@ -18,10 +18,14 @@ function packageNameMatches(
   expectedPackageName: string,
   actualPackageName: string,
 ): boolean {
-  const canonicalPackageName = getCanonicalPackageName(actualPackageName);
+  // Both sides are canonicalized so that a specifier keeps matching whether it
+  // names the package (`semver`) or its DefinitelyTyped wrapper
+  // (`@types/semver`), which is the form the declaration file reports.
+  const canonicalExpectedName = getCanonicalPackageName(expectedPackageName);
+  const canonicalActualName = getCanonicalPackageName(actualPackageName);
   return (
-    canonicalPackageName === expectedPackageName ||
-    canonicalPackageName.startsWith(`${expectedPackageName}/`)
+    canonicalActualName === canonicalExpectedName ||
+    canonicalActualName.startsWith(`${canonicalExpectedName}/`)
   );
 }
 

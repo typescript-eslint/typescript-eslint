@@ -108,6 +108,14 @@ Describes specific types or values imported from packages.
 
 `package` must be used to specify the package name.
 
+A `package` matches at path boundaries: the package itself, and anything published under it.
+Naming a scope therefore matches every package in that scope — `@angular` matches `@angular/common`
+and `@angular/core`. Partial names do not match: `@angular/comm` matches nothing.
+
+Types that ship through DefinitelyTyped can be named either way. `semver` and `@types/semver` both
+match the types from `@types/semver`, as do `@babel/code-frame` and `@types/babel__code-frame` for a
+scoped package.
+
 ### PackageSpecifier Examples
 
 Matching the `SafePromise` type from `@reduxjs/toolkit`:

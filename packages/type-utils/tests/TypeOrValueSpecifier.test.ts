@@ -405,6 +405,19 @@ describe('TypeOrValueSpecifier', () => {
           package: '@babel',
         },
       ],
+      // A package may also be named by its DefinitelyTyped wrapper.
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: '@types/semver' },
+      ],
+      [
+        'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
+        {
+          from: 'package',
+          name: 'BabelCodeFrameOptions',
+          package: '@types/babel__code-frame',
+        },
+      ],
       // TODO: Skipped pending resolution of https://github.com/typescript-eslint/typescript-eslint/issues/11504
       //
       // The following type is available from the multi-file @types/node package.
