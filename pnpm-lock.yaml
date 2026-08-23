@@ -301,6 +301,9 @@ importers:
       execa:
         specifier: 7.2.0
         version: 7.2.0
+      get-github-auth-token:
+        specifier: ^0.1.2
+        version: 0.1.2
       globals:
         specifier: 'catalog:'
         version: 16.5.0
@@ -6451,6 +6454,10 @@ packages:
 
   get-east-asian-width@1.6.0:
     resolution: {integrity: sha512-QRbvDIbx6YklUe6RxeTeleMR0yv3cYH6PsPZHcnVn7xv7zO1BHN8r0XETu8n6Ye3Q+ahtSarc3WgtNWmehIBfA==}
+    engines: {node: '>=18'}
+
+  get-github-auth-token@0.1.2:
+    resolution: {integrity: sha512-vcGCRhKNOOynlxi7j3dOrkCkxG1rxt/IbmZY9A+xXMhRAUMeIA5T4Fn0LTaPXfQWdUkOcc3DBWDvcc6dmnxmYw==}
     engines: {node: '>=18'}
 
   get-intrinsic@1.3.0:
@@ -17427,6 +17434,8 @@ snapshots:
   get-caller-file@2.0.5: {}
 
   get-east-asian-width@1.6.0: {}
+
+  get-github-auth-token@0.1.2: {}
 
   get-intrinsic@1.3.0:
     dependencies:
