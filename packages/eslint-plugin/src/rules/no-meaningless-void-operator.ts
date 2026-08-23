@@ -42,7 +42,7 @@ export default createRule<
           checkNever: {
             type: 'boolean',
             description:
-              'Whether to suggest removing `void` when the argument has type `never`.',
+              "Whether to suggest removing `void` when a call's return type is `never`.",
           },
         },
       },

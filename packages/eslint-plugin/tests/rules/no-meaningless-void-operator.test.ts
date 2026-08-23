@@ -66,6 +66,11 @@ void new Promise<void>(resolve => {
   resolve();
 });
     `,
+    `
+declare function fn(): void;
+declare function getValue(): string;
+void (fn(), getValue());
+    `,
   ],
   invalid: [
     {
