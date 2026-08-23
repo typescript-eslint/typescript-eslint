@@ -10,7 +10,7 @@ import {
   getMovedNodeCode,
   getParserServices,
   isNodeOfType,
-  isTypeFlagSet,
+  isStringLike,
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
@@ -57,22 +57,6 @@ export default createRule<[], MessageId>({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-
-    function isStringLike(type: ts.Type): boolean {
-      return isTypeFlagSet(type, ts.TypeFlags.StringLike);
-    }
-
-    function isUnderlyingTypeString(type: ts.Type): boolean {
-      if (type.isUnion()) {
-        return type.types.every(isStringLike);
-      }
-
-      if (type.isIntersection()) {
-        return type.types.some(isStringLike);
-      }
-
-      return isStringLike(type);
-    }
 
     function isEnumMemberType(type: ts.Type): boolean {
       return tsutils.typeConstituents(type).some(t => {
@@ -424,7 +408,7 @@ export default createRule<[], MessageId>({
             checker,
             services.getTypeAtLocation(node.expressions[0]),
           );
-          if (constraintType && isUnderlyingTypeString(constraintType)) {
+          if (constraintType && isStringLike(constraintType)) {
             reportSingleInterpolation(node);
             return;
           }
@@ -451,7 +435,7 @@ export default createRule<[], MessageId>({
           if (
             constraintType &&
             !isTypeParameter &&
-            isUnderlyingTypeString(constraintType) &&
+            isStringLike(constraintType) &&
             !isEnumMemberType(constraintType)
           ) {
             reportSingleInterpolation(node);

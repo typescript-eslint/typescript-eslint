@@ -4,6 +4,7 @@
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",

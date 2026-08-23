@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strict": true,
-    "types": ["node"],
-    "module": "commonjs"
+    "target": "esnext"
   },
   "include": ["*.vue"]
 }

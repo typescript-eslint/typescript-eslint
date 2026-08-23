@@ -109,8 +109,45 @@ foo\`\`;
 function foo(templates: TemplateStringsArray, arg: any) {}
 foo\`\${1 as any}\`;
     `,
+    `
+declare function foo(...args: any): void;
+foo(1 as any);
+    `,
   ],
   invalid: [
+    {
+      code: `
+declare function foo(...args: [string, string]): void;
+
+declare const spread: [string, ...string[]];
+foo(...spread, 1 as any);
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 24,
+          endLine: 5,
+          line: 5,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(...args: [string, ...string[]]): void;
+
+foo('a', 'b', 1 as any);
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
     {
       code: `
 declare function foo(arg: number): void;

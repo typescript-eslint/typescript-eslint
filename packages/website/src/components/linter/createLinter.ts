@@ -74,9 +74,7 @@ export function createLinter(
       parserOptions: { ...defaultEslintLanguageConfig.parserOptions },
     },
     plugins: {
-      '@typescript-eslint': {
-        rules: webLinterModule.rules,
-      },
+      '@typescript-eslint': webLinterModule.plugin,
     },
   };
 
@@ -90,7 +88,7 @@ export function createLinter(
   const onParse = createEventsBinder<LinterOnParse>();
   const linter = webLinterModule.createLinter();
 
-  Object.entries(webLinterModule.rules).forEach(([name, item]) => {
+  Object.entries(webLinterModule.plugin.rules).forEach(([name, item]) => {
     rules.set(`@typescript-eslint/${name}`, {
       description: item.meta.docs?.description,
       name: `@typescript-eslint/${name}`,
