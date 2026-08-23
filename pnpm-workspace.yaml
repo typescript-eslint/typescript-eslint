@@ -2,8 +2,6 @@ packages:
   - packages/*
 
 minimumReleaseAge: 10080 # 7 days in minutes, matches renovate
-minimumReleaseAgeExclude:
-  - eslint-plugin-eslint-plugin@7.6.2
 blockExoticSubdeps: true
 
 allowBuilds:
