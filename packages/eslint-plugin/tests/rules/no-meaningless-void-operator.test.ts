@@ -73,6 +73,8 @@ void new Promise<void>(resolve => {
       errors: [
         {
           column: 1,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'meaninglessVoidOperator',
         },
@@ -87,6 +89,8 @@ void foo();
       errors: [
         {
           column: 1,
+          endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOperator',
         },
@@ -104,6 +108,8 @@ void box;
       errors: [
         {
           column: 1,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -121,6 +127,8 @@ void box.value;
       errors: [
         {
           column: 1,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -138,6 +146,8 @@ void box?.value;
       errors: [
         {
           column: 1,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -155,6 +165,8 @@ void (<string>box.value);
       errors: [
         {
           column: 1,
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -172,6 +184,8 @@ void (box.value as string);
       errors: [
         {
           column: 1,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -189,6 +203,8 @@ void (box.value satisfies string);
       errors: [
         {
           column: 1,
+          endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -206,6 +222,8 @@ void box.value!;
       errors: [
         {
           column: 1,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -223,6 +241,8 @@ void wrapper?.box?.value!;
       errors: [
         {
           column: 1,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -241,6 +261,8 @@ void (fn(), box.value);
       errors: [
         {
           column: 1,
+          endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -260,6 +282,8 @@ void (fn(), box.value)!;
       errors: [
         {
           column: 1,
+          endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -279,6 +303,8 @@ function bar(x: never) {
       errors: [
         {
           column: 3,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -297,6 +323,8 @@ void box.value;
       errors: [
         {
           column: 1,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
         },
@@ -314,6 +342,8 @@ void fail();
       errors: [
         {
           column: 1,
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOperator',
           suggestions: [
