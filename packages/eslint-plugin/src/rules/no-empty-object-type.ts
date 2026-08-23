@@ -105,18 +105,26 @@ export default createRule<Options, MessageIds>({
 
           const scope = context.sourceCode.getScope(node);
 
-          const mergedWithClassDeclaration = scope.set
+          const mergedWithOtherDeclaration = scope.set
             .get(node.id.name)
             ?.defs.some(
-              def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
+              def =>
+                def.node !== node &&
+                (def.node.type === AST_NODE_TYPES.ClassDeclaration ||
+                  def.node.type === AST_NODE_TYPES.TSInterfaceDeclaration),
             );
+
+          const isDefaultExport =
+            node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration;
+
+          const shouldSuggest = !mergedWithOtherDeclaration && !isDefaultExport;
 
           if (extend.length === 0) {
             context.report({
               node: node.id,
               messageId: 'noEmptyInterface',
               data: { option: 'allowInterfaces' },
-              ...(!mergedWithClassDeclaration && {
+              ...(shouldSuggest && {
                 suggest: ['object', 'unknown'].map(replacement => ({
                   messageId: 'replaceEmptyInterface',
                   data: { replacement },
@@ -140,7 +148,7 @@ export default createRule<Options, MessageIds>({
           context.report({
             node: node.id,
             messageId: 'noEmptyInterfaceWithSuper',
-            ...(!mergedWithClassDeclaration && {
+            ...(shouldSuggest && {
               suggest: [
                 {
                   messageId: 'replaceEmptyInterfaceWithSuper',
