@@ -445,6 +445,7 @@ export default defineConfig(
       'packages/*/src/index.ts',
       'vitest.config.mts',
       'packages/*/vitest.config.mts',
+      'tools/vitest.config.mts',
     ],
     rules: {
       // requirement
