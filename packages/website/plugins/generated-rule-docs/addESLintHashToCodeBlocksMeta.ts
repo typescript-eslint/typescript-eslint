@@ -3,15 +3,12 @@ import type * as unist from 'unist';
 
 import type { RuleDocsPage } from './RuleDocsPage';
 
-import { nodeIsCode } from '../utils/nodes';
+import { nodeIsCode, nodeIsMdxJsxFlowElement } from '../utils/nodes';
 import { convertToPlaygroundHash } from '../utils/rules';
-
-const optionRegex = /option='(?<option>.*?)'/;
+import { getSerializedRuleOptionsFromMeta } from './ruleOptions';
 
 function nodeIsJsxTabs(node: unist.Node): node is MdxJsxFlowElement {
-  return (
-    node.type === 'mdxJsxFlowElement' && 'name' in node && node.name === 'Tabs'
-  );
+  return nodeIsMdxJsxFlowElement(node) && node.name === 'Tabs';
 }
 
 export function addESLintHashToCodeBlocksMeta(
@@ -45,11 +42,11 @@ export function addESLintHashToCodeBlocksMeta(
       !node.meta?.includes('eslintrcHash=')
     ) {
       let playgroundEslintrc = eslintrc;
-      const option = node.meta?.match(optionRegex)?.groups?.option;
-      if (option) {
+      const serializedOptions = getSerializedRuleOptionsFromMeta(node.meta);
+      if (serializedOptions) {
         playgroundEslintrc = playgroundEslintrc.replace(
           '"error"',
-          `["error", ${option}]`,
+          `["error", ${serializedOptions}]`,
         );
         try {
           playgroundEslintrc = JSON.stringify(
