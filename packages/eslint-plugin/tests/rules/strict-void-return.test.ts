@@ -996,6 +996,8 @@ foo(() => null);
       errors: [
         {
           column: 22,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1018,6 +1020,8 @@ foo(async () => /* before */ Promise.resolve(true) /* after */);
       errors: [
         {
           column: 14,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1044,6 +1048,8 @@ foo(
       errors: [
         {
           column: 12,
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1113,6 +1119,8 @@ obj?.foo(() => JSON.parse('{}'));
       errors: [
         {
           column: 16,
+          endColumn: 32,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -1179,6 +1187,8 @@ foo(null, () => Math.random());
       errors: [
         {
           column: 17,
+          endColumn: 30,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -1206,6 +1216,8 @@ foo(null, async () => {});
       errors: [
         {
           column: 20,
+          endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1233,6 +1245,8 @@ foo(async () => {
       errors: [
         {
           column: 14,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1260,6 +1274,8 @@ foo(async function () {
       errors: [
         {
           column: 5,
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1359,6 +1375,8 @@ foo(false, () => Promise.resolve(undefined));
       errors: [
         {
           column: 18,
+          endColumn: 44,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -1388,6 +1406,8 @@ foo.bar(
       errors: [
         {
           column: 9,
+          endColumn: 27,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -1414,7 +1434,15 @@ declare const Foo: {
 };
 new Foo(async () => 123);
       `,
-      errors: [{ column: 18, line: 5, messageId: 'asyncFunc' }],
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'asyncFunc',
+        },
+      ],
     },
     {
       code: `
@@ -1479,6 +1507,8 @@ foo(async () => {
       errors: [
         {
           column: 14,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1623,6 +1653,8 @@ foo(
       errors: [
         {
           column: 9,
+          endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -1641,6 +1673,8 @@ foo(
         },
         {
           column: 9,
+          endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -1705,6 +1739,8 @@ foo({}, async () => {});
       errors: [
         {
           column: 18,
+          endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1730,6 +1766,8 @@ arr.forEach(async x => {
       errors: [
         {
           column: 21,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1753,6 +1791,8 @@ arr.forEach( x => void (async () => {
       errors: [
         {
           column: 24,
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1800,6 +1840,8 @@ const foo: () => void = async () => Promise.resolve(true);
       errors: [
         {
           column: 34,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1852,6 +1894,8 @@ const cb: () => void = (): Array<number> => {
       errors: [
         {
           column: 47,
+          endColumn: 65,
+          endLine: 1,
           line: 1,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -1875,6 +1919,8 @@ const cb: () => void = async (): Promise<number> => {
       errors: [
         {
           column: 50,
+          endColumn: 52,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1897,6 +1943,8 @@ const cb: () => void =  (): void => void (async () => {
       errors: [
         {
           column: 50,
+          endColumn: 52,
+          endLine: 1,
           line: 1,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1919,6 +1967,8 @@ const foo: () => void = async () => {
       errors: [
         {
           column: 34,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1948,6 +1998,8 @@ const foo: () => void = async (): Promise<void> => {
       errors: [
         {
           column: 49,
+          endColumn: 51,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
           suggestions: [
@@ -1980,6 +2032,8 @@ const foo: () => void = async () => {
       errors: [
         {
           column: 34,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
           suggestions: [
@@ -2097,6 +2151,8 @@ const foo: ((arg: number) => void) | ((arg: string) => void) = async () => {
       errors: [
         {
           column: 73,
+          endColumn: 75,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
           suggestions: [
@@ -2274,6 +2330,8 @@ return (
       errors: [
         {
           column: 18,
+          endColumn: 20,
+          endLine: 6,
           line: 6,
           messageId: 'asyncFunc',
           suggestions: [
@@ -2312,6 +2370,8 @@ return (
       errors: [
         {
           column: 9,
+          endColumn: 24,
+          endLine: 6,
           line: 6,
           messageId: 'asyncFunc',
           suggestions: [
@@ -2503,6 +2563,8 @@ foo = {
       errors: [
         {
           column: 3,
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'asyncFunc',
           suggestions: [
@@ -2551,9 +2613,17 @@ declare function cb(): number;
 const foo: Array<(() => void) | false> = [false, cb, () => cb()];
       `,
       errors: [
-        { column: 50, line: 3, messageId: 'nonVoidFunc' },
+        {
+          column: 50,
+          endColumn: 52,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidFunc',
+        },
         {
           column: 60,
+          endColumn: 64,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -2590,9 +2660,17 @@ const foo: { cbs: Array<() => void> | null } = {
 };
       `,
       errors: [
-        { column: 5, line: 4, messageId: 'nonVoidFunc' },
+        {
+          column: 5,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'nonVoidFunc',
+        },
         {
           column: 14,
+          endColumn: 16,
+          endLine: 7,
           line: 7,
           messageId: 'asyncFunc',
           suggestions: [
@@ -2771,6 +2849,8 @@ class Baz extends Bar {
       errors: [
         {
           column: 15,
+          endColumn: 28,
+          endLine: 9,
           line: 9,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -2795,6 +2875,8 @@ class Baz extends Bar {
         },
         {
           column: 5,
+          endColumn: 11,
+          endLine: 11,
           line: 11,
           messageId: 'nonVoidReturn',
         },
@@ -2864,6 +2946,8 @@ class Bar extends Foo {
       errors: [
         {
           column: 3,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'asyncFunc',
           suggestions: [
@@ -2966,6 +3050,8 @@ class Bar implements Foo {
       errors: [
         {
           column: 3,
+          endColumn: 35,
+          endLine: 6,
           line: 6,
           messageId: 'asyncFunc',
           suggestions: [
@@ -3000,6 +3086,8 @@ class Bar implements Foo {
       errors: [
         {
           column: 3,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'asyncFunc',
           suggestions: [
@@ -3038,6 +3126,8 @@ class Bar implements Foo {
       errors: [
         {
           column: 3,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'asyncFunc',
           suggestions: [
@@ -3105,6 +3195,8 @@ class Bar implements Foo1, Foo2 {
       errors: [
         {
           column: 3,
+          endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'asyncFunc',
           suggestions: [
@@ -3131,6 +3223,8 @@ class Bar implements Foo1, Foo2 {
         },
         {
           column: 3,
+          endColumn: 13,
+          endLine: 12,
           line: 12,
           messageId: 'nonVoidFunc',
         },
@@ -3158,6 +3252,8 @@ class Bar extends Baz implements Foo1, Foo2 {
       errors: [
         {
           column: 3,
+          endColumn: 12,
+          endLine: 12,
           line: 12,
           messageId: 'asyncFunc',
           suggestions: [
@@ -3186,11 +3282,15 @@ class Bar extends Baz implements Foo1, Foo2 {
         },
         {
           column: 3,
+          endColumn: 13,
+          endLine: 13,
           line: 13,
           messageId: 'nonVoidFunc',
         },
         {
           column: 5,
+          endColumn: 11,
+          endLine: 15,
           line: 15,
           messageId: 'nonVoidReturn',
         },
@@ -3252,6 +3352,8 @@ class Bar implements Foo2 {
       errors: [
         {
           column: 3,
+          endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'asyncFunc',
           suggestions: [
@@ -3278,6 +3380,8 @@ class Bar implements Foo2 {
         },
         {
           column: 3,
+          endColumn: 13,
+          endLine: 12,
           line: 12,
           messageId: 'nonVoidFunc',
         },
@@ -3298,6 +3402,8 @@ foo = () => () => Math.random();
       errors: [
         {
           column: 19,
+          endColumn: 32,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
           suggestions: [
@@ -3359,7 +3465,15 @@ foo(function () {
   return async (): Promise<unknown[]> => ['asdf', 1234, true];
 });
       `,
-      errors: [{ column: 39, line: 4, messageId: 'asyncFunc' }],
+      errors: [
+        {
+          column: 39,
+          endColumn: 41,
+          endLine: 4,
+          line: 4,
+          messageId: 'asyncFunc',
+        },
+      ],
     },
     {
       code: noFormat`
