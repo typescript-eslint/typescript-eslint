@@ -4,6 +4,7 @@
   "description": "ESLint which works in browsers.",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "repository": {
@@ -41,7 +42,7 @@
     "@typescript-eslint/scope-manager": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "esbuild": "~0.28.0",
     "eslint": "catalog:",
     "esquery": "catalog:",

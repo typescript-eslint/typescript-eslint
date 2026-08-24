@@ -47,92 +47,92 @@ abstract class Mx {
 }
     `,
     `
-      class Mx {
-        get mySetting() {
-          if (this._aValue) {
-            return 'on';
-          }
+class Mx {
+  get mySetting() {
+    if (this._aValue) {
+      return 'on';
+    }
 
-          return 'off';
-        }
-      }
+    return 'off';
+  }
+}
     `,
     `
-      class Mx {
-        get mySetting() {
-          return \`build-\${process.env.build}\`;
-        }
-      }
+class Mx {
+  get mySetting() {
+    return \`build-\${process.env.build}\`;
+  }
+}
     `,
     `
-      class Mx {
-        getMySetting() {
-          if (this._aValue) {
-            return 'on';
-          }
+class Mx {
+  getMySetting() {
+    if (this._aValue) {
+      return 'on';
+    }
 
-          return 'off';
-        }
-      }
+    return 'off';
+  }
+}
     `,
     `
-      class Mx {
-        public readonly myButton = styled.button\`
-          color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
-        \`;
-      }
+class Mx {
+  public readonly myButton = styled.button\`
+    color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+  \`;
+}
     `,
     `
-      class Mx {
-        set p1(val) {}
-        get p1() {
-          return '';
-        }
-      }
+class Mx {
+  set p1(val) {}
+  get p1() {
+    return '';
+  }
+}
     `,
     `
-      let p1 = 'p1';
-      class Mx {
-        set [p1](val) {}
-        get [p1]() {
-          return '';
-        }
-      }
+let p1 = 'p1';
+class Mx {
+  set [p1](val) {}
+  get [p1]() {
+    return '';
+  }
+}
     `,
     `
-      let p1 = 'p1';
-      class Mx {
-        set [/* before set */ p1 /* after set */](val) {}
-        get [/* before get */ p1 /* after get */]() {
-          return '';
-        }
-      }
+let p1 = 'p1';
+class Mx {
+  set [/* before set */ p1 /* after set */](val) {}
+  get [/* before get */ p1 /* after get */]() {
+    return '';
+  }
+}
     `,
     `
-      class Mx {
-        set ['foo'](val) {}
-        get foo() {
-          return '';
-        }
-        set bar(val) {}
-        get ['bar']() {
-          return '';
-        }
-        set ['baz'](val) {}
-        get baz() {
-          return '';
-        }
-      }
+class Mx {
+  set ['foo'](val) {}
+  get foo() {
+    return '';
+  }
+  set bar(val) {}
+  get ['bar']() {
+    return '';
+  }
+  set ['baz'](val) {}
+  get baz() {
+    return '';
+  }
+}
     `,
     {
       code: `
-        class Mx {
-          public get myButton() {
-            return styled.button\`
-              color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
-            \`;
-          }
-        }
+class Mx {
+  public get myButton() {
+    return styled.button\`
+      color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+    \`;
+  }
+}
       `,
       options: ['fields'],
     },
@@ -198,62 +198,62 @@ class Mx {
     },
     {
       code: `
-        class Mx {
-          public readonly myButton = styled.button\`
-            color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
-          \`;
-        }
+class Mx {
+  public readonly myButton = styled.button\`
+    color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+  \`;
+}
       `,
       options: ['getters'],
     },
     {
       code: `
-        class Mx {
-          public get myButton() {
-            return styled.button\`
-              color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
-            \`;
-          }
-        }
+class Mx {
+  public get myButton() {
+    return styled.button\`
+      color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+    \`;
+  }
+}
       `,
       options: ['getters'],
     },
     {
       code: `
-        class A {
-          private readonly foo: string = 'bar';
-          constructor(foo: string) {
-            this.foo = foo;
-          }
-        }
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    this.foo = foo;
+  }
+}
       `,
       options: ['getters'],
     },
     {
       code: `
-        class A {
-          private readonly foo: string = 'bar';
-          constructor(foo: string) {
-            this['foo'] = foo;
-          }
-        }
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    this['foo'] = foo;
+  }
+}
       `,
       options: ['getters'],
     },
     {
       code: `
-        class A {
-          private readonly foo: string = 'bar';
-          constructor(foo: string) {
-            const bar = new (class {
-              private readonly foo: string = 'baz';
-              constructor() {
-                this.foo = 'qux';
-              }
-            })();
-            this['foo'] = foo;
-          }
-        }
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    const bar = new (class {
+      private readonly foo: string = 'baz';
+      constructor() {
+        this.foo = 'qux';
+      }
+    })();
+    this['foo'] = foo;
+  }
+}
       `,
       options: ['getters'],
     },

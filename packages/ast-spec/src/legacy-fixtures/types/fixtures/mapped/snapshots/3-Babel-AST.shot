@@ -16,6 +16,27 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSMappedType {
                 type: "TSMappedType",
+                constraint: TSStringKeyword {
+                  type: "TSStringKeyword",
+
+                  range: [90, 96],
+                  loc: {
+                    start: { column: 17, line: 3 },
+                    end: { column: 23, line: 3 },
+                  },
+                },
+                key: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "P",
+                  optional: false,
+
+                  range: [85, 86],
+                  loc: {
+                    start: { column: 12, line: 3 },
+                    end: { column: 13, line: 3 },
+                  },
+                },
                 nameType: null,
                 optional: false,
                 typeAnnotation: TSNumberKeyword {
@@ -25,28 +46,6 @@ Program {
                   loc: {
                     start: { column: 26, line: 3 },
                     end: { column: 32, line: 3 },
-                  },
-                },
-                typeParameter: TSTypeParameter {
-                  type: "TSTypeParameter",
-                  const: false,
-                  constraint: TSStringKeyword {
-                    type: "TSStringKeyword",
-
-                    range: [90, 96],
-                    loc: {
-                      start: { column: 17, line: 3 },
-                      end: { column: 23, line: 3 },
-                    },
-                  },
-                  in: false,
-                  name: "P",
-                  out: false,
-
-                  range: [85, 96],
-                  loc: {
-                    start: { column: 12, line: 3 },
-                    end: { column: 23, line: 3 },
                   },
                 },
 
@@ -91,9 +90,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 109],
+  range: [0, 109],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

@@ -10,8 +10,7 @@ Snapshot Diff:
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
           abstract: false,
@@ -48,19 +47,18 @@ Snapshot Diff:
                 type: 'TSTypeParameter',
                 const: false,
                 in: false,
--               name: Identifier {
--                 type: 'Identifier',
--                 decorators: Array [],
--                 name: 'T',
--                 optional: false,
--
--                 range: [90, 91],
--                 loc: {
--                   start: { column: 17, line: 3 },
--                   end: { column: 18, line: 3 },
--                 },
--               },
-+               name: 'T',
+                name: Identifier {
+                  type: 'Identifier',
+                  decorators: Array [],
+                  name: 'T',
+                  optional: false,
+
+                  range: [90, 91],
+                  loc: {
+                    start: { column: 17, line: 3 },
+                    end: { column: 18, line: 3 },
+                  },
+                },
                 out: false,
 
                 range: [90, 91],
@@ -73,19 +71,18 @@ Snapshot Diff:
                 type: 'TSTypeParameter',
                 const: false,
                 in: false,
--               name: Identifier {
--                 type: 'Identifier',
--                 decorators: Array [],
--                 name: 'U',
--                 optional: false,
--
--                 range: [93, 94],
--                 loc: {
--                   start: { column: 20, line: 3 },
--                   end: { column: 21, line: 3 },
--                 },
--               },
-+               name: 'U',
+                name: Identifier {
+                  type: 'Identifier',
+                  decorators: Array [],
+                  name: 'U',
+                  optional: false,
+
+                  range: [93, 94],
+                  loc: {
+                    start: { column: 20, line: 3 },
+                    end: { column: 21, line: 3 },
+                  },
+                },
                 out: false,
 
                 range: [93, 94],
@@ -122,9 +119,11 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
-    range: [73, 99],
+-   range: [73, 99],
++   range: [0, 99],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

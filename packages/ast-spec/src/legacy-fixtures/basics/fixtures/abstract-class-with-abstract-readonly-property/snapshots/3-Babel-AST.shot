@@ -7,9 +7,8 @@ Program {
       body: ClassBody {
         type: "ClassBody",
         body: [
-          PropertyDefinition {
-            type: "PropertyDefinition",
-            abstract: true,
+          TSAbstractPropertyDefinition {
+            type: "TSAbstractPropertyDefinition",
             accessibility: "public",
             computed: false,
             declare: false,
@@ -91,9 +90,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 136],
+  range: [0, 136],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 6 },
   },
 }
