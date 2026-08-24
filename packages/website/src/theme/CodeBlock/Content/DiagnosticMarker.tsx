@@ -82,6 +82,12 @@ export function DiagnosticMarker({
   const hideTooltip = () => {
     setTooltipPosition(undefined);
   };
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
+    if (event.key === 'Escape') {
+      hideTooltip();
+    }
+  };
+
   return (
     <span
       ref={markerRef}
@@ -90,8 +96,9 @@ export function DiagnosticMarker({
       className={styles.diagnostic}
       onBlur={hideTooltip}
       onFocus={showTooltip}
-      onMouseEnter={showTooltip}
-      onMouseLeave={hideTooltip}
+      onKeyDown={handleKeyDown}
+      onPointerEnter={showTooltip}
+      onPointerLeave={hideTooltip}
       role={focusable ? 'button' : undefined}
       tabIndex={focusable ? 0 : undefined}
     >
