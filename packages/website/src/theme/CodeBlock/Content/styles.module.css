@@ -1,0 +1,68 @@
+.codeBlock {
+  --ifm-pre-background: var(--prism-background-color);
+
+  margin: 0;
+  padding: 0;
+}
+
+.codeBlockLines {
+  float: left;
+  min-width: 100%;
+  padding: var(--ifm-pre-padding);
+  font: inherit;
+}
+
+.codeBlockLinesWithNumbering {
+  display: table;
+  padding: var(--ifm-pre-padding) 0;
+}
+
+.diagnostic {
+  text-decoration: underline wavy #c62828 1.5px;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 0.18em;
+}
+
+.diagnostic:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid #c62828;
+  outline-offset: 2px;
+}
+
+.diagnosticTooltip {
+  position: fixed;
+  z-index: calc(var(--ifm-z-index-fixed) + 1);
+  width: max-content;
+  max-width: min(20rem, calc(100vw - 24px));
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #ef9a9a;
+  border-radius: var(--ifm-global-radius);
+  background: #fff5f5;
+  box-shadow: var(--ifm-global-shadow-md);
+  color: #731515;
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  pointer-events: none;
+  white-space: normal;
+}
+
+:global(html[data-theme='dark']) .diagnostic {
+  text-decoration-color: #ff8a80;
+}
+
+:global(html[data-theme='dark']) .diagnostic:focus-visible {
+  outline-color: #ff8a80;
+}
+
+:global(html[data-theme='dark']) .diagnosticTooltip {
+  border-color: #a63d3d;
+  background: #351a1a;
+  color: #ffd7d4;
+}
+
+@media print {
+  .codeBlockLines {
+    white-space: pre-wrap;
+  }
+}
