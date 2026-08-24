@@ -246,7 +246,7 @@
   },
   "packages/eslint-plugin/tests/rules/strict-void-return.test.ts": {
     "eslint-plugin/require-test-error-positions": {
-      "count": 130
+      "count": 89
     }
   },
   "packages/eslint-plugin/tests/rules/switch-exhaustiveness-check.test.ts": {
