@@ -19,7 +19,6 @@ interface DiagnosticMarkerProps {
   message: string;
 }
 
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex -- Lint diagnostics must be keyboard focusable. */
 export function DiagnosticMarker({
   children,
   focusable,
@@ -27,6 +26,7 @@ export function DiagnosticMarker({
 }: DiagnosticMarkerProps): React.JSX.Element {
   const descriptionId = useId();
   const markerRef = useRef<HTMLSpanElement>(null);
+  const tooltipRef = useRef<HTMLSpanElement>(null);
   const [tooltipPosition, setTooltipPosition] = useState<TooltipPosition>();
   const tooltipIsOpen = tooltipPosition != null;
 
@@ -36,12 +36,13 @@ export function DiagnosticMarker({
     }
 
     const updatePosition = () => {
-      const rect = markerRef.current?.getBoundingClientRect();
-      if (!rect) {
+      const marker = markerRef.current;
+      const tooltip = tooltipRef.current;
+      if (!marker || !tooltip) {
         return;
       }
 
-      const tooltip = document.getElementById(descriptionId)!;
+      const rect = marker.getBoundingClientRect();
       const tooltipHeight = tooltip.offsetHeight;
       const tooltipWidth = tooltip.offsetWidth;
       const belowMarker = rect.bottom + tooltipGap;
@@ -81,7 +82,6 @@ export function DiagnosticMarker({
   const hideTooltip = () => {
     setTooltipPosition(undefined);
   };
-
   return (
     <span
       ref={markerRef}
@@ -92,6 +92,7 @@ export function DiagnosticMarker({
       onFocus={showTooltip}
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}
+      role={focusable ? 'button' : undefined}
       tabIndex={focusable ? 0 : undefined}
     >
       {children}
@@ -100,6 +101,7 @@ export function DiagnosticMarker({
           <span
             className={styles.diagnosticTooltip}
             id={descriptionId}
+            ref={tooltipRef}
             role="tooltip"
             style={tooltipPosition}
           >
@@ -110,4 +112,3 @@ export function DiagnosticMarker({
     </span>
   );
 }
-/* eslint-enable jsx-a11y/no-noninteractive-tabindex */
