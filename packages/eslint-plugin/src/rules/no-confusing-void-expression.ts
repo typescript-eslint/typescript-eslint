@@ -398,6 +398,31 @@ export default createRule<Options, MessageId>({
       return ['(', '[', '`'].includes(startToken.value);
     }
 
+    function declaredReturnTypeAllowsNoReturn(
+      node: ReturnStatementWithArgument | TSESTree.ArrowFunctionExpression,
+    ): boolean {
+      const functionNode =
+        node.type === AST_NODE_TYPES.ReturnStatement
+          ? getParentFunctionNode(node)
+          : node;
+      const returnTypeAnnotation = functionNode?.returnType;
+      if (returnTypeAnnotation == null) {
+        return true;
+      }
+
+      const declaredType = services.getTypeAtLocation(
+        returnTypeAnnotation.typeAnnotation,
+      );
+      return tsutils
+        .unionConstituents(declaredType)
+        .every(constituent =>
+          tsutils.isTypeFlagSet(
+            constituent,
+            ts.TypeFlags.VoidLike | ts.TypeFlags.Any,
+          ),
+        );
+    }
+
     function canFix(
       node: ReturnStatementWithArgument | TSESTree.ArrowFunctionExpression,
     ): boolean {
@@ -407,7 +432,11 @@ export default createRule<Options, MessageId>({
           : node.body;
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+      if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+        return false;
+      }
+
+      return declaredReturnTypeAllowsNoReturn(node);
     }
 
     function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
