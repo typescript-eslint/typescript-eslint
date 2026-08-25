@@ -188,7 +188,22 @@ function assertIsString(value: unknown): asserts value is string {
 }
 
 assertIsString(s); // Unnecessary; s is always a string.
+
+declare const n: number;
+
+// Unnecessary; n can never be a string.
+if (isString(n)) {
+}
 ```
+
+A type predicate is reported both when it can never narrow anything away, because the
+argument already has the checked type, and when it can never succeed, because the argument
+and the checked type have no value in common.
+
+Only types that cannot overlap are reported for the latter. Two unrelated object types are
+left alone, since a third type can extend both, and so is a primitive checked against an
+object type: TypeScript narrows `string` by `x is { a: number }` to `string & { a: number }`,
+which is inhabitable, rather than to `never`.
 
 Whether this option makes sense for your project may vary.
 Some projects may intentionally use type predicates to ensure that runtime values do indeed match the types according to TypeScript, especially in test code.

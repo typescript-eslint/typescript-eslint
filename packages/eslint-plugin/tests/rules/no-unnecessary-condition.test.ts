@@ -1278,6 +1278,73 @@ if (isNarrower(w)) {
       `,
       options: [{ checkTypePredicates: true }],
     },
+    {
+      // the argument may or may not be a number, which is the whole point of
+      // the type guard.
+      code: `
+declare function isNumber(x: unknown): x is number;
+declare const s: string | number;
+if (isNumber(s)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // two unrelated object types still overlap, since a third type can
+      // extend both.
+      code: `
+interface A {
+  a: string;
+}
+interface B {
+  b: number;
+}
+declare function isB(x: unknown): x is B;
+declare const a: A;
+if (isB(a)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // narrows to `string & { a: number }`, which is inhabitable, not `never`.
+      code: `
+declare function isBoxed(x: unknown): x is { a: number };
+declare const s: string;
+if (isBoxed(s)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNumber(x: unknown): x is number;
+declare const a: any;
+if (isNumber(a)) {
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNumber(x: unknown): x is number;
+function f<T>(t: T) {
+  if (isNumber(t)) {
+  }
+}
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // should not report because option is disabled.
+      code: `
+declare function isNumber(x: unknown): x is number;
+declare const s: string;
+if (isNumber(s)) {
+}
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
     `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
@@ -3841,6 +3908,69 @@ if (isNarrower(w)) {
         {
           line: 11,
           messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // string and number have no overlap, so the guard is always false.
+      code: `
+declare function isNumber(x: unknown): x is number;
+declare const s: string;
+if (isNumber(s)) {
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertsNumber(x: unknown): asserts x is number;
+declare const s: string;
+assertsNumber(s);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // distinct literal types of the same primitive.
+      code: `
+declare function isFoo(x: unknown): x is 'foo';
+declare const s: 'bar';
+if (isFoo(s)) {
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // no constituent of the argument overlaps any constituent of the
+      // predicate.
+      code: `
+declare function isStringOrNumber(x: unknown): x is string | number;
+declare const b: boolean | bigint;
+if (isStringOrNumber(b)) {
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardNeverIsType',
         },
       ],
       options: [{ checkTypePredicates: true }],

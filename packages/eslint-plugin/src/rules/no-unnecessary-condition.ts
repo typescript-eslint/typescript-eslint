@@ -118,6 +118,80 @@ function booleanComparison(
       return left >= right;
   }
 }
+
+/**
+ * Types we can say nothing useful about, so any comparison against them has to
+ * be assumed to overlap.
+ */
+const unknowableFlags =
+  ts.TypeFlags.Any |
+  ts.TypeFlags.Never |
+  ts.TypeFlags.TypeParameter |
+  ts.TypeFlags.TypeVariable |
+  ts.TypeFlags.Unknown;
+
+/**
+ * Types for which a lack of assignability in *both* directions is enough to
+ * prove that no single value inhabits both.
+ *
+ * Object types are deliberately excluded. Two unrelated object types still
+ * overlap, because a third type can extend both, and so does a primitive
+ * checked against an object type: TypeScript narrows `string` by
+ * `x is { a: number }` to the inhabitable `string & { a: number }` rather than
+ * to `never`.
+ */
+const provablyDisjointFlags =
+  ts.TypeFlags.BigIntLike |
+  ts.TypeFlags.BooleanLike |
+  ts.TypeFlags.EnumLike |
+  ts.TypeFlags.ESSymbolLike |
+  ts.TypeFlags.Null |
+  ts.TypeFlags.NumberLike |
+  ts.TypeFlags.StringLike |
+  ts.TypeFlags.Undefined |
+  ts.TypeFlags.Void;
+
+function typesCanOverlap(
+  checker: ts.TypeChecker,
+  a: ts.Type,
+  b: ts.Type,
+): boolean {
+  if (
+    tsutils.isTypeFlagSet(a, unknowableFlags) ||
+    tsutils.isTypeFlagSet(b, unknowableFlags)
+  ) {
+    return true;
+  }
+
+  if (checker.isTypeAssignableTo(a, b) || checker.isTypeAssignableTo(b, a)) {
+    return true;
+  }
+
+  return !(
+    tsutils.isTypeFlagSet(a, provablyDisjointFlags) &&
+    tsutils.isTypeFlagSet(b, provablyDisjointFlags)
+  );
+}
+
+/**
+ * Whether no value could satisfy both types, which makes a type guard between
+ * them always false.
+ */
+function typesAreDisjoint(
+  checker: ts.TypeChecker,
+  argumentType: ts.Type,
+  predicateType: ts.Type,
+): boolean {
+  const predicateParts = tsutils.unionConstituents(predicateType);
+
+  return tsutils
+    .unionConstituents(argumentType)
+    .every(argumentPart =>
+      predicateParts.every(
+        predicatePart => !typesCanOverlap(checker, argumentPart, predicatePart),
+      ),
+    );
+}
 // #endregion
 
 type LegacyAllowConstantLoopConditions = boolean;
@@ -153,7 +227,8 @@ export type MessageId =
   | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck'
   | 'suggestRemoveOptionalChain'
-  | 'typeGuardAlreadyIsType';
+  | 'typeGuardAlreadyIsType'
+  | 'typeGuardNeverIsType';
 
 export default createRule<Options, MessageId>({
   name: 'no-unnecessary-condition',
@@ -188,6 +263,8 @@ export default createRule<Options, MessageId>({
       suggestRemoveOptionalChain: 'Remove unnecessary optional chain',
       typeGuardAlreadyIsType:
         'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
+      typeGuardNeverIsType:
+        'Unnecessary conditional, expression can never have the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
     schema: [
       {
@@ -619,6 +696,22 @@ export default createRule<Options, MessageId>({
             context.report({
               node: typeGuardAssertedArgument.argument,
               messageId: 'typeGuardAlreadyIsType',
+              data: {
+                typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
+                  ? 'assertion function'
+                  : 'type guard',
+              },
+            });
+          } else if (
+            typesAreDisjoint(
+              checker,
+              typeOfArgument,
+              typeGuardAssertedArgument.type,
+            )
+          ) {
+            context.report({
+              node: typeGuardAssertedArgument.argument,
+              messageId: 'typeGuardNeverIsType',
               data: {
                 typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
                   ? 'assertion function'
