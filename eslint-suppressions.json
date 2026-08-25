@@ -1,14 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/no-unnecessary-qualifier.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 9
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-template-expression.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 143
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-unnecessary-type-arguments.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 23
