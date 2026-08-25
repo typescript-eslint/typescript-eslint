@@ -256,6 +256,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'mixed',
         },
@@ -273,6 +274,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'mixed',
         },
@@ -290,6 +292,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'mixed',
         },
@@ -306,6 +309,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'mixed',
         },
@@ -323,6 +327,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'mixed',
         },
@@ -340,6 +345,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'mixed',
         },
@@ -357,6 +363,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 13,
+          endLine: 5,
           line: 5,
           messageId: 'mixed',
         },
@@ -377,6 +384,7 @@ enum Second {
         {
           column: 7,
           endColumn: 10,
+          endLine: 8,
           line: 8,
           messageId: 'mixed',
         },
@@ -397,6 +405,7 @@ enum Second {
         {
           column: 7,
           endColumn: 8,
+          endLine: 8,
           line: 8,
           messageId: 'mixed',
         },
@@ -415,6 +424,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -433,6 +443,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -451,6 +462,7 @@ enum Foo {
         {
           column: 3,
           endColumn: 4,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -469,6 +481,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 8,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -490,12 +503,14 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
         {
           column: 7,
           endColumn: 10,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -517,6 +532,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -538,6 +554,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -557,6 +574,7 @@ declare module './mixed-enums-decl' {
         {
           column: 15,
           endColumn: 16,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -575,6 +593,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -597,6 +616,7 @@ namespace Test {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -619,6 +639,7 @@ namespace Test {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -645,6 +666,7 @@ namespace Outer {
         {
           column: 11,
           endColumn: 14,
+          endLine: 12,
           line: 12,
           messageId: 'mixed',
         },

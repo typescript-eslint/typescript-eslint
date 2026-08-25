@@ -1,34 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/no-misused-promises.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 96
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-misused-spread.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 90
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-mixed-enums.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 22
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-redundant-type-constituents.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 50
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-boolean-literal-compare.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 50
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-condition.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 119
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-unnecessary-qualifier.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 9
