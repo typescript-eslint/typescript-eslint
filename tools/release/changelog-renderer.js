@@ -5,9 +5,14 @@ const {
   default: DefaultChangelogRenderer,
 } = require('nx/release/changelog-renderer');
 
-const EXCLUDED_AUTHORS = ['Claude', 'Cursor', 'Amp'].map(
-  name => new RegExp(`^${name}\\b`),
-);
+const EXCLUDED_AUTHORS = [
+  'Amp',
+  'chatgpt',
+  'Claude',
+  'Codex',
+  'Copilot',
+  'Cursor',
+].map(name => new RegExp(`^${name}\\b`));
 
 module.exports = class CustomChangelogRenderer extends (
   DefaultChangelogRenderer
