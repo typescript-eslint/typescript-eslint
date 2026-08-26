@@ -118,7 +118,7 @@ interface I {
 function f<T extends number>(x: T[]): void;
 function f<T extends string>(x: T): void;
     `,
-    // Constraints that are the same kind of node, but different types
+    // Type parameters with the same name but different constraints
     `
 type A = 1 | 2;
 type B = 3 | 4;
@@ -128,6 +128,11 @@ function f<T extends B>(x: T): void;
     `
 function f<T extends 1 | 2>(x: T, y: string): void;
 function f<T extends 3 | 4>(x: T): void;
+    `,
+    // Type parameters with the same constraint but different names
+    `
+function f<T extends number>(x: T[]): void;
+function f<R extends number>(x: R): void;
     `,
     // Same name, different scopes
     `
