@@ -5,13 +5,8 @@ function getCanonicalPackageName(packageName: string): string {
     return packageName;
   }
 
-  const typesPackageName = packageName.slice('@types/'.length);
-  const scopeSeparatorIndex = typesPackageName.indexOf('__');
-  if (scopeSeparatorIndex === -1) {
-    return typesPackageName;
-  }
-
-  return `@${typesPackageName.slice(0, scopeSeparatorIndex)}/${typesPackageName.slice(scopeSeparatorIndex + 2)}`;
+  // Handle scoped packages: if the name contains __, add a leading @ and replace __ with /
+  return packageName.slice('@types/'.length).replace(/([^_]+)__/, '@$1/');
 }
 
 function packageNameMatches(

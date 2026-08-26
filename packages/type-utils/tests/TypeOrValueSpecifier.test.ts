@@ -396,7 +396,9 @@ describe('TypeOrValueSpecifier', () => {
           package: '@babel/code-frame',
         },
       ],
-      // Package scopes and package names match their subpaths.
+      // A specifier matches whole path components only, so a scope matches every
+      // package inside it: `@babel` matches `@babel/code-frame`, just as
+      // `@angular` matches `@angular/foo` and `@angular/foo/bar`.
       [
         'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
         {
@@ -598,6 +600,9 @@ describe('TypeOrValueSpecifier', () => {
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: 'TsNode', package: 'typescript' },
       ],
+      // A prefix that stops mid-component is not a match: `typescript` is not
+      // matched by `type`, the same way `@angular/foo` does not match
+      // `@angular/foobar`.
       [
         'import type {Node} from "typescript"; type Test = Node;',
         { from: 'package', name: 'Node', package: 'type' },
@@ -609,6 +614,39 @@ describe('TypeOrValueSpecifier', () => {
           name: 'BabelCodeFrameOptions',
           package: '@babel/code',
         },
+      ],
+      // ...and neither is a partial scope, the `@angular` / `@angularlol` case.
+      [
+        'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
+        {
+          from: 'package',
+          name: 'BabelCodeFrameOptions',
+          package: '@babe',
+        },
+      ],
+      // A sibling package in the same scope is not a match either
+      // (`@angular/foo` vs. `@angular/bar`).
+      [
+        'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
+        {
+          from: 'package',
+          name: 'BabelCodeFrameOptions',
+          package: '@babel/other',
+        },
+      ],
+      // The boundary applies to the canonicalized name, so the DefinitelyTyped
+      // spelling of a mid-component prefix does not match either.
+      [
+        'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
+        {
+          from: 'package',
+          name: 'BabelCodeFrameOptions',
+          package: '@types/babel__code',
+        },
+      ],
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: '@types/semve' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
