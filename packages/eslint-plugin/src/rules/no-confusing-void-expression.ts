@@ -414,13 +414,12 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.ReturnStatement
           ? getParentFunctionNode(node)
           : node;
-      const returnTypeAnnotation = functionNode?.returnType;
-      if (returnTypeAnnotation == null) {
+      if (functionNode?.returnType == null) {
         return false;
       }
 
       const declaredType = services.getTypeFromTypeNode(
-        returnTypeAnnotation.typeAnnotation,
+        functionNode.returnType.typeAnnotation,
       );
       const returnedType = functionNode.async
         ? checker.getAwaitedType(declaredType)
