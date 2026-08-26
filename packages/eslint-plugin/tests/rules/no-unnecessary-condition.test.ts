@@ -3922,6 +3922,9 @@ if (isNumber(s)) {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 15,
+          endLine: 4,
           line: 4,
           messageId: 'typeGuardNeverIsType',
         },
@@ -3936,6 +3939,9 @@ assertsNumber(s);
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'typeGuardNeverIsType',
         },
@@ -3952,6 +3958,9 @@ if (isFoo(s)) {
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'typeGuardNeverIsType',
         },
@@ -3969,6 +3978,9 @@ if (isStringOrNumber(b)) {
       `,
       errors: [
         {
+          column: 22,
+          endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'typeGuardNeverIsType',
         },

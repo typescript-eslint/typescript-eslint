@@ -16,7 +16,9 @@ export function selectorTypeToMessageString(
 
 export function isMetaSelector(
   selector: IndividualAndMetaSelectorsString | MetaSelectors | Selectors,
-): selector is MetaSelectorsString {
+): selector is MetaSelectors | MetaSelectorsString {
+  // `MetaSelectors` is a numeric enum, so its reverse mapping makes this true
+  // for the enum's values as well as for its keys.
   return selector in MetaSelectors;
 }
 
