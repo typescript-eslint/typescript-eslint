@@ -884,6 +884,93 @@ function foo(): void {
     },
     {
       code: `
+(): void | undefined => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+(): void | undefined => { console.log('foo'); };
+      `,
+    },
+    {
+      code: `
+(): void | string => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+(): void | string => { console.log('foo'); };
+      `,
+    },
+    {
+      code: `
+async (): Promise<unknown> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 49,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+async (): Promise<void> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 46,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+async (): Promise<void> => { console.log('foo'); };
+      `,
+    },
+    {
+      code: `
+function test(): void | string {
+  return console.log();
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function test(): void | string {
+  console.log();
+}
+      `,
+    },
+    {
+      code: `
 function test(): void {
   () => () => console.log();
 }

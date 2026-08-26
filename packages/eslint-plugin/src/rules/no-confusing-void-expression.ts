@@ -14,6 +14,7 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -108,6 +109,7 @@ export default createRule<Options, MessageId>({
 
   create(context, [options]) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
@@ -398,7 +400,14 @@ export default createRule<Options, MessageId>({
       return ['(', '[', '`'].includes(startToken.value);
     }
 
-    function declaredReturnTypeAllowsNoReturn(
+    /**
+     * Both fixes guarded by `canFix` leave the function with no returned value,
+     * which TS only accepts when the declared return type is `undefined`, `void`
+     * or `any` (TS2355). A void expression is assignable to `void`, `any` and
+     * `unknown`, so `unknown` is the only declared type that both reaches this
+     * rule and rejects the fixed code.
+     */
+    function declaredReturnTypeForbidsEmptyReturn(
       node: ReturnStatementWithArgument | TSESTree.ArrowFunctionExpression,
     ): boolean {
       const functionNode =
@@ -407,20 +416,17 @@ export default createRule<Options, MessageId>({
           : node;
       const returnTypeAnnotation = functionNode?.returnType;
       if (returnTypeAnnotation == null) {
-        return true;
+        return false;
       }
 
-      const declaredType = services.getTypeAtLocation(
+      const declaredType = services.getTypeFromTypeNode(
         returnTypeAnnotation.typeAnnotation,
       );
-      return tsutils
-        .unionConstituents(declaredType)
-        .every(constituent =>
-          tsutils.isTypeFlagSet(
-            constituent,
-            ts.TypeFlags.VoidLike | ts.TypeFlags.Any,
-          ),
-        );
+      const returnedType = functionNode.async
+        ? checker.getAwaitedType(declaredType)
+        : declaredType;
+
+      return returnedType != null && isTypeUnknownType(returnedType);
     }
 
     function canFix(
@@ -432,11 +438,10 @@ export default createRule<Options, MessageId>({
           : node.body;
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
-      if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
-        return false;
-      }
-
-      return declaredReturnTypeAllowsNoReturn(node);
+      return (
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike) &&
+        !declaredReturnTypeForbidsEmptyReturn(node)
+      );
     }
 
     function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
