@@ -1,19 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/no-useless-default-assignment.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 25
-    }
-  },
-  "packages/eslint-plugin/tests/rules/non-nullable-type-assertion-style.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 10
-    }
-  },
-  "packages/eslint-plugin/tests/rules/only-throw-error.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 47
-    }
-  },
   "packages/eslint-plugin/tests/rules/prefer-destructuring.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 37
