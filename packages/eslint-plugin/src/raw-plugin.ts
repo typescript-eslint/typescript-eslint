@@ -70,8 +70,7 @@ const plugin = {
   rules,
 } satisfies Linter.Plugin;
 
-// @ts-expect-error -- upstream type incompatibility stuff
-const flatPlugin = plugin as FlatConfig.Plugin;
+const flatPlugin: FlatConfig.Plugin = plugin;
 
 // included due to https://github.com/eslint/eslint/issues/19513
 const flatConfigs = {

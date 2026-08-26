@@ -1,8 +1,13 @@
+import type * as core from '@eslint/core';
+
 import type {
+  MutableOptions,
   RuleContext,
   RuleListener,
+  RuleListenerWithCoreVisitor,
   RuleMetaData,
   RuleMetaDataDocs,
+  RuleMetaDataWithMutableDefaults,
   RuleModule,
 } from '../ts-eslint/Rule';
 
@@ -49,12 +54,30 @@ export interface RuleWithMetaAndName<
   name: string;
 }
 
-type RuleModuleWithName<
+export interface RuleModuleCoreView<
   MessageIds extends string,
   Options extends readonly unknown[] = [],
   Docs = unknown,
-  ExtendedRuleListener extends RuleListener = RuleListener,
-> = RuleModule<MessageIds, Options, Docs, ExtendedRuleListener> & {
+> {
+  /* eslint-disable @typescript-eslint/unified-signatures -- the overload pair is load-bearing: a single union parameter would leak the union into literal implementations and break contextual typing of rule visitors */
+  create(context: core.RuleContext): RuleListenerWithCoreVisitor;
+  create(
+    context: Readonly<RuleContext<MessageIds, Options>>,
+  ): RuleListenerWithCoreVisitor;
+  /* eslint-enable @typescript-eslint/unified-signatures */
+  /**
+   * @deprecated Use meta.defaultOptions instead
+   * Default options the rule will be run with
+   */
+  defaultOptions?: MutableOptions<Options>;
+  meta: RuleMetaDataWithMutableDefaults<MessageIds, Docs, Options>;
+  name?: string;
+}
+export type RuleModuleWithName<
+  MessageIds extends string,
+  Options extends readonly unknown[] = [],
+  Docs = unknown,
+> = RuleModuleCoreView<MessageIds, Options, Docs> & {
   name: string;
 };
 
@@ -106,24 +129,34 @@ function createRule<
   defaultOptions,
   meta,
   name,
-}: Readonly<RuleWithMeta<Options, MessageIds, PluginDocs>>): RuleModule<
+}: Readonly<RuleWithMeta<Options, MessageIds, PluginDocs>>): RuleModuleCoreView<
   MessageIds,
   Options,
   PluginDocs
 > {
   const resolvedDefaultOptions = (meta.defaultOptions ??
     defaultOptions ??
-    []) as Readonly<Options>;
+    []) as MutableOptions<Options>;
   return {
-    create(context: Readonly<RuleContext<MessageIds, Options>>): RuleListener {
+    create(
+      context: core.RuleContext | Readonly<RuleContext<MessageIds, Options>>,
+    ): RuleListenerWithCoreVisitor {
       const optionsWithDefault = applyDefault(
         resolvedDefaultOptions,
         context.options,
       );
-      return create(context, optionsWithDefault);
+      return create(
+        context as Readonly<RuleContext<MessageIds, Options>>,
+        optionsWithDefault,
+      ) as RuleListenerWithCoreVisitor satisfies RuleListener;
     },
     defaultOptions,
-    meta,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- the cast strips the readonly modifier from defaultOptions; the lint rule does not model readonly-only differences
+    meta: meta as unknown as RuleMetaDataWithMutableDefaults<
+      MessageIds,
+      PluginDocs,
+      Options
+    > satisfies RuleMetaData<MessageIds, PluginDocs, Options>,
     name,
   };
 }

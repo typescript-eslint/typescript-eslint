@@ -38,6 +38,7 @@ This is likely not portable. A type annotation is necessary. ts(2742)
 
 import type {
   RuleModuleWithMetaDocs,
+  RuleModuleWithMetaDocsAndCoreVisitor,
   RuleRecommendation,
   RuleRecommendationAcrossConfigs,
 } from '@typescript-eslint/utils/ts-eslint';
@@ -69,9 +70,14 @@ type ESLintPluginRuleModule = RuleModuleWithMetaDocs<
   ESLintPluginDocs
 >;
 
+/*
+The rules record is typed with a core-compatible view of RuleModuleWithMetaDocs
+so that the plugin is assignable to flat config plugins positions without casts
+(https://github.com/typescript-eslint/typescript-eslint/issues/11543).
+*/
 type TypeScriptESLintRules = Record<
   string,
-  RuleModuleWithMetaDocs<string, unknown[], ESLintPluginDocs>
+  RuleModuleWithMetaDocsAndCoreVisitor<string, unknown[], ESLintPluginDocs>
 >;
 
 declare const rules: TypeScriptESLintRules;

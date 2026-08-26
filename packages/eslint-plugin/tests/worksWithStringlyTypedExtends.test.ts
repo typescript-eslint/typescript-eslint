@@ -8,7 +8,6 @@ describe("The plugin object should work with eslint defineConfig's stringly type
       defineConfig({
         extends: ['ts/flat/strict'],
         plugins: {
-          // @ts-expect-error -- types aren't compatible.
           ts: plugin,
         },
       });
@@ -20,7 +19,6 @@ describe("The plugin object should work with eslint defineConfig's stringly type
       defineConfig({
         extends: ['ts/strict'],
         plugins: {
-          // @ts-expect-error -- types aren't compatible.
           ts: plugin,
         },
       });

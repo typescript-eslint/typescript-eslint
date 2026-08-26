@@ -61,9 +61,7 @@ export function getParserServices(
   context: Readonly<TSESLint.RuleContext<string, unknown[]>>,
   allowWithoutFullTypeInformation = false,
 ): ParserServices {
-  const parser =
-    // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8
-    context.parserPath || context.languageOptions.parser?.meta?.name;
+  const parser = context.languageOptions.parser?.meta?.name;
 
   // This check is unnecessary if the user is using the latest version of our parser.
   //

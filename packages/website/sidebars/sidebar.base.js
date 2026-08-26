@@ -74,6 +74,7 @@ module.exports = {
       items: [
         'users/configs',
         'users/dependency-versions',
+        'users/migrating-to-v9',
         'users/releases',
         'users/versioning',
         'users/what-about-formatting',

@@ -12,8 +12,8 @@ exports[`flat-config-types-@types__eslint-v9 > eslint > should work successfully
       {
         "column": 10,
         "endColumn": 21,
-        "endLine": 38,
-        "line": 38,
+        "endLine": 39,
+        "line": 39,
         "message": "'_otherCases' is defined but never used.",
         "messageId": "unusedVar",
         "nodeType": "Identifier",
@@ -23,8 +23,8 @@ exports[`flat-config-types-@types__eslint-v9 > eslint > should work successfully
       {
         "column": 5,
         "endColumn": 24,
-        "endLine": 55,
-        "line": 55,
+        "endLine": 57,
+        "line": 57,
         "message": "Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.",
         "messageId": "tsDirectiveCommentRequiresDescription",
         "nodeType": "Line",
@@ -34,8 +34,8 @@ exports[`flat-config-types-@types__eslint-v9 > eslint > should work successfully
       {
         "column": 5,
         "endColumn": 24,
-        "endLine": 60,
-        "line": 60,
+        "endLine": 62,
+        "line": 62,
         "message": "Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.",
         "messageId": "tsDirectiveCommentRequiresDescription",
         "nodeType": "Line",
@@ -70,6 +70,7 @@ export default tseslint.config(
   {
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
+      // @ts-expect-error -- plugins typed with pre-re-anchoring @typescript-eslint/utils types are no longer assignable to the flat config plugin types
       ['deprecation']: deprecationPlugin,
       ['vitest']: vitestPlugin,
     },
@@ -86,6 +87,7 @@ function _otherCases() {
     plugins: {
       ['@stylistic']: stylisticPlugin,
       ['@typescript-eslint']: tseslint.plugin,
+      // @ts-expect-error -- plugins typed with pre-re-anchoring @typescript-eslint/utils types are no longer assignable to the flat config plugin types
       ['deprecation']: deprecationPlugin,
       ['vitest']: vitestPlugin,
     },

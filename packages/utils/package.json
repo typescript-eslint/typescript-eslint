@@ -62,6 +62,7 @@
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.9.1",
+    "@eslint/core": "^1.2.1",
     "@typescript-eslint/scope-manager": "workspace:*",
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*"

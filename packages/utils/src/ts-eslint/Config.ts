@@ -1,9 +1,14 @@
 /* eslint-disable  @typescript-eslint/consistent-indexed-object-style,  @typescript-eslint/no-namespace */
 
+import type * as core from '@eslint/core';
+
 import type { Parser as ParserType } from './Parser';
 import type * as ParserOptionsTypes from './ParserOptions';
 import type { Processor as ProcessorType } from './Processor';
-import type { LooseRuleDefinition, SharedConfigurationSettings } from './Rule';
+import type {
+  LooseRuleDefinitionObject,
+  SharedConfigurationSettings,
+} from './Rule';
 
 /** @internal */
 export namespace SharedConfig {
@@ -95,7 +100,7 @@ export namespace ClassicConfig {
     /**
      * The path to a parser or the package name of a parser.
      */
-    parser?: string | null;
+    parser?: string;
     /**
      * The parser options.
      */
@@ -156,7 +161,7 @@ export namespace FlatConfig {
   export type SourceType = 'commonjs' | ParserOptionsTypes.SourceType;
 
   export interface SharedConfigs {
-    [key: string]: Config | ConfigArray;
+    [key: string]: Config | ConfigArray | core.LegacyConfigObject;
   }
   export interface Plugin {
     /**
@@ -172,14 +177,14 @@ export namespace FlatConfig {
      * The definition of plugin processors.
      * Users can stringly reference the processor using the key in their config (i.e., `"pluginName/processorName"`).
      */
-    processors?: Partial<Record<string, Processor>> | undefined;
+    processors?: Record<string, Processor> | undefined;
     /**
      * The definition of plugin rules.
      * The key must be the name of the rule that users will use
      * Users can stringly reference the rule using the key they registered the plugin under combined with the rule name.
      * i.e. for the user config `plugins: { foo: pluginReference }` - the reference would be `"foo/ruleName"`.
      */
-    rules?: Record<string, LooseRuleDefinition> | undefined;
+    rules?: Record<string, LooseRuleDefinitionObject> | undefined;
   }
   export interface Plugins {
     /**
@@ -216,6 +221,13 @@ export namespace FlatConfig {
   }
 
   export interface LanguageOptions {
+    /**
+     * Plugin-defined options for the language.
+     * Allows any plugin-specific keys; `@eslint/core`'s `LanguageOptions` is
+     * `Record<string, unknown>`, and this index signature keeps values of this
+     * type assignable to core config positions without casts.
+     */
+    [key: string]: unknown;
     /**
      * The version of ECMAScript to support.
      * May be any year (i.e., `2022`) or version (i.e., `5`).

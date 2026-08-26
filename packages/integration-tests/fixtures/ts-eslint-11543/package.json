@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "@typescript-eslint/utils": "latest",
+    "eslint": "latest",
+    "typescript-eslint": "latest"
+  }
+}

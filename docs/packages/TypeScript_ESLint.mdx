@@ -16,15 +16,15 @@ This package is the main entrypoint that you can use to consume our tooling with
 
 This package exports the following:
 
-| Name                  | Description                                                                                       |
-| --------------------- | ------------------------------------------------------------------------------------------------- |
-| `config` (deprecated) | A utility function for creating type-safe flat configs -- see [`config(...)`](#config-deprecated) |
-| `configs`             | [Shared ESLint (flat) configs](../users/Shared_Configurations.mdx)                                |
-| `extensions`          | File extension arrays for JavaScript/TypeScript files -- see [`extensions`](#extensions)          |
-| `globs`               | Predefined glob patterns for JavaScript/TypeScript files -- see [`globs`](#globs)                 |
-| `parser`              | A re-export of [`@typescript-eslint/parser`](./Parser.mdx)                                        |
-| `plugin`              | A re-export of [`@typescript-eslint/eslint-plugin`](./ESLint_Plugin.mdx)                          |
-| `FlatConfig`          | A re-export of the type from [`@typescript-eslint/utils`](./Utils.mdx)                            |
+| Name                  | Description                                                                                                                                               |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `config` (deprecated) | A utility function for creating type-safe flat configs -- see [`config(...)`](#config-deprecated)                                                         |
+| `configs`             | [Shared ESLint (flat) configs](../users/Shared_Configurations.mdx)                                                                                        |
+| `extensions`          | File extension arrays for JavaScript/TypeScript files -- see [`extensions`](#extensions)                                                                  |
+| `globs`               | Predefined glob patterns for JavaScript/TypeScript files -- see [`globs`](#globs)                                                                         |
+| `parser`              | A re-export of [`@typescript-eslint/parser`](./Parser.mdx)                                                                                                |
+| `plugin`              | A re-export of [`@typescript-eslint/eslint-plugin`](./ESLint_Plugin.mdx)                                                                                  |
+| `FlatConfig`          | A re-export of the type from [`@typescript-eslint/utils`](./Utils.mdx), anchored on `@eslint/core` -- see [Migrating to v9](../users/Migrating_To_v9.mdx) |
 
 ## Installation
 
@@ -218,6 +218,11 @@ export default [
 We _**strongly**_ recommend using this utility to improve the config authoring experience — however it is entirely optional.
 By choosing not to use it you lose editor autocomplete and type checking for config files.
 Otherwise it _will not_ impact your ability to use our tooling.
+:::
+
+:::note
+Since the types were re-anchored on `@eslint/core`, `defineConfig()` and `tseslint.config()` accept all `typescript-eslint` exports (plugin, parser, configs, and `RuleCreator` outputs) without casts or `@ts-expect-error` workarounds.
+See [Migrating to v9](../users/Migrating_To_v9.mdx) if you are upgrading from v8.
 :::
 
 #### Flat config `extends`

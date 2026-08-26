@@ -25,6 +25,7 @@ export default tseslint.config(
   {
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
+      // @ts-expect-error -- plugins typed with pre-re-anchoring @typescript-eslint/utils types are no longer assignable to the flat config plugin types
       ['deprecation']: deprecationPlugin,
       ['vitest']: vitestPlugin,
     },
@@ -41,6 +42,7 @@ function _otherCases() {
     plugins: {
       ['@stylistic']: stylisticPlugin,
       ['@typescript-eslint']: tseslint.plugin,
+      // @ts-expect-error -- plugins typed with pre-re-anchoring @typescript-eslint/utils types are no longer assignable to the flat config plugin types
       ['deprecation']: deprecationPlugin,
       ['vitest']: vitestPlugin,
     },

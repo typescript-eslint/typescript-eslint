@@ -8,7 +8,14 @@ import { ESLintUtils } from '../../src';
 type UnknownRuleContext = Readonly<TSESLint.RuleContext<string, unknown[]>>;
 
 const defaults = {
-  parserPath: '@typescript-eslint/parser/dist/index.js',
+  languageOptions: {
+    parser: {
+      meta: {
+        name: '@typescript-eslint/parser/dist/index.js',
+      },
+    } as FlatConfig.Parser,
+    parserOptions: {},
+  },
   sourceCode: {
     parserServices: {
       esTreeNodeToTSNodeMap: new Map<TSESTree.Node, ts.Node>(),
@@ -63,7 +70,6 @@ describe(ESLintUtils.getParserServices, () => {
         } as FlatConfig.Parser,
         parserOptions: {},
       },
-      parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
         parserServices: {
@@ -81,7 +87,6 @@ describe(ESLintUtils.getParserServices, () => {
   it('throws a standard error with an unknown parser when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is missing', () => {
     const context = createMockRuleContext({
       languageOptions: { parserOptions: {} },
-      parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
         parserServices: {
@@ -102,7 +107,6 @@ describe(ESLintUtils.getParserServices, () => {
         parser: {} as FlatConfig.Parser,
         parserOptions: {},
       },
-      parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
         parserServices: {
@@ -119,7 +123,14 @@ describe(ESLintUtils.getParserServices, () => {
 
   it('throws an augment error when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is unknown', () => {
     const context = createMockRuleContext({
-      parserPath: '@babel/parser.js',
+      languageOptions: {
+        parser: {
+          meta: {
+            name: '@babel/parser.js',
+          },
+        } as FlatConfig.Parser,
+        parserOptions: {},
+      },
       sourceCode: {
         ...defaults.sourceCode,
         parserServices: {

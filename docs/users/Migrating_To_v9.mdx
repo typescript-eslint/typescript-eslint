@@ -1,0 +1,105 @@
+---
+id: migrating-to-v9
+title: Migrating to v9
+description: How to migrate your code to the typescript-eslint v9 type contracts
+---
+
+typescript-eslint v9 re-anchors the public typing surface of `@typescript-eslint/utils` and `typescript-eslint` onto [`@eslint/core`](https://github.com/eslint/rewrite/tree/main/packages/core), and removes typings for context members that were deleted in ESLint 10.
+This guide covers what you need to do if you authored rules, plugins, or type annotations against the v8 types.
+
+## Removing `@ts-expect-error` workarounds for `defineConfig` {#removing-workarounds}
+
+If your config used a `@ts-expect-error` directive (or `any` cast) to pass a `typescript-eslint` plugin, parser, config, or a rule created with `RuleCreator` into `defineConfig()` ([#11543](https://github.com/typescript-eslint/typescript-eslint/issues/11543)), remove the directive: the values now type-check as-is in both `defineConfig()` and `tseslint.config()`.
+
+```js
+// @ts-check
+
+import { defineConfig } from 'eslint/config';
+import { ESLintUtils } from '@typescript-eslint/utils';
+
+const createRule = ESLintUtils.RuleCreator(
+  ruleName => `https://example.com/rules/${ruleName}`,
+);
+
+const rule = createRule({
+  name: 'no-foo',
+  meta: {
+    type: 'suggestion',
+    docs: { description: 'Disallow foo identifiers.' },
+    messages: { avoidFoo: 'Avoid foo.' },
+    schema: [],
+  },
+  create(context) {
+    return {
+      Identifier(node) {
+        if (node.name === 'foo') {
+          context.report({ messageId: 'avoidFoo', node });
+        }
+      },
+    };
+  },
+});
+
+export default defineConfig({
+  plugins: {
+    example: {
+      // v8 required a workaround directive or cast here; v9 does not
+      rules: { 'no-foo': rule },
+    },
+  },
+});
+```
+
+If you remove the directive and see a `TS2578: Unused '@ts-expect-error' directive` error, the workaround is no longer needed — this is expected, and is the signal that your setup is fixed.
+
+## Configs compose in both entries {#configs}
+
+`tseslint.configs.*` values (and your own configs typed as `TSESLint.FlatConfig.Config` / `ConfigArray`) can be passed to both `defineConfig()` and `tseslint.config()` — as values, inside `extends` arrays, and via spread.
+No `as` casts are required anymore.
+
+## Rule context members removed with ESLint 10 {#context-members}
+
+The typings for the following rule context members, deleted from ESLint's runtime in v10, are removed from `RuleContext` and `CodePath` ([#11371](https://github.com/typescript-eslint/typescript-eslint/issues/11371)):
+
+| Removed member                       | Replacement                                         |
+| ------------------------------------ | --------------------------------------------------- |
+| `context.parserOptions`              | `context.languageOptions.parserOptions`             |
+| `context.parserPath`                 | `context.languageOptions.parser?.meta?.name`        |
+| `context.parserServices`             | `context.sourceCode.parserServices`                 |
+| `context.getAncestors()`             | `context.sourceCode.getAncestors(node)`             |
+| `context.getDeclaredVariables(node)` | `context.sourceCode.getDeclaredVariables(node)`     |
+| `context.getCwd()`                   | `context.cwd`                                       |
+| `context.getFilename()`              | `context.filename`                                  |
+| `context.getPhysicalFilename()`      | `context.physicalFilename`                          |
+| `context.getScope()`                 | `context.sourceCode.getScope(node)`                 |
+| `context.getSourceCode()`            | `context.sourceCode`                                |
+| `context.markVariableAsUsed(name)`   | `context.sourceCode.markVariableAsUsed(name, node)` |
+| `codePath.currentSegments`           | (no replacement; removed upstream)                  |
+
+The replacement properties (`cwd`, `filename`, `physicalFilename`, `sourceCode`) and the `languageOptions` hub remain fully typed.
+
+## Direct `FlatConfig` type annotations {#annotations}
+
+The `TSESLint.FlatConfig.*` type names are preserved and re-anchored onto `@eslint/core`, so annotations such as:
+
+```ts
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
+
+const plugin: FlatConfig.Plugin = { rules: {} };
+const parser: FlatConfig.Parser = { parseForESLint: () => ({ ast: {} }) };
+```
+
+keep working, and the annotated values are now accepted by `defineConfig()` and `tseslint.config()` without casts.
+
+If your plugin previously worked around this incompatibility with its own forked rule creator or boundary casts (as `eslint-plugin-import-x`, `angular-eslint`, and others did), you can now retire that workaround: a plugin built with `RuleCreator` and annotated with `TSESLint.FlatConfig.*` types is accepted directly.
+
+Two boundaries to be aware of:
+
+- **Plugins and configs typed against `@types/eslint` v8 (or very old `@typescript-eslint/utils` versions) are no longer assignable** to the flat config plugin types. If you consume such third-party values inside a typed flat config, either update the dependency or keep a local cast. This is a direct consequence of anchoring onto the current `@eslint/core` contract.
+- Annotating a parser with a **strict `Linter.LanguageOptions['parser']` type** and passing a `LooseParserModule`-style parser into it is not supported — the strict parser plane only exists inside `Linter.LanguageOptions`, not in config positions. Annotate with `FlatConfig.Parser` instead.
+
+## Type guarantee and supported ESLint versions {#peer-range}
+
+The runtime `eslint` peer range is unchanged (`^8.57.0 || ^9.0.0 || ^10.0.0`).
+However, the _type_ layer now describes the current flat config contract (as defined by `@eslint/core` and ESLint 10), and no longer guarantees type-level compatibility with `@types/eslint` v8-style plugin shapes.
+The type contract follows the [ESLint supported versions](https://eslint.org/version-support/): ESLint 8 reached end-of-life in October 2024 and ESLint 9 reaches end-of-life in August 2026.

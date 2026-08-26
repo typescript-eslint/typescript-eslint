@@ -924,6 +924,9 @@ importers:
       '@eslint-community/eslint-utils':
         specifier: ^4.9.1
         version: 4.10.1(eslint@10.8.1(jiti@2.7.0))
+      '@eslint/core':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@typescript-eslint/scope-manager':
         specifier: workspace:*
         version: link:../scope-manager

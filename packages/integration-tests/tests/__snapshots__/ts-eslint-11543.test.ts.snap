@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ts-eslint-11543 > eslint > should work successfully 1`] = `
+[
+  {
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "filePath": "<root>/eslint.config.js",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+]
+`;

@@ -3,17 +3,28 @@
 exports[`flat-config-types-@types__eslint-v8 > eslint > should work successfully 1`] = `
 [
   {
-    "errorCount": 3,
+    "errorCount": 4,
     "fatalErrorCount": 0,
     "filePath": "<root>/eslint.config.js",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": [
       {
+        "column": 7,
+        "endColumn": 29,
+        "endLine": 25,
+        "line": 25,
+        "message": "'v8TypedStylisticPlugin' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "@typescript-eslint/no-unused-vars",
+        "severity": 2,
+      },
+      {
         "column": 10,
         "endColumn": 21,
-        "endLine": 38,
-        "line": 38,
+        "endLine": 51,
+        "line": 51,
         "message": "'_otherCases' is defined but never used.",
         "messageId": "unusedVar",
         "nodeType": "Identifier",
@@ -23,8 +34,8 @@ exports[`flat-config-types-@types__eslint-v8 > eslint > should work successfully
       {
         "column": 5,
         "endColumn": 24,
-        "endLine": 55,
-        "line": 55,
+        "endLine": 71,
+        "line": 71,
         "message": "Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.",
         "messageId": "tsDirectiveCommentRequiresDescription",
         "nodeType": "Line",
@@ -34,8 +45,8 @@ exports[`flat-config-types-@types__eslint-v8 > eslint > should work successfully
       {
         "column": 5,
         "endColumn": 24,
-        "endLine": 60,
-        "line": 60,
+        "endLine": 76,
+        "line": 76,
         "message": "Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.",
         "messageId": "tsDirectiveCommentRequiresDescription",
         "nodeType": "Line",
@@ -60,6 +71,19 @@ const compat = new FlatCompat({
   allConfig: {},
 })
 
+// third-party values typed against @types/eslint v8 are no longer assignable
+// to the re-anchored flat config plugin types
+/** @type {any} */
+const v8TypedJsRecommended = js.configs.recommended
+/** @type {any} */
+const v8TypedStylisticRecommendedFlat = stylisticPlugin.configs['recommended-flat']
+/** @type {any} */
+const v8TypedStylisticPlugin = stylisticPlugin
+/** @type {any} */
+const v8TypedVitestPlugin = vitestPlugin
+/** @type {any} */
+const v8TypedVitestRecommended = vitestPlugin.configs.recommended
+
 // this config is run through eslint as part of the integration test
 // so it needs to be a correct config
 export default tseslint.config(
@@ -71,12 +95,12 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['deprecation']: deprecationPlugin,
-      ['vitest']: vitestPlugin,
+      ['vitest']: v8TypedVitestPlugin,
     },
   },
-  js.configs.recommended,
+  v8TypedJsRecommended,
   ...tseslint.configs.recommended,
-  stylisticPlugin.configs['recommended-flat'],
+  v8TypedStylisticRecommendedFlat,
 )
 
 // wrapped in a function so they aren't executed at lint time
@@ -84,27 +108,30 @@ function _otherCases() {
   // these are just tests for the types and are not seen by eslint so they can be whatever
   tseslint.config({
     plugins: {
+      // third-party values typed against @types/eslint v8 are no longer
+      // assignable to the re-anchored flat config plugin types
+      /** @type {any} */
       ['@stylistic']: stylisticPlugin,
       ['@typescript-eslint']: tseslint.plugin,
       ['deprecation']: deprecationPlugin,
-      ['vitest']: vitestPlugin,
+      ['vitest']: v8TypedVitestPlugin,
     },
   })
   tseslint.config(
-    js.configs.recommended,
+    v8TypedJsRecommended,
     ...tseslint.configs.recommended,
-    stylisticPlugin.configs['recommended-flat'],
-    vitestPlugin.configs.recommended,
+    v8TypedStylisticRecommendedFlat,
+    v8TypedVitestRecommended,
   )
   tseslint.config(
     // @ts-expect-error
     compat.config(deprecationPlugin.configs.recommended),
-    vitestPlugin.configs.recommended,
+    v8TypedVitestRecommended,
   )
   tseslint.config(
     // @ts-expect-error
     deprecationPlugin.configs.recommended,
-    vitestPlugin.configs.recommended,
+    v8TypedVitestRecommended,
   )
 }
 ",

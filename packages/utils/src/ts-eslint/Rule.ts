@@ -1,9 +1,9 @@
+import type * as core from '@eslint/core';
+
 import type { JSONSchema4 } from '../json-schema';
-import type { ParserServices, TSESTree } from '../ts-estree';
+import type { TSESTree } from '../ts-estree';
 import type { AST } from './AST';
 import type { FlatConfig } from './Config';
-import type { Linter } from './Linter';
-import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
 export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
@@ -279,6 +279,14 @@ export interface SharedConfigurationSettings {
   [name: string]: unknown;
 }
 
+/**
+ * The language options as seen by a rule: the flat-config language options
+ * with `parserOptions` guaranteed to be present.
+ */
+export interface RuleContextLanguageOptions extends FlatConfig.LanguageOptions {
+  parserOptions: FlatConfig.ParserOptions;
+}
+
 export interface RuleContext<
   MessageIds extends string,
   Options extends readonly unknown[],
@@ -290,61 +298,17 @@ export interface RuleContext<
   /**
    * The language options configured for this run
    */
-  languageOptions: FlatConfig.LanguageOptions & {
-    parserOptions: FlatConfig.ParserOptions;
-  };
+  languageOptions: RuleContextLanguageOptions;
   /**
    * An array of the configured options for this rule.
    * This array does not include the rule severity.
    */
   options: Options;
   /**
-   * The parser options configured for this run
-   * @deprecated This was deprecated in ESLint 9 and removed in ESLint 10.
-   */
-  parserOptions: Linter.ParserOptions;
-  /**
-   * The name of the parser from configuration, if in eslintrc (legacy) config.
-   * @deprecated This was deprecated in ESLint 9 and removed in ESLint 10.
-   */
-  parserPath: string | undefined;
-  /**
-   * An object containing parser-provided services for rules
-   *
-   * @deprecated in favor of `SourceCode#parserServices`
-   */
-  parserServices?: ParserServices;
-  /**
    * The shared settings from configuration.
    * We do not have any shared settings in this plugin.
    */
   settings: SharedConfigurationSettings;
-
-  // Deprecated members
-
-  /**
-   * Returns an array of the ancestors of the currently-traversed node, starting at
-   * the root of the AST and continuing through the direct parent of the current node.
-   * This array does not include the currently-traversed node itself.
-   *
-   * @deprecated in favor of `SourceCode#getAncestors`
-   */
-  getAncestors(): TSESTree.Node[];
-
-  /**
-   * Returns a list of variables declared by the given node.
-   * This information can be used to track references to variables.
-   *
-   * @deprecated in favor of `SourceCode#getDeclaredVariables`
-   */
-  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
-
-  /**
-   * Returns the current working directory passed to Linter.
-   * It is a path to a directory that should be considered as the current working directory.
-   * @deprecated in favor of `RuleContext#cwd`
-   */
-  getCwd(): string;
 
   /**
    * The current working directory passed to Linter.
@@ -353,22 +317,9 @@ export interface RuleContext<
   cwd: string;
 
   /**
-   * Returns the filename associated with the source.
-   *
-   * @deprecated in favor of `RuleContext#filename`
-   */
-  getFilename(): string;
-
-  /**
    * The filename associated with the source.
    */
   filename: string;
-
-  /**
-   * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
-   * @deprecated in favor of `RuleContext#physicalFilename`
-   */
-  getPhysicalFilename(): string;
 
   /**
    * The full path of the file on disk without any code block information (unlike `filename`).
@@ -376,34 +327,10 @@ export interface RuleContext<
   physicalFilename: string;
 
   /**
-   * Returns the scope of the currently-traversed node.
-   * This information can be used track references to variables.
-   *
-   * @deprecated in favor of `SourceCode#getScope`
-   */
-  getScope(): Scope.Scope;
-
-  /**
-   * Returns a SourceCode object that you can use to work with the source that
-   * was passed to ESLint.
-   *
-   * @deprecated in favor of `RuleContext#sourceCode`
-   */
-  getSourceCode(): Readonly<SourceCode>;
-
-  /**
    * A SourceCode object that you can use to work with the source that
    * was passed to ESLint.
    */
   sourceCode: Readonly<SourceCode>;
-
-  /**
-   * Marks a variable with the given name in the current scope as used.
-   * This affects the no-unused-vars rule.
-   *
-   * @deprecated in favor of `SourceCode#markVariableAsUsed`
-   */
-  markVariableAsUsed(name: string): boolean;
 
   /**
    * Reports a problem in the code.
@@ -423,13 +350,6 @@ export interface RuleContext<
 export interface CodePath {
   /** Code paths of functions this code path contains. */
   childCodePaths: CodePath[];
-
-  /**
-   * Segments of the current traversal position.
-   *
-   * @deprecated
-   */
-  currentSegments: CodePathSegment[];
 
   /** The final segments which includes both returned and thrown. */
   finalSegments: CodePathSegment[];
@@ -777,15 +697,53 @@ export interface RuleModuleWithMetaDocs<
   ExtendedRuleListener extends RuleListener = RuleListener,
 > extends RuleModule<MessageIds, Options, Docs, ExtendedRuleListener> {
   /**
+   * Function which returns an object with methods that ESLint calls to “visit”
+   * nodes while traversing the abstract syntax tree.
+   *
+   * The return type is narrowed to a core-compatible view so that rules
+   * annotated with this type are assignable to `@eslint/core`'s
+   * `RuleDefinition` (flat config plugins positions).
+   */
+  create(
+    context: Readonly<RuleContext<MessageIds, Options>>,
+  ): ExtendedRuleListener & core.RuleVisitor;
+  /**
    * Metadata about the rule
    */
   meta: RuleMetaDataWithDocs<MessageIds, Docs, Options>;
 }
 
-export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
-  string,
-  unknown[]
->;
+/**
+ * A wide view of {@link RuleModuleWithMetaDocs} that is assignable to
+ * `@eslint/core`'s `RuleDefinition`: annotating a rules record with this type
+ * keeps it usable in `defineConfig()` / `tseslint.config()` plugins positions.
+ */
+export type AnyRuleModuleWithMetaDocs = Omit<
+  RuleModuleWithMetaDocs<string, unknown[]>,
+  'create'
+> & {
+  create(
+    context: core.RuleContext | Readonly<RuleContext<string, unknown[]>>,
+  ): RuleListenerWithCoreVisitor;
+};
+
+/**
+ * A `RuleModuleWithMetaDocs` view whose overloaded `create` makes it assignable
+ * to `@eslint/core`'s `RuleDefinition` (flat config plugins positions) while
+ * remaining assignable to plain `RuleModule` positions.
+ */
+export interface RuleModuleWithMetaDocsAndCoreVisitor<
+  MessageIds extends string = string,
+  Options extends readonly unknown[] = unknown[],
+  Docs = unknown,
+  /* eslint-disable @typescript-eslint/unified-signatures -- the overload pair is load-bearing: a single union parameter would leak the union into literal implementations */
+> extends RuleModuleWithMetaDocs<MessageIds, Options, Docs> {
+  create(context: core.RuleContext): RuleListenerWithCoreVisitor;
+  create(
+    context: Readonly<RuleContext<MessageIds, Options>>,
+  ): RuleListenerWithCoreVisitor;
+}
+/* eslint-enable @typescript-eslint/unified-signatures */
 
 /**
  * A loose definition of the RuleModule type for use with configs. This type is
@@ -801,11 +759,17 @@ export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
  */
 export type LooseRuleDefinition =
   // TODO - remove RuleCreateFunction once we no longer support ESLint 8
-  | LooseRuleCreateFunction
-  | {
-      create: LooseRuleCreateFunction;
-      meta?: object | undefined;
-    };
+  LooseRuleCreateFunction | LooseRuleDefinitionObject;
+
+/**
+ * The object variant of {@link LooseRuleDefinition}: the only variant that is
+ * assignable to `@eslint/core`'s `RuleDefinition` (the flat-config `rules`
+ * record requires an object with a `create` method).
+ */
+export interface LooseRuleDefinitionObject {
+  create: LooseRuleCreateFunction;
+  meta?: object;
+}
 /*
 eslint-disable-next-line @typescript-eslint/no-explicit-any --
 intentionally using `any` to allow bi-directional assignment (unknown and
@@ -814,12 +778,12 @@ never only allow unidirectional)
 export type LooseRuleCreateFunction = (context: any) => Record<
   string,
   /*
-  eslint-disable-next-line @typescript-eslint/no-unsafe-function-type --
-  intentionally use Function here to give us the basic "is a function" validation
-  without enforcing specific argument types so that different AST types can still
-  be passed to configs
+  eslint-disable-next-line @typescript-eslint/no-explicit-any --
+  intentionally use a generic function signature with `any` args to give us the
+  basic "is a function" validation without enforcing specific argument types so
+  that different AST types can still be passed to configs
   */
-  Function | undefined
+  ((...args: any[]) => void) | undefined
 >;
 
 export type RuleCreateFunction<
@@ -830,3 +794,32 @@ export type AnyRuleCreateFunction = RuleCreateFunction<
   string,
   readonly unknown[]
 >;
+
+/**
+ * A `RuleListener` view that is also assignable to `@eslint/core`'s
+ * `RuleVisitor` positions. The strict `RuleListener` semantics are preserved;
+ * the intersection only adds the core-compatible index signature.
+ */
+export type RuleListenerWithCoreVisitor = RuleListener & core.RuleVisitor;
+
+/**
+ * A mutable view of a (possibly readonly) options tuple.
+ * `@eslint/core`'s `RuleDefinition.meta.defaultOptions` uses mutable arrays,
+ * while our `RuleMetaData` keeps options readonly.
+ */
+export type MutableOptions<Options extends readonly unknown[]> = {
+  -readonly [K in keyof Options]: Options[K];
+};
+
+/**
+ * `RuleMetaData` with a mutable view of `defaultOptions`, making rule metadata
+ * assignable to `@eslint/core`'s `RulesMeta` (which uses mutable arrays)
+ * without weakening the readonly guarantee of {@link RuleMetaData} itself.
+ */
+export interface RuleMetaDataWithMutableDefaults<
+  MessageIds extends string,
+  PluginDocs = unknown,
+  Options extends readonly unknown[] = [],
+> extends RuleMetaData<MessageIds, PluginDocs, Options> {
+  defaultOptions?: MutableOptions<Options>;
+}
