@@ -1,34 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/no-unsafe-argument.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 25
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-assignment.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 57
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-call.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 26
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-declaration-merging.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 6
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-enum-comparison.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 49
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-unary-minus.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 9
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-useless-default-assignment.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 25
