@@ -225,6 +225,25 @@ export default createRule<Options, MessageId>({
         if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
           return;
         }
+
+        // A variadic tuple element makes positions at or after it depend
+        // on the array's runtime length: an element can be absent even
+        // when its declared type excludes `undefined`, so its default
+        // value is reachable. Bail out instead of reporting a false
+        // positive.
+        const tupleTarget =
+          (sourceType as ts.TupleTypeReference).target ??
+          (sourceType as ts.TupleType);
+        if (
+          tupleTarget.elementFlags.some(
+            flag =>
+              flag & ts.ElementFlags.Rest || flag & ts.ElementFlags.Variadic,
+          ) ||
+          elementIndex >= tupleTarget.minLength
+        ) {
+          return;
+        }
+
         const elementType = tupleArgs[elementIndex];
         if (!canBeUndefined(elementType)) {
           reportUselessDefaultAssignment(node, 'property');
