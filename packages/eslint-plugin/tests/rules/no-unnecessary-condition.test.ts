@@ -1269,6 +1269,22 @@ arr.filter(isNotNil);
       options: [{ checkTypePredicates: true }],
     },
     {
+      code: `
+declare function hasLength(value: string): boolean;
+declare const arr: string[];
+arr.filter(hasLength);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const pair: [string, string];
+pair.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
       // Technically, this has type 'falafel' and not string.
       code: `
 declare function assertString(x: unknown): asserts x is string;
