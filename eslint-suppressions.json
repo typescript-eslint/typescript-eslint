@@ -1,24 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/no-unnecessary-type-arguments.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 23
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-type-assertion.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 112
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-type-conversion.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 21
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-type-parameters.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 76
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-unsafe-argument.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 25
