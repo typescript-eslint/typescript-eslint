@@ -690,11 +690,10 @@ export default createRule<Options, MessageId>({
 
       const heritageTypes = getHeritageTypes(checker, tsNode);
       const declaredType = checker.getTypeAtLocation(tsNode);
-      const ownIndexInfos = checker.getIndexInfosOfType(declaredType);
-      const heritageIndexInfos = (heritageTypes ?? []).flatMap(ht =>
-        checker.getIndexInfosOfType(ht),
-      );
-      const allApplicableIndexInfos = [...ownIndexInfos, ...heritageIndexInfos];
+      // getIndexInfosOfType returns RESOLVED index infos, including inherited
+      // ones with child overrides applied. This is what we use for checking
+      // named members against applicable index signatures.
+      const resolvedIndexInfos = checker.getIndexInfosOfType(declaredType);
 
       const checkInherited =
         checksVoidReturn &&
@@ -709,7 +708,15 @@ export default createRule<Options, MessageId>({
         // Handle index signature declarations
         if (ts.isIndexSignatureDeclaration(nodeMember)) {
           if (checkIndex) {
-            checkIndexSignatureMember(nodeMember, allApplicableIndexInfos);
+            // For index sig declarations, also include heritage index infos
+            // so we can detect conflicts between child and parent sigs.
+            const heritageIndexInfos = (heritageTypes ?? []).flatMap(ht =>
+              checker.getIndexInfosOfType(ht),
+            );
+            checkIndexSignatureMember(nodeMember, [
+              ...resolvedIndexInfos,
+              ...heritageIndexInfos,
+            ]);
           }
           continue;
         }
@@ -738,12 +745,15 @@ export default createRule<Options, MessageId>({
           }
         }
 
-        // Check named members against applicable index signatures
-        if (checkIndex && allApplicableIndexInfos.length > 0) {
+        // Check named members against resolved index signatures.
+        // We use resolvedIndexInfos (not heritage) because
+        // getIndexInfosOfType already includes inherited sigs with
+        // child overrides applied.
+        if (checkIndex && resolvedIndexInfos.length > 0) {
           checkMemberAgainstIndexSignatures(
             nodeMember,
             memberName,
-            allApplicableIndexInfos,
+            resolvedIndexInfos,
           );
         }
       }

@@ -49,6 +49,10 @@
                 "description": "Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`.",
                 "type": "boolean"
               },
+              "indexSignatures": {
+                "description": "Disables checking members against index signatures that expect a void-returning function.",
+                "type": "boolean"
+              },
               "inheritedMethods": {
                 "description": "Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`.",
                 "type": "boolean"
@@ -111,6 +115,8 @@ type Options = [
           arguments?: boolean;
           /** Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`. */
           attributes?: boolean;
+          /** Disables checking members against index signatures that expect a void-returning function. */
+          indexSignatures?: boolean;
           /** Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`. */
           inheritedMethods?: boolean;
           /** Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`. */

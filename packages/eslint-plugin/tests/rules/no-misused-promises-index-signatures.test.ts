@@ -118,7 +118,7 @@ class Impl implements VoidIndex {
       `,
       errors: [
         {
-          line: 9,
+          line: 8,
           messageId: 'voidReturnIndexSignature',
         },
       ],
@@ -156,7 +156,6 @@ interface InvalidInterface {
       ],
       options: [{ checksVoidReturn: { indexSignatures: true } }],
     },
-
     // Subinterface inheriting void-returning index signature
     {
       code: `
@@ -306,13 +305,12 @@ class Emitter implements EventMap {
       `,
       errors: [
         {
-          line: 9,
+          line: 8,
           messageId: 'voidReturnIndexSignature',
         },
       ],
       options: [{ checksVoidReturn: { indexSignatures: true } }],
     },
-
     // Record<string, () => void> contextual type with async object method
     {
       code: `
