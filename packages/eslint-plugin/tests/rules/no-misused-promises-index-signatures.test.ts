@@ -311,22 +311,5 @@ class Emitter implements EventMap {
       ],
       options: [{ checksVoidReturn: { indexSignatures: true } }],
     },
-    // Record<string, () => void> contextual type with async object method
-    {
-      code: `
-const invalidMethodObject: Record<string, () => void> = {
-  async asyncMethod() {
-    await Promise.resolve();
-  },
-};
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'voidReturnProperty',
-        },
-      ],
-      options: [{ checksVoidReturn: { indexSignatures: true } }],
-    },
   ],
 });

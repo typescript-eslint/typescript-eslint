@@ -1059,7 +1059,11 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
   syncMethodProperty: () => void;
 }
       `,
-      options: [{ checksVoidReturn: { inheritedMethods: true } }],
+      options: [
+        {
+          checksVoidReturn: { inheritedMethods: true, indexSignatures: false },
+        },
+      ],
     },
     "const notAFn1: string = '';",
     'const notAFn2: number = 1;',

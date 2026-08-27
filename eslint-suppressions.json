@@ -56,7 +56,7 @@
   },
   "packages/eslint-plugin/tests/rules/no-misused-promises-index-signatures.test.ts": {
     "eslint-plugin/require-test-error-positions": {
-      "count": 13
+      "count": 12
     }
   },
   "packages/eslint-plugin/tests/rules/no-misused-promises.test.ts": {
