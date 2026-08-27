@@ -795,8 +795,6 @@ it('...', () => {});
       ],
     },
     {
-      // TODO: Skipped pending resolution of https://github.com/typescript-eslint/typescript-eslint/issues/11504
-      skip: true,
       code: `
 import { it } from 'node:test';
 
