@@ -1,29 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/promise-function-async.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 41
-    }
-  },
-  "packages/eslint-plugin/tests/rules/require-array-sort-compare.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 17
-    }
-  },
-  "packages/eslint-plugin/tests/rules/require-await.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 33
-    }
-  },
-  "packages/eslint-plugin/tests/rules/restrict-plus-operands.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 65
-    }
-  },
-  "packages/eslint-plugin/tests/rules/restrict-template-expressions.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 26
-    }
-  },
   "packages/eslint-plugin/tests/rules/strict-boolean-expressions.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 111
