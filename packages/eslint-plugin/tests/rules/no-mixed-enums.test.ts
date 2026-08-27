@@ -243,8 +243,95 @@ namespace Different {
   }
 }
     `,
+    `
+namespace Test {
+  enum Bar {
+    A = 1,
+  }
+}
+namespace Test {
+  enum Bar {
+    B = 'B',
+  }
+}
+    `,
+    `
+namespace Test {
+  export enum Bar {}
+}
+namespace Test {
+  export enum Bar {
+    B = 'B',
+  }
+}
+    `,
+    `
+namespace Test.Inner {
+  export enum Bar {
+    A = 1,
+  }
+}
+namespace Test.Other {
+  export enum Bar {
+    B = 'B',
+  }
+}
+    `,
+    `
+declare module 'first' {
+  export enum Bar {
+    A = 1,
+  }
+}
+declare module 'second' {
+  export enum Bar {
+    B = 'B',
+  }
+}
+    `,
+    `
+namespace Test {
+  export enum Bar {
+    A = 1,
+  }
+}
+function foo() {
+  enum Bar {
+    B = 'B',
+  }
+  return Bar;
+}
+    `,
+    `
+namespace Test {
+  export enum Bar {
+    A = 1,
+  }
+}
+namespace Test {
+  export const baz = 2;
+}
+    `,
   ],
   invalid: [
+    {
+      code: `
+export enum Fruit {
+  Apple = 0,
+}
+export enum Fruit {
+  Banana = 'banana',
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 20,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
     {
       code: `
 enum Fruit {
@@ -668,6 +755,143 @@ namespace Outer {
           endColumn: 14,
           endLine: 12,
           line: 12,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Test.Inner {
+  export enum Bar {
+    A = 1,
+  }
+}
+namespace Test.Inner {
+  export enum Bar {
+    B = 'B',
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+module Test {
+  export enum Bar {
+    A = 1,
+  }
+}
+namespace Test {
+  export enum Bar {
+    B = 'B',
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Test {
+  export enum Bar {
+    A = 1,
+  }
+}
+namespace Other {
+  export enum Bar {
+    B = 2,
+  }
+}
+namespace Test {
+  export enum Bar {
+    C = 'C',
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          line: 14,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+declare module 'other-module' {
+  export enum Bar {
+    A = 1,
+  }
+}
+declare module 'other-module' {
+  export enum Bar {
+    B = 'B',
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+export {};
+declare global {
+  export enum Bar {
+    A = 1,
+  }
+}
+declare global {
+  export enum Bar {
+    B = 'B',
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          line: 10,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+enum Bar {
+  A = 1,
+}
+namespace Bar {
+  export const baz = 'baz';
+}
+enum Bar {
+  B = 'B',
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 10,
+          line: 9,
           messageId: 'mixed',
         },
       ],
