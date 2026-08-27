@@ -327,6 +327,7 @@ export enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -776,6 +777,7 @@ namespace Test.Inner {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -798,6 +800,7 @@ namespace Test {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -825,6 +828,7 @@ namespace Test {
         {
           column: 9,
           endColumn: 12,
+          endLine: 14,
           line: 14,
           messageId: 'mixed',
         },
@@ -847,6 +851,7 @@ declare module 'other-module' {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -870,6 +875,7 @@ declare global {
         {
           column: 9,
           endColumn: 12,
+          endLine: 10,
           line: 10,
           messageId: 'mixed',
         },
@@ -891,6 +897,7 @@ enum Bar {
         {
           column: 7,
           endColumn: 10,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
