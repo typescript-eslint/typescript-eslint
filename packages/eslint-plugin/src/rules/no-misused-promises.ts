@@ -35,6 +35,7 @@ export interface ChecksConditionalsOptions {
 export interface ChecksVoidReturnOptions {
   arguments?: boolean;
   attributes?: boolean;
+  indexSignatures?: boolean;
   inheritedMethods?: boolean;
   properties?: boolean;
   returns?: boolean;
@@ -47,6 +48,7 @@ export type MessageId =
   | 'spread'
   | 'voidReturnArgument'
   | 'voidReturnAttribute'
+  | 'voidReturnIndexSignature'
   | 'voidReturnInheritedMethod'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
@@ -64,6 +66,7 @@ function parseChecksVoidReturn(
       return {
         arguments: true,
         attributes: true,
+        indexSignatures: true,
         inheritedMethods: true,
         properties: true,
         returns: true,
@@ -74,6 +77,7 @@ function parseChecksVoidReturn(
       return {
         arguments: checksVoidReturn.arguments ?? true,
         attributes: checksVoidReturn.attributes ?? true,
+        indexSignatures: checksVoidReturn.indexSignatures ?? true,
         inheritedMethods: checksVoidReturn.inheritedMethods ?? true,
         properties: checksVoidReturn.properties ?? true,
         returns: checksVoidReturn.returns ?? true,
@@ -99,6 +103,8 @@ export default createRule<Options, MessageId>({
         'Promise returned in function argument where a void return was expected.',
       voidReturnAttribute:
         'Promise-returning function provided to attribute where a void return was expected.',
+      voidReturnIndexSignature:
+        'Promise-returning function provided where a void return was expected by index signature.',
       voidReturnInheritedMethod:
         "Promise-returning method provided where a void return was expected by extended/implemented type '{{ heritageTypeName }}'.",
       voidReturnProperty:
@@ -164,6 +170,11 @@ export default createRule<Options, MessageId>({
                     type: 'boolean',
                     description:
                       'Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`.',
+                  },
+                  indexSignatures: {
+                    type: 'boolean',
+                    description:
+                      'Disables checking members against index signatures that expect a void-returning function.',
                   },
                   inheritedMethods: {
                     type: 'boolean',
@@ -233,10 +244,14 @@ export default createRule<Options, MessageId>({
           ...(checksVoidReturn.attributes && {
             JSXAttribute: checkJSXAttribute,
           }),
-          ...(checksVoidReturn.inheritedMethods && {
+          ...((checksVoidReturn.inheritedMethods ||
+            checksVoidReturn.indexSignatures) && {
             ClassDeclaration: checkClassLikeOrInterfaceNode,
             ClassExpression: checkClassLikeOrInterfaceNode,
             TSInterfaceDeclaration: checkClassLikeOrInterfaceNode,
+          }),
+          ...(checksVoidReturn.indexSignatures && {
+            TSTypeLiteral: checkTypeLiteral,
           }),
           ...(checksVoidReturn.properties && {
             Property: checkProperty,
@@ -674,35 +689,160 @@ export default createRule<Options, MessageId>({
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
 
       const heritageTypes = getHeritageTypes(checker, tsNode);
-      if (!heritageTypes?.length) {
-        return;
-      }
+      const declaredType = checker.getTypeAtLocation(tsNode);
+      const ownIndexInfos = checker.getIndexInfosOfType(declaredType);
+      const heritageIndexInfos = (heritageTypes ?? []).flatMap(ht =>
+        checker.getIndexInfosOfType(ht),
+      );
+      const allApplicableIndexInfos = [...ownIndexInfos, ...heritageIndexInfos];
+
+      const checkInherited =
+        checksVoidReturn && checksVoidReturn.inheritedMethods;
+      const checkIndex = checksVoidReturn && checksVoidReturn.indexSignatures;
 
       for (const nodeMember of tsNode.members) {
+        // Handle index signature declarations
+        if (ts.isIndexSignatureDeclaration(nodeMember)) {
+          if (checkIndex) {
+            checkIndexSignatureMember(nodeMember, allApplicableIndexInfos);
+          }
+          continue;
+        }
+
         const memberName = nodeMember.name?.getText();
         if (memberName == null) {
-          // Call/construct/index signatures don't have names. TS allows call signatures to mismatch,
-          // and construct signatures can't be async.
-          // TODO - Once we're able to use `checker.isTypeAssignableTo` (v8), we can check an index
-          // signature here against its compatible index signatures in `heritageTypes`
           continue;
         }
         if (!returnsThenable(checker, nodeMember)) {
           continue;
         }
 
-        const node = services.tsNodeToESTreeNodeMap.get(nodeMember);
-        if (isStaticMember(node)) {
+        const esNode = services.tsNodeToESTreeNodeMap.get(nodeMember);
+        if (isStaticMember(esNode)) {
           continue;
         }
 
-        for (const heritageType of heritageTypes) {
-          checkHeritageTypeForMemberReturningVoid(
+        // Check named members against inherited types
+        if (checkInherited && heritageTypes?.length) {
+          for (const heritageType of heritageTypes) {
+            checkHeritageTypeForMemberReturningVoid(
+              nodeMember,
+              heritageType,
+              memberName,
+            );
+          }
+        }
+
+        // Check named members against applicable index signatures
+        if (checkIndex && allApplicableIndexInfos.length > 0) {
+          checkMemberAgainstIndexSignatures(
             nodeMember,
-            heritageType,
             memberName,
+            allApplicableIndexInfos,
           );
         }
+      }
+    }
+
+    /**
+     * Checks whether a named member's return type conflicts with an applicable
+     * index signature that expects void returns.
+     */
+    function checkMemberAgainstIndexSignatures(
+      nodeMember: ts.Node,
+      memberName: string,
+      indexInfos: readonly ts.IndexInfo[],
+    ): void {
+      for (const indexInfo of indexInfos) {
+        if (!isIndexInfoApplicableToName(checker, indexInfo, memberName)) {
+          continue;
+        }
+        if (!indexInfoReturnsVoid(checker, indexInfo)) {
+          continue;
+        }
+        context.report({
+          node: services.tsNodeToESTreeNodeMap.get(nodeMember),
+          messageId: 'voidReturnIndexSignature',
+        });
+        return;
+      }
+    }
+
+    /**
+     * Checks an index signature declaration against other applicable index
+     * signatures (own and inherited) for Promise-void conflicts.
+     */
+    function checkIndexSignatureMember(
+      indexSigDecl: ts.IndexSignatureDeclaration,
+      allIndexInfos: readonly ts.IndexInfo[],
+    ): void {
+      // Check if this index signature itself returns a thenable
+      const sigType = checker.getTypeAtLocation(indexSigDecl);
+      const sigCallSignatures = sigType.getCallSignatures();
+      let sigReturnsThenable = false;
+      for (const sig of sigCallSignatures) {
+        const retType = sig.getReturnType();
+        if (tsutils.isThenableType(checker, indexSigDecl, retType)) {
+          sigReturnsThenable = true;
+          break;
+        }
+      }
+      // If this index signature's value type isn't callable or doesn't return
+      // a thenable, there's nothing to flag.
+      if (!sigReturnsThenable) {
+        return;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Index signatures always have exactly one parameter
+      const keyTypeNode = indexSigDecl.parameters[0].type!;
+      const keyType = checker.getTypeAtLocation(keyTypeNode);
+
+      for (const otherInfo of allIndexInfos) {
+        // Skip if the other index signature's key type doesn't cover ours
+        if (!checker.isTypeAssignableTo(keyType, otherInfo.keyType)) {
+          continue;
+        }
+        // Skip self (same declaration)
+        if (otherInfo.declaration === indexSigDecl) {
+          continue;
+        }
+        if (!indexInfoReturnsVoid(checker, otherInfo)) {
+          continue;
+        }
+        context.report({
+          node: services.tsNodeToESTreeNodeMap.get(indexSigDecl),
+          messageId: 'voidReturnIndexSignature',
+        });
+        return;
+      }
+    }
+
+    /**
+     * Checks index signatures within a type literal for Promise-void mismatches.
+     */
+    function checkTypeLiteral(node: TSESTree.TSTypeLiteral): void {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+      const literalType = checker.getTypeAtLocation(tsNode);
+      const indexInfos = checker.getIndexInfosOfType(literalType);
+      if (indexInfos.length === 0) {
+        return;
+      }
+
+      for (const member of tsNode.members) {
+        if (ts.isIndexSignatureDeclaration(member)) {
+          checkIndexSignatureMember(member, indexInfos);
+          continue;
+        }
+
+        const memberName = member.name?.getText();
+        if (memberName == null) {
+          continue;
+        }
+        if (!returnsThenable(checker, member)) {
+          continue;
+        }
+
+        checkMemberAgainstIndexSignatures(member, memberName, indexInfos);
       }
     }
 
@@ -1198,4 +1338,48 @@ function normalizeFlagUnionsOption(
   }
 
   return checksConditionals.flagUnions ?? 'none';
+}
+
+/**
+ * Checks whether an index signature's key type is applicable to a given
+ * member name. A string index signature applies to all string-named members;
+ * a number index signature applies to numeric member names.
+ */
+function isIndexInfoApplicableToName(
+  checker: ts.TypeChecker,
+  indexInfo: ts.IndexInfo,
+  memberName: string,
+): boolean {
+  const { keyType } = indexInfo;
+
+  // String index signatures apply to all string-named properties
+  if (keyType === checker.getStringType()) {
+    return true;
+  }
+
+  // Number index signatures apply to numeric property names
+  if (keyType === checker.getNumberType()) {
+    return String(Number(memberName)) === memberName;
+  }
+
+  // Template literal and other index key types: create a literal type for the
+  // member name and check assignability
+  const memberLiteralType = checker.getStringLiteralType(memberName);
+  return checker.isTypeAssignableTo(memberLiteralType, keyType);
+}
+
+/**
+ * Checks whether an index signature's value type is a void-returning function
+ * (and not also thenable-returning).
+ */
+function indexInfoReturnsVoid(
+  checker: ts.TypeChecker,
+  indexInfo: ts.IndexInfo,
+): boolean {
+  const { type } = indexInfo;
+  return isVoidReturningFunctionType(
+    checker,
+    indexInfo.declaration ?? ({} as ts.Node),
+    type,
+  );
 }
