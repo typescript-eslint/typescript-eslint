@@ -288,11 +288,13 @@ Duplicated work is behind most genuinely unreachable branches we see in rules, a
 
 ## This Is A Difficult-To-Represent Edge Case In Types
 
+An edge case in types is when a specific case can't be represented in types,
+or when it's guaranteed that a specific case will never occur at runtime.
 This one is the least common.
 Most gaps are one of the first two, so reach for this only after ruling those out.
 
-An edge case in types is when a specific case can't be represented in types,
-or when it's guaranteed that a specific case will never occur at runtime.
+Token lookups, are a case that often comes up.
+`getFirstToken`, for example, returns `TSESTree.Token | null` for every node, including nodes that cannot exist without the token being looked for.
 
 Token lookups are the case that comes up most.
 `getFirstToken` returns `TSESTree.Token | null` for every node, including nodes that cannot exist without a first token.
@@ -338,7 +340,7 @@ For example, the type of `node.parent.parent` is `Node | undefined` only because
 const grandparent = node.parent?.parent;
 ```
 
-The `undefined` now spreads to every line that touches `grandparent`, causing us to write defensive code that clutters our coverage report.
+The `undefined` now spreads to every line that touches `grandparent`, causing us to write defensive code that clutters the coverage report.
 In such cases, reach for `!` rather than `?.`:
 
 ```ts
@@ -346,7 +348,7 @@ In such cases, reach for `!` rather than `?.`:
 const grandparent = node.parent.parent!;
 ```
 
-`!` states the type _is wrong_; `?.` _pretends it is right_.
+_`!` states the type is wrong; `?.` pretends it is right._
 
 :::danger
 An assertion is the answer only when it's confirmed the shape being ruled out is impossible.

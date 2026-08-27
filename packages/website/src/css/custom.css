@@ -211,6 +211,16 @@ h6 {
   background-color: #00ff9510;
 }
 
+.code-block-partially-covered-line::before {
+  content: '!';
+  display: inline-block;
+  width: 0;
+  position: relative;
+  left: -0.7em;
+  color: rgb(166 124 0);
+  font-weight: 700;
+}
+
 .code-block-partially-covered-line {
   background-color: #ffcc0030;
   display: block;
@@ -224,6 +234,15 @@ h6 {
 
 [data-theme='dark'] .code-block-partially-covered-line {
   background-color: #ffcc0018;
+}
+
+.code-block-uncovered-line::before {
+  content: 'x';
+  display: inline-block;
+  width: 0;
+  position: relative;
+  left: -0.7em;
+  color: red;
 }
 
 .code-block-uncovered-line {
