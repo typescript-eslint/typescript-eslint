@@ -200,6 +200,43 @@ h6 {
   background-color: #00ff9510;
 }
 
+.code-block-covered-line {
+  background-color: #00ff9520;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+[data-theme='dark'] .code-block-covered-line {
+  background-color: #00ff9510;
+}
+
+.code-block-partially-covered-line {
+  background-color: #ffcc0030;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+[data-theme='dark'] .code-block-partially-covered-line::before {
+  color: rgb(240 190 60);
+}
+
+[data-theme='dark'] .code-block-partially-covered-line {
+  background-color: #ffcc0018;
+}
+
+.code-block-uncovered-line {
+  background-color: #ff000020;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+[data-theme='dark'] .code-block-uncovered-line {
+  background-color: #ff000015;
+}
+
 .markdown a {
   text-decoration: underline;
 }

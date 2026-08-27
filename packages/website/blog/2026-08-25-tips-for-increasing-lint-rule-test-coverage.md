@@ -7,12 +7,11 @@ title: Tips For Increasing Lint Rule Test Coverage
 ---
 
 Someone probably linked you here from a pull request review that flagged uncovered lines in a lint rule.
-Sorry about that.
 It's one of the most common changes we request, and rather than retype the same explanation every time, we wrote it down.
 
-[We aim for 100% code coverage](/contributing/pull-requests#code-coverage), but chasing a number isn't the point.
-In a lint rule, an uncovered line is rarely just a missing test.
-It's usually a branch you wrote for an AST shape you never actually fed to the rule, which means nobody has checked whether that branch does the right thing.
+[We aim for 100% code coverage when possible](/contributing/pull-requests#code-coverage) because lint rules are extremely tricky, nuanced pieces of code.
+When a lint rule's source has an uncovered line, it's more than it "just" missing test coverage.
+It can also mean that rule logic written for an AST shape is not exercised, which means nothing has checked whether that branch does the right thing.
 Often it doesn't.
 
 Every coverage gap we've reviewed has come down to one of three answers:
@@ -23,10 +22,15 @@ Every coverage gap we've reviewed has come down to one of three answers:
 
 <!--truncate-->
 
+:::tip
+New to writing lint rules?
+See our [Custom Rules documentation](/developers/custom-rules) to get started.
+:::
+
 ## A Rule To Work With
 
 Say we're writing `no-underscore-members`, a rule that reports class methods whose name starts with an underscore.
-A first draft:
+Here's a first draft of just the rule visitors:
 
 ```ts
 MethodDefinition(node) {
@@ -55,13 +59,38 @@ ruleTester.run('no-underscore-members', rule, {
 ```
 
 Both outcomes of `startsWith('_')` are covered.
-The `return` above them never runs once, and that's what the coverage report will point at.
+The `return` above them never runs once, and that's what the coverage report will point at:
+
+<!-- prettier-ignore -->
+```ts
+MethodDefinition(node) {
+  // Partially covered line
+  if (node.key.type !== AST_NODE_TYPES.Identifier) {
+    // Uncovered line
+    return;
+  }
+
+  // Covered line
+  if (node.key.name.startsWith('_')) {
+    // Covered line
+    context.report({ messageId: 'noUnderscore', node: node.key });
+  }
+},
+```
+
+:::info Legend
+**Green** - Line is _fully_ covered by tests
+
+**Yellow** - Line is _partially_ covered by tests (usually in conditional branches where only some outcomes are exercised)
+
+**Red** - Line is _not_ covered by tests
+:::
 
 ## The Code Is Reachable, So A Unit Test Should Exercise It
 
 The first question worth asking about an uncovered branch is whether a user can get there.
 
-For `node.key.type !== AST_NODE_TYPES.Identifier`, they can, without trying hard:
+For `node.key.type !== AST_NODE_TYPES.Identifier`, they can, each of the following pieces of code would hit the uncovered branch:
 
 <!-- prettier-ignore -->
 ```ts
@@ -74,11 +103,11 @@ class Example {
 }
 ```
 
-That early `return` isn't defensive coding.
-It's the rule quietly ignoring `'_update'()`, `['_update']()`, and `#_update()`, which are the same method with different punctuation around the name.
+The rule's early `return` causes its logic to ignore any AST node that's not an identifier.
+`'_update'()`, `['_update']()`, and `#_update()` are all non-identifier forms that declare the same method.
 The coverage report found a bug.
 
-When the type checker complains that `.name` doesn't exist on `node.key`, it's tempting to make the complaint go away:
+When the type checker reports that `.name` doesn't exist on `node.key`, it's tempting to make the complaint go away:
 
 ```ts
 // Please don't.
@@ -89,7 +118,7 @@ That fixes the coverage number, but leads us into a worse bug.
 `.name` is `undefined` for a string literal key, causing `name.startsWith` to throw - e.g., the rule now _crashes_ on code it used to quietly ignore!
 
 Handle the shapes instead.
-Switching on `node.key.type` gives you the right field for each one, and `node.computed` says whether that name belongs to the method or to a variable somewhere else:
+Switching on `node.key.type` gives the right field for each one, and `node.computed` says whether that name belongs to the method or to a variable somewhere else:
 
 ```ts
 function getStaticName(node: TSESTree.MethodDefinition): string | null {
@@ -109,6 +138,10 @@ function getStaticName(node: TSESTree.MethodDefinition): string | null {
   }
 }
 ```
+
+:::tip
+In real world scenarios, helpers like `getStaticStringValue` and `ASTUtils.getStaticValue` are often used to handle these cases.
+:::
 
 Every one of those branches needs a test, and every one of those tests describes real code someone will eventually write:
 
@@ -159,7 +192,7 @@ Without the coverage report, it would have stayed an accident.
 :::tip
 Not sure which shapes a node can take?
 Paste code into [our playground](/play) and read the AST tab.
-It's faster than following type definitions around, and it shows exactly what the parser produces.
+That tab shows what each of the the ESLint, TypeScript, and typescript-eslint parsers produce.
 :::
 
 ## The Code Can Be Refactored To Not Include That Case
@@ -184,19 +217,21 @@ MethodDefinition(node) {
 
 ```ts
 function getReplacementName(node: TSESTree.MethodDefinition) {
+  // Covered line
   const name = getStaticName(node);
 
+  // Partially covered line
   if (name == null) {
-    //  ~~~~~~~~~~~
-    // Uncovered: the visitor only reports when getStaticName returned a name
+    // Uncovered line
     return 'a name without the underscore';
   }
 
+  // Covered line
   return name.slice(1);
 }
 ```
 
-No test can reach that `if`.
+No test can reach the `null` branch of this `if`.
 `getReplacementName` runs only after the visitor has already confirmed there's a name.
 Writing one would mean calling the helper directly, which tests a situation the rule can't produce.
 
@@ -207,8 +242,8 @@ The `!` operator would make the coverage report happy:
 const name = getStaticName(node)!;
 ```
 
-It's true today and unenforced tomorrow.
-The next person to call `getReplacementName` from somewhere else gets `undefined.slice`, with nothing in the code explaining what they broke.
+This might be safe for now, but as the rule changes over time it's risky in code.
+The next change that adds a call to `getReplacementName` from somewhere else might get a nullish `name` and cause a crash.
 
 The actual problem is that `getStaticName` runs twice.
 Each call forces the surrounding code to answer "and what if there's no static name?", so asking twice means answering twice.
@@ -220,7 +255,10 @@ MethodDefinition(node) {
 
   if (name?.startsWith('_')) {
     context.report({
-      data: { replacement: name.slice(1) },
+      // Remove this line
+      data: { replacement: getReplacementName(node) },
+      // Add this line
+      data: { replacement: getReplacementName(name) },
       messageId: 'noUnderscore',
       node: node.key,
     });
@@ -228,13 +266,33 @@ MethodDefinition(node) {
 },
 ```
 
-The helper is gone, the branch is gone, and the rule got shorter.
-Duplicated work is behind most genuinely unreachable branches we see in rules, and deduplicating it usually improves the code on its own merits.
+```ts
+// Remove this line
+function getReplacementName(node: TSESTree.MethodDefinition) {
+// Add this line
+function getReplacementName(name: string) {
+  /* Removed lines start */
+  const name = getStaticName(node);
+
+  if (name == null) {
+    return 'a name without the underscore';
+  }
+
+  /* Removed lines end */
+  return name.slice(1);
+}
+```
+
+The branch is gone, the helper has been simplified, and the rule got shorter.
+Duplicated work is behind most genuinely unreachable branches we see in rules, and deduplicating it usually improves the code.
 
 ## This Is A Difficult-To-Represent Edge Case In Types
 
-This is the rare one.
+This one is the least common.
 Most gaps are one of the first two, so reach for this only after ruling those out.
+
+An edge case in types is when a specific case can't be represented in types,
+or when there are gaps in the [control flow analysis](https://github.com/microsoft/TypeScript/issues/9998).
 
 Token lookups are the case that comes up most.
 `getFirstToken` returns `TSESTree.Token | null` for every node, including nodes that cannot exist without a first token.
@@ -268,7 +326,7 @@ const letToken = nullThrows(
 );
 ```
 
-Both are single expressions, so neither adds a branch to your rule or anything for the coverage report to complain about.
+Both are single expressions, so neither adds a branch to the rule or anything for the coverage report to warn about.
 
 ### Optional Chaining vs Non-Null Assertion
 
@@ -291,14 +349,14 @@ const grandparent = node.parent.parent!;
 `!` states the type _is wrong_; `?.` _pretends it is right_.
 
 :::danger
-An assertion is the answer only when you've confirmed the shape you're ruling out is impossible.
+An assertion is the answer only when it's confirmed the shape being ruled out is impossible.
 Check in [the playground](/play) before deciding.
 A rule that asserts its way past a shape users can write is worse than one that never handled the shape at all, because now it crashes instead of staying quiet.
 :::
 
-## Finding The Gaps Yourself
+## Finding The Gaps Before Review
 
-You don't have to wait for review to see any of this.
+There is no need to wait for the review to see any of this.
 To generate a report for one package:
 
 ```shell
@@ -306,15 +364,15 @@ npx nx test eslint-plugin --coverage
 ```
 
 That writes `packages/eslint-plugin/coverage/lcov-report/index.html`.
-Open it in a browser, find your rule, and uncovered branches are highlighted in the source.
-Pass a test file path to narrow the run down to the rule you're working on:
+Open it in a browser, find the rule, and uncovered branches are highlighted in the source.
+Pass a test file path to narrow the run down to the specific rule:
 
 ```shell
 npx nx test eslint-plugin --coverage tests/rules/no-underscore-members.test.ts
 ```
 
 `pnpm test-coverage` from the repo root does the same for every package, though it takes considerably longer.
-On the pull request itself, the `codecov` bot comments with links to line-by-line coverage for each file you touched.
+On the pull request itself, the `codecov` bot comments with links to line-by-line coverage for each touched file.
 
 ## Ask Us For Help
 

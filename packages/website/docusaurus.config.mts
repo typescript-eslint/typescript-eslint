@@ -221,6 +221,24 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
         className: 'code-block-added-line',
         line: 'Add this line',
       },
+      {
+        block: { end: 'Covered lines end', start: 'Covered lines start' },
+        className: 'code-block-covered-line',
+        line: 'Covered line',
+      },
+      {
+        block: {
+          end: 'Partially covered lines end',
+          start: 'Partially covered lines start',
+        },
+        className: 'code-block-partially-covered-line',
+        line: 'Partially covered line',
+      },
+      {
+        block: { end: 'Uncovered lines end', start: 'Uncovered lines start' },
+        className: 'code-block-uncovered-line',
+        line: 'Uncovered line',
+      },
     ],
     theme: {
       plain: {},
