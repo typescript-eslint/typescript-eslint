@@ -71,7 +71,7 @@
   },
   "packages/eslint-plugin/tests/rules/no-mixed-enums.test.ts": {
     "eslint-plugin/require-test-error-positions": {
-      "count": 22
+      "count": 30
     }
   },
   "packages/eslint-plugin/tests/rules/no-redundant-type-constituents.test.ts": {

@@ -1061,7 +1061,7 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
       `,
       options: [
         {
-          checksVoidReturn: { inheritedMethods: true, indexSignatures: false },
+          checksVoidReturn: { indexSignatures: false, inheritedMethods: true },
         },
       ],
     },
