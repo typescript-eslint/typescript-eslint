@@ -697,8 +697,13 @@ export default createRule<Options, MessageId>({
       const allApplicableIndexInfos = [...ownIndexInfos, ...heritageIndexInfos];
 
       const checkInherited =
-        checksVoidReturn && checksVoidReturn.inheritedMethods;
-      const checkIndex = checksVoidReturn && checksVoidReturn.indexSignatures;
+        checksVoidReturn &&
+        checksVoidReturn !== true &&
+        checksVoidReturn.inheritedMethods;
+      const checkIndex =
+        checksVoidReturn &&
+        checksVoidReturn !== true &&
+        checksVoidReturn.indexSignatures;
 
       for (const nodeMember of tsNode.members) {
         // Handle index signature declarations
