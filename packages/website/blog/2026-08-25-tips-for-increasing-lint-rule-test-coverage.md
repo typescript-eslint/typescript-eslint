@@ -296,35 +296,66 @@ Most gaps are one of the first two, so reach for this only after ruling those ou
 Token lookups, are a case that often comes up.
 `getFirstToken`, for example, returns `TSESTree.Token | null` for every node, including nodes that cannot exist without the token being looked for.
 
-Token lookups are the case that comes up most.
-`getFirstToken` returns `TSESTree.Token | null` for every node, including nodes that cannot exist without a first token.
-
-Take a different rule, one that rewrites a `let` that's never reassigned into a `const`:
+Assume we're adding a suggestion to `no-underscore-members` for methods that declare an accessibility, so `protected _update()` will become `private update()`:
 
 ```ts
-fix(fixer) {
-  const letToken = context.sourceCode.getFirstToken(declaration);
-  //    ~~~~~~~~ TSESTree.Token | null
+MethodDefinition(node) {
+  const name = getStaticName(node);
 
-  return fixer.replaceText(letToken, 'const');
-  //                       ~~~~~~~~
-  // Argument of type 'Token | null' is not assignable to parameter of type 'Token'.
+  if (name?.startsWith('_')) {
+    /* Added lines start */
+    const suggest = node.accessibility
+      ? [
+          {
+            messageId: 'usePrivate' as const,
+            fix(fixer: TSESLint.RuleFixer) {
+              const accessibilityToken = context.sourceCode.getFirstToken(node, {
+                filter: token => token.value === node.accessibility,
+              });
+
+              return [
+                fixer.replaceText(accessibilityToken, 'private'),
+                //                ~~~~~~~~~~~~~~~~~~
+                // Argument of type 'Token | null' is not assignable to parameter of type 'Token'.
+                fixer.replaceText(node.key, getReplacementName(name)),
+              ];
+            },
+          },
+        ]
+      : undefined;
+
+    /* Added lines end */
+    context.report({
+      data: { replacement: getReplacementName(name) },
+      messageId: 'noUnderscore',
+      node: node.key,
+      // Add this line
+      suggest,
+    });
+  }
 },
 ```
 
-A `VariableDeclaration` always starts with `var`, `let`, or `const`.
-There is no source text that parses into one without that token, so an `if (letToken == null)` guard would sit there uncovered forever, and no test could rescue it.
+:::caution Note
+This is a naive fixer for demonstration purposes, which doesn't account for all edge cases.
+:::
+
+The ternary condition guarantees that `accessibilityToken` will be non-null whenever it is used inside the fixer. There is no source text that leads to this suggestion without that token, so an `if (accessibilityToken == null)` guard would sit there uncovered forever, and no test could exercise it.
 
 Either a `!` or [`nullThrows`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/utils/src/eslint-utils/nullThrows.ts) will do:
 
 ```ts
-const letToken = context.sourceCode.getFirstToken(declaration)!;
+const accessibilityToken = context.sourceCode.getFirstToken(node, {
+  filter: token => token.value === accessibility,
+})!;
 ```
 
 ```ts
-const letToken = nullThrows(
-  context.sourceCode.getFirstToken(declaration),
-  NullThrowsReasons.MissingToken('let', 'variable declaration'),
+const accessibilityToken = nullThrows(
+  context.sourceCode.getFirstToken(node, {
+    filter: token => token.value === accessibility,
+  }),
+  NullThrowsReasons.MissingToken(`${accessibility} keyword`, node.type),
 );
 ```
 
