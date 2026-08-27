@@ -50,6 +50,10 @@ export default createRule({
       unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
+      unsafeAssignmentWithPath: [
+        'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
+        '  `{{path}}` is the unsafe `any` type.',
+      ].join('\n'),
       unsafeObjectPattern:
         'Unsafe object destructuring of a property with an {{sender}} value.',
     },
@@ -64,6 +68,10 @@ export default createRule({
       compilerOptions,
       'noImplicitThis',
     );
+
+    // Track object expressions that were already reported as unsafe assignments
+    // to avoid duplicate reports from the Property selector.
+    const reportedObjectExpressions = new Set<TSESTree.ObjectExpression>();
 
     // returns true if the assignment reported
     function checkArrayDestructureHelper(
@@ -306,12 +314,21 @@ export default createRule({
         return false;
       }
 
-      const { receiver, sender } = result;
+      const { path, receiver, sender } = result;
       context.report({
         node: reportingNode,
-        messageId: 'unsafeAssignment',
-        data: createData(sender, receiver),
+        messageId:
+          path.length > 0 ? 'unsafeAssignmentWithPath' : 'unsafeAssignment',
+        data: {
+          ...createData(sender, receiver),
+          ...(path.length > 0 ? { path: path.join('.') } : {}),
+        },
       });
+
+      if (senderNode.type === AST_NODE_TYPES.ObjectExpression) {
+        reportedObjectExpressions.add(senderNode);
+      }
+
       return true;
     }
 
@@ -409,6 +426,14 @@ export default createRule({
           node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
         ) {
           // handled by other selector
+          return;
+        }
+
+        if (
+          node.parent.type === AST_NODE_TYPES.ObjectExpression &&
+          reportedObjectExpressions.has(node.parent)
+        ) {
+          // already reported by the parent assignment check
           return;
         }
 
