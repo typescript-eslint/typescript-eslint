@@ -226,6 +226,16 @@ useCallback((value: number[] = []) => {});
 declare const tuple: [string];
 const [a, b = 'default'] = tuple;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12767
+    // Rest elements in variadic tuples — element can be absent at runtime
+    `
+declare const commands: [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+declare const pairs: [string, ...number[]];
+const [name, x = 0, y = 0] = pairs;
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11911
     `
 const run = (cb: (...args: unknown[]) => void) => cb();

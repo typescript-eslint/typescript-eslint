@@ -225,6 +225,19 @@ export default createRule<Options, MessageId>({
         if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
           return;
         }
+
+        // For variadic tuples (those with rest or optional elements), an element
+        // at a non-Required position can be absent at runtime even if the
+        // TypeScript type for that slot does not include `undefined`.
+        // E.g., for `[string, ...string[]]`, the rest element at index 1 has
+        // type `string`, but `arr[1]` is `undefined` when the rest is empty.
+        const tupleTarget = (sourceType as ts.TupleTypeReference).target;
+        const elementFlag = tupleTarget.elementFlags[elementIndex];
+        if ((elementFlag & ts.ElementFlags.Required) === 0) {
+          // Element is Optional, Rest, or Variadic — default may be reached.
+          return;
+        }
+
         const elementType = tupleArgs[elementIndex];
         if (!canBeUndefined(elementType)) {
           reportUselessDefaultAssignment(node, 'property');
