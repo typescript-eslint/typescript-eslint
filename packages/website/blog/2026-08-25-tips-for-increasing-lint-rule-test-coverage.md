@@ -292,7 +292,7 @@ This one is the least common.
 Most gaps are one of the first two, so reach for this only after ruling those out.
 
 An edge case in types is when a specific case can't be represented in types,
-or when there are gaps in the [control flow analysis](https://github.com/microsoft/TypeScript/issues/9998).
+or when it's guaranteed that a specific case will never occur at runtime.
 
 Token lookups are the case that comes up most.
 `getFirstToken` returns `TSESTree.Token | null` for every node, including nodes that cannot exist without a first token.
