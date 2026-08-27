@@ -25,7 +25,7 @@ Distinct messages for distinct situations are worth the extra entries; generatin
 
 - **Be as specific as the report.** A suggestion removing an unused _import_ is `removeUnusedImport`, not `removeUnusedVariable`.
 - **Never print a full type.** Large types read as noise, and there is no plumbing for rich type printing. Where a type must appear use `checker.typeToString`, never `node.getText()` — which drags in comments and JSDoc and mishandles composed types like an interface extending another.
-- **Read the rendered message out loud.** Reports should read like straightforward understandable English. They shouldn't sound like complex technical jargon or only make sense if the reader deeply knows the rule. "Unsafe call of a(n) unresolved due to error typed value." parses only if you already know the rule.
+- **Read the rendered message out loud.** Reports should read like straightforward understandable English. They shouldn't sound like complex technical jargon or only make sense if the reader deeply knows the rule. For example, "unsafe call of a(n) unresolved due to error typed value." parses only if you already know the rule.
 - **Watch for ambiguity as logic grows.** Once a rule reports nested cases, a message naming one type may no longer locate the problem.
 - **Don't reuse an identifier that could shadow.** A message mentioning `map` confuses a user with their own `map` in scope.
 

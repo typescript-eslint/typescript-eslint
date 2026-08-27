@@ -63,8 +63,6 @@ Two functions only ever called as a pair are one function, not two exports.
 | What is this computed key's value?                      | `getStaticValue`, `getStaticMemberAccessValue`                                                     | handling only literals                                  |
 | Is this a definition file?                              | the same expression TypeScript itself uses                                                         | an approximation                                        |
 
-Name matching deserves particular suspicion: matching an identifier's name does not check where it came from, so the declaration has to be resolved too, via the scope manager or the type checker. Rule-specific matching logic belongs in `type-utils`, not in one rule.
-
 ## A new util needs its call sites
 
 A helper added with no callers is untested and unproven. Find the existing code it replaces and convert it in the same PR — at minimum the straightforward cases.
