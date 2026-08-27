@@ -64,11 +64,6 @@
       "count": 90
     }
   },
-  "packages/eslint-plugin/tests/rules/no-mixed-enums.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 22
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-redundant-type-constituents.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 50
