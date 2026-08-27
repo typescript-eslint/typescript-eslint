@@ -100,30 +100,18 @@ value.sync = () => {};
       `,
       options: [{ checksVoidReturn: { indexSignatures: true } }],
     },
-  ],
-  invalid: [
-    // Class: async method vs string index signature expecting void
+    // checksVoidReturn: false disables all checks including indexSignatures
     {
       code: `
-interface VoidIndex {
+interface ShouldBeIgnored {
   [key: string]: () => void;
-}
-
-class Impl implements VoidIndex {
-  [key: string]: () => void;
-  async doAsync(): Promise<void> {
-    await Promise.resolve();
-  }
+  asyncMethod(): Promise<void>;
 }
       `,
-      errors: [
-        {
-          line: 8,
-          messageId: 'voidReturnIndexSignature',
-        },
-      ],
-      options: [{ checksVoidReturn: { indexSignatures: true } }],
+      options: [{ checksVoidReturn: false }],
     },
+  ],
+  invalid: [
     // Interface: async method declared alongside void-returning index signature
     {
       code: `
@@ -173,14 +161,7 @@ interface Child extends Parent {
           messageId: 'voidReturnIndexSignature',
         },
       ],
-      options: [
-        {
-          checksVoidReturn: {
-            indexSignatures: true,
-            inheritedMethods: false,
-          },
-        },
-      ],
+      options: [{ checksVoidReturn: { indexSignatures: true } }],
     },
     // Class extending abstract class with void index signature
     {
@@ -274,7 +255,7 @@ class SelfContained {
       ],
       options: [{ checksVoidReturn: { indexSignatures: true } }],
     },
-    // Default behavior (indexSignatures defaults to true)
+    // Default behavior (indexSignatures defaults to true when checksVoidReturn options omitted)
     {
       code: `
 interface DefaultCheck {
@@ -289,7 +270,7 @@ interface DefaultCheck {
         },
       ],
     },
-    // Interface with implements-like pattern: class implements interface with void index
+    // Class implements interface with void index (no own index sig — single source)
     {
       code: `
 interface EventMap {
@@ -297,7 +278,6 @@ interface EventMap {
 }
 
 class Emitter implements EventMap {
-  [event: string]: () => void;
   async onReady(): Promise<void> {
     await Promise.resolve();
   }
@@ -305,11 +285,43 @@ class Emitter implements EventMap {
       `,
       errors: [
         {
-          line: 8,
+          line: 7,
           messageId: 'voidReturnIndexSignature',
         },
       ],
       options: [{ checksVoidReturn: { indexSignatures: true } }],
+    },
+    // Numeric index with numeric-keyed member returning Promise
+    {
+      code: `
+interface NumericIndex {
+  [key: number]: () => void;
+  0: () => Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnIndexSignature',
+        },
+      ],
+      options: [{ checksVoidReturn: { indexSignatures: true } }],
+    },
+    // Partial options: indexSignatures defaults to true even when other options are set
+    {
+      code: `
+interface PartialOpts {
+  [key: string]: () => void;
+  asyncMethod(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnIndexSignature',
+        },
+      ],
+      options: [{ checksVoidReturn: { arguments: false } }],
     },
   ],
 });
