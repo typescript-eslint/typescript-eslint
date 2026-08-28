@@ -1190,6 +1190,19 @@ type fn = () => void;
 declare function foo(): void | fn;
 const bar = foo()?.();
     `,
+    `
+declare function maybe<T>(v: T): T | void;
+const a = maybe({ key1: { key2: maybe({ i: 1 }) } })?.key1.key2?.i;
+    `,
+    `
+type Foo = { bar: { baz: number } | void } | null;
+declare const foo: Foo;
+foo?.bar?.baz;
+    `,
+    `
+declare function maybeFn(): { fn: (() => number) | void } | undefined;
+maybeFn()?.fn?.();
+    `,
     {
       code: `
 class ConsistentRand {
