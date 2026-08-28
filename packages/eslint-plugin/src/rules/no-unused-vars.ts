@@ -25,11 +25,26 @@ import {
   getNameLocationInGlobalDirectiveComment,
   isDefinitionFile,
   isFunction,
+  isNodeOfTypes,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
 import { referenceContainsTypePredicate } from '../util/referenceContainsTypePredicate';
 import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
+
+/**
+ * Declarations are only safe to delete outright when they're an element of a
+ * statement list. Anywhere else the declaration is the sole body of its parent
+ * (`if (x) var a = 1;`, `label: function f() {}`, a `for` head, ...) and
+ * removing it leaves behind syntactically invalid code.
+ */
+const isStatementListParent = isNodeOfTypes([
+  AST_NODE_TYPES.BlockStatement,
+  AST_NODE_TYPES.Program,
+  AST_NODE_TYPES.StaticBlock,
+  AST_NODE_TYPES.SwitchCase,
+  AST_NODE_TYPES.TSModuleBlock,
+]);
 
 export type MessageIds =
   | 'removeUnusedImportDeclaration'
@@ -569,26 +584,6 @@ export default createRule<Options, MessageIds>({
       return fixer.remove(node);
     }
 
-    /**
-     * Declarations are only safe to delete outright when they're an element of a
-     * statement list. Anywhere else the declaration is the sole body of its
-     * parent (`if (x) var a = 1;`, `label: function f() {}`, a `for` head, ...)
-     * and removing it leaves behind syntactically invalid code.
-     */
-    function isInStatementList(node: TSESTree.Node): boolean {
-      switch (node.parent?.type) {
-        case AST_NODE_TYPES.BlockStatement:
-        case AST_NODE_TYPES.Program:
-        case AST_NODE_TYPES.StaticBlock:
-        case AST_NODE_TYPES.SwitchCase:
-        case AST_NODE_TYPES.TSModuleBlock:
-          return true;
-
-        default:
-          return false;
-      }
-    }
-
     function getFunctionNameFixer(def: FunctionNameDefinition): {
       fix?: TSESLint.ReportFixFunction;
     } {
@@ -597,7 +592,7 @@ export default createRule<Options, MessageIds>({
         // name too -- but the node is the expression, which we must not remove
         (def.node.type !== AST_NODE_TYPES.FunctionDeclaration &&
           def.node.type !== AST_NODE_TYPES.TSDeclareFunction) ||
-        !isInStatementList(def.node)
+        !isStatementListParent(def.node.parent)
       ) {
         return {};
       }
@@ -622,7 +617,7 @@ export default createRule<Options, MessageIds>({
         // TODO -- destructuring requires removing just this property/element,
         // as its siblings may well be used
         def.name.parent.type !== AST_NODE_TYPES.VariableDeclarator ||
-        !isInStatementList(declaration)
+        !isStatementListParent(declaration.parent)
       ) {
         return {};
       }
