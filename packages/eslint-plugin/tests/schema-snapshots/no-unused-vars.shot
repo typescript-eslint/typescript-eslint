@@ -38,8 +38,16 @@
             "additionalProperties": false,
             "description": "Configurable automatic fixes for different types of unused variables.",
             "properties": {
+              "functions": {
+                "description": "Whether to enable automatic removal of unused function declarations.",
+                "type": "boolean"
+              },
               "imports": {
                 "description": "Whether to enable automatic removal of unused imports.",
+                "type": "boolean"
+              },
+              "variables": {
+                "description": "Whether to enable automatic removal of unused variable declarations.",
                 "type": "boolean"
               }
             },
@@ -102,8 +110,12 @@ type Options = [
       destructuredArrayIgnorePattern?: string;
       /** Configurable automatic fixes for different types of unused variables. */
       enableAutofixRemoval?: {
+        /** Whether to enable automatic removal of unused function declarations. */
+        functions?: boolean;
         /** Whether to enable automatic removal of unused imports. */
         imports?: boolean;
+        /** Whether to enable automatic removal of unused variable declarations. */
+        variables?: boolean;
       };
       /** Whether to ignore classes with at least one static initialization block. */
       ignoreClassWithStaticInitBlock?: boolean;

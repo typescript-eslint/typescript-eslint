@@ -34,6 +34,38 @@ In such codebases, it is generally safe to automatically remove unused imports.
 
 If your codebase relies on side-effects caused by importing modules, you should leave this option set to `false`.
 
+#### `enableAutofixRemoval.functions`
+
+{/* TODO -- we don't support nested object properties in our option doc generator */}
+Whether to enable automatic removal of unused function declarations.
+
+When this is set to `false` (the default) the rule will not provide a fixer for unused function declarations.
+When this is set to `true` the rule will provide an **_automatic fixer_** that removes the entire declaration.
+
+A function declaration is hoisted and its body is never evaluated on declaration, so removing an unused one is side-effect free.
+
+Note: this only applies to function declarations that are a statement in their own right.
+A declaration that is the sole body of another statement (such as `if (x) function f() {}`) is left alone, as removing it would leave behind invalid syntax.
+
+#### `enableAutofixRemoval.variables`
+
+{/* TODO -- we don't support nested object properties in our option doc generator */}
+Whether to enable automatic removal of unused variable declarations.
+
+When this is set to `false` (the default) the rule will not provide a fixer for unused variable declarations.
+When this is set to `true` the rule will provide an **_automatic fixer_** that removes the entire declaration.
+
+Unlike imports and function declarations, **a variable's initializer may have side-effects** -- removing `const x = doSomething();` also removes the call to `doSomething()`.
+Only enable this option if you are comfortable with that tradeoff.
+
+To keep the fixer predictable, it only applies to a declaration that declares exactly one variable using a plain name.
+The following are always left alone:
+
+- Multiple declarators (`let a, b;`), which would require removing just one declarator and its comma.
+- Destructuring (`const { a, b } = obj;`), where the remaining bindings may well be used.
+- `using` and `await using` declarations, where removal would also drop the resource's disposal.
+- Declarations that are not a statement in their own right, such as the head of a `for` loop.
+
 ## FAQs
 
 ### What benefits does this rule have over TypeScript?

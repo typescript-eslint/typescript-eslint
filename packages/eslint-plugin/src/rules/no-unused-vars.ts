@@ -1,7 +1,9 @@
 import type {
   Definition,
+  FunctionNameDefinition,
   ImportBindingDefinition,
   ScopeVariable,
+  VariableDefinition,
 } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 
@@ -46,7 +48,9 @@ export type Options = [
       caughtErrorsIgnorePattern?: string;
       destructuredArrayIgnorePattern?: string;
       enableAutofixRemoval?: {
+        functions?: boolean;
         imports?: boolean;
+        variables?: boolean;
       };
       ignoreClassWithStaticInitBlock?: boolean;
       ignoreRestSiblings?: boolean;
@@ -64,7 +68,9 @@ interface TranslatedOptions {
   caughtErrorsIgnorePattern?: RegExp;
   destructuredArrayIgnorePattern?: RegExp;
   enableAutofixRemoval: {
+    functions: boolean;
     imports: boolean;
+    variables: boolean;
   };
   ignoreClassWithStaticInitBlock: boolean;
   ignoreRestSiblings: boolean;
@@ -249,10 +255,20 @@ export default createRule<Options, MessageIds>({
                 description:
                   'Configurable automatic fixes for different types of unused variables.',
                 properties: {
+                  functions: {
+                    type: 'boolean',
+                    description:
+                      'Whether to enable automatic removal of unused function declarations.',
+                  },
                   imports: {
                     type: 'boolean',
                     description:
                       'Whether to enable automatic removal of unused imports.',
+                  },
+                  variables: {
+                    type: 'boolean',
+                    description:
+                      'Whether to enable automatic removal of unused variable declarations.',
                   },
                 },
               },
@@ -370,9 +386,11 @@ export default createRule<Options, MessageIds>({
               return {};
 
             case VariableType.FunctionName:
-              // TODO(bradzacher) -- this would be really easy to implement and
-              // is side-effect free!
-              return {};
+              // opt-in only -- offering this as a suggestion by default would
+              // add one to every unused function the rule already reports
+              return options.enableAutofixRemoval.functions
+                ? { ...getFunctionNameFixer(def), useAutofix: true }
+                : {};
 
             case VariableType.ImportBinding:
               return {
@@ -418,8 +436,10 @@ export default createRule<Options, MessageIds>({
               return {};
 
             case VariableType.Variable:
-              // TODO(bradzacher) -- this would be really easy to implement
-              return {};
+              // opt-in only -- see the note on FunctionName above
+              return options.enableAutofixRemoval.variables
+                ? { ...getVariableFixer(def), useAutofix: true }
+                : {};
           }
         })();
 
@@ -457,7 +477,9 @@ export default createRule<Options, MessageIds>({
         args: 'after-used',
         caughtErrors: 'all',
         enableAutofixRemoval: {
+          functions: false,
           imports: false,
+          variables: false,
         },
         ignoreClassWithStaticInitBlock: false,
         ignoreRestSiblings: false,
@@ -513,10 +535,17 @@ export default createRule<Options, MessageIds>({
         }
 
         if (firstOption.enableAutofixRemoval) {
-          // eslint-disable-next-line unicorn/no-lonely-if -- will add more cases later
+          if (firstOption.enableAutofixRemoval.functions != null) {
+            options.enableAutofixRemoval.functions =
+              firstOption.enableAutofixRemoval.functions;
+          }
           if (firstOption.enableAutofixRemoval.imports != null) {
             options.enableAutofixRemoval.imports =
               firstOption.enableAutofixRemoval.imports;
+          }
+          if (firstOption.enableAutofixRemoval.variables != null) {
+            options.enableAutofixRemoval.variables =
+              firstOption.enableAutofixRemoval.variables;
           }
         }
       }
@@ -548,6 +577,69 @@ export default createRule<Options, MessageIds>({
         return fixer.removeRange([lineRangeStart, lineRangeEnd]);
       }
       return fixer.remove(node);
+    }
+
+    /**
+     * Declarations are only safe to delete outright when they're an element of a
+     * statement list. Anywhere else the declaration is the sole body of its
+     * parent (`if (x) var a = 1;`, `label: function f() {}`, a `for` head, ...)
+     * and removing it leaves behind syntactically invalid code.
+     */
+    function isInStatementList(node: TSESTree.Node): boolean {
+      switch (node.parent?.type) {
+        case AST_NODE_TYPES.BlockStatement:
+        case AST_NODE_TYPES.Program:
+        case AST_NODE_TYPES.StaticBlock:
+        case AST_NODE_TYPES.SwitchCase:
+        case AST_NODE_TYPES.TSModuleBlock:
+          return true;
+
+        default:
+          return false;
+      }
+    }
+
+    function getFunctionNameFixer(def: FunctionNameDefinition): {
+      fix?: TSESLint.ReportFixFunction;
+    } {
+      if (
+        // a named function *expression* (`const x = function foo() {}`) binds its
+        // name too -- but the node is the expression, which we must not remove
+        (def.node.type !== AST_NODE_TYPES.FunctionDeclaration &&
+          def.node.type !== AST_NODE_TYPES.TSDeclareFunction) ||
+        !isInStatementList(def.node)
+      ) {
+        return {};
+      }
+
+      // function declarations are hoisted and their body is never evaluated on
+      // declaration -- so removing an unused one is side-effect free
+      return { fix: fixer => removeNodeWithTrailingNewline(fixer, def.node) };
+    }
+
+    function getVariableFixer(def: VariableDefinition): {
+      fix?: TSESLint.ReportFixFunction;
+    } {
+      const declaration = def.parent;
+
+      if (
+        // `using x = ...` removal would drop the resource's disposal
+        declaration.kind === 'using' ||
+        declaration.kind === 'await using' ||
+        // TODO -- multiple declarators requires removing just this declarator
+        // and its comma, rather than the whole declaration
+        declaration.declarations.length !== 1 ||
+        // TODO -- destructuring requires removing just this property/element,
+        // as its siblings may well be used
+        def.name.parent.type !== AST_NODE_TYPES.VariableDeclarator ||
+        !isInStatementList(declaration)
+      ) {
+        return {};
+      }
+
+      return {
+        fix: fixer => removeNodeWithTrailingNewline(fixer, declaration),
+      };
     }
 
     function getImportFixer(def: ImportBindingDefinition): {
