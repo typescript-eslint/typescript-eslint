@@ -534,20 +534,10 @@ export default createRule<Options, MessageIds>({
           );
         }
 
-        if (firstOption.enableAutofixRemoval) {
-          if (firstOption.enableAutofixRemoval.functions != null) {
-            options.enableAutofixRemoval.functions =
-              firstOption.enableAutofixRemoval.functions;
-          }
-          if (firstOption.enableAutofixRemoval.imports != null) {
-            options.enableAutofixRemoval.imports =
-              firstOption.enableAutofixRemoval.imports;
-          }
-          if (firstOption.enableAutofixRemoval.variables != null) {
-            options.enableAutofixRemoval.variables =
-              firstOption.enableAutofixRemoval.variables;
-          }
-        }
+        options.enableAutofixRemoval = {
+          ...options.enableAutofixRemoval,
+          ...firstOption.enableAutofixRemoval,
+        };
       }
 
       return options;
