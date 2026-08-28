@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { RuleListener } from '@typescript-eslint/utils/eslint-utils';
 
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -218,6 +219,14 @@ export default createRule<Options, MessageIds>({
           if (variable.references.length === 0) {
             unusedSpecifiers.push(specifier);
           } else {
+            // A same-name local declaration owns the value meaning of the name.
+            // TypeScript rejects the program with TS2440 if the import provides
+            // one too, so in valid code the import can only contribute a type.
+            const hasLocalValueDefinition = variable.defs.some(
+              def =>
+                def.type !== DefinitionType.ImportBinding &&
+                def.type !== DefinitionType.Type,
+            );
             const onlyHasTypeReferences = variable.references.every(ref => {
               /**
                * keep origin import kind when export
@@ -236,6 +245,9 @@ export default createRule<Options, MessageIds>({
                 ref.isTypeReference
               ) {
                 return node.importKind === 'type';
+              }
+              if (ref.isValueReference && hasLocalValueDefinition) {
+                return true;
               }
               if (ref.isValueReference) {
                 let parent = ref.identifier.parent as TSESTree.Node | undefined;

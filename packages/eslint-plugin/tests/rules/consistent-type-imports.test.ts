@@ -32,7 +32,7 @@ const foo: Foo = new Foo();
         `,
         `
 import foo from 'foo';
-const foo: foo.Foo = foo.fn();
+const bar: foo.Foo = foo.fn();
         `,
         `
 import { A, B } from 'foo';
@@ -428,6 +428,43 @@ let foo: Foo;
           output: `
 import type Foo from 'foo';
 let foo: Foo;
+          `,
+        },
+        {
+          // https://github.com/typescript-eslint/typescript-eslint/issues/8315
+          code: `
+import { Placeholder } from 'placeholder';
+export type Config = {
+  placeholder: Placeholder;
+};
+function Placeholder() {
+  return null;
+}
+export function Main() {
+  return Placeholder();
+}
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 43,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          options: [{ prefer: 'type-imports' }],
+          output: `
+import type { Placeholder } from 'placeholder';
+export type Config = {
+  placeholder: Placeholder;
+};
+function Placeholder() {
+  return null;
+}
+export function Main() {
+  return Placeholder();
+}
           `,
         },
         {
