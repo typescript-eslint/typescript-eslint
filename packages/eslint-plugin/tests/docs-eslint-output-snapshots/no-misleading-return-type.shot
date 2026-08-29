@@ -1,12 +1,12 @@
 Incorrect
 
 function getStatus(): string | null {
-                               ~~~~ The return type includes `null`, but no returned expression requires it.
+                               ~~~~ No returned expression requires this type.
   return 'ready';
 }
 
 async function getAsyncStatus(): Promise<string | null> {
-                                                  ~~~~ The return type includes `null`, but no returned expression requires it.
+                                                  ~~~~ No returned expression requires this type.
   return 'ready';
 }
 

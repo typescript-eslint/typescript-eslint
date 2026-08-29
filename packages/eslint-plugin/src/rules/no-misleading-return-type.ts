@@ -35,6 +35,12 @@ type FunctionNode =
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression;
 
+type ClassMemberDeclaration =
+  | ts.GetAccessorDeclaration
+  | ts.MethodDeclaration
+  | ts.PropertyDeclaration
+  | ts.SetAccessorDeclaration;
+
 type TypeProjection = 'arrayElement' | 'awaited' | 'identity';
 
 type UnionCandidate =
@@ -60,8 +66,7 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      unnecessaryType:
-        'The return type includes `{{type}}`, but no returned expression requires it.',
+      unnecessaryType: 'No returned expression requires this type.',
     },
     schema: [],
   },
@@ -76,7 +81,7 @@ export default createRule({
         : [type];
     }
 
-    function hasUnresolvedTemplatePart(types: readonly ts.Type[]): boolean {
+    function hasUnresolvedTemplatePart(types: readonly ts.Type[]) {
       function isUnresolved(type: ts.Type): boolean {
         if (
           tsutils.isTypeFlagSet(type, ts.TypeFlags.Instantiable) ||
@@ -96,7 +101,7 @@ export default createRule({
       return types.some(isUnresolved);
     }
 
-    function isUnresolvedTypeOperation(type: ts.Type): boolean {
+    function isUnresolvedTypeOperation(type: ts.Type) {
       // Assignability can be false until these types are instantiated, even
       // when a returned type will satisfy them for every valid instantiation.
       return (
@@ -107,7 +112,7 @@ export default createRule({
       );
     }
 
-    function getWidenedObjectLiteralType(type: ts.Type): ts.Type {
+    function getWidenedObjectLiteralType(type: ts.Type) {
       // Fresh object literal types trigger excess-property checks in
       // isTypeAssignableTo(). Widening removes freshness while preserving the
       // structural type that can satisfy more than one union constituent.
@@ -117,7 +122,7 @@ export default createRule({
         : type;
     }
 
-    function getStableBaseConstraint(type: ts.Type): ts.Type | null {
+    function getStableBaseConstraint(type: ts.Type) {
       const seen = new Set<ts.Type>([type]);
       let constraint = type;
 
@@ -139,17 +144,17 @@ export default createRule({
         : constraint;
     }
 
-    function isConcreteType(type: ts.Type): boolean {
+    function isConcreteType(type: ts.Type) {
       return tsutils.isTypeFlagSet(type, CONCRETE_TYPE_FLAGS);
     }
 
-    function isPrimitiveType(type: ts.Type): boolean {
+    function isPrimitiveType(type: ts.Type) {
       return tsutils
         .unionConstituents(type)
         .every(type => tsutils.isTypeFlagSet(type, PRIMITIVE_TYPE_FLAGS));
     }
 
-    function isImplicitReturnType(type: ts.Type): boolean {
+    function isImplicitReturnType(type: ts.Type) {
       return tsutils.isTypeFlagSet(
         type,
         ts.TypeFlags.Undefined | ts.TypeFlags.Void,
@@ -159,7 +164,7 @@ export default createRule({
     function mayRepresentImplicitReturn(
       type: ts.Type,
       constraint: ts.Type | null,
-    ): boolean {
+    ) {
       if (tsutils.unionConstituents(type).some(isImplicitReturnType)) {
         return true;
       }
@@ -170,7 +175,7 @@ export default createRule({
       );
     }
 
-    function enumLiteralsHaveSameValue(left: ts.Type, right: ts.Type): boolean {
+    function enumLiteralsHaveSameValue(left: ts.Type, right: ts.Type) {
       // Distinct enum member types can represent the same runtime value.
       if (
         !tsutils.isTypeFlagSet(left, ts.TypeFlags.EnumLiteral) ||
@@ -187,10 +192,7 @@ export default createRule({
       );
     }
 
-    function typesHaveAssignableRelation(
-      left: ts.Type,
-      right: ts.Type,
-    ): boolean {
+    function typesHaveAssignableRelation(left: ts.Type, right: ts.Type) {
       return (
         checker.isTypeAssignableTo(getWidenedObjectLiteralType(left), right) ||
         checker.isTypeAssignableTo(right, left) ||
@@ -198,7 +200,7 @@ export default createRule({
       );
     }
 
-    function canProveNoOverlap(left: ts.Type, right: ts.Type): boolean {
+    function canProveNoOverlap(left: ts.Type, right: ts.Type) {
       const comparableLeft =
         isConcreteType(left) || tsutils.isTypeFlagSet(left, ts.TypeFlags.Object)
           ? left
@@ -220,10 +222,7 @@ export default createRule({
       );
     }
 
-    function getReturnedTypes(
-      node: FunctionNode,
-      projection: TypeProjection,
-    ): ts.Type[] | null {
+    function getReturnedTypes(node: FunctionNode, projection: TypeProjection) {
       const body = services.esTreeNodeToTSNodeMap.get(
         node.body,
       ) as ts.ConciseBody;
@@ -235,7 +234,8 @@ export default createRule({
             returnExpressions.push(statement.expression);
           }
         });
-      } else {
+      }
+      if (!ts.isBlock(body)) {
         returnExpressions.push(body);
       }
 
@@ -332,10 +332,7 @@ export default createRule({
       return null;
     }
 
-    function getProjectedType(
-      type: ts.Type,
-      projection: TypeProjection,
-    ): ts.Type | null {
+    function getProjectedType(type: ts.Type, projection: TypeProjection) {
       if (projection === 'identity') {
         return type;
       }
@@ -355,7 +352,7 @@ export default createRule({
     function getProjectedTypeArgument(
       type: ts.Type,
       projection: TypeProjection,
-    ): ts.Type | null {
+    ) {
       return projection === 'awaited'
         ? (checker.getAwaitedType(type) ?? null)
         : type;
@@ -365,7 +362,7 @@ export default createRule({
       candidate: UnionCandidate,
       projection: TypeProjection,
       returnType: ts.Type,
-    ): ts.Type | null {
+    ) {
       const projectedReturnType = getProjectedType(returnType, projection);
       if (
         !projectedReturnType ||
@@ -399,13 +396,11 @@ export default createRule({
 
     function hasBaseClassMember(
       memberNode: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
-    ): boolean {
-      const memberTsNode = services.esTreeNodeToTSNodeMap.get(memberNode);
-      const memberName = memberTsNode.name;
-      if (memberName == null) {
-        return false;
-      }
-      const memberNameNode: ts.PropertyName = memberName;
+    ) {
+      const memberTsNode = services.esTreeNodeToTSNodeMap.get(
+        memberNode,
+      ) as ClassMemberDeclaration;
+      const memberNameNode = memberTsNode.name;
 
       const classNode = memberTsNode.parent as ts.ClassLikeDeclaration;
       const heritageClauses = classNode.heritageClauses ?? [];
@@ -414,15 +409,14 @@ export default createRule({
       }
 
       const memberSymbol = checker.getSymbolAtLocation(memberNameNode);
-      if (memberSymbol == null) {
+      if (!memberSymbol) {
         return false;
       }
-      const memberSymbolEscapedName = memberSymbol.escapedName;
       const memberSymbolName = memberSymbol.name;
 
       let memberNameType: ts.Type | null = null;
       let memberNameTypeResolved = false;
-      function getMemberNameType(): ts.Type | null {
+      function getMemberNameType() {
         if (memberNameTypeResolved) {
           return memberNameType;
         }
@@ -458,7 +452,7 @@ export default createRule({
       function hasMatchingIndexSignature(
         baseType: ts.Type,
         nameType: ts.Type | null,
-      ): boolean {
+      ) {
         const indexInfos = checker.getIndexInfosOfType(baseType);
         if (
           nameType &&
@@ -527,7 +521,7 @@ export default createRule({
               .getPropertiesOfType(baseType)
               .some(
                 baseMember =>
-                  baseMember.escapedName === memberSymbolEscapedName,
+                  baseMember.escapedName === memberSymbol.escapedName,
               )
           ) {
             return true;
@@ -545,7 +539,7 @@ export default createRule({
       return false;
     }
 
-    function shouldSkipFunction(node: FunctionNode): boolean {
+    function shouldSkipFunction(node: FunctionNode) {
       if (node.generator) {
         return true;
       }
@@ -581,7 +575,7 @@ export default createRule({
       return services.getContextualType(node) != null;
     }
 
-    function checkFunction(node: FunctionNode): void {
+    function checkFunction(node: FunctionNode) {
       const candidate = getUnionCandidate(node);
       if (!candidate || shouldSkipFunction(node)) {
         return;
@@ -654,7 +648,7 @@ export default createRule({
       const analyzedCandidates = resolvedCandidates.map(
         ({ type, constraint, typeNode }) => {
           const unresolved = isUnresolvedTypeOperation(type);
-          const mayBeReturned = returnedTypeParts.some(returnedType => {
+          const isRequired = returnedTypeParts.some(returnedType => {
             if (typesHaveAssignableRelation(returnedType, type)) {
               return true;
             }
@@ -665,21 +659,21 @@ export default createRule({
             );
           });
 
-          return { type, mayBeReturned, typeNode };
+          return { type, isRequired, typeNode };
         },
       );
-      const returnedCandidateTypes = analyzedCandidates
-        .filter(candidate => candidate.mayBeReturned)
+      const requiredCandidateTypes = analyzedCandidates
+        .filter(candidate => candidate.isRequired)
         .map(candidate => candidate.type);
       const hasBooleanCandidate = analyzedCandidates.some(({ type }) =>
         tsutils.isTypeFlagSet(type, ts.TypeFlags.Boolean),
       );
 
-      for (const { type, mayBeReturned, typeNode } of analyzedCandidates) {
+      for (const { type, isRequired, typeNode } of analyzedCandidates) {
         if (
-          mayBeReturned ||
-          returnedCandidateTypes.some(returnedCandidateType =>
-            checker.isTypeAssignableTo(type, returnedCandidateType),
+          isRequired ||
+          requiredCandidateTypes.some(requiredCandidateType =>
+            checker.isTypeAssignableTo(type, requiredCandidateType),
           )
         ) {
           continue;
@@ -701,7 +695,6 @@ export default createRule({
         context.report({
           node: typeNode,
           messageId: 'unnecessaryType',
-          data: { type: context.sourceCode.getText(typeNode) },
         });
       }
     }
