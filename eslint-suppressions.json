@@ -1,9 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/await-thenable.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 36
-    }
-  },
   "packages/eslint-plugin/tests/rules/consistent-type-exports.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 19
