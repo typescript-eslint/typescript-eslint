@@ -214,6 +214,20 @@ class ProviderImpl implements Provider {
 }
     `,
     `
+interface NumericProvider {
+  [key: number]: () => string | null;
+}
+interface NamedProvider {
+  [key: string]: () => string | null;
+}
+class ProviderImpl implements NumericProvider, NamedProvider {
+  [key: string]: () => string | null;
+  getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
 interface Provider {
   [key: string]: () => string | null;
 }
@@ -242,6 +256,29 @@ interface Provider {
 class ProviderImpl implements Provider {
   [key: string]: () => string | null;
   0(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  [key: \`get\${string}\`]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: \`get\${string}\`]: () => string | null;
+  getValue(): string | null {
+    return 'value';
+  }
+}
+    `,
+    `
+interface Provider {
+  [key: symbol]: () => string | null;
+}
+declare const method: unique symbol;
+class ProviderImpl implements Provider {
+  [key: symbol]: () => string | null;
+  [method](): string | null {
     return 'value';
   }
 }
@@ -471,7 +508,6 @@ function getValue(): string | null {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 2,
           line: 2,
@@ -488,7 +524,6 @@ function getValue(): string | (number | null) {
       errors: [
         {
           column: 22,
-          data: { type: 'string' },
           endColumn: 28,
           endLine: 2,
           line: 2,
@@ -496,7 +531,6 @@ function getValue(): string | (number | null) {
         },
         {
           column: 41,
-          data: { type: 'null' },
           endColumn: 45,
           endLine: 2,
           line: 2,
@@ -515,7 +549,6 @@ class Values {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -534,7 +567,6 @@ class Values {
       errors: [
         {
           column: 24,
-          data: { type: 'null' },
           endColumn: 28,
           endLine: 3,
           line: 3,
@@ -546,7 +578,7 @@ class Values {
       code: `
 class Base {
   #getValue(): string | null {
-    return 'value';
+    return Math.random() > 0.5 ? 'value' : null;
   }
 }
 class Derived extends Base {
@@ -558,15 +590,6 @@ class Derived extends Base {
       errors: [
         {
           column: 25,
-          data: { type: 'null' },
-          endColumn: 29,
-          endLine: 3,
-          line: 3,
-          messageId: 'unnecessaryType',
-        },
-        {
-          column: 25,
-          data: { type: 'null' },
           endColumn: 29,
           endLine: 8,
           line: 8,
@@ -592,7 +615,6 @@ class ProviderImpl implements Provider {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 6,
           line: 6,
@@ -614,10 +636,31 @@ class Derived extends Base {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 6,
           line: 6,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+interface Provider {
+  [key: \`get\${string}\`]: () => string | null;
+}
+class ProviderImpl implements Provider {
+  [key: \`get\${string}\`]: () => string | null;
+  other(): string | null {
+    return 'value';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 25,
+          endLine: 7,
+          line: 7,
           messageId: 'unnecessaryType',
         },
       ],
@@ -627,7 +670,6 @@ class Derived extends Base {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 1,
           line: 1,
@@ -644,7 +686,6 @@ const getValue = function (): string | null {
       errors: [
         {
           column: 40,
-          data: { type: 'null' },
           endColumn: 44,
           endLine: 2,
           line: 2,
@@ -661,7 +702,6 @@ async function getValue(): Promise<string | null> {
       errors: [
         {
           column: 45,
-          data: { type: 'null' },
           endColumn: 49,
           endLine: 2,
           line: 2,
@@ -678,7 +718,6 @@ async function getValue(): globalThis.Promise<string | null> {
       errors: [
         {
           column: 56,
-          data: { type: 'null' },
           endColumn: 60,
           endLine: 2,
           line: 2,
@@ -695,8 +734,23 @@ async function getValue<T>(value: T): Promise<T | null> {
       errors: [
         {
           column: 51,
-          data: { type: 'null' },
           endColumn: 55,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue<T>(value: T): Promise<T | null> {
+  return Promise.resolve(value);
+}
+      `,
+      errors: [
+        {
+          column: 45,
+          endColumn: 49,
           endLine: 2,
           line: 2,
           messageId: 'unnecessaryType',
@@ -712,7 +766,6 @@ function getValue(): PromiseLike<string | null> {
       errors: [
         {
           column: 43,
-          data: { type: 'null' },
           endColumn: 47,
           endLine: 2,
           line: 2,
@@ -731,7 +784,6 @@ function getValue(): CustomPromise<string | null> {
       errors: [
         {
           column: 45,
-          data: { type: 'null' },
           endColumn: 49,
           endLine: 4,
           line: 4,
@@ -748,7 +800,6 @@ async function getValue(): Promise<Promise<string> | null> {
       errors: [
         {
           column: 54,
-          data: { type: 'null' },
           endColumn: 58,
           endLine: 2,
           line: 2,
@@ -765,7 +816,6 @@ function getValues(): Array<string | null> {
       errors: [
         {
           column: 38,
-          data: { type: 'null' },
           endColumn: 42,
           endLine: 2,
           line: 2,
@@ -782,7 +832,6 @@ function getValues(): (string | null)[] {
       errors: [
         {
           column: 33,
-          data: { type: 'null' },
           endColumn: 37,
           endLine: 2,
           line: 2,
@@ -799,7 +848,6 @@ function getValues(): readonly (string | null)[] {
       errors: [
         {
           column: 42,
-          data: { type: 'null' },
           endColumn: 46,
           endLine: 2,
           line: 2,
@@ -816,7 +864,6 @@ function getValues<T extends string[]>(values: T): Array<string | null> {
       errors: [
         {
           column: 67,
-          data: { type: 'null' },
           endColumn: 71,
           endLine: 2,
           line: 2,
@@ -835,7 +882,6 @@ function getValues(): ReadonlyArray<string | null> {
       errors: [
         {
           column: 46,
-          data: { type: 'null' },
           endColumn: 50,
           endLine: 4,
           line: 4,
@@ -852,7 +898,6 @@ function getValue(): Promise<string | null> {
       errors: [
         {
           column: 39,
-          data: { type: 'null' },
           endColumn: 43,
           endLine: 2,
           line: 2,
@@ -869,7 +914,6 @@ function getValue(): 'ready' | 'idle' {
       errors: [
         {
           column: 32,
-          data: { type: "'idle'" },
           endColumn: 38,
           endLine: 2,
           line: 2,
@@ -886,7 +930,6 @@ function getValue(): 'ready' | string | null {
       errors: [
         {
           column: 32,
-          data: { type: 'string' },
           endColumn: 38,
           endLine: 2,
           line: 2,
@@ -903,7 +946,6 @@ function getValue(): true | boolean | null {
       errors: [
         {
           column: 29,
-          data: { type: 'boolean' },
           endColumn: 36,
           endLine: 2,
           line: 2,
@@ -920,7 +962,6 @@ function createValue(): { kind: 'ready' } | { kind: 'idle' } {
       errors: [
         {
           column: 45,
-          data: { type: "{ kind: 'idle' }" },
           endColumn: 61,
           endLine: 2,
           line: 2,
@@ -937,7 +978,6 @@ function createValue(): { left: string } | { right: number } | null {
       errors: [
         {
           column: 64,
-          data: { type: 'null' },
           endColumn: 68,
           endLine: 2,
           line: 2,
@@ -955,7 +995,6 @@ function getValue(): object | typeof missing {
       errors: [
         {
           column: 31,
-          data: { type: 'typeof missing' },
           endColumn: 45,
           endLine: 3,
           line: 3,
@@ -974,7 +1013,6 @@ function getValue(): TextValue | MissingValue {
       errors: [
         {
           column: 34,
-          data: { type: 'MissingValue' },
           endColumn: 46,
           endLine: 4,
           line: 4,
@@ -991,8 +1029,23 @@ function getValue<T>(value: T): T | null {
       errors: [
         {
           column: 37,
-          data: { type: 'null' },
           endColumn: 41,
+          endLine: 2,
+          line: 2,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+function getValue<T>(values: Map<string, T>, key: string): T | null {
+  return values.get(key)!;
+}
+      `,
+      errors: [
+        {
+          column: 64,
+          endColumn: 68,
           endLine: 2,
           line: 2,
           messageId: 'unnecessaryType',
@@ -1008,7 +1061,6 @@ function getValue<T extends string | null>(value: T): string | null | number {
       errors: [
         {
           column: 71,
-          data: { type: 'number' },
           endColumn: 77,
           endLine: 2,
           line: 2,
@@ -1025,7 +1077,6 @@ function getValue<T extends string>(value: null): \`\${T}\` | null {
       errors: [
         {
           column: 51,
-          data: { type: '`${T}`' },
           endColumn: 57,
           endLine: 2,
           line: 2,
@@ -1042,7 +1093,6 @@ function getValue(): \`value-\${string}\` | 'fallback' {
       errors: [
         {
           column: 22,
-          data: { type: '`value-${string}`' },
           endColumn: 39,
           endLine: 2,
           line: 2,
@@ -1059,7 +1109,6 @@ function getValue<T>(value: null): (T extends string ? string : number) | null {
       errors: [
         {
           column: 37,
-          data: { type: 'T extends string ? string : number' },
           endColumn: 71,
           endLine: 2,
           line: 2,
@@ -1078,7 +1127,6 @@ function getValue<T>(value: {
       errors: [
         {
           column: 6,
-          data: { type: 'T extends string ? string : number' },
           endColumn: 40,
           endLine: 4,
           line: 4,
@@ -1097,7 +1145,6 @@ function getValue<T extends object, U>(
       errors: [
         {
           column: 9,
-          data: { type: 'U extends string ? string : number' },
           endColumn: 43,
           endLine: 4,
           line: 4,
@@ -1114,7 +1161,6 @@ function getValue<T extends string>(value: null): Uppercase<T> | null {
       errors: [
         {
           column: 51,
-          data: { type: 'Uppercase<T>' },
           endColumn: 63,
           endLine: 2,
           line: 2,
@@ -1131,7 +1177,6 @@ function getValue(): boolean | null {
       errors: [
         {
           column: 32,
-          data: { type: 'null' },
           endColumn: 36,
           endLine: 2,
           line: 2,
@@ -1150,7 +1195,6 @@ const values = {
       errors: [
         {
           column: 24,
-          data: { type: 'null' },
           endColumn: 28,
           endLine: 3,
           line: 3,
@@ -1169,7 +1213,6 @@ const values = {
       errors: [
         {
           column: 27,
-          data: { type: 'null' },
           endColumn: 31,
           endLine: 3,
           line: 3,
@@ -1190,7 +1233,6 @@ function getValue(): string | null {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 2,
           line: 2,
@@ -1208,7 +1250,6 @@ function getValue(): string | number | null {
       errors: [
         {
           column: 40,
-          data: { type: 'null' },
           endColumn: 44,
           endLine: 3,
           line: 3,
@@ -1226,7 +1267,6 @@ function getValue(): string | null {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -1244,7 +1284,6 @@ function getValue(): string | null {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -1262,7 +1301,6 @@ function getValue(): string | null {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 2,
           line: 2,
@@ -1280,7 +1318,6 @@ function getValue(): string | null {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -1298,7 +1335,6 @@ function getValue(): string | null {
       errors: [
         {
           column: 31,
-          data: { type: 'null' },
           endColumn: 35,
           endLine: 3,
           line: 3,
