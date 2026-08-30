@@ -9,7 +9,6 @@ This saves us having to mock unnecessary things and reduces our bundle size.
 */
 
 import js from '@eslint/js';
-import * as plugin from '@typescript-eslint/eslint-plugin';
 import rawPlugin from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/raw-plugin';
 import { analyze } from '@typescript-eslint/scope-manager';
 import {
@@ -32,19 +31,35 @@ exports.createLinter = function () {
   return new Linter();
 };
 
+// Some configs bring in their own `languageOptions.parser`. This would
+// override the browser-compatible parser used by the Playground with the
+// default Node parser, and cause an error, so it's stripped out here.
+/** @type {(config: Record<string, any>) => Record<string, any>} */
+const stripParser = config => {
+  if (!config.languageOptions?.parser) {
+    return config;
+  }
+  const { parser: _parser, ...languageOptions } = config.languageOptions;
+  return { ...config, languageOptions };
+};
+
+/** @type {(config: Record<string, any> | Record<string, any>[]) => unknown} */
+const stripParserFromConfig = config =>
+  Array.isArray(config) ? config.map(stripParser) : stripParser(config);
+
 /** @type {Record<string, unknown>} */
 const configs = {};
 
 for (const [name, value] of Object.entries(js.configs)) {
-  configs[`js/${name}`] = value;
+  configs[`js/${name}`] = stripParserFromConfig(value);
 }
 
 for (const [name, value] of Object.entries(rawPlugin.flatConfigs)) {
-  configs[`@typescript-eslint/${name}`] = value;
+  configs[`@typescript-eslint/${name}`] = stripParserFromConfig(value);
 }
 
 exports.configs = configs;
 
-exports.rules = plugin.rules;
+exports.plugin = rawPlugin.plugin;
 
 exports.builtinRules = builtinRules;
