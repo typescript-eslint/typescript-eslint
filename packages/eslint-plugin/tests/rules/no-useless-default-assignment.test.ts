@@ -378,6 +378,25 @@ const fn: Fn = (value = 'default') => {
   invalid: [
     {
       code: `
+declare const mixed: [boolean, ...number[], string];
+const [a, b = 0] = mixed;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 16,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+declare const mixed: [boolean, ...number[], string];
+const [a, b] = mixed;
+      `,
+    },
+    {
+      code: `
 function Bar({ foo = '' }: { foo: string }) {
   return foo;
 }
