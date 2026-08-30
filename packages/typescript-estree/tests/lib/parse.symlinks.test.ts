@@ -174,7 +174,11 @@ describe('symlinked directories', () => {
     // Simulate a rename occurring after the watch program's initial resync but
     // before its deletion check for the old, symlinked root file.
     vi.spyOn(fsSync, 'existsSync').mockImplementation(filePath => {
-      if (!createdNewFile && filePath === symlinkedExistingFilePath) {
+      if (
+        !createdNewFile &&
+        typeof filePath === 'string' &&
+        path.normalize(filePath) === symlinkedExistingFilePath
+      ) {
         fsSync.renameSync(existingFilePath, newFilePath);
         createdNewFile = true;
         return false;
