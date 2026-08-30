@@ -11,6 +11,7 @@ import {
   forEachChildESTree,
   getNameFromIndexSignature,
   getNameFromMember,
+  getStaticStringValue,
   MemberNameType,
   nullThrows,
   NullThrowsReasons,
@@ -494,29 +495,25 @@ function isMemberOptional(node: Member): boolean {
   return false;
 }
 
-function getMemberInitializer(node: Member): TSESTree.Expression | null {
+function getMemberInitializer(node: Member) {
   switch (node.type) {
     case AST_NODE_TYPES.AccessorProperty:
     case AST_NODE_TYPES.PropertyDefinition:
       return node.value;
   }
-  return null;
+  return undefined;
 }
 
-function getThisPropertyName(node: TSESTree.MemberExpression): string | null {
-  if (!node.computed) {
-    return node.property.name;
-  }
-  return node.property.type === AST_NODE_TYPES.Literal &&
-    typeof node.property.value === 'string'
-    ? node.property.value
-    : null;
+function getThisPropertyName(node: TSESTree.MemberExpression) {
+  return node.computed
+    ? getStaticStringValue(node.property)
+    : node.property.name;
 }
 
 function isEvaluatedLater(
   node: TSESTree.Node,
   initializer: TSESTree.Expression,
-): boolean {
+) {
   for (
     let current = node;
     current !== initializer.parent;
@@ -534,10 +531,9 @@ function isEvaluatedLater(
   return false;
 }
 
-function collectImmediateThisPropertyNames(
-  initializer: TSESTree.Expression,
-  names: Set<string>,
-): void {
+function collectImmediateThisPropertyNames(initializer: TSESTree.Expression) {
+  const names = new Set<string>();
+
   forEachChildESTree(initializer, node => {
     if (
       node.type === AST_NODE_TYPES.MemberExpression &&
@@ -552,6 +548,8 @@ function collectImmediateThisPropertyNames(
 
     return null;
   });
+
+  return names;
 }
 
 function isBlockedByEarlierMemberReferences(
@@ -560,14 +558,13 @@ function isBlockedByEarlierMemberReferences(
   fromIndex: number,
   toIndex: number,
   sourceCode: TSESLint.SourceCode,
-): boolean {
+) {
   const initializer = getMemberInitializer(member);
   if (!initializer) {
     return false;
   }
 
-  const referencedNames = new Set<string>();
-  collectImmediateThisPropertyNames(initializer, referencedNames);
+  const referencedNames = collectImmediateThisPropertyNames(initializer);
 
   return members.slice(fromIndex, toIndex).some(other => {
     const otherName = getMemberName(other, sourceCode);

@@ -1395,6 +1395,51 @@ class Foo {
       ],
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
+    {
+      code: `
+declare const other: { b: number };
+class Foo {
+  b: number = 42;
+  a: number = other.b;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+class Foo {
+  b: number;
+  a: number = this.b;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
   ],
   valid: [
     // Without grouping
@@ -3067,6 +3112,16 @@ class Foo {
 class Foo {
   b: number = 42;
   a: number = this['b'];
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    {
+      code: `
+class Foo {
+  zz: number = 42;
+  a: number = this[\`zz\`];
 }
       `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
