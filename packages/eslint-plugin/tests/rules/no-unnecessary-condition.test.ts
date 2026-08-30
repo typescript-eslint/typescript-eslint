@@ -1563,6 +1563,55 @@ if ((b1 && 'b1') || b2) {
       code: `
 declare const b1: boolean;
 declare const b2: boolean;
+do {} while ((b1 && 'b1') || b2);
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+for (; (b1 && 'b1') || b2;) {}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if (!((b1 && 'b1') || b2)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
 const t1 = b1 && 'b1' && b2;
       `,
       errors: [{ column: 18, line: 4, messageId: 'alwaysTruthy' }],
