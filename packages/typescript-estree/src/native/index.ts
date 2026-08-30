@@ -1,9 +1,12 @@
 import type { NativeProjectService } from './types';
 
 import { registerNativeProjectServiceClearer } from '../clear-caches';
+import { registerNativeParser } from '../parser';
 import { createNativeProjectService } from './createNativeProjectService';
+import { parseAndGenerateNativeServices } from './parseAndGenerateNativeServices';
 
 export { createNativeProjectService } from './createNativeProjectService';
+export { parseAndGenerateNativeServices } from './parseAndGenerateNativeServices';
 export type * from './types';
 
 let nativeProjectService: NativeProjectService | undefined;
@@ -19,3 +22,4 @@ export function getNativeProjectService(): NativeProjectService {
 }
 
 registerNativeProjectServiceClearer(clearNativeProjectService);
+registerNativeParser(parseAndGenerateNativeServices);

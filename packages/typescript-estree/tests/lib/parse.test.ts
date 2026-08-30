@@ -177,14 +177,14 @@ describe(parser.parseAndGenerateServices, () => {
   });
 
   describe('isolated parsing', () => {
-    const config: TSESTreeOptions = {
+    const config = {
       comment: true,
       disallowAutomaticSingleRunInference: true,
       loc: true,
       projectService: false,
       range: true,
       tokens: true,
-    };
+    } satisfies TSESTreeOptions;
     const testParse = ({
       ext,
       jsxContent,

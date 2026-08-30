@@ -5,7 +5,7 @@ import type {
 import type { Lib, ParserOptions, TSESTree } from '@typescript-eslint/types';
 import type {
   AST,
-  ClassicParserServices,
+  ParserServices,
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree';
 import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
@@ -31,7 +31,7 @@ interface ESLintProgram extends AST<{ comment: true; tokens: true }> {
 interface ParseForESLintResult {
   ast: ESLintProgram;
   scopeManager: ScopeManager;
-  services: ClassicParserServices;
+  services: ParserServices;
   visitorKeys: VisitorKeys;
 }
 
@@ -46,7 +46,9 @@ function validateBoolean(
 }
 
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
-function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
+function getLib(
+  compilerOptions: Pick<ts.CompilerOptions, 'lib' | 'target'>,
+): Lib[] {
   if (compilerOptions.lib) {
     return compilerOptions.lib
       .map(lib => LIB_FILENAME_REGEX.exec(lib.toLowerCase())?.[1])
@@ -160,9 +162,11 @@ export function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, tsestreeOptions);
   ast.sourceType = parserOptions.sourceType;
 
-  if (services.program) {
+  const program =
+    services.backend === 'native' ? services.native.program : services.program;
+  if (program) {
     // automatically apply the options configured for the program
-    const compilerOptions = services.program.getCompilerOptions();
+    const compilerOptions = program.getCompilerOptions();
     if (analyzeOptions.lib == null) {
       analyzeOptions.lib = getLib(compilerOptions);
       log('Resolved libs from program: %o', analyzeOptions.lib);

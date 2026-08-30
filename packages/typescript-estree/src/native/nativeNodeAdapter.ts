@@ -9,6 +9,7 @@ import * as ts from 'typescript';
 
 export interface NativeNodeAdapter {
   adaptSourceFile(sourceFile: NativeSourceFile): ts.SourceFile;
+  getWrappedNode(node: unknown): ts.Node | undefined;
   unwrapNode(node: ts.Node): NativeNode;
   wrapNode(node: NativeNode): ts.Node;
 }
@@ -287,6 +288,7 @@ export function createNativeNodeAdapter(
 
   return {
     adaptSourceFile: sourceFile => wrapNode(sourceFile) as ts.SourceFile,
+    getWrappedNode: node => nativeToAdapter.get(node as NativeNode),
     unwrapNode(node) {
       const native = adapterToNative.get(node);
       if (!native) {

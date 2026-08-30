@@ -9,7 +9,13 @@ export function parseCodeAndGenerateServices(
   code: string,
   config: TSESTreeOptions,
 ): ParseAndGenerateServicesResult<TSESTreeOptions> {
-  return parseAndGenerateServices(code, config);
+  const { ast, services } = parseAndGenerateServices(code, config);
+  if (services.backend === 'native') {
+    throw new Error(
+      'Native parser services are not supported by this test helper.',
+    );
+  }
+  return { ast, services };
 }
 
 export function formatSnapshotName(

@@ -293,8 +293,14 @@ export interface NativeParserServices {
     program: NativeProgram;
     project: NativeProject;
   };
-  esTreeNodeToTSNodeMap: ParserWeakMap<TSESTree.Node, NativeNode>;
-  tsNodeToESTreeNodeMap: ParserWeakMap<NativeNode, TSESTree.Node>;
+  esTreeNodeToTSNodeMap: {
+    get(node: TSESTree.Node): NativeNode;
+    has(node: unknown): boolean;
+  };
+  tsNodeToESTreeNodeMap: {
+    get(node: NativeNode): TSESTree.Node;
+    has(node: unknown): boolean;
+  };
   getContextualType(node: TSESTree.Expression): NativeType | undefined;
   getResolvedSignature(
     node: TSESTree.CallExpression | TSESTree.NewExpression,

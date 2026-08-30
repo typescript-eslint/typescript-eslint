@@ -668,6 +668,9 @@ describe('TypeOrValueSpecifier', () => {
         project: './tsconfig.json',
         tsconfigRootDir: rootDir,
       });
+      if (services.backend === 'native') {
+        throw new Error('Expected TypeScript parser services.');
+      }
       assert.isNotNull(services.program);
 
       return { ast, services };
@@ -875,6 +878,9 @@ describe('TypeOrValueSpecifier', () => {
         project: './tsconfig.json',
         tsconfigRootDir: rootDir,
       });
+      if (services.backend === 'native') {
+        throw new Error('Expected TypeScript parser services.');
+      }
       const type = services
         .program!.getTypeChecker()
         .getTypeAtLocation(
@@ -929,6 +935,9 @@ describe('TypeOrValueSpecifier', () => {
         project: './tsconfig.json',
         tsconfigRootDir: rootDir,
       });
+      if (services.backend === 'native') {
+        throw new Error('Expected TypeScript parser services.');
+      }
       assert.isNotNull(services.program);
 
       const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;

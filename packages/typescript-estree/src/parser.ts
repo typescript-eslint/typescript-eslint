@@ -5,6 +5,7 @@ import debug from 'debug';
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import type {
   ClassicParserServices,
+  NativeParserServices,
   ParserServicesNodeMaps,
   TSESTreeOptions,
 } from './parser-options';
@@ -95,6 +96,39 @@ export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ClassicParserServices;
 }
+export interface ParseAndGenerateNativeServicesResult<
+  T extends TSESTreeOptions,
+> extends Omit<ParseAndGenerateServicesResult<T>, 'services'> {
+  services: NativeParserServices;
+}
+type ProjectServiceCanUseNative<T> = T extends object
+  ? 'backend' extends keyof T
+    ? 'native' extends T['backend']
+      ? true
+      : false
+    : false
+  : false;
+type OptionsCanUseNative<T> = T extends unknown
+  ? 'projectService' extends keyof T
+    ? ProjectServiceCanUseNative<T['projectService']>
+    : false
+  : never;
+type ParseAndGenerateServicesResultForOptions<T extends TSESTreeOptions> =
+  T extends { projectService: { backend: 'native' } }
+    ? ParseAndGenerateNativeServicesResult<T>
+    : true extends OptionsCanUseNative<T>
+      ? | ParseAndGenerateNativeServicesResult<T>
+        | ParseAndGenerateServicesResult<T>
+      : ParseAndGenerateServicesResult<T>;
+type ParseAndGenerateNativeServices = <T extends TSESTreeOptions>(
+  parseSettings: ParseSettings,
+) => ParseAndGenerateNativeServicesResult<T>;
+let registeredNativeParser: ParseAndGenerateNativeServices | undefined;
+export function registerNativeParser(
+  parser: ParseAndGenerateNativeServices,
+): void {
+  registeredNativeParser = parser;
+}
 interface ParseWithNodeMapsResult<
   T extends TSESTreeOptions,
 > extends ParserServicesNodeMaps {
@@ -156,15 +190,38 @@ export function clearParseAndGenerateServicesCalls(): void {
 }
 
 export function parseAndGenerateServices<
-  T extends TSESTreeOptions = TSESTreeOptions,
+  T extends TSESTreeOptions & {
+    projectService: { backend: 'native' };
+  },
 >(
   code: string | ts.SourceFile,
   tsestreeOptions: T,
-): ParseAndGenerateServicesResult<T> {
+): ParseAndGenerateNativeServicesResult<T>;
+export function parseAndGenerateServices<T extends TSESTreeOptions>(
+  code: string | ts.SourceFile,
+  tsestreeOptions: T,
+): ParseAndGenerateServicesResultForOptions<T>;
+export function parseAndGenerateServices<T extends TSESTreeOptions>(
+  code: string | ts.SourceFile,
+  tsestreeOptions: T,
+): ParseAndGenerateNativeServicesResult<T> | ParseAndGenerateServicesResult<T> {
   /**
    * Reset the parse configuration
    */
   const parseSettings = createParseSettings(code, tsestreeOptions);
+
+  if (tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues === true) {
+    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
+  }
+
+  if (parseSettings.nativeProjectService) {
+    if (registeredNativeParser) {
+      return registeredNativeParser<T>(parseSettings);
+    }
+    const { parseAndGenerateNativeServices } =
+      require('./native') as typeof import('./native'); // eslint-disable-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
+    return parseAndGenerateNativeServices<T>(parseSettings);
+  }
 
   /**
    * If this is a single run in which the user has not provided any existing programs but there
@@ -200,14 +257,6 @@ export function parseAndGenerateServices<
     parseSettings.programs != null ||
     parseSettings.projects.size > 0 ||
     !!parseSettings.projectService;
-
-  if (
-    typeof tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues ===
-      'boolean' &&
-    tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues
-  ) {
-    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
-  }
 
   if (
     parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues &&
