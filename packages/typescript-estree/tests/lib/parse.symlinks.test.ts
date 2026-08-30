@@ -7,6 +7,7 @@ import { clearCaches } from '../../src/clear-caches';
 import { parseAndGenerateServices } from '../../src/parser';
 
 const CODE = 'export const value = 1;';
+const directoryLinkType = process.platform === 'win32' ? 'junction' : 'dir';
 
 const homeOrTmpDir = os.tmpdir() || os.homedir();
 const tmpDirsParentDirectory = path.join(
@@ -52,7 +53,7 @@ async function createProjectWithSymlinkedDirectory(): Promise<string> {
   await fs.symlink(
     path.join(tmpDir, 'libs'),
     path.join(tmpDir, 'apps', 'app', 'libs'),
-    'dir',
+    directoryLinkType,
   );
   await fs.writeFile(
     path.join(tmpDir, 'tsconfig.json'),
@@ -63,7 +64,7 @@ async function createProjectWithSymlinkedDirectory(): Promise<string> {
   return tmpDir;
 }
 
-describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
+describe('symlinked directories', () => {
   it('returns a program when the file is only in the project under a symlinked path', async () => {
     const tmpDir = await createProjectWithSymlinkedDirectory();
 
@@ -103,7 +104,7 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
   it('returns a program when the file is linted through a symlinked project directory', async () => {
     const tmpDir = await createProjectWithSymlinkedDirectory();
     const linkedTmpDir = `${tmpDir}-link`;
-    await fs.symlink(tmpDir, linkedTmpDir, 'dir');
+    await fs.symlink(tmpDir, linkedTmpDir, directoryLinkType);
 
     const result = parseAndGenerateServices(CODE, {
       disallowAutomaticSingleRunInference: true,
@@ -170,6 +171,8 @@ describe.skipIf(process.platform === 'win32')('symlinked directories', () => {
     );
     const existsSync = fsSync.existsSync;
     let createdNewFile = false;
+    // Simulate a rename occurring after the watch program's initial resync but
+    // before its deletion check for the old, symlinked root file.
     vi.spyOn(fsSync, 'existsSync').mockImplementation(filePath => {
       if (!createdNewFile && filePath === symlinkedExistingFilePath) {
         fsSync.renameSync(existingFilePath, newFilePath);
