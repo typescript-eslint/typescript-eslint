@@ -970,6 +970,8 @@ foo(() => null);
       errors: [
         {
           column: 11,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -983,8 +985,90 @@ foo(() => null);
       errors: [
         {
           column: 22,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+        declare function foo(cb: () => void): void;
+        foo(async () => (((Promise.resolve(true)))));
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+        declare function foo(cb: () => void): void;
+        foo( () => (((void Promise.resolve(true)))));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(cb: () => void): void;
+foo(async () => /* before */ Promise.resolve(true) /* after */);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function foo(cb: () => void): void;
+foo( () => /* before */ void Promise.resolve(true) /* after */);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(cb: () => void): void;
+foo(
+  async () => /* before */ {
+    /* inside */
+  } /* after */,
+);
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function foo(cb: () => void): void;
+foo(
+   () => void (async () => /* before */ {
+    /* inside */
+  })() /* after */,
+);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1000,6 +1084,8 @@ foo(() => null);
       errors: [
         {
           column: 13,
+          endColumn: 19,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -1013,6 +1099,8 @@ foo(0, () => 0);
       errors: [
         {
           column: 14,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -1026,6 +1114,8 @@ foo(() => () => {});
       errors: [
         {
           column: 11,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -1039,8 +1129,19 @@ obj?.foo(() => JSON.parse('{}'));
       errors: [
         {
           column: 16,
+          endColumn: 32,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare const obj: { foo(cb: () => void) } | null;
+obj?.foo(() => void JSON.parse('{}'));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1051,6 +1152,8 @@ obj?.foo(() => JSON.parse('{}'));
       errors: [
         {
           column: 35,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'nonVoidReturn',
         },
@@ -1065,6 +1168,8 @@ foo(cb);
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1080,6 +1185,8 @@ foo<() => void>(async () => ({}));
       errors: [
         {
           column: 26,
+          endColumn: 28,
+          endLine: 5,
           line: 5,
           messageId: 'asyncFunc',
         },
@@ -1096,8 +1203,22 @@ foo(null, () => Math.random());
       errors: [
         {
           column: 17,
+          endColumn: 30,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+function foo<T extends {}>(arg: T, cb: () => T);
+function foo(arg: null, cb: () => void);
+function foo(arg: any, cb: () => any) {}
+
+foo(null, () => void Math.random());
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1111,8 +1232,21 @@ foo(null, async () => {});
       errors: [
         {
           column: 20,
+          endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function foo<T extends {}>(arg: T, cb: () => T): void;
+declare function foo(arg: any, cb: () => void): void;
+
+foo(null,  () => void (async () => {})());
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1127,8 +1261,50 @@ foo(async () => {
       errors: [
         {
           column: 14,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function foo(cb: () => void): void;
+declare function foo(cb: () => any): void;
+foo( () => void (async () => {
+  return Math.random();
+})());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(cb: () => void): void;
+foo(async function () {
+  return -Math.random();
+});
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function foo(cb: () => void): void;
+foo( function () { (async () => {
+  return -Math.random();
+})(); });
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1141,6 +1317,8 @@ f(undefined, () => 'test');
       errors: [
         {
           column: 20,
+          endColumn: 26,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidReturn',
         },
@@ -1155,6 +1333,8 @@ async function cb() {}
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidFunc',
         },
@@ -1171,6 +1351,8 @@ foo(() => {
       errors: [
         {
           column: 3,
+          endColumn: 9,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -1186,6 +1368,8 @@ function bar<Cb extends () => number>(cb: Cb) {
       errors: [
         {
           column: 7,
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1200,6 +1384,8 @@ foo!(cb);
       errors: [
         {
           column: 6,
+          endColumn: 8,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1215,8 +1401,21 @@ foo(false, () => Promise.resolve(undefined));
       errors: [
         {
           column: 18,
+          endColumn: 44,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare const foo: {
+  (arg: boolean, cb: () => void): void;
+};
+foo(false, () => void Promise.resolve(undefined));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1233,8 +1432,24 @@ foo.bar(
       errors: [
         {
           column: 9,
+          endColumn: 27,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare const foo: {
+  bar(cb1: () => any, cb2: () => void): void;
+};
+foo.bar(
+  () => Promise.resolve(1),
+  () => void Promise.resolve(1),
+);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1243,11 +1458,13 @@ foo.bar(
 declare const Foo: {
   new (cb: () => void): void;
 };
-new Foo(async () => {});
+new Foo(async () => 123);
       `,
       errors: [
         {
           column: 18,
+          endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'asyncFunc',
         },
@@ -1269,11 +1486,15 @@ foo(() => {
       errors: [
         {
           column: 18,
+          endColumn: 24,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
         {
           column: 12,
+          endColumn: 18,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
@@ -1297,6 +1518,8 @@ foo(() => {
       errors: [
         {
           column: 7,
+          endColumn: 13,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -1316,8 +1539,25 @@ foo(async () => {
       errors: [
         {
           column: 14,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function foo(cb: () => void): void;
+foo( () => void (async () => {
+  try {
+    await Promise.resolve();
+  } catch {
+    console.error('fail');
+  }
+})());
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1332,6 +1572,8 @@ new Foo(() => false);
       errors: [
         {
           column: 15,
+          endColumn: 20,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -1348,6 +1590,8 @@ Foo(() => false);
       errors: [
         {
           column: 11,
+          endColumn: 16,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -1368,6 +1612,8 @@ function cb() {
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidFunc',
         },
@@ -1386,6 +1632,8 @@ function cb() {
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidFunc',
         },
@@ -1400,6 +1648,8 @@ foo(cb);
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1418,16 +1668,22 @@ foo(
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
         {
           column: 9,
+          endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
         {
           column: 9,
+          endColumn: 11,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
@@ -1445,13 +1701,43 @@ foo(
       errors: [
         {
           column: 9,
+          endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function foo(...cbs: [() => void, () => void, (() => void)?]): void;
+foo(
+  () => {},
+  () => void Math.random(),
+  () => (1).toString(),
+);
+      `,
+            },
+          ],
         },
         {
           column: 9,
+          endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function foo(...cbs: [() => void, () => void, (() => void)?]): void;
+foo(
+  () => {},
+  () => Math.random(),
+  () => void (1).toString(),
+);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1482,11 +1768,15 @@ win.addEventListener('custom', ev => ev);
       errors: [
         {
           column: 48,
+          endColumn: 50,
+          endLine: 21,
           line: 21,
           messageId: 'nonVoidReturn',
         },
         {
           column: 38,
+          endColumn: 40,
+          endLine: 22,
           line: 22,
           messageId: 'nonVoidReturn',
         },
@@ -1501,8 +1791,20 @@ foo({}, async () => {});
       errors: [
         {
           column: 18,
+          endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare function foo(x: null, cb: () => void): void;
+declare function foo(x: unknown, cb: () => any): void;
+foo({},  () => void (async () => {})());
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1516,8 +1818,21 @@ arr.forEach(async x => {
       errors: [
         {
           column: 21,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+const arr = [1, 2];
+arr.forEach( x => void (async () => {
+  console.log(x);
+})());
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1528,8 +1843,18 @@ arr.forEach(async x => {
       errors: [
         {
           column: 24,
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+[1, 2].forEach( x => void console.log(x));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1540,6 +1865,8 @@ const foo: () => void = () => false;
       errors: [
         {
           column: 31,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'nonVoidReturn',
         },
@@ -1551,14 +1878,30 @@ const { name }: () => void = function foo() {
   return false;
 };
       `,
-      errors: [{ column: 3, line: 3, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
 declare const foo: Record<string, () => void>;
 foo['a' + 'b'] = () => true;
       `,
-      errors: [{ column: 24, line: 3, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 24,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
@@ -1567,8 +1910,18 @@ const foo: () => void = async () => Promise.resolve(true);
       errors: [
         {
           column: 34,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+const foo: () => void =  () => void Promise.resolve(true);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1577,6 +1930,8 @@ const foo: () => void = async () => Promise.resolve(true);
       errors: [
         {
           column: 45,
+          endColumn: 47,
+          endLine: 1,
           line: 1,
           messageId: 'nonVoidReturn',
         },
@@ -1591,6 +1946,8 @@ const cb: () => void = (): Array<number> => {
       errors: [
         {
           column: 28,
+          endColumn: 41,
+          endLine: 2,
           line: 2,
           messageId: 'nonVoidFunc',
         },
@@ -1601,6 +1958,8 @@ const cb: () => void = (): Array<number> => {
       errors: [
         {
           column: 24,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'nonVoidFunc',
         },
@@ -1611,8 +1970,17 @@ const cb: () => void = (): Array<number> => {
       errors: [
         {
           column: 47,
+          endColumn: 65,
+          endLine: 1,
           line: 1,
           messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output:
+                'const cb: () => void = (): void => void Promise.resolve(1);',
+            },
+          ],
         },
       ],
     },
@@ -1627,8 +1995,22 @@ const cb: () => void = async (): Promise<number> => {
       errors: [
         {
           column: 50,
+          endColumn: 52,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+const cb: () => void =  (): void => void (async () => {
+  try {
+    return Promise.resolve(1);
+  } catch {}
+})();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1637,8 +2019,16 @@ const cb: () => void = async (): Promise<number> => {
       errors: [
         {
           column: 50,
+          endColumn: 52,
+          endLine: 1,
           line: 1,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `const cb: () => void =  (): void => void Promise.resolve(1);`,
+            },
+          ],
         },
       ],
     },
@@ -1653,8 +2043,22 @@ const foo: () => void = async () => {
       errors: [
         {
           column: 34,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+const foo: () => void =  () => void (async () => {
+  try {
+    return 1;
+  } catch {}
+})();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1670,8 +2074,23 @@ const foo: () => void = async (): Promise<void> => {
       errors: [
         {
           column: 49,
+          endColumn: 51,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+const foo: () => void =  (): void => void (async () => {
+  try {
+    await Promise.resolve();
+  } finally {
+  }
+})();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1689,8 +2108,25 @@ const foo: () => void = async () => {
       errors: [
         {
           column: 34,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+const foo: () => void =  () => void (async () => {
+  try {
+    await Promise.resolve();
+  } catch (err) {
+    console.error(err);
+  }
+  console.log('ok');
+})();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1699,6 +2135,8 @@ const foo: () => void = async () => {
       errors: [
         {
           column: 29,
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'nonVoidFunc',
         },
@@ -1712,6 +2150,8 @@ const foo: () => void = cb;
       errors: [
         {
           column: 25,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidFunc',
         },
@@ -1730,11 +2170,15 @@ const foo: () => void = function () {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidReturn',
         },
         {
           column: 5,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -1752,6 +2196,8 @@ const foo: () => void = function () {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -1772,11 +2218,15 @@ const foo: { (arg: number): void; (arg: string): void } = arg => {
       errors: [
         {
           column: 7,
+          endColumn: 13,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
         {
           column: 7,
+          endColumn: 13,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -1791,8 +2241,20 @@ const foo: ((arg: number) => void) | ((arg: string) => void) = async () => {
       errors: [
         {
           column: 73,
+          endColumn: 75,
+          endLine: 2,
           line: 2,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+const foo: ((arg: number) => void) | ((arg: string) => void) =  () => void (async () => {
+  return 1;
+})();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1807,6 +2269,8 @@ function cb() {
       errors: [
         {
           column: 18,
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidFunc',
         },
@@ -1825,6 +2289,8 @@ function cb() {
       errors: [
         {
           column: 18,
+          endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidFunc',
         },
@@ -1839,6 +2305,8 @@ foo = cb;
       errors: [
         {
           column: 7,
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1855,6 +2323,8 @@ foo.cb = () => {
       errors: [
         {
           column: 3,
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidReturn',
         },
@@ -1869,6 +2339,8 @@ foo ??= cb;
       errors: [
         {
           column: 9,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1883,6 +2355,8 @@ foo ||= cb;
       errors: [
         {
           column: 9,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1897,6 +2371,8 @@ foo &&= cb;
       errors: [
         {
           column: 9,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1910,6 +2386,8 @@ return <Foo cb={() => 1} />;
       errors: [
         {
           column: 23,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -1932,11 +2410,15 @@ return (
       errors: [
         {
           column: 18,
+          endColumn: 24,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
         {
           column: 12,
+          endColumn: 18,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -1946,14 +2428,79 @@ return (
     {
       code: `
 type Cb = () => void;
-declare function Foo(props: { cb: Cb; s: string }): unknown;
-return <Foo cb={async function () {}} s="!@#jp2gmd" />;
+declare function Foo(props: { cb: Cb }): unknown;
+return (
+  <Foo
+    cb={async () => {
+      await fetch('/boop');
+    }}
+  />
+);
       `,
       errors: [
         {
-          column: 17,
-          line: 4,
+          column: 18,
+          endColumn: 20,
+          endLine: 6,
+          line: 6,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+type Cb = () => void;
+declare function Foo(props: { cb: Cb }): unknown;
+return (
+  <Foo
+    cb={ () => void (async () => {
+      await fetch('/boop');
+    })()}
+  />
+);
+      `,
+            },
+          ],
+        },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+type Cb = () => void;
+declare function Foo(props: { cb: Cb; s: string }): unknown;
+return (
+  <Foo
+    cb={async function (): Promise<void> {
+      await fetch('/boop');
+    }}
+    s="!@#jp2gmd"
+  />
+);
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+type Cb = () => void;
+declare function Foo(props: { cb: Cb; s: string }): unknown;
+return (
+  <Foo
+    cb={ function (): void { (async () => {
+      await fetch('/boop');
+    })(); }}
+    s="!@#jp2gmd"
+  />
+);
+      `,
+            },
+          ],
         },
       ],
       filename: 'react.tsx',
@@ -1967,6 +2514,8 @@ return <Foo n={2137} cb={function* () {}} />;
       errors: [
         {
           column: 26,
+          endColumn: 36,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1989,6 +2538,8 @@ return (
       errors: [
         {
           column: 9,
+          endColumn: 25,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidFunc',
         },
@@ -2006,6 +2557,8 @@ return <Foo cb={x => x} />;
       errors: [
         {
           column: 22,
+          endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -2026,6 +2579,8 @@ function App() {
       errors: [
         {
           column: 32,
+          endColumn: 33,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -2040,6 +2595,8 @@ foo({ arg: 1, cb: () => 1 });
       errors: [
         {
           column: 25,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -2058,6 +2615,8 @@ foo = {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -2075,6 +2634,8 @@ foo = {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -2092,6 +2653,8 @@ foo = {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -2107,6 +2670,8 @@ foo = {
       errors: [
         {
           column: 40,
+          endColumn: 41,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidReturn',
         },
@@ -2126,8 +2691,25 @@ foo = {
       errors: [
         {
           column: 3,
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+declare let foo: { cb: (() => void) | number };
+foo = {
+  cb:  () => void (async () => {
+    if (maybe) {
+      return 'asd';
+    }
+  })(),
+};
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2143,11 +2725,15 @@ const foo: Record<string, () => void> = {
       errors: [
         {
           column: 8,
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
         {
           column: 8,
+          endColumn: 10,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidFunc',
         },
@@ -2159,8 +2745,29 @@ declare function cb(): number;
 const foo: Array<(() => void) | false> = [false, cb, () => cb()];
       `,
       errors: [
-        { column: 50, line: 3, messageId: 'nonVoidFunc' },
-        { column: 60, line: 3, messageId: 'nonVoidReturn' },
+        {
+          column: 50,
+          endColumn: 52,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidFunc',
+        },
+        {
+          column: 60,
+          endColumn: 64,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare function cb(): number;
+const foo: Array<(() => void) | false> = [false, cb, () => void cb()];
+      `,
+            },
+          ],
+        },
       ],
     },
     {
@@ -2168,7 +2775,15 @@ const foo: Array<(() => void) | false> = [false, cb, () => cb()];
 declare function cb(): number;
 const foo: [string, () => void, (() => void)?] = ['asd', cb];
       `,
-      errors: [{ column: 58, line: 3, messageId: 'nonVoidFunc' }],
+      errors: [
+        {
+          column: 58,
+          endColumn: 60,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidFunc',
+        },
+      ],
     },
     {
       code: `
@@ -2185,11 +2800,37 @@ const foo: { cbs: Array<() => void> | null } = {
 };
       `,
       errors: [
-        { column: 5, line: 4, messageId: 'nonVoidFunc' },
+        {
+          column: 5,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'nonVoidFunc',
+        },
         {
           column: 14,
+          endColumn: 16,
+          endLine: 7,
           line: 7,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+const foo: { cbs: Array<() => void> | null } = {
+  cbs: [
+    function* () {
+      yield 1;
+    },
+     () => void (async () => {
+      await 1;
+    })(),
+    null,
+  ],
+};
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2202,6 +2843,8 @@ const foo: { cb: () => void } = class {
       errors: [
         {
           column: 22,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -2216,6 +2859,8 @@ class Foo {
       errors: [
         {
           column: 27,
+          endColumn: 29,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -2230,6 +2875,8 @@ class Foo {
       errors: [
         {
           column: 28,
+          endColumn: 39,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidFunc',
         },
@@ -2247,6 +2894,8 @@ class Bar extends Foo {
       errors: [
         {
           column: 8,
+          endColumn: 19,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidFunc',
         },
@@ -2265,6 +2914,8 @@ class Bar extends foo() {
       errors: [
         {
           column: 8,
+          endColumn: 19,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidFunc',
         },
@@ -2287,6 +2938,8 @@ class Bar extends Foo {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 10,
           line: 10,
           messageId: 'nonVoidReturn',
         },
@@ -2306,6 +2959,8 @@ class Foo extends Bar {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
@@ -2325,6 +2980,8 @@ void class extends Foo {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
@@ -2348,11 +3005,34 @@ class Baz extends Bar {
       errors: [
         {
           column: 15,
+          endColumn: 28,
+          endLine: 9,
           line: 9,
           messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+class Foo {
+  cb1 = () => {};
+}
+class Bar extends Foo {
+  cb2() {}
+}
+class Baz extends Bar {
+  cb1 = () => void Math.random();
+  cb2() {
+    return Math.random();
+  }
+}
+      `,
+            },
+          ],
         },
         {
           column: 5,
+          endColumn: 11,
+          endLine: 11,
           line: 11,
           messageId: 'nonVoidReturn',
         },
@@ -2374,6 +3054,8 @@ class Baz extends Bar implements Foo {
       errors: [
         {
           column: 20,
+          endColumn: 21,
+          endLine: 10,
           line: 10,
           messageId: 'nonVoidFunc',
         },
@@ -2400,11 +3082,15 @@ class Bar extends Foo {
       errors: [
         {
           column: 7,
+          endColumn: 13,
+          endLine: 11,
           line: 11,
           messageId: 'nonVoidReturn',
         },
         {
           column: 7,
+          endColumn: 13,
+          endLine: 13,
           line: 13,
           messageId: 'nonVoidReturn',
         },
@@ -2422,8 +3108,23 @@ class Bar extends Foo {
       errors: [
         {
           column: 3,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+abstract class Foo {
+  abstract cb(): void;
+}
+class Bar extends Foo {
+   cb() { (async () => {})(); }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2442,6 +3143,8 @@ class Bar extends Foo {
       errors: [
         {
           column: 3,
+          endColumn: 6,
+          endLine: 9,
           line: 9,
           messageId: 'nonVoidFunc',
         },
@@ -2459,6 +3162,8 @@ class Bar implements Foo {
       errors: [
         {
           column: 8,
+          endColumn: 19,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidFunc',
         },
@@ -2475,6 +3180,8 @@ class Bar implements O {
       errors: [
         {
           column: 8,
+          endColumn: 19,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidFunc',
         },
@@ -2492,8 +3199,46 @@ class Bar implements O {
       errors: [
         {
           column: 11,
+          endColumn: 19,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidFunc',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  cb(): void;
+}
+class Bar implements Foo {
+  async /* important comment */ cb(): Promise<string> {
+    return Promise.resolve('siema');
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 35,
+          endLine: 6,
+          line: 6,
+          messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+interface Foo {
+  cb(): void;
+}
+class Bar implements Foo {
+   /* important comment */ cb(): void { (async () => {
+    return Promise.resolve('siema');
+  })(); }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2511,8 +3256,25 @@ class Bar implements Foo {
       errors: [
         {
           column: 3,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+interface Foo {
+  cb(): void;
+}
+class Bar implements Foo {
+   cb(): void { (async () => {
+    return Promise.resolve('siema');
+  })(); }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2534,8 +3296,29 @@ class Bar implements Foo {
       errors: [
         {
           column: 3,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+interface Foo {
+  cb(): void;
+}
+class Bar implements Foo {
+   cb() { (async () => {
+    try {
+      return { a: ['asdf', 1234] };
+    } catch {
+      console.error('error');
+    }
+  })(); }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2557,6 +3340,8 @@ class Bar implements Foo {
       errors: [
         {
           column: 7,
+          endColumn: 13,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -2571,19 +3356,48 @@ interface Foo2 {
   cb2: () => void;
 }
 class Bar implements Foo1, Foo2 {
-  async cb1() {}
-  async *cb2() {}
+  async cb1() {
+    console.log('a');
+  }
+  async *cb2() {
+    console.log('b');
+  }
 }
       `,
       errors: [
         {
           column: 3,
+          endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+interface Foo1 {
+  cb1(): void;
+}
+interface Foo2 {
+  cb2: () => void;
+}
+class Bar implements Foo1, Foo2 {
+   cb1() { (async () => {
+    console.log('a');
+  })(); }
+  async *cb2() {
+    console.log('b');
+  }
+}
+      `,
+            },
+          ],
         },
         {
           column: 3,
-          line: 10,
+          endColumn: 13,
+          endLine: 12,
+          line: 12,
           messageId: 'nonVoidFunc',
         },
       ],
@@ -2610,16 +3424,45 @@ class Bar extends Baz implements Foo1, Foo2 {
       errors: [
         {
           column: 3,
+          endColumn: 12,
+          endLine: 12,
           line: 12,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+interface Foo1 {
+  cb1(): void;
+}
+interface Foo2 {
+  cb2: () => void;
+}
+class Baz {
+  cb3() {}
+}
+class Bar extends Baz implements Foo1, Foo2 {
+   cb1() { (async () => {})(); }
+  async *cb2() {}
+  cb3() {
+    return Math.random();
+  }
+}
+      `,
+            },
+          ],
         },
         {
           column: 3,
+          endColumn: 13,
+          endLine: 13,
           line: 13,
           messageId: 'nonVoidFunc',
         },
         {
           column: 5,
+          endColumn: 11,
+          endLine: 15,
           line: 15,
           messageId: 'nonVoidReturn',
         },
@@ -2638,6 +3481,8 @@ class A extends class {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -2656,6 +3501,8 @@ class A extends class B {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -2670,19 +3517,48 @@ interface Foo2 extends Foo1 {
   cb2: () => void;
 }
 class Bar implements Foo2 {
-  async cb1() {}
-  async *cb2() {}
+  async cb1() {
+    console.log('a');
+  }
+  async *cb2() {
+    console.log('b');
+  }
 }
       `,
       errors: [
         {
           column: 3,
+          endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'asyncFunc',
+          suggestions: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              output: `
+interface Foo1 {
+  cb1(): void;
+}
+interface Foo2 extends Foo1 {
+  cb2: () => void;
+}
+class Bar implements Foo2 {
+   cb1() { (async () => {
+    console.log('a');
+  })(); }
+  async *cb2() {
+    console.log('b');
+  }
+}
+      `,
+            },
+          ],
         },
         {
           column: 3,
-          line: 10,
+          endColumn: 13,
+          endLine: 12,
+          line: 12,
           messageId: 'nonVoidFunc',
         },
       ],
@@ -2692,14 +3568,39 @@ class Bar implements Foo2 {
 declare let foo: () => () => void;
 foo = () => () => 1 + 1;
       `,
-      errors: [{ column: 19, line: 3, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 19,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
 declare let foo: () => () => void;
 foo = () => () => Math.random();
       `,
-      errors: [{ column: 19, line: 3, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 19,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidReturn',
+          suggestions: [
+            {
+              messageId: 'suggestAddVoidOp',
+              output: `
+declare let foo: () => () => void;
+foo = () => () => void Math.random();
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -2707,7 +3608,15 @@ declare let foo: () => () => void;
 declare const cb: () => null | false;
 foo = () => cb;
       `,
-      errors: [{ column: 13, line: 4, messageId: 'nonVoidFunc' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'nonVoidFunc',
+        },
+      ],
     },
     {
       code: `
@@ -2719,7 +3628,15 @@ foo = {
 };
 function cb() {}
       `,
-      errors: [{ column: 18, line: 5, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
@@ -2730,7 +3647,15 @@ foo.f = function () {
   };
 };
       `,
-      errors: [{ column: 5, line: 5, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
@@ -2739,16 +3664,32 @@ foo = () => () => {
   return 'asd' + 'zxc';
 };
       `,
-      errors: [{ column: 3, line: 4, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
 declare function foo(cb: () => () => void): void;
 foo(function () {
-  return async () => {};
+  return async (): Promise<unknown[]> => ['asdf', 1234, true];
 });
       `,
-      errors: [{ column: 19, line: 4, messageId: 'asyncFunc' }],
+      errors: [
+        {
+          column: 39,
+          endColumn: 41,
+          endLine: 4,
+          line: 4,
+          messageId: 'asyncFunc',
+        },
+      ],
     },
     {
       code: noFormat`
@@ -2770,10 +3711,34 @@ foo(function () {
         });
       `,
       errors: [
-        { column: 13, line: 6, messageId: 'nonVoidReturn' },
-        { column: 13, line: 10, messageId: 'nonVoidReturn' },
-        { column: 13, line: 14, messageId: 'nonVoidReturn' },
-        { column: 11, line: 16, messageId: 'nonVoidReturn' },
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'nonVoidReturn',
+        },
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 10,
+          line: 10,
+          messageId: 'nonVoidReturn',
+        },
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 14,
+          line: 14,
+          messageId: 'nonVoidReturn',
+        },
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 16,
+          line: 16,
+          messageId: 'nonVoidReturn',
+        },
       ],
       filename: 'react.tsx',
     },
@@ -2788,7 +3753,15 @@ async function* cb() {
   yield true;
 }
       `,
-      errors: [{ column: 10, line: 5, messageId: 'nonVoidFunc' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'nonVoidFunc',
+        },
+      ],
     },
   ],
 });
