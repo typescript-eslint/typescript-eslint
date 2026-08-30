@@ -225,6 +225,19 @@ export default createRule<Options, MessageId>({
         if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
           return;
         }
+
+        // A tuple element is only guaranteed to sit at its declared index while
+        // no rest element precedes it. A rest element may match zero elements,
+        // so everything at or after it can shift down and the destructured
+        // position can genuinely be missing at runtime.
+        const { elementFlags } = sourceType.target;
+        const restIndex = elementFlags.findIndex(
+          (flags: ts.ElementFlags) => flags & ts.ElementFlags.Variable,
+        );
+        if (restIndex !== -1 && elementIndex >= restIndex) {
+          return;
+        }
+
         const elementType = tupleArgs[elementIndex];
         if (!canBeUndefined(elementType)) {
           reportUselessDefaultAssignment(node, 'property');
