@@ -1462,6 +1462,10 @@ Promise.reject(someAnyValue);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'rejectAnError',
         },
       ],
@@ -1474,6 +1478,10 @@ Promise.reject(someUnknownValue);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
           messageId: 'rejectAnError',
         },
       ],
@@ -1486,6 +1494,10 @@ Promise.reject(someUnknownValue);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
           messageId: 'rejectAnError',
         },
       ],
@@ -1497,6 +1509,10 @@ Promise.reject(someAnyValue);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'rejectAnError',
         },
       ],
@@ -1507,27 +1523,59 @@ Promise.reject(someAnyValue);
 class CustomRejection {}
 Promise.reject(new CustomRejection());
       `,
-      errors: [{ messageId: 'rejectAnError' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+        },
+      ],
     },
     {
       code: `
 Promise.reject(new Date());
       `,
-      errors: [{ messageId: 'rejectAnError' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'rejectAnError',
+        },
+      ],
     },
     {
       code: `
 import { createError } from 'errors';
 Promise.reject(createError());
       `,
-      errors: [{ messageId: 'rejectAnError' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+        },
+      ],
     },
     {
       code: `
 import { createError } from 'errors';
 new Promise((resolve, reject) => reject(createError()));
       `,
-      errors: [{ messageId: 'rejectAnError' }],
+      errors: [
+        {
+          column: 34,
+          endColumn: 55,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+        },
+      ],
     },
   ],
 });

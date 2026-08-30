@@ -29,6 +29,8 @@ function bar(x: never) {
       errors: [
         {
           column: 1,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'meaninglessVoidOperator',
         },
@@ -43,6 +45,8 @@ void foo();
       errors: [
         {
           column: 1,
+          endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOperator',
         },
@@ -61,6 +65,8 @@ function bar(x: never) {
       errors: [
         {
           column: 3,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOperator',
           suggestions: [

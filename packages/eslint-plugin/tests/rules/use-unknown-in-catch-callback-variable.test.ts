@@ -170,7 +170,6 @@ Promise.resolve().catch(<InvalidHandler>(
 ));
     `,
   ],
-
   invalid: [
     {
       code: `
@@ -180,6 +179,9 @@ Promise.resolve().catch((err: Error) => {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -203,6 +205,10 @@ Promise.resolve()[method]((error: Error) => {});
       `,
       errors: [
         {
+          column: 28,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
           messageId: 'useUnknown',
           suggestions: [
             {
@@ -225,6 +231,9 @@ Promise.resolve().catch((e, ...rest: []) => {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -251,6 +260,9 @@ Promise.resolve().catch(
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 58,
+          endLine: 3,
           line: 3,
           messageId: 'useUnknown',
           suggestions: [
@@ -285,6 +297,9 @@ Promise.resolve().catch(
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 6,
+          endLine: 8,
           line: 4,
           messageId: 'useUnknown',
           suggestions: [
@@ -313,6 +328,9 @@ Promise.resolve().catch(function (err: string) {
       `,
       errors: [
         {
+          column: 35,
+          endColumn: 46,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -337,6 +355,9 @@ Promise.resolve().catch(function (err /* awkward spot for comment */) {
       `,
       errors: [
         {
+          column: 35,
+          endColumn: 38,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -361,6 +382,9 @@ Promise.resolve().catch(function namedCallback(err: string) {
       `,
       errors: [
         {
+          column: 48,
+          endColumn: 59,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -385,6 +409,9 @@ Promise.resolve().catch(err => {
       `,
       errors: [
         {
+          column: 25,
+          endColumn: 28,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -410,6 +437,10 @@ Promise.resolve().then(
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'useUnknown',
           suggestions: [
             {
@@ -434,6 +465,9 @@ Promise.resolve().catch((err?) => {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -458,6 +492,9 @@ Promise.resolve().catch((err?: string) => {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 38,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -482,6 +519,9 @@ Promise.resolve().catch(err/* with comment */=> {
       `,
       errors: [
         {
+          column: 25,
+          endColumn: 28,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -506,6 +546,9 @@ Promise.resolve().catch((err = 2) => {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 33,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -530,6 +573,9 @@ Promise.resolve().catch((err: any /* comment 1 */ = /* comment 2 */ 2) => {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 70,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -554,6 +600,9 @@ Promise.resolve().catch((...args) => {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 33,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -578,6 +627,9 @@ Promise.reject(new Error('I will reject!')).catch(([err]: [unknown]) => {
       `,
       errors: [
         {
+          column: 52,
+          endColumn: 68,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknownArrayDestructuringPattern',
           suggestions: null,
@@ -593,6 +645,9 @@ Promise.resolve(' a string ').catch(
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'useUnknown',
           suggestions: [
@@ -615,6 +670,9 @@ Promise.resolve('object destructuring').catch(({}) => {});
       `,
       errors: [
         {
+          column: 48,
+          endColumn: 50,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknownObjectDestructuringPattern',
         },
@@ -629,6 +687,9 @@ Promise.resolve('object destructuring').catch(function ({ gotcha }) {
       `,
       errors: [
         {
+          column: 57,
+          endColumn: 67,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknownObjectDestructuringPattern',
         },
@@ -641,6 +702,9 @@ Promise.resolve()['catch']((x: any) => 'return');
       `,
       errors: [
         {
+          column: 29,
+          endColumn: 35,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -661,6 +725,9 @@ Promise.reject().catch((...x: any) => {});
       `,
       errors: [
         {
+          column: 25,
+          endColumn: 34,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -683,6 +750,9 @@ Promise.resolve().catch((...[args]: [string]) => {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 45,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -707,6 +777,9 @@ Promise.resolve().catch((...{ find }: [string]) => {
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 47,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -734,9 +807,7 @@ Promise.resolve('foo').then(() => {}, condition ? err => {} : err => {});
           endColumn: 54,
           endLine: 3,
           line: 3,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',
@@ -752,9 +823,7 @@ Promise.resolve('foo').then(() => {}, condition ? (err: unknown) => {} : err => 
           endColumn: 66,
           endLine: 3,
           line: 3,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',
@@ -783,9 +852,7 @@ Promise.resolve('foo').catch(
           endColumn: 59,
           endLine: 6,
           line: 6,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',
@@ -806,9 +873,7 @@ Promise.resolve('foo').catch(
           endColumn: 25,
           endLine: 7,
           line: 7,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',
@@ -829,9 +894,7 @@ Promise.resolve('foo').catch(
           endColumn: 41,
           endLine: 7,
           line: 7,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',
