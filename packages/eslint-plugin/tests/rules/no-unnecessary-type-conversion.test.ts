@@ -139,6 +139,8 @@ const compareWithToString = customId === CustomIds.Id1.toString();
         {
           column: 1,
           endColumn: 7,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -159,6 +161,8 @@ const compareWithToString = customId === CustomIds.Id1.toString();
         {
           column: 8,
           endColumn: 18,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -179,6 +183,8 @@ const compareWithToString = customId === CustomIds.Id1.toString();
         {
           column: 1,
           endColumn: 6,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -199,6 +205,8 @@ const compareWithToString = customId === CustomIds.Id1.toString();
         {
           column: 7,
           endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -281,6 +289,8 @@ let str = 'asdf';
         {
           column: 1,
           endColumn: 7,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -301,6 +311,8 @@ let str = 'asdf';
         {
           column: 1,
           endColumn: 2,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -321,6 +333,8 @@ let str = 'asdf';
         {
           column: 1,
           endColumn: 3,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -341,6 +355,8 @@ let str = 'asdf';
         {
           column: 1,
           endColumn: 8,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -361,6 +377,8 @@ let str = 'asdf';
         {
           column: 1,
           endColumn: 3,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -381,6 +399,8 @@ let str = 'asdf';
         {
           column: 1,
           endColumn: 7,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -541,6 +561,8 @@ function f<T extends bigint>(x: T) {
         {
           column: 1,
           endColumn: 7,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -561,6 +583,8 @@ function f<T extends bigint>(x: T) {
         {
           column: 13,
           endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -581,6 +605,8 @@ function f<T extends bigint>(x: T) {
         {
           column: 5,
           endColumn: 6,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -601,6 +627,8 @@ function f<T extends bigint>(x: T) {
         {
           column: 5,
           endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -621,6 +649,8 @@ function f<T extends bigint>(x: T) {
         {
           column: 10,
           endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -641,6 +671,8 @@ function f<T extends bigint>(x: T) {
         {
           column: 10,
           endColumn: 17,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -661,6 +693,8 @@ function f<T extends bigint>(x: T) {
         {
           column: 6,
           endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -717,6 +751,8 @@ str.toString().length;
         {
           column: 5,
           endColumn: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -743,6 +779,8 @@ let str = 'asdf';
         {
           column: 1,
           endColumn: 3,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -763,6 +801,8 @@ let str = 'asdf';
         {
           column: 1,
           endColumn: 3,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
             {
@@ -786,6 +826,7 @@ declare const threeOrFour: 3 | 4;
         {
           column: 1,
           endColumn: 3,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryTypeConversion',
           suggestions: [
