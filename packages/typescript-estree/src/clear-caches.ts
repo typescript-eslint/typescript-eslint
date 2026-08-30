@@ -10,6 +10,12 @@ import {
 } from './parseSettings/createParseSettings';
 import { clearGlobCache } from './parseSettings/resolveProjectList';
 
+let clearNativeProjectService: (() => void) | undefined;
+
+export function registerNativeProjectServiceClearer(clearer: () => void): void {
+  clearNativeProjectService = clearer;
+}
+
 /**
  * Clears all of the internal caches.
  * Generally you shouldn't need or want to use this.
@@ -25,6 +31,7 @@ export function clearCaches(): void {
   clearTSConfigMatchCache();
   clearTSServerProjectService();
   clearGlobCache();
+  clearNativeProjectService?.();
 }
 
 // TODO - delete this in next major
