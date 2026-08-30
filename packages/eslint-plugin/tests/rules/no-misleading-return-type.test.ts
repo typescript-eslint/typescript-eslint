@@ -174,6 +174,22 @@ function getValues(): Array<string | null> {
 }
     `,
     `
+declare const values: ArrayLike<string | null>;
+function getValues(): ArrayLike<string | null> {
+  return values;
+}
+    `,
+    `
+interface NumberIndexed<T> {
+  readonly [index: number]: string;
+  readonly metadata: T;
+}
+declare const values: NumberIndexed<string>;
+function getValues(): NumberIndexed<string | null> {
+  return values;
+}
+    `,
+    `
 declare const values: string[];
 function getValues(): Array<string | undefined> {
   return values;
@@ -898,6 +914,23 @@ function getValues(): ReadonlyArray<string | null> {
           endColumn: 50,
           endLine: 4,
           line: 4,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: ArrayLike<string>;
+function getValues(): ArrayLike<string | null> {
+  return values;
+}
+      `,
+      errors: [
+        {
+          column: 42,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryType',
         },
       ],
