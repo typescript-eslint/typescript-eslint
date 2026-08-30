@@ -333,7 +333,15 @@ enum Fruit {
 }
 Fruit.Apple < 1;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -342,7 +350,15 @@ enum Fruit {
 }
 Fruit.Apple > 1;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -351,7 +367,15 @@ enum Fruit {
 }
 Fruit.Apple == 1;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -360,7 +384,15 @@ enum Fruit {
 }
 Fruit.Apple === 1;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -369,7 +401,15 @@ enum Fruit {
 }
 Fruit.Apple != 1;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -378,7 +418,15 @@ enum Fruit {
 }
 Fruit.Apple !== 1;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -390,6 +438,10 @@ Fruit.Apple === 0;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -414,7 +466,15 @@ enum Fruit {
 }
 Fruit.Banana === '';
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 20,
+          endLine: 6,
+          line: 6,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -425,7 +485,15 @@ enum Vegetable {
 }
 Vegetable.Asparagus === 'beet';
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 31,
+          endLine: 7,
+          line: 7,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -436,7 +504,15 @@ enum Fruit {
 }
 1 === Fruit.Apple;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 18,
+          endLine: 7,
+          line: 7,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -447,7 +523,15 @@ enum Vegetable {
 }
 'beet' === Vegetable.Asparagus;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 31,
+          endLine: 7,
+          line: 7,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -459,7 +543,15 @@ enum Fruit {
 const fruit = Fruit.Apple;
 fruit === 1;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 8,
+          line: 8,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -471,7 +563,15 @@ enum Vegetable {
 const vegetable = Vegetable.Asparagus;
 vegetable === 'beet';
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 8,
+          line: 8,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -483,7 +583,15 @@ enum Fruit {
 const fruit = Fruit.Apple;
 1 === fruit;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 8,
+          line: 8,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -495,7 +603,15 @@ enum Vegetable {
 const vegetable = Vegetable.Asparagus;
 'beet' === vegetable;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 8,
+          line: 8,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -511,7 +627,15 @@ enum Fruit2 {
 }
 Fruit.Apple === Fruit2.Apple2;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 12,
+          line: 12,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -527,7 +651,15 @@ enum Vegetable2 {
 }
 Vegetable.Asparagus === Vegetable2.Asparagus2;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 46,
+          endLine: 12,
+          line: 12,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -544,7 +676,15 @@ enum Fruit2 {
 const fruit = Fruit.Apple;
 fruit === Fruit2.Apple2;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 24,
+          endLine: 13,
+          line: 13,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -561,7 +701,15 @@ enum Vegetable2 {
 const vegetable = Vegetable.Asparagus;
 vegetable === Vegetable2.Asparagus2;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 36,
+          endLine: 13,
+          line: 13,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -588,6 +736,10 @@ mixed === 1;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 18,
+          line: 18,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -618,6 +770,10 @@ mixed === 1;
           ],
         },
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 19,
+          line: 19,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -648,6 +804,10 @@ mixed === 1;
           ],
         },
         {
+          column: 1,
+          endColumn: 14,
+          endLine: 20,
+          line: 20,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -678,6 +838,10 @@ mixed === 1;
           ],
         },
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 21,
+          line: 21,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -721,7 +885,15 @@ type __String =
 declare const weirdString: __String;
 weirdString === 'someArbitraryValue';
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 10,
+          line: 10,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -737,7 +909,15 @@ switch (fruit) {
   }
 }
       `,
-      errors: [{ messageId: 'mismatchedCase' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 11,
+          line: 9,
+          messageId: 'mismatchedCase',
+        },
+      ],
     },
     {
       code: `
@@ -757,7 +937,15 @@ switch (fruit) {
   }
 }
       `,
-      errors: [{ messageId: 'mismatchedCase' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 15,
+          line: 13,
+          messageId: 'mismatchedCase',
+        },
+      ],
     },
     {
       code: `
@@ -773,7 +961,15 @@ switch (vegetable) {
   }
 }
       `,
-      errors: [{ messageId: 'mismatchedCase' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 11,
+          line: 9,
+          messageId: 'mismatchedCase',
+        },
+      ],
     },
     {
       code: `
@@ -793,7 +989,15 @@ switch (vegetable) {
   }
 }
       `,
-      errors: [{ messageId: 'mismatchedCase' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 15,
+          line: 13,
+          messageId: 'mismatchedCase',
+        },
+      ],
     },
     {
       code: `
@@ -816,7 +1020,15 @@ switch (vegetable) {
   }
 }
       `,
-      errors: [{ messageId: 'mismatchedCase' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 15,
+          line: 13,
+          messageId: 'mismatchedCase',
+        },
+      ],
     },
     {
       code: `
@@ -829,6 +1041,10 @@ str === 'b';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -857,6 +1073,10 @@ str === 'a' + 'b';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 18,
+          endLine: 7,
+          line: 7,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -885,6 +1105,10 @@ declare const num: Num;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 7,
+          line: 7,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -913,6 +1137,10 @@ declare const num: Num;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 35,
+          endLine: 7,
+          line: 7,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -941,6 +1169,10 @@ declare const num: Num;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -969,6 +1201,10 @@ mixed === 1;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -997,6 +1233,10 @@ mixed === 'b';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -1024,6 +1264,10 @@ stringKey === 1;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -1050,6 +1294,10 @@ stringKey === 1;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -1076,6 +1324,10 @@ stringKey === 1;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -1102,6 +1354,10 @@ stringKey === 1;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
@@ -1127,7 +1383,15 @@ declare const foo: number & {};
 if (foo === Fruit.Apple) {
 }
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -1138,7 +1402,15 @@ declare const foo: number & { __someBrand: void };
 if (foo === Fruit.Apple) {
 }
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -1149,7 +1421,15 @@ declare const foo: string & {};
 if (foo === Vegetable.Asparagus) {
 }
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 32,
+          endLine: 6,
+          line: 6,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -1160,7 +1440,15 @@ declare const foo: string & { __someBrand: void };
 if (foo === Vegetable.Asparagus) {
 }
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 32,
+          endLine: 6,
+          line: 6,
+          messageId: 'mismatchedCondition',
+        },
+      ],
     },
     {
       code: `
@@ -1181,10 +1469,16 @@ switch (numberUnion) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 12,
           line: 12,
           messageId: 'mismatchedCase',
         },
         {
+          column: 3,
+          endColumn: 11,
+          endLine: 14,
           line: 13,
           messageId: 'mismatchedCase',
         },
@@ -1209,10 +1503,16 @@ switch (stringUnion) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 12,
           line: 12,
           messageId: 'mismatchedCase',
         },
         {
+          column: 3,
+          endColumn: 11,
+          endLine: 14,
           line: 13,
           messageId: 'mismatchedCase',
         },
@@ -1233,6 +1533,9 @@ stringUnion === stringEnum;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 27,
+          endLine: 11,
           line: 11,
           messageId: 'mismatchedCondition',
         },
