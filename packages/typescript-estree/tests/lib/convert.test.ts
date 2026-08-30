@@ -7,6 +7,7 @@ import type { TSNode } from '../../src';
 import type { ConverterOptions } from '../../src/convert';
 
 import { Converter } from '../../src/convert';
+import { getModifiers } from '../../src/getModifiers';
 
 describe('convert', () => {
   afterEach(() => {
@@ -28,6 +29,18 @@ describe('convert', () => {
   }
 
   describe('unknown node types', () => {
+    it('copies supported node types', () => {
+      const ast = convertCode('async function foo() {}');
+      const declaration = ast.statements[0] as ts.FunctionDeclaration;
+      const modifier = getModifiers(declaration)?.[0];
+      const instance = new Converter(ast);
+
+      // eslint-disable-next-line @typescript-eslint/dot-notation -- Exercise the supported private fallback directly.
+      expect(instance['deeplyCopy'](modifier as TSNode)).toMatchObject({
+        type: AST_NODE_TYPES.TSAsyncKeyword,
+      });
+    });
+
     it('throws an error', () => {
       const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
 
