@@ -269,8 +269,8 @@ importers:
         specifier: 'catalog:'
         version: 10.8.1(jiti@2.7.0)
       eslint-plugin-eslint-plugin:
-        specifier: ^7.6.0
-        version: 7.6.1(eslint@10.8.1(jiti@2.7.0))
+        specifier: ^7.6.2
+        version: 7.6.2(eslint@10.8.1(jiti@2.7.0))
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@packages+parser)(eslint@10.8.1(jiti@2.7.0))
@@ -301,6 +301,9 @@ importers:
       execa:
         specifier: 7.2.0
         version: 7.2.0
+      get-github-auth-token:
+        specifier: ^0.1.2
+        version: 0.1.2
       globals:
         specifier: 'catalog:'
         version: 16.5.0
@@ -6040,8 +6043,8 @@ packages:
     peerDependencies:
       eslint: '>=8'
 
-  eslint-plugin-eslint-plugin@7.6.1:
-    resolution: {integrity: sha512-Knh3EFP4T9K/hIu/V7LE29P/wkwfodITf8b5Zcv+YVTvpb1LIlO44NZzZ7MHMEkD9alxeDmXiR462mgMYL2Odg==}
+  eslint-plugin-eslint-plugin@7.6.2:
+    resolution: {integrity: sha512-MWE0tzCq0VatvFzELsTfmnMZHFZEQc2lK7HjeLLFiQDUPD8M1pCDlpOuQxGBzjbFvyvz4bfYjI03HQlbS5qdQQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
       eslint: '>=9.0.0'
@@ -6451,6 +6454,10 @@ packages:
 
   get-east-asian-width@1.6.0:
     resolution: {integrity: sha512-QRbvDIbx6YklUe6RxeTeleMR0yv3cYH6PsPZHcnVn7xv7zO1BHN8r0XETu8n6Ye3Q+ahtSarc3WgtNWmehIBfA==}
+    engines: {node: '>=18'}
+
+  get-github-auth-token@0.1.2:
+    resolution: {integrity: sha512-vcGCRhKNOOynlxi7j3dOrkCkxG1rxt/IbmZY9A+xXMhRAUMeIA5T4Fn0LTaPXfQWdUkOcc3DBWDvcc6dmnxmYw==}
     engines: {node: '>=18'}
 
   get-intrinsic@1.3.0:
@@ -16858,7 +16865,7 @@ snapshots:
       eslint: 10.8.1(jiti@2.7.0)
       eslint-compat-utils: 0.5.1(eslint@10.8.1(jiti@2.7.0))
 
-  eslint-plugin-eslint-plugin@7.6.1(eslint@10.8.1(jiti@2.7.0)):
+  eslint-plugin-eslint-plugin@7.6.2(eslint@10.8.1(jiti@2.7.0)):
     dependencies:
       '@eslint-community/eslint-utils': 4.10.1(eslint@10.8.1(jiti@2.7.0))
       eslint: 10.8.1(jiti@2.7.0)
@@ -17427,6 +17434,8 @@ snapshots:
   get-caller-file@2.0.5: {}
 
   get-east-asian-width@1.6.0: {}
+
+  get-github-auth-token@0.1.2: {}
 
   get-intrinsic@1.3.0:
     dependencies:

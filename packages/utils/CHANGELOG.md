@@ -1,3 +1,19 @@
+## 8.68.0 (2026-08-24)
+
+### 🚀 Features
+
+- **utils:** support ESLint rule meta.languages ([#12663](https://github.com/typescript-eslint/typescript-eslint/pull/12663))
+
+### ❤️ Thank You
+
+- Cursor @cursoragent
+- Evyatar Daud @StyleShit
+- Younsang Na @nayounsang
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.68.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.67.0 (2026-08-10)
 
 This was a version bump only for utils to align it with other projects, there were no code changes.

@@ -115,6 +115,8 @@ class Foo {
       errors: [
         {
           column: 8,
+          endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -138,6 +140,8 @@ class Foo {
       errors: [
         {
           column: 20,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -162,6 +166,8 @@ class Foo {
       errors: [
         {
           column: 8,
+          endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -186,6 +192,8 @@ class Foo {
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -210,6 +218,8 @@ class Foo {
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -232,6 +242,8 @@ class Foo {
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -253,6 +265,8 @@ class Foo {
       errors: [
         {
           column: 20,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -274,6 +288,8 @@ class Foo {
       errors: [
         {
           column: 20,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -298,6 +314,8 @@ class Foo {
       errors: [
         {
           column: 9,
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -326,6 +344,8 @@ class Foo {
       errors: [
         {
           column: 10,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -356,6 +376,8 @@ class Foo {
       errors: [
         {
           column: 20,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -387,6 +409,7 @@ class Animal<T> {
         {
           column: 10,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'useThisType',
         },
@@ -418,6 +441,7 @@ class BaseUnion {
         {
           column: 8,
           endColumn: 17,
+          endLine: 5,
           line: 5,
           messageId: 'useThisType',
         },
