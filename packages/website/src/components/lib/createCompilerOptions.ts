@@ -12,7 +12,6 @@ export function createCompilerOptions(
       module: 'esnext',
       target: 'esnext',
       ...tsConfig,
-      allowJs: true,
       baseUrl: undefined,
       lib: Array.isArray(tsConfig.lib) ? tsConfig.lib : undefined,
       moduleDetection: undefined,
