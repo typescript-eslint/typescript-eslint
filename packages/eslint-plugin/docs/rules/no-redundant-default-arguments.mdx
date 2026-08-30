@@ -1,0 +1,90 @@
+---
+description: 'Disallow explicitly passing arguments that are equal to their parameter default value.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-redundant-default-arguments** for documentation.
+
+When a parameter declares a [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters), explicitly passing that same value at a call site is redundant.
+The call behaves identically without the argument.
+Omitting the argument also keeps call sites up to date if the default value is ever changed.
+
+This rule reports arguments, destructured object properties, and JSX props that are identical to the default value declared by the called function.
+Type information is used to resolve the called function, so calls to functions declared in other files are checked as well.
+
+To avoid false positives, the rule intentionally stays conservative:
+
+- Only literal values (strings, numbers, bigints, booleans, `null`, and expression-free template literals) are compared.
+- Only functions whose implementation is a function declaration or a function assigned directly to a `const` variable are checked.
+- Positional arguments are only reported when all following arguments are also redundant, since an argument in the middle of an argument list cannot be removed.
+- Arguments, properties, and props that may be overridden by a spread are not reported.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function greet(name = 'world') {
+  return `Hello, ${name}!`;
+}
+greet('world');
+
+const paginate = (page = 1, pageSize = 50) => [page, pageSize];
+paginate(1, 50);
+
+function search({ caseSensitive = false }) {
+  return caseSensitive;
+}
+search({ caseSensitive: false });
+```
+
+```tsx
+function Status({ visible = true }) {
+  return visible ? 'visible' : 'hidden';
+}
+
+<Status visible={true} />;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function greet(name = 'world') {
+  return `Hello, ${name}!`;
+}
+greet();
+greet('typescript-eslint');
+
+const paginate = (page = 1, pageSize = 50) => [page, pageSize];
+paginate(2);
+
+function search({ caseSensitive = false }) {
+  return caseSensitive;
+}
+search({ caseSensitive: true });
+```
+
+```tsx
+function Status({ visible = true }) {
+  return visible ? 'visible' : 'hidden';
+}
+
+<Status />;
+<Status visible={false} />;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If you prefer call sites to be explicit about the values they pass — for example, to protect them from changes to default values — you may not want this rule.
+
+In rare cases, removing an argument can be observable at runtime, such as when the called function inspects [`arguments.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments/length).
+For that reason this rule provides suggestions rather than an auto-fix, so removals are always applied deliberately.

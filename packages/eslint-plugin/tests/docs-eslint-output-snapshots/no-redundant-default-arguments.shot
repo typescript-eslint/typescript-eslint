@@ -1,0 +1,52 @@
+Incorrect
+
+function greet(name = 'world') {
+  return `Hello, ${name}!`;
+}
+greet('world');
+      ~~~~~~~ Explicitly passing the default value ("world") of `name` is redundant.
+
+const paginate = (page = 1, pageSize = 50) => [page, pageSize];
+paginate(1, 50);
+         ~ Explicitly passing the default value (1) of `page` is redundant.
+            ~~ Explicitly passing the default value (50) of `pageSize` is redundant.
+
+function search({ caseSensitive = false }) {
+  return caseSensitive;
+}
+search({ caseSensitive: false });
+         ~~~~~~~~~~~~~~~~~~~~ Explicitly passing the default value (false) of `caseSensitive` is redundant.
+
+Incorrect
+
+function Status({ visible = true }) {
+  return visible ? 'visible' : 'hidden';
+}
+
+<Status visible={true} />;
+        ~~~~~~~~~~~~~~ Explicitly passing the default value (true) of `visible` is redundant.
+
+Correct
+
+function greet(name = 'world') {
+  return `Hello, ${name}!`;
+}
+greet();
+greet('typescript-eslint');
+
+const paginate = (page = 1, pageSize = 50) => [page, pageSize];
+paginate(2);
+
+function search({ caseSensitive = false }) {
+  return caseSensitive;
+}
+search({ caseSensitive: true });
+
+Correct
+
+function Status({ visible = true }) {
+  return visible ? 'visible' : 'hidden';
+}
+
+<Status />;
+<Status visible={false} />;
