@@ -19,6 +19,10 @@ const logTsserverEvent = debug(
   'typescript-eslint:project-service:tsserver:event',
 );
 
+// The debug library doesn't use levels without creating a namespace for each.
+// Log levels are not passed to the writer so we wouldn't be able to forward
+// to a respective namespace. Supporting them would require an additional flag
+// for granular control. Defaulting to all levels for now.
 const isTsserverLoggingEnabled = (): boolean =>
   logTsserverInfo.enabled || logTsserverErr.enabled || logTsserverPerf.enabled;
 
@@ -147,13 +151,12 @@ export function createProjectService({
     close: doNothing,
     endGroup: doNothing,
     getLogFileName: (): undefined => undefined,
-    hasLevel: (): boolean => isTsserverLoggingEnabled(),
+    hasLevel: isTsserverLoggingEnabled,
     info(s) {
       this.msg(s, tsserver.server.Msg.Info);
     },
-    loggingEnabled: (): boolean =>
-      // if none of the debug namespaces are enabled, then don't enable logging in tsserver
-      isTsserverLoggingEnabled(),
+    // if none of the debug namespaces are enabled, then don't enable logging in tsserver
+    loggingEnabled: isTsserverLoggingEnabled,
     msg: (s, type) => {
       switch (type) {
         case tsserver.server.Msg.Err:
