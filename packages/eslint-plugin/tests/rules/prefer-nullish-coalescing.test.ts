@@ -1516,28 +1516,14 @@ x || y;
 declare let x: 0 | 'foo' | undefined;
 x || y;
       `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: true,
-          },
-        },
-      ],
+      options: [{ ignorePrimitives: { number: true, string: true } }],
     },
     {
       code: `
 declare let x: 0 | 'foo' | undefined;
 x || y;
       `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: false,
-          },
-        },
-      ],
+      options: [{ ignorePrimitives: { number: true, string: false } }],
     },
     {
       code: `
@@ -1549,13 +1535,7 @@ enum Enum {
 declare let x: Enum | undefined;
 x || y;
       `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
+      options: [{ ignorePrimitives: { number: true } }],
     },
     {
       code: `
@@ -1567,13 +1547,7 @@ enum Enum {
 declare let x: Enum.A | Enum.B | undefined;
 x || y;
       `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
+      options: [{ ignorePrimitives: { number: true } }],
     },
     {
       code: `
@@ -1585,13 +1559,7 @@ enum Enum {
 declare let x: Enum | undefined;
 x || y;
       `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
+      options: [{ ignorePrimitives: { string: true } }],
     },
     {
       code: `
@@ -1603,13 +1571,7 @@ enum Enum {
 declare let x: Enum.A | Enum.B | undefined;
 x || y;
       `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
+      options: [{ ignorePrimitives: { string: true } }],
     },
     {
       code: `
@@ -5935,14 +5897,14 @@ if (x) {
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
       ],
       languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootDir, 'unstrict'),
-        },
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
       },
       output: null,
     },
@@ -8157,6 +8119,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8183,6 +8149,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8209,6 +8179,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8235,6 +8209,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8261,6 +8239,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8287,6 +8269,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8313,6 +8299,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8339,6 +8329,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8352,9 +8346,7 @@ x ?? y;
         },
       ],
       options: [
-        {
-          ignorePrimitives: { boolean: true, number: true, string: true },
-        },
+        { ignorePrimitives: { boolean: true, number: true, string: true } },
       ],
       output: null,
     },
@@ -8366,6 +8358,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8397,6 +8393,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8428,6 +8428,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8459,6 +8463,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8490,6 +8498,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8521,6 +8533,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8552,6 +8568,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8583,6 +8603,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8614,6 +8638,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8645,6 +8673,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8677,6 +8709,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8708,6 +8744,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8739,6 +8779,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8770,6 +8814,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8801,6 +8849,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -8832,6 +8884,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8863,6 +8919,10 @@ declare let x: 'a' | undefined;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8894,6 +8954,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8925,6 +8989,10 @@ declare let x: \`hello\${'string'}\` | undefined;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8956,6 +9024,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -8987,6 +9059,10 @@ declare let x: 1 | undefined;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9018,6 +9094,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9049,6 +9129,10 @@ declare let x: 1n | undefined;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9080,6 +9164,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9111,6 +9199,10 @@ declare let x: true | undefined;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9143,6 +9235,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -9174,6 +9270,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -9205,6 +9305,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -9236,6 +9340,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -9267,6 +9375,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -9298,6 +9410,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -9329,410 +9445,11 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: true | false | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: false,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 'a' | 'b' | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 'a' | 'b' | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 'a' | 'b' | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 'a' | 'b' | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 'a' | \`b\` | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 'a' | \`b\` | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 'a' | \`b\` | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 'a' | \`b\` | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 0 | 1 | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 0 | 1 | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 0 | 1 | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 0 | 1 | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 1 | 2 | 3 | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 1 | 2 | 3 | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 1 | 2 | 3 | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 1 | 2 | 3 | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 0n | 1n | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 0n | 1n | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 0n | 1n | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 0n | 1n | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 1n | 2n | 3n | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 1n | 2n | 3n | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 1n | 2n | 3n | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 1n | 2n | 3n | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: true | false | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
               messageId: 'suggestNullish',
@@ -9758,11 +9475,470 @@ x ?? y;
     },
     {
       code: `
+declare let x: 'a' | 'b' | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | 'b' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | 'b' | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | 'b' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | \`b\` | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | \`b\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | \`b\` | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | \`b\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0 | 1 | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0 | 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0 | 1 | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0 | 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1 | 2 | 3 | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1 | 2 | 3 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1 | 2 | 3 | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1 | 2 | 3 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0n | 1n | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0n | 1n | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1n | 2n | 3n | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1n | 2n | 3n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1n | 2n | 3n | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1n | 2n | 3n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: true | false | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: true | false | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
 declare let x: true | false | undefined;
 !x ? y : x;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9795,6 +9971,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -9826,6 +10006,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -9857,6 +10041,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9888,6 +10076,10 @@ declare let x: 0 | 1 | 0n | 1n | undefined;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9919,6 +10111,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9950,6 +10146,10 @@ declare let x: true | false | null | undefined;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -9981,6 +10181,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10002,6 +10206,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10022,6 +10230,10 @@ null || y;
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10041,6 +10253,10 @@ undefined || y;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10066,6 +10282,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10097,6 +10317,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10128,6 +10352,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10159,6 +10387,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10188,6 +10420,10 @@ const x = Boolean(a || b);
       `,
       errors: [
         {
+          column: 21,
+          endColumn: 23,
+          endLine: 6,
+          line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10253,6 +10489,10 @@ const x = String(a || b);
       `,
       errors: [
         {
+          column: 20,
+          endColumn: 22,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10282,6 +10522,10 @@ const x = Boolean(() => a || b);
       `,
       errors: [
         {
+          column: 27,
+          endColumn: 29,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10313,6 +10557,10 @@ const x = Boolean(function weird() {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10346,6 +10594,10 @@ const x = Boolean(f(a || b));
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 25,
+          endLine: 7,
+          line: 7,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10377,6 +10629,10 @@ const x = Boolean(1 + (a || b));
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 28,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10406,6 +10662,10 @@ const x = Boolean(a ? a : b);
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 28,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10435,6 +10695,10 @@ const test = Boolean(!a ? b : a);
       `,
       errors: [
         {
+          column: 22,
+          endColumn: 32,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10467,6 +10731,10 @@ if (f(a || b)) {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10500,6 +10768,10 @@ if (+(a || b)) {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10533,6 +10805,10 @@ defaultBox || getFallbackBox();
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10564,6 +10840,10 @@ defaultBox ? defaultBox : getFallbackBox();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 43,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10596,6 +10876,10 @@ defaultBoxOptional.a?.b != null ? defaultBoxOptional.a?.b : getFallbackBox();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 77,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10624,6 +10908,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10647,6 +10935,10 @@ x || y;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -10673,6 +10965,10 @@ defaultBoxOptional.a?.b != null ? defaultBoxOptional.a.b : getFallbackBox();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 76,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10705,6 +11001,10 @@ defaultBoxOptional.a?.b ? defaultBoxOptional.a?.b : getFallbackBox();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 69,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10737,6 +11037,10 @@ defaultBoxOptional.a?.b ? defaultBoxOptional.a.b : getFallbackBox();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 68,
+          endLine: 8,
+          line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10771,6 +11075,10 @@ defaultBoxOptional.a?.b !== undefined
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 10,
+          line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10805,6 +11113,10 @@ defaultBoxOptional.a?.b !== undefined
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 10,
+          line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10839,6 +11151,10 @@ defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 10,
+          line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10873,6 +11189,10 @@ defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 10,
+          line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10901,6 +11221,10 @@ declare let y: number;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10924,6 +11248,10 @@ x ? x : y;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10946,6 +11274,10 @@ declare let x: { n: unknown };
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10967,6 +11299,10 @@ x?.['a'] != null ? x['a'] : 'foo';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -10990,6 +11326,10 @@ x?.['a'] != null ? x.a : 'foo';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -11013,6 +11353,10 @@ x?.a != null ? x['a'] : 'foo';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 30,
+          endLine: 4,
+          line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -11037,6 +11381,10 @@ x?.[a] != null ? x[a] : 'foo';
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -11066,6 +11414,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11097,6 +11449,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11128,6 +11484,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11159,6 +11519,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11175,6 +11539,10 @@ function lazyInitialize() {
           ],
         },
         {
+          column: 9,
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -11208,6 +11576,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11239,6 +11611,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 36,
+          endLine: 6,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11272,6 +11648,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 38,
+          endLine: 6,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11305,6 +11685,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 38,
+          endLine: 6,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11323,6 +11707,10 @@ function lazyInitialize() {
           ],
         },
         {
+          column: 24,
+          endColumn: 27,
+          endLine: 6,
+          line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
@@ -11356,6 +11744,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11387,6 +11779,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11418,6 +11814,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11449,6 +11849,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11481,6 +11885,10 @@ function lazyInitialize() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 9,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11529,6 +11937,10 @@ if (foo == null) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 2,
+          endLine: 25,
+          line: 5,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11572,6 +11984,10 @@ if (foo == null) /* comment before 1 */ /* comment before 2 */ foo = makeFoo(); 
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 80,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11601,6 +12017,10 @@ function weirdParens() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
@@ -11628,6 +12048,10 @@ const foo = a ? a : b ? 1 : 2;
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -11653,6 +12077,10 @@ const foo = a ? a : (b ? 1 : 2);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 32,
+          endLine: 5,
+          line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
@@ -11676,6 +12104,10 @@ c !== null ? c : c ? 1 : 2;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {

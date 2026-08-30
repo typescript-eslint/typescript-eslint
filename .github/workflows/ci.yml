@@ -575,10 +575,8 @@ jobs:
       - lint_with_build
       - lint_with_build_eslint
       - integration_tests
-
-      # Temporarily make these optional until we figure out why it's sometimes failing in CI.
-      # - ast_spec_snapshots_clean
-      # - scope_manager_snapshots_clean
+      - ast_spec_snapshots_clean
+      - scope_manager_snapshots_clean
       - plugin_unit_tests
       - unit_tests
       - unit_tests_project_service
