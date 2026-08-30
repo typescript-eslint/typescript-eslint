@@ -50,6 +50,10 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
+  const nativeProjectServiceOptions = validateNativeProjectServiceOptions(
+    tsestreeOptions,
+    process.versions.node,
+  );
 
   const tsconfigRootDir = (() => {
     if (tsestreeOptions.tsconfigRootDir == null) {
@@ -143,16 +147,18 @@ export function createParseSettings(
         : tsestreeOptions.loggerFn === false
           ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
           : console.log, // eslint-disable-line no-console
+    nativeProjectService: nativeProjectServiceOptions,
     preserveNodeMaps: tsestreeOptions.preserveNodeMaps !== false,
     programs: Array.isArray(tsestreeOptions.programs)
       ? tsestreeOptions.programs
       : null,
     projects: new Map(),
     projectService:
-      tsestreeOptions.projectService ||
-      (tsestreeOptions.project &&
-        tsestreeOptions.projectService !== false &&
-        process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')
+      !nativeProjectServiceOptions &&
+      (tsestreeOptions.projectService ||
+        (tsestreeOptions.project &&
+          tsestreeOptions.projectService !== false &&
+          process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'))
         ? populateProjectService(tsestreeOptions.projectService, {
             jsDocParsingMode,
             tsconfigRootDir,
@@ -222,7 +228,11 @@ export function createParseSettings(
   }
 
   // Providing a program or project service overrides project resolution
-  if (!parseSettings.programs && !parseSettings.projectService) {
+  if (
+    !parseSettings.programs &&
+    !parseSettings.projectService &&
+    !parseSettings.nativeProjectService
+  ) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: tsestreeOptions.cacheLifetime,
       project: getProjectConfigFiles(parseSettings, tsestreeOptions.project),
@@ -238,7 +248,8 @@ export function createParseSettings(
     tsestreeOptions.jsDocParsingMode == null &&
     parseSettings.projects.size === 0 &&
     parseSettings.programs == null &&
-    parseSettings.projectService == null
+    parseSettings.projectService == null &&
+    parseSettings.nativeProjectService == null
   ) {
     parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
   }
@@ -250,6 +261,53 @@ export function createParseSettings(
   );
 
   return parseSettings;
+}
+
+export function validateNativeProjectServiceOptions(
+  tsestreeOptions: Partial<TSESTreeOptions>,
+  nodeVersion: string,
+): ProjectServiceOptions | undefined {
+  const nativeProjectServiceOptions =
+    typeof tsestreeOptions.projectService === 'object' &&
+    tsestreeOptions.projectService.backend === 'native'
+      ? tsestreeOptions.projectService
+      : undefined;
+
+  if (!nativeProjectServiceOptions) {
+    return undefined;
+  }
+
+  if (Number.parseInt(nodeVersion, 10) < 22) {
+    throw new Error(
+      'The experimental native project service requires Node.js 22 or newer.',
+    );
+  }
+
+  const unsupportedOption =
+    tsestreeOptions.project != null && tsestreeOptions.project !== false
+      ? 'parserOptions.project'
+      : tsestreeOptions.programs != null
+        ? 'parserOptions.programs'
+        : nativeProjectServiceOptions.allowDefaultProject != null
+          ? 'allowDefaultProject'
+          : nativeProjectServiceOptions.defaultProject != null
+            ? 'defaultProject'
+            : nativeProjectServiceOptions.loadTypeScriptPlugins != null
+              ? 'loadTypeScriptPlugins'
+              : nativeProjectServiceOptions.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING !=
+                  null
+                ? 'maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING'
+                : tsestreeOptions.extraFileExtensions?.length
+                  ? 'extraFileExtensions'
+                  : undefined;
+
+  if (unsupportedOption) {
+    throw new Error(
+      `${unsupportedOption} is not supported by the experimental native project service.`,
+    );
+  }
+
+  return nativeProjectServiceOptions;
 }
 
 export function clearTSConfigMatchCache(): void {
@@ -285,7 +343,8 @@ function populateProjectService(
   optionsRaw: ProjectServiceOptions | true | undefined,
   settings: CreateProjectServiceSettings,
 ) {
-  const options = typeof optionsRaw === 'object' ? optionsRaw : {};
+  const options = typeof optionsRaw === 'object' ? { ...optionsRaw } : {};
+  delete options.backend;
 
   validateDefaultProjectForFilesGlob(options.allowDefaultProject);
 
