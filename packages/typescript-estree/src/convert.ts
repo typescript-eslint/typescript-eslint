@@ -3027,14 +3027,19 @@ export class Converter {
       const varToken = declarationIsDefault
         ? findNextToken(nextModifier, this.ast, this.ast)
         : findNextToken(exportKeyword, this.ast, this.ast);
+      const decoratorStart = getDecorators(node)?.[0]?.getStart(this.ast);
 
-      result.range[0] = varToken!.getStart(this.ast);
+      result.range[0] = decoratorStart ?? varToken!.getStart(this.ast);
       result.loc = getLocFor(result.range, this.ast);
+      const exportStart = Math.min(
+        exportKeyword.getStart(this.ast),
+        result.range[0],
+      );
 
       if (declarationIsDefault) {
         return this.createNode<TSESTree.ExportDefaultDeclaration>(node, {
           type: AST_NODE_TYPES.ExportDefaultDeclaration,
-          range: [exportKeyword.getStart(this.ast), result.range[1]],
+          range: [exportStart, result.range[1]],
           declaration: result as TSESTree.DefaultExportDeclarations,
           exportKind: 'value',
         });
@@ -3049,7 +3054,7 @@ export class Converter {
         this.#withDeprecatedAliasGetter(
           {
             type: AST_NODE_TYPES.ExportNamedDeclaration,
-            range: [exportKeyword.getStart(this.ast), result.range[1]],
+            range: [exportStart, result.range[1]],
             attributes: [],
             declaration: result,
             exportKind: isType || isDeclare ? 'type' : 'value',

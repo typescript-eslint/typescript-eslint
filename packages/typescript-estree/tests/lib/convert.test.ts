@@ -98,6 +98,29 @@ describe('convert', () => {
   });
   /* eslint-enable @typescript-eslint/dot-notation */
 
+  it('includes decorators in exported class ranges', () => {
+    const code = `
+      @named({ name: 1 })
+      export class Named {}
+
+      @defaultDecorator
+      export default class Default {}
+    `;
+    const program = new Converter(convertCode(code)).convertProgram();
+
+    for (const statement of program.body) {
+      assert(
+        statement.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
+          statement.type === AST_NODE_TYPES.ExportNamedDeclaration,
+      );
+      assert(statement.declaration?.type === AST_NODE_TYPES.ClassDeclaration);
+
+      const decorator = statement.declaration.decorators[0];
+      expect(statement.range[0]).toBe(decorator.range[0]);
+      expect(statement.declaration.range[0]).toBe(decorator.range[0]);
+    }
+  });
+
   it('nodeMaps should contain basic nodes', () => {
     const ast = convertCode(`
       'test';
