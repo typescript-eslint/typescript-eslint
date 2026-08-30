@@ -93,6 +93,23 @@ export class Converter {
     checkSyntaxError(node, parent, this.allowPattern);
   }
 
+  #convertImportTypeQualifier(
+    qualifier: ts.EntityName,
+    importType: TSESTree.TSImportType,
+  ): TSESTree.TSQualifiedName {
+    const left = ts.isIdentifier(qualifier)
+      ? importType
+      : this.#convertImportTypeQualifier(qualifier.left, importType);
+    const right = ts.isIdentifier(qualifier) ? qualifier : qualifier.right;
+
+    return this.createNode<TSESTree.TSQualifiedName>(qualifier, {
+      type: AST_NODE_TYPES.TSQualifiedName,
+      range: [importType.range[0], qualifier.end],
+      left,
+      right: this.convertChild(right),
+    });
+  }
+
   #isValidEscape(text: string): boolean {
     if (/\\[xu]/.test(text)) {
       const hasInvalidUnicodeEscape = /\\u(?![0-9a-fA-F]{4}|{)/.test(text);
@@ -2543,17 +2560,19 @@ export class Converter {
 
         const argument = this.convertChild(node.argument);
         const source = argument.literal;
+        let closingParenToken = findNextToken(node.argument, node, this.ast)!;
+        while (closingParenToken.kind !== SyntaxKind.CloseParenToken) {
+          closingParenToken = findNextToken(closingParenToken, node, this.ast)!;
+        }
 
-        const result = this.createNode<TSESTree.TSImportType>(
+        const importType = this.createNode<TSESTree.TSImportType>(
           node,
           this.#withDeprecatedGetter(
             {
               type: AST_NODE_TYPES.TSImportType,
-              range,
+              range: [range[0], closingParenToken.end],
               options,
-              qualifier: this.convertChild(node.qualifier),
               source,
-              typeArguments: this.convertTypeArguments(node) ?? null,
             },
             'argument',
             'source',
@@ -2561,14 +2580,26 @@ export class Converter {
           ),
         );
 
+        const typeArguments = this.convertTypeArguments(node) ?? undefined;
+        const typeName = node.qualifier
+          ? this.#convertImportTypeQualifier(node.qualifier, importType)
+          : importType;
+
         if (node.isTypeOf) {
           return this.createNode<TSESTree.TSTypeQuery>(node, {
             type: AST_NODE_TYPES.TSTypeQuery,
-            exprName: result,
-            typeArguments: undefined,
+            exprName: typeName,
+            typeArguments,
           });
         }
-        return result;
+        if (typeName.type === AST_NODE_TYPES.TSQualifiedName) {
+          return this.createNode<TSESTree.TSTypeReference>(node, {
+            type: AST_NODE_TYPES.TSTypeReference,
+            typeArguments,
+            typeName,
+          });
+        }
+        return importType;
       }
 
       case SyntaxKind.EnumDeclaration: {

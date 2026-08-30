@@ -102,7 +102,6 @@ Program {
             end: { column: 76, line: 1 },
           },
         },
-        qualifier: null,
         source: Literal {
           type: "Literal",
           raw: ""A"",
@@ -114,7 +113,6 @@ Program {
             end: { column: 31, line: 1 },
           },
         },
-        typeArguments: null,
 
         range: [21, 78],
         loc: {

@@ -999,7 +999,7 @@ let bar: import('foo').Bar;
             },
             {
               column: 10,
-              endColumn: 27,
+              endColumn: 23,
               endLine: 3,
               line: 3,
               messageId: 'noImportTypeAnnotations',

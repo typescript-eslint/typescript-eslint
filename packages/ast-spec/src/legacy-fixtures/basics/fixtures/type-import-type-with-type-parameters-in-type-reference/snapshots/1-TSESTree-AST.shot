@@ -21,32 +21,8 @@ Program {
         typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
-            TSImportType {
-              type: "TSImportType",
-              options: null,
-              qualifier: Identifier {
-                type: "Identifier",
-                decorators: [],
-                name: "B",
-                optional: false,
-
-                range: [95, 96],
-                loc: {
-                  start: { column: 22, line: 3 },
-                  end: { column: 23, line: 3 },
-                },
-              },
-              source: Literal {
-                type: "Literal",
-                raw: "''",
-                value: "",
-
-                range: [91, 93],
-                loc: {
-                  start: { column: 18, line: 3 },
-                  end: { column: 20, line: 3 },
-                },
-              },
+            TSTypeReference {
+              type: "TSTypeReference",
               typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
                 params: [
@@ -65,6 +41,48 @@ Program {
                 loc: {
                   start: { column: 23, line: 3 },
                   end: { column: 28, line: 3 },
+                },
+              },
+              typeName: TSQualifiedName {
+                type: "TSQualifiedName",
+                left: TSImportType {
+                  type: "TSImportType",
+                  options: null,
+                  source: Literal {
+                    type: "Literal",
+                    raw: "''",
+                    value: "",
+
+                    range: [91, 93],
+                    loc: {
+                      start: { column: 18, line: 3 },
+                      end: { column: 20, line: 3 },
+                    },
+                  },
+
+                  range: [84, 94],
+                  loc: {
+                    start: { column: 11, line: 3 },
+                    end: { column: 21, line: 3 },
+                  },
+                },
+                right: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "B",
+                  optional: false,
+
+                  range: [95, 96],
+                  loc: {
+                    start: { column: 22, line: 3 },
+                    end: { column: 23, line: 3 },
+                  },
+                },
+
+                range: [84, 96],
+                loc: {
+                  start: { column: 11, line: 3 },
+                  end: { column: 23, line: 3 },
                 },
               },
 

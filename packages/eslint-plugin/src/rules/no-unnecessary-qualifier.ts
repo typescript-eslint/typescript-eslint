@@ -184,7 +184,9 @@ export default createRule({
         enterDeclaration(node.parent);
       },
       TSQualifiedName(node: TSESTree.TSQualifiedName): void {
-        visitNamespaceAccess(node, node.left, node.right);
+        if (node.left.type !== AST_NODE_TYPES.TSImportType) {
+          visitNamespaceAccess(node, node.left, node.right);
+        }
       },
       'TSQualifiedName:exit': resetCurrentNamespaceExpression,
     };

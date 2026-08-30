@@ -214,7 +214,7 @@ const additionalKeys: AdditionalKeys = {
   TSExternalModuleReference: ['expression'],
   TSFunctionType: SharedVisitorKeys.FunctionType,
   TSImportEqualsDeclaration: ['id', 'moduleReference'],
-  TSImportType: ['source', 'options', 'qualifier', 'typeArguments'],
+  TSImportType: ['source', 'options'],
   TSIndexedAccessType: ['objectType', 'indexType'],
   TSIndexSignature: ['parameters', 'typeAnnotation'],
   TSInferType: ['typeParameter'],

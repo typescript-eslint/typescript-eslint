@@ -122,10 +122,8 @@ export class TypeVisitor extends Visitor {
     this.visitFunctionType(node);
   }
 
-  protected TSImportType(node: TSESTree.TSImportType): void {
-    // the TS parser allows any type to be the parameter, but it's a syntax error - so we can ignore it
-    this.visit(node.typeArguments);
-    // the qualifier is just part of a standard EntityName, so it should not be visited
+  protected TSImportType(): void {
+    // Import module specifiers cannot reference local variables.
   }
 
   protected TSIndexSignature(node: TSESTree.TSIndexSignature): void {

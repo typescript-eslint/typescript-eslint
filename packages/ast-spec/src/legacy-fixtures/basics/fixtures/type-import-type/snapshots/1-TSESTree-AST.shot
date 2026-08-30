@@ -21,7 +21,6 @@ Program {
         exprName: TSImportType {
           type: "TSImportType",
           options: null,
-          qualifier: null,
           source: Literal {
             type: "Literal",
             raw: "'A'",
@@ -33,7 +32,6 @@ Program {
               end: { column: 26, line: 3 },
             },
           },
-          typeArguments: null,
 
           range: [89, 100],
           loc: {
@@ -70,32 +68,8 @@ Program {
           end: { column: 6, line: 4 },
         },
       },
-      typeAnnotation: TSImportType {
-        type: "TSImportType",
-        options: null,
-        qualifier: Identifier {
-          type: "Identifier",
-          decorators: [],
-          name: "X",
-          optional: false,
-
-          range: [123, 124],
-          loc: {
-            start: { column: 21, line: 4 },
-            end: { column: 22, line: 4 },
-          },
-        },
-        source: Literal {
-          type: "Literal",
-          raw: "'B'",
-          value: "B",
-
-          range: [118, 121],
-          loc: {
-            start: { column: 16, line: 4 },
-            end: { column: 19, line: 4 },
-          },
-        },
+      typeAnnotation: TSTypeReference {
+        type: "TSTypeReference",
         typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
@@ -126,6 +100,48 @@ Program {
           loc: {
             start: { column: 22, line: 4 },
             end: { column: 25, line: 4 },
+          },
+        },
+        typeName: TSQualifiedName {
+          type: "TSQualifiedName",
+          left: TSImportType {
+            type: "TSImportType",
+            options: null,
+            source: Literal {
+              type: "Literal",
+              raw: "'B'",
+              value: "B",
+
+              range: [118, 121],
+              loc: {
+                start: { column: 16, line: 4 },
+                end: { column: 19, line: 4 },
+              },
+            },
+
+            range: [111, 122],
+            loc: {
+              start: { column: 9, line: 4 },
+              end: { column: 20, line: 4 },
+            },
+          },
+          right: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "X",
+            optional: false,
+
+            range: [123, 124],
+            loc: {
+              start: { column: 21, line: 4 },
+              end: { column: 22, line: 4 },
+            },
+          },
+
+          range: [111, 124],
+          loc: {
+            start: { column: 9, line: 4 },
+            end: { column: 22, line: 4 },
           },
         },
 

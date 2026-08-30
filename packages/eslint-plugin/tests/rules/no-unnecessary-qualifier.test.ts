@@ -21,6 +21,12 @@ namespace A.B {
 }
     `,
     `
+declare module 'mod' {
+  export type T = string;
+}
+type T = import('mod').T;
+    `,
+    `
 enum A {
   X,
   Y,

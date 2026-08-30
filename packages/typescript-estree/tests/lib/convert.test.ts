@@ -98,6 +98,50 @@ describe('convert', () => {
   });
   /* eslint-enable @typescript-eslint/dot-notation */
 
+  it('standardizes qualified import types as type references', () => {
+    const code = `
+      type A = import('a').b.c<x>;
+      type B = typeof import('b').c<d>;
+    `;
+    const program = new Converter(convertCode(code)).convertProgram();
+
+    const typeAlias = program.body[0];
+    assert(typeAlias.type === AST_NODE_TYPES.TSTypeAliasDeclaration);
+    const typeReference = typeAlias.typeAnnotation;
+    assert(typeReference.type === AST_NODE_TYPES.TSTypeReference);
+    const outerQualifiedName = typeReference.typeName;
+    assert(outerQualifiedName.type === AST_NODE_TYPES.TSQualifiedName);
+    const innerQualifiedName = outerQualifiedName.left;
+    assert(innerQualifiedName.type === AST_NODE_TYPES.TSQualifiedName);
+    const importType = innerQualifiedName.left;
+    assert(importType.type === AST_NODE_TYPES.TSImportType);
+
+    expect(code.slice(...importType.range)).toBe("import('a')");
+    expect(code.slice(...outerQualifiedName.range)).toBe("import('a').b.c");
+    expect(typeReference.typeArguments?.params).toMatchObject([
+      { type: AST_NODE_TYPES.TSTypeReference },
+    ]);
+    expect(importType).not.toHaveProperty('qualifier');
+    expect(importType).not.toHaveProperty('typeArguments');
+
+    const typeQueryAlias = program.body[1];
+    assert(typeQueryAlias.type === AST_NODE_TYPES.TSTypeAliasDeclaration);
+    const typeQuery = typeQueryAlias.typeAnnotation;
+    assert(typeQuery.type === AST_NODE_TYPES.TSTypeQuery);
+
+    expect(typeQuery.exprName).toMatchObject({
+      left: {
+        source: { value: 'b' },
+        type: AST_NODE_TYPES.TSImportType,
+      },
+      right: { name: 'c' },
+      type: AST_NODE_TYPES.TSQualifiedName,
+    });
+    expect(typeQuery.typeArguments?.params).toMatchObject([
+      { type: AST_NODE_TYPES.TSTypeReference },
+    ]);
+  });
+
   it('nodeMaps should contain basic nodes', () => {
     const ast = convertCode(`
       'test';
