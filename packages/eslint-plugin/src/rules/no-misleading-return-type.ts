@@ -8,12 +8,14 @@ import {
   createRule,
   forEachReturnStatement,
   getParserServices,
+  getValueOfLiteralType,
   hasOverloadSignatures,
   isTypeAnyType,
   isTypeNeverType,
   isTypeUnknownType,
 } from '../util';
 
+// TypeFlags.Primitive is not declared in TypeScript's public API.
 const PRIMITIVE_TYPE_FLAGS =
   ts.TypeFlags.Undefined |
   ts.TypeFlags.Null |
@@ -128,7 +130,7 @@ export default createRule({
 
       for (;;) {
         const next = checker.getBaseConstraintOfType(constraint);
-        if (!next || seen.has(next)) {
+        if (next == null || seen.has(next)) {
           break;
         }
         seen.add(next);
@@ -186,10 +188,7 @@ export default createRule({
         return false;
       }
 
-      return (
-        (typeof left.value === 'number' || typeof left.value === 'string') &&
-        left.value === right.value
-      );
+      return getValueOfLiteralType(left) === getValueOfLiteralType(right);
     }
 
     function typesHaveAssignableRelation(left: ts.Type, right: ts.Type) {
@@ -244,7 +243,7 @@ export default createRule({
         const type = checker.getTypeAtLocation(expression);
         const returnedType = getProjectedType(type, projection);
         if (
-          !returnedType ||
+          returnedType == null ||
           tsutils.isIntrinsicErrorType(returnedType) ||
           isTypeAnyType(returnedType) ||
           isTypeUnknownType(returnedType)
@@ -259,7 +258,7 @@ export default createRule({
 
     function getUnionCandidate(node: FunctionNode): UnionCandidate | null {
       const returnType = node.returnType?.typeAnnotation;
-      if (!returnType) {
+      if (returnType == null) {
         return null;
       }
 
@@ -318,7 +317,7 @@ export default createRule({
         return 'arrayElement';
       }
 
-      if (checker.isArrayLikeType(returnType)) {
+      if (checker.getIndexTypeOfType(returnType, ts.IndexKind.Number) != null) {
         return 'arrayElement';
       }
 
@@ -339,14 +338,7 @@ export default createRule({
       if (projection === 'awaited') {
         return checker.getAwaitedType(type) ?? null;
       }
-      const arrayType = checker.isArrayLikeType(type)
-        ? type
-        : getStableBaseConstraint(type);
-      if (!arrayType || !checker.isArrayLikeType(arrayType)) {
-        return null;
-      }
-
-      return checker.getIndexTypeOfType(arrayType, ts.IndexKind.Number) ?? null;
+      return checker.getIndexTypeOfType(type, ts.IndexKind.Number) ?? null;
     }
 
     function getProjectedTypeArgument(
@@ -365,7 +357,7 @@ export default createRule({
     ) {
       const projectedReturnType = getProjectedType(returnType, projection);
       if (
-        !projectedReturnType ||
+        projectedReturnType == null ||
         tsutils.isIntrinsicErrorType(projectedReturnType)
       ) {
         return null;
@@ -380,7 +372,7 @@ export default createRule({
       );
 
       if (
-        !projectedTypeArgument ||
+        projectedTypeArgument == null ||
         tsutils.isIntrinsicErrorType(projectedTypeArgument) ||
         !checker.isTypeAssignableTo(
           projectedReturnType,
@@ -409,7 +401,7 @@ export default createRule({
       }
 
       const memberSymbol = checker.getSymbolAtLocation(memberNameNode);
-      if (!memberSymbol) {
+      if (memberSymbol == null) {
         return false;
       }
       const memberSymbolName = memberSymbol.name;
@@ -455,7 +447,7 @@ export default createRule({
       ) {
         const indexInfos = checker.getIndexInfosOfType(baseType);
         if (
-          nameType &&
+          nameType != null &&
           indexInfos.some(indexInfo =>
             checker.isTypeAssignableTo(nameType, indexInfo.keyType),
           )
@@ -473,7 +465,7 @@ export default createRule({
         }
 
         if (
-          nameType ||
+          nameType != null ||
           (!ts.isIdentifier(memberNameNode) &&
             !ts.isStringLiteralLike(memberNameNode) &&
             !ts.isNumericLiteral(memberNameNode))
@@ -509,13 +501,13 @@ export default createRule({
           const baseType = checker.getTypeAtLocation(
             isStaticMember ? baseTypeNode.expression : baseTypeNode,
           );
-          if (checker.getPropertyOfType(baseType, memberSymbolName)) {
+          if (checker.getPropertyOfType(baseType, memberSymbolName) != null) {
             return true;
           }
 
           const nameType = getMemberNameType();
           if (
-            nameType &&
+            nameType != null &&
             tsutils.isTypeFlagSet(nameType, ts.TypeFlags.UniqueESSymbol) &&
             checker
               .getPropertiesOfType(baseType)
@@ -577,13 +569,13 @@ export default createRule({
 
     function checkFunction(node: FunctionNode) {
       const candidate = getUnionCandidate(node);
-      if (!candidate || shouldSkipFunction(node)) {
+      if (candidate == null || shouldSkipFunction(node)) {
         return;
       }
 
       const returnType = services.getTypeAtLocation(candidate.returnType);
       const projection = getProjection(candidate, returnType);
-      if (!projection) {
+      if (projection == null) {
         return;
       }
 
@@ -593,7 +585,7 @@ export default createRule({
         returnType,
       );
       if (
-        !effectiveReturnType ||
+        effectiveReturnType == null ||
         isTypeAnyType(effectiveReturnType) ||
         isTypeUnknownType(effectiveReturnType)
       ) {
@@ -602,7 +594,7 @@ export default createRule({
 
       const returnedTypes = getReturnedTypes(node, projection);
 
-      if (!returnedTypes || returnedTypes.length === 0) {
+      if (returnedTypes == null || returnedTypes.length === 0) {
         return;
       }
 
@@ -625,7 +617,7 @@ export default createRule({
         const typeAtNode = services.getTypeAtLocation(typeNode);
         const type = getProjectedTypeArgument(typeAtNode, projection);
         if (
-          !type ||
+          type == null ||
           tsutils.isIntrinsicErrorType(type) ||
           isTypeAnyType(type) ||
           isTypeUnknownType(type) ||
@@ -655,7 +647,8 @@ export default createRule({
 
             return (
               unresolved &&
-              (!constraint || !canProveNoOverlap(returnedType, constraint))
+              (constraint == null ||
+                !canProveNoOverlap(returnedType, constraint))
             );
           });
 
