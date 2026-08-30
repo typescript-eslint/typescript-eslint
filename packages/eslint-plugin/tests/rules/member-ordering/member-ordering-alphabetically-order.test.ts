@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 
@@ -3122,6 +3122,16 @@ class Foo {
 class Foo {
   zz: number = 42;
   a: number = this[\`zz\`];
+}
+      `,
+      options: [{ default: { order: 'alphabetically' } }],
+    },
+
+    {
+      code: noFormat`
+class Foo {
+  zz: number = 42;
+  a: number = this[\`${'z'}${'z'}\`];
 }
       `,
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
