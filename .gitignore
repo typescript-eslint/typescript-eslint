@@ -90,5 +90,6 @@ tsconfig*.vitest-temp.json
 .github/instructions/nx.instructions.md
 
 .claude/worktrees
+.worktrees
 .nx/polygraph
 .nx/self-healing
