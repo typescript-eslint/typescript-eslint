@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
+    "jsx": "preserve",
     "strict": true
   },
-  "include": ["*.ts"]
+  "include": ["*.ts", "*.tsx"]
 }
