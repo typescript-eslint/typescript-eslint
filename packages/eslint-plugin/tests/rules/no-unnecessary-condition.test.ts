@@ -1668,7 +1668,15 @@ declare const b2: boolean;
 if ((b1 && 'b1') || b2) {
 }
       `,
-      errors: [{ column: 12, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
     {
       code: `
@@ -1725,7 +1733,15 @@ declare const b1: boolean;
 declare const b2: boolean;
 const t1 = b1 && 'b1' && b2;
       `,
-      errors: [{ column: 18, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 18,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
 
     // Generic type params
