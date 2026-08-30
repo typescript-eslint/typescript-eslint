@@ -12,7 +12,7 @@ const cardWidth = 1200;
 
 const colors = {
   accent: '#2656c7',
-  background: '#eaf7ff',
+  background: '#eaf7fa',
   description: '#4b5563',
   pillBackground: '#eef2ff',
   pillBorder: '#c7d2fe',
