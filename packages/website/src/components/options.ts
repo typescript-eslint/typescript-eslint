@@ -42,6 +42,7 @@ export const defaultConfig: ConfigModel = {
   ts: process.env.TS_VERSION,
   tsconfig: toJson({
     compilerOptions: {
+      lib: ['esnext'],
       strictNullChecks: true,
     },
   }),
