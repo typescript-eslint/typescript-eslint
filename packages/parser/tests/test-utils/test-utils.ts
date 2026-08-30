@@ -7,7 +7,6 @@ export const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures', 'services');
 
 const DEFAULT_PARSER_OPTIONS = {
   comment: true,
-  errorOnUnknownASTType: true,
   loc: true,
   range: true,
   raw: true,

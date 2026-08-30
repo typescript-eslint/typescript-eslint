@@ -42,7 +42,6 @@ const SyntaxKind = ts.SyntaxKind;
 
 export interface ConverterOptions {
   allowInvalidAST?: boolean;
-  errorOnUnknownASTType?: boolean;
   shouldPreserveNodeMaps?: boolean;
   suppressDeprecatedPropertyWarnings?: boolean;
 }
@@ -2910,11 +2909,7 @@ export class Converter {
 
     const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
 
-    /**
-     * If the "errorOnUnknownASTType" option is set to true, throw an error,
-     * otherwise fallback to just including the unknown type as-is.
-     */
-    if (this.options.errorOnUnknownASTType && !AST_NODE_TYPES[customType]) {
+    if (!AST_NODE_TYPES[customType]) {
       throw new Error(`Unknown AST_NODE_TYPE: "${customType}"`);
     }
 

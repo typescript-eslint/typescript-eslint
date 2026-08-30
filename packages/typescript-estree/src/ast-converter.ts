@@ -28,7 +28,6 @@ export function astConverter(
    */
   const instance = new Converter(ast, {
     allowInvalidAST: parseSettings.allowInvalidAST,
-    errorOnUnknownASTType: parseSettings.errorOnUnknownASTType,
     shouldPreserveNodeMaps,
     suppressDeprecatedPropertyWarnings:
       parseSettings.suppressDeprecatedPropertyWarnings,

@@ -23,7 +23,6 @@ function createOptions(fileName: string): { cwd?: string } & TSESTreeOptions {
   return {
     comment: true,
     disallowAutomaticSingleRunInference: true,
-    errorOnUnknownASTType: true,
     filePath: fileName,
     jsx: false,
     loc: true,

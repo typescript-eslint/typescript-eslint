@@ -44,12 +44,6 @@ interface ParseOptions {
   debugLevel?: DebugLevel;
 
   /**
-   * Cause the parser to error if it encounters an unknown AST node type (useful for testing).
-   * This case only usually occurs when TypeScript releases new features.
-   */
-  errorOnUnknownASTType?: boolean;
-
-  /**
    * Absolute (or relative to `cwd`) path to the file being parsed.
    */
   filePath?: string;

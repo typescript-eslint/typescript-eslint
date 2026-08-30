@@ -9,7 +9,6 @@ export const defaultParseSettings: ParseSettings = {
   comments: [],
   debugLevel: new Set(),
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
-  errorOnUnknownASTType: false,
   extraFileExtensions: [],
   filePath: '',
   // JSDocParsingMode was added in TS 5.3.

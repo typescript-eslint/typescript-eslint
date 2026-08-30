@@ -58,11 +58,6 @@ export interface MutableParseSettings {
   errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
 
   /**
-   * Whether to error if an unknown AST node type is encountered.
-   */
-  errorOnUnknownASTType: boolean;
-
-  /**
    * Any non-standard file extensions which will be parsed.
    */
   extraFileExtensions: string[];

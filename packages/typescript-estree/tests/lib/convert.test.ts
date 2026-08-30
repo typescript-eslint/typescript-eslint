@@ -27,76 +27,25 @@ describe('convert', () => {
     );
   }
 
-  /* eslint-disable @typescript-eslint/dot-notation */
-  describe('deeplyCopy', () => {
-    it('should convert node correctly', () => {
+  describe('unknown node types', () => {
+    it('throws an error', () => {
       const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
 
       function fakeUnknownKind(node: ts.Node): void {
         ts.forEachChild(node, fakeUnknownKind);
         // @ts-expect-error -- intentionally writing to a readonly field
-        node.kind = ts.SyntaxKind.UnparsedPrologue;
+        node.kind = ts.SyntaxKind.JSDocAllType;
       }
 
       ts.forEachChild(ast, fakeUnknownKind);
 
       const instance = new Converter(ast);
-      expect(instance.convertProgram()).toMatchSnapshot();
-    });
 
-    it('should convert node with decorators correctly', () => {
-      const ast = convertCode('@test class foo {}');
-
-      const instance = new Converter(ast);
-
-      expect(
-        instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
-      ).toMatchSnapshot();
-    });
-
-    it('should convert node with type parameters correctly', () => {
-      const ast = convertCode('class foo<T> {}');
-
-      const instance = new Converter(ast);
-
-      expect(
-        instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
-      ).toMatchSnapshot();
-    });
-
-    it('should convert node with type arguments correctly', () => {
-      const ast = convertCode('new foo<T>()');
-
-      const instance = new Converter(ast);
-
-      expect(
-        instance['deeplyCopy'](
-          (ast.statements[0] as ts.ExpressionStatement)
-            .expression as ts.NewExpression,
-        ),
-      ).toMatchSnapshot();
-    });
-
-    it('should convert array of nodes', () => {
-      const ast = convertCode('new foo<T>()');
-
-      const instance = new Converter(ast);
-      expect(instance['deeplyCopy'](ast)).toMatchSnapshot();
-    });
-
-    it('should fail on unknown node', () => {
-      const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
-
-      const instance = new Converter(ast, {
-        errorOnUnknownASTType: true,
-      });
-
-      expect(() => instance['deeplyCopy'](ast)).toThrow(
-        'Unknown AST_NODE_TYPE: "TSSourceFile"',
+      expect(() => instance.convertProgram()).toThrow(
+        'Unknown AST_NODE_TYPE: "TSJSDocAllType"',
       );
     });
   });
-  /* eslint-enable @typescript-eslint/dot-notation */
 
   it('nodeMaps should contain basic nodes', () => {
     const ast = convertCode(`

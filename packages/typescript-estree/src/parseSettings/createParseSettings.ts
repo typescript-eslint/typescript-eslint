@@ -128,7 +128,6 @@ export function createParseSettings(
           ? new Set(tsestreeOptions.debugLevel)
           : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
-    errorOnUnknownASTType: tsestreeOptions.errorOnUnknownASTType === true,
     extraFileExtensions:
       Array.isArray(tsestreeOptions.extraFileExtensions) &&
       tsestreeOptions.extraFileExtensions.every(ext => typeof ext === 'string')

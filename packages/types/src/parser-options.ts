@@ -94,7 +94,6 @@ export interface ParserOptions {
   emitDecoratorMetadata?: boolean;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
 
-  errorOnUnknownASTType?: boolean;
   // use experimentalDecorators without specifying parserOptions.project
   experimentalDecorators?: boolean;
   extraFileExtensions?: string[];
