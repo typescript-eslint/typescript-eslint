@@ -5,9 +5,7 @@ type NullableData = null | Data;
 
 // `Omit<null>` becomes {}, so this is `{} | { value: number }`, or `{}`
 type Unexpected = Omit<NullableData, 'name'>;
-                  ~~~~~~~~~~~~~~~~~~~~~~~~~~ This type resolves to `{}`, which allows any non-nullish value, including literals like `0` and `""`.
-                                             - If you want a type meaning "any object", you probably want `object` instead.
-                                             - If you want a type meaning "any value", you probably want `unknown` instead.
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~ This type resolves to `{}`, the empty object type. This was likely not intentional.
 
 Correct
 

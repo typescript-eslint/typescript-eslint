@@ -20,6 +20,9 @@ type Names = Array<string>;
 type Empty = {};
     `,
     `
+type Explicit = {} | { value: number };
+    `,
+    `
 interface Empty {}
 type Alias = Empty;
     `,
@@ -38,6 +41,16 @@ type Aliased = Exclude<Callable, undefined>;
 type Data = { name: string; num: number };
 type NullableData = null | Data;
 type Intersected = Omit<NullableData, 'name'> & { other: string };
+    `,
+    `
+type Data = { name: string; value: number };
+type Data2 = { name: string };
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
+  ? Omit<T, K>
+  : never;
+type Expected = DistributiveOmit<Data | Data2, 'name'> & {
+  other: string;
+};
     `,
     `
 declare function getEnumNames<T extends string>(
@@ -159,6 +172,40 @@ type Unexpected = Array<Omit<NullableData, 'name'>>;
           endColumn: 51,
           endLine: 4,
           line: 4,
+          messageId: 'noGeneratedEmptyObjectType',
+        },
+      ],
+    },
+    {
+      code: `
+type Data = { name: string; value: number };
+type Data2 = { name: string };
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
+  ? Omit<T, K>
+  : never;
+type Unexpected = DistributiveOmit<Data | Data2, 'name'>;
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 57,
+          endLine: 7,
+          line: 7,
+          messageId: 'noGeneratedEmptyObjectType',
+        },
+      ],
+    },
+    {
+      code: `
+type Data = { a: string };
+type Unexpected = Omit<Data, 'a'> & Omit<Data, 'a'>;
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 52,
+          endLine: 3,
+          line: 3,
           messageId: 'noGeneratedEmptyObjectType',
         },
       ],

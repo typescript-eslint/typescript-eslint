@@ -1,3 +1,5 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -15,11 +17,8 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      noGeneratedEmptyObjectType: [
-        'This type resolves to `{}`, which allows any non-nullish value, including literals like `0` and `""`.',
-        '- If you want a type meaning "any object", you probably want `object` instead.',
-        '- If you want a type meaning "any value", you probably want `unknown` instead.',
-      ].join('\n'),
+      noGeneratedEmptyObjectType:
+        'This type resolves to `{}`, the empty object type. This was likely not intentional.',
     },
     schema: [],
   },
@@ -45,17 +44,30 @@ export default createRule({
       );
     }
 
+    function containsEmptyObjectType(type: ts.Type) {
+      return (
+        isEmptyObjectType(type) ||
+        (type.isUnion() && type.types.some(isEmptyObjectType))
+      );
+    }
+
+    function checkNode(node: TSESTree.Node) {
+      if (containsEmptyObjectType(services.getTypeAtLocation(node))) {
+        context.report({
+          node,
+          messageId: 'noGeneratedEmptyObjectType',
+        });
+      }
+    }
+
     return {
-      TSTypeReference(node): void {
+      TSIntersectionType: checkNode,
+      TSTypeReference(node) {
         if (
           node.typeArguments &&
-          node.parent.type !== AST_NODE_TYPES.TSIntersectionType &&
-          isEmptyObjectType(services.getTypeAtLocation(node))
+          node.parent.type !== AST_NODE_TYPES.TSIntersectionType
         ) {
-          context.report({
-            node,
-            messageId: 'noGeneratedEmptyObjectType',
-          });
+          checkNode(node);
         }
       },
     };
