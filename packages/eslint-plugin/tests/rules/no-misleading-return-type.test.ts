@@ -85,6 +85,11 @@ function getValue<T extends { right: true }, U>(
 }
     `,
     `
+function getValue<T, U>(value: T): T | (U extends string ? string : number) {
+  return value;
+}
+    `,
+    `
 function createValue(): { left: string } | { right: number } {
   return { left: 'value', right: 1 };
 }
@@ -444,6 +449,14 @@ interface InvalidThenable {
 declare const thenable: InvalidThenable;
 function getValue(): Promise<string | null> {
   return thenable;
+}
+    `,
+    `
+interface InvalidThenable {
+  then(onfulfilled: string): unknown;
+}
+function getValue(): Promise<string | InvalidThenable> {
+  return Promise.resolve('value');
 }
     `,
     // Recursive thenables have no safely computable awaited type.
