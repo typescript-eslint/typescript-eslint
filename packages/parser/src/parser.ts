@@ -5,7 +5,7 @@ import type {
 import type { Lib, ParserOptions, TSESTree } from '@typescript-eslint/types';
 import type {
   AST,
-  ParserServices,
+  ClassicParserServices,
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree';
 import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
@@ -31,7 +31,7 @@ interface ESLintProgram extends AST<{ comment: true; tokens: true }> {
 interface ParseForESLintResult {
   ast: ESLintProgram;
   scopeManager: ScopeManager;
-  services: ParserServices;
+  services: ClassicParserServices;
   visitorKeys: VisitorKeys;
 }
 

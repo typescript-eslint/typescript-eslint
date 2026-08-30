@@ -1,3 +1,5 @@
+import type { ParserOptions } from '@typescript-eslint/types';
+
 import {
   addCandidateTSConfigRootDir,
   clearCandidateTSConfigRootDirs,
@@ -5,6 +7,9 @@ import {
 import { createParseSettings } from '../../src/parseSettings/createParseSettings';
 
 const projectService = { service: true };
+const nativeProjectServiceOptions = {
+  projectService: { backend: 'native' },
+} satisfies ParserOptions;
 
 const isWindows = process.platform === 'win32';
 
@@ -14,6 +19,12 @@ vi.mock('@typescript-eslint/project-service', () => ({
 
 describe(createParseSettings, () => {
   describe('projectService', () => {
+    it('preserves the native backend literal type', () => {
+      expectTypeOf(
+        nativeProjectServiceOptions.projectService.backend,
+      ).toEqualTypeOf<'native'>();
+    });
+
     it('is created when options.projectService is enabled', () => {
       vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'false');
 

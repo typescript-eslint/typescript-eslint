@@ -45,6 +45,8 @@ export type JSDocParsingMode = 'all' | 'none' | 'type-info';
  * Granular options to configure the project service.
  */
 export interface ProjectServiceOptions {
+  backend?: 'native';
+
   /**
    * Globs of files to allow running with the default project compiler options
    * despite not being matched by the project service.

@@ -4,7 +4,7 @@ import debug from 'debug';
 
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import type {
-  ParserServices,
+  ClassicParserServices,
   ParserServicesNodeMaps,
   TSESTreeOptions,
 } from './parser-options';
@@ -93,7 +93,7 @@ export type AST<T extends TSESTreeOptions> = (T['comment'] extends true
 
 export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
-  services: ParserServices;
+  services: ClassicParserServices;
 }
 interface ParseWithNodeMapsResult<
   T extends TSESTreeOptions,

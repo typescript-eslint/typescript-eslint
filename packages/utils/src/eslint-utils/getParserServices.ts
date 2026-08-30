@@ -1,7 +1,8 @@
 import type * as TSESLint from '../ts-eslint';
 import type {
-  ParserServices,
+  ClassicParserServices,
   ParserServicesWithTypeInformation,
+  ParserServicesWithoutTypeInformation,
 } from '../ts-estree';
 
 import { parserSeemsToBeTSESLint } from './parserSeemsToBeTSESLint';
@@ -44,7 +45,7 @@ export function getParserServices<
 >(
   context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
   allowWithoutFullTypeInformation: true,
-): ParserServices;
+): ClassicParserServices;
 /**
  * Try to retrieve type-aware parser service from context.
  * This may or may not throw if it is not available, depending on if `allowWithoutFullTypeInformation` is `true`
@@ -55,12 +56,13 @@ export function getParserServices<
 >(
   context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
   allowWithoutFullTypeInformation: boolean,
-): ParserServices;
+): ClassicParserServices;
 
 export function getParserServices(
   context: Readonly<TSESLint.RuleContext<string, unknown[]>>,
   allowWithoutFullTypeInformation = false,
-): ParserServices {
+): ClassicParserServices {
+  const parserServices = context.sourceCode.parserServices;
   const parser =
     // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8
     context.parserPath || context.languageOptions.parser?.meta?.name;
@@ -76,8 +78,8 @@ export function getParserServices(
   // This check allows us to handle bad user setups whilst providing a nice user-facing
   // error message explaining the problem.
   if (
-    context.sourceCode.parserServices?.esTreeNodeToTSNodeMap == null ||
-    context.sourceCode.parserServices.tsNodeToESTreeNodeMap == null
+    parserServices?.esTreeNodeToTSNodeMap == null ||
+    parserServices.tsNodeToESTreeNodeMap == null
   ) {
     throwError(parser);
   }
@@ -85,13 +87,17 @@ export function getParserServices(
   // if a rule requires full type information, then hard fail if it doesn't exist
   // this forces the user to supply parserOptions.project
   if (
-    context.sourceCode.parserServices.program == null &&
-    !allowWithoutFullTypeInformation
+    !allowWithoutFullTypeInformation &&
+    (
+      parserServices as Partial<
+        ParserServicesWithoutTypeInformation | ParserServicesWithTypeInformation
+      >
+    ).program == null
   ) {
     throwError(parser);
   }
 
-  return context.sourceCode.parserServices as ParserServices;
+  return parserServices as ClassicParserServices;
 }
 /* eslint-enable @typescript-eslint/unified-signatures */
 

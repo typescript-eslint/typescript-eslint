@@ -1,9 +1,30 @@
+import type { Project as NativeProject } from '@typescript/native/unstable/sync';
 import type * as ts from 'typescript';
 
-import type { ParserServices, TSESLint, TSESTree } from '../../src';
+import type {
+  ClassicParserServices,
+  NativeParserServices,
+  ParserServices,
+  TSESLint,
+  TSESTree,
+} from '../../src';
 import type { FlatConfig } from '../../src/ts-eslint';
 
 import { ESLintUtils } from '../../src';
+
+expectTypeOf<
+  Extract<ParserServices, { backend: 'native' }>
+>().toEqualTypeOf<NativeParserServices>();
+expectTypeOf<
+  Extract<ParserServices, { backend: 'typescript' }>
+>().toEqualTypeOf<ClassicParserServices>();
+expectTypeOf((services: ParserServices) => {
+  if (services.backend === 'native') {
+    expectTypeOf(services.native.project).toEqualTypeOf<NativeProject>();
+  } else if (services.program) {
+    expectTypeOf(services.program).toEqualTypeOf<ts.Program>();
+  }
+}).toBeFunction();
 
 type UnknownRuleContext = Readonly<TSESLint.RuleContext<string, unknown[]>>;
 
@@ -24,6 +45,13 @@ const createMockRuleContext = (
   ...defaults,
   ...overrides,
 });
+
+expectTypeOf(
+  ESLintUtils.getParserServices(defaults, true),
+).toEqualTypeOf<ClassicParserServices>();
+expectTypeOf(
+  ESLintUtils.getParserServices(defaults, true as boolean),
+).toEqualTypeOf<ClassicParserServices>();
 
 const requiresParserServicesMessageTemplate = (parser = '\\S*'): string =>
   'You have used a rule which requires type information, .+\n' +

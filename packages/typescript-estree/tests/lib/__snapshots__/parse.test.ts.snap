@@ -287,6 +287,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .js file - w
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -584,6 +585,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .js file - w
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -771,6 +773,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .js file - w
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -958,6 +961,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .js file - w
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -1181,6 +1185,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .json file -
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -1478,6 +1483,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .jsx file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -1775,6 +1781,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .jsx file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -1962,6 +1969,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .jsx file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -2149,6 +2157,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .jsx file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -2336,6 +2345,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .ts file - w
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -2523,6 +2533,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .ts file - w
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -2820,6 +2831,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .tsx file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -3117,6 +3129,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .tsx file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -3304,6 +3317,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .tsx file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -3491,6 +3505,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .tsx file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -3788,6 +3803,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .vue file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -3975,6 +3991,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .vue file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,
@@ -4162,6 +4179,7 @@ exports[`parseAndGenerateServices > isolated parsing > should parse .vue file - 
     "type": "Program",
   },
   "services": {
+    "backend": "typescript",
     "emitDecoratorMetadata": undefined,
     "esTreeNodeToTSNodeMap": WeakMap {},
     "experimentalDecorators": undefined,

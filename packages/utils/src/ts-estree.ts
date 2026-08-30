@@ -8,6 +8,8 @@ export {
 export type { NodeWithParent } from '@typescript-eslint/types';
 
 export type {
+  ClassicParserServices,
+  NativeParserServices,
   ParserServices,
   ParserServicesWithoutTypeInformation,
   ParserServicesWithTypeInformation,

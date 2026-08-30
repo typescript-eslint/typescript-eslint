@@ -1,14 +1,15 @@
 import type * as ts from 'typescript';
 
 import type { ASTMaps } from './convert';
-import type { ParserServices } from './parser-options';
+import type { ClassicParserServices } from './parser-options';
 
 export function createParserServices(
   astMaps: ASTMaps,
   program: ts.Program | null,
-): ParserServices {
+): ClassicParserServices {
   if (!program) {
     return {
+      backend: 'typescript',
       emitDecoratorMetadata: undefined,
       experimentalDecorators: undefined,
       isolatedDeclarations: undefined,
@@ -24,6 +25,7 @@ export function createParserServices(
   const compilerOptions = program.getCompilerOptions();
 
   return {
+    backend: 'typescript',
     program,
     // not set in the config is the same as off
     emitDecoratorMetadata: compilerOptions.emitDecoratorMetadata ?? false,
