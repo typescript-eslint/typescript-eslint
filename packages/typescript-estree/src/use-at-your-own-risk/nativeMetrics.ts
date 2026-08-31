@@ -24,6 +24,8 @@ type ScalarMetric = Exclude<keyof NativeMetrics, 'parserServices' | 'timing'>;
 
 const activeServices = new Set<() => void>();
 const timingReaders = new Set<() => ReturnType<API['getTimingInfo']>>();
+let registeredServices = 0;
+let timingServiceRegistered = false;
 
 const createParserServiceCounts = (): NativeParserServiceMethodCounts => ({
   getContextualType: 0,
@@ -63,6 +65,13 @@ export function registerNativeMetricService(
   close: () => void,
   readTiming?: () => ReturnType<API['getTimingInfo']>,
 ): () => void {
+  if (timingServiceRegistered || (readTiming && registeredServices > 0)) {
+    throw new Error(
+      'Native timing metrics require exactly one service per metrics epoch. Call resetNativeMetrics() before creating another service.',
+    );
+  }
+  registeredServices += 1;
+  timingServiceRegistered ||= readTiming != null;
   activeServices.add(close);
   if (readTiming) {
     timingReaders.add(readTiming);
@@ -75,7 +84,10 @@ export function registerNativeMetricService(
   };
 }
 
-/** Returns a detached snapshot. Native timing is queried only for timing-enabled active services. */
+/**
+ * Returns a detached snapshot. To keep native timing and local counters in the
+ * same scope, a timing-enabled metrics epoch may contain exactly one service.
+ */
 export function readNativeMetrics(): NativeMetrics {
   const readTiming = [...timingReaders].at(-1);
   return {
@@ -97,6 +109,8 @@ export function resetNativeMetrics(): void {
   }
   activeServices.clear();
   timingReaders.clear();
+  registeredServices = 0;
+  timingServiceRegistered = false;
   metrics = createEmptyMetrics();
   if (errors.length) {
     throw new AggregateError(errors, 'Failed to reset native metrics.');

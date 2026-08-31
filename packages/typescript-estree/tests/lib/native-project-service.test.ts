@@ -1,7 +1,7 @@
 import { API } from '@typescript/native/unstable/sync';
 import fs from 'node:fs';
 import path from 'node:path';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { clearCaches } from '../../src/clear-caches';
 import {
@@ -17,7 +17,37 @@ import {
 const fixtures = path.join(__dirname, '../fixtures/nativeProject');
 const filePath = path.join(fixtures, 'file.ts');
 
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllEnvs();
+  resetNativeMetrics();
+});
+
 describe('native project service lifecycle', () => {
+  it('allows timing for only one service in each metrics epoch', () => {
+    vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_TIMING', 'true');
+    const service = createNativeProjectService();
+
+    expect(() => createNativeProjectService()).toThrow(
+      'Native timing metrics require exactly one service per metrics epoch',
+    );
+
+    service.close();
+    expect(() => createNativeProjectService()).toThrow(
+      'Native timing metrics require exactly one service per metrics epoch',
+    );
+  });
+
+  it('rejects timing after an untimed service in the same metrics epoch', () => {
+    const service = createNativeProjectService();
+    service.close();
+    vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_TIMING', 'true');
+
+    expect(() => createNativeProjectService()).toThrow(
+      'Native timing metrics require exactly one service per metrics epoch',
+    );
+  });
+
   it('enables timing only through the instrumentation environment variable', () => {
     const previousTiming = process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING;
     delete process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING;
@@ -27,6 +57,7 @@ describe('native project service lifecycle', () => {
     expect(readNativeMetrics().timing).toBeUndefined();
 
     service.close();
+    resetNativeMetrics();
     process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING = 'true';
     const timedService = createNativeProjectService();
     expect(readNativeMetrics().timing).toMatchObject({ enabled: true });

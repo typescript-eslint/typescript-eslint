@@ -266,9 +266,23 @@ export function createNativeProjectService(): NativeProjectService {
       return replaceSnapshot({ fileChanges });
     },
   };
-  const unregisterMetrics = registerNativeMetricService(
-    () => service.close(),
-    collectTiming ? () => api.getTimingInfo() : undefined,
-  );
+  let unregisterMetrics: () => void;
+  try {
+    unregisterMetrics = registerNativeMetricService(
+      () => service.close(),
+      collectTiming ? () => api.getTimingInfo() : undefined,
+    );
+  } catch (error) {
+    try {
+      api.close();
+    } catch (closeError) {
+      throw new AggregateError(
+        [error, closeError],
+        'Failed to register native project service metrics.',
+        { cause: closeError },
+      );
+    }
+    throw error;
+  }
   return service;
 }

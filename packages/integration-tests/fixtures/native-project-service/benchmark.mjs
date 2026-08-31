@@ -5,12 +5,15 @@ import {
 } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 import tseslint from 'typescript-eslint';
 
-const backend = process.argv[2];
-if (backend !== 'classic' && backend !== 'native') {
-  throw new Error(`Unknown benchmark backend: ${backend}`);
+const mode = process.argv[2];
+if (!['classic', 'native', 'native-instrumented'].includes(mode)) {
+  throw new Error(`Unknown benchmark mode: ${mode}`);
 }
+const backend = mode === 'classic' ? 'classic' : 'native';
+const collectNativeTiming = mode === 'native-instrumented';
 
-if (backend === 'native') {
+delete process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING;
+if (collectNativeTiming) {
   process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING = 'true';
 }
 resetNativeMetrics();
@@ -57,13 +60,11 @@ try {
       })),
     );
   }
-  const metrics = readNativeMetrics();
+  const nativeMetrics = collectNativeTiming ? readNativeMetrics() : undefined;
   process.stdout.write(
     JSON.stringify({
       diagnostics,
-      nativeRecentRequests: metrics.timing?.recentRequests ?? [],
-      nativeRequestTotals: metrics.timing?.totals,
-      parserServiceCalls: metrics.parserServices,
+      nativeMetrics,
       peakRss,
       wallTimeMs,
     }),
