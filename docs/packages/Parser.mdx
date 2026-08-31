@@ -388,7 +388,7 @@ The native backend currently supports only these typed rules:
 
 Other rules that request classic TypeScript parser services report a compatibility error. The native backend also rejects `parserOptions.project`, `parserOptions.programs`, and a non-empty `allow` option for `@typescript-eslint/no-deprecated`.
 
-This backend is a prototype and is not a stable compatibility guarantee. Its strict performance acceptance benchmark currently fails because the native warm median is slower than the classic warm median. Run `pnpm --dir packages/integration-tests benchmark:native` to reproduce the benchmark.
+This backend is a prototype and is not a stable compatibility guarantee. Its strict performance acceptance benchmark has repeatedly failed because the native warm median is typically slower than the classic warm median, although high variance means individual runs can pass. Run `pnpm --dir packages/integration-tests benchmark:native` to reproduce the benchmark.
 
 #### `ProjectServiceOptions`
 
