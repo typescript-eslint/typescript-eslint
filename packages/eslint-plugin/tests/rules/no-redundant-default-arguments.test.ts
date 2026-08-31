@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-redundant-default-arguments';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
@@ -161,6 +163,71 @@ import { ImportedComponent } from './redundant-default-arguments';
       `,
       filename: 'react.tsx',
     },
+    `
+function loadOptions({ page = 5 }: { page?: number }) {}
+loadOptions({ page: 1, page: 5 });
+    `,
+    `
+declare const loadPage: (page?: number) => void;
+loadPage(20);
+    `,
+    `
+const loadPage = (page: number) => {};
+loadPage(20);
+    `,
+    `
+function run(loadPage = (page = 20) => {}) {
+  loadPage(20);
+}
+    `,
+    `
+function loadPage([page = 20] = []) {}
+loadPage([20]);
+    `,
+    `
+function loadOptions({ page }: { page: number }) {}
+loadOptions({ page: 5 });
+    `,
+    `
+function loadOptions({} = {}) {}
+loadOptions({});
+    `,
+    `
+function loadOptions({ ['page']: page = 5 }: { page?: number }) {}
+loadOptions({ page: 5 });
+    `,
+    `
+function loadPage(page = 1n) {}
+loadPage(1n);
+    `,
+    `
+function loadPage(page = \`x\${1}\`) {}
+loadPage('x1');
+    `,
+    `
+function loadPage(page = +1) {}
+loadPage(1);
+    `,
+    `
+import { importedOverload } from './redundant-default-arguments';
+importedOverload(0);
+    `,
+    `
+import { importedLet } from './redundant-default-arguments';
+importedLet(0);
+    `,
+    `
+import { importedAny } from './redundant-default-arguments';
+importedAny(0);
+    `,
+    `
+import { importedDecl } from './redundant-default-arguments';
+importedDecl(20);
+    `,
+    `
+import { importedKeys } from './redundant-default-arguments';
+importedKeys({ skip: 5 });
+    `,
   ],
   invalid: [
     {
@@ -698,6 +765,420 @@ loadOptions({ extra: 1, page: 5 });
       output: `
 function loadOptions({ page = 5 }: { page?: number; extra?: number }) {}
 loadOptions({ extra: 1 });
+      `,
+    },
+    {
+      code: `
+function loadPage(id: string, page = 20) {}
+loadPage('a', 20);
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { kind: 'argument', name: 'page', value: '20' },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+function loadPage(id: string, page = 20) {}
+loadPage('a');
+      `,
+    },
+    {
+      code: noFormat`
+function loadPage(page = 20) {}
+loadPage(20,);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { kind: 'argument', name: 'page', value: '20' },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+function loadPage(page = 20) {}
+loadPage();
+      `,
+    },
+    {
+      code: noFormat`
+function loadOptions({ page = 5 }: { page?: number; extra?: number }) {}
+loadOptions({ extra: 1, page: 5, });
+      `,
+      errors: [
+        {
+          column: 25,
+          data: { kind: 'property', name: 'page', value: '5' },
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+function loadOptions({ page = 5 }: { page?: number; extra?: number }) {}
+loadOptions({ extra: 1 });
+      `,
+    },
+    {
+      code: `
+function Header({ title = 5, extra }: { title?: number; extra?: number }) {
+  return null;
+}
+<Header title={5} extra={1} />;
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { kind: 'prop', name: 'title', value: '5' },
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      filename: 'react.tsx',
+      output: `
+function Header({ title = 5, extra }: { title?: number; extra?: number }) {
+  return null;
+}
+<Header extra={1} />;
+      `,
+    },
+    {
+      code: `
+function Header({ title = 5 }: any) {
+  return null;
+}
+<Header foo:bar={1} title={5} />;
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { kind: 'prop', name: 'title', value: '5' },
+          endColumn: 30,
+          endLine: 5,
+          line: 5,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      filename: 'react.tsx',
+      output: `
+function Header({ title = 5 }: any) {
+  return null;
+}
+<Header foo:bar={1} />;
+      `,
+    },
+    {
+      code: noFormat`
+function loadOptions({ page = 5 }: { page?: number }) {}
+loadOptions({ 'page': 5 });
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { kind: 'property', name: 'page', value: '5' },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+function loadOptions({ page = 5 }: { page?: number }) {}
+loadOptions({});
+      `,
+    },
+    {
+      code: `
+function loadOptions({ 0: page = 5 }: { 0?: number }) {}
+loadOptions({ 0: 5 });
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { kind: 'property', name: '0', value: '5' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+function loadOptions({ 0: page = 5 }: { 0?: number }) {}
+loadOptions({});
+      `,
+    },
+    {
+      code: `
+function loadOptions({ page = 5, ...rest }: { page?: number }) {}
+loadOptions({ page: 5 });
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { kind: 'property', name: 'page', value: '5' },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+function loadOptions({ page = 5, ...rest }: { page?: number }) {}
+loadOptions({});
+      `,
+    },
+    {
+      code: `
+const loadPage = ((page = 5) => {}) as (page?: number) => void;
+loadPage(5);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { kind: 'argument', name: 'page', value: '5' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+const loadPage = ((page = 5) => {}) as (page?: number) => void;
+loadPage();
+      `,
+    },
+    {
+      code: `
+const loadPage = ((page = 5) => {})!;
+loadPage(5);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { kind: 'argument', name: 'page', value: '5' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+const loadPage = ((page = 5) => {})!;
+loadPage();
+      `,
+    },
+    {
+      code: `
+const loadPage = ((page = 5) => {}) satisfies (page?: number) => void;
+loadPage(5);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { kind: 'argument', name: 'page', value: '5' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+const loadPage = ((page = 5) => {}) satisfies (page?: number) => void;
+loadPage();
+      `,
+    },
+    {
+      code: `
+import { importedArrow } from './redundant-default-arguments';
+importedArrow(0);
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { kind: 'argument', name: 'value', value: '0' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+import { importedArrow } from './redundant-default-arguments';
+importedArrow();
+      `,
+    },
+    {
+      code: `
+import { importedFnExpr } from './redundant-default-arguments';
+importedFnExpr(0);
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { kind: 'argument', name: 'value', value: '0' },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+import { importedFnExpr } from './redundant-default-arguments';
+importedFnExpr();
+      `,
+    },
+    {
+      code: `
+import { importedWithThis } from './redundant-default-arguments';
+importedWithThis(0);
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { kind: 'argument', name: 'value', value: '0' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+import { importedWithThis } from './redundant-default-arguments';
+importedWithThis();
+      `,
+    },
+    {
+      code: `
+import { importedLiterals } from './redundant-default-arguments';
+importedLiterals('all', true, false, null, -1);
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { kind: 'argument', name: 'mode', value: '"all"' },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+        {
+          column: 25,
+          data: { kind: 'argument', name: 'enabled', value: 'true' },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+        {
+          column: 31,
+          data: { kind: 'argument', name: 'disabled', value: 'false' },
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+        {
+          column: 38,
+          data: { kind: 'argument', name: 'empty', value: 'null' },
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+        {
+          column: 44,
+          data: { kind: 'argument', name: 'offset', value: '-1' },
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+import { importedLiterals } from './redundant-default-arguments';
+importedLiterals();
+      `,
+    },
+    {
+      code: `
+import { importedWrapped } from './redundant-default-arguments';
+importedWrapped(0, 0, 0, 0);
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { kind: 'argument', name: 'asserted', value: '0' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+        {
+          column: 20,
+          data: { kind: 'argument', name: 'parens', value: '0' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+        {
+          column: 23,
+          data: { kind: 'argument', name: 'nonNull', value: '0' },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+        {
+          column: 26,
+          data: { kind: 'argument', name: 'satisfied', value: '0' },
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+import { importedWrapped } from './redundant-default-arguments';
+importedWrapped();
+      `,
+    },
+    {
+      code: `
+import { importedKeys } from './redundant-default-arguments';
+importedKeys({ 'the-value': 5, 0: 5 });
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { kind: 'property', name: 'the-value', value: '5' },
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+        {
+          column: 32,
+          data: { kind: 'property', name: '0', value: '5' },
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+import { importedKeys } from './redundant-default-arguments';
+importedKeys({});
       `,
     },
   ],

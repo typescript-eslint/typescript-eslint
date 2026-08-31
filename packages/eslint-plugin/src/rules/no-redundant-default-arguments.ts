@@ -133,7 +133,10 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.CallExpression,
       positional: Map<number, NamedDefault>,
     ): void {
-      let firstRedundant = node.arguments.length;
+      const redundant: {
+        argument: TSESTree.CallExpressionArgument;
+        defaultValue: NamedDefault;
+      }[] = [];
       for (let index = node.arguments.length - 1; index >= 0; index--) {
         const argument = node.arguments[index];
         const defaultValue = positional.get(index);
@@ -146,15 +149,12 @@ export default createRule<Options, MessageIds>({
         ) {
           break;
         }
-        firstRedundant = index;
+        redundant.push({ argument, defaultValue });
       }
 
-      for (let index = firstRedundant; index < node.arguments.length; index++) {
-        const argument = node.arguments[index];
-        const defaultValue = positional.get(index);
-        if (defaultValue == null) {
-          continue;
-        }
+      const firstRedundant = node.arguments.length - redundant.length;
+      redundant.reverse();
+      redundant.forEach(({ argument, defaultValue }, reportIndex) => {
         context.report({
           node: argument,
           messageId: 'redundantDefaultValue',
@@ -164,7 +164,7 @@ export default createRule<Options, MessageIds>({
             value: formatHardcodedValue(defaultValue.value),
           },
           fix:
-            index === firstRedundant
+            reportIndex === 0
               ? fixer =>
                   removeRangeIfUncommented(
                     fixer,
@@ -172,7 +172,7 @@ export default createRule<Options, MessageIds>({
                   )
               : undefined,
         });
-      }
+      });
     }
 
     function reportRedundantObjectProperties(
@@ -193,8 +193,11 @@ export default createRule<Options, MessageIds>({
         }
 
         const name = getPropertyName(property);
-        if (name == null || seen.has(name)) {
+        if (name == null) {
           continue;
+        }
+        if (seen.has(name)) {
+          return;
         }
         seen.add(name);
 
@@ -237,7 +240,6 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.JSXOpeningElement,
       defaults: Map<string, NamedDefault>,
     ): void {
-      const seen = new Set<string>();
       const redundant: {
         attribute: TSESTree.JSXAttribute;
         defaultValue: NamedDefault;
@@ -254,11 +256,6 @@ export default createRule<Options, MessageIds>({
         }
 
         const name = attribute.name.name;
-        if (seen.has(name)) {
-          continue;
-        }
-        seen.add(name);
-
         const defaultValue = defaults.get(name);
         if (
           defaultValue != null &&
@@ -305,15 +302,10 @@ export default createRule<Options, MessageIds>({
 
     function removeRangeIfUncommented(
       fixer: TSESLint.RuleFixer,
-      ranges: TSESTree.Range | TSESTree.Range[] | null,
+      ranges: TSESTree.Range | TSESTree.Range[],
     ): TSESLint.RuleFix | TSESLint.RuleFix[] | null {
-      if (ranges == null) {
-        return null;
-      }
       const list: TSESTree.Range[] =
-        typeof ranges[0] === 'number'
-          ? [ranges as TSESTree.Range]
-          : (ranges as TSESTree.Range[]);
+        typeof ranges[0] === 'number' ? [ranges as TSESTree.Range] : ranges;
       if (list.some(rangeContainsComment)) {
         return null;
       }
@@ -323,13 +315,13 @@ export default createRule<Options, MessageIds>({
     function trailingArgumentRange(
       node: TSESTree.CallExpression,
       firstIndex: number,
-    ): TSESTree.Range | null {
+    ): TSESTree.Range {
       const firstArgument = node.arguments[firstIndex];
       const lastArgument = node.arguments[node.arguments.length - 1];
-      let rangeStart = firstArgument.range[0];
-      if (firstIndex > 0) {
-        rangeStart = node.arguments[firstIndex - 1].range[1];
-      }
+      const rangeStart =
+        firstIndex > 0
+          ? node.arguments[firstIndex - 1].range[1]
+          : firstArgument.range[0];
 
       const tokenAfter = sourceCode.getTokenAfter(lastArgument);
       return [
@@ -341,18 +333,15 @@ export default createRule<Options, MessageIds>({
     function objectPropertyRanges(
       node: TSESTree.ObjectExpression,
       indices: number[],
-    ): TSESTree.Range[] | null {
+    ): TSESTree.Range[] {
       if (
         node.properties.length > 0 &&
         indices.length === node.properties.length &&
         indices[0] === 0 &&
         indices.at(-1) === node.properties.length - 1
       ) {
-        const open = sourceCode.getFirstToken(node);
-        const close = sourceCode.getLastToken(node);
-        if (open == null || close == null) {
-          return null;
-        }
+        const open = sourceCode.getFirstToken(node)!;
+        const close = sourceCode.getLastToken(node)!;
         return [[open.range[1], close.range[0]]];
       }
 
@@ -363,10 +352,9 @@ export default createRule<Options, MessageIds>({
           if (next != null) {
             return [first.range[0], next.range[0]];
           }
-          const rangeStart = previous?.range[1] ?? first.range[0];
           const tokenAfter = sourceCode.getTokenAfter(last);
           return [
-            rangeStart,
+            previous!.range[1],
             tokenAfter?.value === ',' ? tokenAfter.range[1] : last.range[1],
           ];
         },
@@ -376,7 +364,7 @@ export default createRule<Options, MessageIds>({
     function jsxAttributeRanges(
       node: TSESTree.JSXOpeningElement,
       indices: number[],
-    ): TSESTree.Range[] | null {
+    ): TSESTree.Range[] {
       return contiguousRemovalRanges(
         node.attributes,
         indices,
@@ -792,7 +780,7 @@ function contiguousRemovalRanges<T extends { range: TSESTree.Range }>(
     next: T | undefined,
     previous: T | undefined,
   ) => TSESTree.Range,
-): TSESTree.Range[] | null {
+): TSESTree.Range[] {
   const ranges: TSESTree.Range[] = [];
   for (const { start, end } of getContiguousRuns(indices)) {
     ranges.push(
