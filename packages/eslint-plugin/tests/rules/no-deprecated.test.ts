@@ -1,5 +1,14 @@
+import 'tsx/cjs';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { expect, it, vi } from 'vitest';
+
 import rule from '../../src/rules/no-deprecated';
-import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
+import * as util from '../../src/util';
+import {
+  createRuleTesterWithNativeTypes,
+  createRuleTesterWithTypes,
+  getFixturesRootDir,
+} from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes({
@@ -4071,4 +4080,441 @@ export { deprecatedFunction as bar } from './deprecated';
       ],
     },
   ],
+});
+
+const nativeRuleTester = createRuleTesterWithNativeTypes();
+
+nativeRuleTester.run('no-deprecated (native)', rule, {
+  valid: [
+    '/** @deprecated */ const declared = 1;',
+    {
+      code: '/** @deprecated */ const declared = 1;',
+      options: [{ allow: [] }],
+    },
+    {
+      code: `
+interface Props {
+  current?: string;
+}
+declare function Component(props: Props): unknown;
+<Component current="value" />;
+      `,
+      filename: 'react.tsx',
+    },
+    `
+declare const object: {
+  method(): void;
+  /** @deprecated Do not pass numbers. */ method(value: number): void;
+  /** @deprecated Do not pass strings. */ method(value: string): void;
+};
+object.method();
+object['method']();
+    `,
+  ],
+  invalid: [
+    {
+      code: `
+/** @deprecated */ const oldValue = 1;
+oldValue;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: 'oldValue' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+/** @deprecated Use newValue. */ const oldValue = 1;
+const alias = oldValue;
+alias;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { name: 'oldValue', reason: 'Use newValue.' },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+declare function overloaded(): void;
+/** @deprecated Use the string overload. */
+declare function overloaded(value: number): void;
+declare function overloaded(value: string): void;
+overloaded(1);
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            name: 'overloaded',
+            reason: 'Use the string overload.',
+          },
+          endColumn: 11,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+const object = {
+  /** @deprecated */
+  oldProperty: 1,
+};
+object.oldProperty;
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'oldProperty' },
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+const object = {
+  /** @deprecated */
+  oldProperty: 1,
+};
+object['oldProperty'];
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'oldProperty' },
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+/** @deprecated */ const oldProperty = 1;
+const object = { oldProperty };
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { name: 'oldProperty' },
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+declare const OldClass: {
+  /** @deprecated Use create(). */ new (): object;
+};
+new OldClass();
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'OldClass', reason: 'Use create().' },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+/** @deprecated Use replacement(). */
+declare function legacy(): void;
+legacy();
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: 'legacy', reason: 'Use replacement().' },
+          endColumn: 7,
+          endLine: 4,
+          line: 4,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+declare const object: {
+  /** @deprecated Use current(). */ old(): void;
+};
+object.old();
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'old', reason: 'Use current().' },
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+declare const object: {
+  method(): void;
+  /** @deprecated Do not pass numbers. */ method(value: number): void;
+  /** @deprecated Do not pass strings. */ method(value: string): void;
+};
+object.method(1);
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'method', reason: 'Do not pass numbers.' },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+declare const object: {
+  method(): void;
+  /** @deprecated Do not pass numbers. */ method(value: number): void;
+  /** @deprecated Do not pass strings. */ method(value: string): void;
+};
+object.method('value');
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'method', reason: 'Do not pass strings.' },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+declare const object: {
+  method(): void;
+  /** @deprecated Do not pass numbers. */ method(value: number): void;
+  /** @deprecated Do not pass strings. */ method(value: string): void;
+};
+object['method'](1);
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'method', reason: 'Do not pass numbers.' },
+          endColumn: 16,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+declare const object: {
+  method(): void;
+  /** @deprecated Do not pass numbers. */ method(value: number): void;
+  /** @deprecated Do not pass strings. */ method(value: string): void;
+};
+object['method']('value');
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'method', reason: 'Do not pass strings.' },
+          endColumn: 16,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+declare const object: {
+  /** @deprecated Use current. */ method: (value: number) => void;
+};
+object.method(1);
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'method', reason: 'Use current.' },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+declare const tag: {
+  /** @deprecated Use currentTag. */ (strings: TemplateStringsArray): string;
+};
+tag\`value\`;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: 'tag', reason: 'Use currentTag.' },
+          endColumn: 4,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface Props {
+  /** @deprecated Use current. */ old?: string;
+  current?: string;
+}
+declare function Component(props: Props): unknown;
+<Component old="value" />;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'old', reason: 'Use current.' },
+          endColumn: 15,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+interface Props {
+  /** @deprecated Use current. */ old?: string;
+  current?: string;
+}
+declare namespace JSX {
+  interface IntrinsicElements {
+    widget: Props;
+  }
+}
+<widget old="value" />;
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { name: 'old', reason: 'Use current.' },
+          endColumn: 12,
+          endLine: 11,
+          line: 11,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+import { reexportedDeprecatedFunctionWithOverloads as legacy } from './deprecated';
+legacy('value');
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { name: 'legacy', reason: 'Reason' },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+  ],
+});
+
+const symbolLocationNames: string[] = [];
+
+nativeRuleTester.run(
+  'no-deprecated (native JSX attribute symbol)',
+  {
+    ...rule,
+    create(context) {
+      const services = util.getNativeParserServices(context);
+      const getSymbolAtLocation = services.getSymbolAtLocation.bind(services);
+      vi.spyOn(services, 'getSymbolAtLocation').mockImplementation(node => {
+        if (node.type === AST_NODE_TYPES.JSXIdentifier) {
+          symbolLocationNames.push(node.name);
+        }
+        return getSymbolAtLocation(node);
+      });
+      return rule.create(context);
+    },
+  },
+  {
+    valid: [],
+    invalid: [
+      {
+        after() {
+          expect(symbolLocationNames).toContain('old');
+        },
+        code: `
+interface Props {
+  /** @deprecated Use current. */ old?: string;
+}
+declare namespace JSX {
+  interface IntrinsicElements {
+    widget: Props;
+  }
+}
+<widget old="value" />;
+        `,
+        errors: [
+          {
+            column: 9,
+            data: { name: 'old', reason: 'Use current.' },
+            endColumn: 12,
+            endLine: 10,
+            line: 10,
+            messageId: 'deprecatedWithReason',
+          },
+        ],
+        filename: 'react.tsx',
+      },
+    ],
+  },
+);
+
+it('rejects native non-empty allow specifiers', () => {
+  expect(() =>
+    rule.create({
+      languageOptions: { parserOptions: {} },
+      options: [{ allow: [{ from: 'lib', name: 'oldValue' }] }],
+      sourceCode: { parserServices: { backend: 'native' } },
+    } as never),
+  ).toThrow(
+    'The native no-deprecated prototype does not support allow specifiers.',
+  );
 });

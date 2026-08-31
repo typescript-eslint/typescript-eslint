@@ -5,6 +5,7 @@ import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
+import type { create as createNativeRule } from './native/no-deprecated';
 
 import {
   createRule,
@@ -21,9 +22,9 @@ type IdentifierLike =
   | TSESTree.PrivateIdentifier
   | TSESTree.Super;
 
-type MessageIds = 'deprecated' | 'deprecatedWithReason';
+export type MessageIds = 'deprecated' | 'deprecatedWithReason';
 
-type Options = [
+export type Options = [
   {
     allow?: TypeOrValueSpecifier[];
   },
@@ -61,6 +62,19 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
+    if (context.sourceCode.parserServices?.backend === 'native') {
+      if (options.allow?.length) {
+        throw new Error(
+          'The native no-deprecated prototype does not support allow specifiers.',
+        );
+      }
+      const loadNativeRule = require;
+      const nativeRule = loadNativeRule('./native/no-deprecated') as {
+        create: typeof createNativeRule;
+      };
+      return nativeRule.create(context);
+    }
+
     const { jsDocParsingMode } = context.languageOptions.parserOptions;
     const allow = options.allow;
     if (jsDocParsingMode === 'none' || jsDocParsingMode === 'type-info') {
