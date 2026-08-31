@@ -226,6 +226,22 @@ useCallback((value: number[] = []) => {});
 declare const tuple: [string];
 const [a, b = 'default'] = tuple;
     `,
+    `
+declare const commands: [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+declare const items: [...string[], string | undefined];
+const [first = 'fallback'] = items;
+    `,
+    `
+declare const pair: [string, string?];
+const [a, b = 'default'] = pair;
+    `,
+    `
+declare const rest: [...number[], boolean];
+const [a = 1] = rest;
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11911
     `
 const run = (cb: (...args: unknown[]) => void) => cb();
