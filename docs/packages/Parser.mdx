@@ -358,7 +358,7 @@ The parser includes an experimental native backend for TypeScript 7.1. It requir
 pnpm add --save-dev typescript@^6 @typescript/native@npm:typescript@7.1.0-dev.20260822.1
 ```
 
-Keep both packages installed. The default parser backend and syntax-only parsing still import the classic `typescript` package. Installing TypeScript 7 under the normal `typescript` package name is rejected and is not supported by the parser's normal peer dependency range. Other TypeScript 7.1 previews are not supported compatibility guarantees.
+Keep both packages installed. The default parser backend and syntax-only parsing still import the classic `typescript` package. Installing TypeScript 7 under the normal `typescript` package name is rejected and is not supported by the parser's normal peer dependency range. Other TypeScript 7.1 previews have no compatibility guarantees.
 
 Select the native backend with this exact opt-in:
 
