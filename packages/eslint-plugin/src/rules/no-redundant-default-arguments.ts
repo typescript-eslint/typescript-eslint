@@ -166,10 +166,9 @@ export default createRule<Options, MessageIds>({
           fix:
             reportIndex === 0
               ? fixer =>
-                  removeRangeIfUncommented(
-                    fixer,
+                  removeRangeIfUncommented(fixer, [
                     trailingArgumentRange(node, firstRedundant),
-                  )
+                  ])
               : undefined,
         });
       });
@@ -302,14 +301,12 @@ export default createRule<Options, MessageIds>({
 
     function removeRangeIfUncommented(
       fixer: TSESLint.RuleFixer,
-      ranges: TSESTree.Range | TSESTree.Range[],
-    ): TSESLint.RuleFix | TSESLint.RuleFix[] | null {
-      const list: TSESTree.Range[] =
-        typeof ranges[0] === 'number' ? [ranges as TSESTree.Range] : ranges;
-      if (list.some(rangeContainsComment)) {
+      ranges: TSESTree.Range[],
+    ): TSESLint.RuleFix[] | null {
+      if (ranges.some(rangeContainsComment)) {
         return null;
       }
-      return list.map(range => fixer.removeRange(range));
+      return ranges.map(range => fixer.removeRange(range));
     }
 
     function trailingArgumentRange(
