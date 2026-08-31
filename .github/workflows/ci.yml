@@ -319,6 +319,32 @@ jobs:
         env:
           CI: true
 
+  native_project_service_integration_test:
+    name: Native project service integration test (${{ matrix.os }})
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node 22'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: 22
+      - name: Build
+        uses: ./.github/actions/prepare-build
+      - name: Run native project service integration test
+        run: pnpm exec vitest run --config packages/integration-tests/vitest.config.mts packages/integration-tests/tests/native-project-service.test.ts
+        env:
+          CI: true
+
   ast_spec_snapshots_clean:
     name: Verify ast-spec snapshots are clean
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job

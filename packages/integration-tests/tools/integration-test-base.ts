@@ -92,17 +92,11 @@ export function nodeIntegrationTest(
   assertOutput: (stderr: string) => void,
 ): void {
   integrationTest(`node ${scriptName}`, testFilename, async testFolder => {
-    const [result] = await Promise.allSettled([
-      execFile('node', [scriptName], {
-        cwd: testFolder,
-      }),
-    ]);
+    const { stderr, stdout } = await execFile('node', [scriptName], {
+      cwd: testFolder,
+    });
 
-    const stderr =
-      result.status === 'rejected'
-        ? (result.reason as { stderr: string }).stderr
-        : result.value.stderr;
-
+    expect(stdout).toBe('');
     assertOutput(stderr);
   });
 }
