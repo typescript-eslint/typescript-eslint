@@ -8,7 +8,6 @@ import type {
   NativeFileChanges,
   NativeProjectContext,
   NativeProjectService,
-  NativeProjectServiceOptions,
 } from './types';
 
 import {
@@ -42,12 +41,8 @@ function verifySupportedConfig(project: Project): void {
   }
 }
 
-export function createNativeProjectService(
-  options: NativeProjectServiceOptions = {},
-): NativeProjectService {
-  const collectTiming =
-    options.collectTiming === true ||
-    process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING === 'true';
+export function createNativeProjectService(): NativeProjectService {
+  const collectTiming = process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING === 'true';
   const overlays = new Map<string, string | null>();
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();

@@ -38,17 +38,35 @@ const eslint = new ESLint({
   ],
 });
 
-const samples = [];
-let peakRss = process.memoryUsage.rss();
 try {
+  let diagnostics;
+  let peakRss = process.memoryUsage.rss();
+  const wallTimeMs = [];
   for (let iteration = 0; iteration < 6; iteration += 1) {
     const start = process.hrtime.bigint();
-    await eslint.lintFiles(['src/index.ts']);
-    samples.push(Number(process.hrtime.bigint() - start) / 1_000_000);
+    const results = await eslint.lintFiles(['src/index.ts']);
+    wallTimeMs.push(Number(process.hrtime.bigint() - start) / 1_000_000);
     peakRss = Math.max(peakRss, process.memoryUsage.rss());
+    diagnostics ??= results.flatMap(result =>
+      result.messages.map(({ column, endColumn, endLine, line, ruleId }) => ({
+        column,
+        endColumn,
+        endLine,
+        line,
+        ruleId,
+      })),
+    );
   }
+  const metrics = readNativeMetrics();
   process.stdout.write(
-    JSON.stringify({ backend, metrics: readNativeMetrics(), peakRss, samples }),
+    JSON.stringify({
+      diagnostics,
+      nativeRecentRequests: metrics.timing?.recentRequests ?? [],
+      nativeRequestTotals: metrics.timing?.totals,
+      parserServiceCalls: metrics.parserServices,
+      peakRss,
+      wallTimeMs,
+    }),
   );
 } finally {
   resetNativeMetrics();

@@ -18,10 +18,32 @@ const fixtures = path.join(__dirname, '../fixtures/nativeProject');
 const filePath = path.join(fixtures, 'file.ts');
 
 describe('native project service lifecycle', () => {
+  it('enables timing only through the instrumentation environment variable', () => {
+    const previousTiming = process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING;
+    delete process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING;
+    resetNativeMetrics();
+    const service = createNativeProjectService();
+
+    expect(readNativeMetrics().timing).toBeUndefined();
+
+    service.close();
+    process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING = 'true';
+    const timedService = createNativeProjectService();
+    expect(readNativeMetrics().timing).toMatchObject({ enabled: true });
+    timedService.close();
+    resetNativeMetrics();
+    if (previousTiming == null) {
+      delete process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING;
+    } else {
+      process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING = previousTiming;
+    }
+  });
+
   it('records lifecycle metrics without extra native requests', () => {
+    vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_TIMING', 'true');
     resetNativeMetrics();
     const updateSnapshot = vi.spyOn(API.prototype, 'updateSnapshot');
-    const service = createNativeProjectService({ collectTiming: true });
+    const service = createNativeProjectService();
     service.openFile(filePath, fs.readFileSync(filePath, 'utf8'));
     service.openFile(filePath, 'export const value = "updated";');
 
@@ -37,6 +59,7 @@ describe('native project service lifecycle', () => {
     expect(updateSnapshot).toHaveBeenCalledTimes(3);
 
     resetNativeMetrics();
+    vi.unstubAllEnvs();
     updateSnapshot.mockRestore();
     expect(readNativeMetrics()).toMatchObject({
       processStarts: 0,
@@ -46,7 +69,7 @@ describe('native project service lifecycle', () => {
   });
 
   it('replaces and disposes snapshots for edits', () => {
-    const service = createNativeProjectService({ collectTiming: true });
+    const service = createNativeProjectService();
     try {
       const first = service.openFile(filePath, 'export const value = 1;');
       const second = service.openFile(

@@ -4,12 +4,16 @@ import path from 'node:path';
 
 import { FIXTURES_DESTINATION_DIR } from './pack-packages.js';
 
-interface BackendResult {
-  backend: 'classic' | 'native';
-  metrics: unknown;
+interface SampleResult {
+  diagnostics: object[];
+  nativeRecentRequests: object[];
+  nativeRequestTotals?: object;
+  parserServiceCalls: Record<string, number>;
   peakRss: number;
-  samples: number[];
+  wallTimeMs: number[];
 }
+
+type Backend = 'classic' | 'native';
 
 const fixture = path.join(FIXTURES_DESTINATION_DIR, 'native-project-service');
 const runner = path.join(fixture, 'benchmark.mjs');
@@ -37,7 +41,7 @@ if (!fs.existsSync(runner)) {
   }
 }
 
-function runBackend(backend: BackendResult['backend']): BackendResult {
+function runBackend(backend: Backend): SampleResult {
   const result = spawnSync(process.execPath, [runner, backend], {
     cwd: fixture,
     encoding: 'utf8',
@@ -45,7 +49,7 @@ function runBackend(backend: BackendResult['backend']): BackendResult {
   if (result.status !== 0) {
     throw new Error(`${backend} benchmark failed: ${result.stderr}`);
   }
-  return JSON.parse(result.stdout) as BackendResult;
+  return JSON.parse(result.stdout) as SampleResult;
 }
 
 function median(samples: number[]): number {
@@ -55,15 +59,31 @@ function median(samples: number[]): number {
 
 const classic = runBackend('classic');
 const native = runBackend('native');
+if (
+  JSON.stringify(classic.diagnostics) !== JSON.stringify(native.diagnostics)
+) {
+  throw new Error('Classic and native benchmark diagnostics differ.');
+}
+
+const summarize = (result: SampleResult) => ({
+  ...result,
+  coldWallTimeMs: result.wallTimeMs[0],
+  warmMedianWallTimeMs: median(result.wallTimeMs.slice(1)),
+  warmWallTimeMs: result.wallTimeMs.slice(1),
+});
 const output = {
   acceptance: 'native warm median must not exceed classic warm median',
   backends: {
-    classic: { ...classic, warmMedian: median(classic.samples.slice(1)) },
-    native: { ...native, warmMedian: median(native.samples.slice(1)) },
+    classic: summarize(classic),
+    native: summarize(native),
   },
+  diagnosticsEquivalent: true,
 };
 
 console.log(JSON.stringify(output));
-if (output.backends.native.warmMedian > output.backends.classic.warmMedian) {
+if (
+  output.backends.native.warmMedianWallTimeMs >
+  output.backends.classic.warmMedianWallTimeMs
+) {
   process.exitCode = 1;
 }

@@ -25,7 +25,3 @@ export interface NativeProjectService {
   openFile(filePath: string, code: string): NativeProjectContext;
   updateFiles(changes: NativeFileChanges): Snapshot;
 }
-
-export interface NativeProjectServiceOptions {
-  collectTiming?: boolean;
-}
