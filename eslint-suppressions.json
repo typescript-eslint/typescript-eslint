@@ -134,11 +134,6 @@
       "count": 49
     }
   },
-  "packages/eslint-plugin/tests/rules/no-unsafe-unary-minus.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 9
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-useless-default-assignment.test.ts": {
     "eslint-plugin/require-test-error-positions": {
       "count": 25
