@@ -11,6 +11,11 @@ import type {
   NativeProjectServiceOptions,
 } from './types';
 
+import {
+  incrementNativeMetric,
+  registerNativeMetricService,
+} from '../use-at-your-own-risk/nativeMetrics';
+
 const CLOSED_ERROR = 'The TypeScript native project service is closed.';
 
 function normalizePath(filePath: string): string {
@@ -40,7 +45,11 @@ function verifySupportedConfig(project: Project): void {
 export function createNativeProjectService(
   options: NativeProjectServiceOptions = {},
 ): NativeProjectService {
+  const collectTiming =
+    options.collectTiming === true ||
+    process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING === 'true';
   const overlays = new Map<string, string | null>();
+  const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
   const openProjects = new Set<string>();
   let closed = false;
@@ -49,7 +58,7 @@ export function createNativeProjectService(
 
   try {
     api = new API({
-      collectTiming: options.collectTiming,
+      collectTiming,
       cwd: process.cwd(),
       fs: {
         fileExists: fileName =>
@@ -65,6 +74,7 @@ export function createNativeProjectService(
       { cause: error },
     );
   }
+  incrementNativeMetric('processStarts');
 
   function assertOpen(): void {
     if (closed) {
@@ -78,7 +88,12 @@ export function createNativeProjectService(
     try {
       const previousSnapshot = snapshot;
       snapshot = api.updateSnapshot(params);
-      previousSnapshot?.dispose();
+      incrementNativeMetric('snapshotsCreated');
+      fileContexts.clear();
+      if (previousSnapshot) {
+        previousSnapshot.dispose();
+        incrementNativeMetric('snapshotsDisposed');
+      }
     } catch (error) {
       if (!snapshot) {
         throw new Error(
@@ -91,7 +106,7 @@ export function createNativeProjectService(
     return snapshot;
   }
 
-  return {
+  const service: NativeProjectService = {
     close(): void {
       if (closed) {
         return;
@@ -112,12 +127,17 @@ export function createNativeProjectService(
         });
       }
       attempt(() => {
-        snapshot?.dispose();
+        if (snapshot) {
+          snapshot.dispose();
+          incrementNativeMetric('snapshotsDisposed');
+        }
       });
       attempt(() => {
         api.close();
       });
+      unregisterMetrics();
       attempt(() => {
+        fileContexts.clear();
         fileProjects.clear();
         openProjects.clear();
         overlays.clear();
@@ -137,9 +157,16 @@ export function createNativeProjectService(
     openFile(filePath, code): NativeProjectContext {
       assertOpen();
       const normalizedPath = normalizePath(filePath);
+      const cachedContext = fileContexts.get(normalizedPath);
+      if (overlays.get(normalizedPath) === code && cachedContext) {
+        incrementNativeMetric('projectHits');
+        return cachedContext;
+      }
       overlays.set(normalizedPath, code);
+      incrementNativeMetric('fileOverlays');
       const knownConfigFileName = fileProjects.get(normalizedPath);
       if (knownConfigFileName) {
+        incrementNativeMetric('projectHits');
         const nextSnapshot = replaceSnapshot({
           fileChanges: { changed: [normalizedPath] },
         });
@@ -150,15 +177,18 @@ export function createNativeProjectService(
             `The TypeScript native project did not contain '${normalizedPath}'.`,
           );
         }
-        return {
+        const context = {
           checker: project.checker,
           program: project.program,
           project,
           snapshot: nextSnapshot,
           sourceFile,
         };
+        fileContexts.set(normalizedPath, context);
+        return context;
       }
 
+      incrementNativeMetric('projectDiscoveries');
       const discoverySnapshot = replaceSnapshot({
         openFiles: [normalizedPath],
       });
@@ -206,13 +236,15 @@ export function createNativeProjectService(
           `The TypeScript native project did not contain '${normalizedPath}'.`,
         );
       }
-      return {
+      const context = {
         checker: project.checker,
         program: project.program,
         project,
         snapshot: nextSnapshot,
         sourceFile,
       };
+      fileContexts.set(normalizedPath, context);
+      return context;
     },
 
     updateFiles(changes: NativeFileChanges): Snapshot {
@@ -222,6 +254,12 @@ export function createNativeProjectService(
         created: changes.created?.map(normalizePath),
         deleted: changes.deleted?.map(normalizePath),
       };
+      incrementNativeMetric(
+        'fileEvents',
+        (fileChanges.changed?.length ?? 0) +
+          (fileChanges.created?.length ?? 0) +
+          (fileChanges.deleted?.length ?? 0),
+      );
       for (const filePath of fileChanges.deleted ?? []) {
         overlays.set(filePath, null);
       }
@@ -233,4 +271,9 @@ export function createNativeProjectService(
       return replaceSnapshot({ fileChanges });
     },
   };
+  const unregisterMetrics = registerNativeMetricService(
+    () => service.close(),
+    collectTiming ? () => api.getTimingInfo() : undefined,
+  );
+  return service;
 }

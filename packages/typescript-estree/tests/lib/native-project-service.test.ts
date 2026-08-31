@@ -9,11 +9,42 @@ import {
   createNativeProjectService,
   getNativeProjectService,
 } from '../../src/native';
+import {
+  readNativeMetrics,
+  resetNativeMetrics,
+} from '../../src/use-at-your-own-risk/nativeMetrics';
 
 const fixtures = path.join(__dirname, '../fixtures/nativeProject');
 const filePath = path.join(fixtures, 'file.ts');
 
 describe('native project service lifecycle', () => {
+  it('records lifecycle metrics without extra native requests', () => {
+    resetNativeMetrics();
+    const updateSnapshot = vi.spyOn(API.prototype, 'updateSnapshot');
+    const service = createNativeProjectService({ collectTiming: true });
+    service.openFile(filePath, fs.readFileSync(filePath, 'utf8'));
+    service.openFile(filePath, 'export const value = "updated";');
+
+    expect(readNativeMetrics()).toMatchObject({
+      fileOverlays: 2,
+      processStarts: 1,
+      projectDiscoveries: 1,
+      projectHits: 1,
+      snapshotsCreated: 3,
+      snapshotsDisposed: 2,
+      timing: { enabled: true },
+    });
+    expect(updateSnapshot).toHaveBeenCalledTimes(3);
+
+    resetNativeMetrics();
+    updateSnapshot.mockRestore();
+    expect(readNativeMetrics()).toMatchObject({
+      processStarts: 0,
+      snapshotsCreated: 0,
+    });
+    expect(() => service.openFile(filePath, '')).toThrow('closed');
+  });
+
   it('replaces and disposes snapshots for edits', () => {
     const service = createNativeProjectService({ collectTiming: true });
     try {
@@ -30,6 +61,21 @@ describe('native project service lifecycle', () => {
       expect(second.snapshot.isDisposed()).toBe(true);
     } finally {
       service.close();
+    }
+  });
+
+  it('reuses a project context when an overlay is unchanged', () => {
+    const updateSnapshot = vi.spyOn(API.prototype, 'updateSnapshot');
+    const service = createNativeProjectService();
+    try {
+      const code = fs.readFileSync(filePath, 'utf8');
+      const first = service.openFile(filePath, code);
+
+      expect(service.openFile(filePath, code)).toBe(first);
+      expect(updateSnapshot).toHaveBeenCalledTimes(2);
+    } finally {
+      service.close();
+      updateSnapshot.mockRestore();
     }
   });
 

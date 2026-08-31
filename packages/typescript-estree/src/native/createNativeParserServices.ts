@@ -6,6 +6,8 @@ import type { TSNode } from '../ts-estree';
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 import type { NativeProjectContext } from './types';
 
+import { incrementNativeParserServiceMetric } from '../use-at-your-own-risk/nativeMetrics';
+
 export function createNativeParserServices(
   astMaps: ASTMaps,
   adapter: NativeNodeAdapter,
@@ -24,15 +26,26 @@ export function createNativeParserServices(
       has: node => astMaps.esTreeNodeToTSNodeMap.has(node),
     },
     experimentalDecorators: compilerOptions.experimentalDecorators ?? false,
-    getContextualType: node =>
-      checker.getContextualType(toNativeNode(node) as NativeExpression),
-    getResolvedSignature: node =>
-      checker.getResolvedSignature(toNativeNode(node)),
-    getSymbolAtLocation: node =>
-      checker.getSymbolAtLocation(toNativeNode(node)),
-    getTypeAtLocation: node => checker.getTypeAtLocation(toNativeNode(node)),
-    getTypesAtLocations: nodes =>
-      checker.getTypeAtLocation(nodes.map(toNativeNode)),
+    getContextualType: node => {
+      incrementNativeParserServiceMetric('getContextualType');
+      return checker.getContextualType(toNativeNode(node) as NativeExpression);
+    },
+    getResolvedSignature: node => {
+      incrementNativeParserServiceMetric('getResolvedSignature');
+      return checker.getResolvedSignature(toNativeNode(node));
+    },
+    getSymbolAtLocation: node => {
+      incrementNativeParserServiceMetric('getSymbolAtLocation');
+      return checker.getSymbolAtLocation(toNativeNode(node));
+    },
+    getTypeAtLocation: node => {
+      incrementNativeParserServiceMetric('getTypeAtLocation');
+      return checker.getTypeAtLocation(toNativeNode(node));
+    },
+    getTypesAtLocations: nodes => {
+      incrementNativeParserServiceMetric('getTypesAtLocations');
+      return checker.getTypeAtLocation(nodes.map(toNativeNode));
+    },
     isolatedDeclarations: compilerOptions.isolatedDeclarations ?? false,
     native: { checker, program, project },
     tsNodeToESTreeNodeMap: {
