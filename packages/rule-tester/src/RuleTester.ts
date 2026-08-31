@@ -435,7 +435,17 @@ export class RuleTester extends TestFramework {
         // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8
         freezeDeeply(context.parserOptions);
 
-        return (typeof rule === 'function' ? rule : rule.create)(context);
+        // Absolute filenames require the linter's config base path to be the filesystem root,
+        // but that implementation detail should not change the cwd exposed to rules.
+        const ruleContext = Object.create(context, {
+          cwd: {
+            enumerable: true,
+            value: process.cwd(),
+          },
+        }) as typeof context;
+        Object.freeze(ruleContext);
+
+        return (typeof rule === 'function' ? rule : rule.create)(ruleContext);
       },
     };
   }

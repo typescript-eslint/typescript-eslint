@@ -42,6 +42,29 @@ const rule = ESLintUtils.RuleCreator.withoutDocs({
   }),
 });
 
+const cwdRule = ESLintUtils.RuleCreator.withoutDocs({
+  meta: {
+    docs: {
+      description: 'some description',
+    },
+    messages: {
+      cwd: '{{cwd}}',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  defaultOptions: [],
+  create: context => ({
+    Program(node): void {
+      context.report({
+        data: { cwd: context.cwd },
+        messageId: 'cwd',
+        node,
+      });
+    },
+  }),
+});
+
 describe('rule tester filename', () => {
   new RuleTester().run('without tsconfigRootDir', rule, {
     invalid: [
@@ -152,6 +175,19 @@ describe('rule tester filename', () => {
         code: '_',
         errors: [{ messageId: 'foo' }],
         filename: 'a/////////////../../../b',
+      },
+    ],
+    valid: [],
+  });
+});
+
+describe('rule tester context.cwd', () => {
+  new RuleTester().run('context-cwd', cwdRule, {
+    invalid: [
+      {
+        code: '_',
+        errors: [{ message: process.cwd() }],
+        filename: '/an-absolute-path/foo.js',
       },
     ],
     valid: [],
