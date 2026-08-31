@@ -268,6 +268,14 @@ export function createNativeNodeAdapter(
         // Native nodes expose their fields through accessors not represented by
         // the base Node interface, so proxying necessarily starts from unknown.
         const value: unknown = Reflect.get(target, property, target);
+        if (
+          typeof value === 'number' &&
+          (property === 'operator' ||
+            property === 'token' ||
+            property === 'keywordToken')
+        ) {
+          return translateKind(value);
+        }
         if (isNativeNode(value)) {
           return wrapNode(value);
         }

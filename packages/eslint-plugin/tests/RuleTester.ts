@@ -22,6 +22,13 @@ export function createRuleTesterWithTypes(
   });
 }
 
+export function createRuleTesterWithNativeTypes(): RuleTester {
+  return createRuleTesterWithTypes({
+    projectService: { backend: 'native' },
+    tsconfigRootDir: getFixturesRootDir(),
+  });
+}
+
 export function getFixturesRootDir(): string {
   return path.join(__dirname, 'fixtures');
 }

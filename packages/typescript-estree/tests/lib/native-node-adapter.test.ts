@@ -126,6 +126,52 @@ describe('native node adapter', () => {
     });
   });
 
+  it('translates primitive SyntaxKind fields used by the converter', () => {
+    const code = `
+class Derived extends Base {}
+declare let value: number;
++value;
+-value;
+!value;
+~value;
+++value;
+--value;
+value++;
+value--;
+type Keys = keyof object;
+    `;
+    const classic = convertClassic(code);
+
+    withNativeSourceFile(code, fixturePath, ({ sourceFile }) => {
+      const adapter = createNativeNodeAdapter();
+      const native = astConverter(
+        adapter.adaptSourceFile(sourceFile),
+        createParseSettings(code, { ...baseOptions, filePath: fixturePath }),
+        true,
+      );
+
+      expect(native.estree).toEqual(classic.estree);
+    });
+
+    const metaPropertyCode = 'import.meta;';
+    const classicMetaProperty = ts.createSourceFile(
+      fixturePath,
+      metaPropertyCode,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TS,
+    ).statements[0] as ts.ExpressionStatement;
+    withNativeSourceFile(metaPropertyCode, fixturePath, ({ sourceFile }) => {
+      const adaptedMetaProperty = createNativeNodeAdapter().adaptSourceFile(
+        sourceFile,
+      ).statements[0] as ts.ExpressionStatement;
+
+      expect(
+        (adaptedMetaProperty.expression as ts.MetaProperty).keywordToken,
+      ).toBe((classicMetaProperty.expression as ts.MetaProperty).keywordToken);
+    });
+  });
+
   it('produces the classic ESTree tree, tokens, and comments for TSX', () => {
     const classic = convertClassic(jsxFixture, jsxFixturePath);
     withNativeSourceFile(jsxFixture, jsxFixturePath, ({ sourceFile }) => {

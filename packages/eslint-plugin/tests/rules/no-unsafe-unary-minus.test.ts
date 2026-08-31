@@ -1,37 +1,50 @@
+/* eslint-disable @typescript-eslint/internal/no-dynamic-tests -- Both parser backends must run exactly the same cases. */
+import 'tsx/cjs';
+
 import rule from '../../src/rules/no-unsafe-unary-minus';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import {
+  createRuleTesterWithNativeTypes,
+  createRuleTesterWithTypes,
+} from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes();
 
-ruleTester.run('no-unsafe-unary-minus', rule, {
-  valid: [
-    '+42;',
-    '-42;',
-    '-42n;',
-    '(a: number) => -a;',
-    '(a: bigint) => -a;',
-    '(a: number | bigint) => -a;',
-    '(a: any) => -a;',
-    '(a: 1 | 2) => -a;',
-    '(a: string) => +a;',
-    '(a: number[]) => -a[0];',
-    '<T,>(t: T & number) => -t;',
-    '(a: { x: number }) => -a.x;',
-    '(a: never) => -a;',
-    '<T extends number>(t: T) => -t;',
-  ],
-  invalid: [
-    { code: '(a: string) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: '(a: {}) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: '(a: number[]) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: "-'hello';", errors: [{ messageId: 'unaryMinus' }] },
-    { code: '-`hello`;', errors: [{ messageId: 'unaryMinus' }] },
-    {
-      code: '(a: { x: number }) => -a;',
-      errors: [{ messageId: 'unaryMinus' }],
-    },
-    { code: '(a: unknown) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: '(a: void) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: '<T,>(t: T) => -t;', errors: [{ messageId: 'unaryMinus' }] },
-  ],
+const valid = [
+  '+42;',
+  '-42;',
+  '-42n;',
+  '(a: number) => -a;',
+  '(a: bigint) => -a;',
+  '(a: number | bigint) => -a;',
+  '(a: any) => -a;',
+  '(a: 1 | 2) => -a;',
+  '(a: string) => +a;',
+  '(a: number[]) => -a[0];',
+  '<T,>(t: T & number) => -t;',
+  '(a: { x: number }) => -a.x;',
+  '(a: never) => -a;',
+  '<T extends number>(t: T) => -t;',
+] as const;
+const invalid = [
+  { code: '(a: string) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+  { code: '(a: {}) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+  { code: '(a: number[]) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+  { code: "-'hello';", errors: [{ messageId: 'unaryMinus' }] },
+  { code: '-`hello`;', errors: [{ messageId: 'unaryMinus' }] },
+  {
+    code: '(a: { x: number }) => -a;',
+    errors: [{ messageId: 'unaryMinus' }],
+  },
+  { code: '(a: unknown) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+  { code: '(a: void) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+  { code: '<T,>(t: T) => -t;', errors: [{ messageId: 'unaryMinus' }] },
+] as const;
+
+ruleTester.run('no-unsafe-unary-minus', rule, { valid, invalid });
+
+const nativeRuleTester = createRuleTesterWithNativeTypes();
+
+nativeRuleTester.run('no-unsafe-unary-minus (native)', rule, {
+  valid,
+  invalid,
 });
