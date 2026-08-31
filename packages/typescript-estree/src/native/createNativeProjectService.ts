@@ -1,5 +1,7 @@
 import type { Project, Snapshot } from '@typescript/native/unstable/sync';
 
+import nativePackage from '@typescript/native/package.json';
+import { SyntaxKind } from '@typescript/native/unstable/ast';
 import { API } from '@typescript/native/unstable/sync';
 import path from 'node:path';
 import * as ts from 'typescript';
@@ -16,6 +18,43 @@ import {
 } from '../use-at-your-own-risk/nativeMetrics';
 
 const CLOSED_ERROR = 'The TypeScript native project service is closed.';
+const SUPPORTED_NATIVE_VERSION = '7.1.0-dev.20260822.1';
+
+function verifyNativeCompatibility(): void {
+  if (nativePackage.version !== SUPPORTED_NATIVE_VERSION) {
+    throw new Error(
+      `Incompatible @typescript/native version "${nativePackage.version}". This version of typescript-eslint supports only "${SUPPORTED_NATIVE_VERSION}". Install @typescript/native@${SUPPORTED_NATIVE_VERSION}.`,
+    );
+  }
+
+  const nativeAPI: unknown = API;
+  const apiPrototype =
+    typeof nativeAPI === 'function'
+      ? (nativeAPI as { prototype?: Record<string, unknown> }).prototype
+      : undefined;
+  const nativeSyntaxKind: unknown = SyntaxKind;
+  const sourceFileKind =
+    typeof nativeSyntaxKind === 'object' && nativeSyntaxKind
+      ? (nativeSyntaxKind as Record<string, unknown>).SourceFile
+      : undefined;
+  const requiredFunctions = [
+    ['API', nativeAPI],
+    ['API.prototype.updateSnapshot', apiPrototype?.updateSnapshot],
+    ['API.prototype.close', apiPrototype?.close],
+    ['API.prototype.getTimingInfo', apiPrototype?.getTimingInfo],
+  ] as const;
+  const missingFunction = requiredFunctions.find(
+    ([, value]) => typeof value !== 'function',
+  );
+  const missingSurface =
+    missingFunction?.[0] ??
+    (typeof sourceFileKind === 'number' ? undefined : 'SyntaxKind.SourceFile');
+  if (missingSurface) {
+    throw new Error(
+      `Incompatible @typescript/native API version "${nativePackage.version}": required surface "${missingSurface}" is missing. Reinstall @typescript/native@${SUPPORTED_NATIVE_VERSION}.`,
+    );
+  }
+}
 
 function normalizePath(filePath: string): string {
   const absolutePath = path.normalize(path.resolve(filePath));
@@ -42,6 +81,7 @@ function verifySupportedConfig(project: Project): void {
 }
 
 export function createNativeProjectService(): NativeProjectService {
+  verifyNativeCompatibility();
   const collectTiming = process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING === 'true';
   const overlays = new Map<string, string | null>();
   const fileContexts = new Map<string, NativeProjectContext>();
