@@ -28,6 +28,31 @@ function typeDeclaredInDeclareModule(
   );
 }
 
+function typeDeclaredInExportedDeclarationFile(
+  packageName: string,
+  symbol: ts.Symbol,
+  declarationFiles: ts.SourceFile[],
+  program: ts.Program,
+): boolean {
+  const checker = program.getTypeChecker();
+  const moduleSymbol = checker
+    .getAmbientModules()
+    .find(module => module.name === `"${packageName}"`);
+  const exportedSymbol = moduleSymbol
+    ? checker
+        .getExportsOfModule(moduleSymbol)
+        .find(moduleExport => moduleExport.name === symbol.name)
+    : undefined;
+  const exportedDeclarationFiles =
+    exportedSymbol
+      ?.getDeclarations()
+      ?.map(declaration => declaration.getSourceFile()) ?? [];
+
+  return exportedDeclarationFiles.some(exportedDeclarationFile =>
+    declarationFiles.includes(exportedDeclarationFile),
+  );
+}
+
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
@@ -49,12 +74,19 @@ function typeDeclaredInDeclarationFile(
 
 export function typeDeclaredInPackageDeclarationFile(
   packageName: string,
+  symbol: ts.Symbol,
   declarations: ts.Node[],
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
   return (
     typeDeclaredInDeclareModule(packageName, declarations) ||
-    typeDeclaredInDeclarationFile(packageName, declarationFiles, program)
+    typeDeclaredInDeclarationFile(packageName, declarationFiles, program) ||
+    typeDeclaredInExportedDeclarationFile(
+      packageName,
+      symbol,
+      declarationFiles,
+      program,
+    )
   );
 }

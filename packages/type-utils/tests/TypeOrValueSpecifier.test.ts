@@ -382,6 +382,14 @@ describe('TypeOrValueSpecifier', () => {
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: ['Node', 'Symbol'], package: 'typescript' },
       ],
+      [
+        'type Test = URL;',
+        { from: 'package', name: 'URL', package: 'node:url' },
+      ],
+      [
+        'import {URL as NodeURL} from "node:url"; type Test = NodeURL;',
+        { from: 'package', name: 'URL', package: 'node:url' },
+      ],
       // The following type is available from the @types/semver package.
       [
         'import {SemVer} from "semver"; type Test = SemVer;',
@@ -575,6 +583,10 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: 'TsNode', package: 'typescript' },
+      ],
+      [
+        'type Test = URL;',
+        { from: 'package', name: 'URL', package: 'node:buffer' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
@@ -782,6 +794,10 @@ describe('TypeOrValueSpecifier', () => {
           `const fs: typeof import("fs"); const module = fs;`,
           { from: 'package', name: 'fs', package: 'fs' },
         ],
+        [
+          'import { URL } from "node:url"; const value = URL;',
+          { from: 'package', name: 'URL', package: 'node:url' },
+        ],
       ])('matches a matching package specifier: %s', runTestPositive);
 
       it.each<[string, TypeOrValueSpecifier]>([
@@ -796,6 +812,10 @@ describe('TypeOrValueSpecifier', () => {
         [
           'const mock = 42; const hoge = mock;',
           { from: 'package', name: 'mock', package: 'node:test' },
+        ],
+        [
+          'const value = URL;',
+          { from: 'package', name: 'URL', package: 'node:buffer' },
         ],
       ])("doesn't match a mismatched package specifier: %s", runTestNegative);
     });
