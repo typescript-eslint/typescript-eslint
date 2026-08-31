@@ -1,5 +1,10 @@
+import 'tsx/cjs';
+
 import rule from '../../src/rules/no-unsafe-argument';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import {
+  createRuleTesterWithNativeTypes,
+  createRuleTesterWithTypes,
+} from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes();
 
@@ -570,6 +575,230 @@ foo\`\${arg}\`;
           },
           endColumn: 10,
           line: 5,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+  ],
+});
+
+const nativeRuleTester = createRuleTesterWithNativeTypes();
+
+nativeRuleTester.run('no-unsafe-argument (native)', rule, {
+  valid: [
+    `
+doesNotExist(1 as any);
+    `,
+    `
+declare const foo: any;
+foo(1 as any);
+    `,
+    `
+declare function foo(arg: unknown): void;
+foo(1 as any);
+    `,
+    `
+declare function foo(arg: string): void;
+foo('safe');
+    `,
+    `
+declare function foo(...args: [number, string, any]): void;
+foo(1, 'safe', 1 as any);
+    `,
+    `
+declare function foo<T extends string[]>(...args: T): void;
+foo('safe', 1 as any);
+    `,
+    `
+declare function foo(...args: any): void;
+foo(1 as any);
+    `,
+    `
+declare function acceptsMap(arg: Map<string, string>): void;
+acceptsMap(new Map());
+    `,
+    `
+type Recursive<T> = { next: Recursive<T>; value: T };
+declare function foo(value: Recursive<string>): void;
+declare const value: Recursive<string>;
+foo(value);
+    `,
+  ],
+  invalid: [
+    {
+      code: `
+declare function foo(arg: number): void;
+foo(1 as any);
+      `,
+      errors: [
+        {
+          data: { receiver: '`number`', sender: '`any`' },
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number, ...rest: string[]): void;
+const tuple = [1] as const;
+foo('safe', ...tuple, 1 as any);
+      `,
+      errors: [
+        {
+          data: { receiver: '`string`', sender: '`any`' },
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, ...rest: [number, string]): void;
+foo('safe', 1, 1 as any);
+      `,
+      errors: [
+        {
+          data: { receiver: '`string`', sender: '`any`' },
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(...args: [string, ...string[]]): void;
+declare const spread: [string, ...string[]];
+foo(...spread, 1 as any);
+      `,
+      errors: [
+        {
+          data: { receiver: '`string`', sender: '`any`' },
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+declare const values: any;
+foo(...values);
+      `,
+      errors: [
+        {
+          data: { sender: '`any`' },
+          messageId: 'unsafeSpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+foo(...([] as any[]));
+      `,
+      errors: [
+        {
+          data: { sender: '`any[]`' },
+          messageId: 'unsafeArraySpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+foo(...(['safe', 1 as any] as const));
+      `,
+      errors: [
+        {
+          data: { receiver: '`number`', sender: 'of type `any`' },
+          messageId: 'unsafeTupleSpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+declare const errors: error[];
+foo(...errors);
+      `,
+      errors: [
+        {
+          data: { sender: 'error' },
+          messageId: 'unsafeArraySpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+const tuple = ['safe', error] as const;
+foo(...tuple);
+      `,
+      errors: [
+        {
+          data: { receiver: '`number`', sender: 'error typed' },
+          messageId: 'unsafeTupleSpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: Set<Set<string>>): void;
+declare const arg: Set<Set<any>>;
+foo(arg);
+      `,
+      errors: [
+        {
+          data: {
+            receiver: '`Set<Set<string>>`',
+            sender: '`Set<Set<any>>`',
+          },
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: number): void;
+foo(error);
+      `,
+      errors: [
+        {
+          data: { receiver: '`number`', sender: 'error typed' },
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare const Foo: new (arg: number) => object;
+new Foo(1 as any);
+      `,
+      errors: [
+        {
+          data: { receiver: '`number`', sender: '`any`' },
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(templates: TemplateStringsArray, arg: number) {}
+declare const arg: any;
+foo\`\${arg}\`;
+      `,
+      errors: [
+        {
+          data: { receiver: '`number`', sender: '`any`' },
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: Set<string>): void;
+foo(new Set<any>());
+      `,
+      errors: [
+        {
+          data: { receiver: '`Set<string>`', sender: '`Set<any>`' },
           messageId: 'unsafeArgument',
         },
       ],

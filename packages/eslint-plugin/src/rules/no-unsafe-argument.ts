@@ -4,6 +4,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { create as createNativeRule } from './native/no-unsafe-argument';
+
 import {
   createRule,
   FunctionSignature,
@@ -37,6 +39,14 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    if (context.sourceCode.parserServices?.backend === 'native') {
+      const loadNativeRule = require;
+      const nativeRule = loadNativeRule('./native/no-unsafe-argument') as {
+        create: typeof createNativeRule;
+      };
+      return nativeRule.create(context);
+    }
+
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
