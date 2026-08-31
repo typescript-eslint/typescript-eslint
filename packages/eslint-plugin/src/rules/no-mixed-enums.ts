@@ -52,10 +52,7 @@ export default createRule({
       let current: TSESTree.EntityName = id;
       while (current.type === AST_NODE_TYPES.TSQualifiedName) {
         qualifiers = `.${current.right.name}${qualifiers}`;
-        if (current.left.type === AST_NODE_TYPES.TSImportType) {
-          return context.sourceCode.getText(id);
-        }
-        current = current.left;
+        current = current.left as TSESTree.EntityName;
       }
 
       return context.sourceCode.getText(current) + qualifiers;
