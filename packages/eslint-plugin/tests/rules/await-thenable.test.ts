@@ -1,7 +1,16 @@
+import 'tsx/cjs';
+import type { Mock } from 'vitest';
+
 import { noFormat } from '@typescript-eslint/rule-tester';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { vi } from 'vitest';
 
 import rule from '../../src/rules/await-thenable';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import * as util from '../../src/util';
+import {
+  createRuleTesterWithNativeTypes,
+  createRuleTesterWithTypes,
+} from '../RuleTester';
 
 // cspell:ignore Hecker,unional
 
@@ -82,6 +91,24 @@ async function test() {
 
   await thenable;
 }
+    `,
+    `
+declare const value: Promise<number> | number;
+await value;
+    `,
+    `
+declare const value: { then(callback: () => void): void };
+await value;
+    `,
+    `
+declare const value: {
+  then: ((value: number) => void) | ((callback: () => void) => void);
+};
+await value;
+    `,
+    `
+declare const value: { then(...callbacks: (() => void)[]): void };
+await value;
     `,
     `
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/promise-polyfill/index.d.ts
@@ -809,6 +836,54 @@ async function test() {
     },
     {
       code: `
+declare const value: { then(): void };
+await value;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const value: { then(): void };
+ value;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: { then(value: number): void };
+await value;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const value: { then(value: number): void };
+ value;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 declare const callback: (() => void) | undefined;
 await callback?.();
       `,
@@ -1438,6 +1513,368 @@ Promise.all([...[1, 2, 3]]);
           endColumn: 26,
           line: 2,
           messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+  ],
+});
+
+const nativeRuleTester = createRuleTesterWithNativeTypes();
+
+type NativeServices = ReturnType<typeof util.getNativeParserServices>;
+
+let getTypeAtLocationSpy: Mock<NativeServices['getTypeAtLocation']>;
+let getTypesAtLocationsSpy: Mock<NativeServices['getTypesAtLocations']>;
+const ruleWithNativeServiceSpies = {
+  ...rule,
+  create(context: Parameters<typeof rule.create>[0]) {
+    const services = util.getNativeParserServices(context);
+    const getTypeAtLocation = services.getTypeAtLocation.bind(services);
+    const getTypesAtLocations = services.getTypesAtLocations.bind(services);
+    getTypeAtLocationSpy = vi.fn(getTypeAtLocation);
+    getTypesAtLocationsSpy = vi.fn(getTypesAtLocations);
+    services.getTypeAtLocation = getTypeAtLocationSpy;
+    services.getTypesAtLocations = getTypesAtLocationsSpy;
+    return rule.create(context);
+  },
+};
+
+nativeRuleTester.run(
+  'await-thenable (native batching)',
+  ruleWithNativeServiceSpies,
+  {
+    valid: [
+      {
+        after() {
+          expect(getTypeAtLocationSpy).not.toHaveBeenCalled();
+          expect(getTypesAtLocationsSpy).toHaveBeenCalledOnce();
+          expect(
+            getTypesAtLocationsSpy.mock.calls[0][0].map(node =>
+              node.type === AST_NODE_TYPES.Identifier ? node.name : null,
+            ),
+          ).toStrictEqual(['first', 'second']);
+        },
+        code: `
+declare const first: any;
+declare const second: any;
+await using a = first,
+  b = second;
+        `,
+      },
+    ],
+    invalid: [],
+  },
+);
+
+nativeRuleTester.run('await-thenable (native)', rule, {
+  valid: [
+    'await Promise.resolve(1);',
+    `
+declare const value: Promise<number> | number;
+await value;
+    `,
+    `
+declare const value: { then(callback: () => void): void };
+await value;
+    `,
+    `
+declare const value: {
+  then: ((value: number) => void) | ((callback: () => void) => void);
+};
+await value;
+    `,
+    `
+declare const value: { then(...callbacks: (() => void)[]): void };
+await value;
+    `,
+    `
+declare const value: any;
+await value;
+    `,
+    `
+declare const value: unknown;
+await value;
+    `,
+    `
+async function wrapper<T>(value: T) {
+  return await value;
+}
+    `,
+    `
+declare const values: AsyncIterable<number>;
+for await (const value of values) {
+}
+    `,
+    'Promise.all([Promise.resolve(1), Promise.resolve(2)]);',
+    `
+function aggregate() {
+  type PromiseConstructor = {
+    all(values: number[]): Promise<number[]>;
+  };
+  const LocalPromise = null as unknown as PromiseConstructor;
+  LocalPromise.all([1]);
+}
+    `,
+    `
+declare const iterator: unique symbol;
+declare const values: {
+  [iterator](): Iterator<number>;
+};
+Promise.all(values);
+    `,
+    `
+declare const values: {
+  [Symbol.asyncIterator](): AsyncIterator<number>;
+};
+for await (const value of values) {
+}
+    `,
+    `
+declare const value: {
+  [Symbol.asyncDispose](): PromiseLike<void>;
+};
+await using resource = value;
+    `,
+    `
+declare const value: AsyncDisposable;
+await using resource = value;
+    `,
+  ],
+  invalid: [
+    {
+      code: `
+declare const value: { then(): void };
+await value;
+      `,
+      errors: [
+        {
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const value: { then(): void };
+ value;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: { then(value: number): void };
+await value;
+      `,
+      errors: [
+        {
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const value: { then(value: number): void };
+ value;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function wrapper<T extends number>(value: T) {
+  return await value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function wrapper<T extends number>(value: T) {
+  return  value;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+for await (const value of [Promise.resolve(1)]) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'forAwaitOfNonAsyncIterable',
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+for  (const value of [Promise.resolve(1)]) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'await /* preserved */ 1;',
+      errors: [
+        {
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: ' /* preserved */ 1;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+for await (/* preserved */ const value of [1]) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'forAwaitOfNonAsyncIterable',
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+for  (/* preserved */ const value of [1]) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+for await (const value of 1) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'forAwaitOfNonAsyncIterable',
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+for  (const value of 1) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const asyncIterator: unique symbol;
+declare const values: {
+  [asyncIterator](): AsyncIterator<number>;
+};
+for await (const value of values) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'forAwaitOfNonAsyncIterable',
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+declare const asyncIterator: unique symbol;
+declare const values: {
+  [asyncIterator](): AsyncIterator<number>;
+};
+for  (const value of values) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'Promise.all([Promise.resolve(1), 2]);',
+      errors: [{ messageId: 'invalidPromiseAggregatorInput' }],
+    },
+    {
+      code: `
+const PromiseAlias = Promise;
+PromiseAlias.all([1]);
+      `,
+      errors: [{ messageId: 'invalidPromiseAggregatorInput' }],
+    },
+    {
+      code: `
+declare const PromiseIntersection: PromiseConstructor & { extra: true };
+PromiseIntersection.all([1]);
+      `,
+      errors: [{ messageId: 'invalidPromiseAggregatorInput' }],
+    },
+    {
+      code: `
+function aggregate<T extends PromiseConstructor>(PromiseType: T) {
+  PromiseType.all([1]);
+}
+      `,
+      errors: [{ messageId: 'invalidPromiseAggregatorInput' }],
+    },
+    {
+      code: `
+declare const values: number[];
+Promise.all(values);
+      `,
+      errors: [{ messageId: 'invalidPromiseAggregatorInput' }],
+    },
+    {
+      code: 'await using resource = /* preserved */ 1;',
+      errors: [
+        {
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: ' using resource = /* preserved */ 1;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const asyncDispose: unique symbol;
+declare const value: {
+  [asyncDispose](): PromiseLike<void>;
+};
+await using resource = value;
+      `,
+      errors: [
+        {
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const asyncDispose: unique symbol;
+declare const value: {
+  [asyncDispose](): PromiseLike<void>;
+};
+ using resource = value;
+      `,
+            },
+          ],
         },
       ],
     },
