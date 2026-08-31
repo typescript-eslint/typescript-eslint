@@ -1,10 +1,10 @@
 import { nodeIntegrationTest } from '../tools/integration-test-base';
 
-const TS7_ERROR_MESSAGE = [
-  'typescript-eslint does not support TS 7.0.',
-  'Please see https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0 to run typescript-eslint using the TS 6 API.',
-  "See also https://github.com/typescript-eslint/typescript-eslint/issues/10940 for tracking typescript-eslint's support for TS >=7.1",
+const PARSER_TS7_ERROR_MESSAGE = [
+  "typescript-eslint's classic parser backend does not support TypeScript 7 installed as 'typescript'.",
+  "The experimental TypeScript 7.1 native backend requires side-by-side 'typescript' and '@typescript/native' aliases. See https://typescript-eslint.io/packages/parser#experimental-typescript-71-native-backend.",
 ].join('\n');
+const PACKAGE_TS7_ERROR_MESSAGE = 'typescript-eslint does not support TS 7.0.';
 
 for (const scriptName of [
   'imports-eslint-plugin.mjs',
@@ -12,6 +12,10 @@ for (const scriptName of [
   'imports-typescript-eslint.mjs',
 ]) {
   nodeIntegrationTest(__filename, scriptName, stderr => {
-    expect(stderr).toContain(TS7_ERROR_MESSAGE);
+    expect(stderr).toContain(
+      scriptName === 'imports-parser.mjs'
+        ? PARSER_TS7_ERROR_MESSAGE
+        : PACKAGE_TS7_ERROR_MESSAGE,
+    );
   });
 }

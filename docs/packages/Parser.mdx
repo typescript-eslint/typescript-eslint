@@ -350,6 +350,37 @@ This option brings two main benefits over the older `project`:
 
 See [FAQs > Typed Linting > Project Service Issues](../troubleshooting/typed-linting/index.mdx#project-service-issues) for help on working with the project service.
 
+#### Experimental TypeScript 7.1 native backend
+
+The parser includes an experimental native backend for TypeScript 7.1. It requires Node.js 22 or newer and a side-by-side installation of classic TypeScript 6 and `@typescript/native`, aliased to TypeScript `>=7.1.0-0`:
+
+```shell
+pnpm add --save-dev typescript@^6 @typescript/native@npm:typescript@">=7.1.0-0"
+```
+
+Keep both packages installed. The default parser backend and syntax-only parsing still import the classic `typescript` package. Installing TypeScript 7 under the normal `typescript` package name is rejected and is not supported by the parser's normal peer dependency range.
+
+Select the native backend with this exact opt-in:
+
+```js
+parserOptions: {
+  projectService: {
+    backend: 'native',
+  },
+}
+```
+
+The native backend currently supports only these typed rules:
+
+- `@typescript-eslint/await-thenable`
+- `@typescript-eslint/no-deprecated`
+- `@typescript-eslint/no-unsafe-argument`
+- `@typescript-eslint/no-unsafe-unary-minus`
+
+Other rules that request classic TypeScript parser services report a compatibility error. The native backend also rejects `parserOptions.project`, `parserOptions.programs`, and a non-empty `allow` option for `@typescript-eslint/no-deprecated`.
+
+This backend is a prototype and is not a stable compatibility guarantee. Its strict performance acceptance benchmark currently fails because the native warm median is slower than the classic warm median. The latest fair development run observed 12.52ms for native and 2.65ms for classic; exact results vary by machine and run.
+
 #### `ProjectServiceOptions`
 
 The behavior of `parserOptions.projectService` can be customized by setting it to an object.
