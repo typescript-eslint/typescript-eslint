@@ -1,0 +1,31 @@
+Incorrect
+
+function loadPage(page = 20) {}
+loadPage(20);
+         ~~ This argument passes the default value 20 for "page" and can be omitted.
+
+function loadOptions({ page = 20 }: { page?: number }) {}
+loadOptions({ page: 20 });
+              ~~~~~~~~ This property passes the default value 20 for "page" and can be omitted.
+
+function Header({ title = 'Inbox' }: { title?: string }) {
+  return null;
+}
+<Header title="Inbox" />;
+        ~~~~~~~~~~~~~ This prop passes the default value "Inbox" for "title" and can be omitted.
+
+Correct
+
+function loadPage(page = 20) {}
+loadPage();
+loadPage(1);
+
+function loadOptions({ page = 20 }: { page?: number }) {}
+loadOptions({});
+loadOptions({ page: 1 });
+
+function Header({ title = 'Inbox' }: { title?: string }) {
+  return null;
+}
+<Header />;
+<Header title="Sent" />;

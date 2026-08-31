@@ -1,0 +1,90 @@
+---
+description: 'Disallow arguments and JSX props that equal their parameter default.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-redundant-default-arguments** for documentation.
+
+[Default parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters) and [destructuring default values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value) apply when the caller omits a value.
+Passing a hardcoded argument that is the same as that default does not change the result.
+
+This rule reports those redundant arguments, object properties, and JSX props, and can remove them.
+It uses type information so imported callees are resolved across files.
+
+The rule only considers:
+
+- calls whose callee is a stable identifier (not a member access, and not a reassigned binding)
+- hardcoded literals (`0`, `'all'`, `false`, `` `all` ``, `-1`)
+- trailing positional arguments, so a later non-default argument is not dropped
+- object properties and JSX props that cannot be overridden by a spread
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```tsx
+function loadPage(page = 20) {}
+loadPage(20);
+
+function loadOptions({ page = 20 }: { page?: number }) {}
+loadOptions({ page: 20 });
+
+function Header({ title = 'Inbox' }: { title?: string }) {
+  return null;
+}
+<Header title="Inbox" />;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```tsx
+function loadPage(page = 20) {}
+loadPage();
+loadPage(1);
+
+function loadOptions({ page = 20 }: { page?: number }) {}
+loadOptions({});
+loadOptions({ page: 1 });
+
+function Header({ title = 'Inbox' }: { title?: string }) {
+  return null;
+}
+<Header />;
+<Header title="Sent" />;
+```
+
+</TabItem>
+</Tabs>
+
+The following are not reported because omitting the value would change behavior or cannot be proven safe:
+
+```ts
+function loadPage(page = 20, limit = 10) {}
+loadPage(20, 5);
+
+function loadOptions({ page = 20 }: { page?: number }) {}
+loadOptions({ page: 20, ...other });
+
+const api = { loadPage(page = 20) {} };
+api.loadPage(20);
+
+let loadPage = (page = 20) => {};
+loadPage(20);
+```
+
+## When Not To Use It
+
+If your project is not accurately typed, such as if it's in the process of being converted to TypeScript, it may be difficult to enable this rule.
+
+If you pass default values at call sites as documentation, or you rely on a function's runtime [`.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length), you may want to disable this rule.
+
+## Related To
+
+- [`no-useless-default-assignment`](./no-useless-default-assignment.mdx)
+- [`default-param-last`](./default-param-last.mdx)

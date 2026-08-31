@@ -14,6 +14,7 @@
     "deprecated.ts",
     "mixed-enums-decl.ts",
     "react.tsx",
+    "redundant-default-arguments.ts",
     "var-declaration.ts",
     "errors.ts",
     "switch-exhaustiveness-check.ts"

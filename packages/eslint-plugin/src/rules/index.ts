@@ -60,6 +60,7 @@ import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-c
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noNonNullAssertion from './no-non-null-assertion';
 import noRedeclare from './no-redeclare';
+import noRedundantDefaultArguments from './no-redundant-default-arguments';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
@@ -196,6 +197,7 @@ const rules = {
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-non-null-assertion': noNonNullAssertion,
   'no-redeclare': noRedeclare,
+  'no-redundant-default-arguments': noRedundantDefaultArguments,
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
   'no-restricted-imports': noRestrictedImports,
