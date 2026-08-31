@@ -386,6 +386,7 @@ const [a, b = 0] = mixed;
           column: 15,
           data: { type: 'property' },
           endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'uselessDefaultAssignment',
         },
