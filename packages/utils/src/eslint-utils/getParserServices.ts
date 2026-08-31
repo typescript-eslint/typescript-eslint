@@ -2,16 +2,12 @@ import type * as TSESLint from '../ts-eslint';
 import type {
   ClassicParserServices,
   ParserServicesWithTypeInformation,
-  ParserServicesWithoutTypeInformation,
 } from '../ts-estree';
 
-import { parserSeemsToBeTSESLint } from './parserSeemsToBeTSESLint';
-
-const ERROR_MESSAGE_REQUIRES_PARSER_SERVICES =
-  "You have used a rule which requires type information, but don't have parserOptions set to generate type information for this file. See https://tseslint.com/typed-linting for enabling linting with type information.";
-
-const ERROR_MESSAGE_UNKNOWN_PARSER =
-  'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.';
+import {
+  getParserServicesFromContext,
+  throwParserServicesError,
+} from './getParserServicesFromContext';
 
 /* eslint-disable @typescript-eslint/unified-signatures */
 /**
@@ -62,51 +58,20 @@ export function getParserServices(
   context: Readonly<TSESLint.RuleContext<string, unknown[]>>,
   allowWithoutFullTypeInformation = false,
 ): ClassicParserServices {
-  const parserServices = context.sourceCode.parserServices;
-  const parser =
-    // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8
-    context.parserPath || context.languageOptions.parser?.meta?.name;
+  const { parser, parserServices } = getParserServicesFromContext(context);
 
-  // This check is unnecessary if the user is using the latest version of our parser.
-  //
-  // However the world isn't perfect:
-  // - Users often use old parser versions.
-  //   Old versions of the parser would not return any parserServices unless parserOptions.project was set.
-  // - Users sometimes use parsers that aren't @typescript-eslint/parser
-  //   Other parsers won't return the parser services we expect (if they return any at all).
-  //
-  // This check allows us to handle bad user setups whilst providing a nice user-facing
-  // error message explaining the problem.
-  if (
-    parserServices?.esTreeNodeToTSNodeMap == null ||
-    parserServices.tsNodeToESTreeNodeMap == null
-  ) {
-    throwError(parser);
+  if (parserServices.backend === 'native') {
+    throw new Error(
+      'This rule requires classic TypeScript parser services, but the experimental native backend is enabled.',
+    );
   }
 
   // if a rule requires full type information, then hard fail if it doesn't exist
   // this forces the user to supply parserOptions.project
-  if (
-    !allowWithoutFullTypeInformation &&
-    (
-      parserServices as Partial<
-        ParserServicesWithoutTypeInformation | ParserServicesWithTypeInformation
-      >
-    ).program == null
-  ) {
-    throwError(parser);
+  if (!allowWithoutFullTypeInformation && parserServices.program == null) {
+    throwParserServicesError(parser);
   }
 
-  return parserServices as ClassicParserServices;
+  return parserServices;
 }
 /* eslint-enable @typescript-eslint/unified-signatures */
-
-function throwError(parser: string | undefined): never {
-  const messages = [
-    ERROR_MESSAGE_REQUIRES_PARSER_SERVICES,
-    `Parser: ${parser || '(unknown)'}`,
-    !parserSeemsToBeTSESLint(parser) && ERROR_MESSAGE_UNKNOWN_PARSER,
-  ].filter(Boolean);
-
-  throw new Error(messages.join('\n'));
-}

@@ -65,6 +65,26 @@ Note: detected a parser other than @typescript-eslint/parser. Make sure the pars
   );
 
 describe(ESLintUtils.getParserServices, () => {
+  it('rejects native parser services', () => {
+    const context = createMockRuleContext({
+      sourceCode: {
+        ...defaults.sourceCode,
+        parserServices: {
+          ...defaults.sourceCode.parserServices,
+          backend: 'native',
+          program: undefined,
+        } as unknown as ParserServices,
+      },
+    });
+
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
+      'This rule requires classic TypeScript parser services, but the experimental native backend is enabled.',
+    );
+    expect(() => ESLintUtils.getParserServices(context, true)).toThrow(
+      'This rule requires classic TypeScript parser services, but the experimental native backend is enabled.',
+    );
+  });
+
   it('throws a standard error with the parser when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is typescript-eslint', () => {
     const context = createMockRuleContext({
       sourceCode: {
