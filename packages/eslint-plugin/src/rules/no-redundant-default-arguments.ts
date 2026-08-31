@@ -693,7 +693,6 @@ function unwrapExpression(
     case AST_NODE_TYPES.TSTypeAssertion:
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSSatisfiesExpression:
-    case AST_NODE_TYPES.ParenthesizedExpression:
       return unwrapExpression(node.expression);
     default:
       return node;
@@ -708,7 +707,6 @@ function getHardcodedValue(
     case AST_NODE_TYPES.TSTypeAssertion:
     case AST_NODE_TYPES.TSNonNullExpression:
     case AST_NODE_TYPES.TSSatisfiesExpression:
-    case AST_NODE_TYPES.ParenthesizedExpression:
       return getHardcodedValue(node.expression);
     case AST_NODE_TYPES.Literal:
       if (
