@@ -365,5 +365,47 @@ fail();
       options: [{ checkNever: true }],
       output: null,
     },
+    {
+      code: 'void 1;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 7,
+          endLine: 1,
+          line: 1,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: '1;',
+    },
+    {
+      code: "void '0';",
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: "'0';",
+    },
+    {
+      code: `
+declare const value: string;
+const result = void value;
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: null,
+    },
   ],
 });

@@ -12,6 +12,8 @@ void box;
 ~~~~~~~~ void operator is useless here; it should only discard a call's return value
 void box.value;
 ~~~~~~~~~~~~~~ void operator is useless here; it should only discard a call's return value
+void 1;
+~~~~~~ void operator is useless here; it should only discard a call's return value
 
 Correct
 
@@ -28,6 +30,8 @@ void bar(1);
 declare const box: { value: string };
 box;
 box.value;
+
+void 0;
 
 declare const promise: Promise<number>;
 void promise;

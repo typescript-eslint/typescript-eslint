@@ -66,7 +66,7 @@ export default createRule<
         const inner = unwrapVoidArgument(node.argument);
         if (inner.type !== AST_NODE_TYPES.CallExpression) {
           // `void 0` is a common undefined idiom, not a discarded call.
-          if (inner.type === AST_NODE_TYPES.Literal) {
+          if (inner.type === AST_NODE_TYPES.Literal && inner.value === 0) {
             return;
           }
 
@@ -80,7 +80,10 @@ export default createRule<
           context.report({
             node,
             messageId: 'meaninglessVoidOnNonCall',
-            fix,
+            fix:
+              node.parent.type === AST_NODE_TYPES.ExpressionStatement
+                ? fix
+                : undefined,
           });
           return;
         }
