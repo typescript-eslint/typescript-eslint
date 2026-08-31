@@ -6,7 +6,12 @@ import { ASTUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import {
+  createRule,
+  getParserServices,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 const NOT_HARDCODED = Symbol('notHardcoded');
 
@@ -337,8 +342,14 @@ export default createRule<Options, MessageIds>({
         indices[0] === 0 &&
         indices.at(-1) === node.properties.length - 1
       ) {
-        const open = sourceCode.getFirstToken(node)!;
-        const close = sourceCode.getLastToken(node)!;
+        const open = nullThrows(
+          sourceCode.getFirstToken(node),
+          NullThrowsReasons.MissingToken('{', 'object'),
+        );
+        const close = nullThrows(
+          sourceCode.getLastToken(node),
+          NullThrowsReasons.MissingToken('}', 'object'),
+        );
         return [[open.range[1], close.range[0]]];
       }
 
@@ -351,7 +362,7 @@ export default createRule<Options, MessageIds>({
           }
           const tokenAfter = sourceCode.getTokenAfter(last);
           return [
-            previous!.range[1],
+            previous == null ? first.range[0] : previous.range[1],
             tokenAfter?.value === ',' ? tokenAfter.range[1] : last.range[1],
           ];
         },
