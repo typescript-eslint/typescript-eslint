@@ -9,6 +9,9 @@ import rule from '../../../src/rules/member-ordering';
 const ruleTester = new RuleTester();
 
 const grouped: RunTests<MessageIds, Options> = {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // optionalityOrder - required-first
     {
@@ -378,6 +381,11 @@ interface X {
       errors: [
         {
           column: 3,
+          data: {
+            beforeMember: 'd',
+            member: 'b',
+            optionalOrRequired: 'required',
+          },
           line: 4,
           messageId: 'incorrectOrder',
         },

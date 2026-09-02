@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+// /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/member-ordering';
@@ -6,6 +6,9 @@ import rule from '../../../src/rules/member-ordering';
 const ruleTester = new RuleTester();
 
 ruleTester.run('member-ordering-natural-order', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: `

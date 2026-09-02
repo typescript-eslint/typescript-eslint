@@ -5,6 +5,9 @@ import rule from '../../../src/rules/class-methods-use-this';
 const ruleTester = new RuleTester();
 
 ruleTester.run('class-methods-use-this', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: `
@@ -15,6 +18,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "method 'method'" },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -32,6 +36,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "method 'method'" },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -49,6 +54,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "method 'method'" },
           endColumn: 19,
           endLine: 3,
           line: 3,
@@ -66,6 +72,7 @@ class Foo {
       errors: [
         {
           column: 24,
+          data: { name: 'arrow function' },
           endColumn: 26,
           endLine: 3,
           line: 3,
@@ -83,6 +90,7 @@ class Foo {
       errors: [
         {
           column: 32,
+          data: { name: 'arrow function' },
           endColumn: 34,
           endLine: 3,
           line: 3,
@@ -100,6 +108,7 @@ class Foo {
       errors: [
         {
           column: 34,
+          data: { name: 'arrow function' },
           endColumn: 36,
           endLine: 3,
           line: 3,
@@ -117,6 +126,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: 'private method #method' },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -134,6 +144,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "getter 'getter'" },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -151,6 +162,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "getter 'getter'" },
           endColumn: 21,
           endLine: 3,
           line: 3,
@@ -168,6 +180,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "getter 'getter'" },
           endColumn: 23,
           endLine: 3,
           line: 3,
@@ -185,6 +198,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: 'private getter #getter' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -202,6 +216,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "setter 'setter'" },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -224,6 +239,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "setter 'setter'" },
           endColumn: 21,
           endLine: 3,
           line: 3,
@@ -241,6 +257,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "setter 'setter'" },
           endColumn: 23,
           endLine: 3,
           line: 3,
@@ -258,6 +275,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: 'private setter #setter' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -275,6 +293,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "method 'method'" },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -292,6 +311,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: 'private method #method' },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -309,6 +329,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "method 'method'" },
           endColumn: 17,
           endLine: 3,
           line: 3,
@@ -332,6 +353,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "method 'method'" },
           endColumn: 19,
           endLine: 3,
           line: 3,
@@ -355,6 +377,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "getter 'getter'" },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -372,6 +395,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: 'private getter #getter' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -389,6 +413,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "getter 'getter'" },
           endColumn: 21,
           endLine: 3,
           line: 3,
@@ -412,6 +437,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "getter 'getter'" },
           endColumn: 23,
           endLine: 3,
           line: 3,
@@ -435,6 +461,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "setter 'setter'" },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -452,6 +479,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: 'private setter #setter' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -469,6 +497,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "setter 'setter'" },
           endColumn: 21,
           endLine: 3,
           line: 3,
@@ -493,6 +522,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "setter 'setter'" },
           endColumn: 23,
           endLine: 3,
           line: 3,
@@ -517,6 +547,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "method 'method'" },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -534,6 +565,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "getter 'getter'" },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -551,6 +583,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "setter 'setter'" },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -568,6 +601,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "method 'method'" },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -590,6 +624,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "getter 'getter'" },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -612,6 +647,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "setter 'setter'" },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -634,6 +670,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "method 'property'" },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -651,6 +688,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: 'private method #property' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -668,6 +706,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { name: "method 'property'" },
           endColumn: 23,
           endLine: 3,
           line: 3,
@@ -685,6 +724,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "method 'property'" },
           endColumn: 23,
           endLine: 3,
           line: 3,
@@ -707,6 +747,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "method 'property'" },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -730,6 +771,7 @@ class Foo implements Bar {
       errors: [
         {
           column: 3,
+          data: { name: "method 'property'" },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -757,6 +799,7 @@ function fn() {
       errors: [
         {
           column: 5,
+          data: { name: "method 'method'" },
           endColumn: 11,
           endLine: 6,
           line: 6,
