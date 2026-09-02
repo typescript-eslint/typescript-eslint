@@ -144,6 +144,10 @@ type TypeProps = {};
 If your code commonly needs to represent the _"any non-nullish value"_ type, this rule may not be for you.
 Projects that extensively use type operations such as conditional types and mapped types oftentimes benefit from disabling this rule.
 
+## Related To
+
+- [`no-generated-empty-object-type`](./no-generated-empty-object-type.mdx), which reports type operations that _resolve_ to `{}` rather than `{}` written out by hand
+
 ## Further Reading
 
 - [Revamping the `ban-types` rule](/blog/revamping-the-ban-types-rule)
