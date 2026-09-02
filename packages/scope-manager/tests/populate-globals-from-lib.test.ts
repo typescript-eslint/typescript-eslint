@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
-import type { ScopeManager } from '../src';
+import type { LibDefinition, ScopeManager } from '../src';
 
 import { analyze } from '../src';
+import { lib as TSLibraries } from '../src/lib';
 import { parse } from './test-utils';
 
 // Test code that heavily relies on lib-provided globals
@@ -174,6 +175,44 @@ describe('populateGlobalsFromLib – deduplication', () => {
     const es2018WithEs2017Snapshot = extractGlobalSnapshot(es2018WithEs2017);
 
     expect(es2018WithEs2017Snapshot).toEqual(es2018OnlySnapshot);
+  });
+
+  it('merges the type and value flags for duplicate globals', () => {
+    const result = analyze(ast, { lib: ['esnext'] });
+
+    for (const name of ['Array', 'Date', 'Map', 'Set']) {
+      expect(result.globalScope?.set.get(name)).toMatchObject({
+        isTypeVariable: true,
+        isValueVariable: true,
+      });
+    }
+  });
+
+  it('merges type and value flags in either order', () => {
+    const testLib = 'test.merge-flags' as never;
+    const libraries = TSLibraries as Map<string, LibDefinition>;
+    libraries.set(testLib, {
+      libs: [],
+      variables: [
+        ['ValueThenType', { isTypeVariable: false, isValueVariable: true }],
+        ['ValueThenType', { isTypeVariable: true, isValueVariable: false }],
+        ['TypeThenValue', { isTypeVariable: true, isValueVariable: false }],
+        ['TypeThenValue', { isTypeVariable: false, isValueVariable: true }],
+      ],
+    });
+
+    try {
+      const result = analyze(ast, { lib: [testLib] });
+
+      for (const name of ['ValueThenType', 'TypeThenValue']) {
+        expect(result.globalScope?.set.get(name)).toMatchObject({
+          isTypeVariable: true,
+          isValueVariable: true,
+        });
+      }
+    } finally {
+      libraries.delete(testLib);
+    }
   });
 });
 
