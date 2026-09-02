@@ -4,10 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
-import type {
-  ImplicitLibVariableOptions,
-  LibDefinition,
-} from '../variable';
+import type { ImplicitLibVariableOptions, LibDefinition } from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
