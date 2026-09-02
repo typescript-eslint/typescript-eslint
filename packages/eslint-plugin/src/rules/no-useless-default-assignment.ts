@@ -225,8 +225,18 @@ export default createRule<Options, MessageId>({
         if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
           return;
         }
-        const elementType = tupleArgs[elementIndex];
-        if (!canBeUndefined(elementType)) {
+        const { fixedLength, minLength } = sourceType.target;
+
+        if (elementIndex >= minLength) {
+          return;
+        }
+
+        const elementTypes =
+          elementIndex < fixedLength
+            ? [tupleArgs[elementIndex]]
+            : tupleArgs.slice(fixedLength);
+
+        if (!elementTypes.some(canBeUndefined)) {
           reportUselessDefaultAssignment(node, 'property');
         }
       }
