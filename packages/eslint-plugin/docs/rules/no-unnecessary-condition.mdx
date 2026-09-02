@@ -198,9 +198,9 @@ However, in some contexts, it may be more appropriate to keep this option disabl
 :::note
 This option assumes that type predicates accurately describe their runtime behavior.
 
-For a type predicate such as `isString(value): value is string`, TypeScript's control-flow analysis assumes that the function returns `true` if and only if `value` has the asserted type. If a predicate performs additional runtime checks that are not represented in its return type, this option may report conditions that are still meaningful at runtime.
+For a type predicate such as `isString(value): value is string`, TypeScript's control-flow analysis assumes that the function returns `true` if and only if `value` has the asserted type (`string`). If a predicate performs additional runtime checks that are not represented in its return type, this option may report conditions that are still meaningful at runtime.
 
-For assertion functions such as `assertIsString(value): asserts value is string`, TypeScript similarly assumes that the value has the asserted type whenever the function returns normally.
+This option assumes that a well-formed assertion function follows the same if-and-only-if semantics as a type predicate. For example, `assertIsString(value): asserts value is string` is assumed not to throw when `value` is already a string, and if it returns normally, then `value` is a string. Some assertion-function typings in the wild, such as Node's `assert.strictEqual()`, do not follow this assumption. In those cases, this option may report a runtime-meaningful assertion as unnecessary, so you may need to disable the option or suppress the report.
 :::
 
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
