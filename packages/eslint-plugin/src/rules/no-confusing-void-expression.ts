@@ -14,6 +14,7 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -108,6 +109,7 @@ export default createRule<Options, MessageId>({
 
   create(context, [options]) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
@@ -398,6 +400,34 @@ export default createRule<Options, MessageId>({
       return ['(', '[', '`'].includes(startToken.value);
     }
 
+    /**
+     * Both fixes guarded by `canFix` leave the function with no returned value,
+     * which TS only accepts when the declared return type is `undefined`, `void`
+     * or `any` (TS2355). A void expression is assignable to `void`, `any` and
+     * `unknown`, so `unknown` is the only declared type that both reaches this
+     * rule and rejects the fixed code.
+     */
+    function declaredReturnTypeForbidsEmptyReturn(
+      node: ReturnStatementWithArgument | TSESTree.ArrowFunctionExpression,
+    ): boolean {
+      const functionNode =
+        node.type === AST_NODE_TYPES.ReturnStatement
+          ? getParentFunctionNode(node)
+          : node;
+      if (functionNode?.returnType == null) {
+        return false;
+      }
+
+      const declaredType = services.getTypeFromTypeNode(
+        functionNode.returnType.typeAnnotation,
+      );
+      const returnedType = functionNode.async
+        ? checker.getAwaitedType(declaredType)
+        : declaredType;
+
+      return returnedType != null && isTypeUnknownType(returnedType);
+    }
+
     function canFix(
       node: ReturnStatementWithArgument | TSESTree.ArrowFunctionExpression,
     ): boolean {
@@ -407,7 +437,10 @@ export default createRule<Options, MessageId>({
           : node.body;
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+      return (
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike) &&
+        !declaredReturnTypeForbidsEmptyReturn(node)
+      );
     }
 
     function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
