@@ -843,6 +843,11 @@ enum E {
 }
 const x: E = fn(n => n | 0, 0 as E);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10722
+    `
+const obj: {} = {};
+const values = Object.values(obj) as string[];
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/12244
     `
 type BasePayload = { id: string };
@@ -1006,6 +1011,71 @@ const foo = 3 as Foo;
       output: `
 type Foo = 3;
 const foo = 3;
+      `,
+    },
+    {
+      code: `
+declare const value: string;
+const result = value as string;
+      `,
+      errors: [{ line: 3, messageId: 'unnecessaryAssertion' }],
+      output: `
+declare const value: string;
+const result = value;
+      `,
+    },
+    {
+      code: `
+declare function values<T>(obj: { [key: string]: T }): T[];
+declare function values(obj: {}): any[];
+const result = values<string>({}) as string[];
+      `,
+      errors: [{ line: 4, messageId: 'unnecessaryAssertion' }],
+      output: `
+declare function values<T>(obj: { [key: string]: T }): T[];
+declare function values(obj: {}): any[];
+const result = values<string>({});
+      `,
+    },
+    {
+      code: `
+declare function values<T>(obj: { [key: string]: T }): T[];
+declare function values(obj: {}): any[];
+const obj = { key: 'value' };
+const result = values(obj) as string[];
+      `,
+      errors: [{ line: 5, messageId: 'unnecessaryAssertion' }],
+      output: `
+declare function values<T>(obj: { [key: string]: T }): T[];
+declare function values(obj: {}): any[];
+const obj = { key: 'value' };
+const result = values(obj);
+      `,
+    },
+    {
+      code: `
+declare function consume<T>(value: T): string;
+declare function consume(value: {}): string;
+const result = consume({}) as string;
+      `,
+      errors: [{ line: 4, messageId: 'unnecessaryAssertion' }],
+      output: `
+declare function consume<T>(value: T): string;
+declare function consume(value: {}): string;
+const result = consume({});
+      `,
+    },
+    {
+      code: `
+declare function pick<T>(): T;
+declare function pick(value: {}): string;
+const result = pick({}) as string;
+      `,
+      errors: [{ line: 4, messageId: 'unnecessaryAssertion' }],
+      output: `
+declare function pick<T>(): T;
+declare function pick(value: {}): string;
+const result = pick({});
       `,
     },
     {
