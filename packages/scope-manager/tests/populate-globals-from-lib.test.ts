@@ -175,6 +175,17 @@ describe('populateGlobalsFromLib – deduplication', () => {
 
     expect(es2018WithEs2017Snapshot).toEqual(es2018OnlySnapshot);
   });
+
+  it('merges the type and value flags for duplicate globals', () => {
+    const result = analyze(ast, { lib: ['esnext'] });
+
+    for (const name of ['Array', 'Date', 'Map', 'Set']) {
+      expect(result.globalScope?.set.get(name)).toMatchObject({
+        isTypeVariable: true,
+        isValueVariable: true,
+      });
+    }
+  });
 });
 
 describe('populateGlobalsFromLib – const assertion global', () => {
