@@ -17,8 +17,8 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
-  isStartOfArrowFunctionBody,
-  isStartOfExpressionStatement,
+  isStartOfArrowFunctionBodyNeedingParentheses,
+  isStartOfExpressionStatementNeedingParentheses,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -819,14 +819,16 @@ export default createRule<Options, MessageIds>({
             context.sourceCode.getTokenAfter(closingAngleBracket),
             NullThrowsReasons.MissingToken('operand', 'type assertion'),
           );
-          const breaksExpressionStatement =
-            ['{', 'function', 'class'].includes(firstOperandToken.value) &&
-            isStartOfExpressionStatement(node);
-          const breaksArrowFunctionBody =
-            firstOperandToken.value === '{' &&
-            isStartOfArrowFunctionBody(node, context.sourceCode);
           const needsParens =
-            breaksExpressionStatement || breaksArrowFunctionBody;
+            isStartOfExpressionStatementNeedingParentheses(
+              node,
+              firstOperandToken,
+            ) ||
+            isStartOfArrowFunctionBodyNeedingParentheses(
+              node,
+              firstOperandToken,
+              context.sourceCode,
+            );
 
           const fixes: RuleFix[] = [];
           if (needsParens) {

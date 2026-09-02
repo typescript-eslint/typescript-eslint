@@ -6,12 +6,12 @@ import * as ts from 'typescript';
 import {
   Awaitable,
   createRule,
+  getAwaitTokenRemovalRange,
   getFixOrSuggest,
   getParserServices,
   isAwaitExpression,
   isAwaitKeyword,
-  isOpeningBraceToken,
-  isStartOfArrowFunctionBody,
+  isStartOfArrowFunctionBodyNeedingParentheses,
   needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
@@ -251,26 +251,23 @@ export default createRule({
         return null;
       }
 
-      const startAt = awaitToken.range[0];
-      let endAt = awaitToken.range[1];
-      // Also remove any extraneous whitespace after `await`, if there is any.
-      const nextToken = context.sourceCode.getTokenAfter(awaitToken, {
-        includeComments: true,
-      });
-      if (nextToken) {
-        endAt = nextToken.range[0];
-      }
-
-      const awaitRemovalFix = fixer.removeRange([startAt, endAt]);
+      const awaitTokenRemovalRange = getAwaitTokenRemovalRange(
+        context.sourceCode,
+        awaitToken,
+      );
+      const awaitRemovalFix = fixer.removeRange(awaitTokenRemovalRange);
 
       const firstOperandToken = nullThrows(
         context.sourceCode.getTokenAfter(awaitToken),
         NullThrowsReasons.MissingToken('operand', 'await expression'),
       );
-      const shouldWrapInParentheses =
-        isOpeningBraceToken(firstOperandToken) &&
-        isStartOfArrowFunctionBody(node, context.sourceCode);
-      if (shouldWrapInParentheses) {
+      if (
+        isStartOfArrowFunctionBodyNeedingParentheses(
+          node,
+          firstOperandToken,
+          context.sourceCode,
+        )
+      ) {
         return [
           awaitRemovalFix,
           fixer.insertTextBefore(node.argument, '('),

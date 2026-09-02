@@ -705,7 +705,7 @@ Promise.all([
           suggestions: [
             {
               messageId: 'removeAwait',
-              output: ' 0;',
+              output: '0;',
             },
           ],
         },
@@ -723,7 +723,7 @@ Promise.all([
           suggestions: [
             {
               messageId: 'removeAwait',
-              output: " 'value';",
+              output: "'value';",
             },
           ],
         },
@@ -741,7 +741,7 @@ Promise.all([
           suggestions: [
             {
               messageId: 'removeAwait',
-              output: "async () =>  (Math.random() > 0.5 ? '' : 0);",
+              output: "async () => (Math.random() > 0.5 ? '' : 0);",
             },
           ],
         },
@@ -766,6 +766,216 @@ Promise.all([
       ],
     },
     {
+      code: 'const test = async () => await { a: 1 };',
+      errors: [
+        {
+          column: 26,
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => ({ a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await { a: 1 }.a;',
+      errors: [
+        {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => ({ a: 1 }.a);',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`const test = async () => await ({ a: 1 });`,
+      errors: [
+        {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => ({ a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`const test = async () => (await { a: 1 });`,
+      errors: [
+        {
+          column: 27,
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => ({ a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const cond: boolean;
+const test = async () => (cond ? await { a: 1 } : 2);
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 48,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const cond: boolean;
+const test = async () => (cond ? { a: 1 } : 2);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await /* comment */ 1;',
+      errors: [
+        {
+          column: 26,
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => /* comment */ 1;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await /* comment */ { a: 1 };',
+      errors: [
+        {
+          column: 26,
+          endColumn: 54,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => /* comment */ ({ a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await { a: 1 };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  ({ a: 1 });
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await function () {};
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  (function () {});
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await class {};
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  (class {});
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
 class NonPromise extends Array {}
 await new NonPromise();
@@ -782,7 +992,7 @@ await new NonPromise();
               messageId: 'removeAwait',
               output: `
 class NonPromise extends Array {}
- new NonPromise();
+new NonPromise();
       `,
             },
           ],
@@ -817,7 +1027,7 @@ async function test() {
   }
   const thenable = new IncorrectThenable();
 
-   thenable;
+  thenable;
 }
       `,
             },
@@ -842,7 +1052,7 @@ await callback?.();
               messageId: 'removeAwait',
               output: `
 declare const callback: (() => void) | undefined;
- callback?.();
+callback?.();
       `,
             },
           ],
@@ -866,7 +1076,7 @@ await obj.a?.b?.();
               messageId: 'removeAwait',
               output: `
 declare const obj: { a?: { b?: () => void } };
- obj.a?.b?.();
+obj.a?.b?.();
       `,
             },
           ],
@@ -890,7 +1100,7 @@ await obj?.a.b.c?.();
               messageId: 'removeAwait',
               output: `
 declare const obj: { a: { b: { c?: () => void } } } | undefined;
- obj?.a.b.c?.();
+obj?.a.b.c?.();
       `,
             },
           ],
@@ -924,7 +1134,7 @@ function* yieldNumbers() {
   yield 2;
   yield 3;
 }
-for  (const value of yieldNumbers()) {
+for (const value of yieldNumbers()) {
   console.log(value);
 }
       `,
@@ -960,7 +1170,7 @@ function* yieldNumberPromises() {
   yield Promise.resolve(2);
   yield Promise.resolve(3);
 }
-for  (const value of yieldNumberPromises()) {
+for (const value of yieldNumberPromises()) {
   console.log(value);
 }
       `,
@@ -989,7 +1199,7 @@ async function foo() {
               output: `
 declare const disposable: Disposable;
 async function foo() {
-   using d = disposable;
+  using d = disposable;
 }
       `,
             },
@@ -1017,7 +1227,7 @@ async function foo() {
               messageId: 'removeAwait',
               output: `
 async function foo() {
-   using _ = {
+  using _ = {
     async [Symbol.dispose]() {},
   };
 }
@@ -1100,7 +1310,7 @@ async function wrapper<T extends number>(value: T) {
               messageId: 'removeAwait',
               output: `
 async function wrapper<T extends number>(value: T) {
-  return  value;
+  return value;
 }
       `,
             },
@@ -1129,7 +1339,7 @@ class C<T> {
               output: `
 class C<T> {
   async wrapper<T extends string>(value: T) {
-    return  value;
+    return value;
   }
 }
       `,
@@ -1159,7 +1369,7 @@ class C<R extends number> {
               output: `
 class C<R extends number> {
   async wrapper<T extends R>(value: T) {
-    return  value;
+    return value;
   }
 }
       `,
