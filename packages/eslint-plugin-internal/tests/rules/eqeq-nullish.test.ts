@@ -5,6 +5,9 @@ import rule from '../../src/rules/eqeq-nullish.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('eqeq-nullish', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: 'something === undefined;',
