@@ -30,6 +30,7 @@ const vitestConfig = mergeConfig(
         '!packages/website/vitest.config.mts',
         '!packages/website-eslint/vitest.config.mts',
         '!packages/types/vitest.config.mts',
+        'tools/vitest.config.mts',
       ],
 
       root: import.meta.dirname,

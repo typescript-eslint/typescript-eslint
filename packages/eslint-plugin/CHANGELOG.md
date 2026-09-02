@@ -1,3 +1,52 @@
+## 8.69.0 (2026-08-31)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-misused-promises] add flagUnions option for checkConditionals ([#12603](https://github.com/typescript-eslint/typescript-eslint/pull/12603))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-meaningless-void-operator] report void on non-call expressions ([#12727](https://github.com/typescript-eslint/typescript-eslint/pull/12727))
+- **eslint-plugin:** [unified-signatures] compare type parameters by constraint instead of name ([#12741](https://github.com/typescript-eslint/typescript-eslint/pull/12741))
+- **eslint-plugin:** [no-mixed-enums] use scope analysis instead of type checking for merged namespaces ([#12731](https://github.com/typescript-eslint/typescript-eslint/pull/12731))
+
+### ❤️ Thank You
+
+- Abdu Alim Arlikhozhaev @Arlikhozhaev
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- wonbeanie @wonbeanie
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.69.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.68.0 (2026-08-24)
+
+### 🚀 Features
+
+- **eslint-plugin:** [strict-void-return] add fix suggestions ([#12086](https://github.com/typescript-eslint/typescript-eslint/pull/12086))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-empty-object-type] ignore suggestions that result in invalid interfaces and export defaults ([#12739](https://github.com/typescript-eslint/typescript-eslint/pull/12739))
+- **eslint-plugin:** [no-floating-promises] setting `ignoreVoid: false` results in false negative in ArrowFunctionExpression ([#12646](https://github.com/typescript-eslint/typescript-eslint/pull/12646))
+- **eslint-plugin:** [no-unnecessary-type-assertion] prevent stack overflow in recursive types ([#12711](https://github.com/typescript-eslint/typescript-eslint/pull/12711))
+- **eslint-plugin:** [unified-signatures] report identical signatures ([#12678](https://github.com/typescript-eslint/typescript-eslint/pull/12678))
+- **eslint-plugin:** [return-await] prevent autofix from breaking code in arrow-functions ([#12707](https://github.com/typescript-eslint/typescript-eslint/pull/12707))
+- **eslint-plugin:** [unified-signatures] deduplicate types in report ([#12656](https://github.com/typescript-eslint/typescript-eslint/pull/12656))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Hugo @hugop95
+- Niki @phaux
+- Younsang Na @nayounsang
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.68.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.67.0 (2026-08-10)
 
 This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.
