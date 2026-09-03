@@ -302,8 +302,8 @@ importers:
         specifier: 7.2.0
         version: 7.2.0
       get-github-auth-token:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: ^0.2.0
+        version: 0.2.0
       globals:
         specifier: 'catalog:'
         version: 16.5.0
@@ -6455,8 +6455,8 @@ packages:
     resolution: {integrity: sha512-QRbvDIbx6YklUe6RxeTeleMR0yv3cYH6PsPZHcnVn7xv7zO1BHN8r0XETu8n6Ye3Q+ahtSarc3WgtNWmehIBfA==}
     engines: {node: '>=18'}
 
-  get-github-auth-token@0.1.2:
-    resolution: {integrity: sha512-vcGCRhKNOOynlxi7j3dOrkCkxG1rxt/IbmZY9A+xXMhRAUMeIA5T4Fn0LTaPXfQWdUkOcc3DBWDvcc6dmnxmYw==}
+  get-github-auth-token@0.2.0:
+    resolution: {integrity: sha512-3Kbqg9jhyylj/qyumXOhhbXaV23UUIkTQ2TVXQGlGswuciQ09U7hSAt89lusAAj1hu0rRYSdADVqceKqVgiKBQ==}
     engines: {node: '>=18'}
 
   get-intrinsic@1.3.0:
@@ -17271,7 +17271,7 @@ snapshots:
 
   get-east-asian-width@1.6.0: {}
 
-  get-github-auth-token@0.1.2: {}
+  get-github-auth-token@0.2.0: {}
 
   get-intrinsic@1.3.0:
     dependencies:
