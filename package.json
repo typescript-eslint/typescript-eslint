@@ -93,7 +93,7 @@
     "eslint-plugin-regexp": "^2.10.0",
     "eslint-plugin-unicorn": "^59.0.1",
     "execa": "7.2.0",
-    "get-github-auth-token": "^0.1.2",
+    "get-github-auth-token": "^0.2.0",
     "globals": "catalog:",
     "husky": "^9.1.7",
     "knip": "6.32.0",
