@@ -366,94 +366,154 @@ export default createRule<Options, MessageIds>({
       });
     }
 
-    function hasSameProperties(uncast: ts.Type, cast: ts.Type): boolean {
+    function getMatchingProperties(
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): [ts.Symbol, ts.Symbol][] | null {
       const uncastProps = uncast.getProperties();
       const castProps = cast.getProperties();
       if (uncastProps.length !== castProps.length) {
-        return false;
+        return null;
       }
-      const castPropNames = new Set(castProps.map(p => p.getEscapedName()));
-      return uncastProps.every(prop => {
+
+      const castPropsByName = new Map(
+        castProps.map(prop => [prop.getEscapedName(), prop] as const),
+      );
+      const propertyPairs: [ts.Symbol, ts.Symbol][] = [];
+
+      for (const prop of uncastProps) {
         const name = prop.getEscapedName();
-        return (
-          castPropNames.has(name) &&
-          tsutils.isPropertyReadonlyInType(uncast, name, checker) ===
+        const castProp = castPropsByName.get(name);
+        if (
+          !castProp ||
+          tsutils.isSymbolFlagSet(prop, ts.SymbolFlags.Optional) !==
+            tsutils.isSymbolFlagSet(castProp, ts.SymbolFlags.Optional) ||
+          tsutils.isPropertyReadonlyInType(uncast, name, checker) !==
             tsutils.isPropertyReadonlyInType(cast, name, checker)
-        );
-      });
+        ) {
+          return null;
+        }
+        propertyPairs.push([prop, castProp]);
+      }
+
+      return propertyPairs;
     }
 
-    function hasObjectShape(type: ts.Type): boolean {
-      return type.getProperties().length > 0 || hasIndexSignature(type);
+    function getMatchingIndexInfos(
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): [ts.IndexInfo, ts.IndexInfo][] | null {
+      const uncastIndexInfos = checker.getIndexInfosOfType(uncast);
+      const unmatchedCastIndexInfos = new Set(
+        checker.getIndexInfosOfType(cast),
+      );
+      if (uncastIndexInfos.length !== unmatchedCastIndexInfos.size) {
+        return null;
+      }
+
+      const indexInfoPairs: [ts.IndexInfo, ts.IndexInfo][] = [];
+      for (const uncastIndexInfo of uncastIndexInfos) {
+        const castIndexInfo = [...unmatchedCastIndexInfos].find(
+          info => info.keyType === uncastIndexInfo.keyType,
+        );
+        if (castIndexInfo?.isReadonly !== uncastIndexInfo.isReadonly) {
+          return null;
+        }
+        unmatchedCastIndexInfos.delete(castIndexInfo);
+        indexInfoPairs.push([uncastIndexInfo, castIndexInfo]);
+      }
+
+      return indexInfoPairs;
     }
 
     function hasSeenTypePair(
-      seen: WeakMap<ts.Type, Set<ts.Type>>,
+      seen: WeakMap<ts.Type, WeakSet<ts.Type>>,
       uncast: ts.Type,
       cast: ts.Type,
     ): boolean {
-      const seenCasts = seen.get(uncast);
-      if (seenCasts?.has(cast)) {
-        return true;
-      }
+      return seen.get(uncast)?.has(cast) ?? false;
+    }
 
+    function markTypePairAsSeen(
+      seen: WeakMap<ts.Type, WeakSet<ts.Type>>,
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): void {
+      const seenCasts = seen.get(uncast);
       if (seenCasts) {
         seenCasts.add(cast);
       } else {
-        seen.set(uncast, new Set([cast]));
+        seen.set(uncast, new WeakSet([cast]));
       }
-
-      return false;
     }
 
     function hasSameNestedObjectProperties(
       uncast: ts.Type,
       cast: ts.Type,
-      seen = new WeakMap<ts.Type, Set<ts.Type>>(),
     ): boolean {
-      if (hasSeenTypePair(seen, uncast, cast)) {
-        return true;
-      }
+      return hasSameNestedTypeShape(uncast, cast, new WeakMap());
+    }
 
+    function hasSameNestedTypeShape(
+      uncast: ts.Type,
+      cast: ts.Type,
+      seen: WeakMap<ts.Type, WeakSet<ts.Type>>,
+    ): boolean {
       uncast = checker.getNonNullableType(uncast);
       cast = checker.getNonNullableType(cast);
 
+      if (uncast === cast) {
+        return true;
+      }
+
+      // Union properties only include those shared by every constituent, so
+      // comparing them would miss nested shape changes within a constituent.
+      if (uncast.isUnion() || cast.isUnion()) {
+        return false;
+      }
+
+      // Call and construct signatures can hide nested shape changes in their
+      // parameters and return types. Preserve distinct callable assertions.
       if (
-        !hasSameProperties(uncast, cast) ||
+        uncast.getCallSignatures().length > 0 ||
+        cast.getCallSignatures().length > 0 ||
+        uncast.getConstructSignatures().length > 0 ||
+        cast.getConstructSignatures().length > 0
+      ) {
+        return false;
+      }
+
+      const propertyPairs = getMatchingProperties(uncast, cast);
+      const indexInfoPairs = getMatchingIndexInfos(uncast, cast);
+      if (
+        !propertyPairs ||
+        !indexInfoPairs ||
         !haveSameTypeArguments(uncast, cast)
       ) {
         return false;
       }
 
-      const castProps = new Map(
-        cast
-          .getProperties()
-          .map(prop => [prop.getEscapedName(), prop] as const),
+      if (hasSeenTypePair(seen, uncast, cast)) {
+        return true;
+      }
+      markTypePairAsSeen(seen, uncast, cast);
+
+      return (
+        propertyPairs.every(([uncastProp, castProp]) =>
+          hasSameNestedTypeShape(
+            checker.getTypeOfSymbol(uncastProp),
+            checker.getTypeOfSymbol(castProp),
+            seen,
+          ),
+        ) &&
+        indexInfoPairs.every(([uncastIndexInfo, castIndexInfo]) =>
+          hasSameNestedTypeShape(
+            uncastIndexInfo.type,
+            castIndexInfo.type,
+            seen,
+          ),
+        )
       );
-
-      return uncast.getProperties().every(prop => {
-        const castProp = castProps.get(prop.getEscapedName());
-        if (!castProp) {
-          return false;
-        }
-
-        const uncastPropType = checker.getNonNullableType(
-          checker.getTypeOfSymbol(prop),
-        );
-        const castPropType = checker.getNonNullableType(
-          checker.getTypeOfSymbol(castProp),
-        );
-
-        if (!hasObjectShape(uncastPropType) && !hasObjectShape(castPropType)) {
-          return true;
-        }
-
-        return (
-          hasIndexSignature(uncastPropType) ===
-            hasIndexSignature(castPropType) &&
-          hasSameNestedObjectProperties(uncastPropType, castPropType, seen)
-        );
-      });
     }
 
     function haveSameTypeArguments(uncast: ts.Type, cast: ts.Type): boolean {
