@@ -1,4 +1,5 @@
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
+import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
 import * as path from 'node:path';
@@ -35,36 +36,51 @@ function isIncorrectTabItem(node: unist.Node): node is MdxJsxFlowElement {
 }
 
 export function addCodeDiagnostics(page: RuleDocsPage): void {
-  visit(page.children, false);
+  visit(page.children);
 
-  function visit(nodes: readonly unist.Node[], insideIncorrectTab: boolean) {
+  function visit(nodes: readonly unist.Node[]): void {
     for (const node of nodes) {
-      const isIncorrect = insideIncorrectTab || isIncorrectTabItem(node);
-
-      if (isIncorrect && nodeIsCode(node) && isTypeScriptCodeBlock(node)) {
-        const messages = lintRuleCodeBlock({
-          code: node.value,
-          language: node.lang,
-          meta: node.meta,
-          rule: page.rule,
-          ruleName: page.file.stem,
-          tsconfigRootDir,
-        });
-        const diagnostics = lintMessagesToDiagnostics(messages);
-
-        if (diagnostics.length > 0) {
-          const encodedDiagnostics = Buffer.from(
-            JSON.stringify(diagnostics),
-          ).toString('base64url');
-          node.meta = [node.meta, `eslintDiagnostics="${encodedDiagnostics}"`]
-            .filter(Boolean)
-            .join(' ');
-        }
-      }
-
-      if (nodeIsParent(node)) {
-        visit(node.children, isIncorrect);
+      if (isIncorrectTabItem(node)) {
+        addDiagnosticsToCodeBlocks(node);
+      } else if (nodeIsParent(node)) {
+        visit(node.children);
       }
     }
+  }
+
+  function addDiagnosticsToCodeBlocks(node: unist.Parent): void {
+    for (const child of node.children) {
+      if (nodeIsCode(child) && isTypeScriptCodeBlock(child)) {
+        addDiagnosticsToCodeBlock(child);
+      } else if (nodeIsParent(child)) {
+        addDiagnosticsToCodeBlocks(child);
+      }
+    }
+  }
+
+  function addDiagnosticsToCodeBlock(
+    node: mdast.Code & { lang: string },
+  ): void {
+    const messages = lintRuleCodeBlock({
+      code: node.value,
+      language: node.lang,
+      meta: node.meta,
+      rule: page.rule,
+      ruleName: page.file.stem,
+      tsconfigRootDir,
+    });
+    const diagnostics = lintMessagesToDiagnostics(messages);
+
+    if (diagnostics.length === 0) {
+      return;
+    }
+
+    // Code block meta only supports strings, so encode the JSON diagnostics as one safe attribute value.
+    const encodedDiagnostics = Buffer.from(
+      JSON.stringify(diagnostics),
+    ).toString('base64url');
+    node.meta = [node.meta, `eslintDiagnostics="${encodedDiagnostics}"`]
+      .filter(Boolean)
+      .join(' ');
   }
 }

@@ -42,11 +42,11 @@ export function addESLintHashToCodeBlocksMeta(
       !node.meta?.includes('eslintrcHash=')
     ) {
       let playgroundEslintrc = eslintrc;
-      const serializedOptions = getSerializedRuleOptionsFromMeta(node.meta);
-      if (serializedOptions) {
+      const option = getSerializedRuleOptionsFromMeta(node.meta);
+      if (option) {
         playgroundEslintrc = playgroundEslintrc.replace(
           '"error"',
-          `["error", ${serializedOptions}]`,
+          `["error", ${option}]`,
         );
         try {
           playgroundEslintrc = JSON.stringify(
