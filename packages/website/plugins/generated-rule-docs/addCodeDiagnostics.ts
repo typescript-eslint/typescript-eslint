@@ -36,24 +36,24 @@ function isIncorrectTabItem(node: unist.Node): node is MdxJsxFlowElement {
 }
 
 export function addCodeDiagnostics(page: RuleDocsPage): void {
-  visit(page.children);
+  visitIncorrectTabs(page.children);
 
-  function visit(nodes: readonly unist.Node[]): void {
+  function visitIncorrectTabs(nodes: readonly unist.Node[]): void {
     for (const node of nodes) {
       if (isIncorrectTabItem(node)) {
-        addDiagnosticsToCodeBlocks(node);
+        visitCodeBlocks(node.children);
       } else if (nodeIsParent(node)) {
-        visit(node.children);
+        visitIncorrectTabs(node.children);
       }
     }
   }
 
-  function addDiagnosticsToCodeBlocks(node: unist.Parent): void {
-    for (const child of node.children) {
-      if (nodeIsCode(child) && isTypeScriptCodeBlock(child)) {
-        addDiagnosticsToCodeBlock(child);
-      } else if (nodeIsParent(child)) {
-        addDiagnosticsToCodeBlocks(child);
+  function visitCodeBlocks(nodes: readonly unist.Node[]): void {
+    for (const node of nodes) {
+      if (nodeIsCode(node) && isTypeScriptCodeBlock(node)) {
+        addDiagnosticsToCodeBlock(node);
+      } else if (nodeIsParent(node)) {
+        visitCodeBlocks(node.children);
       }
     }
   }
