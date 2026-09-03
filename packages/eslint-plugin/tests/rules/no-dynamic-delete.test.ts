@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-dynamic-delete', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 const container: { [i: string]: 0 } = {};

@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-array-constructor';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-array-constructor', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'new Array(x);',
     'Array(x);',

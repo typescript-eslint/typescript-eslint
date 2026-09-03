@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-type-parameters', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class ClassyArray<T> {
@@ -536,6 +539,7 @@ interface I {
       errors: [
         {
           column: 5,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           endColumn: 6,
           endLine: 3,
           line: 3,

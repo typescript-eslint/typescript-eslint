@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-mixed-enums', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 enum Fruit {}

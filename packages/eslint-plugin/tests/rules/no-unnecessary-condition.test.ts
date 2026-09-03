@@ -20,6 +20,9 @@ const optionsWithNoUncheckedIndexedAccess = {
 };
 
 ruleTester.run('no-unnecessary-condition', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare const b1: boolean;
@@ -4491,6 +4494,7 @@ assertsString(a);
       errors: [
         {
           column: 15,
+          data: { typeGuardOrAssertionFunction: 'assertion function' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -4508,6 +4512,7 @@ isString(a);
       errors: [
         {
           column: 10,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 11,
           endLine: 4,
           line: 4,
@@ -4525,6 +4530,7 @@ isString('fa' + 'lafel');
       errors: [
         {
           column: 10,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 24,
           endLine: 4,
           line: 4,
@@ -4544,6 +4550,7 @@ if (isStringOrNumber(s)) {
       errors: [
         {
           column: 22,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 23,
           endLine: 4,
           line: 4,
@@ -4569,6 +4576,7 @@ if (isWider(n)) {
       errors: [
         {
           column: 13,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 14,
           endLine: 11,
           line: 11,
@@ -4596,6 +4604,7 @@ if (isNarrower(w)) {
       errors: [
         {
           column: 16,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 17,
           endLine: 11,
           line: 11,

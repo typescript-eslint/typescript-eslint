@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-dupe-class-members';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-dupe-class-members', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class A {

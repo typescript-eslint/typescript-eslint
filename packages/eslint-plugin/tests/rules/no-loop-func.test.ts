@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-loop-func';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-loop-func', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 for (let i = 0; i < 10; i++) {
@@ -74,6 +77,9 @@ async function f() {
 
 // Forked from https://github.com/eslint/eslint/blob/89a4a0a260b8eb11487fe3d5d4d80f4630933eb3/tests/lib/rules/no-loop-func.js
 ruleTester.run('no-loop-func ESLint tests', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "string = 'function a() {}';",
     `

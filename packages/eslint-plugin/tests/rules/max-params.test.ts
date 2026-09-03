@@ -79,11 +79,7 @@ type sum = (a: number, b: number) => number;
       errors: [
         {
           column: 1,
-          data: {
-            count: '4',
-            max: '3',
-            name: "Function 'foo'",
-          },
+          data: { count: '4', max: '3', name: "Function 'foo'" },
           endColumn: 13,
           endLine: 1,
           line: 1,
@@ -96,11 +92,7 @@ type sum = (a: number, b: number) => number;
       errors: [
         {
           column: 13,
-          data: {
-            count: '4',
-            max: '3',
-            name: 'Function',
-          },
+          data: { count: '4', max: '3', name: 'Function' },
           endColumn: 22,
           endLine: 1,
           line: 1,
@@ -113,11 +105,7 @@ type sum = (a: number, b: number) => number;
       errors: [
         {
           column: 26,
-          data: {
-            count: '4',
-            max: '3',
-            name: 'Arrow function',
-          },
+          data: { count: '4', max: '3', name: 'Arrow function' },
           endColumn: 28,
           endLine: 1,
           line: 1,
@@ -130,11 +118,7 @@ type sum = (a: number, b: number) => number;
       errors: [
         {
           column: 15,
-          data: {
-            count: '1',
-            max: '0',
-            name: 'Arrow function',
-          },
+          data: { count: '1', max: '0', name: 'Arrow function' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -152,11 +136,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            count: '4',
-            max: '3',
-            name: "Method 'method'",
-          },
+          data: { count: '4', max: '3', name: "Method 'method'" },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -173,11 +153,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            count: '2',
-            max: '1',
-            name: "Method 'method'",
-          },
+          data: { count: '2', max: '1', name: "Method 'method'" },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -195,11 +171,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            count: '4',
-            max: '3',
-            name: "Method 'method'",
-          },
+          data: { count: '4', max: '3', name: "Method 'method'" },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -214,11 +186,7 @@ declare function makeDate(m: number, d: number, y: number): Date;
       errors: [
         {
           column: 1,
-          data: {
-            count: '3',
-            max: '1',
-            name: "Function 'makeDate'",
-          },
+          data: { count: '3', max: '1', name: "Function 'makeDate'" },
           endColumn: 26,
           endLine: 2,
           line: 2,
@@ -234,11 +202,7 @@ type sum = (a: number, b: number) => number;
       errors: [
         {
           column: 12,
-          data: {
-            count: '2',
-            max: '1',
-            name: 'Function',
-          },
+          data: { count: '2', max: '1', name: 'Function' },
           endColumn: 12,
           endLine: 2,
           line: 2,

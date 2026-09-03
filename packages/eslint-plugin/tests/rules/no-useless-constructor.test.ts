@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-useless-constructor';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-useless-constructor', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'class A {}',
     `

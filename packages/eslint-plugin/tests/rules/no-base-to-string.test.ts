@@ -32,6 +32,9 @@ const ruleTester = createRuleTesterWithTypes();
  * ```
  */
 ruleTester.run('no-base-to-string', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // template
     "`${''}`;",

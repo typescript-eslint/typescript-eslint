@@ -8,6 +8,9 @@ const ruleTester = createRuleTesterWithTypes({
 });
 
 ruleTester.run('no-unsafe-assignment', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'const x = 1;',
     'const x: number = 1;',
@@ -99,6 +102,7 @@ const foo: Foo = { bar };
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 19,
           endLine: 1,
           line: 1,
@@ -114,6 +118,7 @@ const x = 1 as any,
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 19,
           endLine: 2,
           line: 2,
@@ -126,6 +131,7 @@ const x = 1 as any,
       errors: [
         {
           column: 14,
+          data: { sender: '`any`' },
           endColumn: 26,
           endLine: 1,
           line: 1,
@@ -142,6 +148,7 @@ class Foo {
       errors: [
         {
           column: 23,
+          data: { sender: '`any`' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -158,6 +165,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { sender: '`any`' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -174,6 +182,7 @@ class Foo {
       errors: [
         {
           column: 3,
+          data: { sender: '`any`' },
           endColumn: 25,
           endLine: 3,
           line: 3,
@@ -260,6 +269,7 @@ const [x] = 1 as any;
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 21,
           endLine: 2,
           line: 2,
@@ -274,6 +284,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -346,6 +357,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 8,
+          data: { sender: '`any`' },
           endColumn: 9,
           endLine: 1,
           line: 1,
@@ -358,6 +370,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 15,
+          data: { sender: '`any`' },
           endColumn: 16,
           endLine: 1,
           line: 1,
@@ -370,6 +383,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 2,
+          data: { sender: '`any`' },
           endColumn: 3,
           endLine: 1,
           line: 1,
@@ -382,6 +396,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 11,
+          data: { sender: '`any`' },
           endColumn: 12,
           endLine: 1,
           line: 1,
@@ -394,6 +409,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 18,
+          data: { sender: '`any`' },
           endColumn: 19,
           endLine: 1,
           line: 1,
@@ -406,6 +422,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 5,
+          data: { sender: '`any`' },
           endColumn: 6,
           endLine: 1,
           line: 1,
@@ -418,6 +435,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 8,
+          data: { sender: '`any`' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -430,6 +448,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 15,
+          data: { sender: '`any`' },
           endColumn: 22,
           endLine: 1,
           line: 1,
@@ -442,6 +461,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 10,
+          data: { sender: '`any`' },
           endColumn: 11,
           endLine: 1,
           line: 1,
@@ -454,6 +474,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 17,
+          data: { sender: '`any`' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -466,6 +487,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 4,
+          data: { sender: '`any`' },
           endColumn: 5,
           endLine: 1,
           line: 1,
@@ -478,6 +500,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 17,
+          data: { sender: '`any`' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -490,6 +513,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 24,
+          data: { sender: '`any`' },
           endColumn: 25,
           endLine: 1,
           line: 1,
@@ -502,6 +526,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 11,
+          data: { sender: '`any`' },
           endColumn: 12,
           endLine: 1,
           line: 1,
@@ -514,6 +539,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 17,
+          data: { sender: '`any`' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -526,6 +552,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 24,
+          data: { sender: '`any`' },
           endColumn: 25,
           endLine: 1,
           line: 1,
@@ -538,6 +565,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 11,
+          data: { sender: '`any`' },
           endColumn: 12,
           endLine: 1,
           line: 1,
@@ -551,6 +579,7 @@ const [x] = [] as any[];
       errors: [
         {
           column: 1,
+          data: { receiver: '`[[[[any]]]]`', sender: '`[any]`' },
           endColumn: 23,
           endLine: 1,
           line: 1,
@@ -566,6 +595,7 @@ const x = [...(1 as any)];
       errors: [
         {
           column: 12,
+          data: { sender: '`any`' },
           endColumn: 25,
           endLine: 2,
           line: 2,
@@ -580,6 +610,7 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 12,
+          data: { sender: '`any`' },
           endColumn: 28,
           endLine: 2,
           line: 2,
@@ -593,6 +624,7 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 9,
+          data: { sender: '`any`' },
           endColumn: 10,
           endLine: 1,
           line: 1,
@@ -605,6 +637,7 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 16,
+          data: { sender: '`any`' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -617,6 +650,7 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 4,
+          data: { sender: '`any`' },
           endColumn: 5,
           endLine: 1,
           line: 1,
@@ -629,6 +663,7 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 12,
+          data: { sender: '`any`' },
           endColumn: 13,
           endLine: 1,
           line: 1,
@@ -641,6 +676,7 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 19,
+          data: { sender: '`any`' },
           endColumn: 20,
           endLine: 1,
           line: 1,
@@ -653,6 +689,7 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 8,
           endLine: 1,
           line: 1,
@@ -669,6 +706,7 @@ const {
       errors: [
         {
           column: 8,
+          data: { sender: '`any`' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -681,6 +719,7 @@ const {
       errors: [
         {
           column: 21,
+          data: { sender: '`any`' },
           endColumn: 22,
           endLine: 1,
           line: 1,
@@ -697,6 +736,7 @@ const {
       errors: [
         {
           column: 8,
+          data: { sender: '`any`' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -713,6 +753,7 @@ const {
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -725,6 +766,7 @@ const {
       errors: [
         {
           column: 20,
+          data: { sender: '`any`' },
           endColumn: 21,
           endLine: 1,
           line: 1,
@@ -741,6 +783,7 @@ const {
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -754,6 +797,7 @@ const {
       errors: [
         {
           column: 13,
+          data: { sender: '`any`' },
           endColumn: 24,
           endLine: 1,
           line: 1,
@@ -766,6 +810,7 @@ const {
       errors: [
         {
           column: 18,
+          data: { sender: '`any`' },
           endColumn: 29,
           endLine: 1,
           line: 1,
@@ -795,6 +840,7 @@ const {
         {
           // spreading an any widens the object type to any
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 28,
           endLine: 1,
           line: 1,
@@ -812,6 +858,7 @@ declare function Foo(props: Props): never;
       errors: [
         {
           column: 9,
+          data: { sender: '`any`' },
           endColumn: 17,
           endLine: 4,
           line: 4,
@@ -829,6 +876,7 @@ function foo() {
       errors: [
         {
           column: 9,
+          data: { sender: '`any`' },
           endColumn: 19,
           endLine: 3,
           line: 3,
@@ -844,6 +892,7 @@ const test: T = ['string', []] as any;
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 38,
           endLine: 3,
           line: 3,
@@ -860,6 +909,7 @@ const foo: Foo = { bar };
       errors: [
         {
           column: 20,
+          data: { sender: '`any`' },
           endColumn: 23,
           endLine: 4,
           line: 4,
