@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+// /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/no-unused-vars';
@@ -36,6 +36,9 @@ ruleTester.defineRule('collect-unused-vars', {
 });
 
 ruleTester.run('no-unused-vars', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: `

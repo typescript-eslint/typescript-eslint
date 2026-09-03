@@ -5,6 +5,9 @@ import rule from '../../src/rules/explicit-module-boundary-types';
 const ruleTester = new RuleTester();
 
 ruleTester.run('explicit-module-boundary-types', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `
