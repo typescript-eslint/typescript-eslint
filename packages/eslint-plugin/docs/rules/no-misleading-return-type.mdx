@@ -1,0 +1,75 @@
+---
+description: 'Disallow return type annotations containing types not required by returned expressions.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misleading-return-type** for documentation.
+
+Explicit return type annotations can retain union constituents after the implementation no longer requires them.
+Callers must then handle types that TypeScript does not infer for any returned expression.
+
+This rule compares explicitly written union return types with the types of a function's return expressions.
+It reports a union constituent when no returned type is assignable to it and no returned type is a supertype of it.
+Literal types satisfy their corresponding primitive types, so returning `'ready'` satisfies a `string` constituent.
+The rule treats enum members with the same string or number value as the same returned value.
+It also checks unions written as array element types and as the awaited value of `Promise` and compatible promise-like return types.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function getStatus(): string | null {
+  return 'ready';
+}
+
+async function getAsyncStatus(): Promise<string | null> {
+  return 'ready';
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function getStatus(): string {
+  return 'ready';
+}
+
+async function getAsyncStatus(): Promise<string> {
+  return 'ready';
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Limitations
+
+This rule checks unions in three places: directly in a return type, in an array element type, and as the single type argument of an array-like or promise-like return type.
+For the type-argument form, the projected return type must be equivalent to the type argument.
+It does not expand a type alias used as the complete return type or inspect unions nested in other containers or object properties.
+It skips comparisons involving `any` or `unknown`.
+For unresolved conditional and string mapping constituents, and template literal constituents that depend on type parameters, it reports only when a stable constraint proves that the returned types are disjoint from the constituent.
+
+To avoid reporting on return types that may describe an external contract, the rule skips overload implementations, contextually typed functions and object methods, inherited or implemented class methods and function-valued fields, decorated members, and members in decorated classes.
+It also skips generators and does not report `undefined` or `void` constituents because a function body may complete without an explicit return expression.
+
+The rule follows the types produced by TypeScript's type checker rather than performing separate runtime reachability analysis.
+Compiler options such as `noUncheckedIndexedAccess` therefore affect its results.
+When that option is disabled, an indexed access can exclude `undefined` from its inferred type even though it may produce `undefined` at runtime.
+
+## When Not To Use It
+
+An API may intentionally declare values that its current implementation does not return, such as for forward compatibility.
+If that convention is common in your project, you might not want to use this rule.
+
+## Related To
+
+- [explicit-function-return-type](./explicit-function-return-type.mdx)
+- [no-redundant-type-constituents](./no-redundant-type-constituents.mdx)
