@@ -805,9 +805,42 @@ export function analyzeChain(
         // foo !== null && foo !== undefined
         validatedOperands[validatedOperands.length - 1].comparedName,
       );
+
       if (comparisonResult === NodeComparisonResult.Subset) {
-        // the operands are comparable, so we can continue searching
-        subChain.push(currentOperand);
+        if (
+          operator === '||' &&
+          currentOperand.comparisonType ===
+            NullishComparisonType.StrictEqualNull &&
+          /*
+           * A paired `[=== null, === undefined]` operand is semantically safe
+           * because it merges to `== null`. Only a lone `=== null` can produce
+           * a broken strict-equality check in the merged chain.
+           */
+          validatedOperands.length === 1 &&
+          subChain
+            .flat()
+            .some(
+              operand =>
+                operand.comparisonType ===
+                NullishComparisonType.StrictEqualUndefined,
+            )
+        ) {
+          /*
+           * For OR chains that contain a `=== undefined` guard anywhere,
+           * extending the chain with a lone `=== null` subset changes
+           *  semantics: when the guarded node is undefined, `node?.child`
+           * returns `undefined`, and `undefined === null` is false (strict),
+           * but the original `=== undefined` guard was true.
+           *
+           * e.g. `foo === undefined || foo.bar === null` must NOT merge to
+           * `foo?.bar === null`, and neither should a mid-chain form like
+           * `a == null || a.b === undefined || a.b.c === null`.
+           */
+          maybeReportThenReset(validatedOperands);
+        } else {
+          // the operands are comparable, so we can continue searching
+          subChain.push(currentOperand);
+        }
       } else if (comparisonResult === NodeComparisonResult.Invalid) {
         maybeReportThenReset(validatedOperands);
       } else {
@@ -819,6 +852,7 @@ export function analyzeChain(
       subChain.push(currentOperand);
     }
   }
+
   const lastOperand = subChain.flat().at(-1);
 
   if (lastOperand && lastChainOperand) {
