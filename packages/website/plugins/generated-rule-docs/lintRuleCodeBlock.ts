@@ -31,15 +31,15 @@ export function lintRuleCodeBlock({
 }: LintRuleCodeBlockOptions): Linter.LintMessage[] {
   const options = parseRuleOptionsFromMeta(meta);
   const namespacedRuleName = `@typescript-eslint/${ruleName}`;
-  const ruleEntry: Linter.RuleLevelAndOptions = options.length
-    ? ['error', ...options]
-    : ['error'];
+  const ruleEntry: Linter.RuleLevelAndOptions =
+    options.length > 0 ? ['error', ...options] : ['error'];
 
   const linter = new Linter();
   return linter.verify(
     code,
     [
       {
+        files: ['**/*.{ts,tsx}'],
         languageOptions: {
           parser: tseslintParser,
           parserOptions: {
