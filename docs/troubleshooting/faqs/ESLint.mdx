@@ -15,13 +15,13 @@ The first step is to [check our list of "extension" rules here](/rules/#extensio
 An extension rule is a rule which extends the base ESLint rules to support TypeScript syntax.
 If you find it in there, give it a go to see if it works for you.
 You can configure it by disabling the base rule, and turning on the extension rule.
-Here's an example with the `semi` rule:
+Here's an example with the `no-unused-vars` rule:
 
 ```json
 {
   "rules": {
-    "semi": "off",
-    "@typescript-eslint/semi": "error"
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error"
   }
 }
 ```
@@ -113,7 +113,7 @@ Two common solutions in TypeScript for declaring the existence of a global varia
 [Using global variables is generally discouraged](https://stackoverflow.com/questions/10525582/why-are-global-variables-considered-bad-practice).
 If possible, it's best to avoid declaring globals altogether.
 
-If you absolutely must use one of the two strategies, then you can use an [ESLint configuration comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) to disable rules as needed.
+If you absolutely must use one of the two strategies, then you can use an [ESLint configuration comment](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments) to disable rules as needed.
 For example:
 
 ```ts
@@ -134,7 +134,7 @@ See [#9582](https://github.com/typescript-eslint/typescript-eslint/issues/9582 '
 [ESLint's `--cache` option](https://eslint.org/docs/latest/use/command-line-interface#caching) caches on a per-file basis.
 You can use it, but it will only work reliably for untyped rules -- and even then, not always.
 
-Any ESLint rule that checks logic across files, including many rules from `eslint-plugin-import`, creates cross-file dependencies.
+Any ESLint rule that checks logic across files, including many rules from [`eslint-plugin-import`](https://github.com/import-js/eslint-plugin-import), creates cross-file dependencies.
 [Typed lint rules](../../getting-started/Typed_Linting.mdx) almost always have dependencies on types across files in practice.
 ESLint's caching doesn't account for those cross-file dependencies.
 

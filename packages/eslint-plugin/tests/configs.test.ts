@@ -138,7 +138,7 @@ describe('all.ts', () => {
 });
 
 describe('disable-type-checked.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: plugin.configs['disable-type-checked'].rules,
   });
 
@@ -152,7 +152,9 @@ describe('disable-type-checked.ts', () => {
 });
 
 describe('recommended.ts', () => {
-  localTest.scoped({ unfilteredConfigRules: plugin.configs.recommended.rules });
+  localTest.override({
+    unfilteredConfigRules: plugin.configs.recommended.rules,
+  });
 
   localTest(
     'contains all recommended rules, excluding type checked ones',
@@ -176,7 +178,7 @@ describe('recommended.ts', () => {
 });
 
 describe('recommended-type-checked.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: plugin.configs['recommended-type-checked'].rules,
   });
 
@@ -198,7 +200,7 @@ describe('recommended-type-checked.ts', () => {
 });
 
 describe('recommended-type-checked-only.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules:
       plugin.configs['recommended-type-checked-only'].rules,
   });
@@ -225,7 +227,7 @@ describe('recommended-type-checked-only.ts', () => {
 });
 
 describe('strict.ts', () => {
-  localTest.scoped({ unfilteredConfigRules: plugin.configs.strict.rules });
+  localTest.override({ unfilteredConfigRules: plugin.configs.strict.rules });
 
   localTest(
     'contains all strict rules, excluding type checked ones',
@@ -250,7 +252,7 @@ describe('strict.ts', () => {
 });
 
 describe('strict-type-checked.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: plugin.configs['strict-type-checked'].rules,
   });
 
@@ -273,7 +275,7 @@ describe('strict-type-checked.ts', () => {
 });
 
 describe('strict-type-checked-only.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: plugin.configs['strict-type-checked-only'].rules,
   });
 
@@ -300,7 +302,7 @@ describe('strict-type-checked-only.ts', () => {
 });
 
 describe('stylistic.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: plugin.configs.stylistic.rules,
   });
 
@@ -326,7 +328,7 @@ describe('stylistic.ts', () => {
 });
 
 describe('stylistic-type-checked.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: plugin.configs['stylistic-type-checked'].rules,
   });
 
@@ -351,7 +353,7 @@ describe('stylistic-type-checked.ts', () => {
 });
 
 describe('stylistic-type-checked-only.ts', () => {
-  localTest.scoped({
+  localTest.override({
     unfilteredConfigRules: plugin.configs['stylistic-type-checked-only'].rules,
   });
 

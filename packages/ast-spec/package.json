@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "8.59.1",
+  "version": "8.69.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -13,10 +13,8 @@
   },
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.js.map",
+    "!**/*.tsbuildinfo"
   ],
   "repository": {
     "type": "git",
@@ -37,21 +35,21 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
   },
   "devDependencies": {
-    "@babel/code-frame": "^7.27.1",
-    "@babel/core": "^7.28.5",
-    "@babel/eslint-parser": "^7.28.5",
-    "@babel/parser": "^7.28.5",
+    "@babel/code-frame": "^8.0.0",
+    "@babel/core": "^8.0.1",
+    "@babel/eslint-parser": "^8.0.1",
+    "@babel/parser": "^8.0.4",
     "@microsoft/api-extractor": "^7.55.2",
-    "@types/babel__code-frame": "catalog:",
-    "@types/babel__core": "^7.20.5",
     "@typescript-eslint/typescript-estree": "workspace:*",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/pretty-format": "catalog:",
     "@vitest/utils": "catalog:",
@@ -72,7 +70,7 @@
     ],
     "targets": {
       "build": {
-        "command": "tsc -b tsconfig.build.json && api-extractor run --local --config=api-extractor.json",
+        "command": "tsc6 -b tsconfig.build.json && api-extractor run --local --config=api-extractor.json",
         "options": {
           "cwd": "{projectRoot}"
         },
@@ -85,6 +83,15 @@
         "command": "eslint"
       },
       "typecheck": {
+        "outputs": [
+          "{workspaceRoot}/dist",
+          "{projectRoot}/dist"
+        ],
+        "dependsOn": [
+          "typescript-estree:build"
+        ]
+      },
+      "typecheck:tsgo": {
         "outputs": [
           "{workspaceRoot}/dist",
           "{projectRoot}/dist"

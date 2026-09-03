@@ -45,6 +45,16 @@
     }
   },
   "targetDefaults": {
+    "typecheck:tsgo": {
+      "cache": true,
+      "executor": "nx:run-commands",
+      "dependsOn": ["build", "^typecheck:tsgo"],
+      "options": {
+        "command": "tsc --build --emitDeclarationOnly",
+        "cwd": "{projectRoot}"
+      },
+      "outputs": ["{projectRoot}/dist"]
+    },
     "lint": {
       "cache": false,
       "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
@@ -59,7 +69,17 @@
       "options": {
         "config": "vitest.config.mts"
       },
-      "outputs": ["{projectRoot}/coverage"]
+      "inputs": ["default", "{workspaceRoot}/vitest.config.base.mts"],
+      "outputs": ["{projectRoot}/coverage", "{projectRoot}/**/*.shot"]
+    },
+    "attw-check": {
+      "cache": false,
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16"
+      }
     }
   },
   "namedInputs": {
@@ -88,5 +108,6 @@
   "nxCloudId": "60b38765e74d975e3faae5ad",
   "sync": {
     "applyChanges": true
-  }
+  },
+  "analytics": false
 }

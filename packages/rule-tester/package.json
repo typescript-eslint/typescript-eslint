@@ -1,12 +1,11 @@
 {
   "name": "@typescript-eslint/rule-tester",
-  "version": "8.59.1",
+  "version": "8.69.0",
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "README.md",
-    "LICENSE"
+    "!**/*.js.map",
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
@@ -40,7 +39,9 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "//": "NOTE - AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70",
   "dependencies": {
@@ -59,6 +60,7 @@
   "devDependencies": {
     "@types/json-stable-stringify-without-jsonify": "^1.0.2",
     "@types/lodash.merge": "4.6.9",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
@@ -80,7 +82,9 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {},
+      "attw-check": {}
     }
   }
 }

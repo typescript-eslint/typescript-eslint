@@ -7,8 +7,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.AccessorProperty]: ts.PropertyDeclaration;
   [AST_NODE_TYPES.ArrayExpression]: ts.ArrayLiteralExpression;
   [AST_NODE_TYPES.ArrayPattern]:
-    | ts.ArrayBindingPattern
-    | ts.ArrayLiteralExpression;
+    ts.ArrayBindingPattern | ts.ArrayLiteralExpression;
   [AST_NODE_TYPES.ArrowFunctionExpression]: ts.ArrowFunction;
   [AST_NODE_TYPES.AssignmentExpression]: ts.BinaryExpression;
   [AST_NODE_TYPES.AssignmentPattern]:
@@ -98,8 +97,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.JSXMemberExpression]: ts.PropertyAccessExpression;
   [AST_NODE_TYPES.JSXNamespacedName]: ts.JsxNamespacedName;
   [AST_NODE_TYPES.JSXOpeningElement]:
-    | ts.JsxOpeningElement
-    | ts.JsxSelfClosingElement;
+    ts.JsxOpeningElement | ts.JsxSelfClosingElement;
   [AST_NODE_TYPES.JSXOpeningFragment]: ts.JsxOpeningFragment;
   [AST_NODE_TYPES.JSXSpreadAttribute]: ts.JsxSpreadAttribute;
   [AST_NODE_TYPES.JSXSpreadChild]: ts.JsxExpression;
@@ -114,8 +112,7 @@ export interface EstreeToTsNodeTypes {
     | ts.StringLiteral;
   [AST_NODE_TYPES.LogicalExpression]: ts.BinaryExpression;
   [AST_NODE_TYPES.MemberExpression]:
-    | ts.ElementAccessExpression
-    | ts.PropertyAccessExpression;
+    ts.ElementAccessExpression | ts.PropertyAccessExpression;
   [AST_NODE_TYPES.MetaProperty]: ts.MetaProperty;
   [AST_NODE_TYPES.MethodDefinition]:
     | ts.ConstructorDeclaration
@@ -125,8 +122,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.NewExpression]: ts.NewExpression;
   [AST_NODE_TYPES.ObjectExpression]: ts.ObjectLiteralExpression;
   [AST_NODE_TYPES.ObjectPattern]:
-    | ts.ObjectBindingPattern
-    | ts.ObjectLiteralExpression;
+    ts.ObjectBindingPattern | ts.ObjectLiteralExpression;
   [AST_NODE_TYPES.Program]: ts.SourceFile;
   [AST_NODE_TYPES.Property]:
     | ts.BindingElement
@@ -154,12 +150,9 @@ export interface EstreeToTsNodeTypes {
     | ts.TemplateMiddle
     | ts.TemplateTail;
   [AST_NODE_TYPES.TemplateLiteral]:
-    | ts.NoSubstitutionTemplateLiteral
-    | ts.TemplateExpression;
+    ts.NoSubstitutionTemplateLiteral | ts.TemplateExpression;
   [AST_NODE_TYPES.ThisExpression]:
-    | ts.Identifier
-    | ts.KeywordTypeNode
-    | ts.ThisExpression;
+    ts.Identifier | ts.KeywordTypeNode | ts.ThisExpression;
   [AST_NODE_TYPES.ThrowStatement]: ts.ThrowStatement;
   [AST_NODE_TYPES.TryStatement]: ts.TryStatement;
   [AST_NODE_TYPES.TSAbstractAccessorProperty]: ts.PropertyDeclaration;
@@ -196,9 +189,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSLiteralType]: ts.LiteralTypeNode;
   [AST_NODE_TYPES.TSMappedType]: ts.MappedTypeNode;
   [AST_NODE_TYPES.TSMethodSignature]:
-    | ts.GetAccessorDeclaration
-    | ts.MethodSignature
-    | ts.SetAccessorDeclaration;
+    ts.GetAccessorDeclaration | ts.MethodSignature | ts.SetAccessorDeclaration;
   [AST_NODE_TYPES.TSModuleBlock]: ts.ModuleBlock;
   [AST_NODE_TYPES.TSModuleDeclaration]: ts.ModuleDeclaration;
   [AST_NODE_TYPES.TSNamedTupleMember]: ts.NamedTupleMember;
@@ -243,11 +234,9 @@ export interface EstreeToTsNodeTypes {
     | ts.TypeOfExpression
     | ts.VoidExpression;
   [AST_NODE_TYPES.UpdateExpression]:
-    | ts.PostfixUnaryExpression
-    | ts.PrefixUnaryExpression;
+    ts.PostfixUnaryExpression | ts.PrefixUnaryExpression;
   [AST_NODE_TYPES.VariableDeclaration]:
-    | ts.VariableDeclarationList
-    | ts.VariableStatement;
+    ts.VariableDeclarationList | ts.VariableStatement;
   [AST_NODE_TYPES.VariableDeclarator]: ts.VariableDeclaration;
   [AST_NODE_TYPES.WhileStatement]: ts.WhileStatement;
   [AST_NODE_TYPES.WithStatement]: ts.WithStatement;

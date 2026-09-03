@@ -18,6 +18,11 @@ type Unify =
       otherSignature: SignatureDefinition;
     }
   | {
+      kind: 'all-parameters-are-same';
+      signature0: SignatureDefinition;
+      signature1: SignatureDefinition;
+    }
+  | {
       kind: 'single-parameter-difference';
       p0: TSESTree.Parameter;
       p1: TSESTree.Parameter;
@@ -38,8 +43,7 @@ type ScopeNode =
 
 type OverloadNode = MethodDefinition | SignatureDefinition;
 type ContainingNode =
-  | TSESTree.ExportDefaultDeclaration
-  | TSESTree.ExportNamedDeclaration;
+  TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration;
 
 type SignatureDefinition =
   | TSESTree.FunctionExpression
@@ -50,10 +54,10 @@ type SignatureDefinition =
   | TSESTree.TSMethodSignature;
 
 type MethodDefinition =
-  | TSESTree.MethodDefinition
-  | TSESTree.TSAbstractMethodDefinition;
+  TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition;
 
 export type MessageIds =
+  | 'allParametersAreSame'
   | 'omittingRestParameter'
   | 'omittingSingleParameter'
   | 'singleParameterDifference';
@@ -76,11 +80,11 @@ export default createRule<Options, MessageIds>({
       recommended: 'strict',
     },
     messages: {
+      allParametersAreSame: '{{failureStringStart}} with identical parameters.',
       omittingRestParameter: '{{failureStringStart}} with a rest parameter.',
       omittingSingleParameter:
         '{{failureStringStart}} with an optional parameter.',
-      singleParameterDifference:
-        '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
+      singleParameterDifference: '{{failureStringStart}} taking `{{types}}`.',
     },
     schema: [
       {
@@ -132,12 +136,8 @@ export default createRule<Options, MessageIds>({
             const { p0, p1 } = unify;
             const lineOfOtherOverload = only2 ? undefined : p0.loc.start.line;
 
-            const typeAnnotation0 = isTSParameterProperty(p0)
-              ? p0.parameter.typeAnnotation
-              : p0.typeAnnotation;
-            const typeAnnotation1 = isTSParameterProperty(p1)
-              ? p1.parameter.typeAnnotation
-              : p1.typeAnnotation;
+            const typeAnnotation0 = getParameterTypeAnnotation(p0);
+            const typeAnnotation1 = getParameterTypeAnnotation(p1);
 
             context.report({
               loc: p1.loc,
@@ -145,12 +145,7 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: context.sourceCode.getText(
-                  typeAnnotation0?.typeAnnotation,
-                ),
-                type2: context.sourceCode.getText(
-                  typeAnnotation1?.typeAnnotation,
-                ),
+                types: getUnifiedTypeText(typeAnnotation0, typeAnnotation1),
               },
             });
             break;
@@ -172,7 +167,25 @@ export default createRule<Options, MessageIds>({
                 failureStringStart: failureStringStart(lineOfOtherOverload),
               },
             });
+            break;
           }
+          case 'all-parameters-are-same': {
+            const { signature0, signature1 } = unify;
+            const lineOfOtherOverload = only2
+              ? undefined
+              : signature0.loc.start.line;
+
+            context.report({
+              node: signature1,
+              messageId: 'allParametersAreSame',
+              data: {
+                failureStringStart: failureStringStart(lineOfOtherOverload),
+              },
+            });
+            break;
+          }
+          default:
+            unify satisfies never;
         }
       }
     }
@@ -211,7 +224,7 @@ export default createRule<Options, MessageIds>({
       }
 
       return a.params.length === b.params.length
-        ? signaturesDifferBySingleParameter(a.params, b.params)
+        ? signaturesHaveSameAmountOfParameters(a, b)
         : signaturesDifferByOptionalOrRestParameter(a, b);
     }
 
@@ -249,7 +262,10 @@ export default createRule<Options, MessageIds>({
       }
 
       return (
-        typesAreEqual(a.returnType, b.returnType) &&
+        typesAreEqual(
+          a.returnType?.typeAnnotation,
+          b.returnType?.typeAnnotation,
+        ) &&
         // Must take the same type parameters.
         // If one uses a type parameter (from outside) and the other doesn't, they shouldn't be joined.
         arraysAreEqual(aTypeParams, bTypeParams, typeParametersAreEqual) &&
@@ -258,11 +274,16 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    /** Detect `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`. */
-    function signaturesDifferBySingleParameter(
-      types1: readonly TSESTree.Parameter[],
-      types2: readonly TSESTree.Parameter[],
+    /**
+     * Detect no difference, i.e. `a(x: number, y: string)` and `a(x: number, y: string)`,
+     * or one param difference, i.e. `a(x: number, y: number, z: number)` and `a(x: number, y: string, z: number)`.
+     */
+    function signaturesHaveSameAmountOfParameters(
+      signature0: SignatureDefinition,
+      signature1: SignatureDefinition,
     ): Unify | undefined {
+      const types1 = signature0.params;
+      const types2 = signature1.params;
       const firstParam1 = types1[0];
       const firstParam2 = types2[0];
 
@@ -277,7 +298,11 @@ export default createRule<Options, MessageIds>({
         parametersAreEqual,
       );
       if (index == null) {
-        return undefined;
+        return {
+          kind: 'all-parameters-are-same',
+          signature0,
+          signature1,
+        };
       }
 
       // If remaining arrays are equal, the signatures differ by just one parameter type
@@ -299,6 +324,58 @@ export default createRule<Options, MessageIds>({
         a.type !== AST_NODE_TYPES.RestElement
         ? { kind: 'single-parameter-difference', p0: a, p1: b }
         : undefined;
+    }
+
+    function getParameterTypeAnnotation(
+      parameter: TSESTree.Parameter,
+    ): TSESTree.TypeNode | undefined {
+      return isTSParameterProperty(parameter)
+        ? parameter.parameter.typeAnnotation?.typeAnnotation
+        : parameter.typeAnnotation?.typeAnnotation;
+    }
+
+    function getUnifiedTypeText(
+      type0: TSESTree.TypeNode | undefined,
+      type1: TSESTree.TypeNode | undefined,
+    ): string {
+      // When a signature's parameter has no type annotation
+      if (type0 == null || type1 == null) {
+        return getUnionMemberText(
+          nullThrows(
+            type0 ?? type1,
+            'Expected a type annotation for one of the parameters, but both were undefined',
+          ),
+        );
+      }
+
+      const members = [...getUnionMembers(type0), ...getUnionMembers(type1)];
+      const uniqueMembers: TSESTree.TypeNode[] = [];
+
+      for (const member of members) {
+        if (!uniqueMembers.some(other => typesAreEqual(other, member))) {
+          uniqueMembers.push(member);
+        }
+      }
+
+      return uniqueMembers
+        .map(member => getUnionMemberText(member))
+        .join(' | ');
+    }
+
+    function getUnionMembers(type: TSESTree.TypeNode): TSESTree.TypeNode[] {
+      return type.type === AST_NODE_TYPES.TSUnionType
+        ? type.types.flatMap(getUnionMembers)
+        : [type];
+    }
+
+    function getUnionMemberText(type: TSESTree.TypeNode): string {
+      const text = context.sourceCode.getText(type);
+      const needsParentheses =
+        type.type === AST_NODE_TYPES.TSConditionalType ||
+        type.type === AST_NODE_TYPES.TSConstructorType ||
+        type.type === AST_NODE_TYPES.TSFunctionType;
+
+      return needsParentheses ? `(${text})` : text;
     }
 
     function isThisParam(param: TSESTree.Parameter | undefined): boolean {
@@ -352,16 +429,12 @@ export default createRule<Options, MessageIds>({
       }
 
       for (let i = 0; i < minLength; i++) {
-        const sig1i = sig1[i];
-        const sig2i = sig2[i];
-        const typeAnnotation1 = isTSParameterProperty(sig1i)
-          ? sig1i.parameter.typeAnnotation
-          : sig1i.typeAnnotation;
-        const typeAnnotation2 = isTSParameterProperty(sig2i)
-          ? sig2i.parameter.typeAnnotation
-          : sig2i.typeAnnotation;
-
-        if (!typesAreEqual(typeAnnotation1, typeAnnotation2)) {
+        if (
+          !typesAreEqual(
+            getParameterTypeAnnotation(sig1[i]),
+            getParameterTypeAnnotation(sig2[i]),
+          )
+        ) {
           return undefined;
         }
       }
@@ -439,16 +512,12 @@ export default createRule<Options, MessageIds>({
       a: TSESTree.Parameter,
       b: TSESTree.Parameter,
     ): boolean {
-      const typeAnnotationA = isTSParameterProperty(a)
-        ? a.parameter.typeAnnotation
-        : a.typeAnnotation;
-      const typeAnnotationB = isTSParameterProperty(b)
-        ? b.parameter.typeAnnotation
-        : b.typeAnnotation;
-
       return (
         parametersHaveEqualSigils(a, b) &&
-        typesAreEqual(typeAnnotationA, typeAnnotationB)
+        typesAreEqual(
+          getParameterTypeAnnotation(a),
+          getParameterTypeAnnotation(b),
+        )
       );
     }
 
@@ -484,29 +553,20 @@ export default createRule<Options, MessageIds>({
       b: TSESTree.TSTypeParameter,
     ): boolean {
       return (
-        a.name.name === b.name.name &&
-        constraintsAreEqual(a.constraint, b.constraint)
+        a.name.name === b.name.name && typesAreEqual(a.constraint, b.constraint)
       );
     }
 
     function typesAreEqual(
-      a: TSESTree.TSTypeAnnotation | undefined,
-      b: TSESTree.TSTypeAnnotation | undefined,
+      a: TSESTree.TypeNode | undefined,
+      b: TSESTree.TypeNode | undefined,
     ): boolean {
       return (
         a === b ||
         (a != null &&
           b != null &&
-          context.sourceCode.getText(a.typeAnnotation) ===
-            context.sourceCode.getText(b.typeAnnotation))
+          context.sourceCode.getText(a) === context.sourceCode.getText(b))
       );
-    }
-
-    function constraintsAreEqual(
-      a: TSESTree.TypeNode | undefined,
-      b: TSESTree.TypeNode | undefined,
-    ): boolean {
-      return a === b || (a != null && a.type === b?.type);
     }
 
     /* Returns the first index where `a` and `b` differ. */

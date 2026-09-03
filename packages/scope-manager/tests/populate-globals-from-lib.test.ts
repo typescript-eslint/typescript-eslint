@@ -109,7 +109,7 @@ describe('populateGlobalsFromLib – error handling', () => {
   it('throws error for invalid lib name', () => {
     expect(() => {
       analyze(ast, { lib: ['invalid-lib-name' as never] });
-    }).toThrowError('Invalid value for lib provided: invalid-lib-name');
+    }).toThrow('Invalid value for lib provided: invalid-lib-name');
   });
 });
 

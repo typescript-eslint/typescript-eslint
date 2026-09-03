@@ -1,4 +1,5 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 
@@ -20,17 +21,25 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'new',
             member: 'call',
           },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
           messageId: 'incorrectOrder',
         },
       ],
@@ -48,17 +57,25 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b.d',
             member: 'b.c',
           },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b.c',
             member: 'a',
           },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -76,17 +93,25 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -106,17 +131,25 @@ type Foo = {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'new',
             member: 'call',
           },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
           messageId: 'incorrectOrder',
         },
       ],
@@ -134,17 +167,25 @@ type Foo = {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b.d',
             member: 'b.c',
           },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b.c',
             member: 'a',
           },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -162,17 +203,25 @@ type Foo = {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -194,10 +243,14 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -215,17 +268,25 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -247,10 +308,14 @@ const foo = class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -268,17 +333,25 @@ const foo = class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -300,10 +373,14 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -321,17 +398,25 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -353,10 +438,14 @@ const foo = class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -376,17 +465,25 @@ const foo = class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -408,17 +505,25 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'new',
             member: 'call',
           },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
           messageId: 'incorrectOrder',
         },
       ],
@@ -438,17 +543,25 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -470,17 +583,25 @@ type Foo = {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'new',
             member: 'call',
           },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
           messageId: 'incorrectOrder',
         },
       ],
@@ -500,17 +621,25 @@ type Foo = {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -542,10 +671,14 @@ class FooTestGetter {
       `,
       errors: [
         {
+          column: 3,
           data: {
             name: 'constructor',
             rank: 'public instance get',
           },
+          endColumn: 19,
+          endLine: 15,
+          line: 15,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -576,17 +709,25 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             name: 'b',
             rank: 'decorated get',
           },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
           messageId: 'incorrectGroupOrder',
         },
         {
+          column: 3,
           data: {
             name: 'd',
             rank: 'decorated set',
           },
+          endColumn: 13,
+          endLine: 11,
+          line: 11,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -621,17 +762,25 @@ class FooTestGetter {
       `,
       errors: [
         {
+          column: 3,
           data: {
             name: 'constructor',
             rank: 'public instance set',
           },
+          endColumn: 19,
+          endLine: 13,
+          line: 13,
           messageId: 'incorrectGroupOrder',
         },
         {
+          column: 3,
           data: {
             name: 'h',
             rank: 'public instance set',
           },
+          endColumn: 13,
+          endLine: 15,
+          line: 15,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -659,24 +808,36 @@ const foo = class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 32,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             name: 'd',
             rank: 'public constructor',
           },
+          endColumn: 25,
+          endLine: 9,
+          line: 9,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -705,24 +866,36 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'a3',
             member: 'a2',
           },
+          endColumn: 14,
+          endLine: 7,
+          line: 6,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             name: 'b1',
             rank: 'constructor',
           },
+          endColumn: 14,
+          endLine: 11,
+          line: 11,
           messageId: 'incorrectGroupOrder',
         },
         {
+          column: 3,
           data: {
             name: 'b2',
             rank: 'constructor',
           },
+          endColumn: 14,
+          endLine: 12,
+          line: 12,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -756,24 +929,36 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 32,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             name: 'd',
             rank: 'public constructor',
           },
+          endColumn: 25,
+          endLine: 9,
+          line: 9,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -803,31 +988,47 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 13,
+          endLine: 10,
+          line: 10,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 13,
+          endLine: 11,
+          line: 11,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             name: 'call',
             rank: 'field',
           },
+          endColumn: 11,
+          endLine: 13,
+          line: 13,
           messageId: 'incorrectGroupOrder',
         },
         {
+          column: 3,
           data: {
             name: 'new',
             rank: 'method',
           },
+          endColumn: 15,
+          endLine: 15,
+          line: 15,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -857,31 +1058,47 @@ type Foo = {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 13,
+          endLine: 10,
+          line: 10,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 13,
+          endLine: 11,
+          line: 11,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             name: 'call',
             rank: 'field',
           },
+          endColumn: 11,
+          endLine: 13,
+          line: 13,
           messageId: 'incorrectGroupOrder',
         },
         {
+          column: 3,
           data: {
             name: 'new',
             rank: 'method',
           },
+          endColumn: 15,
+          endLine: 15,
+          line: 15,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -901,17 +1118,25 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'c',
             member: 'b',
           },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -935,24 +1160,36 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             beforeMember: 'b',
             member: 'a',
           },
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'd',
             member: 'c',
           },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
           messageId: 'incorrectOrder',
         },
         {
+          column: 3,
           data: {
             beforeMember: 'f',
             member: 'e',
           },
+          endColumn: 23,
+          endLine: 10,
+          line: 10,
           messageId: 'incorrectOrder',
         },
       ],
@@ -972,17 +1209,25 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             name: 'c',
             rank: 'abstract accessor',
           },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectGroupOrder',
         },
         {
+          column: 3,
           data: {
             name: 'd',
             rank: 'accessor',
           },
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -998,6 +1243,202 @@ class Foo {
           },
         },
       ],
+    },
+
+    // fields referencing later members are still reported (deferred reference)
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: () => number = () => this.b;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // references in regular functions are deferred
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: () => number = function () {
+    return this.b;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 5,
+          endLine: 6,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // references in nested classes do not refer to the containing class
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a = class {
+    value = this.b;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 5,
+          endLine: 6,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields referencing members they would not be moved before are still reported
+    {
+      code: `
+class Foo {
+  a: number = 1;
+  c: number = 2;
+  b: number = this.a;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 22,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields after a field that cannot be moved are compared against the last movable field
+    {
+      code: `
+class Foo {
+  c: number = 1;
+  a: number = this.c;
+  b: number = 2;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference members by dynamic computed name are still reported
+    {
+      code: `
+declare const key: string;
+class Foo {
+  b: number = 42;
+  a: number = this[key];
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 25,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+declare const other: { b: number };
+class Foo {
+  b: number = 42;
+  a: number = other.b;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+class Foo {
+  b: number;
+  a: number = this.b;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
   ],
   valid: [
@@ -2606,6 +3047,117 @@ const foo = class Foo {
 };
       `,
       options: [{ typeLiterals: { order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference earlier fields
+    {
+      code: `
+class Foo {
+  readonly b: number = 42;
+  readonly c: number = 100;
+  readonly a: number = this.b + this.c;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference earlier fields + default member types
+    {
+      code: `
+class Foo {
+  readonly b: number = 42;
+  readonly c: number = 100;
+  readonly a: number = this.b + this.c;
+}
+      `,
+      options: [{ default: { order: 'alphabetically' } }],
+    },
+
+    // static fields whose initializers reference earlier static fields
+    {
+      code: `
+class Foo {
+  static b: number = 42;
+  static a: number = this.b;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // private fields whose initializers reference earlier private fields
+    {
+      code: `
+class Foo {
+  #b: number = 42;
+  #a: number = this.#b;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // auto accessors whose initializers reference earlier auto accessors
+    {
+      code: `
+class Foo {
+  accessor b: number = 42;
+  accessor a: number = this.b;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference earlier fields by computed name
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: number = this['b'];
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    {
+      code: `
+class Foo {
+  zz: number = 42;
+  a: number = this[\`zz\`];
+}
+      `,
+      options: [{ default: { order: 'alphabetically' } }],
+    },
+
+    {
+      code: noFormat`
+class Foo {
+  zz: number = 42;
+  a: number = this[\`${'z'}${'z'}\`];
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose array initializers reference earlier fields
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a = [this.b, ,];
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference earlier fields that cannot be moved
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: number = this.b;
+  a2: number = this.a;
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
   ],
 });

@@ -28,7 +28,7 @@ To avoid confusion around the `{}` type allowing any _non-nullish value_, this r
 That includes interfaces and object type aliases with no fields.
 
 :::tip
-If you do have a use case for an API allowing `{}`, you can always configure the [rule's options](#options), use an [ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1), or [disable the rule in your ESLint config](https://eslint.org/docs/latest/use/configure/rules#using-configuration-files-1).
+If you do have a use case for an API allowing `{}`, you can always configure the [rule's options](#options), use an [ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments), or [disable the rule in your ESLint config](https://eslint.org/docs/latest/use/configure/rules#using-configuration-files-1).
 :::
 
 Note that this rule does not report on:
@@ -143,6 +143,10 @@ type TypeProps = {};
 
 If your code commonly needs to represent the _"any non-nullish value"_ type, this rule may not be for you.
 Projects that extensively use type operations such as conditional types and mapped types oftentimes benefit from disabling this rule.
+
+## Related To
+
+- [`no-generated-empty-object-type`](./no-generated-empty-object-type.mdx), which reports type operations that _resolve_ to `{}` rather than `{}` written out by hand
 
 ## Further Reading
 

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "8.59.1",
+  "version": "8.69.0",
   "description": "Converts ESLint rule schemas to equivalent TypeScript type strings.",
   "type": "module",
   "exports": {
@@ -10,6 +10,11 @@
     },
     "./package.json": "./package.json"
   },
+  "files": [
+    "dist",
+    "!**/*.js.map",
+    "!**/*.tsbuildinfo"
+  ],
   "engines": {
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
@@ -29,7 +34,9 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
     "@typescript-eslint/type-utils": "workspace:*",
@@ -37,6 +44,7 @@
     "natural-compare": "^1.4.0"
   },
   "devDependencies": {
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
@@ -58,6 +66,17 @@
     "targets": {
       "lint": {
         "command": "eslint"
+      },
+      "typecheck:tsgo": {},
+      "attw-check": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": false,
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile esm-only"
       }
     }
   }

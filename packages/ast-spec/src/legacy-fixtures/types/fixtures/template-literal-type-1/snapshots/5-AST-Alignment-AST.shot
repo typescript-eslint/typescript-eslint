@@ -33,8 +33,7 @@ Snapshot Diff:
                 type: 'TemplateElement',
                 tail: true,
                 value: Object {
--                 'cooked': null,
-+                 'cooked': 'foo',
+                  'cooked': 'foo',
                   'raw': 'foo',
                 },
 
@@ -69,9 +68,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 89],
+-   range: [73, 89],
++   range: [0, 89],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

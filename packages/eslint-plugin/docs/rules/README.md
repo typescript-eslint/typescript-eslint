@@ -58,7 +58,7 @@ module.exports = {
 
 ## Frozen Rules
 
-When rules are feature complete, they are marked as frozen (indicated with ❄️ in the documentation). This applies to standalone rules that are complete, as well as [extension rules](#extension-rules) whose underlying core ESLint rules are frozen. After that point, we expect users to use [disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) when they find an edge case that isn’t covered.
+When rules are feature complete, they are marked as frozen (indicated with ❄️ in the documentation). This applies to standalone rules that are complete, as well as [extension rules](#extension-rules) whose underlying core ESLint rules are frozen. After that point, we expect users to use [disable comments](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments) when they find an edge case that isn’t covered.
 
 When a rule is frozen, it means:
 

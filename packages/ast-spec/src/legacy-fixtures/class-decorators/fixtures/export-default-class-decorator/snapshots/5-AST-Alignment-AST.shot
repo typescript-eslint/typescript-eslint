@@ -82,10 +82,10 @@ Snapshot Diff:
     sourceType: 'module',
 
 -   range: [73, 109],
-+   range: [81, 109],
++   range: [0, 109],
     loc: {
 -     start: { column: 0, line: 3 },
-+     start: { column: 0, line: 4 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 5 },
     },
   }

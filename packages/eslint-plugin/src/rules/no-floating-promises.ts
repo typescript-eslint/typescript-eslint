@@ -137,6 +137,12 @@ export default createRule<Options, MessageId>({
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
     return {
+      ArrowFunctionExpression(node): void {
+        if (node.body.type === AST_NODE_TYPES.UnaryExpression) {
+          checkNode(node.body, node.body);
+        }
+      },
+
       ExpressionStatement(node): void {
         if (options.ignoreIIFE && isAsyncIife(node)) {
           return;
@@ -144,77 +150,84 @@ export default createRule<Options, MessageId>({
 
         const expression = skipChainExpression(node.expression);
 
-        if (isKnownSafePromiseCall(expression)) {
-          return;
-        }
-
-        const { isUnhandled, nonFunctionHandler, promiseArray } =
-          isUnhandledPromise(checker, expression);
-
-        if (isUnhandled) {
-          if (promiseArray) {
-            context.report({
-              node,
-              messageId: options.ignoreVoid
-                ? 'floatingPromiseArrayVoid'
-                : 'floatingPromiseArray',
-            });
-          } else if (options.ignoreVoid) {
-            context.report({
-              node,
-              messageId: nonFunctionHandler
-                ? 'floatingUselessRejectionHandlerVoid'
-                : 'floatingVoid',
-              suggest: [
-                {
-                  messageId: 'floatingFixVoid',
-                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                    if (
-                      isParenthesized(expression, context.sourceCode) ||
-                      getOperatorPrecedenceForNode(expression) >
-                        OperatorPrecedence.Unary
-                    ) {
-                      return fixer.insertTextBefore(node, 'void ');
-                    }
-                    return [
-                      fixer.insertTextBefore(node, 'void ('),
-                      fixer.insertTextAfterRange(
-                        [expression.range[1], expression.range[1]],
-                        ')',
-                      ),
-                    ];
-                  },
-                },
-                {
-                  messageId: 'floatingFixAwait',
-                  fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
-                    addAwait(fixer, expression, node),
-                },
-              ],
-            });
-          } else {
-            context.report({
-              node,
-              messageId: nonFunctionHandler
-                ? 'floatingUselessRejectionHandler'
-                : 'floating',
-              suggest: [
-                {
-                  messageId: 'floatingFixAwait',
-                  fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
-                    addAwait(fixer, expression, node),
-                },
-              ],
-            });
-          }
-        }
+        checkNode(node, expression);
       },
     };
+
+    function checkNode(
+      node: TSESTree.Expression | TSESTree.ExpressionStatement,
+      expression: TSESTree.Expression,
+    ): void {
+      if (isKnownSafePromiseCall(expression)) {
+        return;
+      }
+
+      const { isUnhandled, nonFunctionHandler, promiseArray } =
+        isUnhandledPromise(checker, expression);
+
+      if (isUnhandled) {
+        if (promiseArray) {
+          context.report({
+            node,
+            messageId: options.ignoreVoid
+              ? 'floatingPromiseArrayVoid'
+              : 'floatingPromiseArray',
+          });
+        } else if (options.ignoreVoid) {
+          context.report({
+            node,
+            messageId: nonFunctionHandler
+              ? 'floatingUselessRejectionHandlerVoid'
+              : 'floatingVoid',
+            suggest: [
+              {
+                messageId: 'floatingFixVoid',
+                fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                  if (
+                    isParenthesized(expression, context.sourceCode) ||
+                    getOperatorPrecedenceForNode(expression) >
+                      OperatorPrecedence.Unary
+                  ) {
+                    return fixer.insertTextBefore(node, 'void ');
+                  }
+                  return [
+                    fixer.insertTextBefore(node, 'void ('),
+                    fixer.insertTextAfterRange(
+                      [expression.range[1], expression.range[1]],
+                      ')',
+                    ),
+                  ];
+                },
+              },
+              {
+                messageId: 'floatingFixAwait',
+                fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
+                  addAwait(fixer, expression, node),
+              },
+            ],
+          });
+        } else {
+          context.report({
+            node,
+            messageId: nonFunctionHandler
+              ? 'floatingUselessRejectionHandler'
+              : 'floating',
+            suggest: [
+              {
+                messageId: 'floatingFixAwait',
+                fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
+                  addAwait(fixer, expression, node),
+              },
+            ],
+          });
+        }
+      }
+    }
 
     function addAwait(
       fixer: TSESLint.RuleFixer,
       expression: TSESTree.Expression,
-      node: TSESTree.ExpressionStatement,
+      node: TSESTree.Expression | TSESTree.ExpressionStatement,
     ): TSESLint.RuleFix | TSESLint.RuleFix[] {
       if (
         expression.type === AST_NODE_TYPES.UnaryExpression &&
@@ -394,7 +407,12 @@ export default createRule<Options, MessageId>({
     }
 
     function isPromiseArray(node: ts.Node): boolean {
-      const type = checker.getTypeAtLocation(node);
+      const type = getTypeAtLocation(checker, node);
+
+      if (type == null) {
+        return false;
+      }
+
       for (const ty of tsutils
         .unionConstituents(type)
         .map(t => checker.getApparentType(t))) {
@@ -502,4 +520,16 @@ function isFunctionParam(
     }
   }
   return false;
+}
+
+function getTypeAtLocation(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+): ts.Type | null {
+  try {
+    return checker.getTypeAtLocation(node);
+  } catch {
+    // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/11947
+    return null;
+  }
 }

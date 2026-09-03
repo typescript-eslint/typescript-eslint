@@ -8,25 +8,25 @@ const ruleTester = createRuleTesterWithTypes();
 ruleTester.run('prefer-find', rule, {
   valid: [
     `
-      interface JerkCode<T> {
-        filter(predicate: (item: T) => boolean): JerkCode<T>;
-      }
+interface JerkCode<T> {
+  filter(predicate: (item: T) => boolean): JerkCode<T>;
+}
 
-      declare const jerkCode: JerkCode<string>;
+declare const jerkCode: JerkCode<string>;
 
-      jerkCode.filter(item => item === 'aha')[0];
+jerkCode.filter(item => item === 'aha')[0];
     `,
     `
-      declare const arr: readonly string[];
-      arr.filter(item => item === 'aha')[1];
+declare const arr: readonly string[];
+arr.filter(item => item === 'aha')[1];
     `,
     `
-      declare const arr: string[];
-      arr.filter(item => item === 'aha').at(1);
+declare const arr: string[];
+arr.filter(item => item === 'aha').at(1);
     `,
     `
-      declare const notNecessarilyAnArray: unknown[] | undefined | null | string;
-      notNecessarilyAnArray?.filter(item => true)[0];
+declare const notNecessarilyAnArray: unknown[] | undefined | null | string;
+notNecessarilyAnArray?.filter(item => true)[0];
     `,
     // Be sure that we don't try to mess with this case, since the member access
     // should not need to be optional for the cases the rule is concerned with.
@@ -39,10 +39,10 @@ ruleTester.run('prefer-find', rule, {
     '[].filter?.(() => true)[0];',
     '[1, 2, 3].filter(x => x > 0).at(-Infinity);',
     `
-      declare const arr: string[];
-      declare const cond: Parameters<Array<string>['filter']>[0];
-      const a = { arr };
-      a?.arr.filter(cond).at(1);
+declare const arr: string[];
+declare const cond: Parameters<Array<string>['filter']>[0];
+const a = { arr };
+a?.arr.filter(cond).at(1);
     `,
     "['Just', 'a', 'filter'].filter(x => x.length > 4);",
     "['Just', 'a', 'find'].find(x => x.length > 4);",
@@ -50,23 +50,23 @@ ruleTester.run('prefer-find', rule, {
     'null?.filter(x => x)[0];',
     // Should not throw. See https://github.com/typescript-eslint/typescript-eslint/issues/8386
     `
-      declare function foo(param: any): any;
-      foo(Symbol.for('foo'));
+declare function foo(param: any): any;
+foo(Symbol.for('foo'));
     `,
     // Specifically need to test Symbol.for(), not just Symbol(), since only
     // Symbol.for() creates a static value that the rule inspects.
     `
-      declare const arr: string[];
-      const s = Symbol.for("Don't throw!");
-      arr.filter(item => item === 'aha').at(s);
+declare const arr: string[];
+const s = Symbol.for("Don't throw!");
+arr.filter(item => item === 'aha').at(s);
     `,
     "[1, 2, 3].filter(x => x)[Symbol('0')];",
     "[1, 2, 3].filter(x => x)[Symbol.for('0')];",
     '(Math.random() < 0.5 ? [1, 2, 3].filter(x => true) : [1, 2, 3])[0];',
     `
-      (Math.random() < 0.5
-        ? [1, 2, 3].find(x => true)
-        : [1, 2, 3].filter(x => true))[0];
+(Math.random() < 0.5
+  ? [1, 2, 3].find(x => true)
+  : [1, 2, 3].filter(x => true))[0];
     `,
   ],
 
@@ -78,6 +78,9 @@ arr.filter(item => item === 'aha')[0];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 38,
+          endLine: 3,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -100,6 +103,9 @@ arr.filter(item => item === 'aha')[zero];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 41,
+          endLine: 4,
           line: 4,
           messageId: 'preferFind',
           suggestions: [
@@ -123,6 +129,9 @@ arr.filter(item => item === 'aha')[zero];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 41,
+          endLine: 4,
           line: 4,
           messageId: 'preferFind',
           suggestions: [
@@ -146,6 +155,9 @@ arr.filter(item => item === 'aha')[zero];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 41,
+          endLine: 4,
           line: 4,
           messageId: 'preferFind',
           suggestions: [
@@ -168,6 +180,9 @@ arr.filter(item => item === 'aha').at(0);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 41,
+          endLine: 3,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -189,6 +204,9 @@ declare const arr: ReadonlyArray<string>;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 54,
+          endLine: 3,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -211,6 +229,9 @@ arr.filter(item => item === 'aha').at(zero);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 44,
+          endLine: 4,
           line: 4,
           messageId: 'preferFind',
           suggestions: [
@@ -233,6 +254,9 @@ arr.filter(item => item === 'aha')['0'];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 40,
+          endLine: 3,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -251,6 +275,9 @@ arr.find(item => item === 'aha');
       code: 'const two = [1, 2, 3].filter(item => item === 2)[0];',
       errors: [
         {
+          column: 13,
+          endColumn: 52,
+          endLine: 1,
           line: 1,
           messageId: 'preferFind',
           suggestions: [
@@ -266,6 +293,9 @@ arr.find(item => item === 'aha');
       code: noFormat`const fltr = "filter"; (([] as unknown[]))[fltr] ((item) => { return item === 2 }  ) [ 0  ] ;`,
       errors: [
         {
+          column: 24,
+          endColumn: 92,
+          endLine: 1,
           line: 1,
           messageId: 'preferFind',
           suggestions: [
@@ -282,6 +312,9 @@ arr.find(item => item === 'aha');
       code: noFormat`(([] as unknown[]))?.["filter"] ((item) => { return item === 2 }  ) [ 0  ] ;`,
       errors: [
         {
+          column: 1,
+          endColumn: 75,
+          endLine: 1,
           line: 1,
           messageId: 'preferFind',
           suggestions: [
@@ -301,6 +334,9 @@ nullableArray?.filter(item => true)[0];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 39,
+          endLine: 3,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -319,6 +355,9 @@ nullableArray?.find(item => true);
       code: '([]?.filter(f))[0];',
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'preferFind',
           suggestions: [
@@ -338,6 +377,9 @@ console.log((1, 2, objectWithArrayProperty?.arr['filter'](cond)).at(0));
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 71,
+          endLine: 4,
           line: 4,
           messageId: 'preferFind',
           suggestions: [
@@ -359,6 +401,9 @@ console.log((1, 2, objectWithArrayProperty?.arr["find"](cond)));
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 37,
+          endLine: 2,
           line: 2,
           messageId: 'preferFind',
           suggestions: [
@@ -379,6 +424,9 @@ const idxToLookUp = -0.12635678;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 45,
+          endLine: 3,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -399,6 +447,9 @@ const idxToLookUp = -0.12635678;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 38,
+          endLine: 2,
           line: 2,
           messageId: 'preferFind',
           suggestions: [
@@ -424,6 +475,9 @@ a?.arr
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 8,
           line: 5,
           messageId: 'preferFind',
           suggestions: [
@@ -459,6 +513,9 @@ butIAm.push(
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 14,
+          endLine: 11,
           line: 9,
           messageId: 'preferFind',
           suggestions: [
@@ -492,6 +549,9 @@ function actingOnArray<T extends string[]>(values: T) {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 4,
+          endLine: 5,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -520,6 +580,9 @@ const nestedSequenceAbomination =
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 68,
+          endLine: 9,
           line: 5,
           messageId: 'preferFind',
           suggestions: [
@@ -547,6 +610,9 @@ arr.filter(f, thisArg)[0];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -568,6 +634,9 @@ arr.filter(f, thisArg)[0];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -590,6 +659,9 @@ arr.find(f, thisArg);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 36,
+          endLine: 4,
           line: 2,
           messageId: 'preferFind',
           suggestions: [
@@ -613,6 +685,9 @@ Math.random() < 0.5
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 35,
+          endLine: 4,
           line: 4,
           messageId: 'preferFind',
           suggestions: [
@@ -642,6 +717,9 @@ const nestedTernaries = (
       `,
       errors: [
         {
+          column: 25,
+          endColumn: 10,
+          endLine: 10,
           line: 4,
           messageId: 'preferFind',
           suggestions: [
@@ -677,6 +755,9 @@ const nestedTernariesWithSequenceExpression = (
       `,
       errors: [
         {
+          column: 47,
+          endColumn: 10,
+          endLine: 9,
           line: 3,
           messageId: 'preferFind',
           suggestions: [
@@ -705,6 +786,9 @@ declare const spreadArgs: [(x: unknown) => boolean];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 38,
+          endLine: 3,
           line: 3,
           messageId: 'preferFind',
           suggestions: [

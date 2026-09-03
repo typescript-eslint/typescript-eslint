@@ -3,7 +3,7 @@ Program {
   body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: TSTypeAliasDeclaration {
         type: "TSTypeAliasDeclaration",
         declare: false,
@@ -21,7 +21,7 @@ Program {
         },
         typeAnnotation: TSFunctionType {
           type: "TSFunctionType",
-          parameters: [
+          params: [
             Identifier {
               type: "Identifier",
               decorators: [],
@@ -53,7 +53,7 @@ Program {
               },
             },
           ],
-          typeAnnotation: TSTypeAnnotation {
+          returnType: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSVoidKeyword {
               type: "TSVoidKeyword",
@@ -98,9 +98,9 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 121],
+  range: [0, 121],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

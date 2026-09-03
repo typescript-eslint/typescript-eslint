@@ -16,6 +16,27 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSMappedType {
                 type: "TSMappedType",
+                constraint: TSStringKeyword {
+                  type: "TSStringKeyword",
+
+                  range: [99, 105],
+                  loc: {
+                    start: { column: 26, line: 3 },
+                    end: { column: 32, line: 3 },
+                  },
+                },
+                key: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "P",
+                  optional: false,
+
+                  range: [94, 95],
+                  loc: {
+                    start: { column: 21, line: 3 },
+                    end: { column: 22, line: 3 },
+                  },
+                },
                 nameType: null,
                 optional: true,
                 readonly: true,
@@ -26,28 +47,6 @@ Program {
                   loc: {
                     start: { column: 36, line: 3 },
                     end: { column: 42, line: 3 },
-                  },
-                },
-                typeParameter: TSTypeParameter {
-                  type: "TSTypeParameter",
-                  const: false,
-                  constraint: TSStringKeyword {
-                    type: "TSStringKeyword",
-
-                    range: [99, 105],
-                    loc: {
-                      start: { column: 26, line: 3 },
-                      end: { column: 32, line: 3 },
-                    },
-                  },
-                  in: false,
-                  name: "P",
-                  out: false,
-
-                  range: [94, 105],
-                  loc: {
-                    start: { column: 21, line: 3 },
-                    end: { column: 32, line: 3 },
                   },
                 },
 
@@ -92,9 +91,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 119],
+  range: [0, 119],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

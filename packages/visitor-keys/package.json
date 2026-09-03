@@ -1,13 +1,11 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "8.59.1",
+  "version": "8.69.0",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.js.map",
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
@@ -42,13 +40,16 @@
     "format": "pnpm -w run format",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
     "@typescript-eslint/types": "workspace:*",
     "eslint-visitor-keys": "^5.0.0"
   },
   "devDependencies": {
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
@@ -67,7 +68,9 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {},
+      "attw-check": {}
     }
   }
 }

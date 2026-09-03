@@ -20,9 +20,7 @@ import { nullThrows } from '@typescript-eslint/utils/eslint-utils';
 export function getForStatementHeadLoc(
   sourceCode: TSESLint.SourceCode,
   node:
-    | TSESTree.ForInStatement
-    | TSESTree.ForOfStatement
-    | TSESTree.ForStatement,
+    TSESTree.ForInStatement | TSESTree.ForOfStatement | TSESTree.ForStatement,
 ): TSESTree.SourceLocation {
   const closingParens = nullThrows(
     sourceCode.getTokenBefore(node.body, token => token.value === ')'),

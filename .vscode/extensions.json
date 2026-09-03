@@ -6,6 +6,7 @@
       "esbenp.prettier-vscode",
       "streetsidesoftware.code-spell-checker",
       "mrmlnc.vscode-json5",
+      "unifiedjs.vscode-mdx",
       "vitest.explorer"
   ],
   "unwantedRecommendations": ["hookyqr.beautify", "dbaeumer.jshint"]

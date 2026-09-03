@@ -6,7 +6,7 @@
     "additionalProperties": false,
     "properties": {
       "allowDestructuring": {
-        "description": "Whether to ignore destructurings, such as `const { props, state } = this`.",
+        "description": "Whether to ignore destructuring, such as `const { props, state } = this`.",
         "type": "boolean"
       },
       "allowedNames": {
@@ -26,7 +26,7 @@
 
 type Options = [
   {
-    /** Whether to ignore destructurings, such as `const { props, state } = this`. */
+    /** Whether to ignore destructuring, such as `const { props, state } = this`. */
     allowDestructuring?: boolean;
     /** Names to ignore, such as ["self"] for `const self = this;`. */
     allowedNames?: string[];

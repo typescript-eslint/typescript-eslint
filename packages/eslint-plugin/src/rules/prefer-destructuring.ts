@@ -171,8 +171,7 @@ export default createRule<Options, MessageIds>({
 
     function getNormalizedEnabledType(
       nodeType:
-        | AST_NODE_TYPES.AssignmentExpression
-        | AST_NODE_TYPES.VariableDeclarator,
+        AST_NODE_TYPES.AssignmentExpression | AST_NODE_TYPES.VariableDeclarator,
       destructuringType: 'array' | 'object',
     ): boolean | undefined {
       if ('object' in enabledTypes || 'array' in enabledTypes) {

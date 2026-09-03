@@ -46,11 +46,76 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+  affected-for-tests:
+    name: Determine Affected Projects for Tests
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [install]
+    runs-on: ubuntu-slim
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
+    outputs:
+      is_plugin_affected: ${{ steps.filter.outputs.is_plugin_affected }}
+      unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
+      project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Get affected projects
+        id: affected
+        run: |
+          # Fetch base ref history so NX can determine affected projects
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --depth=1 origin "$BASE_REF"
+            BASE="origin/$BASE_REF"
+          else
+            BASE="HEAD~1"
+          fi
+
+          affected=$(pnpm exec nx show projects --affected --withTarget=test --json --base="$BASE" 2>/dev/null || echo '[]')
+
+          echo "affected=$affected" >> "$GITHUB_OUTPUT"
+        env:
+          BASE_REF: ${{ github.base_ref }}
+
+      # We want to skip non-affected packages, but GH Actions doesn't support `contains(affected, matrix.package)` in `if` conditions,
+      # so we're creating the whole matrix dynamically instead.
+      - name: Filter affected packages for test matrices
+        id: filter
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const affected = ${{ steps.affected.outputs.affected }};
+
+            // Packages that should also be tested with the project service enabled.
+            const projectServicePackages = ['eslint-plugin-internal', 'typescript-estree'];
+
+            // `eslint-plugin` runs in its own sharded job; gate it with a boolean.
+            const isPluginAffected = affected.includes('eslint-plugin');
+
+            // Packages that have their own tests CI job.
+            const EXCLUDED_PACKAGES = ['eslint-plugin', 'integration-tests'];
+
+            const affectedUnitTests = affected.filter((pkg) => !EXCLUDED_PACKAGES.includes(pkg));
+            const affectedProjectService = projectServicePackages.filter((pkg) => affected.includes(pkg));
+
+            core.setOutput('is_plugin_affected', isPluginAffected);
+            core.setOutput('unit_tests_packages', JSON.stringify(affectedUnitTests));
+            core.setOutput('project_service_packages', JSON.stringify(affectedProjectService));
 
   build:
     name: Build All Packages
@@ -61,7 +126,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -73,12 +140,14 @@ jobs:
     name: Generate Configs
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -93,21 +162,34 @@ jobs:
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        lint-task: ['check-spelling', 'check-format', 'lint-markdown']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-      - name: Run Check
-        run: pnpm run ${{ matrix.lint-task }}
+      - parallel:
+          - name: Run Spell Check
+            run: pnpm run check-spelling
+
+          - name: Run Format Check
+            run: pnpm run check-format
+
+          - name: Run Markdown Lint
+            run: pnpm run lint-markdown
+
+          - name: Run Stylelint
+            run: pnpm run stylelint
+            working-directory: packages/website
+
+          - name: Run Deduplicate Check
+            run: pnpm run deduplicate
 
   lint_with_build:
     name: Lint with build
@@ -116,13 +198,16 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        lint-task: ['deduplicate', 'lint', 'typecheck', 'knip']
+        lint-task: ['typecheck', 'typecheck:tsgo', 'knip']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -132,26 +217,83 @@ jobs:
 
       - name: Run Check
         run: pnpm ${{ matrix.lint-task }}
-        env:
-          ESLINT_USE_FLAT_CONFIG: true
 
-  stylelint:
-    name: Stylelint
+  attw:
+    name: Are The Types Wrong?
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [install]
-    runs-on: ubuntu-latest
+    needs: [build]
+    runs-on: ubuntu-slim
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Run stylelint check
-        run: pnpm run stylelint
-        working-directory: packages/website
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Run Check
+        run: pnpm attw-check
+
+  # Note -- intentionally use the same name as lint_with_build just so everything looks uniform in the checks section
+  lint_with_build_eslint:
+    name: Lint with build
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    # because we lint with our own tooling, we need to build
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard: '1/4'
+            args: '--concurrency=auto'
+            projects:
+              - eslint-plugin
+
+          - shard: '2/4'
+            args: ''
+            projects:
+              - ast-spec
+              - utils
+              - scope-manager
+              - eslint-plugin-internal
+
+          - shard: '3/4'
+            args: ''
+            projects:
+              - typescript-estree
+              - types
+              - website
+              - rule-tester
+              - visitor-keys
+
+          - shard: '4/4'
+            args: ''
+            projects:
+              - parser
+              - type-utils
+              - rule-schema-to-typescript-types
+              - typescript-eslint
+              - repo
+              - website-eslint
+              - integration-tests
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - uses: ./.github/actions/prepare-build
+      - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} ${{ matrix.args }}
 
   integration_tests:
     name: Run integration tests on primary Node.js version
@@ -162,7 +304,9 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -175,18 +319,91 @@ jobs:
         env:
           CI: true
 
+  ast_spec_snapshots_clean:
+    name: Verify ast-spec snapshots are clean
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build, affected-for-tests]
+    if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.unit_tests_packages), 'ast-spec') }}
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Delete all ast-spec fixture snapshots
+        run: pnpm exec nx run ast-spec:clean-fixtures
+
+      - name: Regenerate ast-spec fixture snapshots
+        run: pnpm exec nx test ast-spec -u
+        env:
+          CI: true
+
+      - name: Fail if regenerating snapshots produced a diff
+        run: |
+          changes="$(git status --porcelain -- packages/ast-spec/src)"
+          if [ -n "$changes" ]; then
+            echo "$changes"
+            echo "::error::Regenerating ast-spec fixture snapshots from scratch produced a different set of files than what is committed. This means some snapshot files are stale/orphaned/missing in git. Run 'pnpm exec nx run ast-spec:clean-fixtures && pnpm exec nx test ast-spec' locally and commit the resulting changes."
+            exit 1
+          fi
+
+  scope_manager_snapshots_clean:
+    name: Verify scope-manager snapshots are clean
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build, affected-for-tests]
+    if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.unit_tests_packages), 'scope-manager') }}
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Delete all scope-manager fixture snapshots
+        run: pnpm exec nx run scope-manager:clean-fixtures
+
+      - name: Regenerate scope-manager fixture snapshots
+        run: pnpm exec nx test scope-manager -u
+        env:
+          CI: true
+
+      - name: Fail if regenerating snapshots produced a diff
+        run: |
+          changes="$(git status --porcelain -- packages/scope-manager/tests/fixtures)"
+          if [ -n "$changes" ]; then
+            echo "$changes"
+            echo "::error::Regenerating scope-manager fixture snapshots from scratch produced a different set of files than what is committed. This means some snapshot files are stale/orphaned/missing in git. Run 'pnpm exec nx run scope-manager:clean-fixtures && pnpm exec nx test scope-manager' locally and commit the resulting changes."
+            exit 1
+          fi
+
   plugin_unit_tests:
     # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected-for-tests]
+    if: ${{ needs['affected-for-tests'].outputs.is_plugin_affected == 'true' }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        exclude:
-          - os: windows-latest
-            node-version: 18
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 24]
         package:
@@ -196,11 +413,17 @@ jobs:
             { name: 'eslint-plugin', params: '--shard=3/4' },
             { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
+        # Windows CI skips the rules tests so there isn't enough left to be worth sharding.
+        include:
+          - os: windows-latest
+            node-version: 24
+            package: { name: 'eslint-plugin', params: '' }
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -223,7 +446,7 @@ jobs:
 
       - name: Store coverage for uploading
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
           path: packages/${{ matrix.package.name }}/coverage/lcov.info
@@ -233,37 +456,46 @@ jobs:
   unit_tests:
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected-for-tests]
+    if: ${{ needs['affected-for-tests'].outputs.unit_tests_packages != '[]' && needs['affected-for-tests'].outputs.unit_tests_packages != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version
         node-version: [24]
-        package:
-          [
-            { name: 'ast-spec', params: '' },
-            { name: 'eslint-plugin-internal', params: '' },
-            { name: 'parser', params: '' },
-            { name: 'project-service', params: '' },
-            { name: 'rule-schema-to-typescript-types', params: '' },
-            { name: 'rule-tester', params: '' },
-            { name: 'scope-manager', params: '' },
-            { name: 'tsconfig-utils', params: '' },
-            { name: 'type-utils', params: '' },
-            { name: 'typescript-eslint', params: '' },
-            { name: 'typescript-estree', params: '' },
-            { name: 'utils', params: '' },
-            { name: 'visitor-keys', params: '' },
-          ]
+        package: ${{ fromJson(needs['affected-for-tests'].outputs.unit_tests_packages) }}
+
+        # Packages that have no (or we don't care about their) platform-specific,
+        # runtime behavior, so skipping them on Windows to have less jobs to run.
+        exclude:
+          - os: windows-latest
+            package: ast-spec
+
+          - os: windows-latest
+            package: eslint-plugin-internal
+
+          - os: windows-latest
+            package: rule-schema-to-typescript-types
+
+          - os: windows-latest
+            package: scope-manager
+
+          - os: windows-latest
+            package: utils
+
+          - os: windows-latest
+            package: visitor-keys
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -273,42 +505,47 @@ jobs:
 
       # collect coverage on just linux
       # we don't collect coverage on other OSs so that they run faster
-      - name: Run unit tests with coverage for ${{ matrix.package.name }}
+      - name: Run unit tests with coverage for ${{ matrix.package }}
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
+        run: pnpm exec nx test "$PACKAGE" -- --coverage
         env:
           CI: true
-      - name: Run unit tests for ${{ matrix.package.name }}
+          PACKAGE: ${{ matrix.package }}
+      - name: Run unit tests for ${{ matrix.package }}
         if: matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }}
+        run: pnpm exec nx test "$PACKAGE"
         env:
           CI: true
+          PACKAGE: ${{ matrix.package }}
 
       - name: Store coverage for uploading
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
-          path: packages/${{ matrix.package.name }}/coverage/lcov.info
+          name: ${{ matrix.package }}-coverage-${{ strategy.job-index }}
+          path: packages/${{ matrix.package }}/coverage/lcov.info
           # Sadly 1 day is the minimum
           retention-days: 1
 
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build]
+    needs: [build, affected-for-tests]
+    if: ${{ needs['affected-for-tests'].outputs.project_service_packages != '[]' && needs['affected-for-tests'].outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        package: ['eslint-plugin-internal', 'typescript-estree']
+        package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -316,27 +553,57 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
-        run: pnpm exec nx test ${{ matrix.package }} --coverage=false
+        run: pnpm exec nx test "$PACKAGE" --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
+          PACKAGE: ${{ matrix.package }}
+
+  # Some test jobs are created dynamically and conditionally skipped (see affected-for-tests),
+  # so they can't be marked in the branch ruleset as required.
+  # This static job aggregates all other jobs and is the single check we require in the branch ruleset.
+  required_checks:
+    name: Required Checks
+    if: ${{ always() }}
+    needs:
+      - install
+      - affected-for-tests
+      - attw
+      - build
+      - generate_configs
+      - lint_without_build
+      - lint_with_build
+      - lint_with_build_eslint
+      - integration_tests
+      - ast_spec_snapshots_clean
+      - scope_manager_snapshots_clean
+      - plugin_unit_tests
+      - unit_tests
+      - unit_tests_project_service
+    runs-on: ubuntu-slim
+    steps:
+      - name: Fail if any dependency failed or was cancelled
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1
 
   upload_coverage:
     name: Upload Codecov Coverage
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [unit_tests, plugin_unit_tests]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
 
       - name: Download coverage reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           path: coverage
 
       - name: Publish code coverage report
-        uses: codecov/codecov-action@v5.5.2
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/**/lcov.info

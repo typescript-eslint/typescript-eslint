@@ -32,7 +32,7 @@ describe('TSX', () => {
             jsx: true,
           },
         });
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('test.ts', () => {
@@ -77,7 +77,7 @@ describe('TSX', () => {
         parseForESLint(code, {
           filePath: 'test.tsx',
         });
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it("test.tsx with 'jsx:false' option", () => {
@@ -89,7 +89,7 @@ describe('TSX', () => {
           },
           filePath: 'test.tsx',
         });
-      }).not.toThrowError();
+      }).not.toThrow();
     });
   });
 });

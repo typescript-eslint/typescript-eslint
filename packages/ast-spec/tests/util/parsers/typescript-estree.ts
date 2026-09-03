@@ -1,7 +1,8 @@
+import { parse } from '@typescript-eslint/typescript-estree';
+
 import type { Fixture, ParserResponse } from './parser-types.js';
 
 import { ParserResponseType } from './parser-types.js';
-import { parse } from './typescript-estree-import.js';
 
 export function parseTSESTree(
   fixture: Pick<Fixture, 'config' | 'contents' | 'isJSX'>,

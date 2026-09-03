@@ -53,8 +53,7 @@ function isPossiblyNullish(type: ts.Type): boolean {
 function toStaticValue(
   type: ts.Type,
 ):
-  | { value: bigint | boolean | number | string | null | undefined }
-  | undefined {
+  { value: bigint | boolean | number | string | null | undefined } | undefined {
   // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
   if (tsutils.isBooleanLiteralType(type)) {
     return { value: tsutils.isTrueLiteralType(type) };
@@ -119,6 +118,32 @@ function booleanComparison(
       return left >= right;
   }
 }
+
+function isOnlyUsedForTruthiness(node: TSESTree.Expression): boolean {
+  const parent = node.parent;
+
+  switch (parent.type) {
+    case AST_NODE_TYPES.ConditionalExpression:
+    case AST_NODE_TYPES.DoWhileStatement:
+    case AST_NODE_TYPES.ForStatement:
+    case AST_NODE_TYPES.IfStatement:
+    case AST_NODE_TYPES.WhileStatement:
+      return parent.test === node;
+
+    case AST_NODE_TYPES.LogicalExpression:
+      return (
+        (parent.operator === '&&' && parent.left === node) ||
+        isOnlyUsedForTruthiness(parent)
+      );
+
+    case AST_NODE_TYPES.UnaryExpression:
+      return parent.operator === '!';
+
+    default:
+      return false;
+  }
+}
+
 // #endregion
 
 type LegacyAllowConstantLoopConditions = boolean;
@@ -135,8 +160,7 @@ const constantLoopConditionsAllowedLiterals = new Set<unknown>([
 export type Options = [
   {
     allowConstantLoopConditions?:
-      | AllowConstantLoopConditions
-      | LegacyAllowConstantLoopConditions;
+      AllowConstantLoopConditions | LegacyAllowConstantLoopConditions;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     checkTypePredicates?: boolean;
   },
@@ -368,17 +392,22 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      // When checking logical expressions, only check the right side
-      //  as the left side has been checked by checkLogicalExpressionForUnnecessaryConditionals
+      // Only check the right side when the logical expression is used for
+      // truthiness, as the left side has already been checked by
+      // checkLogicalExpressionForUnnecessaryConditionals.
       //
-      // Unless the node is nullish coalescing, as it's common to use patterns like `nullBool ?? true` to to strict
-      //  boolean checks if we inspect the right here, it'll usually be a constant condition on purpose.
+      // Unless the node is nullish coalescing, as it's common to use patterns like
+      // `nullBool ?? true` to perform strict boolean checks. If we inspect the right
+      // here, it'll usually be a constant condition on purpose.
       // In this case it's better to inspect the type of the expression as a whole.
       if (
         expression.type === AST_NODE_TYPES.LogicalExpression &&
         expression.operator !== '??'
       ) {
-        return checkNode(expression.right);
+        if (isOnlyUsedForTruthiness(expression)) {
+          checkNode(expression.right);
+        }
+        return;
       }
 
       const type = getConstrainedTypeAtLocation(services, expression);
@@ -958,8 +987,7 @@ export default createRule<Options, MessageId>({
 
 function normalizeAllowConstantLoopConditions(
   allowConstantLoopConditions:
-    | AllowConstantLoopConditions
-    | LegacyAllowConstantLoopConditions,
+    AllowConstantLoopConditions | LegacyAllowConstantLoopConditions,
 ): AllowConstantLoopConditions {
   if (allowConstantLoopConditions === true) {
     return 'always';

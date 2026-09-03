@@ -36,17 +36,16 @@ Some examples
 <TabItem value="Flat Config">
 
 ```js title="eslint.config.mjs"
-export default defineConfig(
-  // ... the rest of your config ...
-  {
-    rules: {
-      // turns a rule on with no configuration (i.e. uses the default configuration)
-      '@typescript-eslint/array-type': 'error',
-      // turns on a rule with configuration
-      '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
-    },
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  // ... the rest of your typescript config ...
+  rules: {
+    // turns a rule on with no configuration (i.e. uses the default configuration)
+    '@typescript-eslint/array-type': 'error',
+    // turns on a rule with configuration
+    '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
   },
-);
+});
 ```
 
 </TabItem>
@@ -66,6 +65,33 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+
+## How do I configure JS/TS rules alongside non-JS/TS files such as JSON?
+
+When your project mixes JavaScript/TypeScript with files handled by other plugins (JSON, Markdown, etc.), it can be tempting to enable the JS/TS rules for _all_ files and then turn them off again for the non-JS/TS files.
+That approach is error-prone: some rules - including ones that don't require type information, such as [`consistent-type-assertions`](/rules/consistent-type-assertions) - will still report on files they were never meant to lint.
+
+Instead, scope each set of rules to the files it applies to using [`files`](https://eslint.org/docs/latest/use/configure/configuration-files#specifying-files-and-ignores).
+That way JS/TS rules only ever run on JS/TS files, and the other plugins only ever run on their own files.
+This is also faster, since ESLint won't run rules against files they don't apply to:
+
+```js title="eslint.config.mjs"
+import js from '@eslint/js';
+import packageJson from 'eslint-plugin-package-json';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  {
+    files: ['package.json'],
+    extends: [packageJson.configs.recommended],
+  },
+  {
+    files: ['**/*.{js,ts}'],
+    extends: [js.configs.recommended, tseslint.configs.recommended],
+  },
+);
+```
 
 ## How can I ban `<specific language feature>`?
 
@@ -239,22 +265,24 @@ For example, the following config enables only the recommended config's type-che
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
 import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig(
-  tseslint.configs.recommendedTypeCheckedOnly,
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [
+    tseslint.configs.recommendedTypeCheckedOnly,
+    {
+      languageOptions: {
+        parserOptions: {
+          projectService: true,
+        },
       },
     },
-  },
-);
+  ],
+});
 ```
 
 </TabItem>

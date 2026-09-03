@@ -111,6 +111,11 @@ export const setup = async (project: TestProject): Promise<void> => {
 
   const PNPM_CATALOG = await getPnpmCatalog();
 
+  const PNPM_WORKSPACE_CONTENT = await getPnpmWorkspaceContent({
+    // Ensure everything uses the locally packed versions instead of the NPM versions
+    overrides: tseslintPackages,
+  });
+
   const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
     ...tseslintPackages,
     eslint: PNPM_CATALOG.eslint,
@@ -128,9 +133,6 @@ export const setup = async (project: TestProject): Promise<void> => {
       {
         devDependencies: BASE_DEPENDENCIES,
         packageManager: rootPackageJson.packageManager,
-        pnpm: {
-          overrides: tseslintPackages,
-        },
         private: true,
       },
       null,
@@ -142,6 +144,12 @@ export const setup = async (project: TestProject): Promise<void> => {
   await fs.writeFile(path.join(temp, '.npmrc'), NPMRC_CONTENT, {
     encoding: 'utf-8',
   });
+
+  await fs.writeFile(
+    path.join(temp, 'pnpm-workspace.yaml'),
+    PNPM_WORKSPACE_CONTENT,
+    { encoding: 'utf-8' },
+  );
 
   // We install the tarballs here once so that pnpm can cache them globally.
   // This solves 2 problems:
@@ -181,11 +189,6 @@ export const setup = async (project: TestProject): Promise<void> => {
             },
 
             packageManager: rootPackageJson.packageManager,
-
-            // ensure everything uses the locally packed versions instead of the NPM versions
-            pnpm: {
-              overrides: tseslintPackages,
-            },
           },
           null,
           2,
@@ -196,6 +199,12 @@ export const setup = async (project: TestProject): Promise<void> => {
       await fs.writeFile(path.join(testFolder, '.npmrc'), NPMRC_CONTENT, {
         encoding: 'utf-8',
       });
+
+      await fs.writeFile(
+        path.join(testFolder, 'pnpm-workspace.yaml'),
+        PNPM_WORKSPACE_CONTENT,
+        { encoding: 'utf-8' },
+      );
 
       const { stderr, stdout } = await execFile(
         'pnpm',
@@ -248,4 +257,30 @@ async function getPnpmCatalog() {
   }
 
   return parsed.catalog;
+}
+
+// Using the root pnpm-workspace.yaml content but without the catalog and packages,
+// so it contains only pnpm's settings without the monorepo-related stuff.
+async function getPnpmWorkspaceContent({
+  overrides,
+}: {
+  overrides: Record<string, string>;
+}): Promise<string> {
+  const pnpmWorkspace = await fs.readFile(
+    path.join(ROOT_DIR, 'pnpm-workspace.yaml'),
+    { encoding: 'utf-8' },
+  );
+
+  const parsed = yaml.parse(pnpmWorkspace) as Record<string, unknown>;
+
+  delete parsed.catalog;
+  delete parsed.packages;
+
+  parsed.overrides = overrides;
+
+  // the ts7 fixture installs typescript releases newer than the root
+  // minimumReleaseAge allows; `@typescript/*` covers TS 7's native binaries
+  parsed.minimumReleaseAgeExclude = ['typescript', '@typescript/*'];
+
+  return yaml.stringify(parsed);
 }

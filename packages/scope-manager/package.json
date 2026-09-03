@@ -1,13 +1,11 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.59.1",
+  "version": "8.69.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
-    "!**/*.tsbuildinfo",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "!**/*.js.map",
+    "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
   "exports": {
@@ -39,12 +37,14 @@
   "scripts": {
     "build": "pnpm exec nx build",
     "clean": "rimraf dist/ coverage/",
-    "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
+    "clean-fixtures": "rimraf -g \"./tests/fixtures/**/*.shot\"",
     "format": "pnpm -w run format",
     "generate-lib": "pnpm -w exec nx generate-lib repo",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
     "@typescript-eslint/types": "workspace:*",
@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/typescript-estree": "workspace:*",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/pretty-format": "catalog:",
     "eslint": "catalog:",
@@ -73,7 +74,9 @@
     "targets": {
       "lint": {
         "command": "eslint"
-      }
+      },
+      "typecheck:tsgo": {},
+      "attw-check": {}
     }
   }
 }

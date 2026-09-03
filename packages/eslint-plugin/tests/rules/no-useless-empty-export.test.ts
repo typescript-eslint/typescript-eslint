@@ -13,10 +13,6 @@ const ruleTester = new RuleTester({
   },
 });
 
-const error = {
-  messageId: 'uselessExport',
-} as const;
-
 ruleTester.run('no-useless-empty-export', rule, {
   valid: [
     "declare module '_'",
@@ -72,7 +68,15 @@ ruleTester.run('no-useless-empty-export', rule, {
 export const _ = {};
 export {};
       `,
-      errors: [error],
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
       output: `
 export const _ = {};
 
@@ -83,7 +87,15 @@ export const _ = {};
 export * from '_';
 export {};
       `,
-      errors: [error],
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
       output: `
 export * from '_';
 
@@ -94,7 +106,15 @@ export * from '_';
 export {};
 export * from '_';
       `,
-      errors: [error],
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessExport',
+        },
+      ],
       output: `
 
 export * from '_';
@@ -106,7 +126,15 @@ const _ = {};
 export default _;
 export {};
       `,
-      errors: [error],
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
       output: `
 const _ = {};
 export default _;
@@ -119,7 +147,15 @@ export {};
 const _ = {};
 export default _;
       `,
-      errors: [error],
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessExport',
+        },
+      ],
       output: `
 
 const _ = {};
@@ -132,7 +168,15 @@ const _ = {};
 export { _ };
 export {};
       `,
-      errors: [error],
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
       output: `
 const _ = {};
 export { _ };
@@ -144,7 +188,15 @@ export { _ };
 import _ = require('_');
 export {};
       `,
-      errors: [error],
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+      ],
       output: `
 import _ = require('_');
 
@@ -156,7 +208,22 @@ import _ = require('_');
 export {};
 export {};
       `,
-      errors: [error, error],
+      errors: [
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessExport',
+        },
+        {
+          column: 1,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessExport',
+        },
+      ],
       output: `
 import _ = require('_');
 

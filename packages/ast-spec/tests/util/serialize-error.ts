@@ -1,25 +1,13 @@
 import type { ParseError as BabelParseError } from '@babel/parser';
 
 import { codeFrameColumns } from '@babel/code-frame';
-
-import { TSError } from './parsers/typescript-estree-import';
+import { TSError } from '@typescript-eslint/typescript-estree';
 
 function serializeTSError(error: TSError, contents: string): string {
-  const {
-    location: { end, start },
-    message,
-    name,
-  } = error;
+  const { location, message, name } = error;
 
   return `${name}
-${codeFrameColumns(
-  contents,
-  {
-    end: { column: end.column + 1, line: end.line },
-    start: { column: start.column + 1, line: start.line },
-  },
-  { highlightCode: false, message },
-)}`;
+${codeFrameColumns(contents, location, { highlightCode: false, message })}`;
 }
 
 type BabelError = SyntaxError &
@@ -35,13 +23,7 @@ function serializeBabelError(error: BabelError, contents: string): string {
   const { loc, message } = error;
 
   return `BabelError
-${codeFrameColumns(
-  contents,
-  {
-    start: { column: loc.column + 1, line: loc.line },
-  },
-  { highlightCode: false, message },
-)}
+${codeFrameColumns(contents, { start: loc }, { highlightCode: false, message })}
   `;
 }
 

@@ -23,19 +23,20 @@
     "serve": "docusaurus serve",
     "start": "pnpm -w run start",
     "swizzle": "docusaurus swizzle",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
-    "@docusaurus/core": "~3.7.0",
-    "@docusaurus/faster": "^3.9.2",
-    "@docusaurus/plugin-client-redirects": "~3.7.0",
-    "@docusaurus/plugin-content-blog": "~3.7.0",
-    "@docusaurus/plugin-content-docs": "~3.7.0",
-    "@docusaurus/plugin-pwa": "~3.7.0",
-    "@docusaurus/preset-classic": "~3.7.0",
-    "@docusaurus/remark-plugin-npm2yarn": "~3.7.0",
-    "@docusaurus/theme-common": "~3.7.0",
+    "@docusaurus/core": "~3.10.2",
+    "@docusaurus/faster": "^3.10.2",
+    "@docusaurus/plugin-client-redirects": "~3.10.2",
+    "@docusaurus/plugin-content-blog": "~3.10.2",
+    "@docusaurus/plugin-content-docs": "~3.10.2",
+    "@docusaurus/plugin-pwa": "~3.10.2",
+    "@docusaurus/preset-classic": "~3.10.2",
+    "@docusaurus/remark-plugin-npm2yarn": "~3.10.2",
+    "@docusaurus/theme-common": "~3.10.2",
     "@mdx-js/react": "^3.1.0",
     "@typescript-eslint/parser": "workspace:*",
     "@typescript-eslint/website-eslint": "workspace:*",
@@ -50,7 +51,6 @@
     "lz-string": "^1.5.0",
     "mdast-util-to-string": "^4.0.0",
     "prettier": "catalog:",
-    "prism-react-renderer": "^2.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-markdown": "^10.1.0",
@@ -58,13 +58,12 @@
     "reading-time": "^1.5.0",
     "semver": "^7.7.3",
     "typedoc": "^0.28.15",
-    "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "catalog:",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@docusaurus/mdx-loader": "^3.9.2",
-    "@docusaurus/types": "^3.9.2",
+    "@docusaurus/mdx-loader": "^3.10.2",
+    "@docusaurus/types": "^3.10.2",
     "@types/history": "^4.7.11",
     "@types/mdast": "catalog:",
     "@types/react": "catalog:",
@@ -75,12 +74,12 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/utils": "workspace:*",
+    "@typescript/native": "catalog:",
     "history": "^4.10.1",
     "mdast-util-from-markdown": "catalog:",
     "mdast-util-mdx": "catalog:",
-    "monaco-editor": "~0.54.0",
+    "monaco-editor": "0.54.0",
     "prismjs": "1.30.0",
-    "raw-loader": "^4.0.2",
     "rimraf": "catalog:",
     "stylelint": "^16.26.1",
     "stylelint-config-recommended": "^16.0.0",
@@ -105,7 +104,8 @@
   "nx": {
     "name": "website",
     "includedScripts": [
-      "clean"
+      "clean",
+      "generate-website-dts"
     ],
     "targets": {
       "build": {
@@ -136,7 +136,8 @@
         "options": {
           "cwd": "{projectRoot}"
         }
-      }
+      },
+      "typecheck:tsgo": {}
     }
   }
 }

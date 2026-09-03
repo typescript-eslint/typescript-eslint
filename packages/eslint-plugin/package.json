@@ -1,16 +1,14 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.59.1",
+  "version": "8.69.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo",
     "index.d.ts",
     "raw-plugin.d.ts",
-    "rules.d.ts",
-    "package.json",
-    "./README.md",
-    "LICENSE"
+    "rules.d.ts"
   ],
   "type": "commonjs",
   "exports": {
@@ -55,7 +53,9 @@
     "generate-configs": "pnpm -w run generate-configs",
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
-    "typecheck": "pnpm -w exec nx typecheck"
+    "typecheck": "pnpm -w exec nx typecheck",
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.12.2",
@@ -74,6 +74,7 @@
     "@types/react": "catalog:",
     "@typescript-eslint/rule-schema-to-typescript-types": "workspace:*",
     "@typescript-eslint/rule-tester": "workspace:*",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "ajv": "catalog:",
     "eslint": "catalog:",
@@ -117,6 +118,17 @@
       },
       "lint": {
         "command": "eslint"
+      },
+      "typecheck:tsgo": {},
+      "attw-check": {
+        "cache": false,
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --exclude-entrypoints use-at-your-own-risk/raw-plugin --exclude-entrypoints use-at-your-own-risk/rules --ignore-rules named-exports"
       }
     }
   }

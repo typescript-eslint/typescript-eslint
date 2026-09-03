@@ -1,6 +1,9 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  ReportFixFunction,
+  RuleFix,
+} from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -14,6 +17,8 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
+  isStartOfArrowFunctionBody,
+  isStartOfExpressionStatement,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -311,7 +316,18 @@ export default createRule<Options, MessageIds>({
     }
 
     function containsAny(type: ts.Type): boolean {
-      return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
+      try {
+        return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
+      } catch (error) {
+        // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/12705
+        if (
+          error instanceof RangeError &&
+          error.message === 'Maximum call stack size exceeded'
+        ) {
+          return false;
+        }
+        throw error;
+      }
     }
 
     function containsTypeVariable(type: ts.Type): boolean {
@@ -576,9 +592,11 @@ export default createRule<Options, MessageIds>({
       ) {
         return false;
       }
-      const calleeType = checker.getTypeAtLocation(
-        services.esTreeNodeToTSNodeMap.get(parent.callee),
-      );
+      // An optional-chained callee (`foo?.bar(...)`) types as `<method> | undefined`,
+      // and a union exposes no call signatures — strip the nullability first.
+      const calleeType = services
+        .getTypeAtLocation(parent.callee)
+        .getNonNullableType();
       const signatures = calleeType.getCallSignatures();
       if (signatures.length <= 1) {
         return false;
@@ -777,6 +795,15 @@ export default createRule<Options, MessageIds>({
         );
       }
 
+      /**
+       * Interpolated template literals can be widened to `string` while contextual
+       * typing still accepts them, so the assertion may be required.
+       * @see https://github.com/typescript-eslint/typescript-eslint/issues/12276
+       */
+      if (isTemplateLiteralWithExpressions(node.expression)) {
+        return true;
+      }
+
       if (
         SKIP_PARENT_TYPES.has(node.parent.type) ||
         node.expression.type === AST_NODE_TYPES.ArrayExpression ||
@@ -851,10 +878,40 @@ export default createRule<Options, MessageIds>({
             ),
             NullThrowsReasons.MissingToken('>', 'type annotation'),
           );
-          return fixer.removeRange([
-            openingAngleBracket.range[0],
-            closingAngleBracket.range[1],
-          ]);
+          // Removing the angle brackets leaves the asserted operand at the
+          // assertion's position, so its first token leads whatever the
+          // assertion led. A leading `{`/`function`/`class` at the start of an
+          // expression statement is parsed as a block / function or class
+          // declaration, and a leading `{` at the start of a concise arrow body
+          // is parsed as a block body. In those positions the operand must be
+          // wrapped in parentheses to stay an expression.
+          const firstOperandToken = nullThrows(
+            context.sourceCode.getTokenAfter(closingAngleBracket),
+            NullThrowsReasons.MissingToken('operand', 'type assertion'),
+          );
+          const breaksExpressionStatement =
+            ['{', 'function', 'class'].includes(firstOperandToken.value) &&
+            isStartOfExpressionStatement(node);
+          const breaksArrowFunctionBody =
+            firstOperandToken.value === '{' &&
+            isStartOfArrowFunctionBody(node, context.sourceCode);
+          const needsParens =
+            breaksExpressionStatement || breaksArrowFunctionBody;
+
+          const fixes: RuleFix[] = [];
+          if (needsParens) {
+            fixes.push(fixer.insertTextBefore(node, '('));
+          }
+          fixes.push(
+            fixer.removeRange([
+              openingAngleBracket.range[0],
+              closingAngleBracket.range[1],
+            ]),
+          );
+          if (needsParens) {
+            fixes.push(fixer.insertTextAfter(node, ')'));
+          }
+          return fixes;
         }
         const asToken = nullThrows(
           context.sourceCode.getTokenAfter(

@@ -20,7 +20,9 @@ Program {
         type: "TSTypeQuery",
         exprName: TSImportType {
           type: "TSImportType",
-          argument: Literal {
+          options: null,
+          qualifier: null,
+          source: Literal {
             type: "Literal",
             raw: "'A'",
             value: "A",
@@ -31,8 +33,7 @@ Program {
               end: { column: 26, line: 3 },
             },
           },
-          options: null,
-          qualifier: null,
+          typeArguments: null,
 
           range: [89, 100],
           loc: {
@@ -71,17 +72,6 @@ Program {
       },
       typeAnnotation: TSImportType {
         type: "TSImportType",
-        argument: Literal {
-          type: "Literal",
-          raw: "'B'",
-          value: "B",
-
-          range: [118, 121],
-          loc: {
-            start: { column: 16, line: 4 },
-            end: { column: 19, line: 4 },
-          },
-        },
         options: null,
         qualifier: Identifier {
           type: "Identifier",
@@ -95,7 +85,18 @@ Program {
             end: { column: 22, line: 4 },
           },
         },
-        typeParameters: TSTypeParameterInstantiation {
+        source: Literal {
+          type: "Literal",
+          raw: "'B'",
+          value: "B",
+
+          range: [118, 121],
+          loc: {
+            start: { column: 16, line: 4 },
+            end: { column: 19, line: 4 },
+          },
+        },
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSTypeReference {
@@ -144,9 +145,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 129],
+  range: [0, 129],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 5 },
   },
 }

@@ -164,8 +164,7 @@ const t1 = b1 && b2;
     `,
     `
 declare const b1:
-  | (string & { __brandA: string })
-  | (number & { __brandB: string });
+  (string & { __brandA: string }) | (number & { __brandB: string });
 declare const b2: boolean;
 const t1 = b1 && b2;
     `,
@@ -178,8 +177,7 @@ const t1 = b1 && b2;
     `,
     `
 declare const b1: { __brandA: string } & (
-  | ({ __brandB: string } & string)
-  | ({ __brandC: string } & number)
+  ({ __brandB: string } & string) | ({ __brandC: string } & number)
 );
 declare const b2: boolean;
 const t1 = b1 && b2;
@@ -558,6 +556,16 @@ declare const b2: true;
 const x = b1 && b2;
       `,
     },
+    `
+function test(foo?: boolean, bar?: boolean) {
+  return (foo && 'foo') || (bar && 'bar');
+}
+    `,
+    `
+declare const b1: boolean;
+declare const b2: boolean;
+const x = (b1 && 'b1') || b2;
+    `,
     {
       code: `
 while (true) {}
@@ -566,7 +574,7 @@ while (true) {}
     },
     {
       code: `
-for (; true; ) {}
+for (; true;) {}
       `,
       options: [{ allowConstantLoopConditions: true }],
     },
@@ -584,19 +592,19 @@ while (true) {}
     },
     {
       code: `
-for (; true; ) {}
+for (; true;) {}
       `,
       options: [{ allowConstantLoopConditions: 'always' }],
     },
     {
       code: `
-for (; true; ) {}
+for (; true;) {}
       `,
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
-for (; 0; ) {}
+for (; 0;) {}
       `,
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
@@ -1132,6 +1140,19 @@ type fn = () => void;
 declare function foo(): void | fn;
 const bar = foo()?.();
     `,
+    `
+declare function maybe<T>(v: T): T | void;
+const a = maybe({ key1: { key2: maybe({ i: 1 }) } })?.key1.key2?.i;
+    `,
+    `
+type Foo = { bar: { baz: number } | void } | null;
+declare const foo: Foo;
+foo?.bar?.baz;
+    `,
+    `
+declare function maybeFn(): { fn: (() => number) | void } | undefined;
+maybeFn()?.fn?.();
+    `,
     {
       code: `
 class ConsistentRand {
@@ -1322,15 +1343,69 @@ switch (b1) {
 }
       `,
       errors: [
-        { column: 12, line: 4, messageId: 'alwaysTruthy' },
-        { column: 12, line: 5, messageId: 'alwaysTruthy' },
-        { column: 5, line: 6, messageId: 'alwaysTruthy' },
-        { column: 11, line: 8, messageId: 'alwaysTruthy' },
-        { column: 8, line: 10, messageId: 'alwaysTruthy' },
-        { column: 14, line: 11, messageId: 'alwaysTruthy' },
-        { column: 17, line: 12, messageId: 'alwaysTruthy' },
-        { column: 12, line: 15, messageId: 'alwaysTruthy' },
-        { column: 18, line: 16, messageId: 'alwaysTruthy' },
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 11,
+          endColumn: 13,
+          endLine: 8,
+          line: 8,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 10,
+          line: 10,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 11,
+          line: 11,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 17,
+          endColumn: 19,
+          endLine: 12,
+          line: 12,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 12,
+          endColumn: 14,
+          endLine: 15,
+          line: 15,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 16,
+          line: 16,
+          messageId: 'alwaysTruthy',
+        },
         {
           column: 8,
           data: {
@@ -1339,6 +1414,8 @@ switch (b1) {
             right: 'true',
             trueOrFalse: 'true',
           },
+          endColumn: 12,
+          endLine: 18,
           line: 18,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1507,7 +1584,15 @@ declare const falseyBigInt: 0n;
 if (falseyBigInt) {
 }
       `,
-      errors: [{ column: 5, line: 3, messageId: 'alwaysFalsy' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysFalsy',
+        },
+      ],
     },
     {
       code: `
@@ -1515,7 +1600,15 @@ declare const posbigInt: 1n;
 if (posbigInt) {
 }
       `,
-      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
     {
       code: `
@@ -1523,7 +1616,15 @@ declare const negBigInt: -2n;
 if (negBigInt) {
 }
       `,
-      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
     {
       code: `
@@ -1537,9 +1638,109 @@ if (b1 || b2 || true) {
 }
       `,
       errors: [
-        { column: 5, line: 4, messageId: 'alwaysTruthy' },
-        { column: 11, line: 6, messageId: 'alwaysFalsy' },
-        { column: 17, line: 8, messageId: 'alwaysTruthy' },
+        {
+          column: 5,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 11,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'alwaysFalsy',
+        },
+        {
+          column: 17,
+          endColumn: 21,
+          endLine: 8,
+          line: 8,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if ((b1 && 'b1') || b2) {
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+do {} while ((b1 && 'b1') || b2);
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+for (; (b1 && 'b1') || b2;) {}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if (!((b1 && 'b1') || b2)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+const t1 = b1 && 'b1' && b2;
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
       ],
     },
 
@@ -1550,7 +1751,15 @@ function test<T extends object>(t: T) {
   return t ? 'yes' : 'no';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
     {
       code: `
@@ -1558,7 +1767,15 @@ function test<T extends false>(t: T) {
   return t ? 'yes' : 'no';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'alwaysFalsy' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysFalsy',
+        },
+      ],
     },
     {
       code: `
@@ -1566,7 +1783,15 @@ function test<T extends 'a' | 'b'>(t: T) {
   return t ? 'yes' : 'no';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
 
     // Boolean expressions
@@ -1585,6 +1810,8 @@ function test(a: 'a') {
             right: '"a"',
             trueOrFalse: 'true',
           },
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1598,12 +1825,15 @@ a > b;
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: '"34"',
             operator: '>',
             right: '"56"',
             trueOrFalse: 'false',
           },
+          endColumn: 6,
+          endLine: 4,
           line: 4,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1617,12 +1847,15 @@ if (y === 0) {
       `,
       errors: [
         {
+          column: 5,
           data: {
             left: '1',
             operator: '===',
             right: '0',
             trueOrFalse: 'false',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1636,12 +1869,15 @@ if (1 == '1') {
       `,
       errors: [
         {
+          column: 5,
           data: {
             left: '1',
             operator: '==',
             right: '"1"',
             trueOrFalse: 'true',
           },
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1653,12 +1889,15 @@ if (1 == '1') {
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: '2.3',
             operator: '>',
             right: '2.3',
             trueOrFalse: 'false',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1670,12 +1909,15 @@ if (1 == '1') {
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: '2.3',
             operator: '>=',
             right: '2.3',
             trueOrFalse: 'true',
           },
+          endColumn: 11,
+          endLine: 2,
           line: 2,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1687,12 +1929,15 @@ if (1 == '1') {
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: '2n',
             operator: '<',
             right: '2n',
             trueOrFalse: 'false',
           },
+          endColumn: 8,
+          endLine: 2,
           line: 2,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1704,12 +1949,15 @@ if (1 == '1') {
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: '2n',
             operator: '<=',
             right: '2n',
             trueOrFalse: 'true',
           },
+          endColumn: 9,
+          endLine: 2,
           line: 2,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1721,12 +1969,15 @@ if (1 == '1') {
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: '-2n',
             operator: '!==',
             right: '2n',
             trueOrFalse: 'true',
           },
+          endColumn: 11,
+          endLine: 2,
           line: 2,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1740,12 +1991,15 @@ if (1 == '2') {
       `,
       errors: [
         {
+          column: 5,
           data: {
             left: '1',
             operator: '==',
             right: '"2"',
             trueOrFalse: 'false',
           },
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1759,12 +2013,15 @@ if (1 != '2') {
       `,
       errors: [
         {
+          column: 5,
           data: {
             left: '1',
             operator: '!=',
             right: '"2"',
             trueOrFalse: 'true',
           },
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1790,6 +2047,8 @@ if (x === Foo.a) {
             right: 'Foo.a',
             trueOrFalse: 'true',
           },
+          endColumn: 16,
+          endLine: 8,
           line: 8,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1815,6 +2074,8 @@ if (x === 1) {
             right: 1,
             trueOrFalse: 'true',
           },
+          endColumn: 12,
+          endLine: 8,
           line: 8,
           messageId: 'comparisonBetweenLiteralTypes',
         },
@@ -1926,12 +2187,16 @@ true === false;
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: 'true',
             operator: '===',
             right: 'false',
             trueOrFalse: 'false',
           },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
@@ -1942,12 +2207,16 @@ true === true;
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: 'true',
             operator: '===',
             right: 'true',
             trueOrFalse: 'true',
           },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
           messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
@@ -1958,12 +2227,16 @@ true === undefined;
       `,
       errors: [
         {
+          column: 1,
           data: {
             left: 'true',
             operator: '===',
             right: 'undefined',
             trueOrFalse: 'false',
           },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
@@ -1983,14 +2256,62 @@ function test(a: string) {
 }
       `,
       errors: [
-        { column: 14, line: 3, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 4, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 5, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 6, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 7, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 8, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 9, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 10, messageId: 'noOverlapBooleanExpression' },
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 5,
+          line: 5,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 6,
+          line: 6,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 8,
+          line: 8,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 9,
+          line: 9,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 10,
+          line: 10,
+          messageId: 'noOverlapBooleanExpression',
+        },
       ],
     },
     {
@@ -2007,10 +2328,34 @@ function test(a?: string) {
 }
       `,
       errors: [
-        { column: 14, line: 7, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 8, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 9, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 10, messageId: 'noOverlapBooleanExpression' },
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 8,
+          line: 8,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 9,
+          line: 9,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 10,
+          line: 10,
+          messageId: 'noOverlapBooleanExpression',
+        },
       ],
     },
     {
@@ -2027,10 +2372,34 @@ function test(a: null | string) {
 }
       `,
       errors: [
-        { column: 14, line: 3, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 4, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 5, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 6, messageId: 'noOverlapBooleanExpression' },
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 5,
+          line: 5,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 6,
+          line: 6,
+          messageId: 'noOverlapBooleanExpression',
+        },
       ],
     },
     {
@@ -2055,22 +2424,118 @@ function test<T extends object>(a: T) {
 }
       `,
       errors: [
-        { column: 14, line: 3, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 4, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 5, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 6, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 7, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 8, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 9, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 10, messageId: 'noOverlapBooleanExpression' },
-        { column: 14, line: 11, messageId: 'noOverlapBooleanExpression' },
-        { column: 15, line: 12, messageId: 'noOverlapBooleanExpression' },
-        { column: 15, line: 13, messageId: 'noOverlapBooleanExpression' },
-        { column: 15, line: 14, messageId: 'noOverlapBooleanExpression' },
-        { column: 15, line: 15, messageId: 'noOverlapBooleanExpression' },
-        { column: 15, line: 16, messageId: 'noOverlapBooleanExpression' },
-        { column: 15, line: 17, messageId: 'noOverlapBooleanExpression' },
-        { column: 15, line: 18, messageId: 'noOverlapBooleanExpression' },
+        {
+          column: 14,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 23,
+          endLine: 6,
+          line: 6,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 28,
+          endLine: 7,
+          line: 7,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 28,
+          endLine: 8,
+          line: 8,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 28,
+          endLine: 10,
+          line: 10,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 11,
+          line: 11,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 15,
+          endColumn: 25,
+          endLine: 12,
+          line: 12,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 15,
+          endColumn: 25,
+          endLine: 13,
+          line: 13,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 15,
+          endColumn: 25,
+          endLine: 14,
+          line: 14,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 15,
+          line: 15,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 16,
+          line: 16,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 17,
+          line: 17,
+          messageId: 'noOverlapBooleanExpression',
+        },
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 18,
+          line: 18,
+          messageId: 'noOverlapBooleanExpression',
+        },
       ],
     },
     // Nullish coalescing operator
@@ -2080,7 +2545,15 @@ function test(a: string) {
   return a ?? 'default';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
     },
     {
       code: `
@@ -2088,7 +2561,15 @@ function test(a: string | false) {
   return a ?? 'default';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
     },
     {
       code: `
@@ -2096,7 +2577,15 @@ function test<T extends string>(a: T) {
   return a ?? 'default';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
     },
     // nullish + array index without optional chaining
     {
@@ -2105,7 +2594,15 @@ function test(a: { foo: string }[]) {
   return a[0].foo ?? 'default';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
     },
     {
       code: `
@@ -2113,7 +2610,15 @@ function test(a: null) {
   return a ?? 'default';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'alwaysNullish' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysNullish',
+        },
+      ],
     },
     {
       code: `
@@ -2121,7 +2626,15 @@ function test(a: null[]) {
   return a[0] ?? 'default';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'alwaysNullish' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysNullish',
+        },
+      ],
     },
     {
       code: `
@@ -2129,7 +2642,15 @@ function test<T extends null>(a: T) {
   return a ?? 'default';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'alwaysNullish' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysNullish',
+        },
+      ],
     },
     {
       code: `
@@ -2137,7 +2658,9 @@ function test(a: never) {
   return a ?? 'default';
 }
       `,
-      errors: [{ column: 10, line: 3, messageId: 'never' }],
+      errors: [
+        { column: 10, endColumn: 11, endLine: 3, line: 3, messageId: 'never' },
+      ],
     },
     {
       code: `
@@ -2145,7 +2668,15 @@ function test<T extends { foo: number }, K extends 'foo'>(num: T[K]) {
   num ?? 'default';
 }
       `,
-      errors: [{ column: 3, line: 3, messageId: 'neverNullish' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
     },
     // Predicate functions
     {
@@ -2169,11 +2700,41 @@ function nothing3(x: [string, string]) {
 }
       `,
       errors: [
-        { column: 24, line: 2, messageId: 'alwaysTruthy' },
-        { column: 10, line: 4, messageId: 'alwaysFalsy' },
-        { column: 25, line: 9, messageId: 'alwaysFalsy' },
-        { column: 25, line: 13, messageId: 'alwaysFalsy' },
-        { column: 25, line: 17, messageId: 'alwaysFalsy' },
+        {
+          column: 24,
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
+          messageId: 'alwaysTruthy',
+        },
+        {
+          column: 10,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysFalsy',
+        },
+        {
+          column: 25,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'alwaysFalsy',
+        },
+        {
+          column: 25,
+          endColumn: 30,
+          endLine: 13,
+          line: 13,
+          messageId: 'alwaysFalsy',
+        },
+        {
+          column: 25,
+          endColumn: 30,
+          endLine: 17,
+          line: 17,
+          messageId: 'alwaysFalsy',
+        },
       ],
     },
     {
@@ -2182,7 +2743,15 @@ declare const test: <T extends true>() => T;
 
 [1, null].filter(test);
       `,
-      errors: [{ column: 18, line: 4, messageId: 'alwaysTruthyFunc' }],
+      errors: [
+        {
+          column: 18,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthyFunc',
+        },
+      ],
     },
     // Indexing cases
     {
@@ -2193,7 +2762,15 @@ declare const dict: Record<string, object>;
 if (dict['mightNotExist']) {
 }
       `,
-      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
     {
       // Should still check tuples when accessed with literal numbers, since they don't have
@@ -2208,11 +2785,15 @@ if (x[0]?.foo) {
       errors: [
         {
           column: 5,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'alwaysTruthy',
         },
         {
           column: 9,
+          endColumn: 11,
+          endLine: 5,
           line: 5,
           messageId: 'neverOptionalChain',
           suggestions: [
@@ -2237,7 +2818,15 @@ declare const arr: object[];
 if (arr.filter) {
 }
       `,
-      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
     {
       code: `
@@ -2250,9 +2839,27 @@ function falsy() {}
 [1, 2, 3].findLastIndex(falsy);
       `,
       errors: [
-        { column: 18, line: 6, messageId: 'alwaysTruthyFunc' },
-        { column: 16, line: 7, messageId: 'alwaysFalsyFunc' },
-        { column: 25, line: 8, messageId: 'alwaysFalsyFunc' },
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
+          messageId: 'alwaysTruthyFunc',
+        },
+        {
+          column: 16,
+          endColumn: 21,
+          endLine: 7,
+          line: 7,
+          messageId: 'alwaysFalsyFunc',
+        },
+        {
+          column: 25,
+          endColumn: 30,
+          endLine: 8,
+          line: 8,
+          messageId: 'alwaysFalsyFunc',
+        },
       ],
     },
     // Supports generics
@@ -2273,16 +2880,32 @@ declare const test: true;
 
 while (test) {}
       `,
-      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 8,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: false }],
     },
     {
       code: `
 declare const test: true;
 
-for (; test; ) {}
+for (; test;) {}
       `,
-      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 8,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: false }],
     },
     {
@@ -2291,7 +2914,15 @@ declare const test: true;
 
 do {} while (test);
       `,
-      errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 14,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: false }],
     },
     {
@@ -2300,16 +2931,32 @@ declare const test: true;
 
 while (test) {}
       `,
-      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 8,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'never' }],
     },
     {
       code: `
 declare const test: true;
 
-for (; test; ) {}
+for (; test;) {}
       `,
-      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 8,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'never' }],
     },
     {
@@ -2318,7 +2965,15 @@ declare const test: true;
 
 do {} while (test);
       `,
-      errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 14,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'never' }],
     },
     {
@@ -2327,7 +2982,15 @@ declare const test: true;
 
 while (test) {}
       `,
-      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 8,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
@@ -2336,16 +2999,32 @@ declare const test: 1;
 
 while (test) {}
       `,
-      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 8,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
 declare const test: true;
 
-for (; test; ) {}
+for (; test;) {}
       `,
-      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 8,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
@@ -2354,7 +3033,15 @@ declare const test: true;
 
 do {} while (test);
       `,
-      errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 14,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
@@ -2363,21 +3050,45 @@ let shouldRun = true;
 
 while ((shouldRun = true)) {}
       `,
-      errors: [{ column: 9, line: 4, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 9,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
 while (2) {}
       `,
-      errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 8,
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
 while ('truthy') {}
       `,
-      errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 8,
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+          messageId: 'alwaysTruthy',
+        },
+      ],
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
@@ -2400,7 +3111,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo.bar;
 foo ?. bar;
@@ -2421,7 +3132,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo?.bar;
 foo . bar;
@@ -2442,7 +3153,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo?.bar;
 foo ?. bar;
@@ -2463,7 +3174,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = { bar: true };
 foo?.bar;
 foo ?. bar;
@@ -2497,7 +3208,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo();
 foo ?. ();
@@ -2518,7 +3229,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.();
 foo  ();
@@ -2539,7 +3250,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.();
 foo ?. ();
@@ -2560,7 +3271,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.();
 foo ?. ();
@@ -2594,7 +3305,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo(bar);
 foo ?. (bar);
@@ -2615,7 +3326,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.(bar);
 foo  (bar);
@@ -2636,7 +3347,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.(bar);
 foo ?. (bar);
@@ -2657,7 +3368,7 @@ foo
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 let foo = () => {};
 foo?.(bar);
 foo ?. (bar);
@@ -3087,6 +3798,8 @@ x[0].a?.b;
       errors: [
         {
           column: 7,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'neverOptionalChain',
           suggestions: [
@@ -3271,7 +3984,15 @@ const a = null;
 if (!a) {
 }
       `,
-      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
     {
       code: `
@@ -3279,7 +4000,15 @@ const a = true;
 if (!a) {
 }
       `,
-      errors: [{ column: 5, line: 3, messageId: 'alwaysFalsy' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysFalsy',
+        },
+      ],
     },
     {
       code: `
@@ -3291,7 +4020,9 @@ let speech: never = sayHi();
 if (!speech) {
 }
       `,
-      errors: [{ column: 5, line: 7, messageId: 'never' }],
+      errors: [
+        { column: 5, endColumn: 12, endLine: 7, line: 7, messageId: 'never' },
+      ],
     },
     {
       code: `
@@ -3302,11 +4033,15 @@ if (x) {
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
         {
           column: 5,
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'alwaysTruthy',
         },
@@ -3535,7 +4270,7 @@ foo?.bar()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar().toExponential();
@@ -3561,7 +4296,7 @@ foo?.bar?.baz()?.qux?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz().qux?.toExponential();
@@ -3578,7 +4313,7 @@ foo?.bar?.baz().qux?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz()?.qux.toExponential();
@@ -3604,7 +4339,7 @@ foo?.()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.().toExponential();
@@ -3630,7 +4365,7 @@ foo?.['bar']()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']().toExponential();
@@ -3656,7 +4391,7 @@ foo?.['bar']?.()?.toExponential();
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
-              output: noFormat`
+              output: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.().toExponential();
@@ -3668,11 +4403,19 @@ foo?.['bar']?.().toExponential();
     },
     {
       code: `
-        const a = true;
-        if (!!a) {
-        }
+const a = true;
+if (!!a) {
+}
       `,
-      errors: [{ column: 13, line: 3, messageId: 'alwaysTruthy' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
     },
     {
       code: `
@@ -3681,6 +4424,9 @@ assert(true);
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'alwaysTruthy',
         },
@@ -3695,6 +4441,8 @@ assert(false);
       errors: [
         {
           column: 8,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'alwaysFalsy',
         },
@@ -3710,6 +4458,8 @@ assert(true, Math.random() > 0.5);
       errors: [
         {
           column: 8,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'alwaysTruthy',
         },
@@ -3724,6 +4474,8 @@ assert({});
       errors: [
         {
           column: 8,
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'alwaysTruthy',
         },
@@ -3738,6 +4490,9 @@ assertsString(a);
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'typeGuardAlreadyIsType',
         },
@@ -3752,6 +4507,9 @@ isString(a);
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'typeGuardAlreadyIsType',
         },
@@ -3766,6 +4524,9 @@ isString('fa' + 'lafel');
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'typeGuardAlreadyIsType',
         },
@@ -3782,6 +4543,9 @@ if (isStringOrNumber(s)) {
       `,
       errors: [
         {
+          column: 22,
+          endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'typeGuardAlreadyIsType',
         },
@@ -3804,6 +4568,9 @@ if (isWider(n)) {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 11,
           line: 11,
           messageId: 'typeGuardAlreadyIsType',
         },
@@ -3828,6 +4595,9 @@ if (isNarrower(w)) {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 17,
+          endLine: 11,
           line: 11,
           messageId: 'typeGuardAlreadyIsType',
         },
@@ -3890,8 +4660,7 @@ const t1 = b1 && b2;
     {
       code: `
 declare const b1: (
-  | (string & { __brandA: string })
-  | (number & { __brandB: string })
+  (string & { __brandA: string }) | (number & { __brandB: string })
 ) &
   '';
 declare const b2: boolean;
@@ -3901,8 +4670,8 @@ const t1 = b1 && b2;
         {
           column: 12,
           endColumn: 14,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'alwaysFalsy',
         },
       ],
@@ -3962,8 +4731,7 @@ const t1 = b1 && b2;
     {
       code: `
 declare const b1: (
-  | (string & { __brandA: string })
-  | (number & { __brandB: string })
+  (string & { __brandA: string }) | (number & { __brandB: string })
 ) &
   'foo';
 declare const b2: boolean;
@@ -3973,8 +4741,8 @@ const t1 = b1 && b2;
         {
           column: 12,
           endColumn: 14,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'alwaysTruthy',
         },
       ],
@@ -3983,8 +4751,7 @@ const t1 = b1 && b2;
     {
       code: `
 declare const b1: (
-  | (string & { __brandA: string })
-  | (number & { __brandB: string })
+  (string & { __brandA: string }) | (number & { __brandB: string })
 ) &
   ('foo' | 123);
 declare const b2: boolean;
@@ -3994,8 +4761,8 @@ const t1 = b1 && b2;
         {
           column: 12,
           endColumn: 14,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'alwaysTruthy',
         },
       ],

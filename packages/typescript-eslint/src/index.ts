@@ -1,3 +1,23 @@
+/* eslint-disable import/first -- intentionally executing code before rest of the require()s. This will not work with ESM. */
+
+import * as ts from 'typescript';
+
+const [versionMajor, _versionMinor] = ts.versionMajorMinor
+  .split('.')
+  .map(Number);
+
+if (versionMajor >= 7) {
+  // eslint-disable-next-line no-console
+  console.error(
+    [
+      'typescript-eslint does not support TS 7.0.',
+      'Please see https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0 to run typescript-eslint using the TS 6 API.',
+      "See also https://github.com/typescript-eslint/typescript-eslint/issues/10940 for tracking typescript-eslint's support for TS >=7.1",
+    ].join('\n'),
+  );
+  throw new Error('typescript-eslint does not support TS 7.0.');
+}
+
 // see the comment in config-helper.ts for why this doesn't use /ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
@@ -15,6 +35,7 @@ import type {
 
 import { config } from './config-helper';
 import { getTSConfigRootDirFromStack } from './getTSConfigRootDirFromStack';
+import { extensions, globs } from './globs';
 
 export type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
@@ -218,8 +239,11 @@ module.exports = config(
 ```
 */
 export default {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   config,
   configs,
+  extensions,
+  globs,
   parser,
   plugin,
 };
@@ -231,3 +255,13 @@ export {
   type InfiniteDepthConfigWithExtends,
   type ConfigArray,
 } from './config-helper';
+
+export { extensions, globs } from './globs';
+
+// https://github.com/typescript-eslint/typescript-eslint/issues/12134
+export type {
+  CompatibleConfig,
+  CompatibleConfigArray,
+  CompatibleParser,
+  CompatiblePlugin,
+} from './compatibility-types';

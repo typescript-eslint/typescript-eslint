@@ -58,4 +58,20 @@ describe(getParsedConfigFileFromTSServer, () => {
       ),
     );
   });
+
+  it('preserves the error cause when throwOnFailure is true', () => {
+    mockGetParsedConfigFile.mockImplementationOnce(() => {
+      throw new Error('Oh no!');
+    });
+
+    let actual: unknown;
+
+    try {
+      getParsedConfigFileFromTSServer(mockTSServer, 'tsconfig.json', true);
+    } catch (error) {
+      actual = error;
+    }
+
+    expect((actual as { cause?: unknown }).cause).toBeDefined();
+  });
 });

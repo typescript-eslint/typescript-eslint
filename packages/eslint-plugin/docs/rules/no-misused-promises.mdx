@@ -39,6 +39,100 @@ If you don't want to check conditionals, you can configure the rule with `"check
 
 Doing so prevents the rule from looking at code like `if (somePromise)`.
 
+The following sub-options are supported:
+
+#### `flagUnions`
+
+Provides detailed configuration for how union types containing Promise-like types are checked in conditional expressions.
+
+Defaults to `'none'` when `checkConditionals` is `true`.
+
+##### `'all'`
+
+Reports all union types containing Promise-like types.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "checksConditionals": { "flagUnions": "all" } }'
+declare function unionFn(): Promise<boolean> | boolean;
+if (unionFn()) {
+  // Do something
+}
+
+declare function genericFn<T>(arg: T): Promise<T> | string;
+if (genericFn(false)) {
+  // Do something
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "checksConditionals": { "flagUnions": "all" } }'
+declare function unionFn(): Promise<boolean> | boolean;
+if (await unionFn()) {
+  // Do something
+}
+
+declare function genericFn<T>(arg: T): Promise<T> | string;
+if (await genericFn(false)) {
+  // Do something
+}
+```
+
+</TabItem>
+</Tabs>
+
+##### `'strict'`
+
+Reports only when a union contains a Promise-like type whose awaited type exactly matches the other union constituents.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "checksConditionals": { "flagUnions": "strict" } }'
+declare function unionFn(): Promise<boolean> | boolean;
+if (unionFn()) {
+  // Do something
+}
+
+type MyBox<T> = { value: T };
+type PromiseBox<T> = { value: T };
+
+// These types are structurally identical.
+declare function structuralFn(): Promise<PromiseBox<number>> | MyBox<number>;
+if (structuralFn()) {
+  // Do something
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "checksConditionals": { "flagUnions": "strict" } }'
+declare function unionFn(): Promise<boolean> | boolean;
+if (await unionFn()) {
+  // Do something
+}
+
+type MyBox<T> = { value: T };
+type PromiseBox<T> = { value: T };
+
+// These types are structurally identical.
+declare function structuralFn(): Promise<PromiseBox<number>> | MyBox<number>;
+if (await structuralFn()) {
+  // Do something
+}
+```
+
+</TabItem>
+</Tabs>
+
+##### `'none'`
+
+Does not report errors for union types containing Promise-like types.
+
 ### `checksVoidReturn`
 
 {/* insert option description */}
@@ -303,7 +397,7 @@ console.log({ foo: 42, ...(await awaitData()) });
 
 This rule can be difficult to enable on large existing projects that set up many misused Promises.
 Alternately, if you're not worried about crashes from floating or misused Promises -such as if you have global unhandled Promise handlers registered- then in some cases it may be safe to not use this rule.
-You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
 

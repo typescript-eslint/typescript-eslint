@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures basics _error_ class-with-export-parameter-properties Babel - Error 1`] = `[SyntaxError: Unexpected keyword 'export'. (4:16)]`;

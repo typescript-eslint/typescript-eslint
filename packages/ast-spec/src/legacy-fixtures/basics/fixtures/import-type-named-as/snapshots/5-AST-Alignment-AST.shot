@@ -10,9 +10,9 @@ Snapshot Diff:
     body: Array [
       ImportDeclaration {
         type: 'ImportDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         importKind: 'type',
+-       phase: null,
         source: Literal {
           type: 'Literal',
           raw: '\'baz\'',
@@ -70,9 +70,11 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
-    range: [73, 112],
+-   range: [73, 112],
++   range: [0, 112],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

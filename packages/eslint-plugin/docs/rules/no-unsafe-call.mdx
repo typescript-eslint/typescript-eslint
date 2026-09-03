@@ -88,7 +88,7 @@ function callUnsafe(maybeFunction: unknown): string {
 ```
 
 In this sort of situation, beware that there is no way to guarantee with runtime checks that a value is safe to call.
-If you _really_ want to call a value whose type you don't know, your best best is to use a `try`/`catch` and suppress any TypeScript or linter errors that get in your way.
+If you _really_ want to call a value whose type you don't know, your best bet is to use a `try`/`catch` and suppress any TypeScript or linter errors that get in your way.
 
 ```ts
 function callSafe(maybeFunction: unknown): void {
@@ -108,7 +108,7 @@ function callSafe(maybeFunction: unknown): void {
 
 If your codebase has many existing `any`s or areas of unsafe code, it may be difficult to enable this rule.
 It may be easier to skip the `no-unsafe-*` rules pending increasing type safety in unsafe areas of your project.
-You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments) for those specific situations instead of completely disabling this rule.
 
 ## Related To
 

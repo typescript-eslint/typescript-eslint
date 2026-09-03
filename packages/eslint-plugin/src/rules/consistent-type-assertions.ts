@@ -36,8 +36,7 @@ type OptUnion =
 export type Options = readonly [OptUnion];
 
 type AsExpressionOrTypeAssertion =
-  | TSESTree.TSAsExpression
-  | TSESTree.TSTypeAssertion;
+  TSESTree.TSAsExpression | TSESTree.TSTypeAssertion;
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',

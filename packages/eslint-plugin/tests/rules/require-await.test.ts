@@ -21,7 +21,7 @@ const numberOne = function (): number {
     `,
     // Non-async arrow function expression (concise-body)
     `
-      const numberOne = (): number => 1;
+const numberOne = (): number => 1;
     `,
     // Non-async arrow function expression (block-body)
     `
@@ -204,44 +204,44 @@ async function* foo(): Promise<string> {
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/5458
     `
-      async function* f() {
-        let x!: Omit<
-          {
-            [Symbol.asyncIterator](): AsyncIterator<any>;
-          },
-          'z'
-        >;
-        yield* x;
-      }
+async function* f() {
+  let x!: Omit<
+    {
+      [Symbol.asyncIterator](): AsyncIterator<any>;
+    },
+    'z'
+  >;
+  yield* x;
+}
     `,
     `
-      const fn = async () => {
-        await using foo = new Bar();
-      };
+const fn = async () => {
+  await using foo = new Bar();
+};
     `,
     `
-      async function* test1() {
-        yield Promise.resolve(1);
-      }
+async function* test1() {
+  yield Promise.resolve(1);
+}
     `,
     `
-      function asyncFunction() {
-        return Promise.resolve(1);
-      }
-      async function* test1() {
-        yield asyncFunction();
-      }
+function asyncFunction() {
+  return Promise.resolve(1);
+}
+async function* test1() {
+  yield asyncFunction();
+}
     `,
     `
-      declare const asyncFunction: () => Promise<void>;
-      async function* test1() {
-        yield asyncFunction();
-      }
+declare const asyncFunction: () => Promise<void>;
+async function* test1() {
+  yield asyncFunction();
+}
     `,
     `
-      async function* test1() {
-        yield new Promise(() => {});
-      }
+async function* test1() {
+  yield new Promise(() => {});
+}
     `,
   ],
 
@@ -255,9 +255,13 @@ async function numberOne(): Promise<number> {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async function 'numberOne'",
           },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -281,9 +285,13 @@ const numberOne = async function (): Promise<number> {
       `,
       errors: [
         {
+          column: 19,
           data: {
             name: "Async function 'numberOne'",
           },
+          endColumn: 34,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -303,9 +311,13 @@ const numberOne = function (): number {
       code: 'const numberOne = async (): Promise<number> => 1;',
       errors: [
         {
+          column: 45,
           data: {
             name: "Async arrow function 'numberOne'",
           },
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -325,9 +337,13 @@ async function values(): Promise<Array<number>> {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async function 'values'",
           },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -345,27 +361,31 @@ function values(): Array<number> {
     {
       // non-async function with await inside async function without await
       code: `
-        async function foo() {
-          function nested() {
-            await doSomething();
-          }
-        }
+async function foo() {
+  function nested() {
+    await doSomething();
+  }
+}
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async function 'foo'",
           },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        function foo() {
-          function nested() {
-            await doSomething();
-          }
-        }
+function foo() {
+  function nested() {
+    await doSomething();
+  }
+}
       `,
             },
           ],
@@ -382,9 +402,13 @@ async function* foo(): void {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -407,9 +431,13 @@ async function* foo() {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -434,9 +462,13 @@ const foo = async function* () {
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -459,9 +491,13 @@ async function* asyncGenerator() {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -484,9 +520,13 @@ async function* asyncGenerator(source: Iterable<any>) {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -514,9 +554,13 @@ async function* asyncGenerator(source: Iterable<any> | AsyncIterable<any>) {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -547,9 +591,13 @@ async function* asyncGenerator() {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -577,9 +625,13 @@ async function* asyncGenerator() {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -596,23 +648,27 @@ function* asyncGenerator() {
     },
     {
       code: `
-        const fn = async () => {
-          using foo = new Bar();
-        };
+const fn = async () => {
+  using foo = new Bar();
+};
       `,
       errors: [
         {
+          column: 21,
           data: {
             name: "Async arrow function 'fn'",
           },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        const fn = () => {
-          using foo = new Bar();
-        };
+const fn = () => {
+  using foo = new Bar();
+};
       `,
             },
           ],
@@ -621,25 +677,29 @@ function* asyncGenerator() {
     },
     {
       code: `
-        // intentional TS error
-        async function* foo(): Promise<number> {
-          yield 1;
-        }
+// intentional TS error
+async function* foo(): Promise<number> {
+  yield 1;
+}
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        // intentional TS error
-        function* foo(): Promise<number> {
-          yield 1;
-        }
+// intentional TS error
+function* foo(): Promise<number> {
+  yield 1;
+}
       `,
             },
           ],
@@ -648,23 +708,27 @@ function* asyncGenerator() {
     },
     {
       code: `
-        async function* foo(): AsyncGenerator {
-          yield 1;
-        }
+async function* foo(): AsyncGenerator {
+  yield 1;
+}
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        function* foo(): Generator {
-          yield 1;
-        }
+function* foo(): Generator {
+  yield 1;
+}
       `,
             },
           ],
@@ -673,23 +737,27 @@ function* asyncGenerator() {
     },
     {
       code: `
-        async function* foo(): AsyncGenerator<number> {
-          yield 1;
-        }
+async function* foo(): AsyncGenerator<number> {
+  yield 1;
+}
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        function* foo(): Generator<number> {
-          yield 1;
-        }
+function* foo(): Generator<number> {
+  yield 1;
+}
       `,
             },
           ],
@@ -774,11 +842,11 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        async function* run() {
-          await new Promise(resolve => setTimeout(resolve, 100));
-          yield 'Hello';
-          console.log('World');
-        }
+async function* run() {
+  await new Promise(resolve => setTimeout(resolve, 100));
+  yield 'Hello';
+  console.log('World');
+}
       `,
     },
     {
@@ -814,21 +882,25 @@ for await (let num of asyncIterable) {
   invalid: [
     {
       code: `
-        async function foo() {
-          doSomething();
-        }
+async function foo() {
+  doSomething();
+}
       `,
       errors: [
         {
+          column: 1,
           data: { name: "Async function 'foo'" },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        function foo() {
-          doSomething();
-        }
+function foo() {
+  doSomething();
+}
       `,
             },
           ],
@@ -837,21 +909,25 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        (async function () {
-          doSomething();
-        });
+(async function () {
+  doSomething();
+});
       `,
       errors: [
         {
+          column: 2,
           data: { name: 'Async function' },
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        (function () {
-          doSomething();
-        });
+(function () {
+  doSomething();
+});
       `,
             },
           ],
@@ -860,21 +936,25 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        async () => {
-          doSomething();
-        };
+async () => {
+  doSomething();
+};
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'Async arrow function' },
+          endColumn: 12,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        () => {
-          doSomething();
-        };
+() => {
+  doSomething();
+};
       `,
             },
           ],
@@ -885,7 +965,11 @@ for await (let num of asyncIterable) {
       code: 'async () => doSomething();',
       errors: [
         {
+          column: 10,
           data: { name: 'Async arrow function' },
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'missingAwait',
           suggestions: [
             { messageId: 'removeAsync', output: '() => doSomething();' },
@@ -895,25 +979,29 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        ({
-          async foo() {
-            doSomething();
-          },
-        });
+({
+  async foo() {
+    doSomething();
+  },
+});
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'foo'" },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        ({
-          foo() {
-            doSomething();
-          },
-        });
+({
+  foo() {
+    doSomething();
+  },
+});
       `,
             },
           ],
@@ -922,25 +1010,29 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        class A {
-          async foo() {
-            doSomething();
-          }
-        }
+class A {
+  async foo() {
+    doSomething();
+  }
+}
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'foo'" },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        class A {
-          foo() {
-            doSomething();
-          }
-        }
+class A {
+  foo() {
+    doSomething();
+  }
+}
       `,
             },
           ],
@@ -949,25 +1041,29 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        class A {
-          public async foo() {
-            doSomething();
-          }
-        }
+class A {
+  public async foo() {
+    doSomething();
+  }
+}
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'foo'" },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        class A {
-          public foo() {
-            doSomething();
-          }
-        }
+class A {
+  public foo() {
+    doSomething();
+  }
+}
       `,
             },
           ],
@@ -976,25 +1072,29 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        (class {
-          async foo() {
-            doSomething();
-          }
-        });
+(class {
+  async foo() {
+    doSomething();
+  }
+});
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'foo'" },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        (class {
-          foo() {
-            doSomething();
-          }
-        });
+(class {
+  foo() {
+    doSomething();
+  }
+});
       `,
             },
           ],
@@ -1003,25 +1103,29 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        (class {
-          async ''() {
-            doSomething();
-          }
-        });
+(class {
+  async ''() {
+    doSomething();
+  }
+});
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Async method' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        (class {
-          ''() {
-            doSomething();
-          }
-        });
+(class {
+  ''() {
+    doSomething();
+  }
+});
       `,
             },
           ],
@@ -1030,25 +1134,29 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        async function foo() {
-          async () => {
-            await doSomething();
-          };
-        }
+async function foo() {
+  async () => {
+    await doSomething();
+  };
+}
       `,
       errors: [
         {
+          column: 1,
           data: { name: "Async function 'foo'" },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        function foo() {
-          async () => {
-            await doSomething();
-          };
-        }
+function foo() {
+  async () => {
+    await doSomething();
+  };
+}
       `,
             },
           ],
@@ -1057,25 +1165,29 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        async function foo() {
-          await (async () => {
-            doSomething();
-          });
-        }
+async function foo() {
+  await (async () => {
+    doSomething();
+  });
+}
       `,
       errors: [
         {
+          column: 19,
           data: { name: 'Async arrow function' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        async function foo() {
-          await (() => {
-            doSomething();
-          });
-        }
+async function foo() {
+  await (() => {
+    doSomething();
+  });
+}
       `,
             },
           ],
@@ -1084,25 +1196,29 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        const obj = {
-          async: async function foo() {
-            bar();
-          },
-        };
+const obj = {
+  async: async function foo() {
+    bar();
+  },
+};
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'async'" },
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        const obj = {
-          async: function foo() {
-            bar();
-          },
-        };
+const obj = {
+  async: function foo() {
+    bar();
+  },
+};
       `,
             },
           ],
@@ -1119,7 +1235,11 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
+          column: 9,
           data: { name: "Async function 'foo'" },
+          endColumn: 41,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1146,7 +1266,11 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
+          column: 11,
           data: { name: 'Async method' },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1174,7 +1298,11 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
+          column: 18,
           data: { name: 'Async arrow function' },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1192,27 +1320,31 @@ for await (let num of asyncIterable) {
     },
     {
       code: `
-        class A {
-          foo() {}
-          async [bar]() {
-            baz;
-          }
-        }
+class A {
+  foo() {}
+  async [bar]() {
+    baz;
+  }
+}
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Async method' },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
               output: `
-        class A {
-          foo() {}
-          [bar]() {
-            baz;
-          }
-        }
+class A {
+  foo() {}
+  [bar]() {
+    baz;
+  }
+}
       `,
             },
           ],

@@ -88,6 +88,8 @@ export { A };
       errors: [
         {
           column: 1,
+          endColumn: 51,
+          endLine: 1,
           line: 1,
           messageId: 'typeOverValue',
         },
@@ -99,6 +101,8 @@ export { A };
       errors: [
         {
           column: 1,
+          endColumn: 59,
+          endLine: 1,
           line: 1,
           messageId: 'typeOverValue',
         },
@@ -111,13 +115,14 @@ export { A };
       errors: [
         {
           column: 1,
+          endColumn: 59,
+          endLine: 1,
           line: 1,
           messageId: 'singleExportIsType',
         },
       ],
-      output:
-        `export type { Type1 } from './consistent-type-exports';\n` +
-        `export { value1 } from './consistent-type-exports';`,
+      output: `export type { Type1 } from './consistent-type-exports';
+export { value1 } from './consistent-type-exports';`,
     },
     {
       code: `
@@ -126,6 +131,8 @@ export { Type1, value1, value2 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          endColumn: 67,
+          endLine: 2,
           line: 2,
           messageId: 'singleExportIsType',
         },
@@ -142,6 +149,8 @@ export { Type1, value1, Type2, value2 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          endColumn: 74,
+          endLine: 2,
           line: 2,
           messageId: 'multipleExportsAreTypes',
         },
@@ -156,6 +165,8 @@ export { value1, value2 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          endColumn: 58,
+          endLine: 1,
           line: 1,
           messageId: 'typeOverValue',
         },
@@ -169,6 +180,8 @@ export { Type2 as Foo, value1 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          endColumn: 66,
+          endLine: 2,
           line: 2,
           messageId: 'singleExportIsType',
         },
@@ -189,6 +202,8 @@ export {
       errors: [
         {
           column: 1,
+          endColumn: 36,
+          endLine: 6,
           line: 2,
           messageId: 'singleExportIsType',
         },
@@ -206,6 +221,8 @@ export { Type2 };
       errors: [
         {
           column: 1,
+          endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'typeOverValue',
         },
@@ -223,6 +240,8 @@ export { value2, Type2 };
       errors: [
         {
           column: 1,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'singleExportIsType',
         },
@@ -247,6 +266,8 @@ export { Alias, IFace, TypeNS };
       errors: [
         {
           column: 1,
+          endColumn: 33,
+          endLine: 9,
           line: 9,
           messageId: 'multipleExportsAreTypes',
         },
@@ -274,6 +295,8 @@ export { TypeNS };
       errors: [
         {
           column: 1,
+          endColumn: 19,
+          endLine: 6,
           line: 6,
           messageId: 'typeOverValue',
         },
@@ -294,6 +317,8 @@ export { type T, T };
       errors: [
         {
           column: 1,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'typeOverValue',
         },
@@ -311,6 +336,8 @@ export { type/* */T, type     /* */T, T };
       errors: [
         {
           column: 1,
+          endColumn: 43,
+          endLine: 3,
           line: 3,
           messageId: 'typeOverValue',
         },
@@ -329,6 +356,8 @@ export { type T, T, x };
       errors: [
         {
           column: 1,
+          endColumn: 25,
+          endLine: 4,
           line: 4,
           messageId: 'singleExportIsType',
         },
@@ -349,6 +378,8 @@ export { T, x };
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'singleExportIsType',
         },
@@ -368,6 +399,8 @@ export { type T, T };
       errors: [
         {
           column: 1,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'typeOverValue',
         },
@@ -390,6 +423,8 @@ export {
       errors: [
         {
           column: 1,
+          endColumn: 36,
+          endLine: 7,
           line: 2,
           messageId: 'multipleExportsAreTypes',
         },
@@ -412,6 +447,8 @@ export {
       errors: [
         {
           column: 1,
+          endColumn: 36,
+          endLine: 7,
           line: 2,
           messageId: 'multipleExportsAreTypes',
         },

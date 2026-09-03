@@ -1,7 +1,7 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
-import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -21,6 +21,23 @@ const optionsWithExactOptionalPropertyTypes = {
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12705
+    `
+type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
+  options: NewOptions,
+) => RecursiveMethod<Options & NewOptions>) &
+  ((command: string) => Promise<void>);
+
+declare const recursiveMethod: RecursiveMethod;
+declare const value: object;
+
+value as unknown as typeof recursiveMethod;
+    `,
+    `
+function castToSubtype<T extends string>(value: string): T {
+  return value as T;
+}
+    `,
     `
 import { TSESTree } from '@typescript-eslint/utils';
 declare const member: TSESTree.TSEnumMember;
@@ -32,29 +49,29 @@ if (
 }
     `,
     `
-      const c = 1;
-      let z = c as number;
+const c = 1;
+let z = c as number;
     `,
     `
-      const c = 1;
-      let z = c as const;
+const c = 1;
+let z = c as const;
     `,
     `
-      const c = 1;
-      let z = c as 1;
+const c = 1;
+let z = c as 1;
     `,
     `
-      type Bar = 'bar';
-      const data = {
-        x: 'foo' as 'foo',
-        y: 'bar' as Bar,
-      };
+type Bar = 'bar';
+const data = {
+  x: 'foo' as 'foo',
+  y: 'bar' as Bar,
+};
     `,
     "[1, 2, 3, 4, 5].map(x => [x, 'A' + x] as [number, string]);",
     `
-      let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
-        x => [x, 'A' + x] as [number, string],
-      );
+let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
+  x => [x, 'A' + x] as [number, string],
+);
     `,
     'let y = 1 as 1;',
     'const foo = 3 as number;',
@@ -189,8 +206,8 @@ class T {
 }
     `,
     `
-      declare const y: number | null;
-      console.log(y!);
+declare const y: number | null;
+console.log(y!);
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/529
     `
@@ -345,6 +362,13 @@ function bar(items: string[]) {
 declare const myString: 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
+    {
+      code: `
+declare const myString: 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
+      `,
+      options: [{ checkLiteralConstAssertions: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
 declare const myString: 'foo';
@@ -353,6 +377,16 @@ const templateLiteral = <const>\`\${myString}-somethingElse\`;
     `
 const myString = 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12276
+    `
+type ValuePath = 'values' | \`values.\${string}\`;
+
+declare function apply(paths: ValuePath[]): void;
+
+export function update(ids: string[]) {
+  apply(ids.map(id => \`values.\${id}\` as ValuePath));
+}
     `,
     'let a = `a` as const;',
     {
@@ -930,6 +964,30 @@ declare const a: A;
 const b = a as B;
 b.__outer = { x: 'val', z: 'extra' };
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12485
+    `
+declare const items: string[] | undefined;
+
+const counts = items?.reduce(
+  (acc, item) => {
+    acc[item] = (acc[item] ?? 0) + 1;
+    return acc;
+  },
+  {} as Record<string, number>,
+);
+    `,
+    `
+declare const o:
+  | {
+      fn<U>(g: (memo: U) => U, initial: U): U;
+      fn<T>(g: (memo: T) => T): T | undefined;
+    }
+  | undefined;
+enum E {
+  A = 1,
+}
+const x: E | undefined = o?.fn(n => n | 0, 0 as E);
+    `,
   ],
 
   invalid: [
@@ -988,34 +1046,66 @@ const same = diff;
     },
     {
       code: 'const foo = <3>3;',
-      errors: [{ column: 13, line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       output: 'const foo = 3;',
     },
     {
       code: 'const foo = 3 as 3;',
-      errors: [{ column: 13, line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       output: 'const foo = 3;',
     },
     {
       code: `
-        type Foo = 3;
-        const foo = <Foo>3;
+type Foo = 3;
+const foo = <Foo>3;
       `,
-      errors: [{ column: 21, line: 3, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       output: `
-        type Foo = 3;
-        const foo = 3;
+type Foo = 3;
+const foo = 3;
       `,
     },
     {
       code: `
-        type Foo = 3;
-        const foo = 3 as Foo;
+type Foo = 3;
+const foo = 3 as Foo;
       `,
-      errors: [{ column: 21, line: 3, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       output: `
-        type Foo = 3;
-        const foo = 3;
+type Foo = 3;
+const foo = 3;
       `,
     },
     {
@@ -1026,6 +1116,8 @@ const bar = foo!;
       errors: [
         {
           column: 13,
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1042,6 +1134,8 @@ const foo = (3 + 5) as number;
       errors: [
         {
           column: 13,
+          endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1057,6 +1151,8 @@ const foo = <number>(3 + 5);
       errors: [
         {
           column: 13,
+          endColumn: 28,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1073,6 +1169,8 @@ const foo = (3 + 5) as Foo;
       errors: [
         {
           column: 13,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1090,6 +1188,8 @@ const foo = <Foo>(3 + 5);
       errors: [
         {
           column: 13,
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1107,6 +1207,9 @@ bar! + 1;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 5,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1124,6 +1227,9 @@ bar! + 1;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 5,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1141,6 +1247,9 @@ bar! + 1;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 5,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssertion',
         },
@@ -1153,18 +1262,34 @@ bar + 1;
     },
     {
       code: `
-        declare const y: number;
-        console.log(y!);
+declare const y: number;
+console.log(y!);
       `,
-      errors: [{ messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       output: `
-        declare const y: number;
-        console.log(y);
+declare const y: number;
+console.log(y);
       `,
     },
     {
       code: 'Proxy!;',
-      errors: [{ messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 7,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       output: 'Proxy;',
     },
     {
@@ -1175,6 +1300,9 @@ function foo<T extends string>(bar: T) {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1192,6 +1320,9 @@ const bar = <Foo>foo;
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1209,6 +1340,9 @@ nonNull(s!);
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'contextuallyUnnecessary',
         },
@@ -1226,6 +1360,9 @@ const y: number | null = x!;
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'contextuallyUnnecessary',
         },
@@ -1244,6 +1381,9 @@ class Foo {
       `,
       errors: [
         {
+          column: 25,
+          endColumn: 27,
+          endLine: 4,
           line: 4,
           messageId: 'contextuallyUnnecessary',
         },
@@ -1267,6 +1407,9 @@ class Mx {
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 8,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryAssertion',
         },
@@ -1295,17 +1438,14 @@ function Test(props: { id?: string | number }) {
       `,
       errors: [
         {
+          column: 20,
+          endColumn: 29,
+          endLine: 9,
           line: 9,
           messageId: 'contextuallyUnnecessary',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       output: `
 declare namespace JSX {
   interface IntrinsicElements {
@@ -1327,6 +1467,9 @@ y! = 0;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 3,
+          endLine: 5,
           line: 5,
           messageId: 'contextuallyUnnecessary',
         },
@@ -1347,6 +1490,7 @@ const bar: number | void = foo()!;
         {
           column: 28,
           endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'contextuallyUnnecessary',
         },
@@ -1365,6 +1509,7 @@ const a = foo()!;
         {
           column: 11,
           endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1380,6 +1525,9 @@ const b = new Date()!;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 22,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1396,6 +1544,7 @@ const b = (1 + 1)!;
         {
           column: 11,
           endColumn: 19,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1412,6 +1561,8 @@ const a = foo() as number;
       errors: [
         {
           column: 11,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1428,6 +1579,9 @@ const a = <number>foo();
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1445,6 +1599,10 @@ declare function foo(): RT;
       `,
       errors: [
         {
+          column: 2,
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -1461,6 +1619,10 @@ const item = arr[0]!;
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -1476,6 +1638,8 @@ const foo = (  3 + 5  ) as number;
       errors: [
         {
           column: 13,
+          endColumn: 34,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1491,6 +1655,8 @@ const foo = (  3 + 5  ) /*as*/ as number;
       errors: [
         {
           column: 13,
+          endColumn: 41,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1510,6 +1676,8 @@ const foo = (  3 + 5
       errors: [
         {
           column: 13,
+          endColumn: 4,
+          endLine: 6,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1526,6 +1694,8 @@ const foo = (3 + (5 as number) ) as number;
       errors: [
         {
           column: 13,
+          endColumn: 43,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1541,6 +1711,8 @@ const foo = 3 + 5/*as*/ as number;
       errors: [
         {
           column: 13,
+          endColumn: 34,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1556,6 +1728,8 @@ const foo = 3 + 5/*a*/ /*b*/ as number;
       errors: [
         {
           column: 13,
+          endColumn: 39,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1571,6 +1745,8 @@ const foo = <(number)>(3 + 5);
       errors: [
         {
           column: 13,
+          endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1586,6 +1762,8 @@ const foo = < ( number ) >( 3 + 5 );
       errors: [
         {
           column: 13,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1601,6 +1779,8 @@ const foo = <number> /* a */ (3 + 5);
       errors: [
         {
           column: 13,
+          endColumn: 37,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1616,6 +1796,8 @@ const foo = <number /* a */>(3 + 5);
       errors: [
         {
           column: 13,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1637,6 +1819,8 @@ function bar(items: string[]) {
       errors: [
         {
           column: 9,
+          endColumn: 18,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryAssertion',
         },
@@ -1661,6 +1845,8 @@ const bar = foo.a as string | undefined;
       errors: [
         {
           column: 13,
+          endColumn: 40,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryAssertion',
         },
@@ -1683,6 +1869,8 @@ const bar = foo.a as string | undefined;
       errors: [
         {
           column: 13,
+          endColumn: 40,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryAssertion',
         },
@@ -1701,6 +1889,9 @@ varDeclarationFromFixture!;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'unnecessaryAssertion',
         },
@@ -1716,6 +1907,9 @@ x!;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 3,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1734,6 +1928,9 @@ var x = 1;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 5,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssertion',
         },
@@ -1753,6 +1950,9 @@ class T {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1773,6 +1973,9 @@ class T {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryAssertion',
         },
@@ -1793,6 +1996,9 @@ class T {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 33,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1810,6 +2016,10 @@ const b: string | undefined = (a ? undefined : a)!;
       `,
       errors: [
         {
+          column: 31,
+          endColumn: 51,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -1830,6 +2040,10 @@ const b = a as T.Value1;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 24,
+          endLine: 8,
+          line: 8,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -1850,6 +2064,10 @@ const bar: unknown = foo!;
       `,
       errors: [
         {
+          column: 22,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -1866,6 +2084,10 @@ foo(baz!);
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -1877,56 +2099,128 @@ foo(baz);
     },
     {
       code: 'const a = true as const;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = true;',
     },
     {
       code: 'const a = <const>true;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = true;',
     },
     {
       code: 'const a = 1 as const;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1;',
     },
     {
       code: 'const a = <const>1;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1;',
     },
     {
       code: 'const a = 1n as const;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1n;',
     },
     {
       code: 'const a = <const>1n;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = 1n;',
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     {
       code: 'const a = `a` as const;',
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       options: [{ checkLiteralConstAssertions: true }],
       output: 'const a = `a`;',
     },
     {
       code: "const a = 'a' as const;",
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       options: [{ checkLiteralConstAssertions: true }],
       output: "const a = 'a';",
     },
     {
       code: "const a = <const>'a';",
-      errors: [{ line: 1, messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       options: [{ checkLiteralConstAssertions: true }],
       output: "const a = 'a';",
     },
@@ -1938,6 +2232,9 @@ class T {
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryAssertion',
         },
@@ -1961,6 +2258,10 @@ const b = a as const;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 21,
+          endLine: 8,
+          line: 8,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -1981,6 +2282,10 @@ const b = a;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 37,
+          endLine: 2,
+          line: 2,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -1994,6 +2299,10 @@ const b = a;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2012,6 +2321,10 @@ interface Overloaded {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 47,
+          endLine: 7,
+          line: 7,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2031,6 +2344,10 @@ doThing(5 as any);
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2050,6 +2367,10 @@ doThing({ required: 'yes', alsoRequired: 1 } as any);
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 52,
+          endLine: 7,
+          line: 7,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2066,6 +2387,10 @@ doThing({ required: 'yes', alsoRequired: 1 });
       code: 'const x = 5 as any as 5;',
       errors: [
         {
+          column: 11,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2078,6 +2403,10 @@ const x = v as unknown as number;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2093,6 +2422,10 @@ const x = v as any as number;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2107,6 +2440,10 @@ const x = (1 + 1) as any as number;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2120,6 +2457,10 @@ const x = 2 * ((1 + 1) as any as number);
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2134,6 +2475,10 @@ const x = <number>(<any>v);
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2149,6 +2494,10 @@ const obj2 = obj as { id: string };
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2164,6 +2513,10 @@ const obj2 = obj as any as { id: string };
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2179,6 +2532,10 @@ const obj2 = obj as unknown as { id: string };
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2194,6 +2551,10 @@ const array2 = array as any as string[];
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2209,6 +2570,10 @@ const array2 = array as unknown as string[];
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 44,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2228,6 +2593,10 @@ fn(a as AorB);
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 13,
+          endLine: 7,
+          line: 7,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2249,6 +2618,10 @@ const x = { a: 1 } as unknown as Props;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 39,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2268,6 +2641,10 @@ const x = { a: 1 } as Props;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 28,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2287,6 +2664,10 @@ const fn = (): Props => ({ a: 1 }) as unknown as Props;
       `,
       errors: [
         {
+          column: 25,
+          endColumn: 55,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2304,6 +2685,10 @@ fn(42 as unknown as number);
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2319,6 +2704,10 @@ fn(42 as any as number);
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2334,6 +2723,10 @@ fn({ param: 42 as number });
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2349,6 +2742,10 @@ fn({ param: 42 as any });
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2365,6 +2762,10 @@ fn(42 as any as StringOrNumber);
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2383,6 +2784,10 @@ fn({ data: data as NumbersRecord });
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 33,
+          endLine: 5,
+          line: 5,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2405,6 +2810,10 @@ fn({
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 21,
+          endLine: 7,
+          line: 5,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2427,6 +2836,10 @@ const result = updatedColumn as unknown as Tables<'my_table'>['my_column'];
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 75,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2447,6 +2860,10 @@ fn<T>({ a: '' as string });
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2465,6 +2882,10 @@ update('hi' as unknown as string);
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2480,12 +2901,38 @@ update('hi' as string);
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
       output: `
 declare function update<T extends string>(value: T): void;
 update('hi');
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12276
+    {
+      code: `
+declare function fn(param: string): void;
+declare const name_: string;
+fn(\`hello \${name_}\` as string);
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 30,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare function fn(param: string): void;
+declare const name_: string;
+fn(\`hello \${name_}\`);
       `,
     },
     {
@@ -2495,6 +2942,10 @@ fn(['hello'] as any);
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2513,6 +2964,10 @@ update({ chat: chat as Json[] });
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 30,
+          endLine: 6,
+          line: 6,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2534,6 +2989,10 @@ update({ chat: chat as Json[] });
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 30,
+          endLine: 6,
+          line: 6,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2557,6 +3016,10 @@ function fn2<T extends Node>(node: T): void {
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 28,
+          endLine: 7,
+          line: 7,
           messageId: 'unnecessaryAssertion',
         },
       ],
@@ -2585,6 +3048,10 @@ fn(a as B);
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 10,
+          endLine: 11,
+          line: 11,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2609,6 +3076,10 @@ const fileNames: string[] = a.concat(b as string[]);
       `,
       errors: [
         {
+          column: 38,
+          endColumn: 51,
+          endLine: 4,
+          line: 4,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2626,6 +3097,10 @@ fn(value as number);
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2652,6 +3127,10 @@ const schema: A | B = {
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 17,
+          endLine: 12,
+          line: 12,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2687,6 +3166,10 @@ const schema: A | B = {
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 17,
+          endLine: 12,
+          line: 12,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2715,6 +3198,10 @@ fn1(() => {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
           messageId: 'contextuallyUnnecessary',
         },
       ],
@@ -2724,6 +3211,238 @@ declare function fn2(text: string): void;
 fn1(() => {
   fn2('hi');
 });
+      `,
+    },
+    {
+      code: '[].map(() => <{ a: false; b: false }>{ a: false, b: false });',
+      errors: [
+        {
+          column: 14,
+          endColumn: 60,
+          endLine: 1,
+          line: 1,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `[].map(() => ({ a: false, b: false }));`,
+    },
+    {
+      code: noFormat`[].map(() => /* 1 */ <{ a: false; b: false }> /* 2 */ { a: false, b: false } /* 3 */);`,
+      errors: [
+        {
+          column: 22,
+          endColumn: 77,
+          endLine: 1,
+          line: 1,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `[].map(() => /* 1 */ ( /* 2 */ { a: false, b: false }) /* 3 */);`,
+    },
+    {
+      code: noFormat`[].map(() => <{ a: false; b: false }>({ a: false, b: false }));`,
+      errors: [
+        {
+          column: 14,
+          endColumn: 62,
+          endLine: 1,
+          line: 1,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `[].map(() => ({ a: false, b: false }));`,
+    },
+    {
+      code: noFormat`[].map(() => (<{ a: false; b: false }>{ a: false, b: false }));`,
+      errors: [
+        {
+          column: 15,
+          endColumn: 61,
+          endLine: 1,
+          line: 1,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `[].map(() => ({ a: false, b: false }));`,
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' };",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `({ a: 'foo' });`,
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } + 1;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) + 1;",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } && true;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) && true;",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } ? 1 : 2;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) ? 1 : 2;",
+    },
+    {
+      code: noFormat`<{ a: string }>{ a: 'foo' }, foo();`,
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }), foo();",
+    },
+    {
+      code: "<{ a: string }>{ a: 'foo' } + 1 + 2;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }) + 1 + 2;",
+    },
+    {
+      code: "(<{ a: string }>{ a: 'foo' }, 1);",
+      errors: [
+        {
+          column: 2,
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "({ a: 'foo' }, 1);",
+    },
+    {
+      code: "1 + <{ a: string }>{ a: 'foo' };",
+      errors: [
+        {
+          column: 5,
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: "1 + { a: 'foo' };",
+    },
+    // The assertion binds looser than member access, so its operand can be a
+    // member expression whose leading token is `{`, `function`, or `class` —
+    // each of which leads the statement after the fix and must be wrapped.
+    {
+      code: '<number>{ lol: 32 as number }.lol;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: '({ lol: 32 as number }.lol);',
+    },
+    {
+      code: '<number>function Fun() {}.length;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: '(function Fun() {}.length);',
+    },
+    {
+      code: '<number>class Clazz {}.length;',
+      errors: [
+        {
+          column: 1,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: '(class Clazz {}.length);',
+    },
+    {
+      code: 'const foo = () => <number>{ lol: 123 as number }.lol + 54321;',
+      errors: [
+        {
+          column: 19,
+          endColumn: 53,
+          endLine: 1,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: 'const foo = () => ({ lol: 123 as number }.lol) + 54321;',
+    },
+    {
+      code: `
+declare const maybeFn: ((arg: string | number) => void) | undefined;
+declare const s: string;
+maybeFn?.(s as string | number);
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare const maybeFn: ((arg: string | number) => void) | undefined;
+declare const s: string;
+maybeFn?.(s);
       `,
     },
   ],
