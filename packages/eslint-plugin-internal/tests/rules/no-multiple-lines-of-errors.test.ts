@@ -306,5 +306,33 @@ ruleTester.run('test', rule, {
   ],
 });
     `,
+    `
+ruleTester.run('test', rule, {
+  assertionOptions: { requireData: true },
+  invalid: [
+    {
+      errors: [
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 1 },
+      ],
+    },
+  ],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
+      errors: [
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 1 },
+      ],
+    },
+  ],
+  assertionOptions: { requireData: true },
+});
+    `,
   ],
 });
