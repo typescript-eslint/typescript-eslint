@@ -191,8 +191,12 @@ export function typeMatchesSpecifier(
       case 'lib':
         return typeDeclaredInLib(declarationFiles, program);
       case 'package':
+        if (!symbol) {
+          return false;
+        }
         return typeDeclaredInPackageDeclarationFile(
           specifier.package,
+          symbol,
           declarations,
           declarationFiles,
           program,
@@ -264,12 +268,16 @@ export function valueMatchesSpecifier(
 
   if (specifier.from === 'package') {
     const symbol = type.getSymbol() ?? type.aliasSymbol;
-    const declarations = symbol?.getDeclarations() ?? [];
+    if (!symbol) {
+      return false;
+    }
+    const declarations = symbol.getDeclarations() ?? [];
     const declarationFiles = declarations.map(declaration =>
       declaration.getSourceFile(),
     );
     return typeDeclaredInPackageDeclarationFile(
       specifier.package,
+      symbol,
       declarations,
       declarationFiles,
       program,
