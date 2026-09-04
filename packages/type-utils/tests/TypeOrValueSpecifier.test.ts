@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -588,6 +589,10 @@ describe('TypeOrValueSpecifier', () => {
         'type Test = URL;',
         { from: 'package', name: 'URL', package: 'node:buffer' },
       ],
+      [
+        'type Test = string;',
+        { from: 'package', name: 'string', package: 'typescript' },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -818,6 +823,30 @@ describe('TypeOrValueSpecifier', () => {
           { from: 'package', name: 'URL', package: 'node:buffer' },
         ],
       ])("doesn't match a mismatched package specifier: %s", runTestNegative);
+
+      it('does not match a package when a value symbol has no declarations', () => {
+        const symbol = {
+          getDeclarations: () => undefined,
+          name: 'value',
+        } as unknown as ts.Symbol;
+        const program = {
+          getTypeChecker: () => ({ getAmbientModules: () => [] }),
+        } as unknown as ts.Program;
+        const type = { getSymbol: () => symbol } as unknown as ts.Type;
+        const node = {
+          name: 'value',
+          type: AST_NODE_TYPES.Identifier,
+        } as TSESTree.Identifier;
+
+        expect(
+          valueMatchesSpecifier(
+            node,
+            { from: 'package', name: 'value', package: 'example' },
+            program,
+            type,
+          ),
+        ).toBe(false);
+      });
     });
 
     describe(AST_NODE_TYPES.ClassDeclaration, () => {
