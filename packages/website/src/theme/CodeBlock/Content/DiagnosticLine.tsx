@@ -1,5 +1,4 @@
 import type { RenderProps, Token } from 'prism-react-renderer';
-import type { ReactNode } from 'react';
 
 import clsx from 'clsx';
 import React from 'react';
@@ -63,27 +62,31 @@ export function DiagnosticLine({
           const activeRanges = ranges.filter(
             range => range.start < end && range.end > start,
           );
-          let rendered: ReactNode = (
-            <span {...tokenProps}>{tokenProps.children}</span>
-          );
+          const markerKey = `${tokenIndex}:${partIndex}`;
 
-          for (const range of activeRanges.toReversed()) {
-            const focusable = !focusableDiagnostics.has(range.diagnosticIndex);
-            focusableDiagnostics.add(range.diagnosticIndex);
-            rendered = (
-              <DiagnosticMarker
-                focusable={focusable}
-                message={range.diagnostic.message}
-              >
-                {rendered}
-              </DiagnosticMarker>
+          if (activeRanges.length === 0) {
+            return (
+              <span key={markerKey} {...tokenProps}>
+                {tokenProps.children}
+              </span>
             );
           }
 
+          const focusable = activeRanges.some(
+            range => !focusableDiagnostics.has(range.diagnosticIndex),
+          );
+          for (const range of activeRanges) {
+            focusableDiagnostics.add(range.diagnosticIndex);
+          }
+
           return (
-            <React.Fragment key={`${tokenIndex}:${partIndex}`}>
-              {rendered}
-            </React.Fragment>
+            <DiagnosticMarker
+              key={markerKey}
+              focusable={focusable}
+              messages={activeRanges.map(range => range.diagnostic.message)}
+            >
+              <span {...tokenProps}>{tokenProps.children}</span>
+            </DiagnosticMarker>
           );
         });
       })}

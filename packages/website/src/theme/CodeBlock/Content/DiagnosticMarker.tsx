@@ -8,18 +8,24 @@ import styles from './styles.module.css';
 interface DiagnosticMarkerProps {
   children: ReactNode;
   focusable: boolean;
-  message: string;
+  messages: readonly string[];
 }
 
 export function DiagnosticMarker({
   children,
   focusable,
-  message,
+  messages,
 }: DiagnosticMarkerProps): React.JSX.Element {
+  const accessibleMessage = messages.join('; ');
+
   return (
     <Tooltip.Root disableHoverablePopup>
       <Tooltip.Trigger
-        aria-label={focusable ? `Lint error: ${message}` : undefined}
+        aria-label={
+          focusable
+            ? `Lint error${messages.length > 1 ? 's' : ''}: ${accessibleMessage}`
+            : undefined
+        }
         className={styles.diagnostic}
         delay={0}
         render={focusable ? undefined : <span />}
@@ -34,7 +40,12 @@ export function DiagnosticMarker({
           sideOffset={8}
         >
           <Tooltip.Popup className={styles.diagnosticTooltip}>
-            {message}
+            {messages.map((message, index) => (
+              <React.Fragment key={`${index}:${message}`}>
+                {index > 0 && <br />}
+                {message}
+              </React.Fragment>
+            ))}
           </Tooltip.Popup>
         </Tooltip.Positioner>
       </Tooltip.Portal>
