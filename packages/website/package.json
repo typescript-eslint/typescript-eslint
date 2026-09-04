@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
+    "@base-ui/react": "^1.7.0",
     "@docusaurus/core": "~3.10.2",
     "@docusaurus/faster": "^3.10.2",
     "@docusaurus/plugin-client-redirects": "~3.10.2",

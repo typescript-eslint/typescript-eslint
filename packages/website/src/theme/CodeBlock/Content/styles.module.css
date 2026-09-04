@@ -18,6 +18,14 @@
 }
 
 .diagnostic {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: inherit;
   text-decoration: underline wavy #c62828 1.5px;
   text-decoration-skip-ink: none;
   text-underline-offset: 0.18em;
@@ -29,9 +37,11 @@
   outline-offset: 2px;
 }
 
-.diagnosticTooltip {
-  position: fixed;
+.diagnosticTooltipPositioner {
   z-index: calc(var(--ifm-z-index-fixed) + 1);
+}
+
+.diagnosticTooltip {
   width: max-content;
   max-width: min(20rem, calc(100vw - 24px));
   padding: 0.5rem 0.65rem;
