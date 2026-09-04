@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-this-alias';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-this-alias', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'const self = foo(this);',
     {

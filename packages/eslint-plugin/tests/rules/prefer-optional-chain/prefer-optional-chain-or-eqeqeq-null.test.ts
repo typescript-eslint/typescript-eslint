@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-or-eqeqeq-null', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   // with the `| null | undefined` type - `=== null` doesn't cover the
   // `undefined` case - so optional chaining is not a valid conversion
   valid: [

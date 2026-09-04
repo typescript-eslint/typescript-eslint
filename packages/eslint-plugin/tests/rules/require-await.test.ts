@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('require-await', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Non-async function declaration
     `

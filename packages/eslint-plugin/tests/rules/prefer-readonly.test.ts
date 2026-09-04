@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-readonly', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'function ignore() {}',
     'const ignore = function () {};',

@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unsafe-enum-comparison', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "'a' > 'b';",
     "'a' < 'b';",

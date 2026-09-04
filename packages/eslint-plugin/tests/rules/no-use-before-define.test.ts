@@ -7,6 +7,9 @@ const ruleTester = new RuleTester();
 const parserOptions = { ecmaVersion: 6 as const };
 
 ruleTester.run('no-use-before-define', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 type foo = 1;

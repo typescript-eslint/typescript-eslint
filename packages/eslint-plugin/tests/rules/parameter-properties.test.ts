@@ -5,6 +5,9 @@ import rule from '../../src/rules/parameter-properties';
 const ruleTester = new RuleTester();
 
 ruleTester.run('parameter-properties', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Foo {

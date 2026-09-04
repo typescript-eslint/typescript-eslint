@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-implied-eval', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'foo.setImmediate(null);',
     'foo.setInterval(null);',

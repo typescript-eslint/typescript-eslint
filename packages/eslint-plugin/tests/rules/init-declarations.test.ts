@@ -5,6 +5,9 @@ import rule from '../../src/rules/init-declarations';
 const ruleTester = new RuleTester();
 
 ruleTester.run('init-declarations', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // checking compatibility with base rule
     'var foo = null;',

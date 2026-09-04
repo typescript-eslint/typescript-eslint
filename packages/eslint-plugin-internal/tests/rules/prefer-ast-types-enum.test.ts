@@ -7,6 +7,9 @@ import rule from '../../src/rules/prefer-ast-types-enum.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-ast-types-enum', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: "node.type === 'Literal';",

@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-inferrable-types';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-inferrable-types', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'const a = 10n;',
     'const a = -10n;',

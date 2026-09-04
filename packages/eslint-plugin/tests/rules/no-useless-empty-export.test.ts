@@ -14,6 +14,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-useless-empty-export', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "declare module '_'",
     "import {} from '_';",

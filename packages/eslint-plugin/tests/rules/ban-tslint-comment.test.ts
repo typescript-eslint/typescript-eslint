@@ -5,6 +5,9 @@ import rule from '../../src/rules/ban-tslint-comment';
 const ruleTester = new RuleTester();
 
 ruleTester.run('ban-tslint-comment', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'let a: readonly any[] = [];',

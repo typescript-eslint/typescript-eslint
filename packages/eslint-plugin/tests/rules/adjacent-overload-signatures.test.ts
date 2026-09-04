@@ -5,6 +5,9 @@ import rule from '../../src/rules/adjacent-overload-signatures';
 const ruleTester = new RuleTester();
 
 ruleTester.run('adjacent-overload-signatures', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `

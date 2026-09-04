@@ -11,6 +11,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unused-expressions', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 test.age?.toLocaleString();

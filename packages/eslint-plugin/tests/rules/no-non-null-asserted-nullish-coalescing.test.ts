@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-non-null-asserted-nullish-coalescing';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'foo ?? bar;',
     'foo ?? bar!;',

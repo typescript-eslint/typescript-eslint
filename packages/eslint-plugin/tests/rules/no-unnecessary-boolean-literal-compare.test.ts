@@ -8,6 +8,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare const varAny: any;

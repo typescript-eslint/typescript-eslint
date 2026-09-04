@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-literal-enum-member';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-literal-enum-member', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 enum ValidRegex {

@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unsafe-argument', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // unknown function should be ignored
     `
@@ -125,6 +128,7 @@ foo(...spread, 1 as any);
       errors: [
         {
           column: 16,
+          data: { receiver: '`string`', sender: '`any`' },
           endColumn: 24,
           endLine: 5,
           line: 5,
@@ -141,6 +145,7 @@ foo('a', 'b', 1 as any);
       errors: [
         {
           column: 15,
+          data: { receiver: '`string`', sender: '`any`' },
           endColumn: 23,
           endLine: 4,
           line: 4,
@@ -156,10 +161,7 @@ foo(1 as any);
       errors: [
         {
           column: 5,
-          data: {
-            receiver: '`number`',
-            sender: '`any`',
-          },
+          data: { receiver: '`number`', sender: '`any`' },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -175,10 +177,7 @@ foo(error);
       errors: [
         {
           column: 5,
-          data: {
-            receiver: '`number`',
-            sender: 'error typed',
-          },
+          data: { receiver: '`number`', sender: 'error typed' },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -194,10 +193,7 @@ foo(1, 1 as any);
       errors: [
         {
           column: 8,
-          data: {
-            receiver: '`string`',
-            sender: '`any`',
-          },
+          data: { receiver: '`string`', sender: '`any`' },
           endColumn: 16,
           endLine: 3,
           line: 3,
@@ -213,10 +209,7 @@ foo(1, 2, 3, 1 as any);
       errors: [
         {
           column: 14,
-          data: {
-            receiver: '`number`',
-            sender: '`any`',
-          },
+          data: { receiver: '`number`', sender: '`any`' },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -232,10 +225,7 @@ foo(1 as any, 1 as any);
       errors: [
         {
           column: 5,
-          data: {
-            receiver: '`string`',
-            sender: '`any`',
-          },
+          data: { receiver: '`string`', sender: '`any`' },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -243,10 +233,7 @@ foo(1 as any, 1 as any);
         },
         {
           column: 15,
-          data: {
-            receiver: '`number`',
-            sender: '`any`',
-          },
+          data: { receiver: '`number`', sender: '`any`' },
           endColumn: 23,
           endLine: 3,
           line: 3,
@@ -263,6 +250,7 @@ foo(...(x as any));
       errors: [
         {
           column: 5,
+          data: { sender: '`any`' },
           endColumn: 18,
           endLine: 4,
           line: 4,
@@ -316,10 +304,7 @@ foo(...x);
       errors: [
         {
           column: 5,
-          data: {
-            receiver: '`number`',
-            sender: 'of type `any`',
-          },
+          data: { receiver: '`number`', sender: 'of type `any`' },
           endColumn: 9,
           endLine: 5,
           line: 5,
@@ -337,10 +322,7 @@ foo(...x);
       errors: [
         {
           column: 5,
-          data: {
-            receiver: '`number`',
-            sender: 'error typed',
-          },
+          data: { receiver: '`number`', sender: 'error typed' },
           endColumn: 9,
           endLine: 5,
           line: 5,
@@ -356,10 +338,7 @@ foo(...(['foo', 1, 2] as [string, any, number]));
       errors: [
         {
           column: 5,
-          data: {
-            receiver: '`number`',
-            sender: 'of type `any`',
-          },
+          data: { receiver: '`number`', sender: 'of type `any`' },
           endColumn: 48,
           endLine: 3,
           line: 3,
@@ -377,10 +356,7 @@ foo('a', ...x, 1 as any);
       errors: [
         {
           column: 16,
-          data: {
-            receiver: '`string`',
-            sender: '`any`',
-          },
+          data: { receiver: '`string`', sender: '`any`' },
           endColumn: 24,
           endLine: 5,
           line: 5,
@@ -398,10 +374,7 @@ foo('a', ...x, 1 as any);
       errors: [
         {
           column: 16,
-          data: {
-            receiver: '`string`',
-            sender: '`any`',
-          },
+          data: { receiver: '`string`', sender: '`any`' },
           endColumn: 24,
           endLine: 5,
           line: 5,
@@ -419,10 +392,7 @@ foo(new Set<any>(), ...x);
       errors: [
         {
           column: 5,
-          data: {
-            receiver: '`Set<string>`',
-            sender: '`Set<any>`',
-          },
+          data: { receiver: '`Set<string>`', sender: '`Set<any>`' },
           endColumn: 19,
           endLine: 5,
           line: 5,
@@ -449,10 +419,7 @@ foo(1 as any, 'a' as any, 1 as any);
       errors: [
         {
           column: 5,
-          data: {
-            receiver: '`number`',
-            sender: '`any`',
-          },
+          data: { receiver: '`number`', sender: '`any`' },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -460,10 +427,7 @@ foo(1 as any, 'a' as any, 1 as any);
         },
         {
           column: 15,
-          data: {
-            receiver: '`string`',
-            sender: '`any`',
-          },
+          data: { receiver: '`string`', sender: '`any`' },
           endColumn: 25,
           endLine: 3,
           line: 3,
@@ -479,10 +443,7 @@ foo('a', 1 as any, 'a' as any, 1 as any);
       errors: [
         {
           column: 10,
-          data: {
-            receiver: '`number`',
-            sender: '`any`',
-          },
+          data: { receiver: '`number`', sender: '`any`' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -490,10 +451,7 @@ foo('a', 1 as any, 'a' as any, 1 as any);
         },
         {
           column: 20,
-          data: {
-            receiver: '`string`',
-            sender: '`any`',
-          },
+          data: { receiver: '`string`', sender: '`any`' },
           endColumn: 30,
           endLine: 3,
           line: 3,
@@ -511,10 +469,7 @@ foo(t as any);
       errors: [
         {
           column: 5,
-          data: {
-            receiver: '`T`',
-            sender: '`any`',
-          },
+          data: { receiver: '`T`', sender: '`any`' },
           endColumn: 13,
           endLine: 5,
           line: 5,
@@ -536,10 +491,7 @@ foo<number>\`\${arg}\${arg}\${arg}\`;
       errors: [
         {
           column: 15,
-          data: {
-            receiver: '`number`',
-            sender: '`any`',
-          },
+          data: { receiver: '`number`', sender: '`any`' },
           endColumn: 18,
           endLine: 9,
           line: 9,
@@ -547,10 +499,7 @@ foo<number>\`\${arg}\${arg}\${arg}\`;
         },
         {
           column: 27,
-          data: {
-            receiver: '`string`',
-            sender: '`any`',
-          },
+          data: { receiver: '`string`', sender: '`any`' },
           endColumn: 30,
           endLine: 9,
           line: 9,
@@ -567,10 +516,7 @@ foo\`\${arg}\`;
       errors: [
         {
           column: 7,
-          data: {
-            receiver: '`number`',
-            sender: '`any`',
-          },
+          data: { receiver: '`number`', sender: '`any`' },
           endColumn: 10,
           endLine: 4,
           line: 4,
@@ -588,10 +534,7 @@ foo\`\${arg}\`;
       errors: [
         {
           column: 7,
-          data: {
-            receiver: '`T`',
-            sender: '`any`',
-          },
+          data: { receiver: '`T`', sender: '`any`' },
           endColumn: 10,
           endLine: 5,
           line: 5,

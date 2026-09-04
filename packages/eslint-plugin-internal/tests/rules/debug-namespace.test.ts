@@ -5,6 +5,9 @@ import rule from '../../src/rules/debug-namespace.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('debug-namespace', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: "const log = debug('not:correct');",

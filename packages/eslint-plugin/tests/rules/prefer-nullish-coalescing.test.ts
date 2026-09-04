@@ -8,6 +8,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-nullish-coalescing', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare let x: string;
@@ -1844,11 +1847,7 @@ let b: string | boolean | undefined;
 
 const x = Boolean(a || b);
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1858,11 +1857,7 @@ let c: string | boolean | undefined;
 
 const test = Boolean(a || b || c);
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1872,11 +1867,7 @@ let c: string | boolean | undefined;
 
 const test = Boolean(a || (b && c));
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1886,11 +1877,7 @@ let c: string | boolean | undefined;
 
 const test = Boolean((a || b) ?? c);
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1900,11 +1887,7 @@ let c: string | boolean | undefined;
 
 const test = Boolean(a ?? (b || c));
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1914,11 +1897,7 @@ let c: string | boolean | undefined;
 
 const test = Boolean(a ? b || c : 'fail');
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1928,11 +1907,7 @@ let c: string | boolean | undefined;
 
 const test = Boolean(a ? 'success' : b || c);
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1942,11 +1917,7 @@ let c: string | boolean | undefined;
 
 const test = Boolean(((a = b), b || c));
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1956,11 +1927,7 @@ let c: string | boolean | undefined;
 
 const test = Boolean((a ? a : b) || c);
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1970,11 +1937,7 @@ let c: string | boolean | undefined;
 
 const test = Boolean(c || (!a ? b : a));
       `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -1985,11 +1948,7 @@ let c: string | boolean | undefined;
 if (a || b || c) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2000,11 +1959,7 @@ let c: string | boolean | undefined;
 if (a || (b && c)) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2015,11 +1970,7 @@ let c: string | boolean | undefined;
 if ((a || b) ?? c) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2030,11 +1981,7 @@ let c: string | boolean | undefined;
 if (a ?? (b || c)) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2045,11 +1992,7 @@ let c: string | boolean | undefined;
 if (a ? b || c : 'fail') {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2060,11 +2003,7 @@ let c: string | boolean | undefined;
 if (a ? 'success' : b || c) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2075,11 +2014,7 @@ let c: string | boolean | undefined;
 if (((a = b), b || c)) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2089,11 +2024,7 @@ let b: string | undefined;
 if (!(a || b)) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2103,11 +2034,7 @@ let b: string | undefined;
 if (!!(a || b)) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2117,11 +2044,7 @@ let b: string | boolean | undefined;
 if (a ? a : b) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2131,11 +2054,7 @@ let b: string | boolean | undefined;
 if (!a ? b : a) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2146,11 +2065,7 @@ let c: string | boolean | undefined;
 if ((a ? a : b) || c) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -2161,11 +2076,7 @@ let c: string | boolean | undefined;
 if (c || (!a ? b : a)) {
 }
       `,
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
 
     {
@@ -2174,11 +2085,7 @@ declare const a: any;
 declare const b: any;
 a ? a : b;
       `,
-      options: [
-        {
-          ignorePrimitives: true,
-        },
-      ],
+      options: [{ ignorePrimitives: true }],
     },
 
     {
@@ -2223,12 +2130,14 @@ x || 'foo';
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -2248,12 +2157,14 @@ x ||= 'foo';
       errors: [
         {
           column: 3,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 6,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -2273,12 +2184,14 @@ x || 'foo';
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -2298,12 +2211,14 @@ x ||= 'foo';
       errors: [
         {
           column: 3,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 6,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -2323,12 +2238,14 @@ x || 'foo';
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -2348,12 +2265,14 @@ x ||= 'foo';
       errors: [
         {
           column: 3,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 6,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -2373,12 +2292,14 @@ x || 'foo';
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -2398,12 +2319,14 @@ x ||= 'foo';
       errors: [
         {
           column: 3,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 6,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -2421,12 +2344,14 @@ x ??= 'foo';
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -2446,12 +2371,14 @@ x.z[1][this[this.o]]['3'][a.b.c] !== null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -2468,12 +2395,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -2488,12 +2417,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -2513,12 +2444,14 @@ x.z[1][this[this.o]]['3'][a.b.c] !== undefined
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -2535,12 +2468,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -2555,12 +2490,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -2580,12 +2517,14 @@ x.z[1][this[this.o]]['3'][a.b.c] === null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -2602,12 +2541,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -2622,12 +2563,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -2647,12 +2590,14 @@ x.z[1][this[this.o]]['3'][a.b.c] === undefined
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -2669,12 +2614,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -2689,12 +2636,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -2714,12 +2663,14 @@ x.z[1][this[this.o]]['3'][a.b.c] !== null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -2736,12 +2687,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -2756,12 +2709,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -2781,12 +2736,14 @@ x.z[1][this[this.o]]['3'][a.b.c] !== undefined
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -2803,12 +2760,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -2823,12 +2782,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -2848,12 +2809,14 @@ x.z[1][this[this.o]]['3'][a.b.c] === null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -2870,12 +2833,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -2890,12 +2855,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -2915,12 +2882,14 @@ x.z[1][this[this.o]]['3'][a.b.c] === undefined
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -2937,12 +2906,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -2957,12 +2928,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -2982,12 +2955,14 @@ null !== x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3004,12 +2979,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3024,12 +3001,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3049,12 +3028,14 @@ undefined !== x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3071,12 +3052,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3091,12 +3074,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3116,12 +3101,14 @@ null === x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3138,12 +3125,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3158,12 +3147,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3183,12 +3174,14 @@ undefined === x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3205,12 +3198,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3225,12 +3220,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3250,12 +3247,14 @@ null !== x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3272,12 +3271,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3292,12 +3293,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3317,12 +3320,14 @@ undefined !== x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3339,12 +3344,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3359,12 +3366,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3384,12 +3393,14 @@ null === x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3406,12 +3417,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3426,12 +3439,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 38,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3451,12 +3466,14 @@ undefined === x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3473,12 +3490,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 44,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3493,12 +3512,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 36,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3518,12 +3539,14 @@ x.z[1][this[this.o]]['3'][a.b.c] != null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3540,12 +3563,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 42,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3560,12 +3585,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 36,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3585,12 +3612,14 @@ x.z[1][this[this.o]]['3'][a.b.c] == null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3607,12 +3636,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 42,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3627,12 +3658,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3652,12 +3685,14 @@ x.z[1][this[this.o]]['3'][a.b.c] !== null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3674,12 +3709,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 43,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3694,12 +3731,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3719,12 +3758,14 @@ x.z[1][this[this.o]]['3'][a.b.c] === null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3741,12 +3782,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 43,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3761,12 +3804,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3786,12 +3831,14 @@ x.z[1][this[this.o]]['3'][a.b.c] != null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 5,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3808,12 +3855,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 43,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3828,12 +3877,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 23,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3852,12 +3903,14 @@ undefined != x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 4,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -3874,12 +3927,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 29,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3894,12 +3949,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 18,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3914,12 +3971,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 80,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x.z[1][this[this.o]]['3'][a.b.c] ?? y;`,
             },
@@ -3934,12 +3993,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 24,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -3954,12 +4015,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 23,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -3978,12 +4041,14 @@ undefined == x.z[1][this[this.o]]['3'][a.b.c]
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 4,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -4000,12 +4065,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 29,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -4020,12 +4087,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 18,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -4040,12 +4109,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 80,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x.z[1][this[this.o]]['3'][a.b.c] ?? y;`,
             },
@@ -4060,12 +4131,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 24,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -4080,12 +4153,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 23,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -4104,12 +4179,14 @@ x.z[1][this[this.o]]['3'][a.b.c] != undefined
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 6,
           endLine: 4,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -4126,12 +4203,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 29,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -4146,12 +4225,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 18,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -4166,12 +4247,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 80,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x.z[1][this[this.o]]['3'][a.b.c] ?? y;`,
             },
@@ -4186,12 +4269,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 24,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -4206,12 +4291,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 23,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -4230,12 +4317,14 @@ x.z[1][this[this.o]]['3'][a.b.c] == undefined
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 37,
           endLine: 4,
           line: 2,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 x.z[1][this[this.o]]['3'][a.b.c] ?? y;
@@ -4252,12 +4341,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 29,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -4272,12 +4363,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 18,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? y;`,
             },
@@ -4292,12 +4385,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 80,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x.z[1][this[this.o]]['3'][a.b.c] ?? y;`,
             },
@@ -4312,12 +4407,14 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 24,
           endLine: 1,
           line: 1,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `x ?? (z = y);`,
             },
@@ -4333,245 +4430,265 @@ x.z[1][this[this.o]]['3'][a.b.c] ?? y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 29,
           endLine: 1,
           line: 1,
-          messageId: 'preferNullishOverTernary' as const,
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
-              messageId: 'suggestNullish' as const,
+              data: { equals: '' },
+              messageId: 'suggestNullish',
               output: 'this ?? y;',
             },
           ],
         },
       ],
-      options: [{ ignoreTernaryTests: false }] as const,
-      output: null,
-    },
-
-    {
-      code: `
-declare let x: string | null | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: string | null | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare let x: string | null | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: string | null | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare let x: number | null | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: number | null | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare let x: number | null | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: number | null | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare let x: boolean | null | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: boolean | null | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare let x: boolean | null | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: boolean | null | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare let x: object | null | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: object | null | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare let x: object | null | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: object | null | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
       options: [{ ignoreTernaryTests: false }],
       output: null,
     },
 
     {
       code: `
+declare let x: string | null | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: string | null | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | null | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | null | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare let x: object | null | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: object | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+
+    {
+      code: `
 declare let x: { n: string | null | undefined };
 x.n ? x.n : y;
       `,
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n: string | null | undefined };
@@ -4592,12 +4709,14 @@ declare let x: { n: string | null | undefined };
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n: string | null | undefined };
@@ -4618,12 +4737,14 @@ x.n ? x.n : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n: number | null | undefined };
@@ -4644,12 +4765,14 @@ declare let x: { n: number | null | undefined };
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n: number | null | undefined };
@@ -4670,12 +4793,14 @@ x.n ? x.n : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n: boolean | null | undefined };
@@ -4696,12 +4821,14 @@ declare let x: { n: boolean | null | undefined };
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n: boolean | null | undefined };
@@ -4722,12 +4849,14 @@ x.n ? x.n : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n: object | null | undefined };
@@ -4748,12 +4877,14 @@ declare let x: { n: object | null | undefined };
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n: object | null | undefined };
@@ -4775,12 +4906,14 @@ x.n?.a ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -4801,12 +4934,14 @@ x.n?.a ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -4827,12 +4962,14 @@ x.n?.a ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 19,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -4853,12 +4990,14 @@ x.n?.a !== undefined ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 35,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -4879,12 +5018,14 @@ x.n?.a !== undefined ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 34,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -4905,12 +5046,14 @@ x.n?.a !== undefined ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 33,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -4931,12 +5074,14 @@ x.n?.a != undefined ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 34,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -4957,12 +5102,14 @@ x.n?.a != undefined ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 33,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -4983,12 +5130,14 @@ x.n?.a != undefined ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 32,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5009,12 +5158,14 @@ x.n?.a != null ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 29,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5035,12 +5186,14 @@ x.n?.a != null ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 28,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5061,12 +5214,14 @@ x.n?.a != null ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 27,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5087,12 +5242,14 @@ x.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 53,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5113,12 +5270,14 @@ x.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 51,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5139,12 +5298,14 @@ x?.n?.a ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 22,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5165,12 +5326,14 @@ x?.n?.a ? x.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5191,12 +5354,14 @@ x?.n?.a ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5217,12 +5382,14 @@ x?.n?.a ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5243,12 +5410,14 @@ x?.n?.a !== undefined ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 36,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5269,12 +5438,14 @@ x?.n?.a !== undefined ? x.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 35,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5295,12 +5466,14 @@ x?.n?.a !== undefined ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 35,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5321,12 +5494,14 @@ x?.n?.a !== undefined ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 34,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5347,12 +5522,14 @@ x?.n?.a != undefined ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 35,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5373,12 +5550,14 @@ x?.n?.a != undefined ? x.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 34,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5399,12 +5578,14 @@ x?.n?.a != undefined ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 34,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5425,12 +5606,14 @@ x?.n?.a != undefined ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 33,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5451,12 +5634,14 @@ x?.n?.a != null ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 30,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5477,12 +5662,14 @@ x?.n?.a != null ? x.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 29,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5503,12 +5690,14 @@ x?.n?.a != null ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 29,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5529,12 +5718,14 @@ x?.n?.a != null ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 28,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string } };
@@ -5555,12 +5746,14 @@ x?.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 54,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5581,12 +5774,14 @@ x?.n?.a !== undefined && x.n.a !== null ? x.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 53,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5607,12 +5802,14 @@ x?.n?.a !== undefined && x.n.a !== null ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 53,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5633,12 +5830,14 @@ x?.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 52,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5659,12 +5858,14 @@ x?.n?.a ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 22,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5685,12 +5886,14 @@ x?.n?.a ? x.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5711,12 +5914,14 @@ x?.n?.a ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5737,12 +5942,14 @@ x?.n?.a ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5764,12 +5971,14 @@ x.n?.a ? x?.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5790,12 +5999,14 @@ x.n?.a ? x.n?.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5816,12 +6027,14 @@ x.n?.a ? x?.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5842,12 +6055,14 @@ x.n?.a ? x.n.a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 19,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5868,12 +6083,14 @@ x.n?.a ? (x?.n).a : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 22,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n?: { a?: string | null } };
@@ -5918,12 +6135,14 @@ x || 'foo' ? null : null;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -5944,12 +6163,14 @@ declare let x: string | null | undefined;
       errors: [
         {
           column: 4,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 7,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -5970,12 +6191,14 @@ x || 'foo' ? null : null;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -5996,12 +6219,14 @@ declare let x: number | null | undefined;
       errors: [
         {
           column: 4,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 7,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -6022,12 +6247,14 @@ x || 'foo' ? null : null;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6048,12 +6275,14 @@ declare let x: boolean | null | undefined;
       errors: [
         {
           column: 4,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 7,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6074,12 +6303,14 @@ x || 'foo' ? null : null;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6100,12 +6331,14 @@ declare let x: object | null | undefined;
       errors: [
         {
           column: 4,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 7,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6127,12 +6360,14 @@ if (x || 'foo') {
       errors: [
         {
           column: 7,
+          data: { description: 'or', equals: '' },
           endColumn: 9,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -6155,12 +6390,14 @@ if ((x ||= 'foo')) {
       errors: [
         {
           column: 8,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -6183,12 +6420,14 @@ if (x || 'foo') {
       errors: [
         {
           column: 7,
+          data: { description: 'or', equals: '' },
           endColumn: 9,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -6211,12 +6450,14 @@ if ((x ||= 'foo')) {
       errors: [
         {
           column: 8,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -6239,12 +6480,14 @@ if (x || 'foo') {
       errors: [
         {
           column: 7,
+          data: { description: 'or', equals: '' },
           endColumn: 9,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6267,12 +6510,14 @@ if ((x ||= 'foo')) {
       errors: [
         {
           column: 8,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6295,12 +6540,14 @@ if (x || 'foo') {
       errors: [
         {
           column: 7,
+          data: { description: 'or', equals: '' },
           endColumn: 9,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6323,12 +6570,14 @@ if ((x ||= 'foo')) {
       errors: [
         {
           column: 8,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6350,12 +6599,14 @@ do {} while (x || 'foo');
       errors: [
         {
           column: 16,
+          data: { description: 'or', equals: '' },
           endColumn: 18,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -6376,12 +6627,14 @@ do {} while ((x ||= 'foo'));
       errors: [
         {
           column: 17,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -6402,12 +6655,14 @@ do {} while (x || 'foo');
       errors: [
         {
           column: 16,
+          data: { description: 'or', equals: '' },
           endColumn: 18,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -6428,12 +6683,14 @@ do {} while ((x ||= 'foo'));
       errors: [
         {
           column: 17,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -6454,12 +6711,14 @@ do {} while (x || 'foo');
       errors: [
         {
           column: 16,
+          data: { description: 'or', equals: '' },
           endColumn: 18,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6480,12 +6739,14 @@ do {} while ((x ||= 'foo'));
       errors: [
         {
           column: 17,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6506,12 +6767,14 @@ do {} while (x || 'foo');
       errors: [
         {
           column: 16,
+          data: { description: 'or', equals: '' },
           endColumn: 18,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6532,12 +6795,14 @@ do {} while ((x ||= 'foo'));
       errors: [
         {
           column: 17,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6558,12 +6823,14 @@ for (; x || 'foo';) {}
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -6584,12 +6851,14 @@ for (; (x ||= 'foo');) {}
       errors: [
         {
           column: 11,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -6610,12 +6879,14 @@ for (; x || 'foo';) {}
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -6636,12 +6907,14 @@ for (; (x ||= 'foo');) {}
       errors: [
         {
           column: 11,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -6662,12 +6935,14 @@ for (; x || 'foo';) {}
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6688,12 +6963,14 @@ for (; (x ||= 'foo');) {}
       errors: [
         {
           column: 11,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6714,12 +6991,14 @@ for (; x || 'foo';) {}
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6740,12 +7019,14 @@ for (; (x ||= 'foo');) {}
       errors: [
         {
           column: 11,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6766,12 +7047,14 @@ while (x || 'foo') {}
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -6792,12 +7075,14 @@ while ((x ||= 'foo')) {}
       errors: [
         {
           column: 11,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -6818,12 +7103,14 @@ while (x || 'foo') {}
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -6844,12 +7131,14 @@ while ((x ||= 'foo')) {}
       errors: [
         {
           column: 11,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -6870,12 +7159,14 @@ while (x || 'foo') {}
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6896,12 +7187,14 @@ while ((x ||= 'foo')) {}
       errors: [
         {
           column: 11,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -6922,12 +7215,14 @@ while (x || 'foo') {}
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6948,12 +7243,14 @@ while ((x ||= 'foo')) {}
       errors: [
         {
           column: 11,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 14,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -6978,12 +7275,14 @@ a || (b && c);
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: string | null | undefined;
@@ -7008,12 +7307,14 @@ a || (b && c);
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: number | null | undefined;
@@ -7038,12 +7339,14 @@ a || (b && c);
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: boolean | null | undefined;
@@ -7068,12 +7371,14 @@ a || (b && c);
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: object | null | undefined;
@@ -7099,12 +7404,14 @@ a || b || (c && d);
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: string | null | undefined;
@@ -7118,12 +7425,14 @@ declare let d: string | null | undefined;
         },
         {
           column: 8,
+          data: { description: 'or', equals: '' },
           endColumn: 10,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: string | null | undefined;
@@ -7150,12 +7459,14 @@ a || b || (c && d);
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: number | null | undefined;
@@ -7169,12 +7480,14 @@ declare let d: number | null | undefined;
         },
         {
           column: 8,
+          data: { description: 'or', equals: '' },
           endColumn: 10,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: number | null | undefined;
@@ -7201,12 +7514,14 @@ a || b || (c && d);
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: boolean | null | undefined;
@@ -7220,12 +7535,14 @@ declare let d: boolean | null | undefined;
         },
         {
           column: 8,
+          data: { description: 'or', equals: '' },
           endColumn: 10,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: boolean | null | undefined;
@@ -7252,12 +7569,14 @@ a || b || (c && d);
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: object | null | undefined;
@@ -7271,12 +7590,14 @@ declare let d: object | null | undefined;
         },
         {
           column: 8,
+          data: { description: 'or', equals: '' },
           endColumn: 10,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: object | null | undefined;
@@ -7303,12 +7624,14 @@ declare let d: string | null | undefined;
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: string | null | undefined;
@@ -7322,12 +7645,14 @@ declare let d: string | null | undefined;
         },
         {
           column: 15,
+          data: { description: 'or', equals: '' },
           endColumn: 17,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: string | null | undefined;
@@ -7354,12 +7679,14 @@ declare let d: number | null | undefined;
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: number | null | undefined;
@@ -7373,12 +7700,14 @@ declare let d: number | null | undefined;
         },
         {
           column: 15,
+          data: { description: 'or', equals: '' },
           endColumn: 17,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: number | null | undefined;
@@ -7405,12 +7734,14 @@ declare let d: boolean | null | undefined;
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: boolean | null | undefined;
@@ -7424,12 +7755,14 @@ declare let d: boolean | null | undefined;
         },
         {
           column: 15,
+          data: { description: 'or', equals: '' },
           endColumn: 17,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: boolean | null | undefined;
@@ -7456,12 +7789,14 @@ declare let d: object | null | undefined;
       errors: [
         {
           column: 10,
+          data: { description: 'or', equals: '' },
           endColumn: 12,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: object | null | undefined;
@@ -7475,12 +7810,14 @@ declare let d: object | null | undefined;
         },
         {
           column: 15,
+          data: { description: 'or', equals: '' },
           endColumn: 17,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: object | null | undefined;
@@ -7507,12 +7844,14 @@ if (() => x || 'foo') {
       errors: [
         {
           column: 13,
+          data: { description: 'or', equals: '' },
           endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -7534,12 +7873,14 @@ if (() => (x ||= 'foo')) {
       errors: [
         {
           column: 14,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -7561,12 +7902,14 @@ if (() => x || 'foo') {
       errors: [
         {
           column: 13,
+          data: { description: 'or', equals: '' },
           endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -7588,12 +7931,14 @@ if (() => (x ||= 'foo')) {
       errors: [
         {
           column: 14,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -7615,12 +7960,14 @@ if (() => x || 'foo') {
       errors: [
         {
           column: 13,
+          data: { description: 'or', equals: '' },
           endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -7642,12 +7989,14 @@ if (() => (x ||= 'foo')) {
       errors: [
         {
           column: 14,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -7669,12 +8018,14 @@ if (() => x || 'foo') {
       errors: [
         {
           column: 13,
+          data: { description: 'or', equals: '' },
           endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -7696,12 +8047,14 @@ if (() => (x ||= 'foo')) {
       errors: [
         {
           column: 14,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -7727,12 +8080,14 @@ if (
       errors: [
         {
           column: 14,
+          data: { description: 'or', equals: '' },
           endColumn: 16,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -7762,12 +8117,14 @@ if (
       errors: [
         {
           column: 15,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 18,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | null | undefined;
@@ -7797,12 +8154,14 @@ if (
       errors: [
         {
           column: 14,
+          data: { description: 'or', equals: '' },
           endColumn: 16,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -7832,12 +8191,14 @@ if (
       errors: [
         {
           column: 15,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 18,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | null | undefined;
@@ -7867,12 +8228,14 @@ if (
       errors: [
         {
           column: 14,
+          data: { description: 'or', equals: '' },
           endColumn: 16,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -7902,12 +8265,14 @@ if (
       errors: [
         {
           column: 15,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 18,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | null | undefined;
@@ -7937,12 +8302,14 @@ if (
       errors: [
         {
           column: 14,
+          data: { description: 'or', equals: '' },
           endColumn: 16,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -7972,12 +8339,14 @@ if (
       errors: [
         {
           column: 15,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 18,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let x: object | null | undefined;
@@ -8005,12 +8374,14 @@ a || b || c;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: string | null | undefined;
@@ -8034,12 +8405,14 @@ a || b || c;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: number | null | undefined;
@@ -8063,12 +8436,14 @@ a || b || c;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: boolean | null | undefined;
@@ -8092,12 +8467,14 @@ a || b || c;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let a: object | null | undefined;
@@ -8120,12 +8497,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | undefined;
@@ -8136,9 +8515,7 @@ x ?? y;
         },
       ],
       options: [
-        {
-          ignorePrimitives: { bigint: true, boolean: true, number: true },
-        },
+        { ignorePrimitives: { bigint: true, boolean: true, number: true } },
       ],
       output: null,
     },
@@ -8150,12 +8527,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | undefined;
@@ -8166,9 +8545,7 @@ x ?? y;
         },
       ],
       options: [
-        {
-          ignorePrimitives: { bigint: true, boolean: true, string: true },
-        },
+        { ignorePrimitives: { bigint: true, boolean: true, string: true } },
       ],
       output: null,
     },
@@ -8180,12 +8557,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | undefined;
@@ -8196,9 +8575,7 @@ x ?? y;
         },
       ],
       options: [
-        {
-          ignorePrimitives: { bigint: true, number: true, string: true },
-        },
+        { ignorePrimitives: { bigint: true, number: true, string: true } },
       ],
       output: null,
     },
@@ -8210,12 +8587,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: bigint | undefined;
@@ -8226,9 +8605,7 @@ x ?? y;
         },
       ],
       options: [
-        {
-          ignorePrimitives: { boolean: true, number: true, string: true },
-        },
+        { ignorePrimitives: { boolean: true, number: true, string: true } },
       ],
       output: null,
     },
@@ -8240,12 +8617,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: string | undefined;
@@ -8256,9 +8635,7 @@ x ?? y;
         },
       ],
       options: [
-        {
-          ignorePrimitives: { bigint: true, boolean: true, number: true },
-        },
+        { ignorePrimitives: { bigint: true, boolean: true, number: true } },
       ],
       output: null,
     },
@@ -8270,12 +8647,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: number | undefined;
@@ -8286,9 +8665,7 @@ x ?? y;
         },
       ],
       options: [
-        {
-          ignorePrimitives: { bigint: true, boolean: true, string: true },
-        },
+        { ignorePrimitives: { bigint: true, boolean: true, string: true } },
       ],
       output: null,
     },
@@ -8300,12 +8677,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: boolean | undefined;
@@ -8316,9 +8695,7 @@ x ?? y;
         },
       ],
       options: [
-        {
-          ignorePrimitives: { bigint: true, number: true, string: true },
-        },
+        { ignorePrimitives: { bigint: true, number: true, string: true } },
       ],
       output: null,
     },
@@ -8330,12 +8707,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: bigint | undefined;
@@ -8359,12 +8738,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: '' | undefined;
@@ -8394,12 +8775,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: \`\` | undefined;
@@ -8429,12 +8812,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 0 | undefined;
@@ -8464,12 +8849,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 0n | undefined;
@@ -8499,12 +8886,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: false | undefined;
@@ -8534,12 +8923,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: '' | undefined;
@@ -8569,12 +8960,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: \`\` | undefined;
@@ -8604,12 +8997,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 0 | undefined;
@@ -8639,12 +9034,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 0n | undefined;
@@ -8674,12 +9071,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: false | undefined;
@@ -8710,12 +9109,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 'a' | undefined;
@@ -8745,12 +9146,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: \`hello\${'string'}\` | undefined;
@@ -8780,12 +9183,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 1 | undefined;
@@ -8815,12 +9220,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 1n | undefined;
@@ -8850,12 +9257,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: true | undefined;
@@ -8885,12 +9294,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 'a' | undefined;
@@ -8920,12 +9331,14 @@ declare let x: 'a' | undefined;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 'a' | undefined;
@@ -8955,12 +9368,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: \`hello\${'string'}\` | undefined;
@@ -8990,12 +9405,14 @@ declare let x: \`hello\${'string'}\` | undefined;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: \`hello\${'string'}\` | undefined;
@@ -9025,12 +9442,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 1 | undefined;
@@ -9060,12 +9479,14 @@ declare let x: 1 | undefined;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 1 | undefined;
@@ -9095,12 +9516,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 1n | undefined;
@@ -9130,12 +9553,14 @@ declare let x: 1n | undefined;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 1n | undefined;
@@ -9165,12 +9590,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: true | undefined;
@@ -9200,12 +9627,14 @@ declare let x: true | undefined;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: true | undefined;
@@ -9236,12 +9665,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 'a' | 'b' | undefined;
@@ -9271,12 +9702,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 'a' | \`b\` | undefined;
@@ -9306,12 +9739,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 0 | 1 | undefined;
@@ -9341,12 +9776,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 1 | 2 | 3 | undefined;
@@ -9376,12 +9813,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 0n | 1n | undefined;
@@ -9411,12 +9850,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 1n | 2n | 3n | undefined;
@@ -9446,467 +9887,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: true | false | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: false,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 'a' | 'b' | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 'a' | 'b' | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 'a' | 'b' | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 'a' | 'b' | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 'a' | \`b\` | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 'a' | \`b\` | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 'a' | \`b\` | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 'a' | \`b\` | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 0 | 1 | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 0 | 1 | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 0 | 1 | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 0 | 1 | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 1 | 2 | 3 | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 1 | 2 | 3 | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 1 | 2 | 3 | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 1 | 2 | 3 | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 0n | 1n | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 0n | 1n | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 0n | 1n | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 0n | 1n | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 1n | 2n | 3n | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 1n | 2n | 3n | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: 1n | 2n | 3n | undefined;
-!x ? y : x;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare let x: 1n | 2n | 3n | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-declare let x: true | false | undefined;
-x ? x : y;
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: true | false | undefined;
@@ -9930,18 +9918,501 @@ x ?? y;
     },
     {
       code: `
-declare let x: true | false | undefined;
+declare let x: 'a' | 'b' | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | 'b' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | 'b' | undefined;
 !x ? y : x;
       `,
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | 'b' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | \`b\` | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | \`b\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | \`b\` | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | \`b\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0 | 1 | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0 | 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0 | 1 | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0 | 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1 | 2 | 3 | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1 | 2 | 3 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1 | 2 | 3 | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1 | 2 | 3 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0n | 1n | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0n | 1n | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1n | 2n | 3n | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1n | 2n | 3n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1n | 2n | 3n | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1n | 2n | 3n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: true | false | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+declare let x: true | false | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: true | false | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { equals: '' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: true | false | undefined;
@@ -9972,12 +10443,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 0 | 1 | 0n | 1n | undefined;
@@ -10007,12 +10480,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: true | false | null | undefined;
@@ -10042,12 +10517,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 0 | 1 | 0n | 1n | undefined;
@@ -10077,12 +10554,14 @@ declare let x: 0 | 1 | 0n | 1n | undefined;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: 0 | 1 | 0n | 1n | undefined;
@@ -10112,12 +10591,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: true | false | null | undefined;
@@ -10147,12 +10628,14 @@ declare let x: true | false | null | undefined;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 11,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: true | false | null | undefined;
@@ -10182,12 +10665,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: null;
@@ -10207,12 +10692,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 const x = undefined;
@@ -10231,12 +10718,14 @@ null || y;
       errors: [
         {
           column: 6,
+          data: { description: 'or', equals: '' },
           endColumn: 8,
           endLine: 2,
           line: 2,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 null ?? y;
@@ -10254,12 +10743,14 @@ undefined || y;
       errors: [
         {
           column: 11,
+          data: { description: 'or', equals: '' },
           endColumn: 13,
           endLine: 2,
           line: 2,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 undefined ?? y;
@@ -10283,12 +10774,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 enum Enum {
@@ -10318,12 +10811,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 enum Enum {
@@ -10353,12 +10848,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 enum Enum {
@@ -10388,12 +10885,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 enum Enum {
@@ -10421,12 +10920,14 @@ const x = Boolean(a || b);
       errors: [
         {
           column: 21,
+          data: { description: 'or', equals: '' },
           endColumn: 23,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | true | undefined;
@@ -10439,11 +10940,7 @@ const x = Boolean(a ?? b);
           ],
         },
       ],
-      options: [
-        {
-          ignoreBooleanCoercion: false,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: false }],
     },
     {
       code: `
@@ -10456,12 +10953,14 @@ function outer() {
       errors: [
         {
           column: 53,
+          data: { description: 'or', equals: '' },
           endColumn: 55,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 function outer() {
@@ -10474,11 +10973,7 @@ function outer() {
           ],
         },
       ],
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -10490,12 +10985,14 @@ const x = String(a || b);
       errors: [
         {
           column: 20,
+          data: { description: 'or', equals: '' },
           endColumn: 22,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | true | undefined;
@@ -10507,11 +11004,7 @@ const x = String(a ?? b);
           ],
         },
       ],
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -10523,12 +11016,14 @@ const x = Boolean(() => a || b);
       errors: [
         {
           column: 27,
+          data: { description: 'or', equals: '' },
           endColumn: 29,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | true | undefined;
@@ -10540,11 +11035,7 @@ const x = Boolean(() => a ?? b);
           ],
         },
       ],
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -10558,12 +11049,14 @@ const x = Boolean(function weird() {
       errors: [
         {
           column: 12,
+          data: { description: 'or', equals: '' },
           endColumn: 14,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | true | undefined;
@@ -10577,11 +11070,7 @@ const x = Boolean(function weird() {
           ],
         },
       ],
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -10595,12 +11084,14 @@ const x = Boolean(f(a || b));
       errors: [
         {
           column: 23,
+          data: { description: 'or', equals: '' },
           endColumn: 25,
           endLine: 7,
           line: 7,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | true | undefined;
@@ -10614,11 +11105,7 @@ const x = Boolean(f(a ?? b));
           ],
         },
       ],
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -10630,12 +11117,14 @@ const x = Boolean(1 + (a || b));
       errors: [
         {
           column: 26,
+          data: { description: 'or', equals: '' },
           endColumn: 28,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | true | undefined;
@@ -10647,11 +11136,7 @@ const x = Boolean(1 + (a ?? b));
           ],
         },
       ],
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -10663,12 +11148,14 @@ const x = Boolean(a ? a : b);
       errors: [
         {
           column: 19,
+          data: { equals: '' },
           endColumn: 28,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | true | undefined;
@@ -10680,11 +11167,7 @@ const x = Boolean(a ?? b);
           ],
         },
       ],
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -10696,12 +11179,14 @@ const test = Boolean(!a ? b : a);
       errors: [
         {
           column: 22,
+          data: { equals: '' },
           endColumn: 32,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | boolean | undefined;
@@ -10713,11 +11198,7 @@ const test = Boolean(a ?? b);
           ],
         },
       ],
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
+      options: [{ ignoreBooleanCoercion: true }],
     },
     {
       code: `
@@ -10732,12 +11213,14 @@ if (f(a || b)) {
       errors: [
         {
           column: 9,
+          data: { description: 'or', equals: '' },
           endColumn: 11,
           endLine: 7,
           line: 7,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | true | undefined;
@@ -10752,11 +11235,7 @@ if (f(a ?? b)) {
           ],
         },
       ],
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -10769,12 +11248,14 @@ if (+(a || b)) {
       errors: [
         {
           column: 9,
+          data: { description: 'or', equals: '' },
           endColumn: 11,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare const a: string | undefined;
@@ -10787,11 +11268,7 @@ if (+(a ?? b)) {
           ],
         },
       ],
-      options: [
-        {
-          ignoreConditionalTests: true,
-        },
-      ],
+      options: [{ ignoreConditionalTests: true }],
     },
     {
       code: `
@@ -10806,12 +11283,14 @@ defaultBox || getFallbackBox();
       errors: [
         {
           column: 12,
+          data: { description: 'or', equals: '' },
           endColumn: 14,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -10841,12 +11320,14 @@ defaultBox ? defaultBox : getFallbackBox();
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 43,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -10877,12 +11358,14 @@ defaultBoxOptional.a?.b != null ? defaultBoxOptional.a?.b : getFallbackBox();
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 77,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -10909,12 +11392,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 4,
           line: 4,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare const x: any;
@@ -10936,12 +11421,14 @@ x || y;
       errors: [
         {
           column: 3,
+          data: { description: 'or', equals: '' },
           endColumn: 5,
           endLine: 4,
           line: 4,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare const x: unknown;
@@ -10966,12 +11453,14 @@ defaultBoxOptional.a?.b != null ? defaultBoxOptional.a.b : getFallbackBox();
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 76,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -11002,12 +11491,14 @@ defaultBoxOptional.a?.b ? defaultBoxOptional.a?.b : getFallbackBox();
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 69,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -11038,12 +11529,14 @@ defaultBoxOptional.a?.b ? defaultBoxOptional.a.b : getFallbackBox();
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 68,
           endLine: 8,
           line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -11076,12 +11569,14 @@ defaultBoxOptional.a?.b !== undefined
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 10,
           line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -11114,12 +11609,14 @@ defaultBoxOptional.a?.b !== undefined
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 10,
           line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -11152,12 +11649,14 @@ defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 10,
           line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -11190,12 +11689,14 @@ defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 21,
           endLine: 10,
           line: 8,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 interface Box {
@@ -11222,12 +11723,14 @@ declare let y: number;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 11,
           endLine: 4,
           line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: unknown;
@@ -11249,12 +11752,14 @@ x ? x : y;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 10,
           endLine: 4,
           line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: unknown;
@@ -11275,12 +11780,14 @@ declare let x: { n: unknown };
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 15,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { n: unknown };
@@ -11300,12 +11807,14 @@ x?.['a'] != null ? x['a'] : 'foo';
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 34,
           endLine: 4,
           line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { a: string } | null;
@@ -11327,12 +11836,14 @@ x?.['a'] != null ? x.a : 'foo';
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 31,
           endLine: 4,
           line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { a: string } | null;
@@ -11354,12 +11865,14 @@ x?.a != null ? x['a'] : 'foo';
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 30,
           endLine: 4,
           line: 4,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare let x: { a: string } | null;
@@ -11382,12 +11895,14 @@ x?.[a] != null ? x[a] : 'foo';
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 30,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 const a = 'b';
@@ -11415,12 +11930,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11450,12 +11967,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11485,12 +12004,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11520,12 +12041,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11540,12 +12063,14 @@ function lazyInitialize() {
         },
         {
           column: 9,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 12,
           endLine: 7,
           line: 7,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11577,12 +12102,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11612,12 +12139,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 36,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11649,12 +12178,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 38,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11686,12 +12217,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 38,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11708,12 +12241,14 @@ function lazyInitialize() {
         },
         {
           column: 24,
+          data: { description: 'assignment', equals: '=' },
           endColumn: 27,
           endLine: 6,
           line: 6,
           messageId: 'preferNullishOverOr',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11745,12 +12280,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | undefined;
@@ -11780,12 +12317,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null | undefined;
@@ -11815,12 +12354,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11850,12 +12391,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string } | null;
@@ -11886,12 +12429,14 @@ function lazyInitialize() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 9,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: string | null;
@@ -11938,12 +12483,14 @@ if (foo == null) {
       errors: [
         {
           column: 1,
+          data: { equals: '=' },
           endColumn: 2,
           endLine: 25,
           line: 5,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: string | null;
@@ -11985,12 +12532,14 @@ if (foo == null) /* comment before 1 */ /* comment before 2 */ foo = makeFoo(); 
       errors: [
         {
           column: 1,
+          data: { equals: '=' },
           endColumn: 80,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: string | null;
@@ -12018,12 +12567,14 @@ function weirdParens() {
       errors: [
         {
           column: 3,
+          data: { equals: '=' },
           endColumn: 4,
           endLine: 8,
           line: 6,
           messageId: 'preferNullishOverAssignment',
           suggestions: [
             {
+              data: { equals: '=' },
               messageId: 'suggestNullish',
               output: `
 declare let foo: { a: string | null };
@@ -12049,12 +12600,14 @@ const foo = a ? a : b ? 1 : 2;
       errors: [
         {
           column: 13,
+          data: { equals: '' },
           endColumn: 30,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | undefined;
@@ -12078,12 +12631,14 @@ const foo = a ? a : (b ? 1 : 2);
       errors: [
         {
           column: 13,
+          data: { equals: '' },
           endColumn: 32,
           endLine: 5,
           line: 5,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 let a: string | undefined;
@@ -12105,12 +12660,14 @@ c !== null ? c : c ? 1 : 2;
       errors: [
         {
           column: 1,
+          data: { equals: '' },
           endColumn: 27,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverTernary',
           suggestions: [
             {
+              data: { equals: '' },
               messageId: 'suggestNullish',
               output: `
 declare const c: string | null;
