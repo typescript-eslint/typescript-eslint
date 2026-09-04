@@ -62,6 +62,70 @@ ruleTester.run('test', rule, {
         },
       ],
     },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  assertionOptions: { requireData: true },
+  invalid: [
+    {
+      errors: [
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 2 },
+        { messageId: '...', line: 3 },
+      ],
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 38,
+          endLine: 8,
+          line: 8,
+          messageId: 'multipleLines',
+        },
+        {
+          column: 9,
+          endColumn: 38,
+          endLine: 9,
+          line: 9,
+          messageId: 'multipleLines',
+        },
+      ],
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
+      errors: [
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 2 },
+        { messageId: '...', line: 3 },
+      ],
+    },
+  ],
+  assertionOptions: { requireData: true },
+});
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 38,
+          endLine: 7,
+          line: 7,
+          messageId: 'multipleLines',
+        },
+        {
+          column: 9,
+          endColumn: 38,
+          endLine: 8,
+          line: 8,
+          messageId: 'multipleLines',
+        },
+      ],
+    },
   ],
   valid: [
     `
