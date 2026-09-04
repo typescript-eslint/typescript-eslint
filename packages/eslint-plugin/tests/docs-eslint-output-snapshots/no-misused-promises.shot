@@ -1,4 +1,68 @@
 Incorrect
+Options: { "checksConditionals": { "flagUnions": "all" } }
+
+declare function unionFn(): Promise<boolean> | boolean;
+if (unionFn()) {
+    ~~~~~~~~~ Expected non-Promise value in a boolean conditional.
+  // Do something
+}
+
+declare function genericFn<T>(arg: T): Promise<T> | string;
+if (genericFn(false)) {
+    ~~~~~~~~~~~~~~~~ Expected non-Promise value in a boolean conditional.
+  // Do something
+}
+
+Correct
+Options: { "checksConditionals": { "flagUnions": "all" } }
+
+declare function unionFn(): Promise<boolean> | boolean;
+if (await unionFn()) {
+  // Do something
+}
+
+declare function genericFn<T>(arg: T): Promise<T> | string;
+if (await genericFn(false)) {
+  // Do something
+}
+
+Incorrect
+Options: { "checksConditionals": { "flagUnions": "strict" } }
+
+declare function unionFn(): Promise<boolean> | boolean;
+if (unionFn()) {
+    ~~~~~~~~~ Expected non-Promise value in a boolean conditional.
+  // Do something
+}
+
+type MyBox<T> = { value: T };
+type PromiseBox<T> = { value: T };
+
+// These types are structurally identical.
+declare function structuralFn(): Promise<PromiseBox<number>> | MyBox<number>;
+if (structuralFn()) {
+    ~~~~~~~~~~~~~~ Expected non-Promise value in a boolean conditional.
+  // Do something
+}
+
+Correct
+Options: { "checksConditionals": { "flagUnions": "strict" } }
+
+declare function unionFn(): Promise<boolean> | boolean;
+if (await unionFn()) {
+  // Do something
+}
+
+type MyBox<T> = { value: T };
+type PromiseBox<T> = { value: T };
+
+// These types are structurally identical.
+declare function structuralFn(): Promise<PromiseBox<number>> | MyBox<number>;
+if (await structuralFn()) {
+  // Do something
+}
+
+Incorrect
 Options: { "checksConditionals": true }
 
 const promise = Promise.resolve('value');

@@ -20,11 +20,17 @@ import { parseFinallyCall } from '../util/promiseUtils';
 
 export type Options = [
   {
-    checksConditionals?: boolean;
+    checksConditionals?: boolean | ChecksConditionalsOptions;
     checksSpreads?: boolean;
     checksVoidReturn?: boolean | ChecksVoidReturnOptions;
   },
 ];
+
+export type FlagUnionsOptions = 'all' | 'none' | 'strict';
+
+export interface ChecksConditionalsOptions {
+  flagUnions?: FlagUnionsOptions;
+}
 
 export interface ChecksVoidReturnOptions {
   arguments?: boolean;
@@ -108,9 +114,27 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
         properties: {
           checksConditionals: {
-            type: 'boolean',
             description:
               'Whether to warn when a Promise is provided to conditional statements.',
+            oneOf: [
+              {
+                type: 'boolean',
+                description: 'Whether to check conditionals.',
+              },
+              {
+                type: 'object',
+                additionalProperties: false,
+                description: 'Detailed settings for conditional inspection.',
+                properties: {
+                  flagUnions: {
+                    type: 'string',
+                    description:
+                      'Configures how union types containing Promise-like types are checked.',
+                    enum: ['all', 'strict', 'none'],
+                  },
+                },
+              },
+            ],
           },
           checksSpreads: {
             type: 'boolean',
@@ -182,6 +206,8 @@ export default createRule<Options, MessageId>({
     const checker = services.program.getTypeChecker();
 
     const checkedNodes = new Set<TSESTree.Node>();
+
+    const flagUnionsOption = normalizeFlagUnionsOption(checksConditionals);
 
     const conditionalChecks: TSESLint.RuleListener = {
       'CallExpression > MemberExpression': checkArrayPredicates,
@@ -334,6 +360,24 @@ export default createRule<Options, MessageId>({
       }
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (isAlwaysThenable(checker, tsNode)) {
+        context.report({
+          node,
+          messageId: 'conditional',
+        });
+        return;
+      }
+
+      if (
+        // none -> Report `Promise` but not `Promise | ...`
+        (flagUnionsOption === 'none' && isAlwaysThenable(checker, tsNode)) ||
+        //
+        // all -> Report `Promise` and `Promise | ...`
+        (flagUnionsOption === 'all' && isSometimesThenable(checker, tsNode)) ||
+        //
+        // strict -> Report `Promise<T> | T` but not `Promise<T> | NotT`
+        (flagUnionsOption === 'strict' &&
+          hasMatchingPromiseTypeArgument(checker, tsNode))
+      ) {
         context.report({
           node,
           messageId: 'conditional',
@@ -1102,4 +1146,56 @@ function hasWellKnownSymbolWithVoidReturn(
         checker.getTypeOfSymbolAtLocation(symbol, node),
       );
     });
+}
+/**
+ * Check that the Promise argument is the same as the rest of the type when it is a Union that contains Promise.
+ */
+function hasMatchingPromiseTypeArgument(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+) {
+  const type = checker.getTypeAtLocation(node);
+
+  const unionConstituents = tsutils.unionConstituents(
+    checker.getApparentType(type),
+  );
+
+  const promiseType = unionConstituents.find(type =>
+    tsutils.isThenableType(checker, node, type),
+  );
+  if (!promiseType) {
+    return false;
+  }
+
+  const nonPromiseUnionConstituents = unionConstituents.filter(
+    type => type !== promiseType,
+  );
+  const awaitedType = checker.getAwaitedType(promiseType);
+
+  if (!awaitedType) {
+    return false;
+  }
+
+  const awaitedTypeConstituents = tsutils.unionConstituents(awaitedType);
+
+  return (
+    nonPromiseUnionConstituents.length === awaitedTypeConstituents.length &&
+    nonPromiseUnionConstituents.every(type =>
+      awaitedTypeConstituents.some(
+        awaited =>
+          checker.isTypeAssignableTo(type, awaited) &&
+          checker.isTypeAssignableTo(awaited, type),
+      ),
+    )
+  );
+}
+
+function normalizeFlagUnionsOption(
+  checksConditionals: boolean | ChecksConditionalsOptions | undefined,
+): FlagUnionsOptions {
+  if (!checksConditionals || checksConditionals === true) {
+    return 'none';
+  }
+
+  return checksConditionals.flagUnions ?? 'none';
 }
