@@ -39,7 +39,7 @@ jobs:
         run: |
           git diff HEAD~1 -G"@nx/workspace" --exit-code package.json && echo "@nx/workspace unchanged" || echo "::set-output name=was-changed::true"
 
-      - uses: pnpm/setup@84cb39b217b10273981911c288cd62326dc7c6d2 # v2.0.2
+      - uses: pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b # v2.1.0
         if: ${{ steps.nrwl-workspace-package-check.outputs.was-changed == 'true' }}
         name: Install pnpm
         with:
