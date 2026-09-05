@@ -1,3 +1,26 @@
+## 8.69.0 (2026-08-31)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-misused-promises] add flagUnions option for checkConditionals ([#12603](https://github.com/typescript-eslint/typescript-eslint/pull/12603))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-meaningless-void-operator] report void on non-call expressions ([#12727](https://github.com/typescript-eslint/typescript-eslint/pull/12727))
+- **eslint-plugin:** [unified-signatures] compare type parameters by constraint instead of name ([#12741](https://github.com/typescript-eslint/typescript-eslint/pull/12741))
+- **eslint-plugin:** [no-mixed-enums] use scope analysis instead of type checking for merged namespaces ([#12731](https://github.com/typescript-eslint/typescript-eslint/pull/12731))
+
+### ❤️ Thank You
+
+- Abdu Alim Arlikhozhaev @Arlikhozhaev
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- wonbeanie @wonbeanie
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.69.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.68.0 (2026-08-24)
 
 ### 🚀 Features
