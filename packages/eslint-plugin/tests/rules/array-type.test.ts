@@ -1,6 +1,6 @@
 import * as parser from '@typescript-eslint/parser';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { TSESLint } from '@typescript-eslint/utils';
+import { Linter } from 'eslint';
 
 import type { OptionString } from '../../src/rules/array-type';
 
@@ -2163,7 +2163,7 @@ interface FooInterface {
 // -- eslint rule tester is not working with multi-pass
 // https://github.com/eslint/eslint/issues/11187
 describe('array-type (nested)', () => {
-  const linter = new TSESLint.Linter({});
+  const linter = new Linter({});
 
   describe('should deeply fix correctly', () => {
     function testOutput(

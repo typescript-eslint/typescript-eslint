@@ -2,12 +2,13 @@ import type {
   JSONSchema4,
   JSONSchema4ObjectSchema,
 } from '@typescript-eslint/utils/json-schema';
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
 import type { Token, Tokens, TokensList } from 'marked';
 import type * as mdast from 'mdast';
 
 import * as tseslintParser from '@typescript-eslint/parser';
 import { parseForESLint } from '@typescript-eslint/parser';
-import { Linter } from '@typescript-eslint/utils/ts-eslint';
+import { Linter as ESLintLinter } from 'eslint';
 import { marked } from 'marked';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
@@ -423,7 +424,7 @@ describe('Validating rule docs', () => {
         return { [namespacedRuleName]: 'error' as const };
       })();
 
-      const linter = new Linter();
+      const linter = new ESLintLinter();
       const messages = linter.verify(
         token.value,
         [

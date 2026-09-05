@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 
-import { Linter as ESLintLinter } from 'eslint';
-
 import type { ClassicConfig, FlatConfig, SharedConfig } from './Config';
 import type { Parser } from './Parser';
 import type { Processor as ProcessorType } from './Processor';
@@ -20,8 +18,12 @@ export type MinimalRuleModule<
 > = Partial<Omit<RuleModule<MessageIds, Options>, 'create'>> &
   Pick<RuleModule<MessageIds, Options>, 'create'>;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-declare class LinterBase {
+/**
+ * The Linter object does the actual evaluation of the JavaScript code. It doesn't do any filesystem operations, it
+ * simply parses and reports on the code. In particular, the Linter object does not process configuration objects
+ * or files.
+ */
+declare class Linter {
   /**
    * The version from package.json.
    */
@@ -312,11 +314,4 @@ namespace Linter {
   }
 }
 
-/**
- * The Linter object does the actual evaluation of the JavaScript code. It doesn't do any filesystem operations, it
- * simply parses and reports on the code. In particular, the Linter object does not process configuration objects
- * or files.
- */
-class Linter extends (ESLintLinter as typeof LinterBase) {}
-
-export { Linter };
+export type { Linter };
