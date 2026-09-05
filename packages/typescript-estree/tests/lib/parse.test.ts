@@ -527,8 +527,8 @@ describe(parser.parseAndGenerateServices, () => {
         it('errors for not included files', () => {
           expect(testParse('ts/notIncluded0j1.ts'))
             .toThrowErrorMatchingInlineSnapshot(`
-              [Error: ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-              However, that TSConfig does not include this file. Either:
+              [Error: ESLint was configured to lint \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+              However, that TSConfig does not include this file, so type information is not available for it. Either:
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
@@ -536,8 +536,8 @@ describe(parser.parseAndGenerateServices, () => {
             `);
           expect(testParse('ts/notIncluded02.tsx'))
             .toThrowErrorMatchingInlineSnapshot(`
-              [Error: ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded02.tsx\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-              However, that TSConfig does not include this file. Either:
+              [Error: ESLint was configured to lint \`<tsconfigRootDir>/ts/notIncluded02.tsx\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+              However, that TSConfig does not include this file, so type information is not available for it. Either:
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
@@ -545,8 +545,8 @@ describe(parser.parseAndGenerateServices, () => {
             `);
           expect(testParse('js/notIncluded01.js'))
             .toThrowErrorMatchingInlineSnapshot(`
-              [Error: ESLint was configured to run on \`<tsconfigRootDir>/js/notIncluded01.js\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-              However, that TSConfig does not include this file. Either:
+              [Error: ESLint was configured to lint \`<tsconfigRootDir>/js/notIncluded01.js\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+              However, that TSConfig does not include this file, so type information is not available for it. Either:
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
@@ -554,8 +554,8 @@ describe(parser.parseAndGenerateServices, () => {
             `);
           expect(testParse('js/notIncluded02.jsx'))
             .toThrowErrorMatchingInlineSnapshot(`
-              [Error: ESLint was configured to run on \`<tsconfigRootDir>/js/notIncluded02.jsx\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-              However, that TSConfig does not include this file. Either:
+              [Error: ESLint was configured to lint \`<tsconfigRootDir>/js/notIncluded02.jsx\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+              However, that TSConfig does not include this file, so type information is not available for it. Either:
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
@@ -572,7 +572,7 @@ describe(parser.parseAndGenerateServices, () => {
         it('the extension does not match', () => {
           expect(testParse('other/unknownFileType.unknown', []))
             .toThrowErrorMatchingInlineSnapshot(`
-              [Error: ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+              [Error: ESLint was configured to lint \`<tsconfigRootDir>/other/unknownFileType.unknown\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
               The extension for the file (\`.unknown\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config.]
             `);
         });
@@ -587,8 +587,8 @@ describe(parser.parseAndGenerateServices, () => {
           it("the file isn't included", () => {
             expect(testParse('other/notIncluded.vue'))
               .toThrowErrorMatchingInlineSnapshot(`
-                [Error: ESLint was configured to run on \`<tsconfigRootDir>/other/notIncluded.vue\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-                However, that TSConfig does not include this file. Either:
+                [Error: ESLint was configured to lint \`<tsconfigRootDir>/other/notIncluded.vue\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+                However, that TSConfig does not include this file, so type information is not available for it. Either:
                 - Change ESLint's list of included files to not include this file
                 - Change that TSConfig to include this file
                 - Create a new TSConfig that includes this file and include it in your parserOptions.project
@@ -599,9 +599,9 @@ describe(parser.parseAndGenerateServices, () => {
           it('duplicate extension', () => {
             expect(testParse('ts/notIncluded.ts', ['.ts']))
               .toThrowErrorMatchingInlineSnapshot(`
-                [Error: ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+                [Error: ESLint was configured to lint \`<tsconfigRootDir>/ts/notIncluded.ts\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
                 You unnecessarily included the extension \`.ts\` with the \`parserOptions.extraFileExtensions\` option. This extension is already handled by the parser by default.
-                However, that TSConfig does not include this file. Either:
+                However, that TSConfig does not include this file, so type information is not available for it. Either:
                 - Change ESLint's list of included files to not include this file
                 - Change that TSConfig to include this file
                 - Create a new TSConfig that includes this file and include it in your parserOptions.project
@@ -613,7 +613,7 @@ describe(parser.parseAndGenerateServices, () => {
         it('invalid extension', () => {
           expect(testParse('other/unknownFileType.unknown', ['unknown']))
             .toThrowErrorMatchingInlineSnapshot(`
-              [Error: ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+              [Error: ESLint was configured to lint \`<tsconfigRootDir>/other/unknownFileType.unknown\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
               Found unexpected extension \`unknown\` specified with the \`parserOptions.extraFileExtensions\` option. Did you mean \`.unknown\`?
               The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`.]
             `);
@@ -622,7 +622,7 @@ describe(parser.parseAndGenerateServices, () => {
         it('the extension does not match', () => {
           expect(testParse('other/unknownFileType.unknown'))
             .toThrowErrorMatchingInlineSnapshot(`
-              [Error: ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+              [Error: ESLint was configured to lint \`<tsconfigRootDir>/other/unknownFileType.unknown\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
               The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`.]
             `);
         });
@@ -698,15 +698,15 @@ describe(parser.parseAndGenerateServices, () => {
 
         expect(testParse('ts/notIncluded0j1.ts'))
           .toThrowErrorMatchingInlineSnapshot(`
-              [Error: ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`:
-              - <tsconfigRootDir>/tsconfig.json
-              - <tsconfigRootDir>/tsconfig.extra.json
-              However, none of those TSConfigs include this file. Either:
-              - Change ESLint's list of included files to not include this file
-              - Change one of those TSConfigs to include this file
-              - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
-            `);
+            [Error: ESLint was configured to lint \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` with type information from \`parserOptions.project\`:
+            - <tsconfigRootDir>/tsconfig.json
+            - <tsconfigRootDir>/tsconfig.extra.json
+            However, none of those TSConfigs include this file, so type information is not available for it. Either:
+            - Change ESLint's list of included files to not include this file
+            - Change one of those TSConfigs to include this file
+            - Create a new TSConfig that includes this file and include it in your parserOptions.project
+            See the typescript-eslint docs for more info: https://tseslint.com/none-of-those-tsconfigs-include-this-file]
+          `);
       },
     );
   });
@@ -916,7 +916,7 @@ describe(parser.parseAndGenerateServices, () => {
 
       it('throws a special-case error when project references are enabled in the only TSConfig and the file is not found', () => {
         expect(testParse()).toThrowErrorMatchingInlineSnapshot(`
-          [Error: ESLint was configured to run on \`<tsconfigRootDir>/file.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+          [Error: ESLint was configured to lint \`<tsconfigRootDir>/file.ts\` with type information from \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
           That TSConfig uses project "references" and doesn't include \`<tsconfigRootDir>/file.ts\` directly, which is not supported by \`parserOptions.project\`.
           Either:
           - Switch to \`parserOptions.projectService\`
