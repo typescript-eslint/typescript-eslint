@@ -1,0 +1,53 @@
+---
+description: 'Disallow type operations that resolve to the "empty object" type.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-generated-empty-object-type** for documentation.
+
+The `{}`, or "empty object" type, allows any value except `null` and `undefined`.
+It is rarely what you want it to be: even primitives such as `0` and `""` are assignable to it.
+
+[`no-empty-object-type`](./no-empty-object-type.mdx) reports `{}` written out by hand.
+This rule instead reports type operations that _resolve_ to `{}`, which is usually a sign that the operation went wrong.
+For example, `Omit<T, K>` distributes over a union, so `Omit<null | { a: number; b: string }, 'a'>` resolves to `{}` rather than `null | { b: string }`.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+type Data = { name: string; value: number };
+type NullableData = null | Data;
+
+// `Omit<null>` becomes {}, so this is `{} | { value: number }`, or `{}`
+type Unexpected = Omit<NullableData, 'name'>;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+type Data = { name: string; value: number };
+type NullableData = null | Data;
+
+// This is effectively Omit<Data, 'name'>, which is { value: number }
+type Expected = Omit<NonNullable<NullableData>, 'name'>;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If you intentionally rely on type operations producing `{}`, such as to describe "any non-nullish value" for non-trivial type logic, this rule may not be for you.
+Note that `NonNullable<unknown>` is a more explicit way to write that type, and is still reported by this rule.
+
+## Related To
+
+- [`no-empty-object-type`](./no-empty-object-type.mdx)
