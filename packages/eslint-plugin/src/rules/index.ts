@@ -52,6 +52,7 @@ import noLoopFunc from './no-loop-func';
 import noLossOfPrecision from './no-loss-of-precision';
 import noMagicNumbers from './no-magic-numbers';
 import noMeaninglessVoidOperator from './no-meaningless-void-operator';
+import noMisusedDisposable from './no-misused-disposable';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
 import noMisusedSpread from './no-misused-spread';
@@ -189,6 +190,7 @@ const rules = {
   'no-loss-of-precision': noLossOfPrecision,
   'no-magic-numbers': noMagicNumbers,
   'no-meaningless-void-operator': noMeaninglessVoidOperator,
+  'no-misused-disposable': noMisusedDisposable,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
   'no-misused-spread': noMisusedSpread,
