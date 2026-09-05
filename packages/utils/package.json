@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "8.68.0",
+  "version": "8.69.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",

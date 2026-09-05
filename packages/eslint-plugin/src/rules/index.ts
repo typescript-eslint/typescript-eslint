@@ -42,6 +42,7 @@ import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
+import noGeneratedEmptyObjectType from './no-generated-empty-object-type';
 import noImpliedEval from './no-implied-eval';
 import noImportTypeSideEffects from './no-import-type-side-effects';
 import noInferrableTypes from './no-inferrable-types';
@@ -179,6 +180,7 @@ const rules = {
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
+  'no-generated-empty-object-type': noGeneratedEmptyObjectType,
   'no-implied-eval': noImpliedEval,
   'no-import-type-side-effects': noImportTypeSideEffects,
   'no-inferrable-types': noInferrableTypes,

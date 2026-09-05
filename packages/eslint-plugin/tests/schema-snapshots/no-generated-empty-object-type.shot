@@ -1,0 +1,10 @@
+
+# SCHEMA:
+
+[]
+
+
+# TYPES:
+
+/** No options declared */
+type Options = [];
