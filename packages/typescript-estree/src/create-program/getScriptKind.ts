@@ -2,6 +2,7 @@ import path from 'node:path';
 import * as ts from 'typescript';
 
 export function getScriptKind(filePath: string, jsx: boolean): ts.ScriptKind {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- narrowing a file extension string to ts.Extension at a parse boundary
   const extension = path.extname(filePath).toLowerCase() as ts.Extension;
   // note - we only respect the user's jsx setting for unknown extensions
   // this is so that we always match TS's internal script kind logic, preventing

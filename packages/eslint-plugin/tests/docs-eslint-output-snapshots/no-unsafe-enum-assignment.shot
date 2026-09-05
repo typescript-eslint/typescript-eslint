@@ -1,0 +1,41 @@
+Incorrect
+
+enum Fruit {
+  Apple,
+}
+
+declare const someNumber: number;
+
+// Fruit.Apple is set to 0, so TypeScript allows this literal.
+const fruit: Fruit = 0;
+      ~~~~~~~~~~~~~~~~ The value assigned here does not have a shared enum type with the expected enum 'Fruit'.
+
+Incorrect
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+let mutated: Vegetable = Vegetable.Asparagus;
+
+mutated++;
+~~~~~~~~~ This mutation can produce a value outside of the expected enum 'Vegetable'.
+mutated += 1;
+~~~~~~~~~~~~ This mutation can produce a value outside of the expected enum 'Vegetable'.
+
+Correct
+
+enum Fruit {
+  Apple,
+}
+
+const fruit: Fruit = Fruit.Apple;
+
+Correct
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+let reassigned: Vegetable = Vegetable.Asparagus;
+reassigned = Vegetable.Asparagus;

@@ -494,5 +494,6 @@ export function getBinaryOperatorPrecedence(
 
   // -1 is lower than all other precedences.  Returning it will cause binary expression
   // parsing to stop.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- -1 is a sentinel below every real precedence
   return -1;
 }
