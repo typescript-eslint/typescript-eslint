@@ -366,13 +366,19 @@ function Bar({ foo = '' }: { foo: string }) {
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function Bar({ foo }: { foo: string }) {
   return foo;
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -390,15 +396,21 @@ class C {
           endLine: 3,
           line: 3,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 class C {
   public method({ foo }: { foo: string }) {
     return foo;
   }
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -412,11 +424,17 @@ const { 'literal-key': literalKey = 'default' } = { 'literal-key': 'value' };
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { 'literal-key': literalKey } = { 'literal-key': 'value' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -430,11 +448,17 @@ const { 'literal-key': literalKey } = { 'literal-key': 'value' };
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 [1, 2, 3].map((a) => a + 1);
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -452,15 +476,21 @@ function getValue({ value = '' }: { value: string } = {}): string | undefined {
           endLine: 4,
           line: 4,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function getValue(): undefined;
 function getValue(box: { value: string }): string;
 function getValue({ value }: { value: string } = {}): string | undefined {
   return value;
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -476,13 +506,19 @@ function getValue([value = '']: [string]) {
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function getValue([value]: [string]) {
   return value;
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -500,15 +536,21 @@ const {
           endLine: 5,
           line: 5,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 declare const x: { hello: { world: string } };
 
 const {
   hello: { world },
 } = x;
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -526,15 +568,21 @@ const {
           endLine: 5,
           line: 5,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 declare const x: { hello: Array<{ world: string }> };
 
 const {
   hello: [{ world }],
 } = x;
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -554,9 +602,10 @@ const h: B = {
           endLine: 7,
           line: 7,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 interface B {
   foo: (b: boolean | string) => void;
 }
@@ -565,6 +614,11 @@ const h: B = {
   foo: (b) => {},
 };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -578,11 +632,17 @@ function foo(a = undefined) {}
           endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function foo(a) {}
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -596,11 +656,17 @@ const { a = undefined } = {};
           endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = {};
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -614,11 +680,17 @@ const [a = undefined] = [];
           endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const [a] = [];
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -632,11 +704,17 @@ function foo({ a = undefined }) {}
           endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function foo({ a }) {}
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/11847
     {
@@ -652,13 +730,19 @@ function myFunction(p1: string, p2: number | undefined = undefined) {
           endLine: 2,
           line: 2,
           messageId: 'preferOptionalSyntax',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
 function myFunction(p1: string, p2?: number | undefined) {
   console.log(p1, p2);
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -674,14 +758,20 @@ function f(
           endLine: 4,
           line: 4,
           messageId: 'preferOptionalSyntax',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
 type SomeType = number | undefined;
 function f(
   /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
 ) {}
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     // noStrictNullCheck tests
     {
@@ -705,6 +795,16 @@ function Bar({ foo = '' }: { foo: string }) {
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function Bar({ foo }: { foo: string }) {
+  return foo;
+}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -712,11 +812,7 @@ function Bar({ foo = '' }: { foo: string }) {
           tsconfigRootDir: path.join(rootDir, 'unstrict'),
         },
       },
-      output: `
-function Bar({ foo }: { foo: string }) {
-  return foo;
-}
-      `,
+      output: null,
     },
     {
       code: `
@@ -737,6 +833,14 @@ function foo(a = undefined) {}
           endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function foo(a) {}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -744,9 +848,7 @@ function foo(a = undefined) {}
           tsconfigRootDir: path.join(rootDir, 'unstrict'),
         },
       },
-      output: `
-function foo(a) {}
-      `,
+      output: null,
     },
     {
       code: `
@@ -762,6 +864,16 @@ function Bar({ foo = '' }: { foo: string }) {
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function Bar({ foo }: { foo: string }) {
+  return foo;
+}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -774,11 +886,7 @@ function Bar({ foo = '' }: { foo: string }) {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
         },
       ],
-      output: `
-function Bar({ foo }: { foo: string }) {
-  return foo;
-}
-      `,
+      output: null,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/11980
     {
@@ -792,11 +900,17 @@ const { a = 'baz' } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -814,9 +928,10 @@ const { a = 'baz' } =
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } =
   Math.random() < 0.5
     ? { a: 'foo' }
@@ -824,6 +939,11 @@ const { a } =
       ? { a: 'bar' }
       : { a: 'qux' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -836,11 +956,17 @@ const { a = 'baz' } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -853,11 +979,17 @@ const { a = 'baz' } = cond ? { a() {} } : { a: 'bar' };
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = cond ? { a() {} } : { a: 'bar' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -870,11 +1002,17 @@ const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
           endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
   ],
 });
