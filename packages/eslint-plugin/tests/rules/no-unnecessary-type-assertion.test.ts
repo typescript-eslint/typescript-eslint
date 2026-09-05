@@ -917,6 +917,131 @@ const test = inferred({
 
 console.log(test.options.parameters.potato);
     `,
+    `
+type UntypedUpdate = Record<string, unknown> & {
+  Document?: {
+    Form?: string;
+    unid: string;
+  };
+};
+type Update = UntypedUpdate & {
+  Document?: {
+    className: string;
+  };
+};
+type UpdateAction = {
+  Document?: {
+    action?: 'update';
+  };
+};
+
+declare const orgDoc: Update;
+declare const diff: Update;
+const diffWithAction = diff as UpdateAction & Update;
+diffWithAction.Document = { action: 'update', ...orgDoc.Document! };
+    `,
+    `
+type CompletionEntryData = {
+  name: string;
+};
+
+declare const entry: { data: CompletionEntryData | undefined };
+const data = entry.data as
+  (CompletionEntryData & { extra?: string }) | undefined;
+data!.extra = 'value';
+    `,
+    `
+type A = { a?: { b?: { c?: string } } };
+type B = { a?: { b?: { d?: string } } };
+declare const x: A;
+const y = x as B & A;
+    `,
+    `
+type A = { __outer?: { x?: string; y?: string } };
+type B = { __outer?: { x?: string; z?: string } };
+declare const a: A;
+const b = a as B;
+b.__outer = { x: 'val', z: 'extra' };
+    `,
+    `
+type A = { value?: string | { common: string } };
+type B = { value?: string | { common: string; extra?: number } };
+declare const a: A;
+const b = a as B;
+b.value = { common: 'value', extra: 1 };
+    `,
+    `
+type A = { get: () => { common: string } };
+type B = { get: () => { common: string; extra?: number } };
+declare const a: A;
+const b = a as B;
+b.get().extra = 1;
+    `,
+    `
+type A = { Factory: new () => { common: string } };
+type B = { Factory: new () => { common: string; extra?: number } };
+declare const a: A;
+const b = a as B;
+new b.Factory().extra = 1;
+    `,
+    `
+type A = { nested?: { known: string } };
+type B = { nested?: { [key: string]: unknown; known: string } };
+declare const a: A;
+const b = a as B;
+b.nested!.extra = 1;
+    `,
+    `
+type A = { nested?: { [key: string]: unknown; known: string } };
+type B = { nested?: { known: string } };
+declare const a: A;
+const b = a as B;
+    `,
+    `
+type A = { nested?: Record<string, { common: string }> };
+type B = {
+  nested?: Record<string, { common: string; extra?: number }>;
+};
+declare const a: A;
+const b = a as B;
+b.nested!.value.extra = 1;
+    `,
+    `
+type A = { nested?: { readonly [key: string]: string } };
+type B = { nested?: { [key: string]: string } };
+declare const a: A;
+const b = a as B;
+b.nested!.key = 'value';
+    `,
+    `
+type A = { nested?: { [key: string]: unknown } };
+type B = { nested?: { [key: number]: unknown } };
+declare const a: A;
+const b = a as B;
+    `,
+    `
+type A = { nested?: { readonly value: string } };
+type B = { nested?: { value: string } };
+declare const a: A;
+const b = a as B;
+b.nested!.value = 'updated';
+    `,
+    `
+type A = { nested?: { value?: string } };
+type B = { nested?: { value: string } };
+declare const a: A;
+const b = a as B;
+    `,
+    {
+      code: `
+type A = { nested?: { common: string } };
+type B = { nested?: { common: string; extra?: number } };
+declare const a: A;
+const b = a as B;
+b.nested = { common: 'value', extra: 1 };
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/12485
     `
 declare const items: string[] | undefined;
@@ -944,6 +1069,204 @@ const x: E | undefined = o?.fn(n => n | 0, 0 as E);
   ],
 
   invalid: [
+    {
+      code: `
+type SourceNode = {
+  child?: SourceNode;
+  value: string;
+};
+type EquivalentNode = {
+  child?: EquivalentNode;
+  value: string;
+};
+type AnotherEquivalentNode = {
+  child?: AnotherEquivalentNode;
+  value: string;
+};
+type Update = {
+  first?: SourceNode;
+  second?: SourceNode;
+};
+type SameUpdate = {
+  first?: EquivalentNode;
+  second?: AnotherEquivalentNode;
+};
+
+declare const diff: Update;
+const same = diff as SameUpdate;
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 32,
+          endLine: 24,
+          line: 24,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type SourceNode = {
+  child?: SourceNode;
+  value: string;
+};
+type EquivalentNode = {
+  child?: EquivalentNode;
+  value: string;
+};
+type AnotherEquivalentNode = {
+  child?: AnotherEquivalentNode;
+  value: string;
+};
+type Update = {
+  first?: SourceNode;
+  second?: SourceNode;
+};
+type SameUpdate = {
+  first?: EquivalentNode;
+  second?: AnotherEquivalentNode;
+};
+
+declare const diff: Update;
+const same = diff;
+      `,
+    },
+    {
+      code: `
+type A = { value?: { common: string } | null };
+type B = { value?: { common: string } | null };
+declare const a: A;
+const b = a as B;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type A = { value?: { common: string } | null };
+type B = { value?: { common: string } | null };
+declare const a: A;
+const b = a;
+      `,
+    },
+    {
+      code: `
+type A = { nested?: { value: string } };
+type B = { nested?: { value: string } };
+declare const a: A;
+const b = a as B;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type A = { nested?: { value: string } };
+type B = { nested?: { value: string } };
+declare const a: A;
+const b = a;
+      `,
+    },
+    {
+      code: `
+type A = { nested?: { [key: string]: { common: string } } };
+type B = { nested?: { [key: string]: { common: string } } };
+declare const a: A;
+const b = a as B;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type A = { nested?: { [key: string]: { common: string } } };
+type B = { nested?: { [key: string]: { common: string } } };
+declare const a: A;
+const b = a;
+      `,
+    },
+    {
+      code: `
+type Value = string | { common: string };
+type A = { value?: Value };
+declare const a: A;
+const b = a as A;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type Value = string | { common: string };
+type A = { value?: Value };
+declare const a: A;
+const b = a;
+      `,
+    },
+    {
+      code: `
+type A = { get: () => { common: string } };
+declare const a: A;
+const b = a as A;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type A = { get: () => { common: string } };
+declare const a: A;
+const b = a;
+      `,
+    },
+    {
+      code: `
+type A = { nested?: { value: string } };
+type B = { nested?: { value: string } };
+declare const a: A;
+const b = a as B;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+      output: `
+type A = { nested?: { value: string } };
+type B = { nested?: { value: string } };
+declare const a: A;
+const b = a;
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [
