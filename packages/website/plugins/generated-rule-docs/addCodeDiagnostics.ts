@@ -1,5 +1,5 @@
-import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 import type * as mdast from 'mdast';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 import type * as unist from 'unist';
 
 import * as path from 'node:path';
