@@ -941,6 +941,75 @@ enum E {
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12271
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+};
+
+function update(valueStr: string) {
+  const color = +valueStr as Color;
+  values[color] = 'updated';
+}
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+const values: Record<Color, string> = {
+  [Color.Red]: '#f00',
+  [Color.Green]: '#0f0',
+  [Color.Blue]: '#00f',
+};
+
+function update(valueStr: string) {
+  values[+valueStr as Color] = 'updated';
+}
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+declare const value: number;
+const color = value as Color;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+declare const value: number | undefined;
+const color = value as Color | undefined;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+declare const color: Color;
+const value = color as number;
+    `,
+    `
+declare enum StatusCodes {
+  OK = 200,
+  NOT_FOUND = 404,
+}
+declare const status: number;
+const isOk = (status as StatusCodes) === StatusCodes.OK;
+    `,
   ],
 
   invalid: [
@@ -3343,6 +3412,65 @@ maybeFn?.(s as string | number);
 declare const maybeFn: ((arg: string | number) => void) | undefined;
 declare const s: string;
 maybeFn?.(s);
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12271
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+declare const color: Color;
+const same = color as Color;
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 28,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+declare const color: Color;
+const same = color;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+declare const color: Color | undefined;
+const same = color as Color | undefined;
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 40,
+          endLine: 8,
+          line: 8,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+declare const color: Color | undefined;
+const same = color;
       `,
     },
   ],
