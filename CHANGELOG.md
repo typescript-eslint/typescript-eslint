@@ -1,3 +1,34 @@
+## 8.70.0 (2026-09-07)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-generated-empty-object-type] add rule ([#12730](https://github.com/typescript-eslint/typescript-eslint/pull/12730))
+- **website:** generate per-page social preview cards ([#12734](https://github.com/typescript-eslint/typescript-eslint/pull/12734))
+
+### 🩹 Fixes
+
+- use stable release of pnpm 12 ([#12808](https://github.com/typescript-eslint/typescript-eslint/pull/12808))
+- update pnpm to 12.3.4 and dedupe Docusaurus packages ([#12829](https://github.com/typescript-eslint/typescript-eslint/pull/12829))
+- **eslint-plugin:** [member-ordering] don't report fields that read fields declared before them ([#12729](https://github.com/typescript-eslint/typescript-eslint/pull/12729))
+- **eslint-plugin:** [no-unnecessary-condition] no false positive on RHS of a nested logical expression ([#12728](https://github.com/typescript-eslint/typescript-eslint/pull/12728))
+- **eslint-plugin:** [no-deprecated] report deprecated imported values used in object shorthand properties ([#12780](https://github.com/typescript-eslint/typescript-eslint/pull/12780))
+- **project-service:** avoid discarded tsserver logs ([#12748](https://github.com/typescript-eslint/typescript-eslint/pull/12748))
+- **typescript-estree:** clarify the parserOptions.project error message ([#12817](https://github.com/typescript-eslint/typescript-eslint/pull/12817))
+
+### ❤️ Thank You
+
+- Barry @barry166
+- Evyatar Daud @StyleShit
+- Josh Goldberg
+- Josh Goldberg ✨ @JoshuaKGoldberg
+- Kirk Waiblinger @kirkwaiblinger
+- Ulrich Stark @ulrichstark
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.69.0 (2026-08-31)
 
 ### 🚀 Features

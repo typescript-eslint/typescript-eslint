@@ -1,6 +1,6 @@
 {
   "name": "typescript-eslint",
-  "version": "8.69.0",
+  "version": "8.70.0",
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
