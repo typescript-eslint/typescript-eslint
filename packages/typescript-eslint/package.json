@@ -102,10 +102,10 @@
       },
       "attw-check": {
         "cache": false,
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --ignore-rules cjs-only-exports-default",
         "options": {
           "cwd": "{projectRoot}"
-        },
-        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --ignore-rules cjs-only-exports-default"
+        }
       }
     }
   }
