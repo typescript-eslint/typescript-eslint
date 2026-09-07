@@ -1,14 +1,10 @@
-import type { RunTests } from '@typescript-eslint/rule-tester';
-
 import { RuleTester } from '@typescript-eslint/rule-tester';
-
-import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 
 import rule from '../../../src/rules/member-ordering';
 
 const ruleTester = new RuleTester();
 
-const grouped: RunTests<MessageIds, Options> = {
+ruleTester.run('member-ordering-required', rule, {
   assertionOptions: {
     requireData: true,
   },
@@ -264,10 +260,9 @@ interface X {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'd',
-            member: 'b',
-          },
+          data: { beforeMember: 'd', member: 'b' },
+          endColumn: 14,
+          endLine: 5,
           line: 5,
           messageId: 'incorrectOrder',
         },
@@ -293,10 +288,9 @@ interface X {
       errors: [
         {
           column: 3,
-          data: {
-            member: 'b',
-            optionalOrRequired: 'required',
-          },
+          data: { member: 'b', optionalOrRequired: 'required' },
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'incorrectRequiredMembersOrder',
         },
@@ -322,10 +316,9 @@ class X {
       errors: [
         {
           column: 3,
-          data: {
-            member: 'a',
-            optionalOrRequired: 'required',
-          },
+          data: { member: 'a', optionalOrRequired: 'required' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'incorrectRequiredMembersOrder',
         },
@@ -355,6 +348,8 @@ class X {
             member: 'a',
             optionalOrRequired: 'required',
           },
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'incorrectOrder',
         },
@@ -386,6 +381,8 @@ interface X {
             member: 'b',
             optionalOrRequired: 'required',
           },
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'incorrectOrder',
         },
@@ -411,10 +408,9 @@ interface X {
       errors: [
         {
           column: 3,
-          data: {
-            member: 'b',
-            optionalOrRequired: 'optional',
-          },
+          data: { member: 'b', optionalOrRequired: 'optional' },
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'incorrectRequiredMembersOrder',
         },
@@ -444,10 +440,9 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            member: 'f',
-            optionalOrRequired: 'optional',
-          },
+          data: { member: 'f', optionalOrRequired: 'optional' },
+          endColumn: 13,
+          endLine: 5,
           line: 5,
           messageId: 'incorrectRequiredMembersOrder',
         },
@@ -475,10 +470,9 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            member: 'a',
-            optionalOrRequired: 'optional',
-          },
+          data: { member: 'a', optionalOrRequired: 'optional' },
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'incorrectRequiredMembersOrder',
         },
@@ -494,6 +488,4 @@ class Test {
       ],
     },
   ],
-};
-
-ruleTester.run('member-ordering-required', rule, grouped);
+});
