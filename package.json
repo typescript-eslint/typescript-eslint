@@ -64,7 +64,7 @@
     "@nx/js": "22.7.6",
     "@nx/vitest": "22.7.6",
     "@nx/workspace": "22.7.6",
-    "@swc/core": "^1.15.8",
+    "@swc/core": "^1.16.1",
     "@types/debug": "^4.1.12",
     "@types/natural-compare": "catalog:",
     "@types/node": "catalog:",
