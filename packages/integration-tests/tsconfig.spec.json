@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/packages/integration-tests",
-    "ignoreDeprecations": "6.0"
+    "outDir": "../../dist/packages/integration-tests"
   },
   "include": ["vitest.config.mts", "package.json", "tests", "tools", "typings"],
   "references": [

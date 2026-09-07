@@ -3,9 +3,6 @@
     "target": "es2015",
     "module": "commonjs",
     "strict": true,
-    "types": ["node"],
-    "noUncheckedSideEffectImports": false,
-    "esModuleInterop": false,
-    "ignoreDeprecations": "6.0"
+    "types": ["node"]
   }
 }

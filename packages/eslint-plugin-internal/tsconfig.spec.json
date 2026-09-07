@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/packages/eslint-plugin-internal",
-    "ignoreDeprecations": "6.0"
+    "outDir": "../../dist/packages/eslint-plugin-internal"
   },
   "references": [
     {

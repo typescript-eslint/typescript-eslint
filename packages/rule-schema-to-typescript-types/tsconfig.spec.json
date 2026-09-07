@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/packages/rule-schema-to-typescript-types",
-    "ignoreDeprecations": "6.0"
+    "outDir": "../../dist/packages/rule-schema-to-typescript-types"
   },
   "references": [
     {

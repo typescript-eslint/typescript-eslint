@@ -13,8 +13,5 @@
     {
       "path": "../types/tsconfig.build.json"
     }
-  ],
-  "compilerOptions": {
-    "ignoreDeprecations": "6.0"
-  }
+  ]
 }

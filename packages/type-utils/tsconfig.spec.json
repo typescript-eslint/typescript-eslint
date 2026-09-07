@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/packages/type-utils",
-    "ignoreDeprecations": "6.0"
+    "outDir": "../../dist/packages/type-utils"
   },
   "references": [
     {

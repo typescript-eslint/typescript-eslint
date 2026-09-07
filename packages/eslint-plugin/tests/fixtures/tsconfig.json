@@ -6,10 +6,7 @@
     "strict": true,
     "types": ["node", "react"],
     "lib": ["es2015", "es2017", "esnext"],
-    "experimentalDecorators": true,
-    "noUncheckedSideEffectImports": false,
-    "esModuleInterop": false,
-    "ignoreDeprecations": "6.0"
+    "experimentalDecorators": true
   },
   "include": [
     "file.ts",

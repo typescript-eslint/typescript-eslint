@@ -5,8 +5,7 @@
     // Build is done by esbuild
     "emitDeclarationOnly": true,
     "allowJs": true,
-    "checkJs": true,
-    "ignoreDeprecations": "6.0"
+    "checkJs": true
   },
   "include": ["src/**/*.ts", "src/index.js", "build.mts"],
   "references": [

@@ -1,8 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "tsBuildInfoFile": "${configDir}/dist/tsconfig.tsbuildinfo",
-    "ignoreDeprecations": "6.0"
+    "tsBuildInfoFile": "${configDir}/dist/tsconfig.tsbuildinfo"
   },
   "compileOnSave": false,
   "files": [],

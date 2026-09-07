@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/packages/typescript-estree",
-    "ignoreDeprecations": "6.0"
+    "outDir": "../../dist/packages/typescript-estree"
   },
   "references": [
     {
