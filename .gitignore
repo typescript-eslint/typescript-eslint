@@ -11,6 +11,7 @@ packages/website/.docusaurus
 packages/website/.cache-loader
 packages/website/build
 packages/website/data/recent-blog-posts.json
+packages/website/static/img/og
 packages/website/static/sandbox
 
 # Runtime data
@@ -90,5 +91,6 @@ tsconfig*.vitest-temp.json
 .github/instructions/nx.instructions.md
 
 .claude/worktrees
+.worktrees
 .nx/polygraph
 .nx/self-healing
