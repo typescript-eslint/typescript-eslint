@@ -1,6 +1,6 @@
 {
   "name": "typescript-eslint",
-  "version": "8.69.0",
+  "version": "8.70.0",
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
@@ -102,10 +102,10 @@
       },
       "attw-check": {
         "cache": false,
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --ignore-rules cjs-only-exports-default",
         "options": {
           "cwd": "{projectRoot}"
-        },
-        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --ignore-rules cjs-only-exports-default"
+        }
       }
     }
   }

@@ -60,11 +60,11 @@
     "@eslint/compat": "^2.0.2",
     "@eslint/config-helpers": "^0.7.0",
     "@eslint/js": "catalog:",
-    "@nx/devkit": "22.7.6",
-    "@nx/js": "22.7.6",
-    "@nx/vitest": "22.7.6",
-    "@nx/workspace": "22.7.6",
-    "@swc/core": "^1.15.8",
+    "@nx/devkit": "23.2.0",
+    "@nx/js": "23.2.0",
+    "@nx/vitest": "23.2.0",
+    "@nx/workspace": "23.2.0",
+    "@swc/core": "^1.16.1",
     "@types/debug": "^4.1.12",
     "@types/natural-compare": "catalog:",
     "@types/node": "catalog:",
@@ -96,10 +96,10 @@
     "get-github-auth-token": "^0.1.2",
     "globals": "catalog:",
     "husky": "^9.1.7",
-    "knip": "6.32.0",
+    "knip": "6.33.0",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.49.0",
-    "nx": "22.7.6",
+    "nx": "23.2.0",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "semver": "7.8.0",
@@ -109,7 +109,7 @@
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
   "nx": {
     "name": "repo",
     "includedScripts": [
@@ -155,23 +155,23 @@
       },
       "lint": {
         "command": "eslint",
+        "cache": false,
         "options": {
           "cache": true,
           "ignore-pattern": "packages"
-        },
-        "cache": false
+        }
       },
       "clean": {
         "command": "rimraf dist/ coverage/ .eslintcache"
       },
       "test": {
         "command": "vitest",
-        "options": {
-          "config": "tools/vitest.config.mts"
-        },
         "outputs": [
           "{projectRoot}/tools/coverage"
-        ]
+        ],
+        "options": {
+          "config": "tools/vitest.config.mts"
+        }
       }
     }
   }

@@ -395,7 +395,7 @@ describe('semanticInfo', async () => {
           createOptions('<input>'),
         ),
       ).toThrow(
-        /ESLint was configured to run on `<tsconfigRootDir>\/estree\.ts` using/,
+        /ESLint was configured to lint `<tsconfigRootDir>\/estree\.ts` with type information from/,
       );
     },
   );
