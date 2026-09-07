@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "module": "commonjs"
+    "module": "commonjs",
+    "strict": false,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "ts/included01.ts",

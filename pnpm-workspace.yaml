@@ -2,6 +2,23 @@ packages:
   - packages/*
 
 minimumReleaseAge: 10080 # 7 days in minutes, matches renovate
+# nx 23.2.0 is newer than the 7-day cooldown; allow this upgrade through.
+minimumReleaseAgeExclude:
+  - nx@23.2.0
+  - '@nx/devkit@23.2.0'
+  - '@nx/js@23.2.0'
+  - '@nx/vitest@23.2.0'
+  - '@nx/workspace@23.2.0'
+  - '@nx/nx-darwin-arm64@23.2.0'
+  - '@nx/nx-darwin-x64@23.2.0'
+  - '@nx/nx-freebsd-x64@23.2.0'
+  - '@nx/nx-linux-arm-gnueabihf@23.2.0'
+  - '@nx/nx-linux-arm64-gnu@23.2.0'
+  - '@nx/nx-linux-arm64-musl@23.2.0'
+  - '@nx/nx-linux-x64-gnu@23.2.0'
+  - '@nx/nx-linux-x64-musl@23.2.0'
+  - '@nx/nx-win32-arm64-msvc@23.2.0'
+  - '@nx/nx-win32-x64-msvc@23.2.0'
 blockExoticSubdeps: true
 
 allowBuilds:

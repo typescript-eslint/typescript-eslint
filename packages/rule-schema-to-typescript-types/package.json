@@ -73,10 +73,10 @@
           "build"
         ],
         "cache": false,
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile esm-only",
         "options": {
           "cwd": "{projectRoot}"
-        },
-        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile esm-only"
+        }
       }
     }
   }

@@ -12,5 +12,8 @@
     {
       "path": "./tsconfig.tools.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0"
+  }
 }

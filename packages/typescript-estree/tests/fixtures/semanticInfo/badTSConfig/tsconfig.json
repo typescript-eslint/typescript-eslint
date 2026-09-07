@@ -3,6 +3,10 @@
   "compilerOptions": {
     "target": "es2015",
     "module": "commonjs",
-    "strict": true /* Enable all strict type-checking options. */
+    "strict": true,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0" /* Enable all strict type-checking options. */
   }
 }

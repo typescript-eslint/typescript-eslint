@@ -28,7 +28,10 @@
     "target": "ES2022",
     "types": ["vitest/globals", "vitest/importMeta", "node"],
     "verbatimModuleSyntax": false,
-    "stableTypeOrdering": true
+    "stableTypeOrdering": true,
+    "noUncheckedSideEffectImports": false,
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "${configDir}/vitest.config.mts",

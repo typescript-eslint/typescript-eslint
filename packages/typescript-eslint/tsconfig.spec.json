@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/packages/typescript-eslint"
+    "outDir": "../../dist/packages/typescript-eslint",
+    "ignoreDeprecations": "6.0"
   },
   "references": [
     {

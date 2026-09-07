@@ -117,15 +117,15 @@
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "cwd": "{projectRoot}"
-        },
         "cache": true,
         "outputs": [
           "{projectRoot}/build",
           "{projectRoot}/data",
           "{projectRoot}/static/img/og"
-        ]
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
       },
       "lint": {
         "command": "eslint",

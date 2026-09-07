@@ -79,12 +79,12 @@
         "dependsOn": [
           "ast-spec:build"
         ],
-        "options": {
-          "cwd": "{projectRoot}"
-        },
         "outputs": [
           "{projectRoot}/src/generated"
-        ]
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
       },
       "lint": {
         "command": "eslint",

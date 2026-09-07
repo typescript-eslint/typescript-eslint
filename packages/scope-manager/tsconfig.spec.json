@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/packages/scope-manager"
+    "outDir": "../../dist/packages/scope-manager",
+    "ignoreDeprecations": "6.0"
   },
   "references": [
     {

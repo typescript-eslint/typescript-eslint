@@ -3,6 +3,9 @@
     "target": "es5",
     "module": "commonjs",
     "strict": true,
-    "types": ["node"]
+    "types": ["node"],
+    "noUncheckedSideEffectImports": false,
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   }
 }

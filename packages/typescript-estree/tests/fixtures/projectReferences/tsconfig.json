@@ -1,5 +1,16 @@
 {
   "files": [],
   "include": [],
-  "references": [{ "path": "../simpleProject" }]
+  "references": [
+    {
+      "path": "../simpleProject"
+    }
+  ],
+  "compilerOptions": {
+    "strict": false,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
+  }
 }

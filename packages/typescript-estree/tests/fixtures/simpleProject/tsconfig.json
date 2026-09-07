@@ -3,6 +3,10 @@
     "skipLibCheck": true,
     "strict": true,
     "module": "commonjs",
-    "target": "ES2022"
+    "target": "ES2022",
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   }
 }

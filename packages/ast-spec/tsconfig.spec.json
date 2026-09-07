@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/packages/ast-spec"
+    "outDir": "../../dist/packages/ast-spec",
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "tests",

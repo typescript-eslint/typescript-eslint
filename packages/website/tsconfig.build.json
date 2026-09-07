@@ -10,7 +10,8 @@
     "paths": {
       "@site/*": ["./*"]
     },
-    "lib": ["DOM", "ES2023"]
+    "lib": ["DOM", "ES2023"],
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "src",

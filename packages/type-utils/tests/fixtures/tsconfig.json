@@ -5,7 +5,10 @@
     "module": "commonjs",
     "strict": true,
     "types": ["node"],
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "noUncheckedSideEffectImports": false,
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   },
   "include": ["file.ts"]
 }
