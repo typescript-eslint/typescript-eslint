@@ -145,6 +145,7 @@ export default createRule<Options, MessageIds>({
     function checkIfMethodAndReport(
       node: TSESTree.Node,
       symbol: ts.Symbol | undefined,
+      isStaticLike = false,
     ): boolean {
       if (!symbol) {
         return false;
@@ -153,6 +154,7 @@ export default createRule<Options, MessageIds>({
       const { dangerous, firstParamIsThis } = checkIfMethod(
         symbol,
         ignoreStatic,
+        isStaticLike,
       );
       if (dangerous) {
         context.report({
@@ -178,6 +180,10 @@ export default createRule<Options, MessageIds>({
         const reported = checkIfMethodAndReport(
           reportNode,
           intersectionPart.getProperty(propertyName),
+          // e.g. `BufferConstructor` describes the constructor itself (it has
+          // `new` signatures), so methods reached through it - like
+          // `Buffer.compare` - are static-like and don't need an instance.
+          intersectionPart.getConstructSignatures().length > 0,
         );
         if (reported) {
           return true;
@@ -289,11 +295,13 @@ export default createRule<Options, MessageIds>({
 
           if (initNode) {
             if (!isNativelyBound(initNode, property.key)) {
+              const initType = services.getTypeAtLocation(initNode);
               const reported = checkIfMethodAndReport(
                 property.key,
-                services
-                  .getTypeAtLocation(initNode)
-                  .getProperty(property.key.name),
+                initType.getProperty(property.key.name),
+                // See the note in `checkUnionConstituentsAndReport`:
+                // methods reached through a constructor type are static-like.
+                initType.getConstructSignatures().length > 0,
               );
               if (reported) {
                 continue;
@@ -344,6 +352,7 @@ interface CheckMethodResult {
 function checkIfMethod(
   symbol: ts.Symbol,
   ignoreStatic: boolean,
+  isStaticLike: boolean,
 ): CheckMethodResult {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
@@ -365,13 +374,18 @@ function checkIfMethod(
           dangerous: false,
         };
       }
-      return checkMethod(assignee as ts.FunctionExpression, ignoreStatic);
+      return checkMethod(
+        assignee as ts.FunctionExpression,
+        ignoreStatic,
+        isStaticLike,
+      );
     }
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature: {
       return checkMethod(
         valueDeclaration as ts.MethodDeclaration | ts.MethodSignature,
         ignoreStatic,
+        isStaticLike,
       );
     }
   }
@@ -383,6 +397,7 @@ function checkMethod(
   valueDeclaration:
     ts.FunctionExpression | ts.MethodDeclaration | ts.MethodSignature,
   ignoreStatic: boolean,
+  isStaticLike: boolean,
 ): CheckMethodResult {
   const firstParam = valueDeclaration.parameters.at(0);
   const firstParamIsThis =
@@ -392,16 +407,15 @@ function checkMethod(
   const thisArgIsVoid =
     firstParamIsThis && firstParam.type?.kind === ts.SyntaxKind.VoidKeyword;
 
+  const isStatic =
+    isStaticLike ||
+    tsutils.includesModifier(
+      getModifiers(valueDeclaration),
+      ts.SyntaxKind.StaticKeyword,
+    );
+
   return {
-    dangerous:
-      !thisArgIsVoid &&
-      !(
-        ignoreStatic &&
-        tsutils.includesModifier(
-          getModifiers(valueDeclaration),
-          ts.SyntaxKind.StaticKeyword,
-        )
-      ),
+    dangerous: !thisArgIsVoid && !(ignoreStatic && isStatic),
     firstParamIsThis,
   };
 }

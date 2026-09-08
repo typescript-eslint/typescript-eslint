@@ -8,6 +8,24 @@ ruleTester.run('unbound-method', rule, {
     'Promise.resolve().then(console.log);',
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
+    {
+      // `Buffer` is typed in @types/node as a `var` of type `BufferConstructor`
+      // (an interface with `new` signatures), so `Buffer.compare` is a
+      // static-like method accessed on the constructor, not on an instance.
+      code: `
+const buf1 = Buffer.from('1234');
+const buf2 = Buffer.from('0123');
+const sorted = [buf1, buf2].sort(Buffer.compare);
+      `,
+      options: [{ ignoreStatic: true }],
+    },
+    {
+      code: `
+const { compare } = Buffer;
+compare(Buffer.from('1234'), Buffer.from('0123'));
+      `,
+      options: [{ ignoreStatic: true }],
+    },
     `
 const foo = Number;
 ['1', '2', '3'].map(foo.parseInt);
@@ -3169,6 +3187,46 @@ foo[1];
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
+    },
+    {
+      // Without `ignoreStatic`, constructor-side methods are still reported.
+      code: `
+const buf1 = Buffer.from('1234');
+const buf2 = Buffer.from('0123');
+const sorted = [buf1, buf2].sort(Buffer.compare);
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 48,
+          endLine: 4,
+          line: 4,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      // `ignoreStatic` must not suppress methods on a plain (non-constructor)
+      // interface type, since those are accessed on an instance.
+      code: `
+interface Foo {
+  bar(): void;
+}
+
+declare const foo: Foo;
+
+foo.bar;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 8,
+          line: 8,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+      options: [{ ignoreStatic: true }],
     },
   ],
 });
