@@ -55,7 +55,7 @@ export function createLinter(
 ): CreateLinter {
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
-  let compilerOptions: ts.CompilerOptions = { allowJs: true };
+  let compilerOptions = createCompilerOptions({ allowJs: true });
   const parser = createParser(
     system,
     compilerOptions,
