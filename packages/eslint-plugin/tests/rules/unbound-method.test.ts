@@ -9,6 +9,14 @@ ruleTester.run('unbound-method', rule, {
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
     `
+const collator = new Intl.Collator('en');
+['a', 'b'].sort(collator.compare);
+    `,
+    `
+const { compare } = new Intl.Collator('en');
+compare('a', 'b');
+    `,
+    `
 const foo = Number;
 ['1', '2', '3'].map(foo.parseInt);
     `,
@@ -3166,6 +3174,62 @@ foo[1];
           endColumn: 7,
           endLine: 6,
           line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const collator = new Intl.Collator('en');
+const f = collator.resolvedOptions;
+f();
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  compare(a: string, b: string): number {
+    return a.length - b.length;
+  }
+}
+declare const foo: Foo;
+const f = foo.compare;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 22,
+          endLine: 8,
+          line: 8,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Collator {
+  compare(a: string, b: string): number {
+    return a.length - b.length;
+  }
+}
+declare const collator: Collator;
+const f = collator.compare;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 27,
+          endLine: 8,
+          line: 8,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
