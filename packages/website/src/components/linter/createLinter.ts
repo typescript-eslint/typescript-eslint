@@ -5,8 +5,6 @@ import type {
   Linter,
   SourceType,
 } from '@typescript-eslint/utils/ts-eslint';
-import type * as ts from 'typescript';
-
 import type {
   ErrorGroup,
   TabType,
