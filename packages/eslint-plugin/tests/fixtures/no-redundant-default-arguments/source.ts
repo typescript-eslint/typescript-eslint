@@ -4,6 +4,12 @@ export function select(value = 0) {
 
 export const arrow = (value = 0) => value;
 
+// prettier-ignore
+export const parenthesizedArrow = (((value = 0) => value));
+
+// prettier-ignore
+export const parenthesizedExpression = (function (value = 0) { return value; });
+
 export const expression = function (value = 0) {
   return value;
 };

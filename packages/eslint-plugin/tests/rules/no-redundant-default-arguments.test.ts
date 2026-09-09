@@ -7,6 +7,23 @@ const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-redundant-default-arguments', rule, {
   valid: [
+    noFormat`
+const original = (value = 0) => value;
+const select = ((original));
+select(0);
+    `,
+    noFormat`
+const select = (((value = 0) => value) as (value?: number) => number);
+select(0);
+    `,
+    noFormat`
+const select = (((value = 0) => value) satisfies (value?: number) => number);
+select(0);
+    `,
+    noFormat`
+let select = (((value = 0) => value));
+select(0);
+    `,
     // A self-import must not hide an invalid local function reassignment.
     `
 import { select as imported } from './file';
@@ -396,6 +413,106 @@ selected(0);
     `,
   ],
   invalid: [
+    {
+      code: noFormat`
+const select = (function (value = 0) { return value; });
+select(0);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantArguments',
+          suggestions: [
+            {
+              messageId: 'removeArguments',
+              output: `
+const select = (function (value = 0) { return value; });
+select();
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+import { parenthesizedArrow as select } from './no-redundant-default-arguments/source';
+select(0);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantArguments',
+          suggestions: [
+            {
+              messageId: 'removeArguments',
+              output: `
+import { parenthesizedArrow as select } from './no-redundant-default-arguments/source';
+select();
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+import { parenthesizedExpression as select } from './no-redundant-default-arguments/source';
+select(0);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantArguments',
+          suggestions: [
+            {
+              messageId: 'removeArguments',
+              output: `
+import { parenthesizedExpression as select } from './no-redundant-default-arguments/source';
+select();
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+const select = (((value = 0) => value));
+select(0);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantArguments',
+          suggestions: [
+            {
+              messageId: 'removeArguments',
+              output: `
+const select = (((value = 0) => value));
+select();
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
     {
       code: `
 function select({ first = 0, middle = 1, last = 2 }) {}

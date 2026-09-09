@@ -352,7 +352,8 @@ export default createRule<[], MessageIds>({
             (!binding ||
               !ts.isVariableDeclaration(binding) ||
               binding.type ||
-              binding.initializer !== declaration ||
+              !binding.initializer ||
+              unwrapParentheses(binding.initializer) !== declaration ||
               !(binding.parent.flags & ts.NodeFlags.Const))
           ) {
             return;
