@@ -118,7 +118,17 @@ export default createRule<Options, MessageIds>({
       type: ts.Type,
     ): TSESLint.ReportSuggestionArray<MessageIds> | null {
       const types = tsutils.unionConstituents(type);
-      if (types.some(t => !isMap(services.program, t))) {
+      if (
+        types.some(
+          t =>
+            !isTypeRecurser(t, part =>
+              isBuiltinSymbolLike(services.program, part, [
+                'Map',
+                'ReadonlyMap',
+              ]),
+            ),
+        )
+      ) {
         return null;
       }
 
