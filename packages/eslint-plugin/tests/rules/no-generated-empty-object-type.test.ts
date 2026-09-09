@@ -64,6 +64,28 @@ type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> &
     `
 type Emptied<T> = Omit<T, keyof T>;
     `,
+    `
+type Keys<T> = T extends infer U ? keyof U : never;
+type Mapped<T extends object> = { [Key in Keys<T>]: Key };
+type Referenced<T extends object> = Mapped<T>;
+    `,
+    `
+type Keys<T> = T extends infer U ? keyof U : never;
+type Mapped<T extends object> = { [Key in Keys<T>]: Key };
+type Indexed<T extends object> = Mapped<T>[Keys<T>];
+    `,
+    `
+type Keys<T> = T extends infer U ? keyof U : never;
+type Remapped<T extends object> = {
+  [Key in Keys<T> as \`get\${string & Key}\`]: () => void;
+};
+type Referenced<T extends object> = Remapped<T>;
+    `,
+    `
+type Keys<T> = T extends infer U ? keyof U : never;
+type ReadonlyMapped<T extends object> = { readonly [Key in Keys<T>]: number };
+type Referenced<T extends object> = ReadonlyMapped<T>;
+    `,
   ],
   invalid: [
     {
