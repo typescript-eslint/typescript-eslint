@@ -1825,6 +1825,9 @@ Promise.resolve().then(console.log);
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 35,
+          endLine: 10,
           line: 10,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -1837,6 +1840,9 @@ const x = console.log;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -1868,14 +1874,23 @@ function foo(arg: ContainsMethods | null) {
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 31,
+          endLine: 19,
           line: 19,
           messageId: 'unboundWithoutThisAnnotation',
         },
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 20,
           line: 20,
           messageId: 'unboundWithoutThisAnnotation',
         },
         {
+          column: 3,
+          endColumn: 15,
+          endLine: 21,
           line: 21,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -1903,6 +1918,9 @@ const unbound = instance.unbound;
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 33,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -1930,6 +1948,9 @@ const unboundStatic = ContainsMethods.unboundStatic;
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 52,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -1957,6 +1978,9 @@ const { unbound } = instance;
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 16,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -1984,6 +2008,9 @@ const { unboundStatic } = ContainsMethods;
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 22,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2011,6 +2038,9 @@ const arith = {
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 22,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2038,6 +2068,9 @@ instance.unbound as any;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 17,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2065,6 +2098,9 @@ const arith = {
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 35,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2092,6 +2128,9 @@ ContainsMethods.unboundStatic as any;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 30,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2119,6 +2158,9 @@ instance.unbound || 0;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 17,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2146,6 +2188,9 @@ ContainsMethods.unboundStatic || 0;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 30,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2173,6 +2218,9 @@ instance.unbound ? instance.unbound : null;
       `,
       errors: [
         {
+          column: 20,
+          endColumn: 36,
+          endLine: 18,
           line: 18,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2192,15 +2240,14 @@ ContainsMethods.unboundStatic;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 30,
+          endLine: 8,
           line: 8,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
-      options: [
-        {
-          ignoreStatic: true,
-        },
-      ],
+      options: [{ ignoreStatic: true }],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/496
     {
@@ -2212,6 +2259,9 @@ const x = CommunicationError.prototype.foo;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 43,
+          endLine: 5,
           line: 5,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2222,6 +2272,9 @@ const x = CommunicationError.prototype.foo;
       code: 'const x = Promise.all;',
       errors: [
         {
+          column: 11,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2241,6 +2294,9 @@ instance.unbound = x; // THIS SHOULD NOT
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 21,
+          endLine: 9,
           line: 9,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2256,6 +2312,9 @@ const foo = Foo;
       `,
       errors: [
         {
+          column: 21,
+          endColumn: 33,
+          endLine: 6,
           line: 6,
           messageId: 'unbound',
         },
@@ -2268,6 +2327,9 @@ const x = foo.toFixed;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2280,6 +2342,9 @@ const x = foo.hasOwnProperty;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 29,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2292,6 +2357,9 @@ const x = foo.slice;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2304,6 +2372,9 @@ const x = foo.getTime;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2316,6 +2387,9 @@ const x = Foo.parseInt;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2328,6 +2402,9 @@ const x = Foo.fromCharCode;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2340,6 +2417,9 @@ const x = Foo.defineProperty;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 29,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2352,6 +2432,9 @@ const x = Foo.parse;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2366,6 +2449,9 @@ const unbound = new Foo().unbound;
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 34,
+          endLine: 5,
           line: 5,
           messageId: 'unbound',
         },
@@ -2380,6 +2466,9 @@ const { unbound } = new Foo();
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2394,6 +2483,9 @@ const { unbound } = new Foo();
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'unbound',
         },
@@ -2409,6 +2501,9 @@ let unbound;
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2424,6 +2519,9 @@ let unbound;
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'unbound',
         },
@@ -2438,6 +2536,9 @@ function foo({ unbound }: Foo = new Foo()) {}
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'unbound',
         },
@@ -2453,6 +2554,9 @@ function foo({ unbound }: Foo = bar) {}
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'unbound',
         },
@@ -2468,6 +2572,9 @@ function foo({ unbound }: Foo = { unbound: () => {} }) {}
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'unbound',
         },
@@ -2483,6 +2590,9 @@ function foo({ unbound }: Foo = { unbound: function () {} }) {}
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2497,6 +2607,9 @@ function foo({ unbound }: Foo) {}
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'unbound',
         },
@@ -2512,6 +2625,9 @@ bar(({ unbound }) => {});
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 15,
+          endLine: 6,
           line: 6,
           messageId: 'unbound',
         },
@@ -2527,6 +2643,9 @@ bar(({ unbound } = new Foo()) => {});
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 15,
+          endLine: 6,
           line: 6,
           messageId: 'unbound',
         },
@@ -2542,6 +2661,9 @@ for (const { unbound } of [new Foo(), new Foo()]) {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 21,
+          endLine: 5,
           line: 5,
           messageId: 'unbound',
         },
@@ -2557,6 +2679,9 @@ class Foo {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'unbound',
         },
@@ -2574,6 +2699,9 @@ function foo({ unbound }: Foo | Bar) {}
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 8,
           line: 8,
           messageId: 'unbound',
         },
@@ -2588,6 +2716,9 @@ function foo({ unbound }: { unbound: () => string } | Foo) {}
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'unbound',
         },
@@ -2605,6 +2736,9 @@ function foo({ unbound }: Foo | Bar) {}
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 8,
           line: 8,
           messageId: 'unbound',
         },
@@ -2619,6 +2753,9 @@ const foo = ({ unbound }: Foo & { foo: () => 'bar' }) => {};
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'unbound',
         },
@@ -2636,6 +2773,9 @@ const foo = ({ unbound }: (Foo & { foo: () => 'bar' }) | Bar) => {};
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 8,
           line: 8,
           messageId: 'unbound',
         },
@@ -2653,6 +2793,9 @@ const foo = ({ unbound }: Foo & Bar) => {};
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 8,
           line: 8,
           messageId: 'unbound',
         },
@@ -2672,6 +2815,9 @@ const foo = ({ unbound, ...rest }: Foo & Bar) => {};
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 23,
+          endLine: 10,
           line: 10,
           messageId: 'unbound',
         },
@@ -2681,6 +2827,9 @@ const foo = ({ unbound, ...rest }: Foo & Bar) => {};
       code: 'const { unbound } = { unbound: function () {} };',
       errors: [
         {
+          column: 9,
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2694,6 +2843,9 @@ function foo(
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2709,6 +2861,9 @@ const { floor } = Math.random() > 0.5 ? new Foo() : Math;
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 14,
+          endLine: 6,
           line: 6,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2723,6 +2878,9 @@ const { foo } = CommunicationError.prototype;
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 12,
+          endLine: 5,
           line: 5,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2738,6 +2896,9 @@ let foo;
       `,
       errors: [
         {
+          column: 4,
+          endColumn: 7,
+          endLine: 6,
           line: 6,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2750,6 +2911,9 @@ const { log } = console;
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2759,6 +2923,9 @@ const { log } = console;
       code: 'const { all } = Promise;',
       errors: [
         {
+          column: 9,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2780,6 +2947,8 @@ class OtherClass extends BaseClass {
       errors: [
         {
           column: 15,
+          endColumn: 28,
+          endLine: 8,
           line: 8,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2802,6 +2971,8 @@ class OtherClass extends BaseClass {
       errors: [
         {
           column: 9,
+          endColumn: 22,
+          endLine: 9,
           line: 9,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2820,6 +2991,7 @@ const { a, b } = values;
         {
           column: 9,
           endColumn: 10,
+          endLine: 7,
           line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2838,6 +3010,7 @@ const { a: c } = values;
         {
           column: 9,
           endColumn: 10,
+          endLine: 7,
           line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2856,6 +3029,7 @@ const { b, a } = values;
         {
           column: 12,
           endColumn: 13,
+          endLine: 7,
           line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2871,6 +3045,9 @@ const f = objectLiteral.f;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 26,
+          endLine: 5,
           line: 5,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2890,6 +3067,9 @@ const bound = union.bazz;
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 25,
+          endLine: 9,
           line: 9,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2909,6 +3089,9 @@ const bound = union[bazz];
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 26,
+          endLine: 10,
           line: 10,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2924,6 +3107,9 @@ foo['bazz'];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 6,
           line: 6,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2940,6 +3126,9 @@ const bound = foo[bazz];
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 24,
+          endLine: 7,
           line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2955,6 +3144,9 @@ const bound = foo[\`ba\${'zz'}\`];
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 31,
+          endLine: 6,
           line: 6,
           messageId: 'unboundWithoutThisAnnotation',
         },
@@ -2970,6 +3162,9 @@ foo[1];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 7,
+          endLine: 6,
           line: 6,
           messageId: 'unboundWithoutThisAnnotation',
         },

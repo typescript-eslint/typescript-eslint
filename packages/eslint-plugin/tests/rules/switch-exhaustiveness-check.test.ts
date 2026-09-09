@@ -1,7 +1,7 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
-import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
@@ -1006,6 +1006,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1037,6 +1039,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1070,6 +1074,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1105,6 +1111,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1140,6 +1148,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1158,6 +1168,8 @@ switch (value) {
         },
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1193,6 +1205,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1226,6 +1240,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1245,6 +1261,8 @@ case 1: { throw new Error('Not implemented yet: 1 case') }
         },
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1278,6 +1296,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1314,6 +1334,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1350,6 +1372,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1386,6 +1410,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1424,6 +1450,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 5,
           line: 5,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1463,6 +1491,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1497,6 +1527,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1531,6 +1563,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1567,6 +1601,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1586,6 +1622,8 @@ switch (value) {
         },
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1621,6 +1659,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1662,6 +1702,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 7,
           line: 7,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1686,6 +1728,8 @@ switch (value) {
         },
         {
           column: 9,
+          endColumn: 14,
+          endLine: 7,
           line: 7,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1745,6 +1789,8 @@ switch (day) {
             missingBranches:
               '"Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
           },
+          endColumn: 12,
+          endLine: 14,
           line: 14,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1799,9 +1845,9 @@ function test(value: Enum): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: 'Enum.B',
-          },
+          data: { missingBranches: 'Enum.B' },
+          endColumn: 16,
+          endLine: 8,
           line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1843,9 +1889,9 @@ function test(value: Union): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: '"b" | "c"',
-          },
+          data: { missingBranches: '"b" | "c"' },
+          endColumn: 16,
+          endLine: 8,
           line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1889,9 +1935,9 @@ function test(value: Union): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: 'true | 1',
-          },
+          data: { missingBranches: 'true | 1' },
+          endColumn: 16,
+          endLine: 9,
           line: 9,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1932,9 +1978,9 @@ function test(value: DiscriminatedUnion): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: '"B"',
-          },
+          data: { missingBranches: '"B"' },
+          endColumn: 21,
+          endLine: 5,
           line: 5,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1980,6 +2026,8 @@ switch (day) {
             missingBranches:
               '"Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
           },
+          endColumn: 12,
+          endLine: 13,
           line: 13,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2030,9 +2078,9 @@ function test(value: T): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: 'typeof b | typeof c',
-          },
+          data: { missingBranches: 'typeof b | typeof c' },
+          endColumn: 16,
+          endLine: 9,
           line: 9,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2074,6 +2122,10 @@ function test(value: T): number {
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2106,6 +2158,10 @@ function test(value: T): number {
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2140,6 +2196,10 @@ function test(arg: Enum): string {
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2177,6 +2237,10 @@ function test(arg: Enum): string {
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2214,6 +2278,10 @@ function test(arg: Enum): string {
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2248,6 +2316,10 @@ switch (value) {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2286,6 +2358,10 @@ switch (value) {
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2328,6 +2404,10 @@ switch (myUnion) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 14,
+          line: 12,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2362,6 +2442,10 @@ switch (myEnum) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 18,
+          line: 16,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2396,6 +2480,10 @@ switch (myEnum) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 18,
+          line: 16,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2423,6 +2511,10 @@ switch (myBoolean) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 11,
+          line: 9,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2450,6 +2542,10 @@ switch (myValue) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 11,
+          line: 9,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2477,6 +2573,10 @@ switch (myValue) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 11,
+          line: 9,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2508,6 +2608,10 @@ switch (myValue) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 15,
+          line: 13,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2532,6 +2636,8 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2570,6 +2676,8 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2602,6 +2710,8 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2641,6 +2751,8 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2689,6 +2801,8 @@ switch (myEnum) {
       errors: [
         {
           column: 9,
+          endColumn: 15,
+          endLine: 10,
           line: 10,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2735,6 +2849,8 @@ switch (value) {
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2772,6 +2888,8 @@ function foo(x: string[]) {
       errors: [
         {
           column: 11,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2811,6 +2929,10 @@ switch (myValue) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 16,
+          endLine: 8,
+          line: 8,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2833,6 +2955,8 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2872,6 +2996,8 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2917,9 +3043,9 @@ switch (foo) {
       errors: [
         {
           column: 9,
-          data: {
-            missingBranches: 'A.B.D',
-          },
+          data: { missingBranches: 'A.B.D' },
+          endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2958,9 +3084,9 @@ switch (foo) {
       errors: [
         {
           column: 9,
-          data: {
-            missingBranches: 'A.B.D',
-          },
+          data: { missingBranches: 'A.B.D' },
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [

@@ -4070,5 +4070,37 @@ export { deprecatedFunction as bar } from './deprecated';
         },
       ],
     },
+    {
+      code: `
+import { deprecatedVariable } from './deprecated';
+
+void { deprecatedVariable };
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+import { normalVariable } from './deprecated';
+
+void { normalVariable };
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'deprecated',
+        },
+      ],
+    },
   ],
 });

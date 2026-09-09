@@ -361,7 +361,7 @@ export default createRule<Options, MessageIds>({
           searchForDeprecationInAliasesChain(propertySymbol, true) ??
           getJsDocDeprecation(property) ??
           getJsDocDeprecation(propertySymbol) ??
-          getJsDocDeprecation(valueSymbol)
+          searchForDeprecationInAliasesChain(valueSymbol, true)
         );
       }
 

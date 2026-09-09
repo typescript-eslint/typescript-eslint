@@ -59,11 +59,15 @@ class Foo {}
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'unsafeMerging',
         },
         {
           column: 7,
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeMerging',
         },
@@ -77,11 +81,15 @@ interface Foo {}
       errors: [
         {
           column: 7,
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'unsafeMerging',
         },
         {
           column: 11,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeMerging',
         },
@@ -97,11 +105,15 @@ declare global {
       errors: [
         {
           column: 13,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeMerging',
         },
         {
           column: 9,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeMerging',
         },

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.68.0",
+  "version": "8.70.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -109,12 +109,12 @@
     "targets": {
       "generate-breaking-changes": {
         "command": "tsx tools/generate-breaking-changes.mts",
-        "options": {
-          "cwd": "{projectRoot}"
-        },
         "dependsOn": [
           "type-utils:build"
-        ]
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
       },
       "lint": {
         "command": "eslint"
@@ -125,10 +125,10 @@
         "dependsOn": [
           "build"
         ],
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --exclude-entrypoints use-at-your-own-risk/raw-plugin --exclude-entrypoints use-at-your-own-risk/rules --ignore-rules named-exports",
         "options": {
           "cwd": "{projectRoot}"
-        },
-        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile node16 --exclude-entrypoints use-at-your-own-risk/raw-plugin --exclude-entrypoints use-at-your-own-risk/rules --ignore-rules named-exports"
+        }
       }
     }
   }

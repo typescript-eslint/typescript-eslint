@@ -1,3 +1,27 @@
+## 8.70.0 (2026-09-07)
+
+### 🩹 Fixes
+
+- **project-service:** avoid discarded tsserver logs ([#12748](https://github.com/typescript-eslint/typescript-eslint/pull/12748))
+
+### ❤️ Thank You
+
+- Barry @barry166
+- Evyatar Daud @StyleShit
+- Josh Goldberg
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.69.0 (2026-08-31)
+
+This was a version bump only for project-service to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.69.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.68.0 (2026-08-24)
 
 This was a version bump only for project-service to align it with other projects, there were no code changes.
