@@ -71,6 +71,23 @@ declare function fn(): void;
 declare function getValue(): string;
 void (fn(), getValue());
     `,
+    `
+declare let x: number;
+void (x = 1);
+    `,
+    `
+declare let x: number;
+() => void (x = 1);
+    `,
+    `
+declare const box: { value: string };
+void (box.value = 'ok');
+    `,
+    `
+declare let x: number;
+declare function getValue(): number;
+void (x = getValue());
+    `,
   ],
   invalid: [
     {
