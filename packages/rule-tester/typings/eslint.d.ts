@@ -5,5 +5,10 @@ declare module 'eslint/use-at-your-own-risk' {
 }
 
 declare module 'eslint' {
-  export { SourceCode } from '@typescript-eslint/utils/ts-eslint';
+  import type * as TSESLint from '@typescript-eslint/utils/ts-eslint';
+
+  // `@typescript-eslint/utils/ts-eslint` is type-only, so the runtime classes
+  // have to come from ESLint itself. We still describe them with our types.
+  export const Linter: typeof TSESLint.Linter;
+  export const SourceCode: typeof TSESLint.SourceCode;
 }
