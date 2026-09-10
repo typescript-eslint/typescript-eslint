@@ -550,6 +550,28 @@ type NodeListOf = 1;
       options: [{ builtinGlobals: true }],
     },
     {
+      code: 'var Map = 1;',
+      errors: [
+        {
+          column: 5,
+          data: {
+            id: 'Map',
+          },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'redeclaredAsBuiltin',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          lib: ['es2015'],
+          sourceType: 'script',
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
       code: `
 interface A {}
 interface A {}

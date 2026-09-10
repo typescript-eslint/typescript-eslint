@@ -253,6 +253,26 @@ const links = document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
         },
       },
     },
+    {
+      code: 'const map = new Map();',
+      languageOptions: {
+        parserOptions: {
+          lib: ['es2015'],
+        },
+      },
+    },
+    {
+      code: `
+function createMap() {
+  return new Map();
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          lib: ['es2015'],
+        },
+      },
+    },
     // https://github.com/eslint/typescript-eslint-parser/issues/437
     `
 interface Runnable {
