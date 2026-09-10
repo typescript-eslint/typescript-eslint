@@ -28,6 +28,17 @@ function typeDeclaredInDeclareModule(
   );
 }
 
+/**
+ * Whether `packagePath` is `packageName` itself or something inside it, comparing
+ * whole path components: `semver` covers `semver` and `semver/classes/semver.d.ts`,
+ * but not `semver-compare` or `my-semver`.
+ */
+function pathIsInPackage(packagePath: string, packageName: string): boolean {
+  return (
+    packagePath === packageName || packagePath.startsWith(`${packageName}/`)
+  );
+}
+
 function typeDeclaredInDeclarationFile(
   packageName: string,
   declarationFiles: ts.SourceFile[],
@@ -36,12 +47,20 @@ function typeDeclaredInDeclarationFile(
   // Handle scoped packages: if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
   return declarationFiles.some(declaration => {
+    // A package id name is a path within the package, such as
+    // `typescript/lib/typescript.d.ts` or `@types/semver/classes/semver.d.ts`.
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
+    if (packageIdName == null) {
+      return false;
+    }
+
     return (
-      packageIdName != null &&
-      matcher.test(packageIdName) &&
+      (pathIsInPackage(packageIdName, packageName) ||
+        pathIsInPackage(
+          packageIdName.replace(/^@types\//, ''),
+          typesPackageName,
+        )) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
