@@ -25,6 +25,9 @@ describe.for(PARSER_OPTION_COMBOS)(
     });
 
     ruleTester.run('consistent-type-imports', rule, {
+      assertionOptions: {
+        requireData: true,
+      },
       valid: [
         `
 import Foo from 'foo';
@@ -1399,6 +1402,7 @@ const a: Rest.A = '';
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Rest"' },
               endColumn: 41,
               endLine: 2,
               line: 2,
@@ -1420,6 +1424,7 @@ const a: Default = '';
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Default"' },
               endColumn: 41,
               endLine: 2,
               line: 2,
@@ -1465,6 +1470,7 @@ const a: Default = '';
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Default"' },
               endColumn: 53,
               endLine: 2,
               line: 2,
@@ -1487,6 +1493,7 @@ const a: Default = '';
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Default"' },
               endColumn: 66,
               endLine: 2,
               line: 2,
@@ -1582,6 +1589,7 @@ B();
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 28,
               endLine: 2,
               line: 2,
@@ -1607,6 +1615,7 @@ B();
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 28,
               endLine: 2,
               line: 2,
@@ -1698,6 +1707,7 @@ A();
           errors: [
             {
               column: 1,
+              data: { typeImports: '"B" and "C"' },
               endColumn: 31,
               endLine: 2,
               line: 2,
@@ -1776,6 +1786,7 @@ type T = A;
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 42,
               endLine: 2,
               line: 2,
@@ -1798,6 +1809,7 @@ type T = A;
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 42,
               endLine: 2,
               line: 2,
@@ -1824,6 +1836,7 @@ let baz: D;
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A" and "C"' },
               endColumn: 31,
               endLine: 2,
               line: 2,
@@ -1853,6 +1866,7 @@ let baz: D;
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 36,
               endLine: 2,
               line: 2,
@@ -2155,6 +2169,7 @@ function test(foo: Foo) {}
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Foo"' },
               endColumn: 32,
               endLine: 3,
               line: 3,
@@ -2177,6 +2192,7 @@ function test(foo: Foo) {}
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Foo"' },
               endColumn: 32,
               endLine: 3,
               line: 3,
@@ -2207,6 +2223,9 @@ describe('experimentalDecorators: true + emitDecoratorMetadata: true', () => {
   });
 
   ruleTester.run('consistent-type-imports', rule, {
+    assertionOptions: {
+      requireData: true,
+    },
     valid: [
       `
 import Foo from 'foo';

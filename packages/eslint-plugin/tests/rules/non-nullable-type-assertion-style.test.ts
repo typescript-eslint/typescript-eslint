@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('non-nullable-type-assertion-style', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare const original: number | string;

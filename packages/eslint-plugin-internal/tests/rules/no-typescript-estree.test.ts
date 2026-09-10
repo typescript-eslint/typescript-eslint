@@ -5,12 +5,16 @@ import rule from '../../src/rules/no-typescript-estree-import.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-typescript-estree-import', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: "import { foo } from '@typescript-eslint/typescript-estree';",
       errors: [
         {
           column: 1,
+          data: { packageName: '@typescript-eslint/typescript-estree' },
           endColumn: 60,
           endLine: 1,
           line: 1,
@@ -24,6 +28,7 @@ ruleTester.run('no-typescript-estree-import', rule, {
       errors: [
         {
           column: 1,
+          data: { packageName: '@typescript-eslint/typescript-estree' },
           endColumn: 56,
           endLine: 1,
           line: 1,
@@ -37,6 +42,7 @@ ruleTester.run('no-typescript-estree-import', rule, {
       errors: [
         {
           column: 1,
+          data: { packageName: '@typescript-eslint/typescript-estree' },
           endColumn: 61,
           endLine: 1,
           line: 1,
@@ -50,6 +56,7 @@ ruleTester.run('no-typescript-estree-import', rule, {
       errors: [
         {
           column: 1,
+          data: { packageName: '@typescript-eslint/types' },
           endColumn: 48,
           endLine: 1,
           line: 1,
@@ -63,6 +70,7 @@ ruleTester.run('no-typescript-estree-import', rule, {
       errors: [
         {
           column: 1,
+          data: { packageName: '@typescript-eslint/types' },
           endColumn: 44,
           endLine: 1,
           line: 1,
@@ -76,6 +84,7 @@ ruleTester.run('no-typescript-estree-import', rule, {
       errors: [
         {
           column: 1,
+          data: { packageName: '@typescript-eslint/types' },
           endColumn: 49,
           endLine: 1,
           line: 1,

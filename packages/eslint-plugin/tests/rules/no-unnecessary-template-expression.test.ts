@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-template-expression', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "const string = 'a';",
     'const string = `a`;',

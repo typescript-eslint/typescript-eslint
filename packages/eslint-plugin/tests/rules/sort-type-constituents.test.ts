@@ -5,6 +5,9 @@ import rule from '../../src/rules/sort-type-constituents';
 const ruleTester = new RuleTester();
 
 ruleTester.run('sort-type-constituents', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'type T = A | B;',
@@ -423,6 +426,7 @@ type T =
       errors: [
         {
           column: 17,
+          data: { name: 'Expected', type: 'Union' },
           endColumn: 54,
           endLine: 1,
           line: 1,
@@ -666,6 +670,7 @@ type T =
       errors: [
         {
           column: 17,
+          data: { name: 'Expected', type: 'Intersection' },
           endColumn: 54,
           endLine: 1,
           line: 1,

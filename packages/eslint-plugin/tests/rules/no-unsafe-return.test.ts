@@ -14,6 +14,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-return', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function foo() {

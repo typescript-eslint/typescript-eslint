@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-ts-expect-error';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-ts-expect-error', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     '// @ts-nocheck',
     '// @ts-check',

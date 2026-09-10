@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('promise-function-async', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 const nonAsyncNonPromiseArrowFunction = (n: number) => n;

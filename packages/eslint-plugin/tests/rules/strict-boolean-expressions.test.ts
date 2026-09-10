@@ -8,6 +8,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('strict-boolean-expressions', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // boolean in boolean context
     "true ? 'a' : 'b';",
@@ -668,6 +671,7 @@ if (true && (Boolean((1 + 1)))) {
       errors: [
         {
           column: 17,
+          data: { context: 'conditional' },
           endColumn: 26,
           endLine: 1,
           line: 1,
@@ -715,6 +719,7 @@ if (true && (Boolean((1 + 1)))) {
       errors: [
         {
           column: 6,
+          data: { context: 'conditional' },
           endColumn: 8,
           endLine: 1,
           line: 1,
@@ -2381,6 +2386,7 @@ if (x) {
       errors: [
         {
           column: 5,
+          data: { context: 'conditional' },
           endColumn: 6,
           endLine: 3,
           line: 3,
@@ -2404,6 +2410,7 @@ if (x != null) {
       errors: [
         {
           column: 25,
+          data: { context: 'conditional' },
           endColumn: 26,
           endLine: 1,
           line: 1,
@@ -2423,6 +2430,7 @@ if (x != null) {
       errors: [
         {
           column: 45,
+          data: { context: 'conditional' },
           endColumn: 46,
           endLine: 1,
           line: 1,
@@ -3253,6 +3261,7 @@ if (x) {
       errors: [
         {
           column: 10,
+          data: { context: 'conditional' },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -3272,6 +3281,7 @@ if (x) {
         },
         {
           column: 10,
+          data: { context: 'conditional' },
           endColumn: 13,
           endLine: 4,
           line: 4,
@@ -3291,6 +3301,7 @@ if (x) {
         },
         {
           column: 9,
+          data: { context: 'conditional' },
           endColumn: 12,
           endLine: 5,
           line: 5,
@@ -3310,6 +3321,7 @@ if (x) {
         },
         {
           column: 9,
+          data: { context: 'conditional' },
           endColumn: 12,
           endLine: 6,
           line: 6,
@@ -3913,6 +3925,7 @@ assert(Boolean(nullableString));
       errors: [
         {
           column: 25,
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 4,
           line: 2,
@@ -3994,6 +4007,7 @@ assert(Boolean(nullableString));
       errors: [
         {
           column: 25,
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 6,
           line: 2,
@@ -4026,6 +4040,7 @@ const predicate = (x: string) => {
       errors: [
         {
           column: 25,
+          data: { context: 'array predicate return type' },
           endColumn: 34,
           endLine: 8,
           line: 8,
@@ -4062,6 +4077,7 @@ const predicate = async x => {
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 26,
           endLine: 6,
           line: 6,
@@ -4094,6 +4110,7 @@ const predicate = async x => {
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 4,
           line: 2,
@@ -4235,6 +4252,7 @@ declare function foo<T>(x: number): T;
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 20,
           endLine: 3,
           line: 3,
@@ -4250,6 +4268,7 @@ function foo<T extends number>(x: number): T {}
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 20,
           endLine: 3,
           line: 3,

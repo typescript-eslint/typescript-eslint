@@ -9,6 +9,9 @@ import rule from '../../src/rules/member-ordering';
 const ruleTester = new RuleTester();
 
 const grouped: RunTests<MessageIds, Options> = {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 // no accessibility === public

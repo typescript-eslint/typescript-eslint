@@ -1,5 +1,5 @@
 // Ironically, the rule itself needs to be tested for how it handles multiple errors.
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+// /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-multiple-lines-of-errors.js';
@@ -7,6 +7,9 @@ import rule from '../../src/rules/no-multiple-lines-of-errors.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-multiple-lines-of-errors', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: `

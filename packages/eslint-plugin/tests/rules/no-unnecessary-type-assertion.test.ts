@@ -20,6 +20,9 @@ const optionsWithExactOptionalPropertyTypes = {
 };
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `

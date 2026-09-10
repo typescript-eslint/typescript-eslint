@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-generated-empty-object-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 type Data = { name: string; num: number };

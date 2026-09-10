@@ -15,6 +15,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-poorly-typed-ts-props', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: `

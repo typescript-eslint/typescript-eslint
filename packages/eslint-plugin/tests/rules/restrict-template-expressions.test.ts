@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('restrict-template-expressions', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Base case
     `
@@ -550,6 +553,7 @@ const msg = \`arg = \${[, 2]}\`;
       errors: [
         {
           column: 22,
+          data: { type: 'Promise<void>' },
           endColumn: 39,
           endLine: 1,
           line: 1,
@@ -562,6 +566,7 @@ const msg = \`arg = \${[, 2]}\`;
       errors: [
         {
           column: 22,
+          data: { type: 'Error' },
           endColumn: 33,
           endLine: 1,
           line: 1,

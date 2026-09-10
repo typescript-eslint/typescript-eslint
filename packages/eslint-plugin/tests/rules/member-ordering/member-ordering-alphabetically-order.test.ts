@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+// /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
@@ -6,6 +6,9 @@ import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 const ruleTester = new RuleTester();
 
 ruleTester.run('member-ordering-alphabetically-order', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     // Without grouping
     // default option + interface + wrong order

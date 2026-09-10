@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('strict-void-return', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `

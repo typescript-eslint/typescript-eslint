@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-extraneous-class';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-extraneous-class', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Foo {

@@ -7,6 +7,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('switch-exhaustiveness-check', switchExhaustivenessCheck, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // All branches matched
     `
@@ -1006,6 +1009,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"literal"' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1039,6 +1043,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"literal"' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1074,6 +1079,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '1' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1111,6 +1117,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"2"' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1148,6 +1155,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"2"' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1168,6 +1176,7 @@ switch (value) {
         },
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1205,6 +1214,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1240,6 +1250,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'undefined | null | "1" | 1' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1261,6 +1272,7 @@ case 1: { throw new Error('Not implemented yet: 1 case') }
         },
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1296,6 +1308,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1334,6 +1347,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 4,
           line: 4,
@@ -1372,6 +1386,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1410,6 +1425,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 4,
           line: 4,
@@ -1450,6 +1466,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'typeof a | typeof b' },
           endColumn: 14,
           endLine: 5,
           line: 5,
@@ -1491,6 +1508,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 4,
           line: 4,
@@ -1527,6 +1545,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'false | true' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1563,6 +1582,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'true | 1' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1601,6 +1621,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'false | true' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1622,6 +1643,7 @@ switch (value) {
         },
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1659,6 +1681,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1702,6 +1725,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'Aaa.Bar' },
           endColumn: 14,
           endLine: 7,
           line: 7,
@@ -1728,6 +1752,7 @@ switch (value) {
         },
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 7,
           line: 7,
@@ -2123,6 +2148,7 @@ function test(value: T): number {
       errors: [
         {
           column: 11,
+          data: { missingBranches: '2' },
           endColumn: 16,
           endLine: 5,
           line: 5,
@@ -2159,6 +2185,7 @@ function test(value: T): number {
       errors: [
         {
           column: 11,
+          data: { missingBranches: '1 | 2' },
           endColumn: 16,
           endLine: 5,
           line: 5,
@@ -2197,6 +2224,7 @@ function test(arg: Enum): string {
       errors: [
         {
           column: 11,
+          data: { missingBranches: '(typeof Enum)["test-test"] | Enum.test' },
           endColumn: 14,
           endLine: 8,
           line: 8,
@@ -2238,6 +2266,7 @@ function test(arg: Enum): string {
       errors: [
         {
           column: 11,
+          data: { missingBranches: '(typeof Enum)[""] | Enum.test' },
           endColumn: 14,
           endLine: 8,
           line: 8,
@@ -2279,6 +2308,7 @@ function test(arg: Enum): string {
       errors: [
         {
           column: 11,
+          data: { missingBranches: '(typeof Enum)["9test"] | Enum.test' },
           endColumn: 14,
           endLine: 8,
           line: 8,
@@ -2317,6 +2347,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -2359,6 +2390,9 @@ switch (value) {
       errors: [
         {
           column: 17,
+          data: {
+            missingBranches: 'Enum.a | (typeof Enum)["\'a\' `b` \\"c\\""]',
+          },
           endColumn: 18,
           endLine: 9,
           line: 9,
@@ -2636,6 +2670,7 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b"' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -2676,6 +2711,7 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b"' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -2710,6 +2746,7 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b"' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -2751,6 +2788,7 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b" | "c"' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -2801,6 +2839,7 @@ switch (myEnum) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'MyEnum.Bar | MyEnum.Baz' },
           endColumn: 15,
           endLine: 10,
           line: 10,
@@ -2849,6 +2888,7 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'false | true' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -2888,6 +2928,7 @@ function foo(x: string[]) {
       errors: [
         {
           column: 11,
+          data: { missingBranches: 'undefined' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2955,6 +2996,7 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b" | "c"' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -2996,6 +3038,7 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b" | "c"' },
           endColumn: 16,
           endLine: 4,
           line: 4,

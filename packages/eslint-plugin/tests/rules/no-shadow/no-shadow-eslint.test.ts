@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+// /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 
 // The following tests are adapted from the tests in eslint.
 // Original Code: https://github.com/t-mangoe/eslint/blob/c4a70499720f48e27734068074fbeee4f48fb460/tests/lib/rules/no-shadow.js
@@ -11,6 +11,9 @@ import rule from '../../../src/rules/no-shadow';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-shadow', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: `

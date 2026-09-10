@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-unsafe-function-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unsafe-function-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'let value: () => void;',
     'let value: <T>(t: T) => T;',

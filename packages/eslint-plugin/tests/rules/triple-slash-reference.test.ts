@@ -5,6 +5,9 @@ import rule from '../../src/rules/triple-slash-reference';
 const ruleTester = new RuleTester();
 
 ruleTester.run('triple-slash-reference', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `
@@ -130,6 +133,7 @@ import * as foo from 'foo';
       errors: [
         {
           column: 1,
+          data: { module: 'foo' },
           endColumn: 30,
           endLine: 2,
           line: 2,
@@ -146,6 +150,7 @@ import foo = require('foo');
       errors: [
         {
           column: 1,
+          data: { module: 'foo' },
           endColumn: 30,
           endLine: 2,
           line: 2,
@@ -159,6 +164,7 @@ import foo = require('foo');
       errors: [
         {
           column: 1,
+          data: { module: 'foo' },
           endColumn: 29,
           endLine: 1,
           line: 1,
@@ -172,6 +178,7 @@ import foo = require('foo');
       errors: [
         {
           column: 1,
+          data: { module: 'foo' },
           endColumn: 30,
           endLine: 1,
           line: 1,
@@ -185,6 +192,7 @@ import foo = require('foo');
       errors: [
         {
           column: 1,
+          data: { module: 'foo' },
           endColumn: 28,
           endLine: 1,
           line: 1,

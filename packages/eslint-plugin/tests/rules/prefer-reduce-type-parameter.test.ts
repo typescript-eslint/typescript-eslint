@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-reduce-type-parameter', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 new (class Mine {

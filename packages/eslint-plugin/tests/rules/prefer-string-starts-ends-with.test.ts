@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-string-starts-ends-with', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function f(s: string[]) {

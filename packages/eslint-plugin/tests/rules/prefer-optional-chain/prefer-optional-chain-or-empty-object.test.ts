@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-or-empty-object', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: '(foo || {}).bar;',

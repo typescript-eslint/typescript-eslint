@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('typedef', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Array destructuring
     {
@@ -629,6 +632,7 @@ class Test {
       errors: [
         {
           column: 15,
+          data: { name: 'param' },
           endColumn: 20,
           endLine: 3,
           line: 3,
@@ -683,6 +687,7 @@ class Test {
       errors: [
         {
           column: 17,
+          data: { name: 'x' },
           endColumn: 18,
           endLine: 3,
           line: 3,

@@ -12,6 +12,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-redeclare', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 var a = 3;

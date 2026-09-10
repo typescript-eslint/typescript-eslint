@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-array-delete', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare const obj: { a: 1; b: 2 };

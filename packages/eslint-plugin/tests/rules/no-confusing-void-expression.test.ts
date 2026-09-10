@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-confusing-void-expression', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     '() => Math.random();',
     "console.log('foo');",

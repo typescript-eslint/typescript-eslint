@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('unbound-method', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'Promise.resolve().then(console.log);',
     "['1', '2', '3'].map(Number.parseInt);",

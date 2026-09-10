@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unsafe-unary-minus', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     '+42;',
     '-42;',
@@ -26,6 +29,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
       errors: [
         {
           column: 16,
+          data: { type: 'string' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -38,6 +42,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
       errors: [
         {
           column: 12,
+          data: { type: '{}' },
           endColumn: 14,
           endLine: 1,
           line: 1,
@@ -50,6 +55,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
       errors: [
         {
           column: 18,
+          data: { type: 'number[]' },
           endColumn: 20,
           endLine: 1,
           line: 1,
@@ -62,6 +68,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
       errors: [
         {
           column: 1,
+          data: { type: '"hello"' },
           endColumn: 9,
           endLine: 1,
           line: 1,
@@ -74,6 +81,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
       errors: [
         {
           column: 1,
+          data: { type: '"hello"' },
           endColumn: 9,
           endLine: 1,
           line: 1,
@@ -86,6 +94,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
       errors: [
         {
           column: 23,
+          data: { type: '{ x: number; }' },
           endColumn: 25,
           endLine: 1,
           line: 1,
@@ -98,6 +107,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
       errors: [
         {
           column: 17,
+          data: { type: 'unknown' },
           endColumn: 19,
           endLine: 1,
           line: 1,
@@ -110,6 +120,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
       errors: [
         {
           column: 14,
+          data: { type: 'void' },
           endColumn: 16,
           endLine: 1,
           line: 1,
@@ -122,6 +133,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
       errors: [
         {
           column: 15,
+          data: { type: 'T' },
           endColumn: 17,
           endLine: 1,
           line: 1,
