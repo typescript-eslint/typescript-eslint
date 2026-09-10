@@ -2243,6 +2243,210 @@ export const myTypeGuard = (data: unknown): data is string => {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10658
+    {
+      code: `
+const A = 0;
+export type A = typeof A;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'A',
+          },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+interface TypeFirst {
+  next?: TypeFirst;
+}
+export const TypeFirst = 0;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'TypeFirst',
+          },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+type AliasFirst = 0;
+export const AliasFirst = 0;
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'AliasFirst',
+          },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export const ValueFirstType = 0;
+interface ValueFirstType {}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'ValueFirstType',
+          },
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export const ValueFirstAlias = 0;
+type ValueFirstAlias = 0;
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'ValueFirstAlias',
+          },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export interface TypeExported {}
+const TypeExported = 0;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'TypeExported',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export type AliasExported = 0;
+const AliasExported = 0;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'AliasExported',
+          },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+const ValueBeforeType = 0;
+export interface ValueBeforeType {}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'ValueBeforeType',
+          },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+const ValueBeforeAlias = 0;
+export type ValueBeforeAlias = 0;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'ValueBeforeAlias',
+          },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+interface NamedType {}
+const NamedType = 0;
+export type { NamedType };
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'NamedType',
+          },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
   ],
 
   valid: [
@@ -3302,16 +3506,49 @@ export class Foo {
       `,
     },
     `
-interface Foo {
-  bar: string;
-}
-export const Foo = 'bar';
+export interface DirectInterfaceFirst {}
+export const DirectInterfaceFirst = 0;
+
+export type DirectAliasFirst = 0;
+export const DirectAliasFirst = 0;
+
+export const DirectValueFirstInterface = 0;
+export interface DirectValueFirstInterface {}
+
+export const DirectValueFirstAlias = 0;
+export type DirectValueFirstAlias = 0;
     `,
     `
-export const Foo = 'bar';
-interface Foo {
-  bar: string;
-}
+interface NamedInterfaceFirst {}
+const NamedInterfaceFirst = 0;
+export { NamedInterfaceFirst };
+
+type NamedAliasFirst = 0;
+const NamedAliasFirst = 0;
+export { NamedAliasFirst };
+
+const NamedValueFirstInterface = 0;
+interface NamedValueFirstInterface {}
+export { NamedValueFirstInterface };
+
+const NamedValueFirstAlias = 0;
+type NamedValueFirstAlias = 0;
+export { NamedValueFirstAlias };
+    `,
+    `
+interface SharedName {}
+export const SharedName = 0;
+export type UsesSharedName = SharedName;
+    `,
+    `
+export interface SharedName {}
+const SharedName = 0;
+console.log(SharedName);
+    `,
+    `
+interface LocalName {}
+const LocalName = 0;
+export type UsesLocalName = LocalName;
     `,
     `
 let foo = 1;

@@ -1,4 +1,5 @@
 import type {
+  Definition,
   ScopeManager,
   ScopeVariable,
 } from '@typescript-eslint/scope-manager';
@@ -425,24 +426,27 @@ const MERGEABLE_TYPES = new Set([
  */
 function isMergeableExported(variable: ScopeVariable): boolean {
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
-  for (const def of variable.defs) {
-    // parameters can never be exported.
-    // their `node` prop points to the function decl, which can be exported
-    // so we need to special case them
-    if (def.type === TSESLint.Scope.DefinitionType.Parameter) {
-      continue;
-    }
+  return variable.defs.some(
+    definition =>
+      isDefinitionDirectlyExported(definition) &&
+      (MERGEABLE_TYPES.has(definition.node.type) ||
+        definition.node.parent.type ===
+          AST_NODE_TYPES.ExportDefaultDeclaration),
+  );
+}
 
-    if (
-      (MERGEABLE_TYPES.has(def.node.type) &&
-        def.node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
-      def.node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
-    ) {
-      return true;
-    }
+function isDefinitionDirectlyExported(definition: Definition): boolean {
+  // Parameters can never be exported, but their node points to the containing
+  // function declaration, which can be exported.
+  if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
+    return false;
   }
 
-  return false;
+  const node =
+    definition.node.type === AST_NODE_TYPES.VariableDeclarator
+      ? definition.node.parent
+      : definition.node;
+  return node.parent.type.startsWith('Export');
 }
 
 /**
@@ -451,17 +455,7 @@ function isMergeableExported(variable: ScopeVariable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: ScopeVariable): boolean {
-  return variable.defs.some(definition => {
-    let node = definition.node;
-
-    if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-      node = node.parent;
-    } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
-      return false;
-    }
-
-    return node.parent.type.startsWith('Export');
-  });
+  return variable.defs.some(isDefinitionDirectlyExported);
 }
 
 const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['??=', '&&=', '||=']);
@@ -471,7 +465,10 @@ const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['??=', '&&=', '||=']);
  * @param variable The variable to check.
  * @returns True if the variable is used
  */
-function isUsedVariable(variable: ScopeVariable): boolean {
+function isUsedVariable(
+  variable: ScopeVariable,
+  namespace?: 'type' | 'value',
+): boolean {
   /**
    * Gets a list of function definitions for a specified variable.
    * @param variable eslint-scope variable object.
@@ -801,12 +798,78 @@ function isUsedVariable(variable: ScopeVariable): boolean {
       !(isFunctionDefinition && isSelfReference(ref, functionNodes)) &&
       !(isTypeDecl && isInsideOneOf(ref, typeDeclNodes)) &&
       !(isModuleDecl && isSelfReference(ref, moduleDeclNodes)) &&
-      !(isEnumDecl && isSelfReference(ref, enumDeclNodes))
+      !(isEnumDecl && isSelfReference(ref, enumDeclNodes)) &&
+      (namespace == null ||
+        (namespace === 'type' ? ref.isTypeReference : ref.isValueReference))
     );
   });
 }
 
 //#endregion private helpers
+
+/**
+ * Finds the unused type or value declaration when same-named declarations use
+ * separate TypeScript namespaces and an export exposes only one namespace.
+ *
+ * Declarations such as classes that occupy both namespaces are treated as one
+ * definition and are excluded from this check.
+ */
+export function getUnusedDefinitionForPartiallyExportedVariable(
+  variable: ScopeVariable,
+): Definition | null {
+  if (variable.defs.length < 2) {
+    return null;
+  }
+
+  const typeOnlyDefinition = variable.defs.find(
+    def => def.isTypeDefinition && !def.isVariableDefinition,
+  );
+  const valueOnlyDefinition = variable.defs.find(
+    def => !def.isTypeDefinition && def.isVariableDefinition,
+  );
+
+  if (!typeOnlyDefinition || !valueOnlyDefinition) {
+    return null;
+  }
+
+  let hasExport = false;
+  let typeDefinitionsExported = false;
+  let valueDefinitionsExported = false;
+  for (const definition of variable.defs) {
+    if (isDefinitionDirectlyExported(definition)) {
+      hasExport = true;
+      typeDefinitionsExported ||= definition.isTypeDefinition;
+      valueDefinitionsExported ||= definition.isVariableDefinition;
+    }
+  }
+  for (const reference of variable.references) {
+    if (
+      reference.identifier.parent.type === AST_NODE_TYPES.ExportSpecifier ||
+      reference.identifier.parent.type ===
+        AST_NODE_TYPES.ExportDefaultDeclaration ||
+      reference.identifier.parent.type === AST_NODE_TYPES.TSExportAssignment
+    ) {
+      hasExport = true;
+      typeDefinitionsExported ||= reference.isTypeReference;
+      valueDefinitionsExported ||= reference.isValueReference;
+    }
+  }
+
+  if (!hasExport || (typeDefinitionsExported && valueDefinitionsExported)) {
+    return null;
+  }
+
+  const typeDefinitionsUsed =
+    typeDefinitionsExported || isUsedVariable(variable, 'type');
+  const valueDefinitionsUsed =
+    valueDefinitionsExported || isUsedVariable(variable, 'value');
+
+  if (typeDefinitionsUsed === valueDefinitionsUsed) {
+    return null;
+  }
+
+  return typeDefinitionsUsed ? valueOnlyDefinition : typeOnlyDefinition;
+}
 
 /**
  * Collects the set of unused variables for a given context.

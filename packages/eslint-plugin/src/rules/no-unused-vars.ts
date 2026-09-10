@@ -21,6 +21,7 @@ import {
   collectVariables,
   createRule,
   getNameLocationInGlobalDirectiveComment,
+  getUnusedDefinitionForPartiallyExportedVariable,
   isDefinitionFile,
   isFunction,
   nullThrows,
@@ -313,6 +314,7 @@ export default createRule<Options, MessageIds>({
         messageId: MessageIds;
         node?: TSESTree.Node;
       },
+      definition?: Definition,
     ) => {
       reportedUnusedVariables.add(unusedVar);
 
@@ -322,9 +324,12 @@ export default createRule<Options, MessageIds>({
           ref.from.variableScope === unusedVar.scope.variableScope,
       );
 
-      const id = writeReferences.length
-        ? writeReferences[writeReferences.length - 1].identifier
-        : unusedVar.identifiers[0];
+      const id =
+        definition?.name.type === AST_NODE_TYPES.Identifier
+          ? definition.name
+          : writeReferences.length
+            ? writeReferences[writeReferences.length - 1].identifier
+            : unusedVar.identifiers[0];
 
       const { start } = id.loc;
       const idLength = id.name.length;
@@ -842,8 +847,9 @@ export default createRule<Options, MessageIds>({
      */
     function getDefinedMessageData(
       unusedVar: ScopeVariable,
+      definition?: Definition,
     ): Record<string, unknown> {
-      const def = unusedVar.defs.at(0);
+      const def = definition ?? unusedVar.defs.at(0);
       let additionalMessageData = '';
 
       if (def) {
@@ -871,8 +877,9 @@ export default createRule<Options, MessageIds>({
      */
     function getAssignedMessageData(
       unusedVar: ScopeVariable,
+      definition?: Definition,
     ): Record<string, unknown> {
-      const def = unusedVar.defs.at(0);
+      const def = definition ?? unusedVar.defs.at(0);
       let additionalMessageData = '';
 
       if (def) {
@@ -918,7 +925,10 @@ export default createRule<Options, MessageIds>({
       };
     }
 
-    function collectUnusedVariables(): ScopeVariable[] {
+    function collectUnusedVariables(): {
+      definition?: Definition;
+      variable: ScopeVariable;
+    }[] {
       /**
        * Checks whether a node is a sibling of the rest property or not.
        * @param node a node to check
@@ -980,12 +990,15 @@ export default createRule<Options, MessageIds>({
           variable,
         })),
       ];
-      const unusedVariablesReturn: ScopeVariable[] = [];
+      const unusedVariablesReturn: {
+        definition?: Definition;
+        variable: ScopeVariable;
+      }[] = [];
       for (const { used, variable } of variables) {
         // explicit global variables don't have definitions.
         if (variable.defs.length === 0) {
           if (!used) {
-            unusedVariablesReturn.push(variable);
+            unusedVariablesReturn.push({ variable });
           }
 
           continue;
@@ -1119,8 +1132,16 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
-        if (!used) {
-          unusedVariablesReturn.push(variable);
+        const partiallyUnusedDefinition = used
+          ? getUnusedDefinitionForPartiallyExportedVariable(variable)
+          : null;
+        if (partiallyUnusedDefinition) {
+          unusedVariablesReturn.push({
+            definition: partiallyUnusedDefinition,
+            variable,
+          });
+        } else if (!used) {
+          unusedVariablesReturn.push({ variable });
         }
       }
 
@@ -1203,14 +1224,15 @@ export default createRule<Options, MessageIds>({
       'Program:exit'(programNode): void {
         const unusedVars = collectUnusedVariables();
 
-        for (const unusedVar of unusedVars) {
-          // Report the first declaration.
+        for (const { definition, variable: unusedVar } of unusedVars) {
           if (unusedVar.defs.length > 0) {
-            const usedOnlyAsType = unusedVar.references.some(
-              ref =>
-                referenceContainsTypeQuery(ref.identifier) ||
-                referenceContainsTypePredicate(ref.identifier),
-            );
+            const usedOnlyAsType =
+              (definition == null || definition.isVariableDefinition) &&
+              unusedVar.references.some(
+                ref =>
+                  referenceContainsTypeQuery(ref.identifier) ||
+                  referenceContainsTypePredicate(ref.identifier),
+              );
             const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 
             const isImportUsedOnlyAsType =
@@ -1222,12 +1244,19 @@ export default createRule<Options, MessageIds>({
               continue;
             }
 
-            report(unusedVar, {
-              messageId,
-              data: unusedVar.references.some(ref => ref.isWrite())
-                ? getAssignedMessageData(unusedVar)
-                : getDefinedMessageData(unusedVar),
-            });
+            const isAssigned =
+              (definition == null || definition.isVariableDefinition) &&
+              unusedVar.references.some(ref => ref.isWrite());
+            report(
+              unusedVar,
+              {
+                messageId,
+                data: isAssigned
+                  ? getAssignedMessageData(unusedVar, definition)
+                  : getDefinedMessageData(unusedVar, definition),
+              },
+              definition,
+            );
 
             // If there are no regular declaration, report the first `/*globals*/` comment directive.
           } else if (
