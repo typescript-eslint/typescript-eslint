@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
-
 // The following tests are adapted from the tests in eslint.
 // Original Code: https://github.com/t-mangoe/eslint/blob/c4a70499720f48e27734068074fbeee4f48fb460/tests/lib/rules/no-shadow.js
 // License      : https://github.com/eslint/eslint/blob/c4a70499720f48e27734068074fbeee4f48fb460/LICENSE
