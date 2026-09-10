@@ -140,6 +140,7 @@ export function parseLintResults(
       endColumn,
       endLineNumber,
       message: message.message,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- monaco is only available as a type import here
       severity:
         message.severity === 2
           ? 8 // MarkerSeverity.Error

@@ -52,6 +52,7 @@ export const useSandboxServices = (
           {
             acquireTypes: true,
             compilerOptions:
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- monaco is only available as a type import here
               compilerOptions as Monaco.languages.typescript.CompilerOptions,
             domID: editorEmbedId,
             monacoSettings: {

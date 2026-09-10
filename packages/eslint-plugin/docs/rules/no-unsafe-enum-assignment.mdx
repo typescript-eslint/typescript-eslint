@@ -1,0 +1,108 @@
+---
+description: 'Disallow assigning non-enum values to enum typed locations.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unsafe-enum-assignment** for documentation.
+
+TypeScript is deliberately lenient about assigning plain numbers into numeric enums.
+That leniency supports bit flag enums, whose combinations produce a plain `number` rather than an enum member:
+
+```ts
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+const readWrite: Flags = Flags.Read | Flags.Write;
+```
+
+The cost is that _any_ number may be assigned into a numeric enum type, including one that matches no member at all:
+
+```ts
+enum Fruit {
+  Apple,
+}
+
+declare const someNumber: number;
+
+const fruit: Fruit = someNumber; // No error
+```
+
+TypeScript also permits numeric literals that happen to coincide with a member's value, which makes code depend on what an enum's members are set to rather than what they are called.
+Incrementing or otherwise doing arithmetic on an enum-typed value has the same effect, since the result is a plain number that might not match any enum member.
+
+This rule reports on any of those "unsafe" enum assignments that might only happen to match on enum member values.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+enum Fruit {
+  Apple,
+}
+
+declare const someNumber: number;
+
+// Fruit.Apple is set to 0, so TypeScript allows this literal.
+const fruit: Fruit = 0;
+```
+
+```ts
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+let mutated: Vegetable = Vegetable.Asparagus;
+
+mutated++;
+mutated += 1;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+enum Fruit {
+  Apple,
+}
+
+const fruit: Fruit = Fruit.Apple;
+```
+
+```ts
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+let reassigned: Vegetable = Vegetable.Asparagus;
+reassigned = Vegetable.Asparagus;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If your codebase intentionally derives enum values with non-bitwise operators, such as `+=`, this rule will be difficult to adhere to.
+Consider using bitwise operators like `|=`, `&=`, and `^=` for those cases.
+
+Sometimes, you may want to ingest a value from an API or user input, then use it as an enum throughout your application.
+While validating the input, it may be appropriate to disable the rule.
+Alternately, you might consider making use of a validation library like [Zod](https://zod.dev/?id=native-enums).
+
+In the case of relying on third party enums that are only imported as `type`s, their members aren't available to refer to by name.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#use-configuration-comments) for those specific situations instead of completely disabling this rule.
+
+More generally, if you don't mind enums being treated as a namespaced bag of values rather than opaque identifiers, you likely don't need this rule.
+In that case, you might consider declaring a `const` object and a union of its values instead of an enum.
+
+## Related To
+
+- [`no-unsafe-enum-comparison`](./no-unsafe-enum-comparison.mdx)

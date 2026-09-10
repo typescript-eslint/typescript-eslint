@@ -81,7 +81,7 @@ export interface InvalidOperand {
 }
 type Operand = InvalidOperand | LastChainOperand | ValidOperand;
 
-const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
+const NULLISH_FLAGS: ts.TypeFlags = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
   disallowFalseyLiteral: boolean,
@@ -122,7 +122,7 @@ function isValidFalseBooleanCheckType(
     return false;
   }
 
-  let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
+  let allowedFlags: ts.TypeFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
   if (options.checkAny === true) {
     allowedFlags |= ts.TypeFlags.Any;
   }

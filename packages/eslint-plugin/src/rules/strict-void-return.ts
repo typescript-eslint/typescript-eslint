@@ -364,6 +364,7 @@ export default util.createRule<Options, MessageId>({
           .getCallSignaturesOfType(actualType)
           .map(signature => signature.getReturnType())
           .flatMap(returnType => tsutils.unionConstituents(returnType))
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- allowedReturnType is a computed flags mask
           .every(type => tsutils.isTypeFlagSet(type, allowedReturnType))
       ) {
         // The function is already void.
@@ -485,6 +486,7 @@ export default util.createRule<Options, MessageId>({
         const returnType = checker.getTypeAtLocation(
           parserServices.esTreeNodeToTSNodeMap.get(statement.argument),
         );
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- allowedReturnType is a computed flags mask
         if (tsutils.isTypeFlagSet(returnType, allowedReturnType)) {
           // Only visit return statements with invalid type.
           continue;
