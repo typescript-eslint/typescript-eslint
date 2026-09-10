@@ -3345,5 +3345,43 @@ declare const s: string;
 maybeFn?.(s);
       `,
     },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = (await db.list()) as Map<string, Uint8Array>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 61,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function get<T>(): T;
+const value = get<string>() as string;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare function get<T>(): T;
+const value = get<string>();
+      `,
+    },
   ],
 });

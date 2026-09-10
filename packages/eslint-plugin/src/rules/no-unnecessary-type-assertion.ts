@@ -30,7 +30,10 @@ export type Options = [
     typesToIgnore?: string[];
   },
 ];
-export type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
+export type MessageIds =
+  | 'contextuallyInferredTypeArguments'
+  | 'contextuallyUnnecessary'
+  | 'unnecessaryAssertion';
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
@@ -44,6 +47,8 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
+      contextuallyInferredTypeArguments:
+        'The type arguments for this generic call may be inferred from the assertion. Specify them explicitly instead.',
       contextuallyUnnecessary:
         'This assertion is unnecessary since the receiver accepts the original type of the expression.',
       unnecessaryAssertion:
@@ -511,6 +516,20 @@ export default createRule<Options, MessageIds>({
       return type.getCallSignatures().some(hasTypeParams);
     }
 
+    function isGenericCallWithInferredTypeArguments(
+      expression: TSESTree.Expression,
+    ): boolean {
+      const call =
+        expression.type === AST_NODE_TYPES.AwaitExpression
+          ? expression.argument
+          : expression;
+      return (
+        call.type === AST_NODE_TYPES.CallExpression &&
+        call.typeArguments == null &&
+        hasGenericCallSignature(services.getTypeAtLocation(call.callee))
+      );
+    }
+
     function isArgumentToOverloadedFunction(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
@@ -927,11 +946,18 @@ export default createRule<Options, MessageIds>({
           : !typeAnnotationIsConstAssertion;
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
-          context.report({
-            node,
-            messageId: 'unnecessaryAssertion',
-            fix: createAssertionFixer(node),
-          });
+          if (isGenericCallWithInferredTypeArguments(node.expression)) {
+            context.report({
+              node,
+              messageId: 'contextuallyInferredTypeArguments',
+            });
+          } else {
+            context.report({
+              node,
+              messageId: 'unnecessaryAssertion',
+              fix: createAssertionFixer(node),
+            });
+          }
           return;
         }
 
