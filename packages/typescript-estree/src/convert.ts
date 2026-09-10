@@ -217,7 +217,7 @@ export class Converter {
   }
 
   /**
-   * Coverts body Nodes and add a directive field to StringLiterals
+   * Converts body Nodes and add a directive field to StringLiterals
    * @param nodes of ts.Node
    * @param parent parentNode
    * @returns Array of body statements
