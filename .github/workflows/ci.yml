@@ -403,7 +403,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest-16cores]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [18, 24]
         package:
