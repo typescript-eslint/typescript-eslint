@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 Function parameters can supply default values when arguments are omitted. Explicitly passing those defaults can obscure the arguments that customize a call.
 
-This rule reports matching trailing arguments and matching optional properties in directly destructured object parameters. It offers editor suggestions instead of automatic fixes, so each removal can be reviewed.
+This rule reports matching trailing arguments and matching optional properties in directly destructured object parameters, including JSX component props. It offers editor suggestions instead of automatic fixes, so each removal can be reviewed.
 
 ## Examples
 
@@ -32,6 +32,14 @@ function configure({ retries = 3 }: { retries?: number }) {
 }
 
 configure({ retries: 3 });
+```
+
+```tsx
+function Button({ enabled = true }) {
+  return <button disabled={!enabled} />;
+}
+
+<Button enabled />;
 ```
 
 </TabItem>
@@ -55,6 +63,15 @@ configure({});
 configure({ retries: 5 });
 ```
 
+```tsx
+function Button({ enabled = true }) {
+  return <button disabled={!enabled} />;
+}
+
+<Button />;
+<Button enabled={false} />;
+```
+
 </TabItem>
 </Tabs>
 
@@ -62,17 +79,22 @@ configure({ retries: 5 });
 
 The rule checks function declarations, directly initialized `const` function expressions and arrows, and direct function-expression calls. Named, renamed, default, and re-exported imports are supported when TypeScript resolves them to supported source implementations. Declaration-only dependencies do not expose runtime defaults and are skipped.
 
-Values must be primitive literals: strings, numbers, booleans, `null`, bigints, or templates without substitutions. Signed numeric literals and parentheses are supported. Positive and negative zero are distinct. Identifiers, including `undefined`, are not evaluated; assertions, `satisfies`, and other type-affecting wrappers are skipped.
+Values must be primitive literals: strings, numbers, booleans, `null`, bigints, or templates without substitutions. Signed numeric literals, parentheses, and `as const` assertions on primitives are supported. Positive and negative zero are distinct. Identifiers, including `undefined`, are not evaluated; other assertions, `satisfies`, and other type-affecting wrappers are skipped.
 
 Matching positional arguments must form a trailing suffix. Removing an earlier argument must not shift a retained argument. For object arguments, the rule checks one level of ordinary properties, including renamed bindings. Required properties are retained, and removing the last property preserves the empty object argument. Suggestions that would delete comments are omitted.
+
+Functions with rest parameters can have matching object properties removed from their fixed arguments. A later call spread is allowed only when it starts at or after the rest parameter. Positional arguments are never removed from calls with spreads or rest parameters.
+
+JSX components use the same function-origin checks, including for imports. The component must have one directly destructured props parameter. Literal expressions, string attributes, and boolean shorthand attributes are checked. Each matching prop receives its own removal suggestion.
 
 ## Limitations
 
 The rule deliberately skips:
 
-- Object and class methods, namespace-import member calls, `import =` aliases, optional calls, constructors, tagged templates, and JSX elements. Ordinary calls in TSX files are checked.
+- Object and class methods, namespace-import member calls, `import =` aliases, optional calls, constructors, and tagged templates.
 - Generic functions and functions inside generic function/class contexts, overloads, structural callable annotations, local aliases, callbacks, factories, and ambiguous callable origins.
-- Mutable function variables, known local binding writes, imports that resolve back to the current file, spreads in calls, and rest parameters.
+- Mutable function variables, known local binding writes, and imports that resolve back to the current file.
+- JSX intrinsic elements, member or namespaced component names, components with a `defaultProps` property, and elements containing spread or duplicate attributes. Component names must start with an uppercase letter. The special props `key`, `ref`, and `children` are retained.
 - Nested object patterns, computed or numeric keys, duplicate keys, shorthand properties, accessors, methods, spreads, rest bindings, and names inherited from `Object.prototype`, such as `toString` and `__proto__`.
 - Implementations containing identifiers named `arguments` or `eval`, including in parameter initializers and nested functions. These conservative checks can skip harmless uses of those names.
 

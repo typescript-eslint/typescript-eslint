@@ -18,6 +18,10 @@ export function options({ value = 0 }: { value?: number }) {
   return value;
 }
 
+export function Component({ value = 5 }) {
+  return null;
+}
+
 export let mutable = (value = 0) => value;
 mutable = (value = 1) => value;
 

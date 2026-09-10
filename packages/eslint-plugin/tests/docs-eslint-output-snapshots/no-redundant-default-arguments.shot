@@ -16,6 +16,15 @@ function configure({ retries = 3 }: { retries?: number }) {
 configure({ retries: 3 });
             ~~~~~~~~~~ Property 'retries' matches its declared default value.
 
+Incorrect
+
+function Button({ enabled = true }) {
+  return <button disabled={!enabled} />;
+}
+
+<Button enabled />;
+        ~~~~~~~ Property 'enabled' matches its declared default value.
+
 Correct
 
 function select(value = 0) {
@@ -33,3 +42,12 @@ function configure({ retries = 3 }: { retries?: number }) {
 
 configure({});
 configure({ retries: 5 });
+
+Correct
+
+function Button({ enabled = true }) {
+  return <button disabled={!enabled} />;
+}
+
+<Button />;
+<Button enabled={false} />;

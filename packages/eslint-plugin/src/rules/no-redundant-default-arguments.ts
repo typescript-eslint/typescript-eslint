@@ -48,6 +48,14 @@ function readPrimitive(
     return undefined;
   }
   node = unwrapParentheses(node);
+  if (
+    ts.isAsExpression(node) &&
+    ts.isTypeReferenceNode(node.type) &&
+    ts.isIdentifier(node.type.typeName) &&
+    node.type.typeName.text === 'const'
+  ) {
+    return readPrimitive(node.expression);
+  }
   if (ts.isNumericLiteral(node)) {
     return { value: Number(node.text) };
   }
@@ -154,6 +162,7 @@ export default createRule<[], MessageIds>({
           properties: ReturnType<typeof readProperties>;
         }[];
         minimumArguments: number;
+        restIndex: number;
       } | null
     >();
     const writes = new WeakMap<ts.Symbol, boolean>();
@@ -249,7 +258,6 @@ export default createRule<[], MessageIds>({
           ) ||
           !declaration.body ||
           inGenericContext(declaration) ||
-          declaration.parameters.some(parameter => parameter.dotDotDotToken) ||
           observesArguments(declaration)
         ) {
           defaults.set(declaration, null);
@@ -263,7 +271,11 @@ export default createRule<[], MessageIds>({
           );
           let minimumArguments = 0;
           const parameters = runtimeParameters.map((parameter, index) => {
-            if (!parameter.initializer && !parameter.questionToken) {
+            if (
+              !parameter.initializer &&
+              !parameter.questionToken &&
+              !parameter.dotDotDotToken
+            ) {
               minimumArguments = index + 1;
             }
             return {
@@ -272,10 +284,81 @@ export default createRule<[], MessageIds>({
               value: readPrimitive(parameter.initializer),
             };
           });
-          defaults.set(declaration, { minimumArguments, parameters });
+          defaults.set(declaration, {
+            minimumArguments,
+            parameters,
+            restIndex: runtimeParameters.findIndex(
+              parameter => !!parameter.dotDotDotToken,
+            ),
+          });
         }
       }
       return defaults.get(declaration);
+    }
+
+    function getDeclaration(
+      node: TSESTree.CallExpression | TSESTree.JSXOpeningElement,
+      calleeNode: TSESTree.Node,
+    ) {
+      const declaration = checker
+        .getResolvedSignature(services.esTreeNodeToTSNodeMap.get(node))
+        ?.getDeclaration();
+      const callee = unwrapParentheses(
+        services.esTreeNodeToTSNodeMap.get(calleeNode),
+      );
+      if (!declaration) {
+        return;
+      }
+      if (ts.isIdentifier(callee)) {
+        let symbol = checker.getSymbolAtLocation(callee);
+        if (symbol) {
+          if (!writes.has(symbol)) {
+            const variable = ASTUtils.findVariable(
+              context.sourceCode.getScope(node),
+              callee.text,
+            );
+            writes.set(
+              symbol,
+              variable?.references.some(
+                reference => reference.isWrite() && !reference.init,
+              ) ?? false,
+            );
+          }
+          if (writes.get(symbol)) {
+            return;
+          }
+        }
+        if (symbol && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
+          if (
+            declaration.getSourceFile() === callee.getSourceFile() ||
+            !symbol
+              .getDeclarations()
+              ?.every(
+                declaration =>
+                  ts.isImportSpecifier(declaration) ||
+                  ts.isImportClause(declaration),
+              )
+          ) {
+            return;
+          }
+          symbol = checker.getAliasedSymbol(symbol);
+        }
+        const binding = symbol?.valueDeclaration;
+        if (
+          binding !== declaration &&
+          (!binding ||
+            !ts.isVariableDeclaration(binding) ||
+            binding.type ||
+            !binding.initializer ||
+            unwrapParentheses(binding.initializer) !== declaration ||
+            !(binding.parent.flags & ts.NodeFlags.Const))
+        ) {
+          return;
+        }
+      } else if (callee !== declaration) {
+        return;
+      }
+      return declaration;
     }
 
     return {
@@ -283,9 +366,6 @@ export default createRule<[], MessageIds>({
         if (
           !node.arguments.length ||
           node.optional ||
-          node.arguments.some(
-            argument => argument.type === AST_NODE_TYPES.SpreadElement,
-          ) ||
           (node.callee.type !== AST_NODE_TYPES.Identifier &&
             node.callee.type !== AST_NODE_TYPES.FunctionExpression &&
             node.callee.type !== AST_NODE_TYPES.ArrowFunctionExpression)
@@ -303,74 +383,29 @@ export default createRule<[], MessageIds>({
         ) {
           return;
         }
-        const declaration = services
-          .getResolvedSignature(node)
-          ?.getDeclaration();
-        const callee = unwrapParentheses(
-          services.esTreeNodeToTSNodeMap.get(node.callee),
-        );
+        const declaration = getDeclaration(node, node.callee);
         if (!declaration) {
           return;
         }
-        if (ts.isIdentifier(callee)) {
-          let symbol = checker.getSymbolAtLocation(callee);
-          if (symbol) {
-            if (!writes.has(symbol)) {
-              const variable = ASTUtils.findVariable(
-                context.sourceCode.getScope(node),
-                callee.text,
-              );
-              writes.set(
-                symbol,
-                variable?.references.some(
-                  reference => reference.isWrite() && !reference.init,
-                ) ?? false,
-              );
-            }
-            if (writes.get(symbol)) {
-              return;
-            }
-          }
-          if (symbol && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
-            if (
-              declaration.getSourceFile() === callee.getSourceFile() ||
-              !symbol
-                .getDeclarations()
-                ?.every(
-                  declaration =>
-                    ts.isImportSpecifier(declaration) ||
-                    ts.isImportClause(declaration),
-                )
-            ) {
-              return;
-            }
-            symbol = checker.getAliasedSymbol(symbol);
-          }
-          const binding = symbol?.valueDeclaration;
-          if (
-            binding !== declaration &&
-            (!binding ||
-              !ts.isVariableDeclaration(binding) ||
-              binding.type ||
-              !binding.initializer ||
-              unwrapParentheses(binding.initializer) !== declaration ||
-              !(binding.parent.flags & ts.NodeFlags.Const))
-          ) {
-            return;
-          }
-        } else if (callee !== declaration) {
-          return;
-        }
         const metadata = getDefaults(declaration);
+        const spreadIndex = node.arguments.findIndex(
+          argument => argument.type === AST_NODE_TYPES.SpreadElement,
+        );
         if (
           !metadata ||
           node.arguments.length < metadata.minimumArguments ||
-          node.arguments.length > metadata.parameters.length
+          (metadata.restIndex === -1 &&
+            (spreadIndex !== -1 ||
+              node.arguments.length > metadata.parameters.length)) ||
+          (spreadIndex !== -1 && spreadIndex < metadata.restIndex)
         ) {
           return;
         }
         const { parameters } = metadata;
         for (const [index, argument] of node.arguments.entries()) {
+          if (index === metadata.restIndex || index === spreadIndex) {
+            break;
+          }
           const parameter = parameters[index].declaration;
           if (
             argument.type !== AST_NODE_TYPES.ObjectExpression ||
@@ -436,6 +471,9 @@ export default createRule<[], MessageIds>({
             });
           }
         }
+        if (metadata.restIndex !== -1 || spreadIndex !== -1) {
+          return;
+        }
         let first = node.arguments.length;
         while (first > 0) {
           const initializer = parameters[first - 1]?.value;
@@ -493,6 +531,103 @@ export default createRule<[], MessageIds>({
                 },
               ],
         });
+      },
+      JSXOpeningElement(node) {
+        if (
+          node.name.type !== AST_NODE_TYPES.JSXIdentifier ||
+          !/^[A-Z]/u.test(node.name.name) ||
+          !node.attributes.length
+        ) {
+          return;
+        }
+        const attributes = new Map<string, TSESTree.JSXAttribute>();
+        for (const attribute of node.attributes) {
+          if (
+            attribute.type !== AST_NODE_TYPES.JSXAttribute ||
+            attribute.name.type !== AST_NODE_TYPES.JSXIdentifier ||
+            attributes.has(attribute.name.name)
+          ) {
+            return;
+          }
+          attributes.set(attribute.name.name, attribute);
+        }
+        const declaration = getDeclaration(node, node.name);
+        if (!declaration) {
+          return;
+        }
+        const metadata = getDefaults(declaration);
+        if (metadata?.parameters.length !== 1) {
+          return;
+        }
+        const parameter = metadata.parameters[0];
+        if (!parameter.properties) {
+          return;
+        }
+        for (const [name, attribute] of attributes) {
+          if (name === 'key' || name === 'ref' || name === 'children') {
+            continue;
+          }
+          const initializer = parameter.properties.get(name);
+          const expression =
+            attribute.value?.type === AST_NODE_TYPES.JSXExpressionContainer
+              ? attribute.value.expression
+              : attribute.value;
+          const value = !expression
+            ? { value: true }
+            : expression.type === AST_NODE_TYPES.Literal &&
+                typeof expression.value === 'string'
+              ? { value: expression.value }
+              : readPrimitive(services.esTreeNodeToTSNodeMap.get(expression));
+          if (
+            !initializer ||
+            !value ||
+            !Object.is(initializer.value, value.value)
+          ) {
+            continue;
+          }
+          const type = getOptionalPropertyType(parameter.declaration, name);
+          if (
+            !type ||
+            !checker.isTypeAssignableTo(
+              expression
+                ? services.getTypeAtLocation(expression)
+                : checker.getTrueType(),
+              type,
+            )
+          ) {
+            continue;
+          }
+          if (
+            checker.getPropertyOfType(
+              services.getTypeAtLocation(node.name),
+              'defaultProps',
+            )
+          ) {
+            return;
+          }
+          const start = nullThrows(
+            context.sourceCode.getFirstToken(attribute),
+            NullThrowsReasons.MissingToken('attribute', 'JSX element'),
+          );
+          const end = nullThrows(
+            context.sourceCode.getLastToken(attribute),
+            NullThrowsReasons.MissingToken('attribute', 'JSX element'),
+          );
+          context.report({
+            node: attribute,
+            messageId: 'redundantProperty',
+            data: { name },
+            suggest: context.sourceCode.commentsExistBetween(start, end)
+              ? []
+              : [
+                  {
+                    messageId: 'removeProperty',
+                    data: { name },
+                    fix: fixer => fixer.remove(attribute),
+                  },
+                ],
+          });
+        }
       },
     };
   },

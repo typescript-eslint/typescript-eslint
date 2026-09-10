@@ -7,6 +7,206 @@ const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-redundant-default-arguments', rule, {
   valid: [
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+<Component value={6} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+const value = 5;
+<Component value={value} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+const props = { value: 6 };
+<Component {...props} value={5} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+const props = { value: 6 };
+<Component value={5} {...props} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function div({ title = 'hello' }) {
+  return null;
+}
+<div title="hello" />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+const components = { Component: ({ value = 5 }) => null };
+<components.Component value={5} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+declare const Component: (props: { value?: number }) => null;
+<Component value={5} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ value = 5 }: { value: number }) {
+  return null;
+}
+<Component value={5} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component<T>({ value = 5 }: { value?: number }) {
+  return null;
+}
+<Component value={5} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+let Component = ({ value = 5 }) => null;
+<Component value={5} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ ref = null }) {
+  return null;
+}
+<Component ref={null} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ children = 'hello' }) {
+  return null;
+}
+<Component children="hello" />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+<Component />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component(props: { value?: number }) {
+  return null;
+}
+<Component value={5} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component() {
+  return null;
+}
+<Component />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+<Component value={5 as number} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ enabled = false }) {
+  return null;
+}
+<Component enabled />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+<Component value={5} value={6} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+Component.defaultProps = { value: 6 };
+<Component value={5} />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: `
+function Component({ key = 'item' }) {
+  return null;
+}
+<Component key="item" />;
+      `,
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    `
+function select({ value = 5 }, ...rest: number[]) {}
+const values: [] = [];
+select(...values, { value: 5 });
+    `,
+    `
+function select(value = 5, ...rest: number[]) {}
+const values = [1, 2];
+select(5, ...values);
+    `,
+    `
+function select(...rest: { value?: number }[]) {}
+select({ value: 5 });
+    `,
+    `
+function select(value: number = 5 as const) {}
+select(4 as const);
+    `,
+    `
+function select(value = 5 as number) {}
+select(5 as const);
+    `,
     noFormat`
 const original = (value = 0) => value;
 const select = ((original));
@@ -413,6 +613,361 @@ selected(0);
     `,
   ],
   invalid: [
+    {
+      code: `
+function Component({ first = 1, second = 2 }) {
+  return null;
+}
+<Component first={1} second={2} />;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'first' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'first' },
+              messageId: 'removeProperty',
+              output: `
+function Component({ first = 1, second = 2 }) {
+  return null;
+}
+<Component  second={2} />;
+      `,
+            },
+          ],
+        },
+        {
+          column: 22,
+          data: { name: 'second' },
+          endColumn: 32,
+          endLine: 5,
+          line: 5,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'second' },
+              messageId: 'removeProperty',
+              output: `
+function Component({ first = 1, second = 2 }) {
+  return null;
+}
+<Component first={1}  />;
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: null,
+    },
+    {
+      code: `
+function select({ value = 5 }, ...rest: number[]) {}
+select({ value: 5 }, 1, 2);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { name: 'value' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'value' },
+              messageId: 'removeProperty',
+              output: `
+function select({ value = 5 }, ...rest: number[]) {}
+select({  }, 1, 2);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+import { Component } from './no-redundant-default-arguments/source';
+<Component value={5} />;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'value' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'value' },
+              messageId: 'removeProperty',
+              output: `
+import { Component } from './no-redundant-default-arguments/source';
+<Component  />;
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: null,
+    },
+    {
+      code: `
+function Component({ value = 5 } = {}) {
+  return null;
+}
+<Component value={5}></Component>;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'value' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'value' },
+              messageId: 'removeProperty',
+              output: `
+function Component({ value = 5 } = {}) {
+  return null;
+}
+<Component ></Component>;
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: null,
+    },
+    {
+      code: `
+const Component = function ({ label = 'a&b' }) {
+  return null;
+};
+<Component label="a&amp;b" />;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'label' },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'label' },
+              messageId: 'removeProperty',
+              output: `
+const Component = function ({ label = 'a&b' }) {
+  return null;
+};
+<Component  />;
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: null,
+    },
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+<Component value={/* keep */ 5} />;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'value' },
+          endColumn: 32,
+          endLine: 5,
+          line: 5,
+          messageId: 'redundantProperty',
+          suggestions: [],
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: null,
+    },
+    {
+      code: `
+function Component({ enabled = true }) {
+  return null;
+}
+<Component enabled />;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'enabled' },
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'enabled' },
+              messageId: 'removeProperty',
+              output: `
+function Component({ enabled = true }) {
+  return null;
+}
+<Component  />;
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: null,
+    },
+    {
+      code: `
+const Component = ({ label = 'hello' }) => null;
+<Component label="hello" />;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'label' },
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'label' },
+              messageId: 'removeProperty',
+              output: `
+const Component = ({ label = 'hello' }) => null;
+<Component  />;
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: null,
+    },
+    {
+      code: `
+function Component({ value = 5 }) {
+  return null;
+}
+<Component value={5} />;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'value' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'value' },
+              messageId: 'removeProperty',
+              output: `
+function Component({ value = 5 }) {
+  return null;
+}
+<Component  />;
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      output: null,
+    },
+    {
+      code: `
+function select({ value = 5 }, ...rest: number[]) {}
+const values = [1, 2];
+select({ value: 5 }, ...values);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { name: 'value' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'redundantProperty',
+          suggestions: [
+            {
+              data: { name: 'value' },
+              messageId: 'removeProperty',
+              output: `
+function select({ value = 5 }, ...rest: number[]) {}
+const values = [1, 2];
+select({  }, ...values);
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function select(value = 5 as const) {}
+select(5 /* keep */ as const);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantArguments',
+          suggestions: [],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const select = (value = 5 as const) => value;
+select(5 as const);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantArguments',
+          suggestions: [
+            {
+              messageId: 'removeArguments',
+              output: `
+const select = (value = 5 as const) => value;
+select();
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
     {
       code: noFormat`
 const select = (function (value = 0) { return value; });
