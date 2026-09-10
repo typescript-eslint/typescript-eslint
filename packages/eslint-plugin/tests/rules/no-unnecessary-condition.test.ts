@@ -1245,6 +1245,55 @@ isString(a);
       `,
       options: [{ checkTypePredicates: false }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12343
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: (string | null)[];
+arr.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const mixed: (string | number)[];
+mixed.filter(isString);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: any[];
+arr.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function hasLength(value: string): boolean;
+declare const arr: string[];
+arr.filter(hasLength);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const pair: [string, string];
+pair.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
     {
       // Technically, this has type 'falafel' and not string.
       code: `
@@ -4599,6 +4648,43 @@ if (isNarrower(w)) {
           endColumn: 17,
           endLine: 11,
           line: 11,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12343
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.filter(isNotNil);
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.find(isNotNil);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
           messageId: 'typeGuardAlreadyIsType',
         },
       ],
