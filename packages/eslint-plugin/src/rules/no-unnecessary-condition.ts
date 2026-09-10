@@ -347,25 +347,15 @@ export default createRule<Options, MessageId>({
       const objectType = services.getTypeAtLocation(node.object);
       if (node.computed) {
         const propertyType = services.getTypeAtLocation(node.property);
-        return isNullablePropertyType(objectType, propertyType);
+        return isNullablePropertyType(objectType, propertyType, false);
       }
-      const property = node.property;
+      const propertySymbol = services.getSymbolAtLocation(node.property);
 
-      // Get the actual property name, to account for private properties (this.#prop).
-      const propertyName = context.sourceCode.getText(property);
-
-      const propertyType = objectType
-        .getProperties()
-        .find(prop => prop.name === propertyName);
-
-      if (
-        propertyType &&
-        tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional)
-      ) {
-        return true;
+      if (propertySymbol) {
+        return tsutils.isSymbolFlagSet(propertySymbol, ts.SymbolFlags.Optional);
       }
 
-      return false;
+      return isNullablePropertyType(objectType, checker.getStringType(), false);
     }
 
     /**
@@ -773,10 +763,11 @@ export default createRule<Options, MessageId>({
     function isNullablePropertyType(
       objType: ts.Type,
       propertyType: ts.Type,
+      assumeIndexAccessIsNullable = true,
     ): boolean {
       if (propertyType.isUnion()) {
         return propertyType.types.some(type =>
-          isNullablePropertyType(objType, type),
+          isNullablePropertyType(objType, type, assumeIndexAccessIsNullable),
         );
       }
       if (propertyType.isNumberLiteral() || propertyType.isStringLiteral()) {
@@ -792,7 +783,13 @@ export default createRule<Options, MessageId>({
       const typeName = getTypeName(checker, propertyType);
       return checker
         .getIndexInfosOfType(objType)
-        .some(info => getTypeName(checker, info.keyType) === typeName);
+        .some(
+          info =>
+            getTypeName(checker, info.keyType) === typeName &&
+            (assumeIndexAccessIsNullable ||
+              isNoUncheckedIndexedAccess ||
+              isNullableType(info.type)),
+        );
     }
 
     // Checks whether a member expression is nullable or not regardless of it's previous node.
