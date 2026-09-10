@@ -2,9 +2,20 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { isParenthesized } from './astUtils';
+import { isOpeningBraceToken, isParenthesized } from './astUtils';
 
-export function isStartOfArrowFunctionBody(
+export function isStartOfArrowFunctionBodyNeedingParentheses(
+  node: TSESTree.Node,
+  firstToken: TSESTree.Token,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  return (
+    isOpeningBraceToken(firstToken) &&
+    isStartOfArrowFunctionBody(node, sourceCode)
+  );
+}
+
+function isStartOfArrowFunctionBody(
   node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
 ): boolean {

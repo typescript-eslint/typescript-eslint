@@ -7,10 +7,13 @@ import * as tsutils from 'ts-api-utils';
 import {
   Awaitable,
   createRule,
+  getAwaitTokenRemovalRange,
   getConstrainedTypeAtLocation,
   getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
+  isStartOfArrowFunctionBodyNeedingParentheses,
+  isStartOfExpressionStatementNeedingParentheses,
   isTypeAnyType,
   needsToBeAwaited,
   nullThrows,
@@ -77,13 +80,46 @@ export default createRule<[], MessageId>({
             suggest: [
               {
                 messageId: 'removeAwait',
-                fix(fixer): TSESLint.RuleFix {
+                fix(fixer) {
                   const awaitKeyword = nullThrows(
                     context.sourceCode.getFirstToken(node, isAwaitKeyword),
                     NullThrowsReasons.MissingToken('await', 'await expression'),
                   );
 
-                  return fixer.remove(awaitKeyword);
+                  const awaitTokenRemovalRange = getAwaitTokenRemovalRange(
+                    context.sourceCode,
+                    awaitKeyword,
+                  );
+                  const awaitRemovalFix = fixer.removeRange(
+                    awaitTokenRemovalRange,
+                  );
+
+                  const firstOperandToken = nullThrows(
+                    context.sourceCode.getTokenAfter(awaitKeyword),
+                    NullThrowsReasons.MissingToken(
+                      'operand',
+                      'await expression',
+                    ),
+                  );
+                  if (
+                    isStartOfArrowFunctionBodyNeedingParentheses(
+                      node,
+                      firstOperandToken,
+                      context.sourceCode,
+                    ) ||
+                    isStartOfExpressionStatementNeedingParentheses(
+                      node,
+                      firstOperandToken,
+                    )
+                  ) {
+                    return [
+                      awaitRemovalFix,
+                      fixer.insertTextBefore(awaitArgumentEsNode, '('),
+                      fixer.insertTextAfter(awaitArgumentEsNode, ')'),
+                    ];
+                  }
+
+                  return awaitRemovalFix;
                 },
               },
             ],
@@ -169,7 +205,10 @@ export default createRule<[], MessageId>({
                     context.sourceCode.getFirstToken(node, isAwaitKeyword),
                     NullThrowsReasons.MissingToken('await', 'for await loop'),
                   );
-                  return fixer.remove(awaitToken);
+
+                  return fixer.removeRange(
+                    getAwaitTokenRemovalRange(context.sourceCode, awaitToken),
+                  );
                 },
               },
             ],
@@ -219,7 +258,10 @@ export default createRule<[], MessageId>({
                       context.sourceCode.getFirstToken(node, isAwaitKeyword),
                       NullThrowsReasons.MissingToken('await', 'await using'),
                     );
-                    return fixer.remove(awaitToken);
+
+                    return fixer.removeRange(
+                      getAwaitTokenRemovalRange(context.sourceCode, awaitToken),
+                    );
                   },
                 },
               }),
