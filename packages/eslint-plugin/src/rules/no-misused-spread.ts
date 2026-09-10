@@ -151,9 +151,36 @@ export default createRule<Options, MessageIds>({
       ];
     }
 
+    function isInAsyncContext(node: TSESTree.Node): boolean {
+      for (const ancestor of [
+        ...context.sourceCode.getAncestors(node),
+      ].reverse()) {
+        switch (ancestor.type) {
+          case AST_NODE_TYPES.ArrowFunctionExpression:
+          case AST_NODE_TYPES.FunctionDeclaration:
+          case AST_NODE_TYPES.FunctionExpression:
+            return ancestor.async;
+          case AST_NODE_TYPES.StaticBlock:
+            // `await` is not allowed in class static blocks.
+            return false;
+          default:
+            break;
+        }
+      }
+
+      // Top-level `await` is valid in modules.
+      return true;
+    }
+
     function getPromiseSpreadSuggestions(
       node: TSESTree.Expression,
-    ): TSESLint.ReportSuggestionArray<MessageIds> {
+    ): TSESLint.ReportSuggestionArray<MessageIds> | null {
+      // Adding `await` outside an async function (or static block) is a syntax
+      // error, so only offer the suggestion where it can legally be applied.
+      if (!isInAsyncContext(node)) {
+        return null;
+      }
+
       const isHighPrecedence = isHigherPrecedenceThanAwait(
         services.esTreeNodeToTSNodeMap.get(node),
       );

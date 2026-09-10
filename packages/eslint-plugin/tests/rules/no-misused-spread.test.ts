@@ -1152,16 +1152,72 @@ function withPromise<P extends Promise<void>>(promise: P) {
           endLine: 3,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          // `await` is illegal in a sync function, so no suggestion.
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+async function withPromiseAsync<P extends Promise<{ a: number }>>(promise: P) {
+  return { ...promise };
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
               messageId: 'addAwait',
               output: `
-function withPromise<P extends Promise<void>>(promise: P) {
+async function withPromiseAsync<P extends Promise<{ a: number }>>(promise: P) {
   return { ...await promise };
 }
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+async function outer(p: Promise<{ a: number }>) {
+  function inner() {
+    return { ...p };
+  }
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'noPromiseSpreadInObject',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+class C {
+  method(p: Promise<{ a: number }>) {
+    return { ...p };
+  }
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'noPromiseSpreadInObject',
+          suggestions: [],
         },
       ],
     },
