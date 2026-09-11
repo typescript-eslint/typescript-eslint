@@ -1,4 +1,7 @@
-import type { Declaration as NativeDeclaration } from '@typescript/native/unstable/ast';
+import type {
+  Declaration as NativeDeclaration,
+  Node as NativeNode,
+} from '@typescript/native/unstable/ast';
 import type {
   Checker as NativeChecker,
   IndexInfo as NativeIndexInfo,
@@ -12,6 +15,10 @@ import type {
 } from '@typescript/native/unstable/sync';
 import type * as ts from 'typescript';
 
+import {
+  getJSDocTags,
+  getTextOfJSDocComment,
+} from '@typescript/native/unstable/ast';
 import { ObjectFlags, TypeFlags } from '@typescript/native/unstable/sync';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
@@ -117,8 +124,36 @@ export function createNativeTypeAdapter({
   function resolveDeclaration(
     handle: NativeNodeHandle<NativeDeclaration> | undefined,
   ): ts.Declaration | undefined {
-    const resolved = handle?.resolve(project);
+    const resolved = resolveNativeDeclaration(handle);
     return resolved && (nodeAdapter.wrapNode(resolved) as ts.Declaration);
+  }
+
+  function resolveNativeDeclaration(
+    handle: NativeNodeHandle<NativeDeclaration> | undefined,
+  ): NativeNode | undefined {
+    return handle?.resolve(project);
+  }
+
+  /**
+   * Signature-level JSDoc has no native counterpart — `Checker` only exposes
+   * `getJsDocTagsOfSymbol`, and a signature carries no symbol. Reading the tags
+   * off the signature's own declaration is the same source classic reads, and
+   * keeps per-overload tags distinct where a symbol lookup would merge them.
+   */
+  function jsDocTagsOfDeclaration(
+    handle: NativeNodeHandle<NativeDeclaration> | undefined,
+  ): ts.JSDocTagInfo[] {
+    const declaration = resolveNativeDeclaration(handle);
+    if (!declaration) {
+      return [];
+    }
+    return getJSDocTags(declaration).map(tag => {
+      const text = getTextOfJSDocComment(tag.comment);
+      return {
+        name: tag.tagName.text,
+        text: text ? [{ kind: 'text', text }] : undefined,
+      };
+    });
   }
 
   /**
@@ -508,7 +543,8 @@ export function createNativeTypeAdapter({
           case 'getDocumentationComment':
             return (): ts.SymbolDisplayPart[] => [];
           case 'getJsDocTags':
-            return (): ts.JSDocTagInfo[] => [];
+            return (): ts.JSDocTagInfo[] =>
+              jsDocTagsOfDeclaration(target.declaration);
 
           default:
             return bindNativeMethod(

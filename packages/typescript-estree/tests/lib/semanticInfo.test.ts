@@ -19,11 +19,7 @@ const testFiles = glob.sync(`**/*.src.ts`, {
   cwd: FIXTURES_DIR,
 });
 
-type ClassicOptions = Omit<TSESTreeOptions, 'projectService'> & {
-  projectService?: boolean;
-};
-
-function createOptions(fileName: string): ClassicOptions & { cwd?: string } {
+function createOptions(fileName: string): { cwd?: string } & TSESTreeOptions {
   return {
     comment: true,
     disallowAutomaticSingleRunInference: true,

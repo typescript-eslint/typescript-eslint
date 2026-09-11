@@ -1,17 +1,16 @@
 import type { API } from '@typescript/native/unstable/sync';
 
-export interface NativeParserServiceMethodCounts {
-  getContextualType: number;
-  getResolvedSignature: number;
-  getSymbolAtLocation: number;
-  getTypeAtLocation: number;
-  getTypesAtLocations: number;
-}
+/**
+ * Calls made through the classic `ts.TypeChecker` facade, keyed by method name.
+ * Every entry is one or more round trips to the native compiler process, so
+ * this is the number to watch when comparing backends.
+ */
+export type NativeCheckerMethodCounts = Record<string, number>;
 
 export interface NativeMetrics {
+  checker: NativeCheckerMethodCounts;
   fileEvents: number;
   fileOverlays: number;
-  parserServices: NativeParserServiceMethodCounts;
   processStarts: number;
   projectDiscoveries: number;
   projectHits: number;
@@ -20,28 +19,20 @@ export interface NativeMetrics {
   timing: ReturnType<API['getTimingInfo']> | undefined;
 }
 
-type ScalarMetric = Exclude<keyof NativeMetrics, 'parserServices' | 'timing'>;
+type ScalarMetric = Exclude<keyof NativeMetrics, 'checker' | 'timing'>;
 
 const activeServices = new Set<() => void>();
 const timingReaders = new Set<() => ReturnType<API['getTimingInfo']>>();
 let registeredServices = 0;
 let timingServiceRegistered = false;
 
-const createParserServiceCounts = (): NativeParserServiceMethodCounts => ({
-  getContextualType: 0,
-  getResolvedSignature: 0,
-  getSymbolAtLocation: 0,
-  getTypeAtLocation: 0,
-  getTypesAtLocations: 0,
-});
-
 let metrics = createEmptyMetrics();
 
 function createEmptyMetrics(): NativeMetrics {
   return {
+    checker: {},
     fileEvents: 0,
     fileOverlays: 0,
-    parserServices: createParserServiceCounts(),
     processStarts: 0,
     projectDiscoveries: 0,
     projectHits: 0,
@@ -55,10 +46,8 @@ export function incrementNativeMetric(metric: ScalarMetric, by = 1): void {
   metrics[metric] += by;
 }
 
-export function incrementNativeParserServiceMetric(
-  method: keyof NativeParserServiceMethodCounts,
-): void {
-  metrics.parserServices[method] += 1;
+export function incrementNativeCheckerMetric(method: string): void {
+  metrics.checker[method] = (metrics.checker[method] ?? 0) + 1;
 }
 
 export function registerNativeMetricService(
@@ -92,7 +81,7 @@ export function readNativeMetrics(): NativeMetrics {
   const readTiming = [...timingReaders].at(-1);
   return {
     ...metrics,
-    parserServices: { ...metrics.parserServices },
+    checker: { ...metrics.checker },
     timing: readTiming?.(),
   };
 }

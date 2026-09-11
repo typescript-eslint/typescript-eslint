@@ -15,6 +15,8 @@ import {
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 import type { NativeTypeAdapter } from './nativeTypeAdapter';
 
+import { incrementNativeCheckerMetric } from '../use-at-your-own-risk/nativeMetrics';
+
 export interface NativeCheckerAdapterContext {
   checker: NativeChecker;
   nodeAdapter: NativeNodeAdapter;
@@ -321,6 +323,8 @@ export function createNativeChecker({
     },
   } satisfies Partial<ts.TypeChecker> & Record<string, unknown>;
 
+  const counted = new Map<string, unknown>();
+
   return new Proxy(nativeChecker, {
     get(target, property) {
       const value: unknown = Reflect.get(target, property, target);
@@ -329,7 +333,21 @@ export function createNativeChecker({
           `TypeChecker#${property} is not available on the TypeScript native preview API.`,
         );
       }
-      return value;
+      if (typeof value !== 'function' || typeof property !== 'string') {
+        return value;
+      }
+      // Every checker call is at least one round trip to the native compiler
+      // process, so counting here is what makes cross-backend comparisons of
+      // IPC volume meaningful.
+      let wrapper = counted.get(property);
+      if (!wrapper) {
+        wrapper = (...args: unknown[]): unknown => {
+          incrementNativeCheckerMetric(property);
+          return (value as (...args: unknown[]) => unknown)(...args);
+        };
+        counted.set(property, wrapper);
+      }
+      return wrapper;
     },
   }) as unknown as ts.TypeChecker;
 }

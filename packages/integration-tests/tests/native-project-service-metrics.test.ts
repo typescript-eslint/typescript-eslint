@@ -6,7 +6,7 @@ nodeIntegrationTest(__filename, 'metrics.mjs', stderr => {
     metrics: {
       fileEvents: number;
       fileOverlays: number;
-      parserServices: Record<string, number>;
+      checker: Record<string, number>;
       processStarts: number;
       projectDiscoveries: number;
       projectHits: number;
@@ -35,6 +35,5 @@ nodeIntegrationTest(__filename, 'metrics.mjs', stderr => {
     timing: { enabled: true },
   });
   expect(metrics.timing.totals.requestCount).toBeGreaterThan(0);
-  expect(metrics.parserServices.getTypeAtLocation).toBeGreaterThan(0);
-  expect(metrics.parserServices.getTypesAtLocations).toBeGreaterThan(0);
+  expect(metrics.checker.getTypeAtLocation).toBeGreaterThan(0);
 });

@@ -17,5 +17,5 @@ export {
 } from './use-at-your-own-risk/nativeMetrics';
 export type {
   NativeMetrics,
-  NativeParserServiceMethodCounts,
+  NativeCheckerMethodCounts,
 } from './use-at-your-own-risk/nativeMetrics';
