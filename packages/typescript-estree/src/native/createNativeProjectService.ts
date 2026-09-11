@@ -77,6 +77,15 @@ function verifySupportedConfig(project: Project): void {
 export function createNativeProjectService(): NativeProjectService {
   verifyNativeCompatibility();
   const overlays = new Map<string, string | null>();
+  // The text the server currently has for a path, whether it came from an
+  // overlay or from the file itself.
+  const syncedFiles = new Map<string, string>();
+  // Config files already checked for unsupported settings. Parsing a TSConfig
+  // walks every directory its `include` globs can reach, so checking one per
+  // linted file is quadratic in the size of the project. The answer depends
+  // only on the config file, and this service is discarded when caches are
+  // cleared, so a config edit is picked up by the next service.
+  const verifiedConfigs = new Set<string>();
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
   const openProjects = new Set<string>();
@@ -162,6 +171,7 @@ export function createNativeProjectService(): NativeProjectService {
       fileProjects.clear();
       openProjects.clear();
       overlays.clear();
+      syncedFiles.clear();
 
       if (failure) {
         throw failure;
@@ -172,15 +182,56 @@ export function createNativeProjectService(): NativeProjectService {
       assertOpen();
       const normalizedPath = normalizePath(filePath);
       const cachedContext = fileContexts.get(normalizedPath);
-      if (overlays.get(normalizedPath) === code && cachedContext) {
+      if (syncedFiles.get(normalizedPath) === code && cachedContext) {
         return cachedContext;
       }
-      overlays.set(normalizedPath, code);
-      const knownConfigFileName = fileProjects.get(normalizedPath);
+      const previousSynced = syncedFiles.get(normalizedPath);
+
+      // The overlay exists to show the server text that differs from disk.
+      // ESLint usually hands over exactly what it read, so there is often
+      // nothing to show. Leaving the overlay unset lets the server read the
+      // file itself, which skips both the overlay and the snapshot
+      // replacement that would tell the server to re-read it.
+      //
+      // Comparing against disk only helps on a file with no overlay yet. Once
+      // one exists the server has already read it, so a matching disk file
+      // would still leave the stale overlay in place.
+      const servedFromDisk =
+        !overlays.has(normalizedPath) &&
+        ts.sys.readFile(normalizedPath) === code;
+      if (!servedFromDisk) {
+        overlays.set(normalizedPath, code);
+      }
+      syncedFiles.set(normalizedPath, code);
+      let knownConfigFileName = fileProjects.get(normalizedPath);
+
+      // Discovery costs two snapshot replacements and a default-project
+      // lookup, and each response describes the whole project. A file that an
+      // already-open project's program contains needs none of it.
+      if (!knownConfigFileName && snapshot && openProjects.size) {
+        for (const candidate of openProjects) {
+          if (
+            snapshot
+              .getProject(candidate)
+              ?.program.getSourceFile(normalizedPath)
+          ) {
+            knownConfigFileName = candidate;
+            fileProjects.set(normalizedPath, candidate);
+            break;
+          }
+        }
+      }
       if (knownConfigFileName) {
-        const nextSnapshot = replaceSnapshot({
-          fileChanges: { changed: [normalizedPath] },
-        });
+        // Replacing the snapshot tells the server to re-read the file.
+        // When the overlay is byte-identical to the one the server already
+        // read, there is nothing to re-read. Comparing against the previous
+        // overlay rather than against disk is what makes this safe: a file
+        // whose text changed still forces the update.
+        const unchanged = servedFromDisk || previousSynced === code;
+        const nextSnapshot =
+          unchanged && snapshot
+            ? snapshot
+            : replaceSnapshot({ fileChanges: { changed: [normalizedPath] } });
         const project = nextSnapshot.getProject(knownConfigFileName);
         const sourceFile = project?.program.getSourceFile(normalizedPath);
         if (!project || !sourceFile) {
@@ -218,7 +269,10 @@ export function createNativeProjectService(): NativeProjectService {
             `No TypeScript native configured project was located for '${normalizedPath}'.`,
           );
         }
-        verifySupportedConfig(discoveredProject);
+        if (!verifiedConfigs.has(discoveredProject.configFileName)) {
+          verifySupportedConfig(discoveredProject);
+          verifiedConfigs.add(discoveredProject.configFileName);
+        }
         nextSnapshot = replaceSnapshot({
           closeFiles: [normalizedPath],
           openProjects: openProjects.has(configFileName)
@@ -263,6 +317,13 @@ export function createNativeProjectService(): NativeProjectService {
         created: changes.created?.map(normalizePath),
         deleted: changes.deleted?.map(normalizePath),
       };
+      for (const filePath of [
+        ...(fileChanges.changed ?? []),
+        ...(fileChanges.created ?? []),
+        ...(fileChanges.deleted ?? []),
+      ]) {
+        syncedFiles.delete(filePath);
+      }
       for (const filePath of fileChanges.deleted ?? []) {
         overlays.set(filePath, null);
       }
