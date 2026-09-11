@@ -84,6 +84,14 @@ const foo = [3, 'hi', 'bye'] as Tuple;
 type PossibleTuple = {};
 const foo = {} as PossibleTuple;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12856
+    `
+const a = {};
+a as Record<string, string>;
+type Dict = Record<string, string>;
+a as Dict;
+a as { [key: string]: string };
+    `,
     `
 type PossibleTuple = { hello: 'hello' };
 const foo = { hello: 'hello' } as PossibleTuple;
