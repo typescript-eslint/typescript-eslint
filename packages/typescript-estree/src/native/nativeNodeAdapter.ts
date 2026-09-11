@@ -4,7 +4,10 @@ import type {
   SourceFile as NativeSourceFile,
 } from '@typescript/native/unstable/ast';
 
-import { SyntaxKind as NativeSyntaxKind } from '@typescript/native/unstable/ast';
+import {
+  NodeFlags as NativeNodeFlags,
+  SyntaxKind as NativeSyntaxKind,
+} from '@typescript/native/unstable/ast';
 import * as ts from 'typescript';
 
 export interface NativeNodeAdapter {
@@ -37,13 +40,73 @@ nativeToClassicKind.set(
 );
 
 /**
+ * `NodeFlags` bits are numbered differently by the two compilers, so they are
+ * paired up by member name. Only single-bit members are translated; the
+ * composite masks are derived from those bits anyway.
+ */
+const NODE_FLAG_TRANSLATIONS: readonly (readonly [number, number])[] =
+  Object.entries(NativeNodeFlags).flatMap(([name, value]) => {
+    const classic = ts.NodeFlags[name as keyof typeof ts.NodeFlags];
+    return typeof value === 'number' &&
+      (value & (value - 1)) === 0 &&
+      value !== 0 &&
+      typeof classic === 'number'
+      ? [[value, classic] as const]
+      : [];
+  });
+
+/**
+ * `Namespace` and `GlobalAugmentation` have no native `NodeFlags` members at
+ * all: TypeScript 7 models both structurally on the module declaration itself.
+ * The ESTree conversion still reads them as flags, so they are derived back.
+ */
+function getModuleDeclarationFlags(node: NativeNode): ts.NodeFlags {
+  const declaration = node as NativeNode & {
+    keyword?: NativeSyntaxKind;
+    name?: { kind: NativeSyntaxKind; text?: string };
+  };
+
+  if (declaration.keyword === NativeSyntaxKind.NamespaceKeyword) {
+    return ts.NodeFlags.Namespace;
+  }
+
+  return declaration.name?.kind === NativeSyntaxKind.Identifier &&
+    declaration.name.text === 'global'
+    ? ts.NodeFlags.GlobalAugmentation
+    : ts.NodeFlags.None;
+}
+
+function translateNodeFlags(node: NativeNode): ts.NodeFlags {
+  let flags = ts.NodeFlags.None;
+  for (const [nativeFlag, classicFlag] of NODE_FLAG_TRANSLATIONS) {
+    if (node.flags & nativeFlag) {
+      flags |= classicFlag;
+    }
+  }
+  return node.kind === NativeSyntaxKind.ModuleDeclaration
+    ? flags | getModuleDeclarationFlags(node)
+    : flags;
+}
+
+/**
  * Node properties the two compilers spell differently. Reads of the classic
  * name are served from the native one, so both the ESTree converter and rules
  * see the AST shape they expect.
+ *
+ * Class and interface members are the awkward case: TypeScript 7 folds the
+ * trailing `?` and `!` into a single `postfixToken`, where classic keeps
+ * `questionToken` and `exclamationToken` apart. Nodes that still have a native
+ * property of the classic name — a parameter's `?`, a mapped type's `?` — are
+ * served from it directly, so the fallback only applies where it should.
  */
 const CLASSIC_TO_NATIVE_PROPERTY = new Map<string, string>([
   // `TypeParameterDeclaration`
   ['default', 'defaultType'],
+]);
+
+const POSTFIX_TOKEN_KINDS = new Map<string, NativeSyntaxKind>([
+  ['exclamationToken', NativeSyntaxKind.ExclamationToken],
+  ['questionToken', NativeSyntaxKind.QuestionToken],
 ]);
 
 function isNativeNode(value: unknown): value is NativeNode {
@@ -207,6 +270,33 @@ export function createNativeNodeAdapter(
     return result;
   }
 
+  /**
+   * Classic's `getFirstToken`/`getLastToken`: walk to the outermost child on
+   * the requested side, descending until an actual token is reached.
+   */
+  function getEdgeToken(
+    node: NativeNode,
+    parent: ts.Node,
+    first: boolean,
+  ): ts.Node | undefined {
+    const children = getChildren(node, parent);
+    const child = first ? children[0] : children.at(-1);
+    if (!child) {
+      return undefined;
+    }
+    return child.kind < ts.SyntaxKind.FirstNode
+      ? child
+      : getEdgeToken(unwrap(child), child, first);
+  }
+
+  function unwrap(node: ts.Node): NativeNode {
+    const native = adapterToNative.get(node);
+    if (!native) {
+      throw new Error('The node was not created by this native node adapter.');
+    }
+    return native;
+  }
+
   function wrapNode(node: NativeNode): ts.Node {
     const cached = nativeToAdapter.get(node);
     if (cached) {
@@ -217,6 +307,9 @@ export function createNativeNodeAdapter(
       get(target, property) {
         if (property === 'kind') {
           return translateKind(target.kind);
+        }
+        if (property === 'flags') {
+          return translateNodeFlags(target);
         }
         if (property === 'transformFlags') {
           return 0;
@@ -243,6 +336,25 @@ export function createNativeNodeAdapter(
         }
         if (property === 'getChildren') {
           return () => getChildren(target, proxy);
+        }
+        if (property === 'getChildCount') {
+          return () => getChildren(target, proxy).length;
+        }
+        if (property === 'getChildAt') {
+          return (index: number) => getChildren(target, proxy)[index];
+        }
+        if (property === 'getFirstToken' || property === 'getLastToken') {
+          return () =>
+            getEdgeToken(target, proxy, property === 'getFirstToken');
+        }
+        if (property === 'getEnd') {
+          return () => target.end;
+        }
+        if (property === 'getFullStart') {
+          return () => target.pos;
+        }
+        if (property === 'getLeadingTriviaWidth') {
+          return () => target.getStart() - target.pos;
         }
         if (property === 'forEachChild') {
           return <T>(
@@ -277,13 +389,27 @@ export function createNativeNodeAdapter(
         }
         // Native nodes expose their fields through accessors not represented by
         // the base Node interface, so proxying necessarily starts from unknown.
-        const value: unknown = Reflect.get(
+        let value: unknown = Reflect.get(
           target,
           (typeof property === 'string' &&
             CLASSIC_TO_NATIVE_PROPERTY.get(property)) ||
             property,
           target,
         );
+        if (value == null && typeof property === 'string') {
+          const postfixKind = POSTFIX_TOKEN_KINDS.get(property);
+          if (postfixKind != null) {
+            const postfix: unknown = Reflect.get(
+              target,
+              'postfixToken',
+              target,
+            );
+            value =
+              isNativeNode(postfix) && postfix.kind === postfixKind
+                ? postfix
+                : undefined;
+          }
+        }
         if (
           typeof value === 'number' &&
           (property === 'operator' ||
@@ -313,15 +439,7 @@ export function createNativeNodeAdapter(
   return {
     adaptSourceFile: sourceFile => wrapNode(sourceFile) as ts.SourceFile,
     getWrappedNode: node => nativeToAdapter.get(node as NativeNode),
-    unwrapNode(node) {
-      const native = adapterToNative.get(node);
-      if (!native) {
-        throw new Error(
-          'The node was not created by this native node adapter.',
-        );
-      }
-      return native;
-    },
+    unwrapNode: unwrap,
     wrapNode,
   };
 }
