@@ -47,18 +47,12 @@ describe.for(testFiles)('services', async filename => {
   it(`${snapshotName} services`, () => {
     const { services } = parseForESLint(code, config);
 
-    if (services.backend !== 'typescript') {
-      throw new Error('Expected TypeScript parser services.');
-    }
     assert.isNotNull(services.program);
   });
 
   it(`${snapshotName} services with provided program`, () => {
     const { services } = parseForESLint(code, { ...config, program });
 
-    if (services.backend !== 'typescript') {
-      throw new Error('Expected TypeScript parser services.');
-    }
     assert.isNotNull(services.program);
   });
 });

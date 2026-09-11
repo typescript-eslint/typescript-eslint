@@ -11,8 +11,6 @@ export {
   type ParseAndGenerateServicesResult,
 } from './parser';
 export type {
-  ClassicParserServices,
-  NativeParserServices,
   ParserServices,
   ParserServicesWithoutTypeInformation,
   ParserServicesWithTypeInformation,

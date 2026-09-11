@@ -46,9 +46,7 @@ function validateBoolean(
 }
 
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
-function getLib(
-  compilerOptions: Pick<ts.CompilerOptions, 'lib' | 'target'>,
-): Lib[] {
+function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
     return compilerOptions.lib
       .map(lib => LIB_FILENAME_REGEX.exec(lib.toLowerCase())?.[1])
@@ -162,11 +160,9 @@ export function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, tsestreeOptions);
   ast.sourceType = parserOptions.sourceType;
 
-  const program =
-    services.backend === 'native' ? services.native.program : services.program;
-  if (program) {
+  if (services.program) {
     // automatically apply the options configured for the program
-    const compilerOptions = program.getCompilerOptions();
+    const compilerOptions = services.program.getCompilerOptions();
     if (analyzeOptions.lib == null) {
       analyzeOptions.lib = getLib(compilerOptions);
       log('Resolved libs from program: %o', analyzeOptions.lib);

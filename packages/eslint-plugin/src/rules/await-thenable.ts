@@ -4,8 +4,6 @@ import type * as ts from 'typescript';
 import { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
-import type { create as createNativeRule } from './native/await-thenable';
-
 import {
   Awaitable,
   createRule,
@@ -55,14 +53,6 @@ export default createRule<[], MessageId>({
   defaultOptions: [],
 
   create(context) {
-    if (context.sourceCode.parserServices?.backend === 'native') {
-      const loadNativeRule = require;
-      const nativeRule = loadNativeRule('./native/await-thenable') as {
-        create: typeof createNativeRule;
-      };
-      return nativeRule.create(context);
-    }
-
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 

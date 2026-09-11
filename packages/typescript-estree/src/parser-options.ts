@@ -5,15 +5,6 @@ import type {
   ProjectServiceOptions,
   SourceType,
 } from '@typescript-eslint/types';
-import type { Node as NativeNode } from '@typescript/native/unstable/ast';
-import type {
-  Checker as NativeChecker,
-  Program as NativeProgram,
-  Project as NativeProject,
-  Signature as NativeSignature,
-  Symbol as NativeSymbol,
-  Type as NativeType,
-} from '@typescript/native/unstable/sync';
 import type * as ts from 'typescript';
 
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
@@ -264,7 +255,6 @@ export interface ParserServicesNodeMaps {
 }
 export interface ParserServicesWithTypeInformation
   extends ParserServicesNodeMaps, ParserServicesBase {
-  backend: 'typescript';
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
   getContextualType: (node: TSESTree.Expression) => ts.Type | undefined;
@@ -280,35 +270,7 @@ export interface ParserServicesWithTypeInformation
 }
 export interface ParserServicesWithoutTypeInformation
   extends ParserServicesNodeMaps, ParserServicesBase {
-  backend: 'typescript';
   program: null;
 }
-export interface NativeParserServices {
-  backend: 'native';
-  emitDecoratorMetadata: boolean;
-  experimentalDecorators: boolean;
-  isolatedDeclarations: boolean;
-  native: {
-    checker: NativeChecker;
-    program: NativeProgram;
-    project: NativeProject;
-  };
-  esTreeNodeToTSNodeMap: {
-    get(node: TSESTree.Node): NativeNode;
-    has(node: unknown): boolean;
-  };
-  tsNodeToESTreeNodeMap: {
-    get(node: NativeNode): TSESTree.Node;
-    has(node: unknown): boolean;
-  };
-  getContextualType(node: TSESTree.Expression): NativeType | undefined;
-  getResolvedSignature(
-    node: TSESTree.CallExpression | TSESTree.NewExpression,
-  ): NativeSignature;
-  getSymbolAtLocation(node: TSESTree.Node): NativeSymbol | undefined;
-  getTypeAtLocation(node: TSESTree.Node): NativeType;
-  getTypesAtLocations(nodes: readonly TSESTree.Node[]): NativeType[];
-}
-export type ClassicParserServices =
+export type ParserServices =
   ParserServicesWithoutTypeInformation | ParserServicesWithTypeInformation;
-export type ParserServices = ClassicParserServices | NativeParserServices;

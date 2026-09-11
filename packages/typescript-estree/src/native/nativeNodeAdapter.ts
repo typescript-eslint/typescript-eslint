@@ -36,6 +36,16 @@ nativeToClassicKind.set(
   ts.SyntaxKind.EndOfFileToken,
 );
 
+/**
+ * Node properties the two compilers spell differently. Reads of the classic
+ * name are served from the native one, so both the ESTree converter and rules
+ * see the AST shape they expect.
+ */
+const CLASSIC_TO_NATIVE_PROPERTY = new Map<string, string>([
+  // `TypeParameterDeclaration`
+  ['default', 'defaultType'],
+]);
+
 function isNativeNode(value: unknown): value is NativeNode {
   return (
     typeof value === 'object' &&
@@ -267,7 +277,13 @@ export function createNativeNodeAdapter(
         }
         // Native nodes expose their fields through accessors not represented by
         // the base Node interface, so proxying necessarily starts from unknown.
-        const value: unknown = Reflect.get(target, property, target);
+        const value: unknown = Reflect.get(
+          target,
+          (typeof property === 'string' &&
+            CLASSIC_TO_NATIVE_PROPERTY.get(property)) ||
+            property,
+          target,
+        );
         if (
           typeof value === 'number' &&
           (property === 'operator' ||

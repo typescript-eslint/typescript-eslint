@@ -6,6 +6,7 @@ import { createNativeProjectService } from './createNativeProjectService';
 import { parseAndGenerateNativeServices } from './parseAndGenerateNativeServices';
 
 export { createNativeProjectService } from './createNativeProjectService';
+export { createNativeProgram } from './nativeProgramAdapter';
 export { parseAndGenerateNativeServices } from './parseAndGenerateNativeServices';
 export type * from './types';
 

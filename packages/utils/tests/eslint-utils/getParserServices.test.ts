@@ -1,30 +1,9 @@
-import type { Project as NativeProject } from '@typescript/native/unstable/sync';
 import type * as ts from 'typescript';
 
-import type {
-  ClassicParserServices,
-  NativeParserServices,
-  ParserServices,
-  TSESLint,
-  TSESTree,
-} from '../../src';
+import type { ParserServices, TSESLint, TSESTree } from '../../src';
 import type { FlatConfig } from '../../src/ts-eslint';
 
 import { ESLintUtils } from '../../src';
-
-expectTypeOf<
-  Extract<ParserServices, { backend: 'native' }>
->().toEqualTypeOf<NativeParserServices>();
-expectTypeOf<
-  Extract<ParserServices, { backend: 'typescript' }>
->().toEqualTypeOf<ClassicParserServices>();
-expectTypeOf((services: ParserServices) => {
-  if (services.backend === 'native') {
-    expectTypeOf(services.native.project).toEqualTypeOf<NativeProject>();
-  } else if (services.program) {
-    expectTypeOf(services.program).toEqualTypeOf<ts.Program>();
-  }
-}).toBeFunction();
 
 type UnknownRuleContext = Readonly<TSESLint.RuleContext<string, unknown[]>>;
 
@@ -46,13 +25,6 @@ const createMockRuleContext = (
   ...overrides,
 });
 
-expectTypeOf(
-  ESLintUtils.getParserServices(defaults, true),
-).toEqualTypeOf<ClassicParserServices>();
-expectTypeOf(
-  ESLintUtils.getParserServices(defaults, true as boolean),
-).toEqualTypeOf<ClassicParserServices>();
-
 const requiresParserServicesMessageTemplate = (parser = '\\S*'): string =>
   'You have used a rule which requires type information, .+\n' +
   `Parser: ${parser}`;
@@ -65,26 +37,6 @@ Note: detected a parser other than @typescript-eslint/parser. Make sure the pars
   );
 
 describe(ESLintUtils.getParserServices, () => {
-  it('rejects native parser services', () => {
-    const context = createMockRuleContext({
-      sourceCode: {
-        ...defaults.sourceCode,
-        parserServices: {
-          ...defaults.sourceCode.parserServices,
-          backend: 'native',
-          program: undefined,
-        } as unknown as ParserServices,
-      },
-    });
-
-    expect(() => ESLintUtils.getParserServices(context)).toThrow(
-      'This rule requires classic TypeScript parser services, but the experimental native backend is enabled.',
-    );
-    expect(() => ESLintUtils.getParserServices(context, true)).toThrow(
-      'This rule requires classic TypeScript parser services, but the experimental native backend is enabled.',
-    );
-  });
-
   it('throws a standard error with the parser when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is typescript-eslint', () => {
     const context = createMockRuleContext({
       sourceCode: {

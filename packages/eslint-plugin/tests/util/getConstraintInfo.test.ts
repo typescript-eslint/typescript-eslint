@@ -1,7 +1,7 @@
 import type { ParserOptions } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { parseForESLint as parse } from '@typescript-eslint/parser';
+import { parseForESLint } from '@typescript-eslint/parser';
 import * as path from 'node:path';
 import * as tsutils from 'ts-api-utils';
 
@@ -18,14 +18,6 @@ const DEFAULT_PARSER_OPTIONS = {
   tsconfigRootDir: FIXTURES_DIR,
 } as const satisfies ParserOptions;
 
-function parseForESLint(code: string, options: ParserOptions) {
-  const { ast, scopeManager, services, visitorKeys } = parse(code, options);
-  if (services.backend === 'native' || services.program == null) {
-    throw new Error('Expected typed TypeScript parser services.');
-  }
-  return { ast, scopeManager, services, visitorKeys };
-}
-
 describe(getConstraintInfo, () => {
   it('returns undefined for unconstrained generic', () => {
     const sourceCode = `
@@ -36,6 +28,8 @@ function foo<T>(x: T);
       sourceCode,
       DEFAULT_PARSER_OPTIONS,
     );
+
+    assert.isNotNull(services.program);
 
     const checker = services.program.getTypeChecker();
 
@@ -63,6 +57,8 @@ function foo<T extends unknown>(x: T);
       sourceCode,
       DEFAULT_PARSER_OPTIONS,
     );
+
+    assert.isNotNull(services.program);
 
     const checker = services.program.getTypeChecker();
 
@@ -93,6 +89,8 @@ function foo<T extends any>(x: T);
       DEFAULT_PARSER_OPTIONS,
     );
 
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -122,6 +120,8 @@ function foo<T extends string>(x: T);
       DEFAULT_PARSER_OPTIONS,
     );
 
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -150,6 +150,8 @@ function foo(x: string);
       sourceCode,
       DEFAULT_PARSER_OPTIONS,
     );
+
+    assert.isNotNull(services.program);
 
     const checker = services.program.getTypeChecker();
 
@@ -184,6 +186,8 @@ function foo<T extends string>() {
       DEFAULT_PARSER_OPTIONS,
     );
 
+    assert.isNotNull(services.program);
+
     const checker = services.program.getTypeChecker();
 
     const outerFunctionNode = ast.body[0] as TSESTree.FunctionDeclaration;
@@ -216,6 +220,8 @@ function foo<T>() {
       sourceCode,
       DEFAULT_PARSER_OPTIONS,
     );
+
+    assert.isNotNull(services.program);
 
     const checker = services.program.getTypeChecker();
 

@@ -42,7 +42,6 @@ export * from '@typescript-eslint/type-utils';
 export const {
   applyDefault,
   deepMerge,
-  getNativeParserServices,
   getParserServices,
   isObjectNotArray,
   nullThrows,

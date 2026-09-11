@@ -4,8 +4,7 @@ import debug from 'debug';
 
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import type {
-  ClassicParserServices,
-  NativeParserServices,
+  ParserServices,
   ParserServicesNodeMaps,
   TSESTreeOptions,
 } from './parser-options';
@@ -94,36 +93,18 @@ export type AST<T extends TSESTreeOptions> = (T['comment'] extends true
 
 export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
-  services: ClassicParserServices;
+  services: ParserServices;
 }
-export interface ParseAndGenerateNativeServicesResult<
-  T extends TSESTreeOptions,
-> extends Omit<ParseAndGenerateServicesResult<T>, 'services'> {
-  services: NativeParserServices;
-}
-type ProjectServiceCanUseNative<T> = T extends object
-  ? 'backend' extends keyof T
-    ? 'native' extends T['backend']
-      ? true
-      : false
-    : false
-  : false;
-type OptionsCanUseNative<T> = T extends unknown
-  ? 'projectService' extends keyof T
-    ? ProjectServiceCanUseNative<T['projectService']>
-    : false
-  : never;
-type ParseAndGenerateServicesResultForOptions<T extends TSESTreeOptions> =
-  T extends { projectService: { backend: 'native' } }
-    ? ParseAndGenerateNativeServicesResult<T>
-    : true extends OptionsCanUseNative<T>
-      ? | ParseAndGenerateNativeServicesResult<T>
-        | ParseAndGenerateServicesResult<T>
-      : ParseAndGenerateServicesResult<T>;
 type ParseAndGenerateNativeServices = <T extends TSESTreeOptions>(
   parseSettings: ParseSettings,
-) => ParseAndGenerateNativeServicesResult<T>;
+) => ParseAndGenerateServicesResult<T>;
 let registeredNativeParser: ParseAndGenerateNativeServices | undefined;
+
+/**
+ * Registers the native backend's parse entry point, so that importing
+ * `./native` is enough to enable it without this module depending on the
+ * optional `@typescript/native` package.
+ */
 export function registerNativeParser(
   parser: ParseAndGenerateNativeServices,
 ): void {
@@ -190,21 +171,11 @@ export function clearParseAndGenerateServicesCalls(): void {
 }
 
 export function parseAndGenerateServices<
-  T extends TSESTreeOptions & {
-    projectService: { backend: 'native' };
-  },
+  T extends TSESTreeOptions = TSESTreeOptions,
 >(
   code: string | ts.SourceFile,
   tsestreeOptions: T,
-): ParseAndGenerateNativeServicesResult<T>;
-export function parseAndGenerateServices<T extends TSESTreeOptions>(
-  code: string | ts.SourceFile,
-  tsestreeOptions: T,
-): ParseAndGenerateServicesResultForOptions<T>;
-export function parseAndGenerateServices<T extends TSESTreeOptions>(
-  code: string | ts.SourceFile,
-  tsestreeOptions: T,
-): ParseAndGenerateNativeServicesResult<T> | ParseAndGenerateServicesResult<T> {
+): ParseAndGenerateServicesResult<T> {
   /**
    * Reset the parse configuration
    */

@@ -1,8 +1,6 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import type { create as createNativeRule } from './native/no-unsafe-unary-minus';
-
 import * as util from '../util';
 
 export type Options = [];
@@ -25,14 +23,6 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    if (context.sourceCode.parserServices?.backend === 'native') {
-      const loadNativeRule = require;
-      const nativeRule = loadNativeRule('./native/no-unsafe-unary-minus') as {
-        create: typeof createNativeRule;
-      };
-      return nativeRule.create(context);
-    }
-
     return {
       UnaryExpression(node): void {
         if (node.operator !== '-') {

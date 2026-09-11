@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.68.0",
+  "version": "8.69.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -93,15 +93,9 @@
     "vitest": "catalog:"
   },
   "peerDependencies": {
-    "@typescript/native": "npm:typescript@>=7.1.0-0",
     "@typescript-eslint/parser": "workspace:^",
     "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
     "typescript": ">=4.8.4 <6.1.0"
-  },
-  "peerDependenciesMeta": {
-    "@typescript/native": {
-      "optional": true
-    }
   },
   "funding": {
     "type": "opencollective",
