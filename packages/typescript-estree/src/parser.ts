@@ -25,6 +25,7 @@ import {
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
 import { createParserServices } from './createParserServices';
+import { getNativeParser } from './nativeParserRegistry';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { useProgramFromProjectService } from './useProgramFromProjectService';
@@ -94,21 +95,6 @@ export type AST<T extends TSESTreeOptions> = (T['comment'] extends true
 export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
-}
-type ParseAndGenerateNativeServices = <T extends TSESTreeOptions>(
-  parseSettings: ParseSettings,
-) => ParseAndGenerateServicesResult<T>;
-let registeredNativeParser: ParseAndGenerateNativeServices | undefined;
-
-/**
- * Registers the native backend's parse entry point, so that importing
- * `./native` is enough to enable it without this module depending on the
- * optional `@typescript/native` package.
- */
-export function registerNativeParser(
-  parser: ParseAndGenerateNativeServices,
-): void {
-  registeredNativeParser = parser;
 }
 interface ParseWithNodeMapsResult<
   T extends TSESTreeOptions,
@@ -190,12 +176,13 @@ export function parseAndGenerateServices<
   }
 
   if (parseSettings.nativeProjectService) {
-    if (registeredNativeParser) {
-      return registeredNativeParser<T>(parseSettings);
+    const nativeParser = getNativeParser();
+    if (!nativeParser) {
+      throw new Error(
+        'The experimental native project service could not be loaded. Install @typescript/native.',
+      );
     }
-    const { parseAndGenerateNativeServices } =
-      require('./native') as typeof import('./native'); // eslint-disable-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
-    return parseAndGenerateNativeServices<T>(parseSettings);
+    return nativeParser<T>(parseSettings);
   }
 
   /**

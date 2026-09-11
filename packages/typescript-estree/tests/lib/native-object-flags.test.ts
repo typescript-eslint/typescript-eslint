@@ -1,3 +1,5 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import fs from 'node:fs';
 import path from 'node:path';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -6,33 +8,56 @@ import '../../src/native/index.js';
 import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
 
 const fixtures = path.join(__dirname, '../fixtures/nativeProject');
-const filePath = path.join(fixtures, 'file.ts');
+const filePath = path.join(fixtures, 'instantiation.ts');
+
+beforeEach(() => {
+  // This test selects a backend per call, so the blanket environment switch
+  // has to stay out of the way.
+  vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
+});
 
 afterEach(clearCaches);
-
-const CODE = [
-  'declare const g: <T extends object>(t: T) => void;',
-  'const inst = g<{ x: 1 }>;',
-].join('\n');
 
 /**
  * The two compilers number `ObjectFlags` above `Mapped` differently. Classic's
  * `InstantiationExpressionType` is native's `IsGenericObjectType`, so passing
  * the flags through unchanged would make `no-misused-spread` miss real
  * instantiation expressions and fire on ordinary generic object types.
+ *
+ * The fixture is read from disk rather than written inline because the classic
+ * backend serves the file from a shared program, which other tests may have
+ * already populated from disk.
  */
 function objectFlagsOfInstantiation(native: boolean) {
-  const { ast, services } = parseAndGenerateServices(CODE, {
-    filePath,
-    ...(native
-      ? { projectService: { backend: 'native' as const } }
-      : { project: './tsconfig.json', tsconfigRootDir: fixtures }),
-  });
+  const { ast, services } = parseAndGenerateServices(
+    fs.readFileSync(filePath, 'utf8'),
+    {
+      filePath,
+      tsconfigRootDir: fixtures,
+      ...(native
+        ? { projectService: { backend: 'native' as const } }
+        : { projectService: true }),
+    },
+  );
   assert.isNotNull(services.program);
   const checker = services.program.getTypeChecker();
-  const declaration = ast.body[1] as never as { declarations: { id: never }[] };
+
+  const declarator = ast.body
+    .flatMap(statement => {
+      const declaration =
+        statement.type === AST_NODE_TYPES.ExportNamedDeclaration
+          ? statement.declaration
+          : statement;
+      return declaration?.type === AST_NODE_TYPES.VariableDeclaration
+        ? declaration.declarations
+        : [];
+    })
+    .at(-1);
+  if (!declarator) {
+    throw new Error('The fixture should declare an exported variable.');
+  }
   const type = checker.getTypeAtLocation(
-    services.esTreeNodeToTSNodeMap.get(declaration.declarations[0].id),
+    services.esTreeNodeToTSNodeMap.get(declarator),
   );
 
   return {

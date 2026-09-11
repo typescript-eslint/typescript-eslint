@@ -1,7 +1,7 @@
 import type { NativeProjectService } from './types';
 
 import { registerNativeProjectServiceClearer } from '../clear-caches';
-import { registerNativeParser } from '../parser';
+import { registerNativeParser } from '../nativeParserRegistry';
 import { createNativeProjectService } from './createNativeProjectService';
 import { parseAndGenerateNativeServices } from './parseAndGenerateNativeServices';
 

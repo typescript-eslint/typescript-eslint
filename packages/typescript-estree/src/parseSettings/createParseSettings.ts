@@ -14,6 +14,7 @@ import type { MutableParseSettings } from './index';
 
 import { ensureAbsolutePath } from '../create-program/shared';
 import { validateDefaultProjectForFilesGlob } from '../create-program/validateDefaultProjectForFilesGlob';
+import { getNativeParser } from '../nativeParserRegistry';
 import { isSourceFile } from '../source-files';
 import { getInferredTSConfigRootDir } from './candidateTSConfigRootDirs';
 import {
@@ -263,58 +264,103 @@ export function createParseSettings(
   return parseSettings;
 }
 
+/**
+ * Names the first option that the native project service cannot honor, or
+ * `undefined` when the configuration is fully supported.
+ */
+function findUnsupportedNativeOption(
+  tsestreeOptions: Partial<TSESTreeOptions>,
+  projectServiceOptions: ProjectServiceOptions,
+  ignoreProject: boolean,
+): string | undefined {
+  if (
+    !ignoreProject &&
+    tsestreeOptions.project != null &&
+    tsestreeOptions.project !== false
+  ) {
+    return 'parserOptions.project';
+  }
+  if (tsestreeOptions.programs != null) {
+    return 'parserOptions.programs';
+  }
+  if (tsestreeOptions.extraFileExtensions?.length) {
+    return 'extraFileExtensions';
+  }
+  if (projectServiceOptions.allowDefaultProject != null) {
+    return 'allowDefaultProject';
+  }
+  if (projectServiceOptions.defaultProject != null) {
+    return 'defaultProject';
+  }
+  if (projectServiceOptions.loadTypeScriptPlugins != null) {
+    return 'loadTypeScriptPlugins';
+  }
+  if (
+    projectServiceOptions.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING !=
+    null
+  ) {
+    return 'maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING';
+  }
+  return undefined;
+}
+
 function validateNativeProjectServiceOptions(
   tsestreeOptions: Partial<TSESTreeOptions>,
   nodeVersion: string,
 ): ProjectServiceOptions | undefined {
-  // `TYPESCRIPT_ESLINT_NATIVE_BACKEND` lets the existing test suites run
-  // against the native backend, the same way
-  // `TYPESCRIPT_ESLINT_PROJECT_SERVICE` does for the project service.
-  const nativeProjectServiceOptions =
+  const requested =
     typeof tsestreeOptions.projectService === 'object' &&
     tsestreeOptions.projectService.backend === 'native'
       ? tsestreeOptions.projectService
-      : process.env.TYPESCRIPT_ESLINT_NATIVE_BACKEND === 'true' &&
-          tsestreeOptions.projectService !== false &&
-          (tsestreeOptions.projectService || tsestreeOptions.project)
-        ? { backend: 'native' as const }
-        : undefined;
+      : undefined;
 
-  if (!nativeProjectServiceOptions) {
+  // `TYPESCRIPT_ESLINT_NATIVE_BACKEND` runs the existing test suites against
+  // the native backend, the same way `TYPESCRIPT_ESLINT_PROJECT_SERVICE` does
+  // for the project service. Unlike an explicit `backend: 'native'`, it is a
+  // blanket switch rather than a per-config choice, so a configuration the
+  // native backend cannot serve falls back to the classic one instead of
+  // failing.
+  // The switch only applies where the backend can actually load. This
+  // package's own tests run from source, where `require` resolves nothing, and
+  // they cover classic program management regardless.
+  const viaEnvironment =
+    !requested &&
+    process.env.TYPESCRIPT_ESLINT_NATIVE_BACKEND === 'true' &&
+    getNativeParser() != null &&
+    tsestreeOptions.projectService !== false &&
+    (tsestreeOptions.projectService != null || tsestreeOptions.project != null);
+
+  const projectServiceOptions =
+    requested ?? (viaEnvironment ? { backend: 'native' as const } : undefined);
+  if (!projectServiceOptions) {
     return undefined;
   }
 
-  if (Number.parseInt(nodeVersion, 10) < 22) {
+  const unsupportedOption = findUnsupportedNativeOption(
+    tsestreeOptions,
+    projectServiceOptions,
+    viaEnvironment,
+  );
+  const unsupportedNodeVersion = Number.parseInt(nodeVersion, 10) < 22;
+
+  if (viaEnvironment) {
+    return unsupportedOption || unsupportedNodeVersion
+      ? undefined
+      : projectServiceOptions;
+  }
+
+  if (unsupportedNodeVersion) {
     throw new Error(
       'The experimental native project service requires Node.js 22 or newer.',
     );
   }
-
-  const unsupportedOption =
-    tsestreeOptions.project != null && tsestreeOptions.project !== false
-      ? 'parserOptions.project'
-      : tsestreeOptions.programs != null
-        ? 'parserOptions.programs'
-        : nativeProjectServiceOptions.allowDefaultProject != null
-          ? 'allowDefaultProject'
-          : nativeProjectServiceOptions.defaultProject != null
-            ? 'defaultProject'
-            : nativeProjectServiceOptions.loadTypeScriptPlugins != null
-              ? 'loadTypeScriptPlugins'
-              : nativeProjectServiceOptions.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING !=
-                  null
-                ? 'maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING'
-                : tsestreeOptions.extraFileExtensions?.length
-                  ? 'extraFileExtensions'
-                  : undefined;
-
   if (unsupportedOption) {
     throw new Error(
       `${unsupportedOption} is not supported by the experimental native project service.`,
     );
   }
 
-  return nativeProjectServiceOptions;
+  return projectServiceOptions;
 }
 
 export function clearTSConfigMatchCache(): void {

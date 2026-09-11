@@ -538,6 +538,12 @@ jobs:
       matrix:
         package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
         backend: [classic, native]
+        include:
+          # The typed rule tests are where the native backend needs coverage,
+          # and they run against the built package where the lazy `require`
+          # resolves.
+          - package: eslint-plugin
+            backend: native
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,

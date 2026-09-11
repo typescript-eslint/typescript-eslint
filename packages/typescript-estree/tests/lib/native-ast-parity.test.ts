@@ -6,6 +6,12 @@ import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
 const fixtures = path.join(__dirname, '../fixtures/nativeProject');
 const filePath = path.join(fixtures, 'file.ts');
 
+beforeEach(() => {
+  // These tests select a backend per call, so the blanket environment switch
+  // has to stay out of the way.
+  vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
+});
+
 afterEach(clearCaches);
 
 /**

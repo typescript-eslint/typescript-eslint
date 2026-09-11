@@ -4553,11 +4553,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  typescript@7.1.0-dev.20260822.1:
-    resolution: {integrity: sha512-SbI3P4RT3jq+Lw391NLlAo+bQFNEifaEV/c/0oPyzPXLVJJN/iH39Rx0AnSafoj3rtetzI6cyHXloMvbwt6HyA==}
-    engines: {node: '>=16.20.0'}
-    hasBin: true
-
   '@typescript/typescript6@6.0.2':
     resolution: {integrity: sha512-mbCddXd+jm7hfx7w2YU64/Av4/NqqeG3GoRZgxPcgoTxYjhrcfJRw9ULch71SS4G+Q3bOXFhRvPqjguN0Hyp5w==}
     hasBin: true
@@ -9744,6 +9739,11 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  typescript@7.1.0-dev.20260822.1:
+    resolution: {integrity: sha512-SbI3P4RT3jq+Lw391NLlAo+bQFNEifaEV/c/0oPyzPXLVJJN/iH39Rx0AnSafoj3rtetzI6cyHXloMvbwt6HyA==}
+    engines: {node: '>=16.20.0'}
+    hasBin: true
+
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
 
@@ -14560,16 +14560,6 @@ snapshots:
 
   '@typescript/typescript-win32-x64@7.1.0-dev.20260822.1':
     optional: true
-
-  typescript@7.1.0-dev.20260822.1:
-    optionalDependencies:
-      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20260822.1
-      '@typescript/typescript-darwin-x64': 7.1.0-dev.20260822.1
-      '@typescript/typescript-linux-arm': 7.1.0-dev.20260822.1
-      '@typescript/typescript-linux-arm64': 7.1.0-dev.20260822.1
-      '@typescript/typescript-linux-x64': 7.1.0-dev.20260822.1
-      '@typescript/typescript-win32-arm64': 7.1.0-dev.20260822.1
-      '@typescript/typescript-win32-x64': 7.1.0-dev.20260822.1
 
   '@typescript/typescript6@6.0.2':
     dependencies:
@@ -20835,6 +20825,16 @@ snapshots:
       yaml: 2.9.0
 
   typescript@6.0.3: {}
+
+  typescript@7.1.0-dev.20260822.1:
+    optionalDependencies:
+      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20260822.1
+      '@typescript/typescript-darwin-x64': 7.1.0-dev.20260822.1
+      '@typescript/typescript-linux-arm': 7.1.0-dev.20260822.1
+      '@typescript/typescript-linux-arm64': 7.1.0-dev.20260822.1
+      '@typescript/typescript-linux-x64': 7.1.0-dev.20260822.1
+      '@typescript/typescript-win32-arm64': 7.1.0-dev.20260822.1
+      '@typescript/typescript-win32-x64': 7.1.0-dev.20260822.1
 
   uc.micro@2.1.0: {}
 

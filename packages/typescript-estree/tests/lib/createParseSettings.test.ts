@@ -29,6 +29,9 @@ describe(createParseSettings, () => {
     beforeEach(() => {
       clearTSServerProjectService();
       createProjectService.mockClear();
+      // These assertions are about the classic project service, so the blanket
+      // native switch has to stay out of the way.
+      vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
     });
 
     it('is created when options.projectService is enabled', () => {
