@@ -381,7 +381,11 @@ export default [
 
 Rules do not opt in to the native backend, and there is no native-only rule API. `parserServices.program` is a `ts.Program` on both backends, so a rule that calls `getParserServices(context)` and reads types through `ts.Type`, `ts.Symbol`, and `ts.Signature` works the same either way.
 
-A few TypeScript APIs our rules rely on have no equivalent in the preview API. Where one can be derived from the primitives the preview does expose, it is; where it cannot, the call throws an error naming the missing API rather than silently returning a wrong answer. See [the native backend API gaps](https://github.com/typescript-eslint/typescript-eslint/issues/10940) for the current list.
+A few TypeScript APIs our rules rely on have no equivalent in the preview API. Where one can be derived from the primitives the preview does expose, it is. Where it cannot, the call throws an error naming the missing API rather than silently returning a wrong answer:
+
+- `Type#thisType` throws. The preview's `getTypeParameters` deliberately excludes an interface's synthetic `this` type, and nothing else surfaces it.
+- `TypeChecker#getAwaitedType` returns `undefined` for a union whose constituents await to different types. Producing the right answer would mean constructing a union type, which the preview has no API for.
+- Union constituents come back in a different order than they were declared, so a rule that prints a union type may word its report differently.
 
 The native backend also rejects `parserOptions.project` and `parserOptions.programs`; use `projectService` instead.
 
@@ -421,6 +425,12 @@ There are several restrictions on this option to prevent it from being overused:
 
 - `**` is not allowed in globs passed to it
 - Files that match `allowDefaultProject` may not also be included in their nearest `tsconfig.json`
+
+##### `backend`
+
+> Default: `undefined` _(the classic TypeScript backend)_
+
+Set to `'native'` to opt in to the experimental TypeScript 7.1 native backend described [above](#experimental-typescript-71-native-backend).
 
 ##### `defaultProject`
 

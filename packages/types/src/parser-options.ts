@@ -45,6 +45,10 @@ export type JSDocParsingMode = 'all' | 'none' | 'type-info';
  * Granular options to configure the project service.
  */
 export interface ProjectServiceOptions {
+  /**
+   * Set to `'native'` to power type information with the experimental
+   * TypeScript 7.1 native backend instead of the classic TypeScript API.
+   */
   backend?: 'native';
 
   /**
