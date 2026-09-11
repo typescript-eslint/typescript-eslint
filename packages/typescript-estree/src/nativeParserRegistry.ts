@@ -30,10 +30,10 @@ export function getNativeParser(): ParseAndGenerateNativeServices | undefined {
   if (!loaded) {
     loaded = true;
     try {
-      registeredNativeParser = (
-        require('./native') as typeof import('./native')
-      ) // eslint-disable-line @typescript-eslint/consistent-type-imports, @typescript-eslint/no-require-imports
-      .parseAndGenerateNativeServices;
+      registeredNativeParser =
+        // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/consistent-type-imports
+        (require('./native') as typeof import('./native'))
+          .parseAndGenerateNativeServices;
     } catch {
       registeredNativeParser = undefined;
     }
