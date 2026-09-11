@@ -344,7 +344,7 @@ export default createRule({
 
     return {
       'AccessorProperty[value != null]'(
-        node: { value: NonNullable<unknown> } & TSESTree.AccessorProperty,
+        node: { value: object } & TSESTree.AccessorProperty,
       ): void {
         checkAssignment(
           node.key,
@@ -372,7 +372,7 @@ export default createRule({
         }
       },
       'PropertyDefinition[value != null]'(
-        node: { value: NonNullable<unknown> } & TSESTree.PropertyDefinition,
+        node: { value: object } & TSESTree.PropertyDefinition,
       ): void {
         checkAssignment(
           node.key,

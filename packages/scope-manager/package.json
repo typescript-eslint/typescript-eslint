@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.68.0",
+  "version": "8.69.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",

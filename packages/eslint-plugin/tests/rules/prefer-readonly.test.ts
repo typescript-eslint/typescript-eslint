@@ -766,15 +766,23 @@ class Test4 {
       `,
       errors: [
         {
+          column: 3,
           data: {
             name: 'Symbol.iterator',
           },
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
           messageId: 'preferReadonly',
         },
         {
+          column: 3,
           data: {
             name: '1',
           },
+          endColumn: 14,
+          endLine: 9,
+          line: 9,
           messageId: 'preferReadonly',
         },
       ],

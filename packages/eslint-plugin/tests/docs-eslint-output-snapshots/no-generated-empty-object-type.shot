@@ -1,0 +1,16 @@
+Incorrect
+
+type Data = { name: string; value: number };
+type NullableData = null | Data;
+
+// `Omit<null>` becomes {}, so this is `{} | { value: number }`, or `{}`
+type Unexpected = Omit<NullableData, 'name'>;
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~ This type resolves to `{}`, the empty object type. This was likely not intentional.
+
+Correct
+
+type Data = { name: string; value: number };
+type NullableData = null | Data;
+
+// This is effectively Omit<Data, 'name'>, which is { value: number }
+type Expected = Omit<NonNullable<NullableData>, 'name'>;

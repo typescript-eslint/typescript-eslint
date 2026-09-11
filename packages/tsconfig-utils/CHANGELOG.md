@@ -1,3 +1,11 @@
+## 8.69.0 (2026-08-31)
+
+This was a version bump only for tsconfig-utils to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.69.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.68.0 (2026-08-24)
 
 This was a version bump only for tsconfig-utils to align it with other projects, there were no code changes.

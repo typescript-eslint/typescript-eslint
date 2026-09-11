@@ -42,6 +42,7 @@ export const defaultConfig: ConfigModel = {
   ts: process.env.TS_VERSION,
   tsconfig: toJson({
     compilerOptions: {
+      allowJs: true,
       strictNullChecks: true,
     },
   }),

@@ -382,9 +382,7 @@ if (x) {
         },
       },
       options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
+        { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true },
       ],
     },
 
@@ -407,11 +405,7 @@ if (x) {
 if (y) {
 }
       `,
-      options: [
-        {
-          allowNumber: true,
-        },
-      ],
+      options: [{ allowNumber: true }],
     },
     `
 function f(arg: 1 | null) {
@@ -446,11 +440,7 @@ if (x) {
 if (y) {
 }
       `,
-      options: [
-        {
-          allowString: true,
-        },
-      ],
+      options: [{ allowString: true }],
     },
     `
 declare const foo: boolean & { __BRAND: 'Foo' };
@@ -640,6 +630,8 @@ if (true && 1 + 1) {
         {
           column: 13,
           data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -668,11 +660,7 @@ if (true && (Boolean((1 + 1)))) {
         },
       ],
       options: [
-        {
-          allowNullableObject: false,
-          allowNumber: false,
-          allowString: false,
-        },
+        { allowNullableObject: false, allowNumber: false, allowString: false },
       ],
     },
     {
@@ -680,6 +668,8 @@ if (true && (Boolean((1 + 1)))) {
       errors: [
         {
           column: 17,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -699,11 +689,7 @@ if (true && (Boolean((1 + 1)))) {
         },
       ],
       options: [
-        {
-          allowNullableObject: false,
-          allowNumber: false,
-          allowString: false,
-        },
+        { allowNullableObject: false, allowNumber: false, allowString: false },
       ],
     },
     {
@@ -712,16 +698,14 @@ if (true && (Boolean((1 + 1)))) {
         {
           column: 34,
           data: { context: 'conditional' },
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
       ],
       options: [
-        {
-          allowNullableObject: false,
-          allowNumber: false,
-          allowString: false,
-        },
+        { allowNullableObject: false, allowNumber: false, allowString: false },
       ],
     },
 
@@ -731,6 +715,8 @@ if (true && (Boolean((1 + 1)))) {
       errors: [
         {
           column: 6,
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -750,17 +736,17 @@ if (true && (Boolean((1 + 1)))) {
         },
         {
           column: 12,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
         {
           column: 20,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -778,7 +764,13 @@ if (true && (Boolean((1 + 1)))) {
             },
           ],
         },
-        { column: 25, line: 1, messageId: 'conditionErrorNullish' },
+        {
+          column: 25,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'conditionErrorNullish',
+        },
       ],
       options: [
         { allowNullableObject: false, allowNumber: false, allowString: false },
@@ -792,9 +784,11 @@ array.some(x => x);
       `,
       errors: [
         {
-          data: {
-            context: 'array predicate return type',
-          },
+          column: 12,
+          data: { context: 'array predicate return type' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
           messageId: 'conditionErrorString',
           suggestions: [
             {
@@ -838,9 +832,9 @@ if (('' && foo) || (0 && void 0)) { }
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -869,9 +863,9 @@ if (((Boolean('')) && foo) || (0 && void 0)) { }
         },
         {
           column: 21,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -898,7 +892,13 @@ if (('' && foo) || ((Boolean(0)) && void 0)) { }
             },
           ],
         },
-        { column: 26, line: 3, messageId: 'conditionErrorNullish' },
+        {
+          column: 26,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullish',
+        },
       ],
       options: [
         { allowNullableObject: false, allowNumber: false, allowString: false },
@@ -913,9 +913,9 @@ if (('' && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -944,17 +944,17 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 12,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorObject',
         },
         {
           column: 27,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 33,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullish',
         },
@@ -971,9 +971,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 1,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -993,9 +993,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 10,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1015,9 +1015,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1030,9 +1030,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 1,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1052,9 +1052,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 10,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1074,9 +1074,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1089,9 +1089,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 10,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 11,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1112,9 +1112,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 15,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1135,14 +1135,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 22,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
         {
           column: 31,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1163,9 +1165,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 36,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1193,9 +1195,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 9,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1216,9 +1218,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 14,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1239,14 +1241,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 21,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1267,9 +1271,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 35,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1297,9 +1301,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 14,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1319,17 +1323,17 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 19,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
         {
           column: 27,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1358,9 +1362,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1380,17 +1384,17 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 11,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
         {
           column: 19,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1410,9 +1414,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 26,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1425,14 +1429,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 9,
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1455,9 +1461,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 22,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1480,9 +1486,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 29,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1495,14 +1501,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 10,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1522,9 +1530,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 23,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1544,9 +1552,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1561,6 +1569,8 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 1,
+          endColumn: 5,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1571,6 +1581,8 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 1,
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1585,6 +1597,8 @@ if (x) {
       errors: [
         {
           column: 5,
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullish',
         },
@@ -1595,6 +1609,8 @@ if (x) {
       errors: [
         {
           column: 20,
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1605,6 +1621,8 @@ if (x) {
       errors: [
         {
           column: 40,
+          endColumn: 41,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1615,6 +1633,8 @@ if (x) {
       errors: [
         {
           column: 28,
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1625,6 +1645,8 @@ if (x) {
       errors: [
         {
           column: 33,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1637,9 +1659,9 @@ if (x) {
       errors: [
         {
           column: 1,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1650,9 +1672,9 @@ if (x) {
       errors: [
         {
           column: 2,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 4,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1667,9 +1689,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorObject',
         },
@@ -1680,9 +1702,9 @@ if (x) {
       errors: [
         {
           column: 21,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1693,9 +1715,9 @@ if (x) {
       errors: [
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1706,9 +1728,9 @@ if (x) {
       errors: [
         {
           column: 41,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1719,9 +1741,9 @@ if (x) {
       errors: [
         {
           column: 37,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1732,9 +1754,9 @@ if (x) {
       errors: [
         {
           column: 34,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1747,9 +1769,9 @@ if (x) {
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1768,20 +1790,16 @@ if (x) {
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
     {
       code: "for (; 'foo';) {}",
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1800,11 +1818,7 @@ if (x) {
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
     {
       code: `
@@ -1815,9 +1829,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1848,20 +1862,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
     {
       code: '(x: string) => !x;',
       errors: [
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1880,20 +1890,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
     {
       code: '<T extends string>(x: T) => (x ? 1 : 0);',
       errors: [
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1912,11 +1918,7 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
 
     // number in boolean context
@@ -1925,9 +1927,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1948,20 +1950,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: 'for (; 123;) {}',
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 11,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1980,11 +1978,7 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: `
@@ -1995,9 +1989,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2028,20 +2022,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: '(x: bigint) => !x;',
       errors: [
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2062,20 +2052,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: '<T extends number>(x: T) => (x ? 1 : 0);',
       errors: [
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2095,20 +2081,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: "![]['length']; // doesn't count as array.length when computed",
       errors: [
         {
           column: 2,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2130,11 +2112,7 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: `
@@ -2146,6 +2124,8 @@ if (a.notLength) {
         {
           column: 5,
           data: { context: 'conditional' },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2176,11 +2156,7 @@ if (Boolean(a.notLength)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
 
     // number (array.length) in boolean context
@@ -2193,9 +2169,9 @@ if (![].length) {
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2218,9 +2194,9 @@ if ([].length === 0) {
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2243,9 +2219,9 @@ if ([].length === 0) {
       errors: [
         {
           column: 35,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 43,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2272,6 +2248,8 @@ if (x) {
       errors: [
         {
           column: 5,
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorOther',
         },
@@ -2283,6 +2261,8 @@ if (x) {
       errors: [
         {
           column: 26,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorOther',
         },
@@ -2294,6 +2274,8 @@ if (x) {
       errors: [
         {
           column: 48,
+          endColumn: 49,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorOther',
         },
@@ -2311,9 +2293,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableBoolean',
           suggestions: [
@@ -2343,9 +2325,9 @@ if (x === true) {
       errors: [
         {
           column: 19,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableBoolean',
           suggestions: [
@@ -2367,9 +2349,9 @@ if (x === true) {
       errors: [
         {
           column: 50,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 51,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableBoolean',
           suggestions: [
@@ -2399,6 +2381,8 @@ if (x) {
       errors: [
         {
           column: 5,
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -2420,6 +2404,8 @@ if (x != null) {
       errors: [
         {
           column: 25,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -2437,6 +2423,8 @@ if (x != null) {
       errors: [
         {
           column: 45,
+          endColumn: 46,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -2461,9 +2449,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -2500,9 +2488,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -2528,6 +2516,8 @@ if (Boolean(x)) {
         {
           column: 49,
           data: { context: 'conditional' },
+          endColumn: 50,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -2561,6 +2551,8 @@ function foo(x: '' | 'bar' | null) {
         {
           column: 8,
           data: { context: 'conditional' },
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -2606,9 +2598,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableNumber',
           suggestions: [
@@ -2645,9 +2637,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableNumber',
           suggestions: [
@@ -2672,9 +2664,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 49,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 50,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableNumber',
           suggestions: [
@@ -2707,9 +2699,9 @@ function foo(x: 0 | 1 | null) {
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableNumber',
           suggestions: [
@@ -2759,9 +2751,7 @@ if (theEnum) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 12,
           endLine: 7,
           line: 7,
@@ -2797,9 +2787,7 @@ if (!theEnum) {
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 13,
           endLine: 7,
           line: 7,
@@ -2835,9 +2823,7 @@ if (!theEnum) {
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 13,
           endLine: 7,
           line: 7,
@@ -2873,9 +2859,7 @@ if (!theEnum) {
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 13,
           endLine: 7,
           line: 7,
@@ -2911,9 +2895,7 @@ if (!theEnum) {
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 13,
           endLine: 7,
           line: 7,
@@ -2949,9 +2931,7 @@ if (!theEnum) {
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 13,
           endLine: 7,
           line: 7,
@@ -2987,9 +2967,7 @@ if (!theEnum) {
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 13,
           endLine: 7,
           line: 7,
@@ -3026,9 +3004,7 @@ enum ExampleEnum {
       errors: [
         {
           column: 27,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 32,
           endLine: 6,
           line: 6,
@@ -3061,9 +3037,7 @@ enum ExampleEnum {
       errors: [
         {
           column: 28,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 33,
           endLine: 6,
           line: 6,
@@ -3096,9 +3070,7 @@ enum ExampleEnum {
       errors: [
         {
           column: 28,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 33,
           endLine: 6,
           line: 6,
@@ -3131,9 +3103,7 @@ enum ExampleEnum {
       errors: [
         {
           column: 28,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 33,
           endLine: 6,
           line: 6,
@@ -3164,9 +3134,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorAny',
           suggestions: [
@@ -3186,9 +3156,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 7,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorAny',
           suggestions: [
@@ -3205,9 +3175,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 27,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorAny',
           suggestions: [
@@ -3224,9 +3194,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 16,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorAny',
           suggestions: [
@@ -3249,14 +3219,16 @@ if (x) {
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorObject',
         },
@@ -3281,6 +3253,8 @@ if (x) {
       errors: [
         {
           column: 10,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -3298,6 +3272,8 @@ if (x) {
         },
         {
           column: 10,
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -3315,6 +3291,8 @@ if (x) {
         },
         {
           column: 9,
+          endColumn: 12,
+          endLine: 5,
           line: 5,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -3332,6 +3310,8 @@ if (x) {
         },
         {
           column: 9,
+          endColumn: 12,
+          endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -3360,9 +3340,9 @@ assert(nullableString);
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3404,9 +3384,9 @@ assert(foo, nullableString);
       errors: [
         {
           column: 13,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 27,
+          endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3449,9 +3429,9 @@ assert(foo, nullableString);
       errors: [
         {
           column: 13,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 27,
+          endLine: 5,
           line: 5,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3496,9 +3476,9 @@ assert(foo, nullableString);
       errors: [
         {
           column: 13,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 27,
+          endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3551,9 +3531,11 @@ someAssert(maybeString);
       `,
       errors: [
         {
-          data: {
-            context: 'conditional',
-          },
+          column: 12,
+          data: { context: 'conditional' },
+          endColumn: 23,
+          endLine: 10,
+          line: 10,
           messageId: 'conditionErrorNullableString',
           suggestions: [
             {
@@ -3627,9 +3609,9 @@ assert(3 as any, nullableString);
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 32,
+          endLine: 18,
           line: 18,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3729,9 +3711,9 @@ assert(3 as any, nullableString, 'more', 'args', 'afterwards');
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 32,
+          endLine: 19,
           line: 19,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3819,9 +3801,10 @@ assert(boo, nullableString);
       `,
       errors: [
         {
-          data: {
-            context: 'conditional',
-          },
+          column: 13,
+          data: { context: 'conditional' },
+          endColumn: 27,
+          endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3874,9 +3857,10 @@ assert(nullableString);
       `,
       errors: [
         {
-          data: {
-            context: 'conditional',
-          },
+          column: 8,
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 8,
           line: 8,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -4059,9 +4043,7 @@ const predicate = (x: string) => {
       errors: [
         {
           column: 17,
-          data: {
-            type: 'Promise<boolean>',
-          },
+          data: { type: 'Promise<boolean>' },
           endColumn: 2,
           endLine: 4,
           line: 2,
@@ -4274,11 +4256,7 @@ function foo<T extends number>(x: number): T {}
           messageId: 'conditionErrorNumber',
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: `
@@ -4288,9 +4266,7 @@ declare const nullOrString: string | null;
       errors: [
         {
           column: 22,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 39,
           endLine: 3,
           line: 3,
@@ -4336,9 +4312,7 @@ declare const nullOrString: string | null;
       errors: [
         {
           column: 28,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 40,
           endLine: 3,
           line: 3,
@@ -4377,9 +4351,7 @@ declare const anyValue: any;
       errors: [
         {
           column: 22,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -4411,9 +4383,7 @@ declare const nullOrBoolean: boolean | null;
       errors: [
         {
           column: 21,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 39,
           endLine: 3,
           line: 3,
@@ -4456,9 +4426,7 @@ const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
       errors: [
         {
           column: 15,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 27,
           endLine: 7,
           line: 7,
@@ -4498,9 +4466,7 @@ declare const nullOrNumber: number | null;
       errors: [
         {
           column: 18,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -4546,9 +4512,7 @@ const objectValue: object = {};
       errors: [
         {
           column: 23,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 39,
           endLine: 3,
           line: 3,
@@ -4575,9 +4539,7 @@ const objectValue: object = {};
       errors: [
         {
           column: 23,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 5,
           line: 3,
@@ -4604,9 +4566,7 @@ declare const nullOrObject: object | null;
       errors: [
         {
           column: 25,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 42,
           endLine: 3,
           line: 3,
@@ -4639,9 +4599,7 @@ const numbers: number[] = [1];
       errors: [
         {
           column: 15,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 34,
           endLine: 3,
           line: 3,
@@ -4674,9 +4632,7 @@ const numberValue: number = 1;
       errors: [
         {
           column: 15,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 31,
           endLine: 3,
           line: 3,
@@ -4723,9 +4679,7 @@ const stringValue: string = 'hoge';
       errors: [
         {
           column: 24,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 40,
           endLine: 3,
           line: 3,

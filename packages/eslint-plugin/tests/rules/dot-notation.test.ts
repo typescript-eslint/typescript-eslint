@@ -209,7 +209,15 @@ class X {
 const x = new X();
 x['priv_prop'] = 123;
       `,
-      errors: [{ messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'useDot',
+        },
+      ],
       options: [{ allowPrivateClassPropertyAccess: false }],
       output: `
 class X {
@@ -229,7 +237,15 @@ class X {
 const x = new X();
 x['pub_prop'] = 123;
       `,
-      errors: [{ messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 13,
+          endLine: 7,
+          line: 7,
+          messageId: 'useDot',
+        },
+      ],
       output: `
 class X {
   public pub_prop = 123;
@@ -249,49 +265,130 @@ x.pub_prop = 123;
     // },
     {
       code: "a['true'];",
-      errors: [{ data: { key: q('true') }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          data: { key: q('true') },
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: 'a.true;',
     },
     {
       code: "a['time'];",
-      errors: [{ data: { key: '"time"' }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          data: { key: '"time"' },
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       output: 'a.time;',
     },
     {
       code: 'a[null];',
-      errors: [{ data: { key: 'null' }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          data: { key: 'null' },
+          endColumn: 7,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: 'a.null;',
     },
     {
       code: 'a[true];',
-      errors: [{ data: { key: 'true' }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          data: { key: 'true' },
+          endColumn: 7,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: 'a.true;',
     },
     {
       code: 'a[false];',
-      errors: [{ data: { key: 'false' }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          data: { key: 'false' },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: 'a.false;',
     },
     {
       code: "a['b'];",
-      errors: [{ data: { key: q('b') }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          data: { key: q('b') },
+          endColumn: 6,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: 'a.b;',
     },
     {
       code: "a.b['c'];",
-      errors: [{ data: { key: q('c') }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 5,
+          data: { key: q('c') },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: 'a.b.c;',
     },
     {
       code: "a['_dangle'];",
-      errors: [{ data: { key: q('_dangle') }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          data: { key: q('_dangle') },
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
       output: 'a._dangle;',
     },
     {
       code: "a['SHOUT_CASE'];",
-      errors: [{ data: { key: q('SHOUT_CASE') }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          data: { key: q('SHOUT_CASE') },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
       output: 'a.SHOUT_CASE;',
     },
@@ -304,6 +401,8 @@ a
         {
           column: 4,
           data: { key: q('SHOUT_CASE') },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'useDot',
         },
@@ -324,17 +423,17 @@ getResource()
       errors: [
         {
           column: 4,
-          data: {
-            key: '"catch"',
-          },
+          data: { key: '"catch"' },
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'useDot',
         },
         {
           column: 4,
-          data: {
-            key: '"catch"',
-          },
+          data: { key: '"catch"' },
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'useDot',
         },
@@ -352,7 +451,16 @@ getResource()
 foo
   .while;
       `,
-      errors: [{ data: { key: 'while' }, messageId: 'useBrackets' }],
+      errors: [
+        {
+          column: 4,
+          data: { key: 'while' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'useBrackets',
+        },
+      ],
       options: [{ allowKeywords: false }],
       output: `
 foo
@@ -361,38 +469,101 @@ foo
     },
     {
       code: "foo[/* comment */ 'bar'];",
-      errors: [{ data: { key: q('bar') }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 19,
+          data: { key: q('bar') },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: null, // Not fixed due to comment
     },
     {
       code: "foo['bar' /* comment */];",
-      errors: [{ data: { key: q('bar') }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 5,
+          data: { key: q('bar') },
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: null, // Not fixed due to comment
     },
     {
       code: "foo['bar'];",
-      errors: [{ data: { key: q('bar') }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 5,
+          data: { key: q('bar') },
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: 'foo.bar;',
     },
     {
       code: 'foo./* comment */ while;',
-      errors: [{ data: { key: 'while' }, messageId: 'useBrackets' }],
+      errors: [
+        {
+          column: 19,
+          data: { key: 'while' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'useBrackets',
+        },
+      ],
       options: [{ allowKeywords: false }],
       output: null, // Not fixed due to comment
     },
     {
       code: 'foo[null];',
-      errors: [{ data: { key: 'null' }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 5,
+          data: { key: 'null' },
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: 'foo.null;',
     },
     {
       code: "foo['bar'] instanceof baz;",
-      errors: [{ data: { key: q('bar') }, messageId: 'useDot' }],
+      errors: [
+        {
+          column: 5,
+          data: { key: q('bar') },
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'useDot',
+        },
+      ],
       output: 'foo.bar instanceof baz;',
     },
     {
       code: 'let.if();',
-      errors: [{ data: { key: 'if' }, messageId: 'useBrackets' }],
+      errors: [
+        {
+          column: 5,
+          data: { key: 'if' },
+          endColumn: 7,
+          endLine: 1,
+          line: 1,
+          messageId: 'useBrackets',
+        },
+      ],
       options: [{ allowKeywords: false }],
       output: null, // `let["if"]()` is a syntax error because `let[` indicates a destructuring variable declaration
     },
@@ -405,7 +576,15 @@ class X {
 const x = new X();
 x['protected_prop'] = 123;
       `,
-      errors: [{ messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'useDot',
+        },
+      ],
       options: [{ allowProtectedClassPropertyAccess: false }],
       output: `
 class X {
@@ -426,7 +605,15 @@ class X {
 const x = new X();
 x['prop'] = 'hello';
       `,
-      errors: [{ messageId: 'useDot' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 8,
+          line: 8,
+          messageId: 'useDot',
+        },
+      ],
       options: [{ allowIndexSignaturePropertyAccess: true }],
       output: `
 class X {
@@ -446,7 +633,15 @@ type Foo = {
 };
 foo['key_baz'];
       `,
-      errors: [{ messageId: 'useDot' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'useDot',
+        },
+      ],
       output: `
 type Foo = {
   bar: boolean;
@@ -468,7 +663,15 @@ function f<T extends Foo>(x: T) {
   x['extraKey'];
 }
       `,
-      errors: [{ messageId: 'useDot' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 15,
+          endLine: 10,
+          line: 10,
+          messageId: 'useDot',
+        },
+      ],
       output: `
 type ExtraKey = \`extra\${string}\`;
 
