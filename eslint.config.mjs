@@ -109,6 +109,7 @@ export default defineConfig(
         'error',
         { ignoreVoidReturningFunctions: true },
       ],
+      '@typescript-eslint/no-misused-disposable': 'error',
       // TODO: enable it once we drop support for TS<5.0
       // https://github.com/typescript-eslint/typescript-eslint/issues/10065
       '@typescript-eslint/consistent-type-exports': [
@@ -387,6 +388,8 @@ export default defineConfig(
           'vitest/prefer-to-contain': 'error',
           'vitest/prefer-to-have-length': 'error',
           'vitest/valid-expect': 'error',
+          // TODO - handle the vi.spy() cases
+          '@typescript-eslint/no-misused-disposable': 'off',
         },
         settings: { vitest: { typecheck: true } },
       },
