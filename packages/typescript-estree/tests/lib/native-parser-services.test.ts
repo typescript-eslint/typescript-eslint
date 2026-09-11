@@ -46,12 +46,15 @@ describe('native parser services', () => {
     const { ast, services } = parse('declare const value: string | number;');
     const checker = services.program.getTypeChecker();
     const declaration = ast.body[0] as TSESTree.VariableDeclaration;
-    const type = services.getTypeAtLocation(declaration.declarations[0].id);
+    const type = checker.getTypeAtLocation(
+      services.esTreeNodeToTSNodeMap.get(declaration.declarations[0].id),
+    );
 
     expect(checker.typeToString(type)).toBe('string | number');
-    expect(type.isUnion()).toBe(true);
     expect(
-      (type as ts.UnionType).types.map(part => checker.typeToString(part)),
+      type.isUnion()
+        ? type.types.map(part => checker.typeToString(part))
+        : undefined,
     ).toStrictEqual(['string', 'number']);
   });
 

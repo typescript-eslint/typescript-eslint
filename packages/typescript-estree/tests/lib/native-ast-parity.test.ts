@@ -25,7 +25,7 @@ function convert(code: string, native: boolean): unknown {
       ? { projectService: { backend: 'native' as const } }
       : { project: false }),
   });
-  return JSON.parse(JSON.stringify(ast));
+  return structuredClone(ast);
 }
 
 describe.for([

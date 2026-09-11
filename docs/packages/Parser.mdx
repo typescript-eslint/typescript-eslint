@@ -379,14 +379,11 @@ export default [
 ];
 ```
 
-The native backend currently supports only these typed rules:
+Rules do not opt in to the native backend, and there is no native-only rule API. `parserServices.program` is a `ts.Program` on both backends, so a rule that calls `getParserServices(context)` and reads types through `ts.Type`, `ts.Symbol`, and `ts.Signature` works the same either way.
 
-- `@typescript-eslint/await-thenable`
-- `@typescript-eslint/no-deprecated`
-- `@typescript-eslint/no-unsafe-argument`
-- `@typescript-eslint/no-unsafe-unary-minus`
+A few TypeScript APIs our rules rely on have no equivalent in the preview API. Where one can be derived from the primitives the preview does expose, it is; where it cannot, the call throws an error naming the missing API rather than silently returning a wrong answer. See [the native backend API gaps](https://github.com/typescript-eslint/typescript-eslint/issues/10940) for the current list.
 
-Other rules that request classic TypeScript parser services report a compatibility error. The native backend also rejects `parserOptions.project`, `parserOptions.programs`, and a non-empty `allow` option for `@typescript-eslint/no-deprecated`.
+The native backend also rejects `parserOptions.project` and `parserOptions.programs`; use `projectService` instead.
 
 This backend is a prototype and is not a stable compatibility guarantee. Its strict performance acceptance benchmark has repeatedly failed because the native warm median is typically slower than the classic warm median, although high variance means individual runs can pass. Run `pnpm --dir packages/integration-tests benchmark:native` to reproduce the benchmark.
 

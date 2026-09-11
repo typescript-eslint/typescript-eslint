@@ -3,14 +3,11 @@ import type {
   Signature as NativeSignature,
   Symbol as NativeSymbol,
   Type as NativeType,
+  SymbolFlags,
 } from '@typescript/native/unstable/sync';
 import type * as ts from 'typescript';
 
-import {
-  SignatureKind,
-  SymbolFlags,
-  TypeFlags,
-} from '@typescript/native/unstable/sync';
+import { SignatureKind, TypeFlags } from '@typescript/native/unstable/sync';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 import type { NativeTypeAdapter } from './nativeTypeAdapter';
@@ -69,7 +66,8 @@ export function createNativeChecker({
     type: ts.Type,
     kind: ts.IndexKind,
   ): ts.IndexInfo | undefined {
-    const wanted = kind === 0 ? TypeFlags.String : TypeFlags.Number;
+    const wanted =
+      kind === ts.IndexKind.String ? TypeFlags.String : TypeFlags.Number;
     const info = checker
       .getIndexInfosOfType(unwrapType(type))
       .find(candidate => (candidate.keyType.flags & wanted) !== 0);
@@ -144,9 +142,8 @@ export function createNativeChecker({
         .getBaseTypes(
           unwrapType(type) as Parameters<NativeChecker['getBaseTypes']>[0],
         )
-        .map(toType) as ts.BaseType[],
-    getConstantValue: node =>
-      checker.getConstantValue(unwrapNode(node)) as string | number | undefined,
+        .map(toType),
+    getConstantValue: node => checker.getConstantValue(unwrapNode(node)),
     getContextualType: node =>
       wrapType(
         checker.getContextualType(
@@ -171,23 +168,33 @@ export function createNativeChecker({
      * Native always yields a signature, using a sentinel "unknown signature"
      * where classic returns `undefined`.
      */
+    getAliasedSymbol: symbol =>
+      wrapSymbol(checker.getAliasedSymbol(unwrapSymbol(symbol))),
+
+    getExportsOfModule: symbol =>
+      checker.getExportsOfModule(unwrapSymbol(symbol)).map(toSymbol),
+    getExportSpecifierLocalTargetSymbol: node =>
+      wrapSymbol(checker.getExportSpecifierLocalTargetSymbol(unwrapNode(node))),
+    getImmediateAliasedSymbol: symbol =>
+      wrapSymbol(checker.getImmediateAliasedSymbol(unwrapSymbol(symbol))),
     getResolvedSignature: node => {
       const signature = checker.getResolvedSignature(unwrapNode(node));
       return checker.isUnknownSignature(signature)
         ? undefined
         : wrapSignature(signature);
     },
-
     getReturnTypeOfSignature: signature =>
       wrapType(checker.getReturnTypeOfSignature(unwrapSignature(signature))),
+    getShorthandAssignmentValueSymbol: node =>
+      wrapSymbol(
+        node && checker.getShorthandAssignmentValueSymbol(unwrapNode(node)),
+      ),
     getSignatureFromDeclaration: declaration =>
       wrapSignature(
         checker.getSignatureFromDeclaration(unwrapNode(declaration)),
       ),
     getSignaturesOfType: (type, kind) =>
-      checker
-        .getSignaturesOfType(unwrapType(type), kind as unknown as SignatureKind)
-        .map(toSignature),
+      checker.getSignaturesOfType(unwrapType(type), kind).map(toSignature),
     getSymbolAtLocation: node =>
       wrapSymbol(checker.getSymbolAtLocation(unwrapNode(node))),
     getSymbolsInScope: (location, meaning) =>
@@ -205,6 +212,7 @@ export function createNativeChecker({
         .map(toType),
     getTypeAtLocation: node =>
       wrapType(checker.getTypeAtLocation(unwrapNode(node))),
+
     getTypeFromTypeNode: node =>
       wrapType(
         checker.getTypeFromTypeNode(
@@ -233,8 +241,8 @@ export function createNativeChecker({
     isTupleType: type => checker.isTupleType(unwrapType(type)),
     isTypeAssignableTo: (source, target) =>
       checker.isTypeAssignableTo(unwrapType(source), unwrapType(target)),
-    isUnknownSymbol: symbol => checker.isUnknownSymbol(unwrapSymbol(symbol)),
 
+    isUnknownSymbol: symbol => checker.isUnknownSymbol(unwrapSymbol(symbol)),
     resolveName: (name, location, meaning, excludeGlobals) =>
       wrapSymbol(
         checker.resolveName(
@@ -254,7 +262,7 @@ export function createNativeChecker({
         unwrapSignature(signature),
         kind as never,
         enclosingDeclaration && unwrapNode(enclosingDeclaration),
-        flags as never,
+        flags,
       ) as ts.SignatureDeclaration | undefined,
     typeToString: (type, enclosingDeclaration, flags) =>
       checker.typeToString(
@@ -266,23 +274,10 @@ export function createNativeChecker({
       const typeNode = checker.typeToTypeNode(
         unwrapType(type),
         enclosingDeclaration && unwrapNode(enclosingDeclaration),
-        flags as never,
+        flags,
       );
       return typeNode && (nodeAdapter.wrapNode(typeNode) as ts.TypeNode);
     },
-
-    getAliasedSymbol: symbol =>
-      wrapSymbol(checker.getAliasedSymbol(unwrapSymbol(symbol))),
-    getImmediateAliasedSymbol: symbol =>
-      wrapSymbol(checker.getImmediateAliasedSymbol(unwrapSymbol(symbol))),
-    getExportsOfModule: symbol =>
-      checker.getExportsOfModule(unwrapSymbol(symbol)).map(toSymbol),
-    getExportSpecifierLocalTargetSymbol: node =>
-      wrapSymbol(checker.getExportSpecifierLocalTargetSymbol(unwrapNode(node))),
-    getShorthandAssignmentValueSymbol: node =>
-      wrapSymbol(
-        node && checker.getShorthandAssignmentValueSymbol(unwrapNode(node)),
-      ),
 
     // Intrinsic types.
     getAnyType: () => wrapType(checker.getAnyType()),
@@ -328,7 +323,7 @@ export function createNativeChecker({
   return new Proxy(nativeChecker, {
     get(target, property) {
       const value: unknown = Reflect.get(target, property, target);
-      if (value === undefined && typeof property === 'string') {
+      if (value == null && typeof property === 'string') {
         throw new Error(
           `TypeChecker#${property} is not available on the TypeScript native preview API.`,
         );

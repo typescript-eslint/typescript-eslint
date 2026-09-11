@@ -46,12 +46,11 @@ nativeToClassicKind.set(
  */
 const NODE_FLAG_TRANSLATIONS: readonly (readonly [number, number])[] =
   Object.entries(NativeNodeFlags).flatMap(([name, value]) => {
-    const classic = ts.NodeFlags[name as keyof typeof ts.NodeFlags];
-    return typeof value === 'number' &&
-      (value & (value - 1)) === 0 &&
-      value !== 0 &&
-      typeof classic === 'number'
-      ? [[value, classic] as const]
+    const classic: unknown = ts.NodeFlags[name as keyof typeof ts.NodeFlags];
+    const native: number = typeof value === 'number' ? value : 0;
+    const isSingleBit = native > 0 && (native & (native - 1)) === 0;
+    return isSingleBit && typeof classic === 'number'
+      ? [[native, classic] as const]
       : [];
   });
 

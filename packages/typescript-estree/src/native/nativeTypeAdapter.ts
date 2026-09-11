@@ -294,7 +294,8 @@ export function createNativeTypeAdapter({
           // result; anything reaching a rule unwrapped would fail the first
           // time it was passed back to the checker.
           case 'getSymbol':
-            return () => (wrapped as ts.Type).symbol;
+            // eslint-disable-next-line @typescript-eslint/internal/no-poorly-typed-ts-props -- this is the implementation of that property
+            return () => wrapped.symbol;
           case 'getProperties':
             return () => target.getProperties().map(toSymbol);
           case 'getProperty':
@@ -318,7 +319,7 @@ export function createNativeTypeAdapter({
           case 'getIndexInfos':
             return () => target.getIndexInfos().map(wrapIndexInfo);
           case 'getAliasSymbol':
-            return () => (wrapped as ts.Type).aliasSymbol;
+            return () => wrapped.aliasSymbol;
           case 'getAliasTypeArguments':
             return () => target.getAliasTypeArguments().map(toType);
           case 'getBaseTypes':
@@ -432,6 +433,7 @@ export function createNativeTypeAdapter({
       get(target, property) {
         switch (property) {
           case 'declarations':
+            // eslint-disable-next-line @typescript-eslint/internal/no-poorly-typed-ts-props -- reading the native symbol, to implement the classic property
             return (declarations ??= target.declarations
               .map(resolveDeclaration)
               .filter(declaration => declaration != null));
@@ -451,13 +453,14 @@ export function createNativeTypeAdapter({
           case 'getFlags':
             return () => target.flags;
           case 'getDeclarations':
-            return () => (wrapped as ts.Symbol).declarations;
+            // eslint-disable-next-line @typescript-eslint/internal/no-poorly-typed-ts-props -- this is the implementation of that method
+            return () => wrapped.declarations;
           case 'getParent':
             return () => wrapSymbol(target.getParent());
           case 'getMembers':
-            return () => (wrapped as ts.Symbol).members;
+            return () => wrapped.members;
           case 'getExports':
-            return () => (wrapped as ts.Symbol).exports;
+            return () => wrapped.exports;
           case 'getExportSymbol':
             return () => wrapSymbol(target.getExportSymbol());
           case 'getJsDocTags':
@@ -526,15 +529,15 @@ export function createNativeTypeAdapter({
             return wrapType(target.getReturnType());
 
           case 'getDeclaration':
-            return () => (wrapped as ts.Signature).declaration;
+            return () => wrapped.declaration;
           case 'getParameters':
-            return () => (wrapped as ts.Signature).parameters;
+            return () => wrapped.parameters;
           case 'getTypeParameters':
-            return () => (wrapped as ts.Signature).typeParameters;
+            return () => wrapped.typeParameters;
           case 'getReturnType':
             return () => wrapType(target.getReturnType());
           case 'getThisParameter':
-            return () => (wrapped as ts.Signature).thisParameter;
+            return () => wrapped.thisParameter;
           case 'getTarget':
             return () => wrapSignature(target.getTarget());
           case 'getTypeParameterAtPosition':
@@ -562,12 +565,12 @@ export function createNativeTypeAdapter({
 
   function wrapIndexInfo(info: NativeIndexInfo): ts.IndexInfo {
     return {
+      type: wrapType(info.valueType),
       declaration: resolveDeclaration(
         info.declaration,
       ) as ts.IndexSignatureDeclaration,
       isReadonly: info.isReadonly,
       keyType: wrapType(info.keyType),
-      type: wrapType(info.valueType),
     };
   }
 
@@ -601,7 +604,6 @@ export function createNativeTypeAdapter({
    * calling them through the proxy still sees the native receiver.
    */
   function bindNativeMethod(value: unknown, target: object): unknown {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return typeof value === 'function' ? value.bind(target) : value;
   }
 

@@ -53,7 +53,7 @@ export function createNativeProgram({
 
   function wrapDiagnostic(diagnostic: NativeDiagnostic): ts.Diagnostic {
     return {
-      category: diagnostic.category as unknown as ts.DiagnosticCategory,
+      category: diagnostic.category,
       code: diagnostic.code,
       file: undefined,
       length: diagnostic.end - diagnostic.pos,
@@ -74,25 +74,45 @@ export function createNativeProgram({
       (compilerOptions ??= translateCompilerOptions(
         program.getCompilerOptions(),
       )),
+    getConfigFileParsingDiagnostics: () =>
+      program.getConfigFileParsingDiagnostics().map(wrapDiagnostic),
     getCurrentDirectory: () => dirnameOf(project.configFileName),
+    getDeclarationDiagnostics: file =>
+      diagnosticsFor(
+        fileName => program.getDeclarationDiagnostics(fileName),
+        file,
+      ) as ts.DiagnosticWithLocation[],
+    getGlobalDiagnostics: () =>
+      program.getGlobalDiagnostics().map(wrapDiagnostic),
     getRootFileNames: () => project.parsedCommandLine.fileNames,
+
+    getSemanticDiagnostics: file =>
+      diagnosticsFor(
+        fileName => program.getSemanticDiagnostics(fileName),
+        file,
+      ),
     getSourceFile: fileName => {
       const sourceFile = program.getSourceFile(fileName);
       return sourceFile && (nodeAdapter.wrapNode(sourceFile) as ts.SourceFile);
     },
+
     getSourceFiles: () =>
       program
         .getSourceFileNames()
         .map(fileName => program.getSourceFile(fileName))
         .filter(sourceFile => sourceFile != null)
         .map(sourceFile => nodeAdapter.wrapNode(sourceFile) as ts.SourceFile),
+    getSyntacticDiagnostics: file =>
+      diagnosticsFor(
+        fileName => program.getSyntacticDiagnostics(fileName),
+        file,
+      ) as ts.DiagnosticWithLocation[],
     getTypeChecker: () =>
       (typeChecker ??= createNativeChecker({
         checker,
         nodeAdapter,
         typeAdapter,
       })),
-
     isSourceFileDefaultLibrary: sourceFile =>
       program.isSourceFileDefaultLibrary(
         nodeAdapter.unwrapNode(sourceFile) as never,
@@ -101,26 +121,6 @@ export function createNativeProgram({
       program.isSourceFileFromExternalLibrary(
         nodeAdapter.unwrapNode(sourceFile) as never,
       ),
-
-    getConfigFileParsingDiagnostics: () =>
-      program.getConfigFileParsingDiagnostics().map(wrapDiagnostic),
-    getGlobalDiagnostics: () =>
-      program.getGlobalDiagnostics().map(wrapDiagnostic),
-    getSemanticDiagnostics: file =>
-      diagnosticsFor(
-        fileName => program.getSemanticDiagnostics(fileName),
-        file,
-      ),
-    getSyntacticDiagnostics: file =>
-      diagnosticsFor(
-        fileName => program.getSyntacticDiagnostics(fileName),
-        file,
-      ) as ts.DiagnosticWithLocation[],
-    getDeclarationDiagnostics: file =>
-      diagnosticsFor(
-        fileName => program.getDeclarationDiagnostics(fileName),
-        file,
-      ) as ts.DiagnosticWithLocation[],
 
     /**
      * Classic keeps a map from a source file's canonical path to the package it
@@ -135,7 +135,7 @@ export function createNativeProgram({
   return new Proxy(nativeProgram, {
     get(target, property) {
       const value: unknown = Reflect.get(target, property, target);
-      if (value === undefined && typeof property === 'string') {
+      if (value == null && typeof property === 'string') {
         throw new Error(
           `Program#${property} is not available on the TypeScript native preview API.`,
         );
@@ -170,8 +170,7 @@ function translateCompilerOptions(
 ): ts.CompilerOptions {
   const translated = { ...options } as ts.CompilerOptions;
   if (options.jsx != null) {
-    translated.jsx = (NATIVE_TO_CLASSIC_JSX_EMIT.get(options.jsx) ??
-      options.jsx) as ts.JsxEmit;
+    translated.jsx = NATIVE_TO_CLASSIC_JSX_EMIT.get(options.jsx) ?? options.jsx;
   }
   return translated;
 }

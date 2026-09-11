@@ -1,5 +1,3 @@
-import type { TSESLint } from '@typescript-eslint/utils';
-
 import * as parser from '@typescript-eslint/parser';
 import { Linter } from 'eslint';
 
@@ -238,18 +236,14 @@ const CASES: Record<RuleName, string[]> = {
 };
 
 describe('TypeScript 7.1 native backend rule parity', () => {
-  for (const [ruleName, cases] of Object.entries(CASES) as [
-    RuleName,
-    string[],
-  ][]) {
-    describe(ruleName, () => {
+  describe.each(Object.entries(CASES) as [RuleName, string[]][])(
+    '%s',
+    (ruleName, cases) => {
       it.for(cases)('%s', code => {
         expect(lint(ruleName, code, true)).toStrictEqual(
           lint(ruleName, code, false),
         );
       });
-    });
-  }
+    },
+  );
 });
-
-export type { TSESLint };
