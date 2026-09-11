@@ -143,6 +143,143 @@ module.exports = {
 
 You can read more about the rules provided by typescript-eslint in our [rules docs](/rules) and [shared configurations docs](../users/Shared_Configurations.mdx).
 
+## Customizing Rules on Top of Shared Configs
+
+ESLint applies later config objects on top of earlier ones.
+You can extend a shared config and then add config objects to enable additional type-aware rules or change rule severities and options.
+
+### Adding type-aware rules to `recommended`
+
+The [`recommended`](../users/Shared_Configurations.mdx#recommended) config does not enable type-aware rules.
+To add individual type-aware rules (such as [`no-floating-promises`](/rules/no-floating-promises)) on top of `recommended`, add a config object with `languageOptions.parserOptions.projectService` and the additional rules.
+Scope `files` to TypeScript file extensions so type-aware linting does not run on other file types such as JSON.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  {
+    files: ['**/*.{js,ts}'],
+    extends: [js.configs.recommended, tseslint.configs.recommended],
+  },
+  {
+    files: [tseslint.globs.ts],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'error',
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.cjs"
+/* eslint-env node */
+module.exports = {
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  plugins: ['@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
+  overrides: [
+    {
+      files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: __dirname,
+      },
+      rules: {
+        '@typescript-eslint/no-floating-promises': 'error',
+      },
+    },
+  ],
+  root: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
+### Customizing rules in `recommendedTypeChecked`
+
+The [`recommendedTypeChecked`](../users/Shared_Configurations.mdx#recommended-type-checked) config enables all recommended type-aware rules and requires [`parserOptions.projectService`](../packages/Parser.mdx#projectservice).
+To change severity or options for individual type-aware rules, add a later config object with `rules` overrides.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  {
+    files: ['**/*.{js,ts}'],
+    extends: [js.configs.recommended, tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  {
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'error',
+    },
+  },
+  {
+    files: ['**/*.js'],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.cjs"
+/* eslint-env node */
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+  ],
+  plugins: ['@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    projectService: true,
+    tsconfigRootDir: __dirname,
+  },
+  rules: {
+    '@typescript-eslint/no-floating-promises': 'error',
+  },
+  overrides: [
+    {
+      files: ['**/*.js'],
+      extends: ['plugin:@typescript-eslint/disable-type-checked'],
+    },
+  ],
+  root: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
+See [How do I disable type-checked linting for a file?](../troubleshooting/typed-linting/index.mdx#how-do-i-disable-type-checked-linting-for-a-file) for more ways to disable type-aware linting on specific file patterns.
+
 ## Performance
 
 Typed rules come with a catch.

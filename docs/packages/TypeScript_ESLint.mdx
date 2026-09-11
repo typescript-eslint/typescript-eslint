@@ -51,6 +51,36 @@ export default defineConfig({
 
 This config file exports a flat config that enables both the [core ESLint recommended config](https://www.npmjs.com/package/@eslint/js) and [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
+#### Customizing rules on top of shared configs
+
+To add type-aware rules or change rule settings on top of a shared config, add later config objects with `languageOptions.parserOptions` and `rules`.
+See [Customizing Rules on Top of Shared Configs](../getting-started/Typed_Linting.mdx#customizing-rules-on-top-of-shared-configs) for examples of layering `recommended` or `recommendedTypeChecked` with custom type-aware rules.
+
+```js title="eslint.config.mjs"
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  {
+    files: ['**/*.{js,ts}'],
+    extends: [js.configs.recommended, tseslint.configs.recommended],
+  },
+  {
+    files: [tseslint.globs.ts],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'error',
+    },
+  },
+);
+```
+
 ### `extensions`
 
 The `extensions` export provides arrays of standard file extensions (without leading dots) for JavaScript and TypeScript files. These arrays are useful when you need to programmatically construct globs or perform file extension checks.
