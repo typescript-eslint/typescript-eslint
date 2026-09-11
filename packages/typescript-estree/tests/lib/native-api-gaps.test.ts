@@ -1,5 +1,6 @@
+import type * as ts from 'typescript';
+
 import path from 'node:path';
-import * as ts from 'typescript';
 
 import '../../src/native/index.js';
 import { clearCaches, parseAndGenerateServices } from '../../src/index.js';

@@ -263,15 +263,22 @@ export function createParseSettings(
   return parseSettings;
 }
 
-export function validateNativeProjectServiceOptions(
+function validateNativeProjectServiceOptions(
   tsestreeOptions: Partial<TSESTreeOptions>,
   nodeVersion: string,
 ): ProjectServiceOptions | undefined {
+  // `TYPESCRIPT_ESLINT_NATIVE_BACKEND` lets the existing test suites run
+  // against the native backend, the same way
+  // `TYPESCRIPT_ESLINT_PROJECT_SERVICE` does for the project service.
   const nativeProjectServiceOptions =
     typeof tsestreeOptions.projectService === 'object' &&
     tsestreeOptions.projectService.backend === 'native'
       ? tsestreeOptions.projectService
-      : undefined;
+      : process.env.TYPESCRIPT_ESLINT_NATIVE_BACKEND === 'true' &&
+          tsestreeOptions.projectService !== false &&
+          (tsestreeOptions.projectService || tsestreeOptions.project)
+        ? { backend: 'native' as const }
+        : undefined;
 
   if (!nativeProjectServiceOptions) {
     return undefined;

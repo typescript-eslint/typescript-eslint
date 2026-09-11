@@ -9,10 +9,6 @@ import {
   createNativeProjectService,
   getNativeProjectService,
 } from '../../src/native';
-import {
-  readNativeMetrics,
-  resetNativeMetrics,
-} from '../../src/use-at-your-own-risk/nativeMetrics';
 
 const fixtures = path.join(__dirname, '../fixtures/nativeProject');
 const filePath = path.join(fixtures, 'file.ts');
@@ -20,83 +16,28 @@ const filePath = path.join(fixtures, 'file.ts');
 afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllEnvs();
-  resetNativeMetrics();
 });
 
 describe('native project service lifecycle', () => {
-  it('allows timing for only one service in each metrics epoch', () => {
-    vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_TIMING', 'true');
-    const service = createNativeProjectService();
-
-    expect(() => createNativeProjectService()).toThrow(
-      'Native timing metrics require exactly one service per metrics epoch',
-    );
-
-    service.close();
-    expect(() => createNativeProjectService()).toThrow(
-      'Native timing metrics require exactly one service per metrics epoch',
-    );
-  });
-
-  it('rejects timing after an untimed service in the same metrics epoch', () => {
+  it('rejects use after the service is closed', () => {
     const service = createNativeProjectService();
     service.close();
-    vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_TIMING', 'true');
 
-    expect(() => createNativeProjectService()).toThrow(
-      'Native timing metrics require exactly one service per metrics epoch',
-    );
+    expect(() => service.openFile(filePath, '')).toThrow('closed');
   });
 
-  it('enables timing only through the instrumentation environment variable', () => {
-    const previousTiming = process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING;
-    delete process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING;
-    resetNativeMetrics();
-    const service = createNativeProjectService();
-
-    expect(readNativeMetrics().timing).toBeUndefined();
-
-    service.close();
-    resetNativeMetrics();
-    process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING = 'true';
-    const timedService = createNativeProjectService();
-    expect(readNativeMetrics().timing).toMatchObject({ enabled: true });
-    timedService.close();
-    resetNativeMetrics();
-    if (previousTiming == null) {
-      delete process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING;
-    } else {
-      process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING = previousTiming;
-    }
-  });
-
-  it('records lifecycle metrics without extra native requests', () => {
-    vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_TIMING', 'true');
-    resetNativeMetrics();
+  it('reuses the snapshot when the same file text is reopened', () => {
     const updateSnapshot = vi.spyOn(API.prototype, 'updateSnapshot');
     const service = createNativeProjectService();
-    service.openFile(filePath, fs.readFileSync(filePath, 'utf8'));
-    service.openFile(filePath, 'export const value = "updated";');
+    try {
+      const code = fs.readFileSync(filePath, 'utf8');
+      service.openFile(filePath, code);
+      service.openFile(filePath, code);
 
-    expect(readNativeMetrics()).toMatchObject({
-      fileOverlays: 2,
-      processStarts: 1,
-      projectDiscoveries: 1,
-      projectHits: 1,
-      snapshotsCreated: 3,
-      snapshotsDisposed: 2,
-      timing: { enabled: true },
-    });
-    expect(updateSnapshot).toHaveBeenCalledTimes(3);
-
-    resetNativeMetrics();
-    vi.unstubAllEnvs();
-    updateSnapshot.mockRestore();
-    expect(readNativeMetrics()).toMatchObject({
-      processStarts: 0,
-      snapshotsCreated: 0,
-    });
-    expect(() => service.openFile(filePath, '')).toThrow('closed');
+      expect(updateSnapshot).toHaveBeenCalledTimes(2);
+    } finally {
+      service.close();
+    }
   });
 
   it('replaces and disposes snapshots for edits', () => {

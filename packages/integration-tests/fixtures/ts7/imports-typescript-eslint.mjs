@@ -1,5 +1,3 @@
-try {
-  await import('typescript-eslint');
-} catch (error) {
-  process.stderr.write(String(error));
-}
+import tseslint from 'typescript-eslint';
+
+export default [...tseslint.configs.recommended];

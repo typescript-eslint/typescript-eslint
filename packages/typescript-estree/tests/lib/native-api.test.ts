@@ -9,7 +9,6 @@ describe('TypeScript native API', () => {
     expect(API).toBeTypeOf('function');
     expect(API.prototype.updateSnapshot).toBeTypeOf('function');
     expect(API.prototype.close).toBeTypeOf('function');
-    expect(API.prototype.getTimingInfo).toBeTypeOf('function');
     expect(SyntaxKind.SourceFile).toBeTypeOf('number');
   });
 });

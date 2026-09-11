@@ -12,11 +12,6 @@ import type {
   NativeProjectService,
 } from './types';
 
-import {
-  incrementNativeMetric,
-  registerNativeMetricService,
-} from '../use-at-your-own-risk/nativeMetrics';
-
 const CLOSED_ERROR = 'The TypeScript native project service is closed.';
 const SUPPORTED_NATIVE_VERSION = '7.1.0-dev.20260822.1';
 
@@ -41,7 +36,6 @@ function verifyNativeCompatibility(): void {
     ['API', nativeAPI],
     ['API.prototype.updateSnapshot', apiPrototype?.updateSnapshot],
     ['API.prototype.close', apiPrototype?.close],
-    ['API.prototype.getTimingInfo', apiPrototype?.getTimingInfo],
   ] as const;
   const missingFunction = requiredFunctions.find(
     ([, value]) => typeof value !== 'function',
@@ -82,7 +76,6 @@ function verifySupportedConfig(project: Project): void {
 
 export function createNativeProjectService(): NativeProjectService {
   verifyNativeCompatibility();
-  const collectTiming = process.env.TYPESCRIPT_ESLINT_NATIVE_TIMING === 'true';
   const overlays = new Map<string, string | null>();
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
@@ -93,7 +86,6 @@ export function createNativeProjectService(): NativeProjectService {
 
   try {
     api = new API({
-      collectTiming,
       cwd: process.cwd(),
       fs: {
         fileExists: fileName =>
@@ -109,7 +101,6 @@ export function createNativeProjectService(): NativeProjectService {
       { cause: error },
     );
   }
-  incrementNativeMetric('processStarts');
 
   function assertOpen(): void {
     if (closed) {
@@ -123,11 +114,9 @@ export function createNativeProjectService(): NativeProjectService {
     try {
       const previousSnapshot = snapshot;
       snapshot = api.updateSnapshot(params);
-      incrementNativeMetric('snapshotsCreated');
       fileContexts.clear();
       if (previousSnapshot) {
         previousSnapshot.dispose();
-        incrementNativeMetric('snapshotsDisposed');
       }
     } catch (error) {
       if (!snapshot) {
@@ -164,13 +153,11 @@ export function createNativeProjectService(): NativeProjectService {
       attempt(() => {
         if (snapshot) {
           snapshot.dispose();
-          incrementNativeMetric('snapshotsDisposed');
         }
       });
       attempt(() => {
         api.close();
       });
-      unregisterMetrics();
       attempt(() => {
         fileContexts.clear();
         fileProjects.clear();
@@ -194,14 +181,11 @@ export function createNativeProjectService(): NativeProjectService {
       const normalizedPath = normalizePath(filePath);
       const cachedContext = fileContexts.get(normalizedPath);
       if (overlays.get(normalizedPath) === code && cachedContext) {
-        incrementNativeMetric('projectHits');
         return cachedContext;
       }
       overlays.set(normalizedPath, code);
-      incrementNativeMetric('fileOverlays');
       const knownConfigFileName = fileProjects.get(normalizedPath);
       if (knownConfigFileName) {
-        incrementNativeMetric('projectHits');
         const nextSnapshot = replaceSnapshot({
           fileChanges: { changed: [normalizedPath] },
         });
@@ -223,7 +207,6 @@ export function createNativeProjectService(): NativeProjectService {
         return context;
       }
 
-      incrementNativeMetric('projectDiscoveries');
       const discoverySnapshot = replaceSnapshot({
         openFiles: [normalizedPath],
       });
@@ -289,12 +272,6 @@ export function createNativeProjectService(): NativeProjectService {
         created: changes.created?.map(normalizePath),
         deleted: changes.deleted?.map(normalizePath),
       };
-      incrementNativeMetric(
-        'fileEvents',
-        (fileChanges.changed?.length ?? 0) +
-          (fileChanges.created?.length ?? 0) +
-          (fileChanges.deleted?.length ?? 0),
-      );
       for (const filePath of fileChanges.deleted ?? []) {
         overlays.set(filePath, null);
       }
@@ -306,23 +283,5 @@ export function createNativeProjectService(): NativeProjectService {
       return replaceSnapshot({ fileChanges });
     },
   };
-  let unregisterMetrics: () => void;
-  try {
-    unregisterMetrics = registerNativeMetricService(
-      () => service.close(),
-      collectTiming ? () => api.getTimingInfo() : undefined,
-    );
-  } catch (error) {
-    try {
-      api.close();
-    } catch (closeError) {
-      throw new AggregateError(
-        [error, closeError],
-        'Failed to register native project service metrics.',
-        { cause: closeError },
-      );
-    }
-    throw error;
-  }
   return service;
 }

@@ -27,10 +27,6 @@ it('rejects unknown native previews before invoking the API constructor', async 
 
 it('reports a missing required native API member as incompatible', async () => {
   class API {
-    getTimingInfo(): void {
-      return undefined;
-    }
-
     updateSnapshot(): void {
       return undefined;
     }
@@ -58,10 +54,6 @@ it('wraps native API startup failures with their cause', async () => {
     }
 
     close(): void {
-      return undefined;
-    }
-
-    getTimingInfo(): void {
       return undefined;
     }
 

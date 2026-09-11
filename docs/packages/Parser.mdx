@@ -350,23 +350,23 @@ This option brings two main benefits over the older `project`:
 
 See [FAQs > Typed Linting > Project Service Issues](../troubleshooting/typed-linting/index.mdx#project-service-issues) for help on working with the project service.
 
-#### Experimental TypeScript 7.1 native backend
+#### Experimental TypeScript 7 native backend
 
-The parser includes an experimental native backend for TypeScript 7.1. It requires Node.js 22 or newer and a side-by-side installation of classic TypeScript 6 and `@typescript/native`. The `@typescript/native` package must resolve to TypeScript `>=7.1.0-0`. Install the exact preview tested in this workspace:
+The parser includes an experimental native backend for TypeScript >=7.1.
+It requires Node.js 22 or newer and a side-by-side installation of classic TypeScript 6 and `@typescript/native`.
 
 ```shell
 pnpm add --save-dev typescript@^6 @typescript/native@npm:typescript@7.1.0-dev.20260822.1
 ```
 
-Keep both packages installed. The default parser backend and syntax-only parsing still import the classic `typescript` package. Installing TypeScript 7 under the normal `typescript` package name is rejected and is not supported by the parser's normal peer dependency range. Other TypeScript 7.1 previews have no compatibility guarantees.
-
-Select the native backend with this exact opt-in:
+Select the native backend by specifying it as `projectService.backend`:
 
 ```js
 import parser from '@typescript-eslint/parser';
 
 export default [
   {
+    // ...
     languageOptions: {
       parser,
       parserOptions: {
@@ -379,17 +379,11 @@ export default [
 ];
 ```
 
-Rules do not opt in to the native backend, and there is no native-only rule API. `parserServices.program` is a `ts.Program` on both backends, so a rule that calls `getParserServices(context)` and reads types through `ts.Type`, `ts.Symbol`, and `ts.Signature` works the same either way.
+The native code backend operates as a facade over TypeScript 7's program, types, symbols, and other entities.
+See [#12803 feat: prototype TypeScript 7.1 native parser support](https://github.com/typescript-eslint/typescript-eslint/pull/12803) for more information.
 
-A few TypeScript APIs our rules rely on have no equivalent in the preview API. Where one can be derived from the primitives the preview does expose, it is. Where it cannot, the call throws an error naming the missing API rather than silently returning a wrong answer:
-
-- `Type#thisType` throws. The preview's `getTypeParameters` deliberately excludes an interface's synthetic `this` type, and nothing else surfaces it.
-- `TypeChecker#getAwaitedType` returns `undefined` for a union whose constituents await to different types. Producing the right answer would mean constructing a union type, which the preview has no API for.
-- Union constituents come back in a different order than they were declared, so a rule that prints a union type may word its report differently.
-
-The native backend also rejects `parserOptions.project` and `parserOptions.programs`; use `projectService` instead.
-
-This backend is a prototype and is not a stable compatibility guarantee. Its strict performance acceptance benchmark has repeatedly failed because the native warm median is typically slower than the classic warm median, although high variance means individual runs can pass. Run `pnpm --dir packages/integration-tests benchmark:native` to reproduce the benchmark.
+The native backend does not support the legacy `parserOptions.project` and `parserOptions.programs` configuration options.
+Use `projectService` instead.
 
 #### `ProjectServiceOptions`
 
@@ -430,7 +424,7 @@ There are several restrictions on this option to prevent it from being overused:
 
 > Default: `undefined` _(the classic TypeScript backend)_
 
-Set to `'native'` to opt in to the experimental TypeScript 7.1 native backend described [above](#experimental-typescript-71-native-backend).
+Set to `'native'` to opt in to the experimental TypeScript 7 native backend described [above](#experimental-typescript-7-native-backend).
 
 ##### `defaultProject`
 

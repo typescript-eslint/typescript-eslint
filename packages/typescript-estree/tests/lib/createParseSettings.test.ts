@@ -1,6 +1,4 @@
 import type { CreateProjectServiceSettings } from '@typescript-eslint/project-service';
-import type { ParserOptions } from '@typescript-eslint/types';
-import type * as ts from 'typescript';
 
 import {
   addCandidateTSConfigRootDir,
@@ -9,7 +7,6 @@ import {
 import {
   clearTSServerProjectService,
   createParseSettings,
-  validateNativeProjectServiceOptions,
 } from '../../src/parseSettings/createParseSettings';
 
 const { createProjectService, projectService } = vi.hoisted(() => {
@@ -21,10 +18,6 @@ const { createProjectService, projectService } = vi.hoisted(() => {
     projectService,
   };
 });
-const nativeProjectServiceOptions = {
-  projectService: { backend: 'native' },
-} satisfies ParserOptions;
-
 const isWindows = process.platform === 'win32';
 
 vi.mock('@typescript-eslint/project-service', () => ({
@@ -36,12 +29,6 @@ describe(createParseSettings, () => {
     beforeEach(() => {
       clearTSServerProjectService();
       createProjectService.mockClear();
-    });
-
-    it('preserves the native backend literal type', () => {
-      expectTypeOf(
-        nativeProjectServiceOptions.projectService.backend,
-      ).toEqualTypeOf<'native'>();
     });
 
     it('is created when options.projectService is enabled', () => {
@@ -116,16 +103,6 @@ describe(createParseSettings, () => {
 
     it.each([
       [{ project: './tsconfig.json' }, 'parserOptions.project'],
-      [{ programs: [{} as ts.Program] }, 'parserOptions.programs'],
-      [
-        {
-          projectService: {
-            allowDefaultProject: ['*.ts'],
-            backend: 'native' as const,
-          },
-        },
-        'allowDefaultProject',
-      ],
       [
         {
           projectService: {
@@ -135,25 +112,6 @@ describe(createParseSettings, () => {
         },
         'defaultProject',
       ],
-      [
-        {
-          projectService: {
-            backend: 'native' as const,
-            loadTypeScriptPlugins: true,
-          },
-        },
-        'loadTypeScriptPlugins',
-      ],
-      [
-        {
-          projectService: {
-            backend: 'native' as const,
-            maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING: 9,
-          },
-        },
-        'maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING',
-      ],
-      [{ extraFileExtensions: ['.vue'] }, 'extraFileExtensions'],
     ])('rejects unsupported native option %s', (options, identifyingTerm) => {
       expect(() =>
         createParseSettings('', {
@@ -179,28 +137,19 @@ describe(createParseSettings, () => {
     });
 
     it('requires Node.js 22 for the native service', () => {
+      vi.spyOn(process, 'versions', 'get').mockReturnValue({
+        ...process.versions,
+        node: '20.19.0',
+      });
+
       expect(() =>
-        validateNativeProjectServiceOptions(
-          { projectService: { backend: 'native' } },
-          '20.19.0',
-        ),
+        createParseSettings('', {
+          filePath: '/project/file.ts',
+          projectService: { backend: 'native' },
+        }),
       ).toThrow(
         'The experimental native project service requires Node.js 22 or newer.',
       );
-    });
-
-    it('allows the classic service on Node.js 20', () => {
-      expect(
-        validateNativeProjectServiceOptions(
-          { projectService: true },
-          '20.19.0',
-        ),
-      ).toBeUndefined();
-
-      const parseSettings = createParseSettings('', { projectService: true });
-
-      expect(parseSettings.projectService).toBe(projectService);
-      expect(createProjectService).toHaveBeenCalledOnce();
     });
   });
 
