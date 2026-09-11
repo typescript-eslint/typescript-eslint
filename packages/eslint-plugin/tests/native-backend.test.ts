@@ -12,6 +12,7 @@ import noMisusedPromises from '../src/rules/no-misused-promises';
 import noMisusedSpread from '../src/rules/no-misused-spread';
 import noMixedEnums from '../src/rules/no-mixed-enums';
 import noUnnecessaryCondition from '../src/rules/no-unnecessary-condition';
+import noUnnecessaryQualifier from '../src/rules/no-unnecessary-qualifier';
 import noUnnecessaryTypeArguments from '../src/rules/no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from '../src/rules/no-unnecessary-type-assertion';
 import noUnsafeArgument from '../src/rules/no-unsafe-argument';
@@ -20,6 +21,7 @@ import noUnsafeReturn from '../src/rules/no-unsafe-return';
 import noUnsafeUnaryMinus from '../src/rules/no-unsafe-unary-minus';
 import onlyThrowError from '../src/rules/only-throw-error';
 import preferNullishCoalescing from '../src/rules/prefer-nullish-coalescing';
+import preferReadonlyParameterTypes from '../src/rules/prefer-readonly-parameter-types';
 import preferReduceTypeParameter from '../src/rules/prefer-reduce-type-parameter';
 import preferStringStartsEndsWith from '../src/rules/prefer-string-starts-ends-with';
 import requireArraySortCompare from '../src/rules/require-array-sort-compare';
@@ -49,6 +51,7 @@ const RULES = {
   'no-misused-spread': noMisusedSpread,
   'no-mixed-enums': noMixedEnums,
   'no-unnecessary-condition': noUnnecessaryCondition,
+  'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unsafe-argument': noUnsafeArgument,
@@ -57,6 +60,7 @@ const RULES = {
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
   'only-throw-error': onlyThrowError,
   'prefer-nullish-coalescing': preferNullishCoalescing,
+  'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'require-array-sort-compare': requireArraySortCompare,
@@ -195,6 +199,11 @@ const CASES: Record<RuleName, (string | Case)[]> = {
     'declare const a: { b?: number }; a.b?.toFixed();',
     'declare const a: number[]; if (a) {}',
   ],
+  'no-unnecessary-qualifier': [
+    'namespace N {\n  export type T = number;\n  declare const x: N.T;\n}',
+    'namespace N {\n  export type T = number;\n}\ndeclare const x: N.T;',
+    'enum E {\n  A,\n}\nnamespace E {\n  declare const a: E.A;\n}',
+  ],
   'no-unnecessary-type-arguments': [
     'declare function f<T = number>(): T; f<number>();',
     'declare function f<T = number>(): T; f<string>();',
@@ -210,6 +219,12 @@ const CASES: Record<RuleName, (string | Case)[]> = {
     'declare function f(x: number): void; declare const a: any; f(a);',
     'declare function f(x: number): void; f(1);',
     'declare function f(...xs: number[]): void; declare const a: any[]; f(...a);',
+    'declare function f(...xs: number[]): void; declare const a: string[]; f(...a);',
+    'declare function f(...xs: [number, string]): void; declare const a: any; f(1, a);',
+    // An array rest parameter reaches `getIndexTypeOfType`, which the native
+    // API has no equivalent for. The reported parameter type is the element
+    // type rather than the array type.
+    'declare function f(...xs: number[]): void; declare const a: any; f(a);',
   ],
   'no-unsafe-assignment': [
     'declare const a: any; const b: number = a;',
@@ -244,6 +259,14 @@ const CASES: Record<RuleName, (string | Case)[]> = {
     'declare const a: string | undefined; a || "b";',
     'declare const a: string | undefined; a ?? "b";',
     'declare const a: boolean; a || false;',
+  ],
+  'prefer-readonly-parameter-types': [
+    'function f(x: { [k: string]: number }) {}',
+    'function f(x: { readonly [k: string]: number }) {}',
+    'function f(x: { readonly [k: number]: string }) {}',
+    'function f(x: { a: number }) {}',
+    'function f(x: { readonly a: number }) {}',
+    'function f(x: readonly number[]) {}',
   ],
   'prefer-reduce-type-parameter': [
     'declare const a: number[]; a.reduce((acc, x) => acc.concat(x), [] as number[]);',
