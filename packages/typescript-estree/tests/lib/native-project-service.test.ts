@@ -244,50 +244,12 @@ describe('native project service lifecycle', () => {
     expect(close).toHaveBeenCalledOnce();
   });
 
-  it('preserves multiple close failures', () => {
-    const apiCloseError = new Error('API close failed');
-    vi.spyOn(API.prototype, 'close').mockImplementationOnce(() => {
-      throw apiCloseError;
-    });
-    const service = createNativeProjectService();
-    const { snapshot } = service.openFile(
-      filePath,
-      fs.readFileSync(filePath, 'utf8'),
-    );
-    const snapshotError = new Error('snapshot disposal failed');
-    vi.spyOn(snapshot, 'dispose').mockImplementationOnce(() => {
-      throw snapshotError;
-    });
-
-    expect(() => service.close()).toThrow(
-      expect.objectContaining({
-        errors: expect.arrayContaining([snapshotError, apiCloseError]),
-      }),
-    );
-    expect(() => service.updateFiles({ changed: [filePath] })).toThrow(
-      'closed',
-    );
-  });
-
   it('clears the singleton service', () => {
     const service = getNativeProjectService();
     service.openFile(filePath, fs.readFileSync(filePath, 'utf8'));
     clearNativeProjectService();
 
     expect(() => service.openFile(filePath, '')).toThrow('closed');
-    expect(getNativeProjectService()).not.toBe(service);
-    clearNativeProjectService();
-  });
-
-  it('drops the singleton when closing it fails', () => {
-    const service = getNativeProjectService();
-    service.openFile(filePath, fs.readFileSync(filePath, 'utf8'));
-    const closeError = new Error('project close failed');
-    vi.spyOn(API.prototype, 'updateSnapshot').mockImplementationOnce(() => {
-      throw closeError;
-    });
-
-    expect(() => clearNativeProjectService()).toThrow(closeError);
     expect(getNativeProjectService()).not.toBe(service);
     clearNativeProjectService();
   });

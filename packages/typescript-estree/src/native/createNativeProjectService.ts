@@ -136,12 +136,16 @@ export function createNativeProjectService(): NativeProjectService {
         return;
       }
       closed = true;
-      const errors: unknown[] = [];
+
+      // Every step runs even if an earlier one fails, so that a failure part
+      // way through still shuts the compiler process down rather than leaking
+      // it. The first failure is the one reported.
+      let failure: Error | undefined;
       const attempt = (cleanup: () => void): void => {
         try {
           cleanup();
         } catch (error) {
-          errors.push(error);
+          failure ??= error instanceof Error ? error : new Error(String(error));
         }
       };
 
@@ -150,29 +154,17 @@ export function createNativeProjectService(): NativeProjectService {
           replaceSnapshot({ closeProjects: [...openProjects] });
         });
       }
-      attempt(() => {
-        if (snapshot) {
-          snapshot.dispose();
-        }
-      });
+      attempt(() => snapshot?.dispose());
       attempt(() => {
         api.close();
       });
-      attempt(() => {
-        fileContexts.clear();
-        fileProjects.clear();
-        openProjects.clear();
-        overlays.clear();
-      });
+      fileContexts.clear();
+      fileProjects.clear();
+      openProjects.clear();
+      overlays.clear();
 
-      if (errors.length === 1) {
-        throw errors[0];
-      }
-      if (errors.length > 1) {
-        throw new AggregateError(
-          errors,
-          'Failed to close native project service.',
-        );
+      if (failure) {
+        throw failure;
       }
     },
 
@@ -234,14 +226,13 @@ export function createNativeProjectService(): NativeProjectService {
             : [configFileName],
         });
       } catch (error) {
+        // Close the file even though discovery failed, so a later parse does
+        // not inherit a half-open state. The discovery failure is the one
+        // worth reporting, so a failure to clean up does not mask it.
         try {
           replaceSnapshot({ closeFiles: [normalizedPath] });
-        } catch (cleanupError) {
-          throw new AggregateError(
-            [error, cleanupError],
-            error instanceof Error ? error.message : String(error),
-            { cause: cleanupError },
-          );
+        } catch {
+          // Intentionally ignored.
         }
         throw error;
       }
