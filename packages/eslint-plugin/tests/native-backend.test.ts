@@ -9,6 +9,7 @@ import noDeprecated from '../src/rules/no-deprecated';
 import noFloatingPromises from '../src/rules/no-floating-promises';
 import noForInArray from '../src/rules/no-for-in-array';
 import noMisusedPromises from '../src/rules/no-misused-promises';
+import noMisusedSpread from '../src/rules/no-misused-spread';
 import noMixedEnums from '../src/rules/no-mixed-enums';
 import noUnnecessaryCondition from '../src/rules/no-unnecessary-condition';
 import noUnnecessaryTypeArguments from '../src/rules/no-unnecessary-type-arguments';
@@ -17,6 +18,7 @@ import noUnsafeArgument from '../src/rules/no-unsafe-argument';
 import noUnsafeAssignment from '../src/rules/no-unsafe-assignment';
 import noUnsafeReturn from '../src/rules/no-unsafe-return';
 import noUnsafeUnaryMinus from '../src/rules/no-unsafe-unary-minus';
+import onlyThrowError from '../src/rules/only-throw-error';
 import preferNullishCoalescing from '../src/rules/prefer-nullish-coalescing';
 import preferReduceTypeParameter from '../src/rules/prefer-reduce-type-parameter';
 import preferStringStartsEndsWith from '../src/rules/prefer-string-starts-ends-with';
@@ -44,6 +46,7 @@ const RULES = {
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
   'no-misused-promises': noMisusedPromises,
+  'no-misused-spread': noMisusedSpread,
   'no-mixed-enums': noMixedEnums,
   'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
@@ -52,6 +55,7 @@ const RULES = {
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-return': noUnsafeReturn,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
+  'only-throw-error': onlyThrowError,
   'prefer-nullish-coalescing': preferNullishCoalescing,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
@@ -67,11 +71,16 @@ type RuleName = keyof typeof RULES;
 
 const filename = `${getFixturesRootDir()}/file.ts`;
 
-function lint(ruleName: RuleName, code: string, native: boolean): string[] {
+interface Case {
+  code: string;
+  options?: unknown[];
+}
+
+function lint(ruleName: RuleName, testCase: Case, native: boolean): string[] {
   const linter = new Linter();
   return linter
     .verify(
-      code,
+      testCase.code,
       {
         files: ['**/*.ts'],
         languageOptions: {
@@ -90,14 +99,18 @@ function lint(ruleName: RuleName, code: string, native: boolean): string[] {
             },
           },
         },
-        rules: { [`parity/${ruleName}`]: 'error' },
+        rules: {
+          [`parity/${ruleName}`]: testCase.options
+            ? ['error', ...testCase.options]
+            : 'error',
+        },
       } as unknown as Linter.Config,
       filename,
     )
     .map(message => `${message.ruleId ?? '(fatal)'}: ${message.message}`);
 }
 
-const CASES: Record<RuleName, string[]> = {
+const CASES: Record<RuleName, (string | Case)[]> = {
   'await-thenable': [
     'async function f() { await 1; }',
     'async function f() { await Promise.resolve(1); }',
@@ -123,6 +136,19 @@ const CASES: Record<RuleName, string[]> = {
   ],
   'no-deprecated': [
     '/** @deprecated Use bar. */ declare function foo(): void;\nfoo();',
+    // Only the string overload is deprecated, which the shared symbol's tags
+    // cannot distinguish; the signature's own declaration can.
+    'declare function o(a: string): void;\n/** @deprecated */ declare function o(a: number): void;\no("a");\no(1);',
+    "import { exists } from 'fs';\nexists('/foo', () => {});",
+    // `@types/node` wraps `fs` in a `declare module` block, which matches
+    // before any package name lookup happens. See `only-throw-error` for the
+    // case that reaches `Program#sourceFileToPackageName`.
+    {
+      code: "import { exists } from 'fs';\nexists('/foo', () => {});",
+      options: [
+        { allow: [{ from: 'package', name: 'exists', package: 'fs' }] },
+      ],
+    },
     '/** @deprecated */ declare const a: number;\na;',
     'declare function foo(): void;\nfoo();',
     '/** @deprecated */ interface I { a: number }\ndeclare const i: I;',
@@ -141,8 +167,21 @@ const CASES: Record<RuleName, string[]> = {
   ],
   'no-misused-promises': [
     'declare const p: Promise<boolean>; if (p) {}',
+    // Reaches `getContextualTypeForArgumentAtIndex`, which is approximated.
+    // Each overload order is covered because the resolved signature and the
+    // contextual type pick different ones.
+    "interface ItLike {\n  (name: string, cb: () => Promise<void>): void;\n  (name: string, cb: () => void): void;\n}\ndeclare const it: ItLike;\nit('', async () => {});",
+    "interface ItLike {\n  (name: string, cb: () => void): void;\n  (name: string, cb: () => Promise<void>): void;\n}\ndeclare const it: ItLike;\nit('', async () => {});",
+    "interface ItLike {\n  (name: string, cb: () => void): void;\n}\ndeclare const it: ItLike;\nit('', async () => {});",
     'declare function f(cb: () => void): void; f(async () => {});',
     'declare const b: boolean; if (b) {}',
+  ],
+  'no-misused-spread': [
+    'class C {}\nconst a = { ...C };',
+    'declare const c: { a: number };\nconst a = { ...c };',
+    'declare function f<T extends object>(t: T): void;\ndeclare const g: <T extends object>(t: T) => void;\nconst a = { ...g<{ x: 1 }> };',
+    'declare const s: string;\nconst a = [...s];',
+    'declare function rest<T extends object>(t: T): void;\nfunction h<T extends object>(t: T) { const { ...r } = t; return { ...r }; }',
   ],
   'no-mixed-enums': [
     'enum E { A = 1, B = "b" }',
@@ -188,6 +227,18 @@ const CASES: Record<RuleName, string[]> = {
     'declare const a: number; -a;',
     'declare const a: bigint; -a;',
     'declare const a: number | string; -a;',
+  ],
+  'only-throw-error': [
+    "import { SemVer } from 'semver';\ndeclare const v: SemVer;\nthrow v;",
+    // `@types/semver` is a plain module rather than a `declare module` block,
+    // so matching this specifier has to go through
+    // `Program#sourceFileToPackageName`, which has no native API.
+    {
+      code: "import { SemVer } from 'semver';\ndeclare const v: SemVer;\nthrow v;",
+      options: [
+        { allow: [{ from: 'package', name: 'SemVer', package: 'semver' }] },
+      ],
+    },
   ],
   'prefer-nullish-coalescing': [
     'declare const a: string | undefined; a || "b";',
@@ -236,12 +287,14 @@ const CASES: Record<RuleName, string[]> = {
 };
 
 describe('TypeScript 7.1 native backend rule parity', () => {
-  describe.each(Object.entries(CASES) as [RuleName, string[]][])(
+  describe.each(Object.entries(CASES) as [RuleName, (string | Case)[]][])(
     '%s',
     (ruleName, cases) => {
-      it.for(cases)('%s', code => {
-        expect(lint(ruleName, code, true)).toStrictEqual(
-          lint(ruleName, code, false),
+      it.for(cases)('%j', rawCase => {
+        const testCase =
+          typeof rawCase === 'string' ? { code: rawCase } : rawCase;
+        expect(lint(ruleName, testCase, true)).toStrictEqual(
+          lint(ruleName, testCase, false),
         );
       });
     },

@@ -13,13 +13,13 @@ import type {
   Type as NativeType,
   TypePredicate as NativeTypePredicate,
 } from '@typescript/native/unstable/sync';
-import type * as ts from 'typescript';
 
 import {
   getJSDocTags,
   getTextOfJSDocComment,
 } from '@typescript/native/unstable/ast';
 import { ObjectFlags, TypeFlags } from '@typescript/native/unstable/sync';
+import * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 
@@ -98,6 +98,37 @@ interface NativeTypeInternals {
   substConstraint: number;
   symbol: number;
   target: number;
+}
+
+/**
+ * `ObjectFlags` bits above `ObjectFlags.Mapped` are numbered differently by the
+ * two compilers, so — as with `NodeFlags` on nodes — they are paired up by
+ * member name rather than copied through. Copying them through would silently
+ * read a different flag: classic's `InstantiationExpressionType` is native's
+ * `IsGenericObjectType`, which is set on a great many generic object types.
+ *
+ * Only single-bit members are translated; the composite masks are built from
+ * those bits anyway.
+ */
+const OBJECT_FLAG_TRANSLATIONS: readonly (readonly [number, number])[] =
+  Object.entries(ObjectFlags).flatMap(([name, value]) => {
+    const classic: unknown =
+      ts.ObjectFlags[name as keyof typeof ts.ObjectFlags];
+    const native: number = typeof value === 'number' ? value : 0;
+    const isSingleBit = native > 0 && (native & (native - 1)) === 0;
+    return isSingleBit && typeof classic === 'number'
+      ? [[native, classic] as const]
+      : [];
+  });
+
+function translateObjectFlags(nativeFlags: number): ts.ObjectFlags {
+  let flags = 0;
+  for (const [nativeFlag, classicFlag] of OBJECT_FLAG_TRANSLATIONS) {
+    if (nativeFlags & nativeFlag) {
+      flags |= classicFlag;
+    }
+  }
+  return flags;
 }
 
 const UNWRAP_ERROR =
@@ -190,6 +221,8 @@ export function createNativeTypeAdapter({
               : undefined;
           case 'aliasTypeArguments':
             return wrapTypeList(target.getAliasTypeArguments());
+          case 'objectFlags':
+            return translateObjectFlags(native.objectFlags);
           case 'checker':
             // `typescript`'s back-reference from a type to its checker is an
             // implementation detail with no native equivalent.
