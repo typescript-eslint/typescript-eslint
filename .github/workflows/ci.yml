@@ -8,11 +8,11 @@ on:
   # NOTE: Never use pull_request_target here because that would populate secrets for forks
   pull_request:
     branches:
-      - "**"
+      - '**'
   merge_group:
 
 concurrency:
-  group: "${{ github.workflow }} - ${{ github.head_ref || github.ref }}"
+  group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
@@ -43,7 +43,7 @@ jobs:
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-latest"
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -60,7 +60,7 @@ jobs:
     needs: [install]
     runs-on: ubuntu-slim
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-slim"
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
     outputs:
       is_plugin_affected: ${{ steps.filter.outputs.is_plugin_affected }}
       unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
@@ -123,7 +123,7 @@ jobs:
     needs: [install]
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-latest"
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -142,7 +142,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-slim
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-slim"
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -163,7 +163,7 @@ jobs:
     needs: [install]
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-latest"
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -200,9 +200,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lint-task: ["typecheck", "typecheck:tsgo", "knip"]
+        lint-task: ['typecheck', 'typecheck:tsgo', 'knip']
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-latest"
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -224,7 +224,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-slim
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-slim"
+      NX_CI_EXECUTION_ENV: 'ubuntu-slim'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -251,21 +251,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - shard: "1/4"
-            args: "--concurrency=auto"
+          - shard: '1/4'
+            args: '--concurrency=auto'
             projects:
               - eslint-plugin
 
-          - shard: "2/4"
-            args: ""
+          - shard: '2/4'
+            args: ''
             projects:
               - ast-spec
               - utils
               - scope-manager
               - eslint-plugin-internal
 
-          - shard: "3/4"
-            args: ""
+          - shard: '3/4'
+            args: ''
             projects:
               - typescript-estree
               - types
@@ -273,8 +273,8 @@ jobs:
               - rule-tester
               - visitor-keys
 
-          - shard: "4/4"
-            args: ""
+          - shard: '4/4'
+            args: ''
             projects:
               - parser
               - type-utils
@@ -284,7 +284,7 @@ jobs:
               - website-eslint
               - integration-tests
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-latest"
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
@@ -301,7 +301,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-latest"
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -326,7 +326,7 @@ jobs:
     if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.unit_tests_packages), 'ast-spec') }}
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-latest"
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -363,7 +363,7 @@ jobs:
     if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.unit_tests_packages), 'scope-manager') }}
     runs-on: ubuntu-latest
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-latest"
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -408,16 +408,16 @@ jobs:
         node-version: [18, 24]
         package:
           [
-            { name: "eslint-plugin", params: "--shard=1/4" },
-            { name: "eslint-plugin", params: "--shard=2/4" },
-            { name: "eslint-plugin", params: "--shard=3/4" },
-            { name: "eslint-plugin", params: "--shard=4/4" },
+            { name: 'eslint-plugin', params: '--shard=1/4' },
+            { name: 'eslint-plugin', params: '--shard=2/4' },
+            { name: 'eslint-plugin', params: '--shard=3/4' },
+            { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
         # Windows CI skips the rules tests so there isn't enough left to be worth sharding.
         include:
           - os: windows-latest
             node-version: 24
-            package: { name: "eslint-plugin", params: "" }
+            package: { name: 'eslint-plugin', params: '' }
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -488,7 +488,7 @@ jobs:
           - os: windows-latest
             package: visitor-keys
     env:
-      NX_CI_EXECUTION_ENV: "${{ matrix.os }} - Node ${{ matrix.node-version }}"
+      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
@@ -539,7 +539,7 @@ jobs:
         package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
         backend: [classic, native]
     env:
-      NX_CI_EXECUTION_ENV: "ubuntu-latest"
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,
     steps:
       - name: Checkout
@@ -550,6 +550,7 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
+          # The native backend requires Node.js 22 or newer.
           node-version: 22
       - name: Build
         uses: ./.github/actions/prepare-build

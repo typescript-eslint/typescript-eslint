@@ -181,7 +181,11 @@ export function parseAndGenerateServices<
    */
   const parseSettings = createParseSettings(code, tsestreeOptions);
 
-  if (tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues === true) {
+  if (
+    typeof tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues ===
+      'boolean' &&
+    tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues
+  ) {
     parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
   }
 

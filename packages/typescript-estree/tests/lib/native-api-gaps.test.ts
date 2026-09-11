@@ -24,8 +24,9 @@ function parse(code: string) {
 
 function typeOfDeclaration(code: string) {
   const { ast, services } = parse(code);
+  assert.isNotNull(services.program);
   const checker = services.program.getTypeChecker();
-  const declaration = ast.body.at(-1) as {
+  const declaration = ast.body.at(-1) as never as {
     declarations: { id: never }[];
   };
   return {
@@ -39,6 +40,7 @@ function typeOfDeclaration(code: string) {
 describe('native preview API gaps', () => {
   it('has no way to read an interface type’s `this` type', () => {
     const { ast, services } = parse('class C { m() {} }');
+    assert.isNotNull(services.program);
     const checker = services.program.getTypeChecker();
     const classType = checker.getTypeAtLocation(
       services.esTreeNodeToTSNodeMap.get(ast.body[0]),

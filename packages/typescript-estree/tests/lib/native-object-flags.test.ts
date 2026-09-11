@@ -28,6 +28,7 @@ function objectFlagsOfInstantiation(native: boolean) {
       ? { projectService: { backend: 'native' as const } }
       : { project: './tsconfig.json', tsconfigRootDir: fixtures }),
   });
+  assert.isNotNull(services.program);
   const checker = services.program.getTypeChecker();
   const declaration = ast.body[1] as never as { declarations: { id: never }[] };
   const type = checker.getTypeAtLocation(

@@ -12,10 +12,12 @@ const filePath = path.join(fixtures, 'file.ts');
 afterEach(clearCaches);
 
 function parse(code: string) {
-  return parseAndGenerateServices(code, {
+  const { ast, services } = parseAndGenerateServices(code, {
     filePath,
     projectService: { backend: 'native' },
   });
+  assert.isNotNull(services.program);
+  return { ast, services };
 }
 
 describe('native parser services', () => {
@@ -29,10 +31,10 @@ describe('native parser services', () => {
         tokens: true,
       },
     );
+    assert.isNotNull(services.program);
 
     expect(ast.comments).toHaveLength(1);
     expect(ast.tokens.length).toBeGreaterThan(0);
-    expect(services.program).not.toBeNull();
     expect(services.program.getCompilerOptions().strict).toBe(true);
 
     const declaration = ast.body[0];
