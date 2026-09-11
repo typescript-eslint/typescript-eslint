@@ -1,0 +1,77 @@
+import path from 'node:path';
+import * as ts from 'typescript';
+
+import '../../src/native/index.js';
+import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
+
+const fixtures = path.join(__dirname, '../fixtures/nativeProject');
+const filePath = path.join(fixtures, 'file.ts');
+
+afterEach(clearCaches);
+
+/**
+ * Pins the places where the native preview API cannot reproduce classic
+ * behavior, so that a preview that closes one of these gaps shows up here as a
+ * failing test rather than going unnoticed.
+ */
+function parse(code: string) {
+  return parseAndGenerateServices(code, {
+    filePath,
+    projectService: { backend: 'native' },
+  });
+}
+
+function typeOfDeclaration(code: string) {
+  const { ast, services } = parse(code);
+  const checker = services.program.getTypeChecker();
+  const declaration = ast.body.at(-1) as {
+    declarations: { id: never }[];
+  };
+  return {
+    checker,
+    type: checker.getTypeAtLocation(
+      services.esTreeNodeToTSNodeMap.get(declaration.declarations[0].id),
+    ),
+  };
+}
+
+describe('native preview API gaps', () => {
+  it('has no way to read an interface type’s `this` type', () => {
+    const { ast, services } = parse('class C { m() {} }');
+    const checker = services.program.getTypeChecker();
+    const classType = checker.getTypeAtLocation(
+      services.esTreeNodeToTSNodeMap.get(ast.body[0]),
+    ) as ts.InterfaceType;
+
+    expect(() => classType.thisType).toThrow(
+      'Type#thisType is not available on the TypeScript native preview API.',
+    );
+  });
+
+  it('cannot await a union whose constituents await to different types', () => {
+    const { checker, type } = typeOfDeclaration(
+      'declare const p: Promise<number> | Promise<string>;',
+    );
+
+    // Classic answers `string | number`. Deriving that here would mean
+    // constructing a union, which the native API has no way to do.
+    expect(checker.getAwaitedType(type)).toBeUndefined();
+  });
+
+  it('awaits a single thenable the same way classic does', () => {
+    const { checker, type } = typeOfDeclaration(
+      'declare const p: Promise<number>;',
+    );
+
+    expect(checker.typeToString(checker.getAwaitedType(type)!)).toBe('number');
+  });
+
+  it('does not preserve the declared order of union constituents', () => {
+    const { checker, type } = typeOfDeclaration(
+      'declare const u: number | string;',
+    );
+
+    // Classic reports `number | string`, matching the declaration.
+    expect(checker.typeToString(type)).toBe('string | number');
+  });
+});

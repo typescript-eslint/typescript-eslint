@@ -5,9 +5,9 @@ import type {
   Type as NativeType,
   SymbolFlags,
 } from '@typescript/native/unstable/sync';
-import type * as ts from 'typescript';
 
 import { SignatureKind, TypeFlags } from '@typescript/native/unstable/sync';
+import * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 import type { NativeTypeAdapter } from './nativeTypeAdapter';
@@ -107,21 +107,28 @@ export function createNativeChecker({
     }
 
     // A thenable's awaited type is the parameter of the callback its `then`
-    // takes: `then(onfulfilled: (value: T) => ...)` awaits to `T`.
-    const onFulfilled = checker
+    // takes: `then(onfulfilled: (value: T) => ...)` awaits to `T`. The callback
+    // parameter is declared nullable, and a union including `null` has no call
+    // signatures, so it is narrowed before its signatures are read.
+    const value = checker
       .getSignaturesOfType(checker.getTypeOfSymbol(then), SignatureKind.Call)
       .flatMap(signature => signature.getParameters().slice(0, 1))
-      .map(parameter => checker.getTypeOfSymbol(parameter))
-      .flatMap(parameterType =>
-        checker.getSignaturesOfType(parameterType, SignatureKind.Call),
-      );
-    const value = onFulfilled
+      .map(parameter =>
+        checker.getNonNullableType(checker.getTypeOfSymbol(parameter)),
+      )
+      .flatMap(callbackType =>
+        checker.getSignaturesOfType(callbackType, SignatureKind.Call),
+      )
       .flatMap(signature => signature.getParameters().slice(0, 1))
       .map(parameter => checker.getTypeOfSymbol(parameter));
-    if (value.length !== 1) {
+
+    if (value.length === 0) {
       return undefined;
     }
-    return awaitedTypeOf(value[0], depth + 1);
+    const [first, ...rest] = value;
+    return rest.every((part: NativeType) => part === first)
+      ? awaitedTypeOf(first, depth + 1)
+      : undefined;
   }
 
   const nativeChecker = {
