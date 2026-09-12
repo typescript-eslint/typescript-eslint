@@ -222,10 +222,21 @@ export default createRule<Options, MessageId>({
 
         const tupleArgs = checker.getTypeArguments(sourceType);
         const elementIndex = parent.elements.indexOf(node);
+
         if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
           return;
         }
+
+        const tupleTarget = sourceType.target;
+
+        if (
+          tupleTarget.elementFlags.some(flag => flag === ts.ElementFlags.Rest)
+        ) {
+          return;
+        }
+
         const elementType = tupleArgs[elementIndex];
+
         if (!canBeUndefined(elementType)) {
           reportUselessDefaultAssignment(node, 'property');
         }
