@@ -86,7 +86,6 @@ const NOOP_RULE: RuleModule<'error'> = {
   create() {
     return {};
   },
-  defaultOptions: [],
   meta: {
     messages: {
       error: 'error',
@@ -2180,7 +2179,6 @@ describe('RuleTester - hooks', () => {
         },
       };
     },
-    defaultOptions: [],
     meta: {
       messages: {
         error: 'error',
@@ -2403,7 +2401,6 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
-      defaultOptions: [],
       meta: {
         messages: {
           error: 'error',
@@ -2487,7 +2484,6 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
-      defaultOptions: [],
       meta: {
         fixable: 'code',
         messages: {
@@ -2609,7 +2605,6 @@ describe('RuleTester - multipass fixer', () => {
           },
         };
       },
-      defaultOptions: [],
       meta: {
         fixable: 'code',
         messages: {
@@ -2707,7 +2702,6 @@ describe('RuleTester - run types', () => {
         },
       };
     },
-    defaultOptions: [],
     meta: {
       messages: {
         customErrorBar: 'Error custom Bar',
