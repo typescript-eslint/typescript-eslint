@@ -1,0 +1,79 @@
+.codeBlock {
+  --ifm-pre-background: var(--prism-background-color);
+
+  margin: 0;
+  padding: 0;
+}
+
+.codeBlockLines {
+  float: left;
+  min-width: 100%;
+  padding: var(--ifm-pre-padding);
+  font: inherit;
+}
+
+.codeBlockLinesWithNumbering {
+  display: table;
+  padding: var(--ifm-pre-padding) 0;
+}
+
+.diagnostic {
+  appearance: none;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23c62828'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-position: bottom left;
+  background-repeat: repeat-x;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: inherit;
+}
+
+.diagnostic:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid #c62828;
+  outline-offset: 2px;
+}
+
+.diagnosticTooltipPositioner {
+  z-index: calc(var(--ifm-z-index-fixed) + 1);
+}
+
+.diagnosticTooltip {
+  width: max-content;
+  max-width: min(20rem, calc(100vw - 24px));
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #ef9a9a;
+  border-radius: var(--ifm-global-radius);
+  background: #fff5f5;
+  box-shadow: var(--ifm-global-shadow-md);
+  color: #731515;
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  pointer-events: none;
+  white-space: normal;
+}
+
+:global(html[data-theme='dark']) .diagnostic {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23ff8a80'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+}
+
+:global(html[data-theme='dark']) .diagnostic:focus-visible {
+  outline-color: #ff8a80;
+}
+
+:global(html[data-theme='dark']) .diagnosticTooltip {
+  border-color: #a63d3d;
+  background: #351a1a;
+  color: #ffd7d4;
+}
+
+@media print {
+  .codeBlockLines {
+    white-space: pre-wrap;
+  }
+}
