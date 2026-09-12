@@ -74,7 +74,13 @@
     "yaml": "catalog:"
   },
   "peerDependencies": {
+    "@typescript/native": "npm:typescript@>=7.1.0-0",
     "typescript": ">=4.8.4 <6.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@typescript/native": {
+      "optional": true
+    }
   },
   "funding": {
     "type": "opencollective",

@@ -350,6 +350,41 @@ This option brings two main benefits over the older `project`:
 
 See [FAQs > Typed Linting > Project Service Issues](../troubleshooting/typed-linting/index.mdx#project-service-issues) for help on working with the project service.
 
+#### Experimental TypeScript 7 native backend
+
+The parser includes an experimental native backend for TypeScript >=7.1.
+It requires Node.js 22 or newer and a side-by-side installation of classic TypeScript 6 and `@typescript/native`.
+
+```shell
+pnpm add --save-dev typescript@^6 @typescript/native@npm:typescript@7.1.0-dev.20260822.1
+```
+
+Select the native backend by specifying it as `projectService.backend`:
+
+```js
+import parser from '@typescript-eslint/parser';
+
+export default [
+  {
+    // ...
+    languageOptions: {
+      parser,
+      parserOptions: {
+        projectService: {
+          backend: 'native',
+        },
+      },
+    },
+  },
+];
+```
+
+The native code backend operates as a facade over TypeScript 7's program, types, symbols, and other entities.
+See [#12803 feat: prototype TypeScript 7.1 native parser support](https://github.com/typescript-eslint/typescript-eslint/pull/12803) for more information.
+
+The native backend does not support the legacy `parserOptions.project` and `parserOptions.programs` configuration options.
+Use `projectService` instead.
+
 #### `ProjectServiceOptions`
 
 The behavior of `parserOptions.projectService` can be customized by setting it to an object.
@@ -384,6 +419,12 @@ There are several restrictions on this option to prevent it from being overused:
 
 - `**` is not allowed in globs passed to it
 - Files that match `allowDefaultProject` may not also be included in their nearest `tsconfig.json`
+
+##### `backend`
+
+> Default: `undefined` _(the classic TypeScript backend)_
+
+Set to `'native'` to opt in to the experimental TypeScript 7 native backend described [above](#experimental-typescript-7-native-backend).
 
 ##### `defaultProject`
 

@@ -1,4 +1,5 @@
 import type { ProjectServiceAndMetadata } from '@typescript-eslint/project-service';
+import type { ProjectServiceOptions } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
 import type { CanonicalPath } from '../create-program/shared';
@@ -116,6 +117,11 @@ export interface MutableParseSettings {
    * Normalized paths to provided project paths.
    */
   projects: ReadonlyMap<CanonicalPath, string>;
+
+  /**
+   * Validated options for the native project service.
+   */
+  nativeProjectService: ProjectServiceOptions | undefined;
 
   /**
    * TypeScript server to power program creation.

@@ -25,6 +25,7 @@ import {
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
 import { createParserServices } from './createParserServices';
+import { getNativeParser } from './nativeParserRegistry';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { useProgramFromProjectService } from './useProgramFromProjectService';
@@ -166,6 +167,24 @@ export function parseAndGenerateServices<
    */
   const parseSettings = createParseSettings(code, tsestreeOptions);
 
+  if (
+    typeof tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues ===
+      'boolean' &&
+    tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues
+  ) {
+    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
+  }
+
+  if (parseSettings.nativeProjectService) {
+    const nativeParser = getNativeParser();
+    if (!nativeParser) {
+      throw new Error(
+        'The experimental native project service could not be loaded. Install @typescript/native.',
+      );
+    }
+    return nativeParser<T>(parseSettings);
+  }
+
   /**
    * If this is a single run in which the user has not provided any existing programs but there
    * are programs which need to be created from the provided "project" option,
@@ -200,14 +219,6 @@ export function parseAndGenerateServices<
     parseSettings.programs != null ||
     parseSettings.projects.size > 0 ||
     !!parseSettings.projectService;
-
-  if (
-    typeof tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues ===
-      'boolean' &&
-    tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues
-  ) {
-    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
-  }
 
   if (
     parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues &&
