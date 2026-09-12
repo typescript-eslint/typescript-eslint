@@ -1,0 +1,21 @@
+Incorrect
+
+function getStatus(): string | null {
+                               ~~~~ No returned expression requires this type.
+  return 'ready';
+}
+
+async function getAsyncStatus(): Promise<string | null> {
+                                                  ~~~~ No returned expression requires this type.
+  return 'ready';
+}
+
+Correct
+
+function getStatus(): string {
+  return 'ready';
+}
+
+async function getAsyncStatus(): Promise<string> {
+  return 'ready';
+}
