@@ -92,6 +92,14 @@ const foo = { hello: 'hello' } as PossibleTuple;
 type PossibleTuple = { 0: 'hello'; 5: 'hello' };
 const foo = { 0: 'hello', 5: 'hello' } as PossibleTuple;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12856
+    `
+const a = {};
+a as Record<string, string>;
+type Dict = Record<string, string>;
+a as Dict;
+a as { [key: string]: string };
+    `,
     `
 let bar: number | undefined = x;
 let foo: number = bar!;

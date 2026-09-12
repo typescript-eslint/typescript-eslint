@@ -226,7 +226,7 @@ export default createRule<Options, MessageIds>({
       if (
         (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
           !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
-        (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
+        hasIndexSignature(uncast) !== hasIndexSignature(cast) ||
         containsAny(uncast) ||
         containsAny(cast) ||
         (containsTypeVariable(cast) && !containsTypeVariable(uncast))
