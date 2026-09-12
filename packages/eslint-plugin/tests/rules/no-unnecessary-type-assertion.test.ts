@@ -593,6 +593,12 @@ foo(array as string[]);
 declare const record: Record<string, unknown>;
 const obj = record as { id?: number };
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12856
+    `
+const value = {};
+type Dict = Record<string, string>;
+value as Dict;
+    `,
     `
 declare const obj: { [key: string]: unknown };
 const foo = obj as {};
