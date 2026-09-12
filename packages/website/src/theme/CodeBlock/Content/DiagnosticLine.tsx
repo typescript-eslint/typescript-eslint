@@ -15,6 +15,21 @@ interface DiagnosticLineProps {
   ranges: readonly LineDiagnosticRange[];
 }
 
+interface LinePart {
+  activeRanges: readonly LineDiagnosticRange[];
+  content: string;
+  key: string;
+  token: Token;
+}
+
+type LinePartGroup =
+  | {
+      kind: 'diagnostic';
+      parts: LinePart[];
+      ranges: LineDiagnosticRange[];
+    }
+  | { kind: 'plain'; part: LinePart };
+
 function getTokenBoundaries(
   tokenStart: number,
   tokenEnd: number,
@@ -33,6 +48,67 @@ function getTokenBoundaries(
     .filter((boundary, index, all) => boundary !== all[index - 1]);
 }
 
+function getLineParts(line: Token[], ranges: readonly LineDiagnosticRange[]) {
+  let tokenStart = 0;
+
+  return line.flatMap((token, tokenIndex) => {
+    const tokenEnd = tokenStart + token.content.length;
+    const boundaries = getTokenBoundaries(tokenStart, tokenEnd, ranges);
+    const currentTokenStart = tokenStart;
+    tokenStart = tokenEnd;
+
+    return boundaries.slice(0, -1).map((start, partIndex) => {
+      const end = boundaries[partIndex + 1];
+
+      return {
+        activeRanges: ranges.filter(
+          range => range.start < end && range.end > start,
+        ),
+        content: token.content.slice(
+          start - currentTokenStart,
+          end - currentTokenStart,
+        ),
+        key: `${tokenIndex}:${partIndex}`,
+        token,
+      };
+    });
+  });
+}
+
+function groupLineParts(parts: readonly LinePart[]) {
+  const groups: LinePartGroup[] = [];
+
+  for (const part of parts) {
+    if (part.activeRanges.length === 0) {
+      groups.push({ kind: 'plain', part });
+      continue;
+    }
+
+    const previousGroup = groups.at(-1);
+    if (previousGroup?.kind === 'diagnostic') {
+      previousGroup.parts.push(part);
+      previousGroup.ranges.push(...part.activeRanges);
+      continue;
+    }
+
+    groups.push({
+      kind: 'diagnostic',
+      parts: [part],
+      ranges: [...part.activeRanges],
+    });
+  }
+
+  return groups;
+}
+
+function getDiagnosticMessages(ranges: readonly LineDiagnosticRange[]) {
+  return [
+    ...new Map(
+      ranges.map(range => [range.diagnosticIndex, range.diagnostic.message]),
+    ).values(),
+  ];
+}
+
 export function DiagnosticLine({
   classNames,
   getLineProps,
@@ -42,53 +118,49 @@ export function DiagnosticLine({
 }: DiagnosticLineProps): React.JSX.Element {
   const lineProps = getLineProps({ className: clsx(classNames), line });
   const focusableDiagnostics = new Set<number>();
-  let tokenStart = 0;
+  const groups = groupLineParts(getLineParts(line, ranges));
 
   return (
     <div {...lineProps}>
-      {line.flatMap((token, tokenIndex) => {
-        const tokenEnd = tokenStart + token.content.length;
-        const boundaries = getTokenBoundaries(tokenStart, tokenEnd, ranges);
-        const currentTokenStart = tokenStart;
-        tokenStart = tokenEnd;
-
-        return boundaries.slice(0, -1).map((start, partIndex) => {
-          const end = boundaries[partIndex + 1];
-          const content = token.content.slice(
-            start - currentTokenStart,
-            end - currentTokenStart,
-          );
-          const tokenProps = getTokenProps({ token: { ...token, content } });
-          const activeRanges = ranges.filter(
-            range => range.start < end && range.end > start,
-          );
-          const markerKey = `${tokenIndex}:${partIndex}`;
-
-          if (activeRanges.length === 0) {
-            return (
-              <span key={markerKey} {...tokenProps}>
-                {tokenProps.children}
-              </span>
-            );
-          }
-
-          const focusable = activeRanges.some(
-            range => !focusableDiagnostics.has(range.diagnosticIndex),
-          );
-          for (const range of activeRanges) {
-            focusableDiagnostics.add(range.diagnosticIndex);
-          }
+      {groups.map(group => {
+        if (group.kind === 'plain') {
+          const tokenProps = getTokenProps({
+            token: { ...group.part.token, content: group.part.content },
+          });
 
           return (
-            <DiagnosticMarker
-              key={markerKey}
-              focusable={focusable}
-              messages={activeRanges.map(range => range.diagnostic.message)}
-            >
-              <span {...tokenProps}>{tokenProps.children}</span>
-            </DiagnosticMarker>
+            <span key={group.part.key} {...tokenProps}>
+              {tokenProps.children}
+            </span>
           );
-        });
+        }
+
+        const focusable = group.ranges.some(
+          range => !focusableDiagnostics.has(range.diagnosticIndex),
+        );
+        for (const range of group.ranges) {
+          focusableDiagnostics.add(range.diagnosticIndex);
+        }
+
+        return (
+          <DiagnosticMarker
+            key={group.parts[0].key}
+            focusable={focusable}
+            messages={getDiagnosticMessages(group.ranges)}
+          >
+            {group.parts.map(part => {
+              const tokenProps = getTokenProps({
+                token: { ...part.token, content: part.content },
+              });
+
+              return (
+                <span key={part.key} {...tokenProps}>
+                  {tokenProps.children}
+                </span>
+              );
+            })}
+          </DiagnosticMarker>
+        );
       })}
       <br />
     </div>
