@@ -1,4 +1,5 @@
 import { clearWatchCaches } from './create-program/getWatchProgramsForProjects';
+import { clearRealPathCache } from './create-program/shared';
 import {
   clearDefaultProjectMatchedFiles,
   clearProgramCache as clearProgramCacheOriginal,
@@ -21,6 +22,7 @@ export function clearCaches(): void {
   clearCandidateTSConfigRootDirs();
   clearDefaultProjectMatchedFiles();
   clearProgramCacheOriginal();
+  clearRealPathCache();
   clearWatchCaches();
   clearTSConfigMatchCache();
   clearTSServerProjectService();

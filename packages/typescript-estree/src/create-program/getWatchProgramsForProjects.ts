@@ -12,6 +12,8 @@ import {
   createDefaultCompilerOptionsFromExtra,
   createHash,
   getCanonicalFileName,
+  getCanonicalRealPath,
+  getSourceFileFromProgram,
 } from './shared';
 
 const log = debug(
@@ -123,6 +125,17 @@ function updateCachedFileList(
 }
 
 /**
+ * Checks a program's known files for a path, including when the program knows
+ * the file by a path that resolves to the same file on disk.
+ */
+function fileListIncludes(
+  fileList: ReadonlySet<CanonicalPath>,
+  filePath: CanonicalPath,
+): boolean {
+  return fileList.has(filePath) || fileList.has(getCanonicalRealPath(filePath));
+}
+
+/**
  * Calculate project environments using options provided by consumer and paths from config
  * @param parseSettings Internal settings for parsing the file
  * @returns The programs corresponding to the supplied tsconfig paths
@@ -172,7 +185,7 @@ export function getWatchProgramsForProjects(
       fileList = updateCachedFileList(tsconfigPath, updatedProgram);
     }
 
-    if (fileList.has(filePath)) {
+    if (fileListIncludes(fileList, filePath)) {
       log('Found existing program for file. %s', filePath);
 
       updatedProgram ??= existingWatch.getProgram().getProgram();
@@ -210,7 +223,7 @@ export function getWatchProgramsForProjects(
 
       // cache and check the file list
       const fileList = updateCachedFileList(tsconfigPath[0], updatedProgram);
-      if (fileList.has(filePath)) {
+      if (fileListIncludes(fileList, filePath)) {
         log('Found updated program for file. %s', filePath);
         // we can return early because we know this program contains the file
         return [updatedProgram];
@@ -229,7 +242,7 @@ export function getWatchProgramsForProjects(
 
     // cache and check the file list
     const fileList = updateCachedFileList(tsconfigPath[0], program);
-    if (fileList.has(filePath)) {
+    if (fileListIncludes(fileList, filePath)) {
       log('Found program for file. %s', filePath);
       // we can return early because we know this program contains the file
       return [program];
@@ -393,7 +406,7 @@ function maybeInvalidateProgram(
     programFileListCache.delete(tsconfigPath);
   }
 
-  let sourceFile = updatedProgram.getSourceFile(filePath);
+  let sourceFile = getSourceFileFromProgram(updatedProgram, filePath);
   if (sourceFile) {
     return updatedProgram;
   }
@@ -437,7 +450,7 @@ function maybeInvalidateProgram(
 
   // force the immediate resync
   updatedProgram = existingWatch.getProgram().getProgram();
-  sourceFile = updatedProgram.getSourceFile(filePath);
+  sourceFile = getSourceFileFromProgram(updatedProgram, filePath);
   if (sourceFile) {
     return updatedProgram;
   }
@@ -480,7 +493,7 @@ function maybeInvalidateProgram(
   programFileListCache.delete(tsconfigPath);
 
   updatedProgram = existingWatch.getProgram().getProgram();
-  sourceFile = updatedProgram.getSourceFile(filePath);
+  sourceFile = getSourceFileFromProgram(updatedProgram, filePath);
   if (sourceFile) {
     return updatedProgram;
   }
