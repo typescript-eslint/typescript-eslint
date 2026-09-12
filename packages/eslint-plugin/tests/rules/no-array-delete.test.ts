@@ -49,6 +49,11 @@ delete test[0];
     `
 delete console.log();
     `,
+    `
+      function f<T>(input: T) {
+        delete input[0];
+      }
+    `,
   ],
 
   invalid: [
