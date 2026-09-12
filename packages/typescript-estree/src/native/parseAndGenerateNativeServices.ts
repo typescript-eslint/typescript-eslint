@@ -6,17 +6,16 @@ import { astConverter } from '../ast-converter';
 import { convertError } from '../convert';
 import { createParserServices } from '../createParserServices';
 import { getFirstSemanticOrSyntacticError } from '../semantic-or-syntactic-errors';
-import { getNativeProjectService } from './index';
+import { getNativeProjectService } from './createNativeProjectService';
 import { createNativeNodeAdapter } from './nativeNodeAdapter';
 import { createNativeProgram } from './nativeProgramAdapter';
 
 export function parseAndGenerateNativeServices<
   T extends TSESTreeOptions = TSESTreeOptions,
 >(parseSettings: ParseSettings): ParseAndGenerateServicesResult<T> {
-  const context = getNativeProjectService().openFile(
-    parseSettings.filePath,
-    parseSettings.codeFullText,
-  );
+  const context = getNativeProjectService(
+    parseSettings.tsconfigRootDir,
+  ).openFile(parseSettings.filePath, parseSettings.codeFullText);
   const getSyntacticDiagnostics = () =>
     context.program.getSyntacticDiagnostics(context.sourceFile.fileName);
   const nodeAdapter = createNativeNodeAdapter(getSyntacticDiagnostics);
@@ -27,7 +26,7 @@ export function parseAndGenerateNativeServices<
   if (parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues) {
     const error = getFirstSemanticOrSyntacticError(program, sourceFile);
     if (error) {
-      throw convertError({ ...error, file: sourceFile });
+      throw convertError(error);
     }
   }
 

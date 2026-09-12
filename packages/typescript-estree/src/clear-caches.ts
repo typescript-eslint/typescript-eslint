@@ -1,4 +1,5 @@
 import { clearWatchCaches } from './create-program/getWatchProgramsForProjects';
+import { clearNativeBackendCaches } from './nativeParserRegistry';
 import {
   clearDefaultProjectMatchedFiles,
   clearProgramCache as clearProgramCacheOriginal,
@@ -9,12 +10,6 @@ import {
   clearTSServerProjectService,
 } from './parseSettings/createParseSettings';
 import { clearGlobCache } from './parseSettings/resolveProjectList';
-
-let clearNativeProjectService: (() => void) | undefined;
-
-export function registerNativeProjectServiceClearer(clearer: () => void): void {
-  clearNativeProjectService = clearer;
-}
 
 /**
  * Clears all of the internal caches.
@@ -31,7 +26,7 @@ export function clearCaches(): void {
   clearTSConfigMatchCache();
   clearTSServerProjectService();
   clearGlobCache();
-  clearNativeProjectService?.();
+  clearNativeBackendCaches();
 }
 
 // TODO - delete this in next major

@@ -2,41 +2,44 @@ import type {
   CompilerOptions as NativeCompilerOptions,
   Diagnostic as NativeDiagnostic,
 } from '@typescript/native/unstable/sync';
-import type * as ts from 'typescript';
+
+import path from 'node:path';
+import * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 import type { NativeProjectContext } from './types';
 
 import { createNativeChecker } from './nativeCheckerAdapter';
 import { createNativeTypeAdapter } from './nativeTypeAdapter';
+import { throwOnUnsupportedMembers } from './throwOnUnsupportedMembers';
 
 export interface NativeProgramAdapterContext {
   context: NativeProjectContext;
   nodeAdapter: NativeNodeAdapter;
 }
 
-/**
- * `JsxEmit.React` and `JsxEmit.ReactNative` are the one pair of compiler option
- * enum members whose numeric values the two compilers disagree on. Everything
- * else — `ScriptTarget`, `ModuleKind`, `ModuleResolutionKind` — matches, and
- * the remaining options are booleans and strings.
- */
-const NATIVE_TO_CLASSIC_JSX_EMIT = new Map([
-  [2, 3],
-  [3, 2],
+/** Native numbers `ReactNative` 2 and `React` 3; classic has them swapped. */
+const NATIVE_TO_CLASSIC_JSX_EMIT = new Map<number, number>([
+  [2, ts.JsxEmit.ReactNative],
+  [3, ts.JsxEmit.React],
 ]);
 
-/**
- * Presents a native project's program as a classic `ts.Program`.
- *
- * This is the seam that lets every existing rule run unchanged on the native
- * backend: `createParserServices` takes this object exactly as it takes a
- * classic program, so `services.program.getTypeChecker()` hands rules a checker
- * whose types, symbols, and signatures all speak the classic API.
- *
- * As with the checker, any classic method without a native counterpart throws
- * on access rather than surfacing as `undefined`.
- */
+const UNSUPPORTED_PROGRAM_MEMBERS = new Set([
+  'emit',
+  'getIdentifierCount',
+  'getInstantiationCount',
+  'getModeForResolutionAtIndex',
+  'getModeForUsageLocation',
+  'getNodeCount',
+  'getOptionsDiagnostics',
+  'getProjectReferences',
+  'getRelationCacheSizes',
+  'getResolvedProjectReferences',
+  'getSourceFileByPath',
+  'getSymbolCount',
+  'getTypeCount',
+] satisfies readonly (keyof ts.Program)[]);
+
 export function createNativeProgram({
   context,
   nodeAdapter,
@@ -51,11 +54,22 @@ export function createNativeProgram({
   let compilerOptions: ts.CompilerOptions | undefined;
   let typeChecker: ts.TypeChecker | undefined;
 
-  function wrapDiagnostic(diagnostic: NativeDiagnostic): ts.Diagnostic {
+  function getSourceFile(fileName: string): ts.SourceFile | undefined {
+    const sourceFile = program.getSourceFile(fileName);
+    return sourceFile && (nodeAdapter.wrapNode(sourceFile) as ts.SourceFile);
+  }
+
+  function wrapDiagnostic(
+    diagnostic: NativeDiagnostic,
+    requestedFile?: ts.SourceFile,
+  ): ts.Diagnostic {
     return {
       category: diagnostic.category,
       code: diagnostic.code,
-      file: undefined,
+      file:
+        diagnostic.fileName == null
+          ? requestedFile
+          : (getSourceFile(diagnostic.fileName) ?? requestedFile),
       length: diagnostic.end - diagnostic.pos,
       messageText: diagnostic.text,
       start: diagnostic.pos,
@@ -66,7 +80,20 @@ export function createNativeProgram({
     get: (fileName?: string) => readonly NativeDiagnostic[],
     file: ts.SourceFile | undefined,
   ): ts.Diagnostic[] {
-    return get(file?.fileName).map(wrapDiagnostic);
+    return get(file?.fileName).map(diagnostic =>
+      wrapDiagnostic(diagnostic, file),
+    );
+  }
+
+  /** A diagnostic with no file belongs to the global accessors, not these. */
+  function locatedDiagnosticsFor(
+    get: (fileName?: string) => readonly NativeDiagnostic[],
+    file: ts.SourceFile | undefined,
+  ): ts.DiagnosticWithLocation[] {
+    return diagnosticsFor(get, file).filter(
+      (diagnostic): diagnostic is ts.DiagnosticWithLocation =>
+        diagnostic.file != null,
+    );
   }
 
   const nativeProgram = {
@@ -75,15 +102,19 @@ export function createNativeProgram({
         program.getCompilerOptions(),
       )),
     getConfigFileParsingDiagnostics: () =>
-      program.getConfigFileParsingDiagnostics().map(wrapDiagnostic),
-    getCurrentDirectory: () => dirnameOf(project.configFileName),
+      program
+        .getConfigFileParsingDiagnostics()
+        .map(diagnostic => wrapDiagnostic(diagnostic)),
+    getCurrentDirectory: () => path.dirname(project.configFileName),
     getDeclarationDiagnostics: file =>
-      diagnosticsFor(
+      locatedDiagnosticsFor(
         fileName => program.getDeclarationDiagnostics(fileName),
         file,
-      ) as ts.DiagnosticWithLocation[],
+      ),
     getGlobalDiagnostics: () =>
-      program.getGlobalDiagnostics().map(wrapDiagnostic),
+      program
+        .getGlobalDiagnostics()
+        .map(diagnostic => wrapDiagnostic(diagnostic)),
     getRootFileNames: () => project.parsedCommandLine.fileNames,
 
     getSemanticDiagnostics: file =>
@@ -91,10 +122,7 @@ export function createNativeProgram({
         fileName => program.getSemanticDiagnostics(fileName),
         file,
       ),
-    getSourceFile: fileName => {
-      const sourceFile = program.getSourceFile(fileName);
-      return sourceFile && (nodeAdapter.wrapNode(sourceFile) as ts.SourceFile);
-    },
+    getSourceFile,
 
     getSourceFiles: () =>
       program
@@ -103,10 +131,10 @@ export function createNativeProgram({
         .filter(sourceFile => sourceFile != null)
         .map(sourceFile => nodeAdapter.wrapNode(sourceFile) as ts.SourceFile),
     getSyntacticDiagnostics: file =>
-      diagnosticsFor(
+      locatedDiagnosticsFor(
         fileName => program.getSyntacticDiagnostics(fileName),
         file,
-      ) as ts.DiagnosticWithLocation[],
+      ),
     getTypeChecker: () =>
       (typeChecker ??= createNativeChecker({
         checker,
@@ -122,35 +150,15 @@ export function createNativeProgram({
         nodeAdapter.unwrapNode(sourceFile) as never,
       ),
 
-    /**
-     * Classic keeps a map from a source file's canonical path to the package it
-     * was resolved from. The native API exposes no such map, so the package name
-     * is read back off the path, which is where classic's own entries come from.
-     */
-    sourceFileToPackageName: {
-      get: (path: string) => packageNameFromPath(path),
-    },
+    sourceFileToPackageName: { get: packageNameFromPath },
   } satisfies Partial<ts.Program> & Record<string, unknown>;
 
-  return new Proxy(nativeProgram, {
-    get(target, property) {
-      const value: unknown = Reflect.get(target, property, target);
-      if (value == null && typeof property === 'string') {
-        throw new Error(
-          `Program#${property} is not available on the TypeScript native preview API.`,
-        );
-      }
-      return value;
-    },
-  }) as unknown as ts.Program;
-}
-
-function dirnameOf(filePath: string): string {
-  const separator = Math.max(
-    filePath.lastIndexOf('/'),
-    filePath.lastIndexOf('\\'),
-  );
-  return separator === -1 ? filePath : filePath.slice(0, separator);
+  return throwOnUnsupportedMembers(
+    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum -- this names the classic TypeScript API, not an ESTree node type
+    'Program',
+    UNSUPPORTED_PROGRAM_MEMBERS,
+    nativeProgram,
+  ) as unknown as ts.Program;
 }
 
 function packageNameFromPath(filePath: string): string | undefined {

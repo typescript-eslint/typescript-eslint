@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import * as ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 
@@ -7,9 +6,8 @@ import { astConverter } from '../../src/ast-converter';
 import { createNativeProjectService } from '../../src/native';
 import { createNativeNodeAdapter } from '../../src/native/nativeNodeAdapter';
 import { createParseSettings } from '../../src/parseSettings/createParseSettings';
+import { nativeFilePath as fixturePath } from './nativeTestUtils';
 
-const fixtures = path.join(__dirname, '../fixtures/nativeProject');
-const fixturePath = path.join(fixtures, 'file.ts');
 const fixture = fs.readFileSync(fixturePath, 'utf8');
 const baseOptions = {
   comment: true,
@@ -52,8 +50,10 @@ function withNativeSourceFile<T>(
 
 describe('native node adapter', () => {
   it('caches adapted node arrays and their structural children', () => {
-    withNativeSourceFile(fixture, fixturePath, ({ sourceFile }) => {
-      const adapter = createNativeNodeAdapter();
+    withNativeSourceFile(fixture, fixturePath, ({ program, sourceFile }) => {
+      const adapter = createNativeNodeAdapter(() =>
+        program.getSyntacticDiagnostics(fixturePath),
+      );
       const adaptedSourceFile = adapter.adaptSourceFile(sourceFile);
       const statements = adaptedSourceFile.statements;
 

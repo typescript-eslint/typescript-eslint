@@ -1,26 +1,13 @@
 import type * as ts from 'typescript';
 
-import path from 'node:path';
+import { parseAndGenerateServices } from '../../src/index.js';
+import {
+  isolateNativeBackend,
+  nativeFilePath as filePath,
+} from './nativeTestUtils';
 
-import '../../src/native/index.js';
-import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
+isolateNativeBackend();
 
-const fixtures = path.join(__dirname, '../fixtures/nativeProject');
-const filePath = path.join(fixtures, 'file.ts');
-
-beforeEach(() => {
-  // These tests select a backend per call, so the blanket environment switch
-  // has to stay out of the way.
-  vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
-});
-
-afterEach(clearCaches);
-
-/**
- * Pins the places where the native preview API cannot reproduce classic
- * behavior, so that a preview that closes one of these gaps shows up here as a
- * failing test rather than going unnoticed.
- */
 function parse(code: string) {
   return parseAndGenerateServices(code, {
     filePath,
@@ -62,8 +49,6 @@ describe('native preview API gaps', () => {
       'declare const p: Promise<number> | Promise<string>;',
     );
 
-    // Classic answers `string | number`. Deriving that here would mean
-    // constructing a union, which the native API has no way to do.
     expect(checker.getAwaitedType(type)).toBeUndefined();
   });
 

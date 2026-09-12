@@ -4,36 +4,20 @@ import path from 'node:path';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import '../../src/native/index.js';
-import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
+import { parseAndGenerateServices } from '../../src/index.js';
+import { isolateNativeBackend, nativeFixtures } from './nativeTestUtils';
 
-const fixtures = path.join(__dirname, '../fixtures/nativeProject');
-const filePath = path.join(fixtures, 'instantiation.ts');
+const filePath = path.join(nativeFixtures, 'instantiation.ts');
 
-beforeEach(() => {
-  // This test selects a backend per call, so the blanket environment switch
-  // has to stay out of the way.
-  vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
-});
+isolateNativeBackend();
 
-afterEach(clearCaches);
-
-/**
- * The two compilers number `ObjectFlags` above `Mapped` differently. Classic's
- * `InstantiationExpressionType` is native's `IsGenericObjectType`, so passing
- * the flags through unchanged would make `no-misused-spread` miss real
- * instantiation expressions and fire on ordinary generic object types.
- *
- * The fixture is read from disk rather than written inline because the classic
- * backend serves the file from a shared program, which other tests may have
- * already populated from disk.
- */
+/** Read from disk: the classic backend serves it from a shared program. */
 function objectFlagsOfInstantiation(native: boolean) {
   const { ast, services } = parseAndGenerateServices(
     fs.readFileSync(filePath, 'utf8'),
     {
       filePath,
-      tsconfigRootDir: fixtures,
+      tsconfigRootDir: nativeFixtures,
       ...(native
         ? { projectService: { backend: 'native' as const } }
         : { projectService: true }),

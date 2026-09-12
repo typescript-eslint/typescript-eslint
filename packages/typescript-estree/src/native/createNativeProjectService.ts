@@ -6,11 +6,7 @@ import { API } from '@typescript/native/unstable/sync';
 import path from 'node:path';
 import * as ts from 'typescript';
 
-import type {
-  NativeFileChanges,
-  NativeProjectContext,
-  NativeProjectService,
-} from './types';
+import type { NativeProjectContext, NativeProjectService } from './types';
 
 const CLOSED_ERROR = 'The TypeScript native project service is closed.';
 const SUPPORTED_NATIVE_VERSION = '7.1.0-dev.20260822.1';
@@ -22,27 +18,18 @@ function verifyNativeCompatibility(): void {
     );
   }
 
-  const nativeAPI: unknown = API;
-  const apiPrototype =
-    typeof nativeAPI === 'function'
-      ? (nativeAPI as { prototype?: Record<string, unknown> }).prototype
-      : undefined;
-  const nativeSyntaxKind: unknown = SyntaxKind;
-  const sourceFileKind =
-    typeof nativeSyntaxKind === 'object' && nativeSyntaxKind
-      ? (nativeSyntaxKind as Record<string, unknown>).SourceFile
-      : undefined;
-  const requiredFunctions = [
-    ['API', nativeAPI],
-    ['API.prototype.updateSnapshot', apiPrototype?.updateSnapshot],
-    ['API.prototype.close', apiPrototype?.close],
-  ] as const;
-  const missingFunction = requiredFunctions.find(
-    ([, value]) => typeof value !== 'function',
-  );
-  const missingSurface =
-    missingFunction?.[0] ??
-    (typeof sourceFileKind === 'number' ? undefined : 'SyntaxKind.SourceFile');
+  const api: unknown = API;
+  const prototype = (api as { prototype?: Record<string, unknown> }).prototype;
+  const missingSurface = (
+    [
+      ['API', api],
+      ['API.prototype.updateSnapshot', prototype?.updateSnapshot],
+      ['API.prototype.close', prototype?.close],
+      ['SyntaxKind.SourceFile', SyntaxKind.SourceFile],
+    ] as const
+  ).find(
+    ([, value]) => typeof value !== 'function' && typeof value !== 'number',
+  )?.[0];
   if (missingSurface) {
     throw new Error(
       `Incompatible @typescript/native API version "${nativePackage.version}": required surface "${missingSurface}" is missing. Reinstall @typescript/native@${SUPPORTED_NATIVE_VERSION}.`,
@@ -50,8 +37,15 @@ function verifyNativeCompatibility(): void {
   }
 }
 
+function startupError(error: unknown): Error {
+  return new Error(
+    `Failed to start the TypeScript native project service: ${error instanceof Error ? error.message : String(error)}`,
+    { cause: error },
+  );
+}
+
 function normalizePath(filePath: string): string {
-  const absolutePath = path.normalize(path.resolve(filePath));
+  const absolutePath = path.resolve(filePath);
   return process.platform === 'win32'
     ? absolutePath.toLowerCase()
     : absolutePath;
@@ -61,6 +55,7 @@ function verifySupportedConfig(project: Project): void {
   if (project.parsedCommandLine.projectReferences?.length) {
     throw new Error('TypeScript native project references are not supported.');
   }
+  // Native carries no `plugins`, nor a `raw` showing one an extended config set.
   const parsed = ts.getParsedCommandLineOfConfigFile(
     project.configFileName,
     {},
@@ -74,17 +69,12 @@ function verifySupportedConfig(project: Project): void {
   }
 }
 
-export function createNativeProjectService(): NativeProjectService {
+export function createNativeProjectService(
+  cwd = process.cwd(),
+): NativeProjectService {
   verifyNativeCompatibility();
-  const overlays = new Map<string, string | null>();
-  // The text the server currently has for a path, whether it came from an
-  // overlay or from the file itself.
+  const overlays = new Map<string, string>();
   const syncedFiles = new Map<string, string>();
-  // Config files already checked for unsupported settings. Parsing a TSConfig
-  // walks every directory its `include` globs can reach, so checking one per
-  // linted file is quadratic in the size of the project. The answer depends
-  // only on the config file, and this service is discarded when caches are
-  // cleared, so a config edit is picked up by the next service.
   const verifiedConfigs = new Set<string>();
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
@@ -95,20 +85,15 @@ export function createNativeProjectService(): NativeProjectService {
 
   try {
     api = new API({
-      cwd: process.cwd(),
+      cwd,
       fs: {
         fileExists: fileName =>
-          overlays.has(normalizePath(fileName))
-            ? overlays.get(normalizePath(fileName)) != null
-            : undefined,
+          overlays.has(normalizePath(fileName)) ? true : undefined,
         readFile: fileName => overlays.get(normalizePath(fileName)),
       },
     });
   } catch (error) {
-    throw new Error(
-      `Failed to start the TypeScript native project service: ${error instanceof Error ? error.message : String(error)}`,
-      { cause: error },
-    );
+    throw startupError(error);
   }
 
   function assertOpen(): void {
@@ -129,14 +114,33 @@ export function createNativeProjectService(): NativeProjectService {
       }
     } catch (error) {
       if (!snapshot) {
-        throw new Error(
-          `Failed to start the TypeScript native project service: ${error instanceof Error ? error.message : String(error)}`,
-          { cause: error },
-        );
+        throw startupError(error);
       }
       throw error;
     }
     return snapshot;
+  }
+
+  function contextFor(
+    nextSnapshot: Snapshot,
+    configFileName: string,
+    normalizedPath: string,
+  ): NativeProjectContext {
+    const project = nextSnapshot.getProject(configFileName);
+    const sourceFile = project?.program.getSourceFile(normalizedPath);
+    if (!project || !sourceFile) {
+      throw new Error(
+        `The TypeScript native project did not contain '${normalizedPath}'.`,
+      );
+    }
+    const context = {
+      checker: project.checker,
+      program: project.program,
+      project,
+      sourceFile,
+    };
+    fileContexts.set(normalizedPath, context);
+    return context;
   }
 
   const service: NativeProjectService = {
@@ -146,9 +150,6 @@ export function createNativeProjectService(): NativeProjectService {
       }
       closed = true;
 
-      // Every step runs even if an earlier one fails, so that a failure part
-      // way through still shuts the compiler process down rather than leaking
-      // it. The first failure is the one reported.
       let failure: Error | undefined;
       const attempt = (cleanup: () => void): void => {
         try {
@@ -187,15 +188,8 @@ export function createNativeProjectService(): NativeProjectService {
       }
       const previousSynced = syncedFiles.get(normalizedPath);
 
-      // The overlay exists to show the server text that differs from disk.
-      // ESLint usually hands over exactly what it read, so there is often
-      // nothing to show. Leaving the overlay unset lets the server read the
-      // file itself, which skips both the overlay and the snapshot
-      // replacement that would tell the server to re-read it.
-      //
-      // Comparing against disk only helps on a file with no overlay yet. Once
-      // one exists the server has already read it, so a matching disk file
-      // would still leave the stale overlay in place.
+      // Once an overlay exists the server has read it, so a matching disk file
+      // would leave that overlay stale — hence the `has` check.
       const servedFromDisk =
         !overlays.has(normalizedPath) &&
         ts.sys.readFile(normalizedPath) === code;
@@ -205,9 +199,6 @@ export function createNativeProjectService(): NativeProjectService {
       syncedFiles.set(normalizedPath, code);
       let knownConfigFileName = fileProjects.get(normalizedPath);
 
-      // Discovery costs two snapshot replacements and a default-project
-      // lookup, and each response describes the whole project. A file that an
-      // already-open project's program contains needs none of it.
       if (!knownConfigFileName && snapshot && openProjects.size) {
         for (const candidate of openProjects) {
           if (
@@ -222,32 +213,14 @@ export function createNativeProjectService(): NativeProjectService {
         }
       }
       if (knownConfigFileName) {
-        // Replacing the snapshot tells the server to re-read the file.
-        // When the overlay is byte-identical to the one the server already
-        // read, there is nothing to re-read. Comparing against the previous
-        // overlay rather than against disk is what makes this safe: a file
-        // whose text changed still forces the update.
         const unchanged = servedFromDisk || previousSynced === code;
-        const nextSnapshot =
+        return contextFor(
           unchanged && snapshot
             ? snapshot
-            : replaceSnapshot({ fileChanges: { changed: [normalizedPath] } });
-        const project = nextSnapshot.getProject(knownConfigFileName);
-        const sourceFile = project?.program.getSourceFile(normalizedPath);
-        if (!project || !sourceFile) {
-          throw new Error(
-            `The TypeScript native project did not contain '${normalizedPath}'.`,
-          );
-        }
-        const context = {
-          checker: project.checker,
-          program: project.program,
-          project,
-          snapshot: nextSnapshot,
-          sourceFile,
-        };
-        fileContexts.set(normalizedPath, context);
-        return context;
+            : replaceSnapshot({ fileChanges: { changed: [normalizedPath] } }),
+          knownConfigFileName,
+          normalizedPath,
+        );
       }
 
       const discoverySnapshot = replaceSnapshot({
@@ -269,9 +242,9 @@ export function createNativeProjectService(): NativeProjectService {
             `No TypeScript native configured project was located for '${normalizedPath}'.`,
           );
         }
-        if (!verifiedConfigs.has(discoveredProject.configFileName)) {
+        if (!verifiedConfigs.has(configFileName)) {
           verifySupportedConfig(discoveredProject);
-          verifiedConfigs.add(discoveredProject.configFileName);
+          verifiedConfigs.add(configFileName);
         }
         nextSnapshot = replaceSnapshot({
           closeFiles: [normalizedPath],
@@ -280,9 +253,7 @@ export function createNativeProjectService(): NativeProjectService {
             : [configFileName],
         });
       } catch (error) {
-        // Close the file even though discovery failed, so a later parse does
-        // not inherit a half-open state. The discovery failure is the one
-        // worth reporting, so a failure to clean up does not mask it.
+        // Leave no half-open file behind, without masking the real failure.
         try {
           replaceSnapshot({ closeFiles: [normalizedPath] });
         } catch {
@@ -292,48 +263,21 @@ export function createNativeProjectService(): NativeProjectService {
       }
       openProjects.add(configFileName);
       fileProjects.set(normalizedPath, configFileName);
-      const project = nextSnapshot.getProject(configFileName);
-      const sourceFile = project?.program.getSourceFile(normalizedPath);
-      if (!project || !sourceFile) {
-        throw new Error(
-          `The TypeScript native project did not contain '${normalizedPath}'.`,
-        );
-      }
-      const context = {
-        checker: project.checker,
-        program: project.program,
-        project,
-        snapshot: nextSnapshot,
-        sourceFile,
-      };
-      fileContexts.set(normalizedPath, context);
-      return context;
-    },
-
-    updateFiles(changes: NativeFileChanges): Snapshot {
-      assertOpen();
-      const fileChanges = {
-        changed: changes.changed?.map(normalizePath),
-        created: changes.created?.map(normalizePath),
-        deleted: changes.deleted?.map(normalizePath),
-      };
-      for (const filePath of [
-        ...(fileChanges.changed ?? []),
-        ...(fileChanges.created ?? []),
-        ...(fileChanges.deleted ?? []),
-      ]) {
-        syncedFiles.delete(filePath);
-      }
-      for (const filePath of fileChanges.deleted ?? []) {
-        overlays.set(filePath, null);
-      }
-      for (const filePath of fileChanges.created ?? []) {
-        if (overlays.get(filePath) == null && overlays.has(filePath)) {
-          overlays.delete(filePath);
-        }
-      }
-      return replaceSnapshot({ fileChanges });
+      return contextFor(nextSnapshot, configFileName, normalizedPath);
     },
   };
   return service;
+}
+
+let nativeProjectService: NativeProjectService | undefined;
+
+export function clearNativeProjectService(): void {
+  const service = nativeProjectService;
+  nativeProjectService = undefined;
+  service?.close();
+}
+
+/** One process is shared, so only the first `cwd` passed takes effect. */
+export function getNativeProjectService(cwd?: string): NativeProjectService {
+  return (nativeProjectService ??= createNativeProjectService(cwd));
 }

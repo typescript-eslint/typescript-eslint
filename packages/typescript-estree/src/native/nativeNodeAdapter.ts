@@ -10,9 +10,10 @@ import {
 } from '@typescript/native/unstable/ast';
 import * as ts from 'typescript';
 
+import { createFlagTranslations, translateFlags } from './translateFlags';
+
 export interface NativeNodeAdapter {
   adaptSourceFile(sourceFile: NativeSourceFile): ts.SourceFile;
-  getWrappedNode(node: unknown): ts.Node | undefined;
   unwrapNode(node: ts.Node): NativeNode;
   wrapNode(node: NativeNode): ts.Node;
 }
@@ -39,26 +40,12 @@ nativeToClassicKind.set(
   ts.SyntaxKind.EndOfFileToken,
 );
 
-/**
- * `NodeFlags` bits are numbered differently by the two compilers, so they are
- * paired up by member name. Only single-bit members are translated; the
- * composite masks are derived from those bits anyway.
- */
-const NODE_FLAG_TRANSLATIONS: readonly (readonly [number, number])[] =
-  Object.entries(NativeNodeFlags).flatMap(([name, value]) => {
-    const classic: unknown = ts.NodeFlags[name as keyof typeof ts.NodeFlags];
-    const native: number = typeof value === 'number' ? value : 0;
-    const isSingleBit = native > 0 && (native & (native - 1)) === 0;
-    return isSingleBit && typeof classic === 'number'
-      ? [[native, classic] as const]
-      : [];
-  });
+const NODE_FLAG_TRANSLATIONS = createFlagTranslations(
+  NativeNodeFlags,
+  ts.NodeFlags,
+);
 
-/**
- * `Namespace` and `GlobalAugmentation` have no native `NodeFlags` members at
- * all: TypeScript 7 models both structurally on the module declaration itself.
- * The ESTree conversion still reads them as flags, so they are derived back.
- */
+/** TypeScript 7 has no such `NodeFlags`; it models both structurally. */
 function getModuleDeclarationFlags(node: NativeNode): ts.NodeFlags {
   const declaration = node as NativeNode & {
     keyword?: NativeSyntaxKind;
@@ -76,33 +63,20 @@ function getModuleDeclarationFlags(node: NativeNode): ts.NodeFlags {
 }
 
 function translateNodeFlags(node: NativeNode): ts.NodeFlags {
-  let flags = ts.NodeFlags.None;
-  for (const [nativeFlag, classicFlag] of NODE_FLAG_TRANSLATIONS) {
-    if (node.flags & nativeFlag) {
-      flags |= classicFlag;
-    }
-  }
+  const flags = translateFlags(NODE_FLAG_TRANSLATIONS, node.flags);
   return node.kind === NativeSyntaxKind.ModuleDeclaration
     ? flags | getModuleDeclarationFlags(node)
     : flags;
 }
 
-/**
- * Node properties the two compilers spell differently. Reads of the classic
- * name are served from the native one, so both the ESTree converter and rules
- * see the AST shape they expect.
- *
- * Class and interface members are the awkward case: TypeScript 7 folds the
- * trailing `?` and `!` into a single `postfixToken`, where classic keeps
- * `questionToken` and `exclamationToken` apart. Nodes that still have a native
- * property of the classic name — a parameter's `?`, a mapped type's `?` — are
- * served from it directly, so the fallback only applies where it should.
- */
 const CLASSIC_TO_NATIVE_PROPERTY = new Map<string, string>([
-  // `TypeParameterDeclaration`
   ['default', 'defaultType'],
 ]);
 
+/**
+ * A fallback rather than a rename: nodes that do have a native property of the
+ * classic name — a parameter's `?`, a mapped type's `?` — keep using it.
+ */
 const POSTFIX_TOKEN_KINDS = new Map<string, NativeSyntaxKind>([
   ['exclamationToken', NativeSyntaxKind.ExclamationToken],
   ['questionToken', NativeSyntaxKind.QuestionToken],
@@ -130,7 +104,7 @@ function isNativeNodeArray(
 }
 
 export function createNativeNodeAdapter(
-  getSyntacticDiagnostics?: () => readonly NativeSyntacticDiagnostic[],
+  getSyntacticDiagnostics: () => readonly NativeSyntacticDiagnostic[],
 ): NativeNodeAdapter {
   const nativeToAdapter = new WeakMap<NativeNode, ts.Node>();
   const adapterToNative = new WeakMap<ts.Node, NativeNode>();
@@ -138,6 +112,7 @@ export function createNativeNodeAdapter(
     NativeNodeArray<NativeNode>,
     ts.NodeArray<ts.Node>
   >();
+  const nativeToChildren = new WeakMap<NativeNode, readonly ts.Node[]>();
 
   function translateKind(kind: NativeSyntaxKind): ts.SyntaxKind {
     const translated = nativeToClassicKind.get(kind);
@@ -186,7 +161,13 @@ export function createNativeNodeAdapter(
     return token;
   }
 
-  function getChildren(node: NativeNode, parent: ts.Node): readonly ts.Node[] {
+  function getChildren(node: NativeNode): readonly ts.Node[] {
+    const cached = nativeToChildren.get(node);
+    if (cached) {
+      return cached;
+    }
+
+    const parent = wrapNode(node);
     const children: NativeNode[] = [];
     node.forEachChild(
       child => {
@@ -208,20 +189,15 @@ export function createNativeNodeAdapter(
       sourceFile.languageVariant,
       sourceFile.text,
     );
-    // The classic scanner's deprecated position API is the only API capable of
-    // resuming after a structural native child.
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // Only the deprecated position API can resume after a structural child.
+    /* eslint-disable @typescript-eslint/no-deprecated */
     scanner.setTextPos(Math.max(0, node.pos));
     const result: ts.Node[] = [];
     let childIndex = 0;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     while (scanner.getTextPos() < node.end) {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const fullStart = scanner.getTextPos();
       const kind = scanner.scan();
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const tokenStart = scanner.getTokenPos();
-      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const tokenEnd = scanner.getTextPos();
       while (
         childIndex < children.length &&
@@ -235,7 +211,6 @@ export function createNativeNodeAdapter(
         tokenStart >= childStarts[childIndex] &&
         tokenStart < child.end
       ) {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
         scanner.setTextPos(child.end);
         result.push(wrapNode(child));
         childIndex += 1;
@@ -263,29 +238,23 @@ export function createNativeNodeAdapter(
         result.push(createToken(kind, fullStart, tokenEnd, parent));
       }
     }
+    /* eslint-enable @typescript-eslint/no-deprecated */
     while (childIndex < children.length) {
       result.push(wrapNode(children[childIndex++]));
     }
+    nativeToChildren.set(node, result);
     return result;
   }
 
-  /**
-   * Classic's `getFirstToken`/`getLastToken`: walk to the outermost child on
-   * the requested side, descending until an actual token is reached.
-   */
-  function getEdgeToken(
-    node: NativeNode,
-    parent: ts.Node,
-    first: boolean,
-  ): ts.Node | undefined {
-    const children = getChildren(node, parent);
+  function getEdgeToken(node: NativeNode, first: boolean): ts.Node | undefined {
+    const children = getChildren(node);
     const child = first ? children[0] : children.at(-1);
     if (!child) {
       return undefined;
     }
     return child.kind < ts.SyntaxKind.FirstNode
       ? child
-      : getEdgeToken(unwrap(child), child, first);
+      : getEdgeToken(unwrap(child), first);
   }
 
   function unwrap(node: ts.Node): NativeNode {
@@ -324,7 +293,7 @@ export function createNativeNodeAdapter(
           property === 'parseDiagnostics' &&
           target.kind === NativeSyntaxKind.SourceFile
         ) {
-          return (getSyntacticDiagnostics?.() ?? []).map(diagnostic => ({
+          return getSyntacticDiagnostics().map(diagnostic => ({
             category: diagnostic.category,
             code: diagnostic.code,
             file: proxy,
@@ -334,17 +303,16 @@ export function createNativeNodeAdapter(
           }));
         }
         if (property === 'getChildren') {
-          return () => getChildren(target, proxy);
+          return () => getChildren(target);
         }
         if (property === 'getChildCount') {
-          return () => getChildren(target, proxy).length;
+          return () => getChildren(target).length;
         }
         if (property === 'getChildAt') {
-          return (index: number) => getChildren(target, proxy)[index];
+          return (index: number) => getChildren(target)[index];
         }
         if (property === 'getFirstToken' || property === 'getLastToken') {
-          return () =>
-            getEdgeToken(target, proxy, property === 'getFirstToken');
+          return () => getEdgeToken(target, property === 'getFirstToken');
         }
         if (property === 'getEnd') {
           return () => target.end;
@@ -386,8 +354,6 @@ export function createNativeNodeAdapter(
               : target[property](nativeSourceFile);
           };
         }
-        // Native nodes expose their fields through accessors not represented by
-        // the base Node interface, so proxying necessarily starts from unknown.
         let value: unknown = Reflect.get(
           target,
           (typeof property === 'string' &&
@@ -437,7 +403,6 @@ export function createNativeNodeAdapter(
 
   return {
     adaptSourceFile: sourceFile => wrapNode(sourceFile) as ts.SourceFile,
-    getWrappedNode: node => nativeToAdapter.get(node as NativeNode),
     unwrapNode: unwrap,
     wrapNode,
   };

@@ -1,21 +1,14 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
-import path from 'node:path';
 import * as ts from 'typescript';
 
-import '../../src/native/index.js';
-import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
+import { parseAndGenerateServices } from '../../src/index.js';
+import {
+  isolateNativeBackend,
+  nativeFilePath as filePath,
+} from './nativeTestUtils';
 
-const fixtures = path.join(__dirname, '../fixtures/nativeProject');
-const filePath = path.join(fixtures, 'file.ts');
-
-beforeEach(() => {
-  // These tests select a backend per call, so the blanket environment switch
-  // has to stay out of the way.
-  vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
-});
-
-afterEach(clearCaches);
+isolateNativeBackend();
 
 function parse(code: string) {
   const { ast, services } = parseAndGenerateServices(code, {
@@ -135,6 +128,22 @@ describe('native parser services', () => {
     }).toStrictEqual({ forward: true, reverse: true });
   });
 
+  it('locates diagnostics in the source file they came from', () => {
+    const { ast, services } = parse('function test(...values,) {}');
+    const sourceFile = services.esTreeNodeToTSNodeMap
+      .get(ast.body[0])
+      .getSourceFile();
+    const diagnostics = services.program.getSemanticDiagnostics(sourceFile);
+    const diagnostic = diagnostics.find(({ code }) => code === 1013);
+
+    expect(diagnostics.map(({ file }) => file?.fileName)).toStrictEqual(
+      diagnostics.map(() => filePath),
+    );
+    expect(
+      diagnostic?.file?.getLineAndCharacterOfPosition(diagnostic.start!).line,
+    ).toBe(0);
+  });
+
   it.each([
     ['function test(...values,) {}', 'A rest parameter'],
     ['1 = 2;', 'left-hand side'],
@@ -148,12 +157,57 @@ describe('native parser services', () => {
     ).toThrow(message);
   });
 
-  it('names the missing native API when an unsupported one is reached', () => {
-    const { services } = parse('const value = 1;');
-    const checker = services.program.getTypeChecker();
+  it.each(['declarations', 'exports', 'members', 'parent', 'valueDeclaration'])(
+    'resolves a symbol’s %s once and reuses it',
+    property => {
+      const { ast, services } = parse(
+        'interface Box { a: number }\nexport declare const b: Box;',
+      );
+      const statement = ast.body[1] as TSESTree.ExportNamedDeclaration;
+      const declaration = statement.declaration as TSESTree.VariableDeclaration;
+      const symbol = services.getSymbolAtLocation(
+        declaration.declarations[0].id,
+      ) as unknown as Record<string, unknown>;
 
-    expect(
-      () => (checker as unknown as Record<string, unknown>).getTypeCount,
-    ).toThrow('not available on the TypeScript native preview API');
+      expect(symbol[property]).toBeDefined();
+      expect(symbol[property]).toBe(symbol[property]);
+    },
+  );
+
+  it('names the missing checker API when an unsupported one is reached', () => {
+    const { services } = parse('const value = 1;');
+    const checker = services.program.getTypeChecker() as unknown as Record<
+      string,
+      unknown
+    >;
+
+    expect(() => checker.getAmbientModules).toThrow(
+      'TypeChecker#getAmbientModules is not available on the TypeScript native preview API.',
+    );
   });
+
+  it('names the missing program API when an unsupported one is reached', () => {
+    const { services } = parse('const value = 1;');
+    const program = services.program as unknown as Record<string, unknown>;
+
+    expect(() => program.getTypeCount).toThrow(
+      '#getTypeCount is not available on the TypeScript native preview API.',
+    );
+  });
+
+  it.each(['then', 'toJSON', 'inspect'])(
+    'leaves the %s probe undefined rather than throwing',
+    member => {
+      const { services } = parse('const value = 1;');
+      const checker = services.program.getTypeChecker() as unknown as Record<
+        string,
+        unknown
+      >;
+
+      expect(checker[member]).toBeUndefined();
+      expect(
+        (services.program as unknown as Record<string, unknown>)[member],
+      ).toBeUndefined();
+    },
+  );
 });

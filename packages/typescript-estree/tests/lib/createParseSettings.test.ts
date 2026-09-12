@@ -44,17 +44,14 @@ describe(createParseSettings, () => {
       expect(parseSettings.projectService).toBe(projectService);
     });
 
-    it('forwards classic options without a backend', () => {
+    it('forwards classic options to the project service', () => {
       const options = {
-        backend: undefined,
         maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING: 9,
       };
 
       createParseSettings('', { projectService: options });
 
-      expect(createProjectService.mock.calls[0][0].options).toStrictEqual({
-        maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING: 9,
-      });
+      expect(createProjectService.mock.calls[0][0].options).toBe(options);
     });
 
     it('is created when options.projectService is undefined, options.project is true, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {

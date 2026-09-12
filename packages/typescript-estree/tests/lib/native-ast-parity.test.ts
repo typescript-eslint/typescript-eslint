@@ -1,26 +1,16 @@
 import path from 'node:path';
 
-import '../../src/native/index.js';
-import { clearCaches, parseAndGenerateServices } from '../../src/index.js';
+import { parseAndGenerateServices } from '../../src/index.js';
+import {
+  isolateNativeBackend,
+  nativeFilePath as filePath,
+  nativeFixtures,
+} from './nativeTestUtils';
 
-const fixtures = path.join(__dirname, '../fixtures/nativeProject');
-const filePath = path.join(fixtures, 'file.ts');
-const tsxFilePath = path.join(fixtures, 'component.tsx');
+const tsxFilePath = path.join(nativeFixtures, 'component.tsx');
 
-beforeEach(() => {
-  // These tests select a backend per call, so the blanket environment switch
-  // has to stay out of the way.
-  vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
-});
+isolateNativeBackend();
 
-afterEach(clearCaches);
-
-/**
- * The ESTree conversion reads the TypeScript AST through property names, node
- * kinds, and node flags — all three of which the native compiler numbers or
- * spells differently. Converting the same source with both backends and
- * comparing the result is what keeps those translations honest.
- */
 function convert(code: string, native: boolean, tsx = false): unknown {
   const { ast } = parseAndGenerateServices(code, {
     comment: true,
@@ -75,16 +65,12 @@ describe.for([
     'abstract class D { abstract m(): void; [key: string]: unknown; }\ninterface I { readonly [k: number]: string; new (): I; (): void }',
   ],
   [
-    // Unary, update, and keyword tokens are read as raw `SyntaxKind` numbers,
-    // which the two compilers number differently.
     'operators and keyword tokens',
     'declare let v: number;\n+v;\n-v;\n!v;\n~v;\n++v;\n--v;\nv++;\nv--;\ntype K = keyof object;\nimport.meta;',
   ],
   [
-    // An interface's `extends` is left out: the native compiler models it as a
-    // `TypeReference` with a `typeName`, where classic uses an
-    // `ExpressionWithTypeArguments` with an `expression`. Translating that
-    // needs a node kind change, not just a property rename.
+    // An interface's `extends` is left out: native models it as a
+    // `TypeReference` where classic uses an `ExpressionWithTypeArguments`.
     'classes with heritage clauses',
     'declare class Base {}\nclass Derived extends Base {}',
   ],
