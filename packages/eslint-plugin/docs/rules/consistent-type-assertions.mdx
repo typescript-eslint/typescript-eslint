@@ -84,6 +84,8 @@ function bar(): T {
 </TabItem>
 </Tabs>
 
+A single level of array nesting is treated as a parameter as well, such as `print([{ foo: 1 } as T])`, since there is still no place to annotate the type instead.
+
 Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow-as-parameter' }`:
 
 <Tabs>
@@ -156,6 +158,8 @@ function bar(): T {
 
 </TabItem>
 </Tabs>
+
+As with `objectLiteralTypeAssertions`, a single level of array nesting is also treated as a parameter, such as `print([['foo'] as T])`.
 
 Examples of code for `{ assertionStyle: 'as', arrayLiteralTypeAssertions: 'allow-as-parameter' }`:
 
