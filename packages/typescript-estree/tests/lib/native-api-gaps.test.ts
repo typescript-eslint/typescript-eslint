@@ -60,12 +60,16 @@ describe('native preview API gaps', () => {
     expect(checker.typeToString(checker.getAwaitedType(type)!)).toBe('number');
   });
 
-  it('does not preserve the declared order of union constituents', () => {
+  it('orders union constituents by name where classic orders them by type id', () => {
     const { checker, type } = typeOfDeclaration(
-      'declare const u: number | string;',
+      [
+        'interface Zebra { z: number }',
+        'interface Apple { a: number }',
+        'declare const u: Zebra | Apple;',
+      ].join('\n'),
     );
 
-    // Classic reports `number | string`, matching the declaration.
-    expect(checker.typeToString(type)).toBe('string | number');
+    // Classic reports `Zebra | Apple`.
+    expect(checker.typeToString(type)).toBe('Apple | Zebra');
   });
 });
