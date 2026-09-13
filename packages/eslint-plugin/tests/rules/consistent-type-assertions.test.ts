@@ -510,6 +510,33 @@ function foo() {
         },
       ],
     },
+    {
+      code: 'print([{ bar: 5 } as Foo]);',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'new print([{ bar: 5 } as Foo]);',
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: 'print([<Foo>{ bar: 5 }]);',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
 
     {
       code: 'const x = [] as string[];',
@@ -680,6 +707,24 @@ function foo() {
     },
     {
       code: 'new Print(<Foo>[5]);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print([[5] as Foo]);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print([<Foo>[5]]);',
       options: [
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
