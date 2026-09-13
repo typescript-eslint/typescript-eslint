@@ -38,6 +38,38 @@ export type Options = readonly [OptUnion];
 type AsExpressionOrTypeAssertion =
   TSESTree.TSAsExpression | TSESTree.TSTypeAssertion;
 
+/**
+ * Node types in which a value is passed along to something else, meaning
+ * there is no type annotation the user could reach for instead of an
+ * assertion.
+ */
+const PARAMETER_POSITION_NODE_TYPES = new Set<AST_NODE_TYPES>([
+  AST_NODE_TYPES.AssignmentPattern,
+  AST_NODE_TYPES.CallExpression,
+  AST_NODE_TYPES.JSXExpressionContainer,
+  AST_NODE_TYPES.NewExpression,
+  AST_NODE_TYPES.ThrowStatement,
+]);
+
+function isInParameterPosition(node: TSESTree.Node): boolean {
+  return (
+    PARAMETER_POSITION_NODE_TYPES.has(node.type) ||
+    // an interpolation of a tagged template literal is a parameter, too
+    (node.type === AST_NODE_TYPES.TemplateLiteral &&
+      node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression)
+  );
+}
+
+function isAsParameter(node: AsExpressionOrTypeAssertion): boolean {
+  const { parent } = node;
+
+  // a single level of array nesting is still a parameter position, as there
+  // is no place to annotate the type instead: print([{ bar: 5 } as Foo])
+  return isInParameterPosition(
+    parent.type === AST_NODE_TYPES.ArrayExpression ? parent.parent : parent,
+  );
+}
+
 export default createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
   meta: {
@@ -252,18 +284,6 @@ export default createRule<Options, MessageIds>({
         ],
       });
       return suggestions;
-    }
-
-    function isAsParameter(node: AsExpressionOrTypeAssertion): boolean {
-      return (
-        node.parent.type === AST_NODE_TYPES.NewExpression ||
-        node.parent.type === AST_NODE_TYPES.CallExpression ||
-        node.parent.type === AST_NODE_TYPES.ThrowStatement ||
-        node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
-        node.parent.type === AST_NODE_TYPES.JSXExpressionContainer ||
-        (node.parent.type === AST_NODE_TYPES.TemplateLiteral &&
-          node.parent.parent.type === AST_NODE_TYPES.TaggedTemplateExpression)
-      );
     }
 
     function checkExpressionForObjectAssertion(
