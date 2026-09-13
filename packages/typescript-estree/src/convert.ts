@@ -2471,75 +2471,7 @@ export class Converter {
           range[0] = token.getStart(this.ast);
         }
 
-        let options = null;
-        if (node.attributes) {
-          const value = this.createNode<TSESTree.ObjectExpression>(
-            node.attributes,
-            {
-              type: AST_NODE_TYPES.ObjectExpression,
-              properties: node.attributes.elements.map(importAttribute =>
-                this.createNode<TSESTree.Property>(importAttribute, {
-                  type: AST_NODE_TYPES.Property,
-                  computed: false,
-                  key: this.convertChild(importAttribute.name),
-                  kind: 'init',
-                  method: false,
-                  optional: false,
-                  shorthand: false,
-                  value: this.convertChild(importAttribute.value),
-                }),
-              ),
-            },
-          );
-
-          const commaToken = findNextToken(node.argument, node, this.ast)!;
-          const openBraceToken = findNextToken(commaToken, node, this.ast)!;
-          const tokenAfterAttributes = findNextToken(
-            node.attributes,
-            node,
-            this.ast,
-          )!;
-          // Since TS 5.9, there could be a trailing comma, i.e. `{ with: { ... }, }`
-          const closeBraceToken =
-            tokenAfterAttributes.kind === ts.SyntaxKind.CommaToken
-              ? findNextToken(tokenAfterAttributes, node, this.ast)!
-              : tokenAfterAttributes;
-          const withOrAssertToken = findNextToken(
-            openBraceToken,
-            node,
-            this.ast,
-          )!;
-          const withOrAssertTokenRange = getRange(withOrAssertToken, this.ast);
-          const withOrAssertName =
-            withOrAssertToken.kind === ts.SyntaxKind.AssertKeyword
-              ? 'assert'
-              : 'with';
-
-          options = this.createNode<TSESTree.ObjectExpression>(node, {
-            type: AST_NODE_TYPES.ObjectExpression,
-            range: [openBraceToken.getStart(this.ast), closeBraceToken.end],
-            properties: [
-              this.createNode<TSESTree.Property>(node, {
-                type: AST_NODE_TYPES.Property,
-                range: [withOrAssertTokenRange[0], node.attributes.end],
-                computed: false,
-                key: this.createNode<TSESTree.Identifier>(node, {
-                  type: AST_NODE_TYPES.Identifier,
-                  range: withOrAssertTokenRange,
-                  decorators: [],
-                  name: withOrAssertName,
-                  optional: false,
-                  typeAnnotation: undefined,
-                }),
-                kind: 'init',
-                method: false,
-                optional: false,
-                shorthand: false,
-                value,
-              }),
-            ],
-          });
-        }
+        const options = this.convertChildren(node.attributes?.elements ?? []);
 
         const argument = this.convertChild(node.argument);
         const source = argument.literal;
