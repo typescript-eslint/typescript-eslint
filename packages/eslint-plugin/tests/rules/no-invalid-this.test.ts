@@ -15,12 +15,12 @@ describe('foo', () => {
 });
     `,
     `
-      interface SomeType {
-        prop: string;
-      }
-      function foo(this: SomeType) {
-        this.prop;
-      }
+interface SomeType {
+  prop: string;
+}
+function foo(this: SomeType) {
+  this.prop;
+}
     `,
     `
 function foo(this: prop) {

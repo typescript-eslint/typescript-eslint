@@ -23,7 +23,6 @@ Snapshot Diff:
           },
         },
         importKind: 'type',
-+       isExport: false,
         moduleReference: TSExternalModuleReference {
           type: 'TSExternalModuleReference',
           expression: Literal {
@@ -54,9 +53,11 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
-    range: [73, 107],
+-   range: [73, 107],
++   range: [0, 107],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

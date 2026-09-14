@@ -36,10 +36,8 @@ Snapshot Diff:
           },
         },
         implements: Array [
--         TSClassImplements {
--           type: 'TSClassImplements',
-+         TSExpressionWithTypeArguments {
-+           type: 'TSExpressionWithTypeArguments',
+          TSClassImplements {
+            type: 'TSClassImplements',
             expression: Identifier {
               type: 'Identifier',
               decorators: Array [],
@@ -71,9 +69,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 101],
+-   range: [73, 101],
++   range: [0, 101],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

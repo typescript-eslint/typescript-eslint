@@ -55,9 +55,8 @@ Program {
               end: { column: 24, line: 4 },
             },
           },
-          PropertyDefinition {
-            type: "PropertyDefinition",
-            abstract: true,
+          TSAbstractPropertyDefinition {
+            type: "TSAbstractPropertyDefinition",
             computed: false,
             declare: true,
             decorators: [],
@@ -104,9 +103,8 @@ Program {
               end: { column: 33, line: 5 },
             },
           },
-          PropertyDefinition {
-            type: "PropertyDefinition",
-            abstract: true,
+          TSAbstractPropertyDefinition {
+            type: "TSAbstractPropertyDefinition",
             accessibility: "public",
             computed: false,
             declare: true,
@@ -154,9 +152,8 @@ Program {
               end: { column: 40, line: 6 },
             },
           },
-          PropertyDefinition {
-            type: "PropertyDefinition",
-            abstract: true,
+          TSAbstractPropertyDefinition {
+            type: "TSAbstractPropertyDefinition",
             computed: false,
             declare: true,
             decorators: [],
@@ -203,9 +200,8 @@ Program {
               end: { column: 42, line: 7 },
             },
           },
-          PropertyDefinition {
-            type: "PropertyDefinition",
-            abstract: true,
+          TSAbstractPropertyDefinition {
+            type: "TSAbstractPropertyDefinition",
             accessibility: "public",
             computed: false,
             declare: true,
@@ -287,9 +283,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 303],
+  range: [0, 303],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 10 },
   },
 }

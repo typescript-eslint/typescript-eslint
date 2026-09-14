@@ -15,11 +15,12 @@ Program {
       },
       declare: false,
       extends: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
-          expression: TSQualifiedName {
-            type: "TSQualifiedName",
-            left: Identifier {
+        TSInterfaceHeritage {
+          type: "TSInterfaceHeritage",
+          expression: MemberExpression {
+            type: "MemberExpression",
+            computed: false,
+            object: Identifier {
               type: "Identifier",
               decorators: [],
               name: "bar",
@@ -31,7 +32,8 @@ Program {
                 end: { column: 25, line: 3 },
               },
             },
-            right: Identifier {
+            optional: false,
+            property: Identifier {
               type: "Identifier",
               decorators: [],
               name: "baz",
@@ -80,9 +82,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 106],
+  range: [0, 106],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

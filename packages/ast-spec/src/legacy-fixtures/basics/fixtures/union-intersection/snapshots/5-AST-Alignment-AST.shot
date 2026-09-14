@@ -190,62 +190,33 @@ Snapshot Diff:
                         end: { column: 23, line: 5 },
                       },
                     },
--                   TSIntersectionType {
--                     type: 'TSIntersectionType',
--                     types: Array [
--                       TSStringKeyword {
--                         type: 'TSStringKeyword',
-+                   TSParenthesizedType {
-+                     type: 'TSParenthesizedType',
-+                     typeAnnotation: TSIntersectionType {
-+                       type: 'TSIntersectionType',
-+                       types: Array [
-+                         TSStringKeyword {
-+                           type: 'TSStringKeyword',
+                    TSIntersectionType {
+                      type: 'TSIntersectionType',
+                      types: Array [
+                        TSStringKeyword {
+                          type: 'TSStringKeyword',
 
--                         range: [173, 179],
--                         loc: {
--                           start: { column: 27, line: 5 },
--                           end: { column: 33, line: 5 },
-+                           range: [173, 179],
-+                           loc: {
-+                             start: { column: 27, line: 5 },
-+                             end: { column: 33, line: 5 },
-+                           },
+                          range: [173, 179],
+                          loc: {
+                            start: { column: 27, line: 5 },
+                            end: { column: 33, line: 5 },
                           },
--                       },
--                       TSBooleanKeyword {
--                         type: 'TSBooleanKeyword',
-+                         TSBooleanKeyword {
-+                           type: 'TSBooleanKeyword',
-
--                         range: [182, 189],
--                         loc: {
--                           start: { column: 36, line: 5 },
--                           end: { column: 43, line: 5 },
-+                           range: [182, 189],
-+                           loc: {
-+                             start: { column: 36, line: 5 },
-+                             end: { column: 43, line: 5 },
-+                           },
-                          },
-+                       ],
-+
-+                       range: [173, 189],
-+                       loc: {
-+                         start: { column: 27, line: 5 },
-+                         end: { column: 43, line: 5 },
                         },
--                     ],
-+                     },
+                        TSBooleanKeyword {
+                          type: 'TSBooleanKeyword',
 
--                     range: [173, 189],
-+                     range: [172, 190],
+                          range: [182, 189],
+                          loc: {
+                            start: { column: 36, line: 5 },
+                            end: { column: 43, line: 5 },
+                          },
+                        },
+                      ],
+
+                      range: [173, 189],
                       loc: {
--                       start: { column: 27, line: 5 },
--                       end: { column: 43, line: 5 },
-+                       start: { column: 26, line: 5 },
-+                       end: { column: 44, line: 5 },
+                        start: { column: 27, line: 5 },
+                        end: { column: 43, line: 5 },
                       },
                     },
                   ],
@@ -304,62 +275,33 @@ Snapshot Diff:
                 typeAnnotation: TSUnionType {
                   type: 'TSUnionType',
                   types: Array [
--                   TSIntersectionType {
--                     type: 'TSIntersectionType',
--                     types: Array [
--                       TSNumberKeyword {
--                         type: 'TSNumberKeyword',
-+                   TSParenthesizedType {
-+                     type: 'TSParenthesizedType',
-+                     typeAnnotation: TSIntersectionType {
-+                       type: 'TSIntersectionType',
-+                       types: Array [
-+                         TSNumberKeyword {
-+                           type: 'TSNumberKeyword',
+                    TSIntersectionType {
+                      type: 'TSIntersectionType',
+                      types: Array [
+                        TSNumberKeyword {
+                          type: 'TSNumberKeyword',
 
--                         range: [210, 216],
--                         loc: {
--                           start: { column: 18, line: 6 },
--                           end: { column: 24, line: 6 },
-+                           range: [210, 216],
-+                           loc: {
-+                             start: { column: 18, line: 6 },
-+                             end: { column: 24, line: 6 },
-+                           },
+                          range: [210, 216],
+                          loc: {
+                            start: { column: 18, line: 6 },
+                            end: { column: 24, line: 6 },
                           },
--                       },
--                       TSStringKeyword {
--                         type: 'TSStringKeyword',
-+                         TSStringKeyword {
-+                           type: 'TSStringKeyword',
-
--                         range: [219, 225],
--                         loc: {
--                           start: { column: 27, line: 6 },
--                           end: { column: 33, line: 6 },
-+                           range: [219, 225],
-+                           loc: {
-+                             start: { column: 27, line: 6 },
-+                             end: { column: 33, line: 6 },
-+                           },
-                          },
-+                       ],
-+
-+                       range: [210, 225],
-+                       loc: {
-+                         start: { column: 18, line: 6 },
-+                         end: { column: 33, line: 6 },
                         },
--                     ],
-+                     },
+                        TSStringKeyword {
+                          type: 'TSStringKeyword',
 
--                     range: [210, 225],
-+                     range: [209, 226],
+                          range: [219, 225],
+                          loc: {
+                            start: { column: 27, line: 6 },
+                            end: { column: 33, line: 6 },
+                          },
+                        },
+                      ],
+
+                      range: [210, 225],
                       loc: {
--                       start: { column: 18, line: 6 },
--                       end: { column: 33, line: 6 },
-+                       start: { column: 17, line: 6 },
-+                       end: { column: 34, line: 6 },
+                        start: { column: 18, line: 6 },
+                        end: { column: 33, line: 6 },
                       },
                     },
                     TSBooleanKeyword {
@@ -578,9 +520,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 395],
+-   range: [73, 395],
++   range: [0, 395],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 12 },
     },
   }

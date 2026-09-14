@@ -91,20 +91,20 @@ function foo<T extends (arg: any) => void>(arg: T) {}
     },
     {
       code: `
-        enum A {
-          A,
-          B,
-        }
+enum A {
+  A,
+  B,
+}
       `,
       errors: [
         {
-          column: 11,
+          column: 3,
           data: {
             name: 'A',
-            shadowedColumn: 14,
+            shadowedColumn: 6,
             shadowedLine: 2,
           },
-          endColumn: 12,
+          endColumn: 4,
           endLine: 3,
           line: 3,
           messageId: 'noEnumShadow',
@@ -113,23 +113,23 @@ function foo<T extends (arg: any) => void>(arg: T) {}
     },
     {
       code: `
-        enum A {
-          B = 2,
-        }
+enum A {
+  B = 2,
+}
 
-        enum A {
-          A = 1,
-        }
+enum A {
+  A = 1,
+}
       `,
       errors: [
         {
-          column: 11,
+          column: 3,
           data: {
             name: 'A',
-            shadowedColumn: 14,
+            shadowedColumn: 6,
             shadowedLine: 2,
           },
-          endColumn: 12,
+          endColumn: 4,
           endLine: 7,
           line: 7,
           messageId: 'noEnumShadow',
@@ -1324,43 +1324,43 @@ declare namespace Lib {
     // https://github.com/typescript-eslint/typescript-eslint/issues/2724
     {
       code: `
-        declare global {
-          interface ArrayConstructor {}
-        }
-        export {};
+declare global {
+  interface ArrayConstructor {}
+}
+export {};
       `,
       options: [{ builtinGlobals: true }],
     },
     `
-      declare global {
-        const a: string;
+declare global {
+  const a: string;
 
-        namespace Foo {
-          const a: number;
-        }
-      }
-      export {};
+  namespace Foo {
+    const a: number;
+  }
+}
+export {};
     `,
     {
       code: `
-        declare global {
-          type A = 'foo';
+declare global {
+  type A = 'foo';
 
-          namespace Foo {
-            type A = 'bar';
-          }
-        }
-        export {};
+  namespace Foo {
+    type A = 'bar';
+  }
+}
+export {};
       `,
       options: [{ ignoreTypeValueShadow: false }],
     },
     {
       code: `
-        declare global {
-          const foo: string;
-          type Fn = (foo: number) => void;
-        }
-        export {};
+declare global {
+  const foo: string;
+  type Fn = (foo: number) => void;
+}
+export {};
       `,
       options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
     },

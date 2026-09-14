@@ -4,16 +4,44 @@ exports[`vue-sfc > eslint > should work successfully 1`] = `
 [
   {
     "errorCount": 1,
-    "fatalErrorCount": 1,
+    "fatalErrorCount": 0,
     "filePath": "<root>/Hello.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": [
       {
-        "fatal": true,
-        "message": "Parsing error: error TS5012: Cannot read file '/usr/linked/tsconfig.json': ENOENT: no such file or directory, open '/usr/linked/tsconfig.json'.",
-        "ruleId": null,
+        "column": 39,
+        "endColumn": 42,
+        "endLine": 26,
+        "line": 26,
+        "message": "Unexpected any. Specify a different type.",
+        "messageId": "unexpectedAny",
+        "ruleId": "@typescript-eslint/no-explicit-any",
         "severity": 2,
+        "suggestions": [
+          {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": {
+              "range": [
+                575,
+                578,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": {
+              "range": [
+                575,
+                578,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
       },
     ],
     "source": "<!-- Hello.vue -->
@@ -28,32 +56,30 @@ exports[`vue-sfc > eslint > should work successfully 1`] = `
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-export default Vue.extend({
-  props: ['name', 'initialEnthusiasm'],
-  data() {
-    return {
-      enthusiasm: this.initialEnthusiasm,
-    };
-  },
-  methods: {
-    increment() {
-      this.enthusiasm++;
-    },
-    decrement() {
-      if (this.enthusiasm > 1) {
-        this.enthusiasm--;
-      }
-    },
-  },
-  computed: {
-    exclamationMarks(): any {
-      // !!!!! expected error !!!!!
-      return Array(this.enthusiasm + 1).join('!');
-    },
-  },
-});
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+
+interface Props {
+  initialEnthusiasm?: number;
+  name?: string;
+}
+
+const { initialEnthusiasm = 1, name = 'World' } = defineProps<Props>();
+
+const enthusiasm = ref(initialEnthusiasm);
+
+// !!!!! expected error !!!!!
+const exclamationMarks = computed((): any => '!'.repeat(enthusiasm.value));
+
+function increment(): void {
+  enthusiasm.value++;
+}
+
+function decrement(): void {
+  if (enthusiasm.value > 1) {
+    enthusiasm.value--;
+  }
+}
 </script>
 ",
     "suppressedMessages": [],
@@ -88,22 +114,14 @@ export default Vue.extend({
     "warningCount": 0,
   },
   {
-    "errorCount": 1,
-    "fatalErrorCount": 1,
+    "errorCount": 0,
+    "fatalErrorCount": 0,
     "filePath": "<root>/Utility.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": [
-      {
-        "fatal": true,
-        "message": "Parsing error: error TS5012: Cannot read file '/usr/linked/tsconfig.json': ENOENT: no such file or directory, open '/usr/linked/tsconfig.json'.",
-        "ruleId": null,
-        "severity": 2,
-      },
-    ],
-    "source": "<script lang="ts">
+    "messages": [],
+    "output": "<script lang="ts">
 /* https://github.com/typescript-eslint/typescript-eslint/issues/2591 */
-/* eslint-disable class-methods-use-this */
 export default class Utility {
   get a() {
     const list: Array<string> = [];
@@ -111,7 +129,7 @@ export default class Utility {
   }
 
   get b() {
-    const a = this.a as Array<string>;
+    const a = this.a;
     return a;
   }
 }
@@ -149,52 +167,12 @@ export default class Utility {
     "warningCount": 0,
   },
   {
-    "errorCount": 1,
-    "fatalErrorCount": 1,
+    "errorCount": 0,
+    "fatalErrorCount": 0,
     "filePath": "<root>/World.vue",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
-    "messages": [
-      {
-        "fatal": true,
-        "message": "Parsing error: error TS5012: Cannot read file '/usr/linked/tsconfig.json': ENOENT: no such file or directory, open '/usr/linked/tsconfig.json'.",
-        "ruleId": null,
-        "severity": 2,
-      },
-    ],
-    "source": "<!-- World.vue -->
-<template>
-  <div>
-    <div :id="name">
-      {{ enthusiasm }}
-    </div>
-    <button @click="decrement">-</button>
-    <button @click="increment">+</button>
-  </div>
-</template>
-
-<script lang="ts">
-import Vue from 'vue';
-export default Vue.extend({
-  props: ['name', 'initialEnthusiasm'],
-  data() {
-    return {
-      enthusiasm: this.initialEnthusiasm,
-    };
-  },
-  methods: {
-    increment() {
-      this.enthusiasm++;
-    },
-    decrement() {
-      if (this.enthusiasm > 1) {
-        this.enthusiasm--;
-      }
-    },
-  },
-});
-</script>
-",
+    "messages": [],
     "suppressedMessages": [],
     "usedDeprecatedRules": [
       {

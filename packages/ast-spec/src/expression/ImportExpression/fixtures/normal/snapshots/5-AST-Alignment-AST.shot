@@ -12,7 +12,6 @@ Snapshot Diff:
         type: 'ExpressionStatement',
         expression: ImportExpression {
           type: 'ImportExpression',
-+         attributes: null,
           options: null,
 -         phase: null,
           source: Literal {

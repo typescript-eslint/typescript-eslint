@@ -23,7 +23,7 @@
     "rootDir": "${configDir}/",
     "skipDefaultLibCheck": false,
     "skipLibCheck": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "strict": true,
     "target": "ES2022",
     "types": ["vitest/globals", "vitest/importMeta", "node"],

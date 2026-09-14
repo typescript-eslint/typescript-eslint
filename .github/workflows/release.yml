@@ -59,7 +59,7 @@ jobs:
   # Validation job to ensure secure inputs and determine release type
   validate:
     name: Validate Release Parameters
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     # Only run on the official repository to avoid wasted compute and unnecessary errors on forks (also an initial albeit weak first layer of protection against unauthorized releases)
     if: github.repository == 'typescript-eslint/typescript-eslint'
     outputs:

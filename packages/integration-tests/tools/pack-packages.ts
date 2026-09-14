@@ -111,7 +111,10 @@ export const setup = async (project: TestProject): Promise<void> => {
 
   const PNPM_CATALOG = await getPnpmCatalog();
 
-  const PNPM_WORKSPACE_CONTENT = await getPnpmWorkspaceContent();
+  const PNPM_WORKSPACE_CONTENT = await getPnpmWorkspaceContent({
+    // Ensure everything uses the locally packed versions instead of the NPM versions
+    overrides: tseslintPackages,
+  });
 
   const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
     ...tseslintPackages,
@@ -130,9 +133,6 @@ export const setup = async (project: TestProject): Promise<void> => {
       {
         devDependencies: BASE_DEPENDENCIES,
         packageManager: rootPackageJson.packageManager,
-        pnpm: {
-          overrides: tseslintPackages,
-        },
         private: true,
       },
       null,
@@ -189,11 +189,6 @@ export const setup = async (project: TestProject): Promise<void> => {
             },
 
             packageManager: rootPackageJson.packageManager,
-
-            // ensure everything uses the locally packed versions instead of the NPM versions
-            pnpm: {
-              overrides: tseslintPackages,
-            },
           },
           null,
           2,
@@ -264,9 +259,13 @@ async function getPnpmCatalog() {
   return parsed.catalog;
 }
 
-// Using the root pnpm-workspace.yaml content but without the catalog, overrides, and packages,
+// Using the root pnpm-workspace.yaml content but without the catalog and packages,
 // so it contains only pnpm's settings without the monorepo-related stuff.
-async function getPnpmWorkspaceContent(): Promise<string> {
+async function getPnpmWorkspaceContent({
+  overrides,
+}: {
+  overrides: Record<string, string>;
+}): Promise<string> {
   const pnpmWorkspace = await fs.readFile(
     path.join(ROOT_DIR, 'pnpm-workspace.yaml'),
     { encoding: 'utf-8' },
@@ -275,8 +274,9 @@ async function getPnpmWorkspaceContent(): Promise<string> {
   const parsed = yaml.parse(pnpmWorkspace) as Record<string, unknown>;
 
   delete parsed.catalog;
-  delete parsed.overrides;
   delete parsed.packages;
+
+  parsed.overrides = overrides;
 
   // the ts7 fixture installs typescript releases newer than the root
   // minimumReleaseAge allows; `@typescript/*` covers TS 7's native binaries

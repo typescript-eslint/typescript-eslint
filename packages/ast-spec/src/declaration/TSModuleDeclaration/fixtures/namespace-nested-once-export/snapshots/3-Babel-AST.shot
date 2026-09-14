@@ -3,24 +3,36 @@ Program {
   body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: TSModuleDeclaration {
         type: "TSModuleDeclaration",
-        body: TSModuleDeclaration {
-          type: "TSModuleDeclaration",
-          body: TSModuleBlock {
-            type: "TSModuleBlock",
-            body: [],
+        body: TSModuleBlock {
+          type: "TSModuleBlock",
+          body: [],
 
-            range: [25, 27],
+          range: [25, 27],
+          loc: {
+            start: { column: 25, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+        declare: false,
+        global: false,
+        id: TSQualifiedName {
+          type: "TSQualifiedName",
+          left: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "abd",
+            optional: false,
+
+            range: [17, 20],
             loc: {
-              start: { column: 25, line: 1 },
-              end: { column: 27, line: 1 },
+              start: { column: 17, line: 1 },
+              end: { column: 20, line: 1 },
             },
           },
-          declare: false,
-          global: false,
-          id: Identifier {
+          right: Identifier {
             type: "Identifier",
             decorators: [],
             name: "def",
@@ -33,24 +45,10 @@ Program {
             },
           },
 
-          range: [21, 27],
-          loc: {
-            start: { column: 21, line: 1 },
-            end: { column: 27, line: 1 },
-          },
-        },
-        declare: false,
-        global: false,
-        id: Identifier {
-          type: "Identifier",
-          decorators: [],
-          name: "abd",
-          optional: false,
-
-          range: [17, 20],
+          range: [17, 24],
           loc: {
             start: { column: 17, line: 1 },
-            end: { column: 20, line: 1 },
+            end: { column: 24, line: 1 },
           },
         },
         kind: "namespace",

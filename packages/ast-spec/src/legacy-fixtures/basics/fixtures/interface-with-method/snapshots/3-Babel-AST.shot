@@ -23,7 +23,7 @@ Program {
             },
             kind: "method",
             optional: false,
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -56,8 +56,7 @@ Program {
               },
             ],
             readonly: false,
-            static: false,
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
                 type: "TSVoidKeyword",
@@ -75,6 +74,7 @@ Program {
                 end: { column: 22, line: 4 },
               },
             },
+            static: false,
 
             range: [92, 113],
             loc: {
@@ -99,7 +99,7 @@ Program {
             },
             kind: "method",
             optional: false,
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -144,8 +144,7 @@ Program {
               },
             ],
             readonly: false,
-            static: false,
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
                 type: "TSTypeReference",
@@ -175,6 +174,7 @@ Program {
                 end: { column: 17, line: 5 },
               },
             },
+            static: false,
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
               params: [
@@ -182,7 +182,18 @@ Program {
                   type: "TSTypeParameter",
                   const: false,
                   in: false,
-                  name: "T",
+                  name: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "T",
+                    optional: false,
+
+                    range: [118, 119],
+                    loc: {
+                      start: { column: 4, line: 5 },
+                      end: { column: 5, line: 5 },
+                    },
+                  },
                   out: false,
 
                   range: [118, 119],
@@ -238,9 +249,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 135],
+  range: [0, 135],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 7 },
   },
 }

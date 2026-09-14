@@ -39,19 +39,7 @@ Program {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
-              typeName: Identifier {
-                type: "Identifier",
-                decorators: [],
-                name: "Map",
-                optional: false,
-
-                range: [92, 95],
-                loc: {
-                  start: { column: 19, line: 3 },
-                  end: { column: 22, line: 3 },
-                },
-              },
-              typeParameters: TSTypeParameterInstantiation {
+              typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
                 params: [
                   TSSymbolKeyword {
@@ -78,6 +66,18 @@ Program {
                 loc: {
                   start: { column: 22, line: 3 },
                   end: { column: 38, line: 3 },
+                },
+              },
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "Map",
+                optional: false,
+
+                range: [92, 95],
+                loc: {
+                  start: { column: 19, line: 3 },
+                  end: { column: 22, line: 3 },
                 },
               },
 
@@ -112,9 +112,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 116],
+  range: [0, 116],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

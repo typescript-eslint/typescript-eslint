@@ -131,9 +131,9 @@ type obj = {
     // https://github.com/eslint/typescript-eslint-parser/issues/397
     {
       code: `
-        function foo(a: number, ...rest: any[]): void {
-          return;
-        }
+function foo(a: number, ...rest: any[]): void {
+  return;
+}
       `,
       options: [{ ignoreRestArgs: true }],
     },
@@ -1704,14 +1704,14 @@ const test = <T extends Partial<never>>() => {};
     {
       // https://github.com/eslint/typescript-eslint-parser/issues/397
       code: `
-        function foo(a: number, ...rest: any[]): void {
-          return;
-        }
+function foo(a: number, ...rest: any[]): void {
+  return;
+}
       `,
       errors: [
         {
-          column: 42,
-          endColumn: 45,
+          column: 34,
+          endColumn: 37,
           endLine: 2,
           line: 2,
           messageId: 'unexpectedAny',
@@ -1719,17 +1719,17 @@ const test = <T extends Partial<never>>() => {};
             {
               messageId: 'suggestUnknown',
               output: `
-        function foo(a: number, ...rest: unknown[]): void {
-          return;
-        }
+function foo(a: number, ...rest: unknown[]): void {
+  return;
+}
       `,
             },
             {
               messageId: 'suggestNever',
               output: `
-        function foo(a: number, ...rest: never[]): void {
-          return;
-        }
+function foo(a: number, ...rest: never[]): void {
+  return;
+}
       `,
             },
           ],

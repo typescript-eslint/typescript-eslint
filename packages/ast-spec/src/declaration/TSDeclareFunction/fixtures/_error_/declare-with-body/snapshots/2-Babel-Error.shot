@@ -3,6 +3,6 @@
 exports[`AST Fixtures > declaration > TSDeclareFunction > _error_ > declare-with-body > Babel - Error`]
 BabelError
 > 1 | declare function foo(): void {};
-    | ^ An implementation cannot be declared in ambient contexts. (1:0)
+    |                              ^ An implementation cannot be declared in ambient contexts. (1:29)
   2 |
   

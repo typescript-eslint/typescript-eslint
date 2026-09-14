@@ -15,8 +15,7 @@ Snapshot Diff:
           body: Array [
             ExportNamedDeclaration {
               type: 'ExportNamedDeclaration',
--             attributes: Array [],
-+             assertions: Array [],
+              attributes: Array [],
               declaration: TSDeclareFunction {
                 type: 'TSDeclareFunction',
                 async: false,
@@ -71,20 +70,7 @@ Snapshot Diff:
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSTypeReference {
                     type: 'TSTypeReference',
--                   typeArguments: TSTypeParameterInstantiation {
-+                   typeName: Identifier {
-+                     type: 'Identifier',
-+                     decorators: Array [],
-+                     name: 'Selection',
-+                     optional: false,
-+
-+                     range: [140, 149],
-+                     loc: {
-+                       start: { column: 44, line: 4 },
-+                       end: { column: 53, line: 4 },
-+                     },
-+                   },
-+                   typeParameters: TSTypeParameterInstantiation {
+                    typeArguments: TSTypeParameterInstantiation {
                       type: 'TSTypeParameterInstantiation',
                       params: Array [
                         TSAnyKeyword {
@@ -104,18 +90,18 @@ Snapshot Diff:
                         end: { column: 58, line: 4 },
                       },
                     },
--                   typeName: Identifier {
--                     type: 'Identifier',
--                     decorators: Array [],
--                     name: 'Selection',
--                     optional: false,
--
--                     range: [140, 149],
--                     loc: {
--                       start: { column: 44, line: 4 },
--                       end: { column: 53, line: 4 },
--                     },
--                   },
+                    typeName: Identifier {
+                      type: 'Identifier',
+                      decorators: Array [],
+                      name: 'Selection',
+                      optional: false,
+
+                      range: [140, 149],
+                      loc: {
+                        start: { column: 44, line: 4 },
+                        end: { column: 53, line: 4 },
+                      },
+                    },
 
                     range: [140, 154],
                     loc: {
@@ -181,9 +167,11 @@ Snapshot Diff:
 -   sourceType: 'script',
 +   sourceType: 'module',
 
-    range: [73, 158],
+-   range: [73, 158],
++   range: [0, 158],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

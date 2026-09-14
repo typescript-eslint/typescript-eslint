@@ -25,8 +25,7 @@ Snapshot Diff:
         },
         typeAnnotation: TSFunctionType {
           type: 'TSFunctionType',
--         params: Array [
-+         parameters: Array [
+          params: Array [
             Identifier {
               type: 'Identifier',
               decorators: Array [],
@@ -70,8 +69,7 @@ Snapshot Diff:
               },
             },
           ],
--         returnType: TSTypeAnnotation {
-+         typeAnnotation: TSTypeAnnotation {
+          returnType: TSTypeAnnotation {
             type: 'TSTypeAnnotation',
             typeAnnotation: TSTypeReference {
               type: 'TSTypeReference',
@@ -115,19 +113,18 @@ Snapshot Diff:
               type: 'TSTypeParameter',
               const: false,
               in: true,
--             name: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'T',
--               optional: false,
--
--               range: [88, 89],
--               loc: {
--                 start: { column: 15, line: 3 },
--                 end: { column: 16, line: 3 },
--               },
--             },
-+             name: 'T',
+              name: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'T',
+                optional: false,
+
+                range: [88, 89],
+                loc: {
+                  start: { column: 15, line: 3 },
+                  end: { column: 16, line: 3 },
+                },
+              },
               out: false,
 
               range: [85, 89],
@@ -140,19 +137,18 @@ Snapshot Diff:
               type: 'TSTypeParameter',
               const: false,
               in: false,
--             name: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'U',
--               optional: false,
--
--               range: [95, 96],
--               loc: {
--                 start: { column: 22, line: 3 },
--                 end: { column: 23, line: 3 },
--               },
--             },
-+             name: 'U',
+              name: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'U',
+                optional: false,
+
+                range: [95, 96],
+                loc: {
+                  start: { column: 22, line: 3 },
+                  end: { column: 23, line: 3 },
+                },
+              },
               out: true,
 
               range: [91, 96],
@@ -179,9 +175,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 113],
+-   range: [73, 113],
++   range: [0, 113],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

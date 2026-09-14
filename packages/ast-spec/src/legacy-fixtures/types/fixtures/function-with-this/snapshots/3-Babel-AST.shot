@@ -16,7 +16,7 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSFunctionType {
                 type: "TSFunctionType",
-                parameters: [
+                params: [
                   Identifier {
                     type: "Identifier",
                     decorators: [],
@@ -48,7 +48,7 @@ Program {
                     },
                   },
                 ],
-                typeAnnotation: TSTypeAnnotation {
+                returnType: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSVoidKeyword {
                     type: "TSVoidKeyword",
@@ -108,9 +108,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 104],
+  range: [0, 104],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

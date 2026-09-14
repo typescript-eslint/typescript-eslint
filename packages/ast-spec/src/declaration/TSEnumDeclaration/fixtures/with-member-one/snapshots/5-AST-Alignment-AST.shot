@@ -10,38 +10,39 @@ Snapshot Diff:
     body: Array [
       TSEnumDeclaration {
         type: 'TSEnumDeclaration',
--       body: TSEnumBody {
--         type: 'TSEnumBody',
--         members: Array [
--           TSEnumMember {
--             type: 'TSEnumMember',
--             id: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'A',
--               optional: false,
--
--               range: [13, 14],
--               loc: {
--                 start: { column: 2, line: 2 },
--                 end: { column: 3, line: 2 },
--               },
--             },
--
--             range: [13, 14],
--             loc: {
--               start: { column: 2, line: 2 },
--               end: { column: 3, line: 2 },
--             },
--           },
--         ],
--
--         range: [9, 17],
--         loc: {
--           start: { column: 9, line: 1 },
--           end: { column: 1, line: 3 },
--         },
--       },
+        body: TSEnumBody {
+          type: 'TSEnumBody',
+          members: Array [
+            TSEnumMember {
+              type: 'TSEnumMember',
++             computed: false,
+              id: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'A',
+                optional: false,
+
+                range: [13, 14],
+                loc: {
+                  start: { column: 2, line: 2 },
+                  end: { column: 3, line: 2 },
+                },
+              },
+
+              range: [13, 14],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 3, line: 2 },
+              },
+            },
+          ],
+
+          range: [9, 17],
+          loc: {
+            start: { column: 9, line: 1 },
+            end: { column: 1, line: 3 },
+          },
+        },
         const: false,
         declare: false,
         id: Identifier {
@@ -56,30 +57,6 @@ Snapshot Diff:
             end: { column: 8, line: 1 },
           },
         },
-+       members: Array [
-+         TSEnumMember {
-+           type: 'TSEnumMember',
-+           computed: false,
-+           id: Identifier {
-+             type: 'Identifier',
-+             decorators: Array [],
-+             name: 'A',
-+             optional: false,
-+
-+             range: [13, 14],
-+             loc: {
-+               start: { column: 2, line: 2 },
-+               end: { column: 3, line: 2 },
-+             },
-+           },
-+
-+           range: [13, 14],
-+           loc: {
-+             start: { column: 2, line: 2 },
-+             end: { column: 3, line: 2 },
-+           },
-+         },
-+       ],
 
         range: [0, 17],
         loc: {

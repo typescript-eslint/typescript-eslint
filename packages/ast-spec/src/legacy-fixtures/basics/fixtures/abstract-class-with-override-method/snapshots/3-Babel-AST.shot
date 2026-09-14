@@ -7,9 +7,8 @@ Program {
       body: ClassBody {
         type: "ClassBody",
         body: [
-          MethodDefinition {
-            type: "MethodDefinition",
-            abstract: true,
+          TSAbstractMethodDefinition {
+            type: "TSAbstractMethodDefinition",
             computed: false,
             decorators: [],
             key: Identifier {
@@ -28,9 +27,10 @@ Program {
             optional: false,
             override: true,
             static: false,
-            value: FunctionExpression {
-              type: "FunctionExpression",
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
               async: false,
+              body: null,
               declare: false,
               expression: false,
               generator: false,
@@ -95,9 +95,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 163],
+  range: [0, 163],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 6 },
   },
 }

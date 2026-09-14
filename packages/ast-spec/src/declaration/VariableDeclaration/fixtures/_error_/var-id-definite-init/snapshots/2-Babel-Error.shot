@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > var-id-definite-init > Babel - Error`]
-NO ERROR
+BabelError
+> 1 | var foo! = 1;
+    |     ^ Declarations with initializers cannot also have definite assignment assertions. (1:4)
+  2 |
+  

@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "8.65.0",
+  "version": "8.70.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
@@ -46,7 +47,7 @@
     "attw-check": "pnpm -w exec nx attw-check"
   },
   "devDependencies": {
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "rimraf": "catalog:",
@@ -78,12 +79,12 @@
         "dependsOn": [
           "ast-spec:build"
         ],
-        "options": {
-          "cwd": "{projectRoot}"
-        },
         "outputs": [
           "{projectRoot}/src/generated"
-        ]
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
       },
       "lint": {
         "command": "eslint",

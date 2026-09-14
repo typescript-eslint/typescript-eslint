@@ -29,8 +29,8 @@ Program {
         },
       },
       implements: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSClassImplements {
+          type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
             decorators: [],

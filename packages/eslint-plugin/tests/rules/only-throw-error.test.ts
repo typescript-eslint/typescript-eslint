@@ -169,8 +169,8 @@ throw new Map();
     },
     {
       code: `
-        import { createError } from 'errors';
-        throw createError();
+import { createError } from 'errors';
+throw createError();
       `,
       options: [
         {
@@ -187,11 +187,7 @@ function func<T1, T2>() {
   throw err;
 }
       `,
-      options: [
-        {
-          allow: ['Promise'],
-        },
-      ],
+      options: [{ allow: ['Promise'] }],
     },
     {
       code: `
@@ -253,11 +249,7 @@ async function foo() {
   throw await Promise.resolve(new Error('error'));
 }
       `,
-      options: [
-        {
-          allowThrowingAny: false,
-        },
-      ],
+      options: [{ allowThrowingAny: false }],
     },
     {
       code: `
@@ -265,11 +257,7 @@ function* foo(): Generator<number, void, Error> {
   throw yield 303;
 }
       `,
-      options: [
-        {
-          allowThrowingAny: false,
-        },
-      ],
+      options: [{ allowThrowingAny: false }],
     },
   ],
   invalid: [
@@ -277,6 +265,10 @@ function* foo(): Generator<number, void, Error> {
       code: 'throw undefined;',
       errors: [
         {
+          column: 7,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'undef',
         },
       ],
@@ -285,6 +277,10 @@ function* foo(): Generator<number, void, Error> {
       code: "throw new String('');",
       errors: [
         {
+          column: 7,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
@@ -293,6 +289,10 @@ function* foo(): Generator<number, void, Error> {
       code: "throw 'error';",
       errors: [
         {
+          column: 7,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
@@ -301,6 +301,10 @@ function* foo(): Generator<number, void, Error> {
       code: 'throw 0;',
       errors: [
         {
+          column: 7,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
@@ -309,6 +313,10 @@ function* foo(): Generator<number, void, Error> {
       code: 'throw false;',
       errors: [
         {
+          column: 7,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
@@ -317,6 +325,10 @@ function* foo(): Generator<number, void, Error> {
       code: 'throw null;',
       errors: [
         {
+          column: 7,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
@@ -325,6 +337,10 @@ function* foo(): Generator<number, void, Error> {
       code: 'throw {};',
       errors: [
         {
+          column: 7,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
@@ -333,6 +349,10 @@ function* foo(): Generator<number, void, Error> {
       code: "throw 'a' + 'b';",
       errors: [
         {
+          column: 7,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
@@ -344,6 +364,10 @@ throw a + 'b';
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -352,6 +376,10 @@ throw a + 'b';
       code: "throw (foo = 'error');",
       errors: [
         {
+          column: 8,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
@@ -360,42 +388,106 @@ throw a + 'b';
       code: 'throw (new Error(), 1, 2, 3);',
       errors: [
         {
+          column: 8,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
     },
     {
       code: "throw 'literal' && 'not an Error';",
-      errors: [{ messageId: 'object' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'object',
+        },
+      ],
     },
     {
       code: "throw 'literal' || new Error();",
-      errors: [{ messageId: 'object' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'object',
+        },
+      ],
     },
     {
       code: "throw new Error() && 'literal';",
-      errors: [{ messageId: 'object' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'object',
+        },
+      ],
     },
     {
       code: "throw 'literal' ?? new Error();",
-      errors: [{ messageId: 'object' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'object',
+        },
+      ],
     },
     {
       code: "throw foo ? 'not an Error' : 'literal';",
-      errors: [{ messageId: 'object' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
+          messageId: 'object',
+        },
+      ],
     },
     {
       code: "throw foo ? new Error() : 'literal';",
-      errors: [{ messageId: 'object' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
+          messageId: 'object',
+        },
+      ],
     },
     {
       code: "throw foo ? 'literal' : new Error();",
-      errors: [{ messageId: 'object' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
+          messageId: 'object',
+        },
+      ],
     },
     {
       code: 'throw `${err}`;',
       errors: [
         {
+          column: 7,
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'object',
         },
       ],
@@ -407,6 +499,10 @@ throw err;
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -418,6 +514,10 @@ throw foo('error');
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -431,6 +531,10 @@ throw foo.msg;
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'object',
         },
       ],
@@ -444,6 +548,10 @@ throw foo.msg;
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'undef',
         },
       ],
@@ -455,6 +563,10 @@ throw new CustomError();
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -467,6 +579,10 @@ throw new CustomError();
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
           messageId: 'object',
         },
       ],
@@ -478,6 +594,10 @@ throw Error;
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -490,6 +610,8 @@ throw new Error();
       errors: [
         {
           column: 7,
+          endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'object',
         },
@@ -503,6 +625,8 @@ throw new CustomError();
       errors: [
         {
           column: 7,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'object',
         },
@@ -518,6 +642,8 @@ function foo<T>() {
       errors: [
         {
           column: 9,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'object',
         },
@@ -534,6 +660,8 @@ function foo<T>(fn: () => Promise<T>) {
       errors: [
         {
           column: 9,
+          endColumn: 12,
+          endLine: 5,
           line: 5,
           messageId: 'object',
         },
@@ -547,6 +675,10 @@ function foo() {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 54,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -560,6 +692,10 @@ function bar() {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'object',
         },
       ],
@@ -569,7 +705,15 @@ function bar() {
 declare const foo: Error | string;
 throw foo as string;
       `,
-      errors: [{ messageId: 'object' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'object',
+        },
+      ],
     },
     {
       code: `
@@ -579,14 +723,14 @@ function fun(value: any) {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
-      options: [
-        {
-          allowThrowingAny: false,
-        },
-      ],
+      options: [{ allowThrowingAny: false }],
     },
     {
       code: `
@@ -596,14 +740,14 @@ function fun(value: unknown) {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
-      options: [
-        {
-          allowThrowingUnknown: false,
-        },
-      ],
+      options: [{ allowThrowingUnknown: false }],
     },
     {
       code: `
@@ -613,6 +757,10 @@ function fun<T extends number>(t: T): void {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -626,14 +774,14 @@ function func<T1, T2>() {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'object',
         },
       ],
-      options: [
-        {
-          allow: ['Promise'],
-        },
-      ],
+      options: [{ allow: ['Promise'] }],
     },
     {
       code: `
@@ -642,6 +790,10 @@ throw new UnknownError();
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -662,6 +814,10 @@ Promise.reject('foo').catch(e => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'object',
         },
       ],
@@ -681,6 +837,10 @@ Promise.reject('foo').catch((...e) => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -701,6 +861,10 @@ Promise.reject('foo').catch(...x, e => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'object',
         },
       ],
@@ -721,6 +885,10 @@ Promise.reject('foo').then(...x, e => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'object',
         },
       ],
@@ -742,6 +910,10 @@ Promise.reject('foo').then(onFulfilled, ...x, e => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
           messageId: 'object',
         },
       ],
@@ -761,6 +933,10 @@ Promise.reject('foo').then((...e) => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -780,6 +956,10 @@ Promise.reject('foo').then(e => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
@@ -799,14 +979,14 @@ async function foo() {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
-      options: [
-        {
-          allowThrowingAny: false,
-        },
-      ],
+      options: [{ allowThrowingAny: false }],
     },
     {
       code: `
@@ -816,14 +996,14 @@ async function foo() {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 43,
+          endLine: 3,
+          line: 3,
           messageId: 'object',
         },
       ],
-      options: [
-        {
-          allowThrowingAny: false,
-        },
-      ],
+      options: [{ allowThrowingAny: false }],
     },
   ],
 });

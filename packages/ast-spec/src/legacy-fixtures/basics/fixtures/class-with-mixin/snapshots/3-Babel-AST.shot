@@ -127,19 +127,7 @@ Program {
             const: false,
             constraint: TSTypeReference {
               type: "TSTypeReference",
-              typeName: Identifier {
-                type: "Identifier",
-                decorators: [],
-                name: "Constructor",
-                optional: false,
-
-                range: [94, 105],
-                loc: {
-                  start: { column: 21, line: 3 },
-                  end: { column: 32, line: 3 },
-                },
-              },
-              typeParameters: TSTypeParameterInstantiation {
+              typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
                 params: [
                   TSTypeLiteral {
@@ -160,6 +148,18 @@ Program {
                   end: { column: 36, line: 3 },
                 },
               },
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "Constructor",
+                optional: false,
+
+                range: [94, 105],
+                loc: {
+                  start: { column: 21, line: 3 },
+                  end: { column: 32, line: 3 },
+                },
+              },
 
               range: [94, 109],
               loc: {
@@ -168,7 +168,18 @@ Program {
               },
             },
             in: false,
-            name: "T",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [84, 85],
+              loc: {
+                start: { column: 11, line: 3 },
+                end: { column: 12, line: 3 },
+              },
+            },
             out: false,
 
             range: [84, 109],
@@ -220,8 +231,8 @@ Program {
         },
       },
       implements: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSClassImplements {
+          type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
             decorators: [],
@@ -271,7 +282,7 @@ Program {
           },
         },
         optional: false,
-        typeParameters: TSTypeParameterInstantiation {
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSAnyKeyword {
@@ -392,7 +403,7 @@ Program {
       typeAnnotation: TSConstructorType {
         type: "TSConstructorType",
         abstract: false,
-        parameters: [
+        params: [
           RestElement {
             type: "RestElement",
             argument: Identifier {
@@ -444,7 +455,7 @@ Program {
             },
           },
         ],
-        typeAnnotation: TSTypeAnnotation {
+        returnType: TSTypeAnnotation {
           type: "TSTypeAnnotation",
           typeAnnotation: TSTypeReference {
             type: "TSTypeReference",
@@ -488,7 +499,18 @@ Program {
             type: "TSTypeParameter",
             const: false,
             in: false,
-            name: "T",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [243, 244],
+              loc: {
+                start: { column: 17, line: 11 },
+                end: { column: 18, line: 11 },
+              },
+            },
             out: false,
 
             range: [243, 244],
@@ -515,9 +537,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 275],
+  range: [0, 275],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 12 },
   },
 }

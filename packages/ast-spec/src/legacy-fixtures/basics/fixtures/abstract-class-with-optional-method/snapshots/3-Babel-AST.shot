@@ -3,7 +3,7 @@ Program {
   body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         abstract: true,
@@ -30,9 +30,10 @@ Program {
               optional: true,
               override: false,
               static: false,
-              value: FunctionExpression {
-                type: "FunctionExpression",
+              value: TSEmptyBodyFunctionExpression {
+                type: "TSEmptyBodyFunctionExpression",
                 async: false,
+                body: null,
                 declare: false,
                 expression: false,
                 generator: false,
@@ -42,19 +43,7 @@ Program {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSTypeReference {
                     type: "TSTypeReference",
-                    typeName: Identifier {
-                      type: "Identifier",
-                      decorators: [],
-                      name: "Promise",
-                      optional: false,
-
-                      range: [131, 138],
-                      loc: {
-                        start: { column: 19, line: 4 },
-                        end: { column: 26, line: 4 },
-                      },
-                    },
-                    typeParameters: TSTypeParameterInstantiation {
+                    typeArguments: TSTypeParameterInstantiation {
                       type: "TSTypeParameterInstantiation",
                       params: [
                         TSStringKeyword {
@@ -72,6 +61,18 @@ Program {
                       loc: {
                         start: { column: 26, line: 4 },
                         end: { column: 34, line: 4 },
+                      },
+                    },
+                    typeName: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "Promise",
+                      optional: false,
+
+                      range: [131, 138],
+                      loc: {
+                        start: { column: 19, line: 4 },
+                        end: { column: 26, line: 4 },
                       },
                     },
 
@@ -146,9 +147,9 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 150],
+  range: [0, 150],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 6 },
   },
 }

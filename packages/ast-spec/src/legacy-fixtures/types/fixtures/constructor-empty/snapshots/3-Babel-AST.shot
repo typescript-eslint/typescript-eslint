@@ -17,8 +17,8 @@ Program {
               typeAnnotation: TSConstructorType {
                 type: "TSConstructorType",
                 abstract: false,
-                parameters: [],
-                typeAnnotation: TSTypeAnnotation {
+                params: [],
+                returnType: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSVoidKeyword {
                     type: "TSVoidKeyword",
@@ -78,9 +78,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 96],
+  range: [0, 96],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }
