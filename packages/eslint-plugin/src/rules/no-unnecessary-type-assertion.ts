@@ -205,6 +205,15 @@ export default createRule<Options, MessageIds>({
         return true;
       }
 
+      // TypeScript lets `number` be assigned to a numeric enum (and vice versa)
+      // for compatibility, so the two are mutually assignable without being the
+      // same type. An assertion between them (`+value as Color`) does change
+      // the type and must not be treated as unchanged.
+      // https://github.com/typescript-eslint/typescript-eslint/issues/12271
+      if (containsEnumType(uncast) !== containsEnumType(cast)) {
+        return false;
+      }
+
       if (
         node.typeAnnotation.type === AST_NODE_TYPES.TSIntersectionType &&
         containsTypeVariable(cast)
@@ -337,6 +346,12 @@ export default createRule<Options, MessageIds>({
       return typeContains(type, t =>
         isTypeFlagSet(t, ts.TypeFlags.TypeVariable | ts.TypeFlags.Index),
       );
+    }
+
+    function containsEnumType(type: ts.Type): boolean {
+      return tsutils
+        .unionConstituents(type)
+        .some(part => isTypeFlagSet(part, ts.TypeFlags.EnumLike));
     }
 
     function hasPhantomTypeArguments(type: ts.Type): boolean {
