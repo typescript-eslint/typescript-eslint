@@ -970,6 +970,8 @@ foo(() => null);
       errors: [
         {
           column: 11,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -983,6 +985,8 @@ foo(() => null);
       errors: [
         {
           column: 22,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -1080,6 +1084,8 @@ foo(
       errors: [
         {
           column: 13,
+          endColumn: 19,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -1093,6 +1099,8 @@ foo(0, () => 0);
       errors: [
         {
           column: 14,
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -1106,6 +1114,8 @@ foo(() => () => {});
       errors: [
         {
           column: 11,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -1142,6 +1152,8 @@ obj?.foo(() => void JSON.parse('{}'));
       errors: [
         {
           column: 35,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'nonVoidReturn',
         },
@@ -1156,6 +1168,8 @@ foo(cb);
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1171,6 +1185,8 @@ foo<() => void>(async () => ({}));
       errors: [
         {
           column: 26,
+          endColumn: 28,
+          endLine: 5,
           line: 5,
           messageId: 'asyncFunc',
         },
@@ -1301,6 +1317,8 @@ f(undefined, () => 'test');
       errors: [
         {
           column: 20,
+          endColumn: 26,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidReturn',
         },
@@ -1315,6 +1333,8 @@ async function cb() {}
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidFunc',
         },
@@ -1331,6 +1351,8 @@ foo(() => {
       errors: [
         {
           column: 3,
+          endColumn: 9,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -1346,6 +1368,8 @@ function bar<Cb extends () => number>(cb: Cb) {
       errors: [
         {
           column: 7,
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1360,6 +1384,8 @@ foo!(cb);
       errors: [
         {
           column: 6,
+          endColumn: 8,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1460,11 +1486,15 @@ foo(() => {
       errors: [
         {
           column: 18,
+          endColumn: 24,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
         {
           column: 12,
+          endColumn: 18,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
@@ -1488,6 +1518,8 @@ foo(() => {
       errors: [
         {
           column: 7,
+          endColumn: 13,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -1540,6 +1572,8 @@ new Foo(() => false);
       errors: [
         {
           column: 15,
+          endColumn: 20,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -1556,6 +1590,8 @@ Foo(() => false);
       errors: [
         {
           column: 11,
+          endColumn: 16,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -1576,6 +1612,8 @@ function cb() {
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidFunc',
         },
@@ -1594,6 +1632,8 @@ function cb() {
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidFunc',
         },
@@ -1608,6 +1648,8 @@ foo(cb);
       errors: [
         {
           column: 5,
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -1626,16 +1668,22 @@ foo(
       errors: [
         {
           column: 9,
+          endColumn: 14,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
         {
           column: 9,
+          endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
         {
           column: 9,
+          endColumn: 11,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
@@ -1720,11 +1768,15 @@ win.addEventListener('custom', ev => ev);
       errors: [
         {
           column: 48,
+          endColumn: 50,
+          endLine: 21,
           line: 21,
           messageId: 'nonVoidReturn',
         },
         {
           column: 38,
+          endColumn: 40,
+          endLine: 22,
           line: 22,
           messageId: 'nonVoidReturn',
         },
@@ -1813,6 +1865,8 @@ const foo: () => void = () => false;
       errors: [
         {
           column: 31,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'nonVoidReturn',
         },
@@ -1824,14 +1878,30 @@ const { name }: () => void = function foo() {
   return false;
 };
       `,
-      errors: [{ column: 3, line: 3, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
 declare const foo: Record<string, () => void>;
 foo['a' + 'b'] = () => true;
       `,
-      errors: [{ column: 24, line: 3, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 24,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
@@ -1860,6 +1930,8 @@ const foo: () => void =  () => void Promise.resolve(true);
       errors: [
         {
           column: 45,
+          endColumn: 47,
+          endLine: 1,
           line: 1,
           messageId: 'nonVoidReturn',
         },
@@ -1874,6 +1946,8 @@ const cb: () => void = (): Array<number> => {
       errors: [
         {
           column: 28,
+          endColumn: 41,
+          endLine: 2,
           line: 2,
           messageId: 'nonVoidFunc',
         },
@@ -1884,6 +1958,8 @@ const cb: () => void = (): Array<number> => {
       errors: [
         {
           column: 24,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'nonVoidFunc',
         },
@@ -2059,6 +2135,8 @@ const foo: () => void =  () => void (async () => {
       errors: [
         {
           column: 29,
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'nonVoidFunc',
         },
@@ -2072,6 +2150,8 @@ const foo: () => void = cb;
       errors: [
         {
           column: 25,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidFunc',
         },
@@ -2090,11 +2170,15 @@ const foo: () => void = function () {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidReturn',
         },
         {
           column: 5,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -2112,6 +2196,8 @@ const foo: () => void = function () {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -2132,11 +2218,15 @@ const foo: { (arg: number): void; (arg: string): void } = arg => {
       errors: [
         {
           column: 7,
+          endColumn: 13,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
         {
           column: 7,
+          endColumn: 13,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -2179,6 +2269,8 @@ function cb() {
       errors: [
         {
           column: 18,
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidFunc',
         },
@@ -2197,6 +2289,8 @@ function cb() {
       errors: [
         {
           column: 18,
+          endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidFunc',
         },
@@ -2211,6 +2305,8 @@ foo = cb;
       errors: [
         {
           column: 7,
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -2227,6 +2323,8 @@ foo.cb = () => {
       errors: [
         {
           column: 3,
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidReturn',
         },
@@ -2241,6 +2339,8 @@ foo ??= cb;
       errors: [
         {
           column: 9,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -2255,6 +2355,8 @@ foo ||= cb;
       errors: [
         {
           column: 9,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -2269,6 +2371,8 @@ foo &&= cb;
       errors: [
         {
           column: 9,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -2282,6 +2386,8 @@ return <Foo cb={() => 1} />;
       errors: [
         {
           column: 23,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -2304,11 +2410,15 @@ return (
       errors: [
         {
           column: 18,
+          endColumn: 24,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
         {
           column: 12,
+          endColumn: 18,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -2404,6 +2514,8 @@ return <Foo n={2137} cb={function* () {}} />;
       errors: [
         {
           column: 26,
+          endColumn: 36,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
@@ -2426,6 +2538,8 @@ return (
       errors: [
         {
           column: 9,
+          endColumn: 25,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidFunc',
         },
@@ -2443,6 +2557,8 @@ return <Foo cb={x => x} />;
       errors: [
         {
           column: 22,
+          endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -2463,6 +2579,8 @@ function App() {
       errors: [
         {
           column: 32,
+          endColumn: 33,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -2477,6 +2595,8 @@ foo({ arg: 1, cb: () => 1 });
       errors: [
         {
           column: 25,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -2495,6 +2615,8 @@ foo = {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -2512,6 +2634,8 @@ foo = {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -2529,6 +2653,8 @@ foo = {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidReturn',
         },
@@ -2544,6 +2670,8 @@ foo = {
       errors: [
         {
           column: 40,
+          endColumn: 41,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidReturn',
         },
@@ -2597,11 +2725,15 @@ const foo: Record<string, () => void> = {
       errors: [
         {
           column: 8,
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'nonVoidFunc',
         },
         {
           column: 8,
+          endColumn: 10,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidFunc',
         },
@@ -2643,7 +2775,15 @@ const foo: Array<(() => void) | false> = [false, cb, () => void cb()];
 declare function cb(): number;
 const foo: [string, () => void, (() => void)?] = ['asd', cb];
       `,
-      errors: [{ column: 58, line: 3, messageId: 'nonVoidFunc' }],
+      errors: [
+        {
+          column: 58,
+          endColumn: 60,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidFunc',
+        },
+      ],
     },
     {
       code: `
@@ -2703,6 +2843,8 @@ const foo: { cb: () => void } = class {
       errors: [
         {
           column: 22,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -2717,6 +2859,8 @@ class Foo {
       errors: [
         {
           column: 27,
+          endColumn: 29,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidReturn',
         },
@@ -2731,6 +2875,8 @@ class Foo {
       errors: [
         {
           column: 28,
+          endColumn: 39,
+          endLine: 3,
           line: 3,
           messageId: 'nonVoidFunc',
         },
@@ -2748,6 +2894,8 @@ class Bar extends Foo {
       errors: [
         {
           column: 8,
+          endColumn: 19,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidFunc',
         },
@@ -2766,6 +2914,8 @@ class Bar extends foo() {
       errors: [
         {
           column: 8,
+          endColumn: 19,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidFunc',
         },
@@ -2788,6 +2938,8 @@ class Bar extends Foo {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 10,
           line: 10,
           messageId: 'nonVoidReturn',
         },
@@ -2807,6 +2959,8 @@ class Foo extends Bar {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
@@ -2826,6 +2980,8 @@ void class extends Foo {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 7,
           line: 7,
           messageId: 'nonVoidReturn',
         },
@@ -2898,6 +3054,8 @@ class Baz extends Bar implements Foo {
       errors: [
         {
           column: 20,
+          endColumn: 21,
+          endLine: 10,
           line: 10,
           messageId: 'nonVoidFunc',
         },
@@ -2924,11 +3082,15 @@ class Bar extends Foo {
       errors: [
         {
           column: 7,
+          endColumn: 13,
+          endLine: 11,
           line: 11,
           messageId: 'nonVoidReturn',
         },
         {
           column: 7,
+          endColumn: 13,
+          endLine: 13,
           line: 13,
           messageId: 'nonVoidReturn',
         },
@@ -2981,6 +3143,8 @@ class Bar extends Foo {
       errors: [
         {
           column: 3,
+          endColumn: 6,
+          endLine: 9,
           line: 9,
           messageId: 'nonVoidFunc',
         },
@@ -2998,6 +3162,8 @@ class Bar implements Foo {
       errors: [
         {
           column: 8,
+          endColumn: 19,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidFunc',
         },
@@ -3014,6 +3180,8 @@ class Bar implements O {
       errors: [
         {
           column: 8,
+          endColumn: 19,
+          endLine: 5,
           line: 5,
           messageId: 'nonVoidFunc',
         },
@@ -3031,6 +3199,8 @@ class Bar implements O {
       errors: [
         {
           column: 11,
+          endColumn: 19,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidFunc',
         },
@@ -3170,6 +3340,8 @@ class Bar implements Foo {
       errors: [
         {
           column: 7,
+          endColumn: 13,
+          endLine: 8,
           line: 8,
           messageId: 'nonVoidReturn',
         },
@@ -3309,6 +3481,8 @@ class A extends class {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -3327,6 +3501,8 @@ class A extends class B {
       errors: [
         {
           column: 5,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
@@ -3392,7 +3568,15 @@ class Bar implements Foo2 {
 declare let foo: () => () => void;
 foo = () => () => 1 + 1;
       `,
-      errors: [{ column: 19, line: 3, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 19,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
@@ -3424,7 +3608,15 @@ declare let foo: () => () => void;
 declare const cb: () => null | false;
 foo = () => cb;
       `,
-      errors: [{ column: 13, line: 4, messageId: 'nonVoidFunc' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'nonVoidFunc',
+        },
+      ],
     },
     {
       code: `
@@ -3436,7 +3628,15 @@ foo = {
 };
 function cb() {}
       `,
-      errors: [{ column: 18, line: 5, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 18,
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
@@ -3447,7 +3647,15 @@ foo.f = function () {
   };
 };
       `,
-      errors: [{ column: 5, line: 5, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
@@ -3456,7 +3664,15 @@ foo = () => () => {
   return 'asd' + 'zxc';
 };
       `,
-      errors: [{ column: 3, line: 4, messageId: 'nonVoidReturn' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'nonVoidReturn',
+        },
+      ],
     },
     {
       code: `
@@ -3495,10 +3711,34 @@ foo(function () {
         });
       `,
       errors: [
-        { column: 13, line: 6, messageId: 'nonVoidReturn' },
-        { column: 13, line: 10, messageId: 'nonVoidReturn' },
-        { column: 13, line: 14, messageId: 'nonVoidReturn' },
-        { column: 11, line: 16, messageId: 'nonVoidReturn' },
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'nonVoidReturn',
+        },
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 10,
+          line: 10,
+          messageId: 'nonVoidReturn',
+        },
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 14,
+          line: 14,
+          messageId: 'nonVoidReturn',
+        },
+        {
+          column: 11,
+          endColumn: 17,
+          endLine: 16,
+          line: 16,
+          messageId: 'nonVoidReturn',
+        },
       ],
       filename: 'react.tsx',
     },
@@ -3513,7 +3753,15 @@ async function* cb() {
   yield true;
 }
       `,
-      errors: [{ column: 10, line: 5, messageId: 'nonVoidFunc' }],
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'nonVoidFunc',
+        },
+      ],
     },
   ],
 });

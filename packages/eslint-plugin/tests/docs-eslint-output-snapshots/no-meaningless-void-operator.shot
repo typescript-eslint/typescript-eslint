@@ -7,6 +7,14 @@ function foo() {}
 void foo();
 ~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a return value is being ignored
 
+declare const box: { value: string };
+void box;
+~~~~~~~~ void operator is useless here; it should only discard a call's return value
+void box.value;
+~~~~~~~~~~~~~~ void operator is useless here; it should only discard a call's return value
+void 1;
+~~~~~~ void operator is useless here; it should only discard a call's return value
+
 Correct
 
 (() => {})();
@@ -15,7 +23,15 @@ function foo() {}
 foo(); // nothing to discard
 
 function bar(x: number) {
-  void x; // discarding a number
-  return 2;
+  return x * 2;
 }
-void bar(1); // discarding a number
+void bar(1);
+
+declare const box: { value: string };
+box;
+box.value;
+
+void 0;
+
+declare const promise: Promise<number>;
+void promise;

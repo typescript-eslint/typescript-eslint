@@ -1,3 +1,47 @@
+## 8.70.0 (2026-09-07)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-generated-empty-object-type] add rule ([#12730](https://github.com/typescript-eslint/typescript-eslint/pull/12730))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] report deprecated imported values used in object shorthand properties ([#12780](https://github.com/typescript-eslint/typescript-eslint/pull/12780))
+- **eslint-plugin:** [no-unnecessary-condition] no false positive on RHS of a nested logical expression ([#12728](https://github.com/typescript-eslint/typescript-eslint/pull/12728))
+- **eslint-plugin:** [member-ordering] don't report fields that read fields declared before them ([#12729](https://github.com/typescript-eslint/typescript-eslint/pull/12729))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨ @JoshuaKGoldberg
+- Ulrich Stark @ulrichstark
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.69.0 (2026-08-31)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-misused-promises] add flagUnions option for checkConditionals ([#12603](https://github.com/typescript-eslint/typescript-eslint/pull/12603))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-meaningless-void-operator] report void on non-call expressions ([#12727](https://github.com/typescript-eslint/typescript-eslint/pull/12727))
+- **eslint-plugin:** [unified-signatures] compare type parameters by constraint instead of name ([#12741](https://github.com/typescript-eslint/typescript-eslint/pull/12741))
+- **eslint-plugin:** [no-mixed-enums] use scope analysis instead of type checking for merged namespaces ([#12731](https://github.com/typescript-eslint/typescript-eslint/pull/12731))
+
+### ❤️ Thank You
+
+- Abdu Alim Arlikhozhaev @Arlikhozhaev
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- wonbeanie @wonbeanie
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.69.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.68.0 (2026-08-24)
 
 ### 🚀 Features

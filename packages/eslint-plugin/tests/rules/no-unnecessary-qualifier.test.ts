@@ -81,6 +81,10 @@ namespace A {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -100,6 +104,10 @@ namespace A {
       `,
       errors: [
         {
+          column: 20,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -121,6 +129,10 @@ namespace A {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 15,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -144,6 +156,10 @@ namespace A {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -167,6 +183,10 @@ namespace A {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -190,6 +210,10 @@ namespace A {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -211,6 +235,10 @@ enum A {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -232,6 +260,10 @@ namespace Foo {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -253,6 +285,10 @@ declare module './foo' {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryQualifier',
         },
       ],
