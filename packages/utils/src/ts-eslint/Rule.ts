@@ -411,6 +411,22 @@ export interface RuleContext<
   report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
+export interface CodePathSegmentTraversalController {
+  skip(): void;
+  break(): void;
+}
+
+export type CodePathSegmentTraversalCallback = (
+  this: CodePath,
+  segment: CodePathSegment,
+  controller: CodePathSegmentTraversalController,
+) => void;
+
+export interface CodePathTraversalOptions {
+  first?: CodePathSegment | undefined;
+  last?: CodePathSegment | undefined;
+}
+
 /**
  * Part of the code path analysis feature of ESLint:
  * https://eslint.org/docs/latest/extend/code-path-analysis
@@ -450,6 +466,11 @@ export interface CodePath {
 
   /** The code path of the upper function/global scope. */
   upper: CodePath | null;
+
+  traverseSegments(
+    options: CodePathTraversalOptions,
+    callback: CodePathSegmentTraversalCallback,
+  ): void;
 }
 
 /**
@@ -729,6 +750,58 @@ export interface RuleListenerExtension {
     node: TSESTree.Node,
   ) => void;
   */
+}
+
+/**
+ * These methods exist on the {@link RuleListener} object in ESLint, but are intentionally omitted from the RuleListener
+ * type because they cause unresolvable compiler errors: https://github.com/typescript-eslint/typescript-eslint/issues/6993
+ *
+ * Consider merging the objects like so to satisfy the type system:
+ *
+ * ```ts
+ * export default createRule({
+ *   // ...
+ *   create(context) {
+ *     const codePathListener: CodePathListener = {
+ *       onCodePathStart(codePath, node) {
+ *         // ...
+ *       },
+ *       onCodePathEnd(codePath, node) {
+ *         // ...
+ *       },
+ *     };
+ *
+ *     return {
+ *       ...(codePathListener as TSESLint.RuleListener),
+ *
+ *       ExpressionStatement(node) {
+ *         // ...
+ *       },
+ *       // other selectors...
+ *     };
+ *   },
+ * });
+ * ```
+ */
+export interface CodePathListener {
+  onCodePathStart?: (codePath: CodePath, node: TSESTree.Node) => void;
+  onCodePathEnd?: (codePath: CodePath, node: TSESTree.Node) => void;
+  onCodePathSegmentEnd?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  onCodePathSegmentStart?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  onUnreachableCodePathSegmentEnd?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  onUnreachableCodePathSegmentStart?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
 }
 
 export type RuleListener = RuleListenerBaseSelectors &
