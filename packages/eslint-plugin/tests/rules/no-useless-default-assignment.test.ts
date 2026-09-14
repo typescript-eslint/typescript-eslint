@@ -231,21 +231,17 @@ const [a, b = 'default'] = tuple;
 declare const commands: [string, ...string[]];
 const [cmd, arg = 'run'] = commands;
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12767
     `
 declare const commands: readonly [string, ...string[]];
 const [cmd, arg = 'run'] = commands;
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12767
     `
 function run([cmd, arg = 'run']: [string, ...string[]]) {}
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12767
     `
 declare const mixed: [boolean, ...number[], string];
 const [a, b, c = 0] = mixed;
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12767
     `
 declare const items: [...string[], string | undefined];
 const [first = 'fallback'] = items;
