@@ -528,7 +528,7 @@ jobs:
           retention-days: 1
 
   unit_tests_project_service:
-    name: Run Unit Tests with Project Service
+    name: Run Unit Tests with Project Service (${{ matrix.backend }})
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build, affected-for-tests]
     if: ${{ needs['affected-for-tests'].outputs.project_service_packages != '[]' && needs['affected-for-tests'].outputs.project_service_packages != '' }}
@@ -537,6 +537,13 @@ jobs:
       fail-fast: false
       matrix:
         package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
+        backend: [classic, native]
+        include:
+          # The typed rule tests are where the native backend needs coverage,
+          # and they run against the built package where the lazy `require`
+          # resolves.
+          - package: eslint-plugin
+            backend: native
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,
@@ -549,7 +556,8 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-          node-version: 18
+          # The native backend requires Node.js 22 or newer.
+          node-version: 22
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
@@ -557,6 +565,7 @@ jobs:
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
+          TYPESCRIPT_ESLINT_NATIVE_BACKEND: ${{ matrix.backend == 'native' }}
           PACKAGE: ${{ matrix.package }}
 
   # Some test jobs are created dynamically and conditionally skipped (see affected-for-tests),

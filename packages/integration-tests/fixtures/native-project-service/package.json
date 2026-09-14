@@ -1,0 +1,9 @@
+{
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@typescript/native": "npm:typescript@7.1.0-dev.20260822.1",
+    "typescript": "npm:@typescript/typescript6@6.0.2"
+  }
+}
