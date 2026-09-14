@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.3",
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.8.0",
     "@eslint/compat": "^2.0.2",
     "@eslint/config-helpers": "^0.7.0",
     "@eslint/js": "catalog:",
