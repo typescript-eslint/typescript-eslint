@@ -116,7 +116,6 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
     innerNode.type === AST_NODE_TYPES.Literal ||
     innerNode.type === AST_NODE_TYPES.Identifier ||
     innerNode.type === AST_NODE_TYPES.TSTypeReference ||
-    innerNode.type === AST_NODE_TYPES.TSTypeOperator ||
     innerNode.type === AST_NODE_TYPES.ArrayExpression ||
     innerNode.type === AST_NODE_TYPES.ObjectExpression ||
     innerNode.type === AST_NODE_TYPES.MemberExpression ||

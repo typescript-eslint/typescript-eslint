@@ -71,6 +71,37 @@ declare function fn(): void;
 declare function getValue(): string;
 void (fn(), getValue());
     `,
+    `
+declare let x: number;
+void (x = 1);
+    `,
+    `
+declare let x: number;
+() => void (x = 1);
+    `,
+    `
+declare let x: number;
+void (x += 1);
+    `,
+    `
+declare let x: number;
+declare let y: number;
+void (x = y = 1);
+    `,
+    `
+declare let x: string;
+declare function getValue(): string;
+void (x = getValue());
+    `,
+    `
+declare const obj: { prop: number };
+void (obj.prop = 1);
+    `,
+    `
+declare let x: number;
+declare let y: number;
+void ((x = 1), (y = 2));
+    `,
   ],
   invalid: [
     {
@@ -406,6 +437,63 @@ const result = void value;
         },
       ],
       output: null,
+    },
+    {
+      code: `
+declare let x: number;
+void x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+x;
+      `,
+    },
+    {
+      code: `
+declare let x: number;
+void ++x;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+++x;
+      `,
+    },
+    {
+      code: `
+declare let x: number;
+void x++;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOnNonCall',
+        },
+      ],
+      output: `
+declare let x: number;
+x++;
+      `,
     },
   ],
 });

@@ -202,7 +202,18 @@ describe(createProjectService, () => {
     expect(processStderrWriteSpy).not.toHaveBeenCalled();
   });
 
-  it('enables all log levels for the default projects logger', () => {
+  it('disables all log levels for the default projects logger when tsserver logging is disabled', () => {
+    const { service } = createProjectService();
+
+    expect(service.logger.hasLevel(ts.server.LogLevel.terse)).toBe(false);
+    expect(service.logger.hasLevel(ts.server.LogLevel.normal)).toBe(false);
+    expect(service.logger.hasLevel(ts.server.LogLevel.requestTime)).toBe(false);
+    expect(service.logger.hasLevel(ts.server.LogLevel.verbose)).toBe(false);
+  });
+
+  it('enables all log levels for the default projects logger when any tsserver logger is enabled', () => {
+    debug.enable('typescript-eslint:project-service:tsserver:info');
+
     const { service } = createProjectService();
 
     expect(service.logger.hasLevel(ts.server.LogLevel.terse)).toBe(true);
