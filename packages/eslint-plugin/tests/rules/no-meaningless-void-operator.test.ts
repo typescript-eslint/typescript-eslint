@@ -100,7 +100,7 @@ void (obj.prop = 1);
     `
 declare let x: number;
 declare let y: number;
-void (x = 1, y = 2);
+void ((x = 1), (y = 2));
     `,
   ],
   invalid: [
@@ -460,12 +460,12 @@ x;
     {
       code: `
 declare let x: number;
-void (++x);
+void ++x;
       `,
       errors: [
         {
           column: 1,
-          endColumn: 11,
+          endColumn: 9,
           endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
@@ -473,18 +473,18 @@ void (++x);
       ],
       output: `
 declare let x: number;
-(++x);
+++x;
       `,
     },
     {
       code: `
 declare let x: number;
-void (x++);
+void x++;
       `,
       errors: [
         {
           column: 1,
-          endColumn: 11,
+          endColumn: 9,
           endLine: 3,
           line: 3,
           messageId: 'meaninglessVoidOnNonCall',
@@ -492,7 +492,7 @@ void (x++);
       ],
       output: `
 declare let x: number;
-(x++);
+x++;
       `,
     },
   ],
