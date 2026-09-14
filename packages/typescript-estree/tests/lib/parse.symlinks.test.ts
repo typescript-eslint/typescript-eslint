@@ -191,7 +191,7 @@ describe('symlinked directories', () => {
         ...config,
         filePath: newFilePath,
       }),
-    ).toThrow('However, that TSConfig does not include this file.');
+    ).toThrow(/However, that TSConfig does not include this file./);
 
     expect(createdNewFile).toBe(true);
   });
