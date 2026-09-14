@@ -2205,7 +2205,11 @@ declare function f(): (A extends B ? C : D) | null;
       code: 'declare function foo<T extends () => number>(arg: T[]): void;',
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -2226,7 +2230,11 @@ declare function foo<T extends keyof Foo>(arg: T[]): void;
       `,
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 41,
+          endLine: 6,
+          line: 6,
           messageId: 'sole',
           suggestions: [
             {
@@ -2247,7 +2255,11 @@ declare function foo(arg: (keyof Foo)[]): void;
       code: 'declare function foo<T extends () => void>(arg: T | string): void;',
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -2272,7 +2284,11 @@ declare function foo<T extends A | B>(k: keyof T): void;
       `,
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 10,
+          line: 10,
           messageId: 'sole',
           suggestions: [
             {
@@ -2300,7 +2316,11 @@ declare function bar<T extends new () => Foo>(arg: T[]): void;
       `,
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -2322,7 +2342,11 @@ declare function foo<T extends () => Promise<string>>(
       `,
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 53,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -2341,7 +2365,11 @@ declare function foo(
       code: 'declare function foo<T extends readonly string[]>(x: T[]): void;',
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 49,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
