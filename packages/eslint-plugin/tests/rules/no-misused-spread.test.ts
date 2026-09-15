@@ -8,6 +8,9 @@ const ruleTester = createRuleTesterWithTypes({
 });
 
 ruleTester.run('no-misused-spread', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'const a = [...[1, 2, 3]];',
     'const a = [...([1, 2, 3] as const)];',

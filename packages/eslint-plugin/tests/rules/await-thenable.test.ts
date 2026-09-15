@@ -8,6 +8,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('await-thenable', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 async function test() {

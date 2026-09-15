@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-non-null-asserted-optional-chain';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-non-null-asserted-optional-chain', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'foo.bar!;',
     'foo.bar!.baz;',

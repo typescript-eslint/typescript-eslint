@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-explicit-any';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-explicit-any', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'const number: number = 1;',
     'function greet(): string {}',

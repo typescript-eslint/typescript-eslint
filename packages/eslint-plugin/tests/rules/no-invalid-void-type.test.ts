@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-invalid-void-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('allowInGenericTypeArguments: false', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'type Generic<T> = [T];',
