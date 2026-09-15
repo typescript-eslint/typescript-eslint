@@ -604,5 +604,26 @@ class User {
         },
       ],
     },
+    {
+      // Identifier write that is not the parameter must not suppress the report.
+      code: `
+class User {
+  constructor(public name: string) {
+    let local = name;
+    local = local.trim();
+    this.name = name;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
   ],
 });
