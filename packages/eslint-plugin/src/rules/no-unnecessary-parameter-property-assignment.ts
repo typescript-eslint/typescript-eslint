@@ -46,7 +46,7 @@ export default createRule({
         return null;
       }
 
-      if (node.property.type === AST_NODE_TYPES.Identifier) {
+      if (!node.computed && node.property.type === AST_NODE_TYPES.Identifier) {
         return node.property.name;
       }
       if (node.computed) {

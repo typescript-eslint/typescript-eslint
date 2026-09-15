@@ -498,7 +498,11 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'i'" },
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
           messageId: 'unsafeRefs',
         },
       ],
@@ -515,7 +519,11 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
+          column: 6,
           data: { varNames: "'i', 'j'" },
+          endColumn: 6,
+          endLine: 6,
+          line: 4,
           messageId: 'unsafeRefs',
         },
       ],
@@ -530,7 +538,11 @@ for (var i in {}) {
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'i'" },
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
           messageId: 'unsafeRefs',
         },
       ],
@@ -545,7 +557,11 @@ for (var i of {}) {
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'i'" },
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
           messageId: 'unsafeRefs',
         },
       ],
@@ -561,7 +577,11 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
+          column: 3,
           data: { varNames: "'i'" },
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
           messageId: 'unsafeRefs',
         },
       ],
@@ -577,7 +597,11 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
+          column: 11,
           data: { varNames: "'i'" },
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
           messageId: 'unsafeRefs',
         },
       ],
@@ -593,7 +617,11 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
+          column: 3,
           data: { varNames: "'i'" },
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
           messageId: 'unsafeRefs',
         },
       ],
@@ -612,7 +640,11 @@ for (let i = 0; i < l; i++) {
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'a'" },
+          endColumn: 4,
+          endLine: 7,
+          line: 5,
           messageId: 'unsafeRefs',
         },
       ],
@@ -630,7 +662,11 @@ for (let i in {}) {
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'a'" },
+          endColumn: 4,
+          endLine: 6,
+          line: 4,
           messageId: 'unsafeRefs',
         },
       ],
@@ -648,7 +684,11 @@ a = 1;
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'a'" },
+          endColumn: 4,
+          endLine: 6,
+          line: 4,
           messageId: 'unsafeRefs',
         },
       ],
@@ -668,7 +708,11 @@ for (let i = 0; i < l; i++) {
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'a'" },
+          endColumn: 4,
+          endLine: 8,
+          line: 4,
           messageId: 'unsafeRefs',
         },
       ],
@@ -688,7 +732,11 @@ for (let i in {}) {
       `,
       errors: [
         {
+          column: 3,
           data: { varNames: "'a'" },
+          endColumn: 4,
+          endLine: 9,
+          line: 5,
           messageId: 'unsafeRefs',
         },
       ],
@@ -708,7 +756,11 @@ a = 1;
       `,
       errors: [
         {
+          column: 3,
           data: { varNames: "'a'" },
+          endColumn: 4,
+          endLine: 8,
+          line: 4,
           messageId: 'unsafeRefs',
         },
       ],
@@ -723,7 +775,11 @@ for (var i = 0; i < 10; ++i) {
       `,
       errors: [
         {
+          column: 27,
           data: { varNames: "'i'" },
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
           messageId: 'unsafeRefs',
         },
       ],
@@ -743,7 +799,11 @@ for (let x of xs) {
       `,
       errors: [
         {
+          column: 6,
           data: { varNames: "'a'" },
+          endColumn: 6,
+          endLine: 8,
+          line: 6,
           messageId: 'unsafeRefs',
         },
       ],
@@ -761,7 +821,11 @@ for (var x of xs) {
       `,
       errors: [
         {
+          column: 6,
           data: { varNames: "'x'" },
+          endColumn: 6,
+          endLine: 6,
+          line: 4,
           messageId: 'unsafeRefs',
         },
       ],
@@ -777,7 +841,11 @@ for (var x of xs) {
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'x'" },
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
           messageId: 'unsafeRefs',
         },
       ],
@@ -795,7 +863,11 @@ for (let x of xs) {
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'a'" },
+          endColumn: 4,
+          endLine: 7,
+          line: 5,
           messageId: 'unsafeRefs',
         },
       ],
@@ -813,7 +885,11 @@ for (let x of xs) {
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'a'" },
+          endColumn: 4,
+          endLine: 6,
+          line: 4,
           messageId: 'unsafeRefs',
         },
       ],
@@ -834,7 +910,11 @@ foo();
       `,
       errors: [
         {
+          column: 4,
           data: { varNames: "'a'" },
+          endColumn: 4,
+          endLine: 9,
+          line: 7,
           messageId: 'unsafeRefs',
         },
       ],
@@ -855,7 +935,11 @@ foo();
       `,
       errors: [
         {
+          column: 6,
           data: { varNames: "'a'" },
+          endColumn: 6,
+          endLine: 8,
+          line: 6,
           messageId: 'unsafeRefs',
         },
       ],

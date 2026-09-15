@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > MetaProperty > _error_ > import-source > Babel - Error`]
+BabelError
+  3 | // an ImportExpression with phase: 'source'.
+  4 |
+> 5 | import.source('mod');
+    |        ^ This experimental syntax requires enabling the parser plugin: "sourcePhaseImports". (5:7)
+  6 |
+  

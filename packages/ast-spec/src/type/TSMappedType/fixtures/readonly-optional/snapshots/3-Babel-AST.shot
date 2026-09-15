@@ -18,6 +18,27 @@ Program {
       },
       typeAnnotation: TSMappedType {
         type: "TSMappedType",
+        constraint: TSStringKeyword {
+          type: "TSStringKeyword",
+
+          range: [43, 49],
+          loc: {
+            start: { column: 17, line: 2 },
+            end: { column: 23, line: 2 },
+          },
+        },
+        key: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "P",
+          optional: false,
+
+          range: [38, 39],
+          loc: {
+            start: { column: 12, line: 2 },
+            end: { column: 13, line: 2 },
+          },
+        },
         nameType: null,
         optional: false,
         readonly: true,
@@ -28,28 +49,6 @@ Program {
           loc: {
             start: { column: 26, line: 2 },
             end: { column: 32, line: 2 },
-          },
-        },
-        typeParameter: TSTypeParameter {
-          type: "TSTypeParameter",
-          const: false,
-          constraint: TSStringKeyword {
-            type: "TSStringKeyword",
-
-            range: [43, 49],
-            loc: {
-              start: { column: 17, line: 2 },
-              end: { column: 23, line: 2 },
-            },
-          },
-          in: false,
-          name: "P",
-          out: false,
-
-          range: [38, 49],
-          loc: {
-            start: { column: 12, line: 2 },
-            end: { column: 23, line: 2 },
           },
         },
 

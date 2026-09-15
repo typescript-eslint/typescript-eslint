@@ -59,7 +59,7 @@ jobs:
   # Validation job to ensure secure inputs and determine release type
   validate:
     name: Validate Release Parameters
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     # Only run on the official repository to avoid wasted compute and unnecessary errors on forks (also an initial albeit weak first layer of protection against unauthorized releases)
     if: github.repository == 'typescript-eslint/typescript-eslint'
     outputs:
@@ -194,7 +194,7 @@ jobs:
       id-token: write # Required for trusted publishing
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           # We need the full history for version calculation
           fetch-depth: 0
@@ -243,7 +243,7 @@ jobs:
     steps:
       - name: Checkout
         # zizmor: ignore[artipacked] Need persisted token for push permissions.
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           # Need full history for changelog generation
           fetch-depth: 0

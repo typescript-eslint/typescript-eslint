@@ -1,0 +1,4 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ExportNamedDeclaration > braced-identifier-aliased-to-string-literal-without-source > Babel - Error`]
+SyntaxError: Export 'a' is not defined. (1:9)

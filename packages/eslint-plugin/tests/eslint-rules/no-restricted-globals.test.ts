@@ -18,9 +18,13 @@ fdescribe('foo', function () {});
       `,
       errors: [
         {
+          column: 15,
           data: {
             name: 'event',
           },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'defaultMessage',
         },
       ],
@@ -32,9 +36,13 @@ confirm('TEST');
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: 'confirm',
           },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
           messageId: 'defaultMessage',
         },
       ],
@@ -46,9 +54,13 @@ var a = confirm('TEST')?.a;
       `,
       errors: [
         {
+          column: 9,
           data: {
             name: 'confirm',
           },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'defaultMessage',
         },
       ],
@@ -76,22 +88,22 @@ type Handler = (event: string) => any;
     },
     {
       code: `
-        const a = foo?.bar?.name;
+const a = foo?.bar?.name;
       `,
     },
     {
       code: `
-        const a = foo?.bar?.name ?? 'foobar';
+const a = foo?.bar?.name ?? 'foobar';
       `,
     },
     {
       code: `
-        const a = foo()?.bar;
+const a = foo()?.bar;
       `,
     },
     {
       code: `
-        const a = foo()?.bar ?? true;
+const a = foo()?.bar ?? true;
       `,
     },
   ],

@@ -281,6 +281,8 @@ function wrap() {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 39,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },
@@ -300,6 +302,8 @@ if (true) {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 39,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },
@@ -317,6 +321,8 @@ export function foo(sn: string | number) {}
         {
           column: 1,
           data: { name: 'foo' },
+          endColumn: 44,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },
@@ -334,6 +340,8 @@ export function foo(sn: string | number) {}
         {
           column: 1,
           data: { name: 'foo' },
+          endColumn: 44,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },
@@ -351,6 +359,8 @@ function foo(sn: string | number) {}
         {
           column: 1,
           data: { name: 'foo' },
+          endColumn: 37,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },
@@ -368,6 +378,8 @@ function foo(sn: string | number) {}
         {
           column: 1,
           data: { name: 'foo' },
+          endColumn: 37,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },
@@ -385,6 +397,8 @@ function foo(sn: string | number) {}
         {
           column: 1,
           data: { name: 'foo' },
+          endColumn: 37,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },
@@ -401,6 +415,8 @@ function foo(sn: string | number) {}
         {
           column: 1,
           data: { name: 'foo' },
+          endColumn: 37,
+          endLine: 5,
           line: 5,
           messageId: 'adjacentSignature',
         },
@@ -422,6 +438,8 @@ class Bar {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 30,
+          endLine: 9,
           line: 9,
           messageId: 'adjacentSignature',
         },
@@ -439,6 +457,8 @@ declare function foo(sn: string | number);
         {
           column: 1,
           data: { name: 'foo' },
+          endColumn: 43,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },
@@ -456,6 +476,8 @@ declare function foo(sn: string | number);
         {
           column: 1,
           data: { name: 'foo' },
+          endColumn: 43,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },
@@ -475,6 +497,8 @@ declare module 'Foo' {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 50,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -496,6 +520,8 @@ declare module 'Foo' {
         {
           column: 3,
           data: { name: 'baz' },
+          endColumn: 33,
+          endLine: 8,
           line: 8,
           messageId: 'adjacentSignature',
         },
@@ -515,6 +541,8 @@ declare namespace Foo {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 50,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -536,6 +564,8 @@ declare namespace Foo {
         {
           column: 3,
           data: { name: 'baz' },
+          endColumn: 33,
+          endLine: 8,
           line: 8,
           messageId: 'adjacentSignature',
         },
@@ -555,6 +585,8 @@ type Foo = {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 34,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -574,6 +606,8 @@ type Foo = {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 34,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -594,6 +628,8 @@ type Foo = {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 24,
+          endLine: 5,
           line: 5,
           messageId: 'adjacentSignature',
         },
@@ -615,6 +651,8 @@ interface Foo {
         {
           column: 3,
           data: { name: 'call' },
+          endColumn: 21,
+          endLine: 5,
           line: 5,
           messageId: 'adjacentSignature',
         },
@@ -634,6 +672,8 @@ interface Foo {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 34,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -653,6 +693,8 @@ interface Foo {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 34,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -672,6 +714,8 @@ interface Foo {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 34,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -692,6 +736,8 @@ interface Foo {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 24,
+          endLine: 5,
           line: 5,
           messageId: 'adjacentSignature',
         },
@@ -713,6 +759,8 @@ interface Foo {
         {
           column: 5,
           data: { name: 'baz' },
+          endColumn: 36,
+          endLine: 8,
           line: 8,
           messageId: 'adjacentSignature',
         },
@@ -732,6 +780,8 @@ interface Foo {
         {
           column: 3,
           data: { name: 'new' },
+          endColumn: 29,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -751,12 +801,16 @@ interface Foo {
         {
           column: 3,
           data: { name: 'new' },
+          endColumn: 19,
+          endLine: 5,
           line: 5,
           messageId: 'adjacentSignature',
         },
         {
           column: 3,
           data: { name: 'new' },
+          endColumn: 29,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -776,6 +830,8 @@ class Foo {
         {
           column: 3,
           data: { name: 'constructor' },
+          endColumn: 38,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -795,6 +851,8 @@ class Foo {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 36,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -814,6 +872,8 @@ class Foo {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 36,
+          endLine: 7,
           line: 7,
           messageId: 'adjacentSignature',
         },
@@ -834,6 +894,8 @@ class Foo {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 36,
+          endLine: 8,
           line: 8,
           messageId: 'adjacentSignature',
         },
@@ -854,6 +916,8 @@ class Foo {
         {
           column: 3,
           data: { name: 'constructor' },
+          endColumn: 26,
+          endLine: 5,
           line: 5,
           messageId: 'adjacentSignature',
         },
@@ -874,6 +938,8 @@ class Foo {
         {
           column: 3,
           data: { name: 'foo' },
+          endColumn: 24,
+          endLine: 5,
           line: 5,
           messageId: 'adjacentSignature',
         },
@@ -894,6 +960,8 @@ class Foo {
         {
           column: 3,
           data: { name: 'static foo' },
+          endColumn: 31,
+          endLine: 5,
           line: 5,
           messageId: 'adjacentSignature',
         },
@@ -913,12 +981,16 @@ class Test {
         {
           column: 3,
           data: { name: '#private' },
+          endColumn: 33,
+          endLine: 5,
           line: 5,
           messageId: 'adjacentSignature',
         },
         {
           column: 3,
           data: { name: '"#private"' },
+          endColumn: 35,
+          endLine: 6,
           line: 6,
           messageId: 'adjacentSignature',
         },

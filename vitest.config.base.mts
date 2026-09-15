@@ -15,6 +15,7 @@ export const vitestBaseConfig = {
 
     globals: true,
     include: ['**/*.test.?(c|m)ts?(x)'],
+    isolate: false,
 
     reporters: process.env.GITHUB_ACTIONS
       ? [['default', { summary: false }], ['github-actions']]

@@ -3,9 +3,6 @@ import * as path from 'node:path';
 
 import { execFile, FIXTURES_DESTINATION_DIR } from './pack-packages.js';
 
-// make sure that vitest doesn't timeout the test
-vi.setConfig({ testTimeout: 60_000 });
-
 function integrationTest(
   testName: string,
   testFilename: string,
@@ -76,8 +73,7 @@ export function eslintIntegrationTest(
         /"filePath":"([^"]*)"/g,
         (_, testFile: string) =>
           `"filePath": "<root>/${path.relative(testFolder, testFile)}"`,
-      )
-      .replaceAll(/C:\\\\(usr)\\\\(linked)\\\\(tsconfig.json)/g, '/$1/$2/$3');
+      );
     let lintOutput: unknown;
     try {
       lintOutput = JSON.parse(lintOutputRAW);
@@ -87,6 +83,27 @@ export function eslintIntegrationTest(
       );
     }
     expect(lintOutput).toMatchSnapshot();
+  });
+}
+
+export function nodeIntegrationTest(
+  testFilename: string,
+  scriptName: string,
+  assertOutput: (stderr: string) => void,
+): void {
+  integrationTest(`node ${scriptName}`, testFilename, async testFolder => {
+    const [result] = await Promise.allSettled([
+      execFile('node', [scriptName], {
+        cwd: testFolder,
+      }),
+    ]);
+
+    const stderr =
+      result.status === 'rejected'
+        ? (result.reason as { stderr: string }).stderr
+        : result.value.stderr;
+
+    assertOutput(stderr);
   });
 }
 
@@ -100,7 +117,7 @@ export function typescriptIntegrationTest(
     const [result] = await Promise.allSettled([
       execFile(
         'pnpm',
-        ['exec', 'tsc', '--noEmit', '--skipLibCheck', ...tscArgs],
+        ['exec', 'tsc6', '--noEmit', '--skipLibCheck', ...tscArgs],
         {
           cwd: testFolder,
           shell: true,

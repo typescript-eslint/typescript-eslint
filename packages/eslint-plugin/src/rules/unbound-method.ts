@@ -167,6 +167,43 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function checkUnionConstituentsAndReport(
+      reportNode: TSESTree.Node,
+      propertyName: string,
+      type: ts.Type,
+    ): boolean {
+      for (const intersectionPart of tsutils
+        .unionConstituents(type)
+        .flatMap(unionPart => tsutils.intersectionConstituents(unionPart))) {
+        const reported = checkIfMethodAndReport(
+          reportNode,
+          intersectionPart.getProperty(propertyName),
+        );
+        if (reported) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function getAccessedPropertyNames(
+      node: TSESTree.MemberExpression,
+    ): string[] {
+      if (!node.computed) {
+        return node.property.type === AST_NODE_TYPES.Identifier
+          ? [node.property.name]
+          : [];
+      }
+
+      return tsutils
+        .unionConstituents(services.getTypeAtLocation(node.property))
+        .flatMap(part => {
+          return part.isStringLiteral() || part.isNumberLiteral()
+            ? [part.value.toString()]
+            : [];
+        });
+    }
+
     function isNativelyBound(
       object: TSESTree.Node,
       property: TSESTree.Node,
@@ -216,7 +253,17 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkIfMethodAndReport(node, services.getSymbolAtLocation(node));
+        const propertyNames = getAccessedPropertyNames(node);
+        if (propertyNames.length === 0) {
+          return;
+        }
+
+        const objectType = services.getTypeAtLocation(node.object);
+        for (const propertyName of propertyNames) {
+          if (checkUnionConstituentsAndReport(node, propertyName, objectType)) {
+            break;
+          }
+        }
       },
       ObjectPattern(node): void {
         if (isNodeInsideTypeDeclaration(node)) {
@@ -260,19 +307,11 @@ export default createRule<Options, MessageIds>({
             }
           }
 
-          for (const intersectionPart of tsutils
-            .unionConstituents(services.getTypeAtLocation(node))
-            .flatMap(unionPart =>
-              tsutils.intersectionConstituents(unionPart),
-            )) {
-            const reported = checkIfMethodAndReport(
-              property.key,
-              intersectionPart.getProperty(property.key.name),
-            );
-            if (reported) {
-              break;
-            }
-          }
+          checkUnionConstituentsAndReport(
+            property.key,
+            property.key.name,
+            services.getTypeAtLocation(node),
+          );
         }
       },
     };

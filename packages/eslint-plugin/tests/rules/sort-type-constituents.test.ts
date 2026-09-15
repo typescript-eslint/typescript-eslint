@@ -220,7 +220,11 @@ type T = 1 | string | {} | A;
       code: 'type T = B | A;',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -230,7 +234,11 @@ type T = 1 | string | {} | A;
       code: "type T = 'B' | 'A';",
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -240,7 +248,11 @@ type T = 1 | string | {} | A;
       code: 'type T = 2 | 1;',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -250,7 +262,11 @@ type T = 1 | string | {} | A;
       code: noFormat`type T = (B) | (A);`,
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -260,7 +276,11 @@ type T = 1 | string | {} | A;
       code: 'type T = { b: string } | { a: string };',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -270,7 +290,11 @@ type T = 1 | string | {} | A;
       code: 'type T = [1, 2, 4] | [1, 2, 3];',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -280,7 +304,11 @@ type T = 1 | string | {} | A;
       code: 'type T = (() => void) | (() => string);',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -290,7 +318,11 @@ type T = 1 | string | {} | A;
       code: 'type T = () => void | string;',
       errors: [
         {
+          column: 16,
           data: { type: 'Union' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'notSorted',
         },
       ],
@@ -300,7 +332,11 @@ type T = 1 | string | {} | A;
       code: 'type T = () => undefined | null;',
       errors: [
         {
+          column: 16,
           data: { type: 'Union' },
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
           messageId: 'notSorted',
         },
       ],
@@ -334,7 +370,11 @@ type T =
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'T', type: 'Union' },
+          endColumn: 8,
+          endLine: 24,
+          line: 3,
           messageId: 'notSortedNamed',
         },
       ],
@@ -347,7 +387,11 @@ type T =
       code: 'type T = B | /* comment */ A;',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
           suggestions: [
             {
@@ -363,7 +407,11 @@ type T =
       code: 'type T = (() => /* comment */ A) | B;',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
           suggestions: null,
         },
@@ -374,6 +422,10 @@ type T =
       code: 'type Expected = (new (x: number) => boolean) | string;',
       errors: [
         {
+          column: 17,
+          endColumn: 54,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -383,7 +435,11 @@ type T =
       code: noFormat`type T = (| A) | B;`,
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -393,7 +449,11 @@ type T =
       code: noFormat`type T = (& A) | B;`,
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Union' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -403,7 +463,11 @@ type T =
       code: 'type T = B & A;',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -413,7 +477,11 @@ type T =
       code: "type T = 'B' & 'A';",
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -423,7 +491,11 @@ type T =
       code: 'type T = 2 & 1;',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -433,7 +505,11 @@ type T =
       code: noFormat`type T = (B) & (A);`,
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -443,7 +519,11 @@ type T =
       code: 'type T = { b: string } & { a: string };',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -453,7 +533,11 @@ type T =
       code: 'type T = [1, 2, 4] & [1, 2, 3];',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -463,7 +547,11 @@ type T =
       code: 'type T = (() => void) & (() => string);',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -473,7 +561,11 @@ type T =
       code: 'type T = () => void & string;',
       errors: [
         {
+          column: 16,
           data: { type: 'Intersection' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'notSorted',
         },
       ],
@@ -483,7 +575,11 @@ type T =
       code: 'type T = () => undefined & null;',
       errors: [
         {
+          column: 16,
           data: { type: 'Intersection' },
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
           messageId: 'notSorted',
         },
       ],
@@ -517,7 +613,11 @@ type T =
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 8,
+          endLine: 24,
+          line: 3,
           messageId: 'notSortedNamed',
         },
       ],
@@ -530,7 +630,11 @@ type T =
       code: 'type T = B & /* comment */ A;',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
           suggestions: [
             {
@@ -546,7 +650,11 @@ type T =
       code: 'type T = (() => /* comment */ A) & B;',
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
           suggestions: null,
         },
@@ -557,6 +665,10 @@ type T =
       code: 'type Expected = (new (x: number) => boolean) & string;',
       errors: [
         {
+          column: 17,
+          endColumn: 54,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -566,7 +678,11 @@ type T =
       code: noFormat`type T = (| A) & B;`,
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -576,7 +692,11 @@ type T =
       code: noFormat`type T = (& A) & B;`,
       errors: [
         {
+          column: 10,
           data: { name: 'T', type: 'Intersection' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -586,10 +706,14 @@ type T =
       code: 'type T = (B | C) & A;',
       errors: [
         {
+          column: 10,
           data: {
             name: 'T',
             type: 'Intersection',
           },
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -599,10 +723,14 @@ type T =
       code: "type A<T> = (T extends number ? 'hi' : 'there') | string;",
       errors: [
         {
+          column: 13,
           data: {
             name: 'A',
             type: 'Union',
           },
+          endColumn: 57,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -612,10 +740,14 @@ type T =
       code: "type T = 'DeletedAt' | 'DeleteForever';",
       errors: [
         {
+          column: 10,
           data: {
             name: 'T',
             type: 'Union',
           },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],
@@ -630,10 +762,14 @@ type T =
       code: 'type T = { a: string } | { A: string } | { B: string };',
       errors: [
         {
+          column: 10,
           data: {
             name: 'T',
             type: 'Union',
           },
+          endColumn: 55,
+          endLine: 1,
+          line: 1,
           messageId: 'notSortedNamed',
         },
       ],

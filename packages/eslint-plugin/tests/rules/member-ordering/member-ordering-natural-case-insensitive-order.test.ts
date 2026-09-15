@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/member-ordering';
@@ -22,6 +21,8 @@ interface Example {
             beforeMember: 10,
             member: 5,
           },
+          endColumn: 13,
+          endLine: 5,
           line: 5,
           messageId: 'incorrectOrder',
         },
@@ -62,6 +63,8 @@ interface Example {
             beforeMember: 'a10',
             member: 'a5',
           },
+          endColumn: 14,
+          endLine: 7,
           line: 7,
           messageId: 'incorrectOrder',
         },
@@ -71,6 +74,8 @@ interface Example {
             beforeMember: 'B10',
             member: 'B1',
           },
+          endColumn: 14,
+          endLine: 10,
           line: 10,
           messageId: 'incorrectOrder',
         },
@@ -80,6 +85,8 @@ interface Example {
             beforeMember: 'B1',
             member: 'a1',
           },
+          endColumn: 14,
+          endLine: 15,
           line: 15,
           messageId: 'incorrectOrder',
         },

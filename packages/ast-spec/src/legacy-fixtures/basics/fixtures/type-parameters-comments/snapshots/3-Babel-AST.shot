@@ -19,7 +19,7 @@ Program {
           },
         },
         optional: false,
-        typeParameters: TSTypeParameterInstantiation {
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSTypeReference {
@@ -101,7 +101,18 @@ Program {
             type: "TSTypeParameter",
             const: false,
             in: false,
-            name: "A",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "A",
+              optional: false,
+
+              range: [138, 139],
+              loc: {
+                start: { column: 23, line: 4 },
+                end: { column: 24, line: 4 },
+              },
+            },
             out: false,
 
             range: [138, 139],
@@ -182,7 +193,18 @@ Program {
               },
             },
             in: false,
-            name: "A",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "A",
+              optional: false,
+
+              range: [179, 180],
+              loc: {
+                start: { column: 23, line: 5 },
+                end: { column: 24, line: 5 },
+              },
+            },
             out: false,
 
             range: [179, 196],
@@ -209,9 +231,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 203],
+  range: [0, 203],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 6 },
   },
 }

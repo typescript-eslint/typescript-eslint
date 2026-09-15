@@ -15,8 +15,8 @@ Program {
       },
       declare: false,
       extends: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSInterfaceHeritage {
+          type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
             decorators: [],
@@ -36,8 +36,8 @@ Program {
             end: { column: 30, line: 1 },
           },
         },
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSInterfaceHeritage {
+          type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
             decorators: [],

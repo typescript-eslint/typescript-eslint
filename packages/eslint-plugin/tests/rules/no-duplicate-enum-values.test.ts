@@ -177,6 +177,8 @@ enum E {
         {
           column: 3,
           data: { value: 1 },
+          endColumn: 8,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -193,6 +195,8 @@ enum E {
         {
           column: 3,
           data: { value: -1 },
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -209,6 +213,8 @@ enum E {
         {
           column: 3,
           data: { value: 1 },
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -225,6 +231,8 @@ enum E {
         {
           column: 3,
           data: { value: 0 },
+          endColumn: 8,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -241,6 +249,8 @@ enum E {
         {
           column: 3,
           data: { value: -0 },
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -257,6 +267,8 @@ enum E {
         {
           column: 3,
           data: { value: 0 },
+          endColumn: 8,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -273,6 +285,8 @@ enum E {
         {
           column: 3,
           data: { value: 0x10 },
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -289,6 +303,8 @@ enum E {
         {
           column: 3,
           data: { value: 1e2 },
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -305,6 +321,8 @@ enum E {
         {
           column: 3,
           data: { value: 0 },
+          endColumn: 8,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -321,6 +339,8 @@ enum E {
         {
           column: 3,
           data: { value: -1 },
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -337,6 +357,8 @@ enum E {
         {
           column: 3,
           data: { value: -0 },
+          endColumn: 9,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -353,6 +375,8 @@ enum E {
         {
           column: 3,
           data: { value: 'A' },
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -371,12 +395,16 @@ enum E {
         {
           column: 3,
           data: { value: 'A' },
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
         {
           column: 3,
           data: { value: 1 },
+          endColumn: 8,
+          endLine: 6,
           line: 6,
           messageId: 'duplicateValue',
         },
@@ -393,6 +421,8 @@ enum E {
         {
           column: 3,
           data: { value: 'A' },
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },
@@ -409,6 +439,8 @@ enum E {
         {
           column: 3,
           data: { value: 'A' },
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'duplicateValue',
         },

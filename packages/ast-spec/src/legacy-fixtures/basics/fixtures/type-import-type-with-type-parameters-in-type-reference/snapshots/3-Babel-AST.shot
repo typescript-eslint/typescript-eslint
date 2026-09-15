@@ -18,34 +18,11 @@ Program {
       },
       typeAnnotation: TSTypeReference {
         type: "TSTypeReference",
-        typeName: Identifier {
-          type: "Identifier",
-          decorators: [],
-          name: "A",
-          optional: false,
-
-          range: [82, 83],
-          loc: {
-            start: { column: 9, line: 3 },
-            end: { column: 10, line: 3 },
-          },
-        },
-        typeParameters: TSTypeParameterInstantiation {
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSImportType {
               type: "TSImportType",
-              argument: Literal {
-                type: "Literal",
-                raw: "''",
-                value: "",
-
-                range: [91, 93],
-                loc: {
-                  start: { column: 18, line: 3 },
-                  end: { column: 20, line: 3 },
-                },
-              },
               options: null,
               qualifier: Identifier {
                 type: "Identifier",
@@ -59,7 +36,18 @@ Program {
                   end: { column: 23, line: 3 },
                 },
               },
-              typeParameters: TSTypeParameterInstantiation {
+              source: Literal {
+                type: "Literal",
+                raw: "''",
+                value: "",
+
+                range: [91, 93],
+                loc: {
+                  start: { column: 18, line: 3 },
+                  end: { column: 20, line: 3 },
+                },
+              },
+              typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
                 params: [
                   TSAnyKeyword {
@@ -94,6 +82,18 @@ Program {
             end: { column: 29, line: 3 },
           },
         },
+        typeName: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "A",
+          optional: false,
+
+          range: [82, 83],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 10, line: 3 },
+          },
+        },
 
         range: [82, 102],
         loc: {
@@ -111,9 +111,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 104],
+  range: [0, 104],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

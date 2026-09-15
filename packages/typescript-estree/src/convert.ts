@@ -217,7 +217,7 @@ export class Converter {
   }
 
   /**
-   * Coverts body Nodes and add a directive field to StringLiterals
+   * Converts body Nodes and add a directive field to StringLiterals
    * @param nodes of ts.Node
    * @param parent parentNode
    * @returns Array of body statements
@@ -1878,7 +1878,34 @@ export class Converter {
       }
 
       case SyntaxKind.CallExpression: {
-        if (node.expression.kind === SyntaxKind.ImportKeyword) {
+        const importExpressionParams:
+          Pick<TSESTree.ImportExpression, 'phase'> | undefined = (() => {
+          // import(...);
+          if (node.expression.kind === SyntaxKind.ImportKeyword) {
+            return {
+              phase: null,
+            };
+          }
+          // import.defer(...);
+          if (node.expression.kind === SyntaxKind.MetaProperty) {
+            const metaPropertyNode = node.expression as ts.MetaProperty;
+            const metaObject = getTextForTokenKind(
+              metaPropertyNode.keywordToken,
+            );
+            if (metaObject === 'import') {
+              const metaPropertyName = metaPropertyNode.name.text;
+              if (metaPropertyName === 'defer') {
+                return {
+                  phase: 'defer',
+                };
+              }
+            }
+          }
+
+          return undefined;
+        })();
+
+        if (importExpressionParams != null) {
           return this.createNode<TSESTree.ImportExpression>(
             node,
             this.#withDeprecatedAliasGetter(
@@ -1887,6 +1914,7 @@ export class Converter {
                 options: node.arguments[1]
                   ? this.convertChild(node.arguments[1])
                   : null,
+                phase: importExpressionParams.phase,
                 source: this.convertChild(node.arguments[0]),
               },
               'attributes',

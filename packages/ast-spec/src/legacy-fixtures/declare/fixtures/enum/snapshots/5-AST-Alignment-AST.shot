@@ -10,45 +10,24 @@ Snapshot Diff:
     body: Array [
       TSEnumDeclaration {
         type: 'TSEnumDeclaration',
--       body: TSEnumBody {
--         type: 'TSEnumBody',
--         members: Array [
--           TSEnumMember {
--             type: 'TSEnumMember',
--             id: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'Bar',
--               optional: false,
-+       const: false,
-+       declare: true,
-+       id: Identifier {
-+         type: 'Identifier',
-+         decorators: Array [],
-+         name: 'Foo',
-+         optional: false,
+        body: TSEnumBody {
+          type: 'TSEnumBody',
+          members: Array [
+            TSEnumMember {
+              type: 'TSEnumMember',
++             computed: false,
+              id: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'Bar',
+                optional: false,
 
--               range: [94, 97],
--               loc: {
--                 start: { column: 2, line: 4 },
--                 end: { column: 5, line: 4 },
--               },
--             },
-+         range: [86, 89],
-+         loc: {
-+           start: { column: 13, line: 3 },
-+           end: { column: 16, line: 3 },
-+         },
-+       },
-+       members: Array [
-+         TSEnumMember {
-+           type: 'TSEnumMember',
-+           computed: false,
-+           id: Identifier {
-+             type: 'Identifier',
-+             decorators: Array [],
-+             name: 'Bar',
-+             optional: false,
+                range: [94, 97],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 5, line: 4 },
+                },
+              },
 
               range: [94, 97],
               loc: {
@@ -56,34 +35,21 @@ Snapshot Diff:
                 end: { column: 5, line: 4 },
               },
             },
--           TSEnumMember {
--             type: 'TSEnumMember',
--             id: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'Baz',
--               optional: false,
+            TSEnumMember {
+              type: 'TSEnumMember',
++             computed: false,
+              id: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'Baz',
+                optional: false,
 
--               range: [101, 104],
--               loc: {
--                 start: { column: 2, line: 5 },
--                 end: { column: 5, line: 5 },
--               },
--             },
-+           range: [94, 97],
-+           loc: {
-+             start: { column: 2, line: 4 },
-+             end: { column: 5, line: 4 },
-+           },
-+         },
-+         TSEnumMember {
-+           type: 'TSEnumMember',
-+           computed: false,
-+           id: Identifier {
-+             type: 'Identifier',
-+             decorators: Array [],
-+             name: 'Baz',
-+             optional: false,
+                range: [101, 104],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 5, line: 5 },
+                },
+              },
 
               range: [101, 104],
               loc: {
@@ -91,34 +57,28 @@ Snapshot Diff:
                 end: { column: 5, line: 5 },
               },
             },
--         ],
+          ],
 
--         range: [90, 107],
--         loc: {
--           start: { column: 17, line: 3 },
--           end: { column: 1, line: 6 },
-+           range: [101, 104],
-+           loc: {
-+             start: { column: 2, line: 5 },
-+             end: { column: 5, line: 5 },
-+           },
+          range: [90, 107],
+          loc: {
+            start: { column: 17, line: 3 },
+            end: { column: 1, line: 6 },
           },
--       },
--       const: false,
--       declare: true,
--       id: Identifier {
--         type: 'Identifier',
--         decorators: Array [],
--         name: 'Foo',
--         optional: false,
--
--         range: [86, 89],
--         loc: {
--           start: { column: 13, line: 3 },
--           end: { column: 16, line: 3 },
--         },
--       },
-+       ],
+        },
+        const: false,
+        declare: true,
+        id: Identifier {
+          type: 'Identifier',
+          decorators: Array [],
+          name: 'Foo',
+          optional: false,
+
+          range: [86, 89],
+          loc: {
+            start: { column: 13, line: 3 },
+            end: { column: 16, line: 3 },
+          },
+        },
 
         range: [73, 107],
         loc: {
@@ -129,9 +89,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 108],
+-   range: [73, 108],
++   range: [0, 108],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 7 },
     },
   }

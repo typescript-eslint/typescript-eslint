@@ -314,9 +314,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 252],
+  range: [0, 252],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 11 },
   },
 }

@@ -71,18 +71,29 @@ type sum = (a: number, b: number) => number;
     },
   ],
   invalid: [
-    { code: 'function foo(a, b, c, d) {}', errors: [{ messageId: 'exceed' }] },
+    {
+      code: 'function foo(a, b, c, d) {}',
+      errors: [
+        { column: 1, endColumn: 13, endLine: 1, line: 1, messageId: 'exceed' },
+      ],
+    },
     {
       code: 'const foo = function (a, b, c, d) {};',
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        { column: 13, endColumn: 22, endLine: 1, line: 1, messageId: 'exceed' },
+      ],
     },
     {
       code: 'const foo = (a, b, c, d) => {};',
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        { column: 26, endColumn: 28, endLine: 1, line: 1, messageId: 'exceed' },
+      ],
     },
     {
       code: 'const foo = a => {};',
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        { column: 15, endColumn: 17, endLine: 1, line: 1, messageId: 'exceed' },
+      ],
       options: [{ max: 0 }],
     },
     {
@@ -91,7 +102,9 @@ class Foo {
   method(this: void, a, b, c, d) {}
 }
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        { column: 3, endColumn: 9, endLine: 3, line: 3, messageId: 'exceed' },
+      ],
     },
     {
       code: `
@@ -99,7 +112,9 @@ class Foo {
   method(this: void, a) {}
 }
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        { column: 3, endColumn: 9, endLine: 3, line: 3, messageId: 'exceed' },
+      ],
       options: [{ countVoidThis: true, max: 1 }],
     },
     {
@@ -108,20 +123,26 @@ class Foo {
   method(this: Foo, a, b, c) {}
 }
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        { column: 3, endColumn: 9, endLine: 3, line: 3, messageId: 'exceed' },
+      ],
     },
     {
       code: `
 declare function makeDate(m: number, d: number, y: number): Date;
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        { column: 1, endColumn: 26, endLine: 2, line: 2, messageId: 'exceed' },
+      ],
       options: [{ max: 1 }],
     },
     {
       code: `
 type sum = (a: number, b: number) => number;
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        { column: 12, endColumn: 12, endLine: 2, line: 2, messageId: 'exceed' },
+      ],
       options: [{ max: 1 }],
     },
   ],

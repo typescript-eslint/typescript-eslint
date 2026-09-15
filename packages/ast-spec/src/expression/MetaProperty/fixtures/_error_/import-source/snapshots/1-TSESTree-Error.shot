@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > MetaProperty > _error_ > import-source > TSESTree - Error`]
+TSError
+  3 | // an ImportExpression with phase: 'source'.
+  4 |
+> 5 | import.source('mod');
+    | ^^^^^^^^^^^^^ 'source' is not a valid meta-property for keyword 'import'.
+  6 |

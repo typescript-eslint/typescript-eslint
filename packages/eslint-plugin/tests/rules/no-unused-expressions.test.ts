@@ -13,52 +13,52 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-unused-expressions', rule, {
   valid: [
     `
-      test.age?.toLocaleString();
+test.age?.toLocaleString();
     `,
     `
-      let a = (a?.b).c;
+let a = (a?.b).c;
     `,
     `
-      let b = a?.['b'];
+let b = a?.['b'];
     `,
     `
-      let c = one[2]?.[3][4];
+let c = one[2]?.[3][4];
     `,
     `
-      one[2]?.[3][4]?.();
+one[2]?.[3][4]?.();
     `,
     `
-      a?.['b']?.c();
+a?.['b']?.c();
     `,
     `
-      module Foo {
-        'use strict';
-      }
+module Foo {
+  'use strict';
+}
     `,
     `
-      namespace Foo {
-        'use strict';
+namespace Foo {
+  'use strict';
 
-        export class Foo {}
-        export class Bar {}
-      }
+  export class Foo {}
+  export class Bar {}
+}
     `,
     `
-      function foo() {
-        'use strict';
+function foo() {
+  'use strict';
 
-        return null;
-      }
+  return null;
+}
     `,
     `
-      import('./foo');
+import('./foo');
     `,
     `
-      import('./foo').then(() => {});
+import('./foo').then(() => {});
     `,
     `
-      class Foo<T> {}
-      new Foo<string>();
+class Foo<T> {}
+new Foo<string>();
     `,
     {
       code: 'foo && foo?.();',

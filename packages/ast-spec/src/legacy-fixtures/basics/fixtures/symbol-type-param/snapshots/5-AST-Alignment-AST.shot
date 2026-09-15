@@ -46,20 +46,7 @@ Snapshot Diff:
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
--               typeArguments: TSTypeParameterInstantiation {
-+               typeName: Identifier {
-+                 type: 'Identifier',
-+                 decorators: Array [],
-+                 name: 'Map',
-+                 optional: false,
-+
-+                 range: [92, 95],
-+                 loc: {
-+                   start: { column: 19, line: 3 },
-+                   end: { column: 22, line: 3 },
-+                 },
-+               },
-+               typeParameters: TSTypeParameterInstantiation {
+                typeArguments: TSTypeParameterInstantiation {
                   type: 'TSTypeParameterInstantiation',
                   params: Array [
                     TSSymbolKeyword {
@@ -86,18 +73,18 @@ Snapshot Diff:
                   loc: {
                     start: { column: 22, line: 3 },
                     end: { column: 38, line: 3 },
--                 },
--               },
--               typeName: Identifier {
--                 type: 'Identifier',
--                 decorators: Array [],
--                 name: 'Map',
--                 optional: false,
--
--                 range: [92, 95],
--                 loc: {
--                   start: { column: 19, line: 3 },
--                   end: { column: 22, line: 3 },
+                  },
+                },
+                typeName: Identifier {
+                  type: 'Identifier',
+                  decorators: Array [],
+                  name: 'Map',
+                  optional: false,
+
+                  range: [92, 95],
+                  loc: {
+                    start: { column: 19, line: 3 },
+                    end: { column: 22, line: 3 },
                   },
                 },
 
@@ -132,9 +119,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 116],
+-   range: [73, 116],
++   range: [0, 116],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

@@ -94,6 +94,8 @@ class Person {
           data: {
             name: 'constructor',
           },
+          endColumn: 31,
+          endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [
@@ -121,6 +123,8 @@ class Person {
           data: {
             name: "method 'otherMethod'",
           },
+          endColumn: 31,
+          endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [
@@ -148,6 +152,8 @@ class Foo {
           data: {
             name: 'constructor',
           },
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [
@@ -175,6 +181,8 @@ class Foo {
           data: {
             name: 'constructor',
           },
+          endColumn: 29,
+          endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [
@@ -200,6 +208,8 @@ function foo() {}
           data: {
             name: "function 'foo'",
           },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'unexpected',
           suggestions: [
@@ -226,6 +236,8 @@ class Foo {
           data: {
             name: "method 'foo'",
           },
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'unexpected',
           suggestions: [
@@ -254,6 +266,8 @@ class Foo extends Base {
           data: {
             name: "method 'foo'",
           },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'unexpected',
           suggestions: [

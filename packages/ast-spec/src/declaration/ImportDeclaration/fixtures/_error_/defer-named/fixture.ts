@@ -1,0 +1,1 @@
+import defer { named } from 'mod';

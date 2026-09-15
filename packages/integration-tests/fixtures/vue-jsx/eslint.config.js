@@ -8,6 +8,9 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: { ecmaFeatures: { jsx: true }, parser: tseslint.parser },
     },
-    rules: { '@typescript-eslint/no-explicit-any': 'error' },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+      'vue/multi-word-component-names': 'off',
+    },
   },
 );

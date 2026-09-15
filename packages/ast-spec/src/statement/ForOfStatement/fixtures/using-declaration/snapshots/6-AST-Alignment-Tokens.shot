@@ -1,5 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > statement > ForOfStatement > using-declaration > AST Alignment - Token`]
-Snapshot Diff:
-Compared values have no visual difference.

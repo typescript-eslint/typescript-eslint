@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures parameter TSParameterProperty _error_ override-method-parameter Babel - Error 1`] = `[SyntaxError: A parameter property is only allowed in a constructor implementation. (2:9)]`;

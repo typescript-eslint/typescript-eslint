@@ -3,7 +3,7 @@ Program {
   body: [
     ExportAllDeclaration {
       type: "ExportAllDeclaration",
-      assertions: [],
+      attributes: [],
       exported: Identifier {
         type: "Identifier",
         decorators: [],
@@ -38,9 +38,9 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 101],
+  range: [0, 101],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

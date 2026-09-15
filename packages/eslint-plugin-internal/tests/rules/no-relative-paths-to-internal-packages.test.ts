@@ -19,6 +19,9 @@ ruleTester.run('no-relative-paths-to-internal-packages', rule, {
       code: "import { parse } from '../../../typescript-estree';",
       errors: [
         {
+          column: 23,
+          endColumn: 51,
+          endLine: 1,
           line: 1,
           messageId: 'noRelativePathsToInternalPackages',
         },
@@ -33,6 +36,9 @@ ruleTester.run('no-relative-paths-to-internal-packages', rule, {
       code: "import { parse } from '../../../typescript-estree/inner-module';",
       errors: [
         {
+          column: 23,
+          endColumn: 64,
+          endLine: 1,
           line: 1,
           messageId: 'noRelativePathsToInternalPackages',
         },
@@ -47,6 +53,9 @@ ruleTester.run('no-relative-paths-to-internal-packages', rule, {
       code: "import type { ValueOf } from '../../../../utils';",
       errors: [
         {
+          column: 30,
+          endColumn: 49,
+          endLine: 1,
           line: 1,
           messageId: 'noRelativePathsToInternalPackages',
         },
@@ -66,6 +75,9 @@ import type {
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 47,
+          endLine: 5,
           line: 5,
           messageId: 'noRelativePathsToInternalPackages',
         },

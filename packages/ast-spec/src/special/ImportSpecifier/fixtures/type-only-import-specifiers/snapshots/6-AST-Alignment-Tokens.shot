@@ -1,5 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > special > ImportSpecifier > type-only-import-specifiers > AST Alignment - Token`]
-Snapshot Diff:
-Compared values have no visual difference.

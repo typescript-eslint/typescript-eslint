@@ -30,6 +30,15 @@ export interface RuleMetaDataDocs {
    * Mark this rule as feature-frozen.
    */
   frozen?: boolean;
+
+  /**
+   * The dialects of the languages that the rule is intended to lint.
+   * @example
+   * ["JavaScript", "TypeScript"]
+   *
+   * since ESLint 10.2.0
+   */
+  dialects?: string[] | undefined;
 }
 
 export interface ExternalSpecifier {
@@ -111,6 +120,15 @@ export interface RuleMetaData<
    * Specifies whether rules can return suggestions. Omit if there is no suggestions
    */
   hasSuggestions?: boolean;
+  /**
+   * Languages supported by this rule in the format `"plugin/language"`.
+   * Use `"*"` for any language or `"plugin/*"` for any language from a specific plugin.
+   * @example
+   * ["js/js", "markdown/gfm", "json/jsonc", "css/css"]
+   *
+   * since ESLint 10.2.0
+   */
+  languages?: string[] | undefined;
   /**
    * A map of messages which the rule can report.
    * The key is the messageId, and the string is the parameterized error string.

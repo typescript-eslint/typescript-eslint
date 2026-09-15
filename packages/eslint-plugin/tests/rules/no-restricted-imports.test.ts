@@ -391,6 +391,10 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1';",
       errors: [
         {
+          column: 1,
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -400,6 +404,10 @@ import type { foo } from 'import2/private/bar';
       code: "import foo = require('import1');",
       errors: [
         {
+          column: 1,
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -409,6 +417,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1';",
       errors: [
         {
+          column: 1,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -418,6 +430,10 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1';",
       errors: [
         {
+          column: 1,
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -427,6 +443,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1';",
       errors: [
         {
+          column: 1,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -436,6 +456,10 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1/private/foo';",
       errors: [
         {
+          column: 1,
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'patterns',
         },
       ],
@@ -450,6 +474,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1/private/foo';",
       errors: [
         {
+          column: 1,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'patterns',
         },
       ],
@@ -464,6 +492,10 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import-foo';",
       errors: [
         {
+          column: 1,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'pathWithCustomMessage',
         },
       ],
@@ -486,6 +518,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import-foo';",
       errors: [
         {
+          column: 1,
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
           messageId: 'pathWithCustomMessage',
         },
       ],
@@ -508,6 +544,10 @@ import type { foo } from 'import2/private/bar';
       code: "import { Bar } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -527,6 +567,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { Bar } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -546,6 +590,10 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1/private/foo';",
       errors: [
         {
+          column: 1,
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -569,6 +617,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1/private/foo';",
       errors: [
         {
+          column: 1,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -592,6 +644,10 @@ import type { foo } from 'import2/private/bar';
       code: "import 'import-foo';",
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -609,6 +665,10 @@ import type { foo } from 'import2/private/bar';
       code: "import 'import-foo';",
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -627,6 +687,10 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import-foo';",
       errors: [
         {
+          column: 1,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'pathWithCustomMessage',
         },
       ],
@@ -646,6 +710,10 @@ import type { foo } from 'import2/private/bar';
       code: "import foo = require('import-foo');",
       errors: [
         {
+          column: 1,
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
           messageId: 'pathWithCustomMessage',
         },
       ],
@@ -665,6 +733,10 @@ import type { foo } from 'import2/private/bar';
       code: "import { Bar } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -685,6 +757,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { Bar } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -705,6 +781,10 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1/private/bar';",
       errors: [
         {
+          column: 1,
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -724,6 +804,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1/private/bar';",
       errors: [
         {
+          column: 1,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -743,6 +827,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1/private/bar';",
       errors: [
         {
+          column: 1,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -762,6 +850,10 @@ import type { foo } from 'import2/private/bar';
       code: "import { foo } from 'import1/private-package';",
       errors: [
         {
+          column: 1,
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -782,6 +874,10 @@ import type { foo } from 'import2/private/bar';
       code: "export * from 'import1';",
       errors: [
         {
+          column: 1,
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -791,6 +887,10 @@ import type { foo } from 'import2/private/bar';
       code: "import type { InvalidTestCase } from '@typescript-eslint/utils/dist/ts-eslint';",
       errors: [
         {
+          column: 1,
+          endColumn: 80,
+          endLine: 1,
+          line: 1,
           messageId: 'patterns',
         },
       ],
@@ -804,6 +904,10 @@ import type { foo } from 'import2/private/bar';
       code: "import { Bar, type Baz } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -824,9 +928,17 @@ import type { foo } from 'import2/private/bar';
       code: "import { Bar, type Baz } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
         {
+          column: 15,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -847,6 +959,10 @@ import type { foo } from 'import2/private/bar';
       code: "export { Bar, type Baz } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -867,9 +983,17 @@ import type { foo } from 'import2/private/bar';
       code: "export { Bar, type Baz } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
         {
+          column: 15,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],

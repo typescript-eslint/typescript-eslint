@@ -9,12 +9,12 @@ ruleTester.run('no-unsafe-function-type', rule, {
     'let value: () => void;',
     'let value: <T>(t: T) => T;',
     `
-      // create a scope since it's illegal to declare a duplicate identifier
-      // 'Function' in the global script scope.
-      {
-        type Function = () => void;
-        let value: Function;
-      }
+// create a scope since it's illegal to declare a duplicate identifier
+// 'Function' in the global script scope.
+{
+  type Function = () => void;
+  let value: Function;
+}
     `,
   ],
   invalid: [
@@ -23,6 +23,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'bannedFunctionType',
         },
@@ -34,6 +36,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'bannedFunctionType',
         },
@@ -45,6 +49,8 @@ ruleTester.run('no-unsafe-function-type', rule, {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'bannedFunctionType',
         },
@@ -53,13 +59,15 @@ ruleTester.run('no-unsafe-function-type', rule, {
     },
     {
       code: `
-        class Weird implements Function {
-          // ...
-        }
+class Weird implements Function {
+  // ...
+}
       `,
       errors: [
         {
-          column: 32,
+          column: 24,
+          endColumn: 32,
+          endLine: 2,
           line: 2,
           messageId: 'bannedFunctionType',
         },
@@ -68,13 +76,15 @@ ruleTester.run('no-unsafe-function-type', rule, {
     },
     {
       code: `
-        interface Weird extends Function {
-          // ...
-        }
+interface Weird extends Function {
+  // ...
+}
       `,
       errors: [
         {
-          column: 33,
+          column: 25,
+          endColumn: 33,
+          endLine: 2,
           line: 2,
           messageId: 'bannedFunctionType',
         },

@@ -726,6 +726,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = new Generic<int>() as Foo;',
       errors: [
         {
+          column: 11,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -736,6 +739,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = b as A;',
       errors: [
         {
+          column: 11,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -746,6 +752,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = [1] as readonly number[];',
       errors: [
         {
+          column: 11,
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -756,6 +765,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = 'string' as a | b;",
       errors: [
         {
+          column: 11,
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -766,6 +778,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = !'string' as A;",
       errors: [
         {
+          column: 11,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -776,6 +791,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = (a as A) + b;',
       errors: [
         {
+          column: 12,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -786,6 +804,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = new Generic<string>() as Foo;',
       errors: [
         {
+          column: 11,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -796,6 +817,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = new (Generic<string> as Foo)();',
       errors: [
         {
+          column: 16,
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -806,6 +830,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = new (Generic<string> as Foo)('string');",
       errors: [
         {
+          column: 16,
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -816,6 +843,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = () => ({ bar: 5 }) as Foo;',
       errors: [
         {
+          column: 17,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -826,6 +856,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = () => bar as Foo;',
       errors: [
         {
+          column: 17,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -836,6 +869,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = bar<string>`${'baz'}` as Foo;",
       errors: [
         {
+          column: 11,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -846,6 +882,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = { key: 'value' } as const;",
       errors: [
         {
+          column: 11,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'angle-bracket',
         },
@@ -856,6 +895,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <Foo>new Generic<int>();',
       errors: [
         {
+          column: 11,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -867,6 +909,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <A>b;',
       errors: [
         {
+          column: 11,
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -878,6 +923,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <readonly number[]>[1];',
       errors: [
         {
+          column: 11,
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -889,6 +937,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = <a | b>'string';",
       errors: [
         {
+          column: 11,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -900,6 +951,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = <A>!'string';",
       errors: [
         {
+          column: 11,
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -911,6 +965,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <A>a + b;',
       errors: [
         {
+          column: 11,
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -922,6 +979,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <Foo>new Generic<string>();',
       errors: [
         {
+          column: 11,
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -933,6 +993,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = new (<Foo>Generic<string>)();',
       errors: [
         {
+          column: 16,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -944,6 +1007,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = new (<Foo>Generic<string>)('string');",
       errors: [
         {
+          column: 16,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -955,6 +1021,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = () => <Foo>{ bar: 5 };',
       errors: [
         {
+          column: 17,
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -966,6 +1035,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = () => <Foo>bar;',
       errors: [
         {
+          column: 17,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -977,6 +1049,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = <Foo>bar<string>`${'baz'}`;",
       errors: [
         {
+          column: 11,
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -988,6 +1063,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = <const>{ key: 'value' };",
       errors: [
         {
+          column: 11,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -999,6 +1077,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = new Generic<int>() as Foo;',
       errors: [
         {
+          column: 11,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1009,6 +1090,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = b as A;',
       errors: [
         {
+          column: 11,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1019,6 +1103,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = [1] as readonly number[];',
       errors: [
         {
+          column: 11,
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1029,6 +1116,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = 'string' as a | b;",
       errors: [
         {
+          column: 11,
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1039,6 +1129,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = !'string' as A;",
       errors: [
         {
+          column: 11,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1049,6 +1142,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = (a as A) + b;',
       errors: [
         {
+          column: 12,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1059,6 +1155,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = new Generic<string>() as Foo;',
       errors: [
         {
+          column: 11,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1069,6 +1168,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = new (Generic<string> as Foo)();',
       errors: [
         {
+          column: 16,
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1079,6 +1181,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = new (Generic<string> as Foo)('string');",
       errors: [
         {
+          column: 16,
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1089,6 +1194,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = () => ({ bar: 5 }) as Foo;',
       errors: [
         {
+          column: 17,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1099,6 +1207,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = () => bar as Foo;',
       errors: [
         {
+          column: 17,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1109,6 +1220,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = bar<string>`${'baz'}` as Foo;",
       errors: [
         {
+          column: 11,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1119,6 +1233,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <Foo>new Generic<int>();',
       errors: [
         {
+          column: 11,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1129,6 +1246,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <A>b;',
       errors: [
         {
+          column: 11,
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1139,6 +1259,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <readonly number[]>[1];',
       errors: [
         {
+          column: 11,
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1149,6 +1272,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = <a | b>'string';",
       errors: [
         {
+          column: 11,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1159,6 +1285,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = <A>!'string';",
       errors: [
         {
+          column: 11,
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1169,6 +1298,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <A>a + b;',
       errors: [
         {
+          column: 11,
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1179,6 +1311,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <Foo>new Generic<string>();',
       errors: [
         {
+          column: 11,
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1189,6 +1324,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = new (<Foo>Generic<string>)();',
       errors: [
         {
+          column: 16,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1199,6 +1337,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = new (<Foo>Generic<string>)('string');",
       errors: [
         {
+          column: 16,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1209,6 +1350,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = () => <Foo>{ bar: 5 };',
       errors: [
         {
+          column: 17,
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1219,6 +1363,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = () => <Foo>bar;',
       errors: [
         {
+          column: 17,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1229,6 +1376,9 @@ const x = { key: 'value' } as unknown;
       code: "const x = <Foo>bar<string>`${'baz'}`;",
       errors: [
         {
+          column: 11,
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'never',
         },
@@ -1239,6 +1389,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = {} as Foo<int>;',
       errors: [
         {
+          column: 11,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1266,6 +1419,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = {} as a | b;',
       errors: [
         {
+          column: 11,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1293,6 +1449,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = ({} as A) + b;',
       errors: [
         {
+          column: 12,
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1315,6 +1474,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <Foo<int>>{};',
       errors: [
         {
+          column: 11,
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1342,6 +1504,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <a | b>{};',
       errors: [
         {
+          column: 11,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1369,6 +1534,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = <A>{} + b;',
       errors: [
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1391,6 +1559,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = {} as Foo<int>;',
       errors: [
         {
+          column: 11,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1413,6 +1584,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = {} as a | b;',
       errors: [
         {
+          column: 11,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1435,6 +1609,9 @@ const x = { key: 'value' } as unknown;
       code: 'const x = ({} as A) + b;',
       errors: [
         {
+          column: 12,
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1452,6 +1629,9 @@ const x = { key: 'value' } as unknown;
       code: 'print({ bar: 5 } as Foo);',
       errors: [
         {
+          column: 7,
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1469,6 +1649,9 @@ const x = { key: 'value' } as unknown;
       code: 'new print({ bar: 5 } as Foo);',
       errors: [
         {
+          column: 11,
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1490,6 +1673,9 @@ function foo() {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1511,6 +1697,9 @@ function foo() {
       code: 'function b(x = {} as Foo.Bar) {}',
       errors: [
         {
+          column: 16,
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1528,6 +1717,9 @@ function foo() {
       code: 'function c(x = {} as Foo) {}',
       errors: [
         {
+          column: 16,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1545,6 +1737,9 @@ function foo() {
       code: 'print?.({ bar: 5 } as Foo);',
       errors: [
         {
+          column: 9,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1562,6 +1757,9 @@ function foo() {
       code: 'print?.call({ bar: 5 } as Foo);',
       errors: [
         {
+          column: 13,
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1579,6 +1777,9 @@ function foo() {
       code: 'print`${{ bar: 5 } as Foo}`;',
       errors: [
         {
+          column: 9,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1596,6 +1797,9 @@ function foo() {
       code: 'const x = <Foo<int>>{};',
       errors: [
         {
+          column: 11,
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1623,6 +1827,9 @@ function foo() {
       code: 'const x = <a | b>{};',
       errors: [
         {
+          column: 11,
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1650,6 +1857,9 @@ function foo() {
       code: 'const x = <A>{} + b;',
       errors: [
         {
+          column: 11,
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1672,6 +1882,9 @@ function foo() {
       code: 'print(<Foo>{ bar: 5 });',
       errors: [
         {
+          column: 7,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1694,6 +1907,9 @@ function foo() {
       code: 'new print(<Foo>{ bar: 5 });',
       errors: [
         {
+          column: 11,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1720,6 +1936,9 @@ function foo() {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1746,6 +1965,9 @@ function foo() {
       code: 'print?.(<Foo>{ bar: 5 });',
       errors: [
         {
+          column: 9,
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1768,6 +1990,9 @@ function foo() {
       code: 'print?.call(<Foo>{ bar: 5 });',
       errors: [
         {
+          column: 13,
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1790,6 +2015,9 @@ function foo() {
       code: 'print`${<Foo>{ bar: 5 }}`;',
       errors: [
         {
+          column: 9,
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
@@ -1810,7 +2038,9 @@ function foo() {
     },
     {
       code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
-      errors: [{ line: 1, messageId: 'never' }],
+      errors: [
+        { column: 25, endColumn: 42, endLine: 1, line: 1, messageId: 'never' },
+      ],
       languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ assertionStyle: 'never' }],
       output: null,
@@ -1819,6 +2049,9 @@ function foo() {
       code: 'const a = <any>(b, c);',
       errors: [
         {
+          column: 11,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -1834,6 +2067,9 @@ function foo() {
       code: 'const f = <any>(() => {});',
       errors: [
         {
+          column: 11,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -1849,6 +2085,9 @@ function foo() {
       code: 'const f = <any>function () {};',
       errors: [
         {
+          column: 11,
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -1864,6 +2103,9 @@ function foo() {
       code: 'const f = <any>(async () => {});',
       errors: [
         {
+          column: 11,
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -1885,6 +2127,9 @@ function* g() {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'as',
         },
@@ -1907,6 +2152,9 @@ const bs = <any>(x <<= y);
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'as',
         },
@@ -1925,6 +2173,9 @@ const bs = (x <<= y) as any;
       code: 'const ternary = <any>(true ? x : y);',
       errors: [
         {
+          column: 17,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'as',
         },
@@ -1940,6 +2191,10 @@ const bs = (x <<= y) as any;
       code: 'const x = [] as string[];',
       errors: [
         {
+          column: 11,
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
           messageId: 'never',
         },
       ],
@@ -1953,6 +2208,10 @@ const bs = (x <<= y) as any;
       code: 'const x = <string[]>[];',
       errors: [
         {
+          column: 11,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'never',
         },
       ],
@@ -1966,6 +2225,10 @@ const bs = (x <<= y) as any;
       code: 'const x = [] as string[];',
       errors: [
         {
+          column: 11,
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
           messageId: 'angle-bracket',
         },
       ],
@@ -1979,6 +2242,10 @@ const bs = (x <<= y) as any;
       code: 'const x = <string[]>[];',
       errors: [
         {
+          column: 11,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'as',
         },
       ],
@@ -1993,6 +2260,10 @@ const bs = (x <<= y) as any;
       code: 'const x = [] as string[];',
       errors: [
         {
+          column: 11,
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2019,6 +2290,10 @@ const bs = (x <<= y) as any;
       code: 'const x = <string[]>[];',
       errors: [
         {
+          column: 11,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2045,6 +2320,10 @@ const bs = (x <<= y) as any;
       code: 'print([5] as Foo);',
       errors: [
         {
+          column: 7,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2066,6 +2345,10 @@ const bs = (x <<= y) as any;
       code: 'new print([5] as Foo);',
       errors: [
         {
+          column: 11,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2087,6 +2370,10 @@ const bs = (x <<= y) as any;
       code: 'function b(x = [5] as Foo.Bar) {}',
       errors: [
         {
+          column: 16,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2112,6 +2399,10 @@ function foo() {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2137,6 +2428,10 @@ function foo() {
       code: 'print`${[5] as Foo}`;',
       errors: [
         {
+          column: 9,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2158,6 +2453,10 @@ function foo() {
       code: 'const foo = () => [5] as Foo;',
       errors: [
         {
+          column: 19,
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2179,6 +2478,10 @@ function foo() {
       code: 'new print(<Foo>[5]);',
       errors: [
         {
+          column: 11,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2200,6 +2503,10 @@ function foo() {
       code: 'function b(x = <Foo.Bar>[5]) {}',
       errors: [
         {
+          column: 16,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2225,6 +2532,10 @@ function foo() {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2250,6 +2561,10 @@ function foo() {
       code: 'print`${<Foo>[5]}`;',
       errors: [
         {
+          column: 9,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
@@ -2271,6 +2586,10 @@ function foo() {
       code: 'const foo = <Foo>[5];',
       errors: [
         {
+          column: 13,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {

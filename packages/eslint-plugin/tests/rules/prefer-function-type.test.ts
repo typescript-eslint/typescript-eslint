@@ -51,9 +51,13 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
           },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -71,9 +75,13 @@ export default interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
           },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -88,9 +96,13 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
           },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -108,9 +120,13 @@ export interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
           },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -128,9 +144,13 @@ export interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
           },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -147,9 +167,13 @@ function foo(bar: { /* comment */ (s: string): number } | undefined): number {
       `,
       errors: [
         {
+          column: 35,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
           },
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -167,9 +191,13 @@ type Foo = {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
           },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -185,9 +213,13 @@ function foo(bar: { (s: string): number }): number {
       `,
       errors: [
         {
+          column: 21,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
           },
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -205,9 +237,13 @@ function foo(bar: { (s: string): number } | undefined): number {
       `,
       errors: [
         {
+          column: 21,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
           },
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -225,9 +261,13 @@ interface Foo extends Function {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
           },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -243,9 +283,13 @@ interface Foo<T> {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
           },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -261,9 +305,13 @@ interface Foo<T> {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
           },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -277,9 +325,13 @@ type Foo<T> = { (this: string): T };
       `,
       errors: [
         {
+          column: 17,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
           },
+          endColumn: 34,
+          endLine: 2,
+          line: 2,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -295,9 +347,13 @@ interface Foo {
       `,
       errors: [
         {
+          column: 9,
           data: {
             interfaceName: 'Foo',
           },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThisOnFunctionOnlyInterface',
         },
       ],
@@ -311,9 +367,13 @@ interface Foo {
       `,
       errors: [
         {
+          column: 18,
           data: {
             interfaceName: 'Foo',
           },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThisOnFunctionOnlyInterface',
         },
       ],
@@ -336,9 +396,13 @@ interface Foo {
       `,
       errors: [
         {
+          column: 3,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSInterfaceDeclaration],
           },
+          endColumn: 5,
+          endLine: 12,
+          line: 4,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -361,9 +425,13 @@ type X = {} | { (): void; }
       `,
       errors: [
         {
+          column: 17,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
           },
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
           messageId: 'functionTypeOverCallableType',
         },
       ],
@@ -377,9 +445,13 @@ type X = {} & { (): void; };
       `,
       errors: [
         {
+          column: 17,
           data: {
             literalOrInterface: phrases[AST_NODE_TYPES.TSTypeLiteral],
           },
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
           messageId: 'functionTypeOverCallableType',
         },
       ],

@@ -36,10 +36,9 @@ Program {
             },
             kind: "get",
             optional: false,
-            parameters: [],
+            params: [],
             readonly: false,
-            static: false,
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNumberKeyword {
                 type: "TSNumberKeyword",
@@ -57,6 +56,7 @@ Program {
                 end: { column: 20, line: 4 },
               },
             },
+            static: false,
 
             range: [90, 109],
             loc: {
@@ -81,7 +81,7 @@ Program {
             },
             kind: "set",
             optional: false,
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -169,9 +169,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 159],
+  range: [0, 159],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 7 },
   },
 }

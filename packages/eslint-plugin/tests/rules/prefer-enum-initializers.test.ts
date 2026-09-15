@@ -38,7 +38,10 @@ enum Direction {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Up' },
+          endColumn: 5,
+          endLine: 3,
           line: 3,
           messageId: 'defineInitializer',
           suggestions: [
@@ -79,7 +82,10 @@ enum Direction {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Up' },
+          endColumn: 5,
+          endLine: 3,
           line: 3,
           messageId: 'defineInitializer',
           suggestions: [
@@ -113,7 +119,10 @@ enum Direction {
           ],
         },
         {
+          column: 3,
           data: { name: 'Down' },
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'defineInitializer',
           suggestions: [
@@ -157,7 +166,10 @@ enum Direction {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Down' },
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'defineInitializer',
           suggestions: [
@@ -201,7 +213,10 @@ enum Direction {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Up' },
+          endColumn: 5,
+          endLine: 3,
           line: 3,
           messageId: 'defineInitializer',
           suggestions: [

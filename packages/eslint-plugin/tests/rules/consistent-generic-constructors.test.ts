@@ -194,6 +194,10 @@ function a([a = new Foo<string>()]) {}
       code: 'const a: Foo<string> = new Foo();',
       errors: [
         {
+          column: 7,
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
           messageId: 'preferConstructor',
         },
       ],
@@ -203,6 +207,10 @@ function a([a = new Foo<string>()]) {}
       code: 'const a: Map<string, number> = new Map();',
       errors: [
         {
+          column: 7,
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
           messageId: 'preferConstructor',
         },
       ],
@@ -212,6 +220,10 @@ function a([a = new Foo<string>()]) {}
       code: noFormat`const a: Map <string, number> = new Map();`,
       errors: [
         {
+          column: 7,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
           messageId: 'preferConstructor',
         },
       ],
@@ -221,6 +233,10 @@ function a([a = new Foo<string>()]) {}
       code: noFormat`const a: Map< string, number > = new Map();`,
       errors: [
         {
+          column: 7,
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'preferConstructor',
         },
       ],
@@ -230,6 +246,10 @@ function a([a = new Foo<string>()]) {}
       code: noFormat`const a: Map<string, number> = new Map ();`,
       errors: [
         {
+          column: 7,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
           messageId: 'preferConstructor',
         },
       ],
@@ -239,6 +259,10 @@ function a([a = new Foo<string>()]) {}
       code: noFormat`const a: Foo<number> = new Foo;`,
       errors: [
         {
+          column: 7,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
           messageId: 'preferConstructor',
         },
       ],
@@ -248,6 +272,10 @@ function a([a = new Foo<string>()]) {}
       code: 'const a: /* comment */ Foo/* another */ <string> = new Foo();',
       errors: [
         {
+          column: 7,
+          endColumn: 61,
+          endLine: 1,
+          line: 1,
           messageId: 'preferConstructor',
         },
       ],
@@ -257,6 +285,10 @@ function a([a = new Foo<string>()]) {}
       code: 'const a: Foo/* comment */ <string> = new Foo /* another */();',
       errors: [
         {
+          column: 7,
+          endColumn: 61,
+          endLine: 1,
+          line: 1,
           messageId: 'preferConstructor',
         },
       ],
@@ -266,6 +298,10 @@ function a([a = new Foo<string>()]) {}
       code: noFormat`const a: Foo<string> = new \n Foo \n ();`,
       errors: [
         {
+          column: 7,
+          endColumn: 4,
+          endLine: 3,
+          line: 1,
           messageId: 'preferConstructor',
         },
       ],
@@ -279,6 +315,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
           messageId: 'preferConstructor',
         },
       ],
@@ -296,6 +336,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
           messageId: 'preferConstructor',
         },
       ],
@@ -313,6 +357,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
           messageId: 'preferConstructor',
         },
       ],
@@ -330,6 +378,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -348,6 +400,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 41,
+          endLine: 3,
+          line: 3,
           messageId: 'preferConstructor',
         },
       ],
@@ -363,6 +419,10 @@ function foo(a: Foo<string> = new Foo()) {}
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
           messageId: 'preferConstructor',
         },
       ],
@@ -376,6 +436,10 @@ function foo({ a }: Foo<string> = new Foo()) {}
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
           messageId: 'preferConstructor',
         },
       ],
@@ -389,6 +453,10 @@ function foo([a]: Foo<string> = new Foo()) {}
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
           messageId: 'preferConstructor',
         },
       ],
@@ -404,6 +472,10 @@ class A {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 41,
+          endLine: 3,
+          line: 3,
           messageId: 'preferConstructor',
         },
       ],
@@ -419,6 +491,10 @@ const a = function (a: Foo<string> = new Foo()) {};
       `,
       errors: [
         {
+          column: 21,
+          endColumn: 47,
+          endLine: 2,
+          line: 2,
           messageId: 'preferConstructor',
         },
       ],
@@ -430,6 +506,10 @@ const a = function (a = new Foo<string>()) {};
       code: 'const a = new Foo<string>();',
       errors: [
         {
+          column: 7,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -440,6 +520,10 @@ const a = function (a = new Foo<string>()) {};
       code: 'const a = new Map<string, number>();',
       errors: [
         {
+          column: 7,
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -450,6 +534,10 @@ const a = function (a = new Foo<string>()) {};
       code: noFormat`const a = new Map <string, number> ();`,
       errors: [
         {
+          column: 7,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -460,6 +548,10 @@ const a = function (a = new Foo<string>()) {};
       code: noFormat`const a = new Map< string, number >();`,
       errors: [
         {
+          column: 7,
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -470,6 +562,10 @@ const a = function (a = new Foo<string>()) {};
       code: noFormat`const a = new \n Foo<string> \n ();`,
       errors: [
         {
+          column: 7,
+          endColumn: 4,
+          endLine: 3,
+          line: 1,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -480,6 +576,10 @@ const a = function (a = new Foo<string>()) {};
       code: 'const a = new Foo/* comment */ <string> /* another */();',
       errors: [
         {
+          column: 7,
+          endColumn: 56,
+          endLine: 1,
+          line: 1,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -490,6 +590,10 @@ const a = function (a = new Foo<string>()) {};
       code: 'const a = new Foo</* comment */ string, /* another */ number>();',
       errors: [
         {
+          column: 7,
+          endColumn: 64,
+          endLine: 1,
+          line: 1,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -504,6 +608,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -522,6 +630,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -540,6 +652,10 @@ class Foo {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -556,6 +672,10 @@ function foo(a = new Foo<string>()) {}
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -570,6 +690,10 @@ function foo({ a } = new Foo<string>()) {}
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -584,6 +708,10 @@ function foo([a] = new Foo<string>()) {}
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 37,
+          endLine: 2,
+          line: 2,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -600,6 +728,10 @@ class A {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -616,6 +748,10 @@ const a = function (a = new Foo<string>()) {};
       `,
       errors: [
         {
+          column: 21,
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
           messageId: 'preferTypeAnnotation',
         },
       ],
@@ -632,6 +768,10 @@ export {};
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 60,
+          endLine: 3,
+          line: 3,
           messageId: 'preferConstructor',
         },
       ],

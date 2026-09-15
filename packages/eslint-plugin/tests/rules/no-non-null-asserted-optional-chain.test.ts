@@ -25,6 +25,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: 'foo?.bar!;',
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {
@@ -39,6 +43,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: "foo?.['bar']!;",
       errors: [
         {
+          column: 1,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {
@@ -53,6 +61,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: 'foo?.bar()!;',
       errors: [
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {
@@ -67,6 +79,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: 'foo.bar?.()!;',
       errors: [
         {
+          column: 1,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {
@@ -81,6 +97,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: noFormat`(foo?.bar)!.baz`,
       errors: [
         {
+          column: 2,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {
@@ -95,6 +115,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: noFormat`(foo?.bar)!().baz`,
       errors: [
         {
+          column: 2,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {
@@ -109,6 +133,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: noFormat`(foo?.bar)!`,
       errors: [
         {
+          column: 2,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {
@@ -123,6 +151,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: noFormat`(foo?.bar)!()`,
       errors: [
         {
+          column: 2,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {
@@ -137,6 +169,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: noFormat`(foo?.bar!)`,
       errors: [
         {
+          column: 2,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {
@@ -151,6 +187,10 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
       code: noFormat`(foo?.bar!)()`,
       errors: [
         {
+          column: 2,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'noNonNullOptionalChain',
           suggestions: [
             {

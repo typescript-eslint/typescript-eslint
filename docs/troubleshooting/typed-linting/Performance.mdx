@@ -46,6 +46,37 @@ You can enable the setting by prepending your ESLint command like:
 NODE_OPTIONS=--max-semi-space-size=256 eslint <rest of your command>
 ```
 
+## Out-of-Memory Errors
+
+Very large or complex projects can cause Node.js to run out of memory during linting, resulting in crashes such as:
+
+```plaintext
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+```
+
+Out-of-memory (OOM) errors during typed linting are most often caused by large or complex TypeScript types.
+Because typed linting relies on the same type information as type checking, anything that makes TypeScript's type checker allocate a lot of memory will impact typed linting as well.
+
+### Investigating Large Types
+
+The same tools that spot slow types also spot memory-heavy ones: see [Slow TypeScript Types](#slow-typescript-types) above for how to investigate them.
+Simplifying or splitting up any types flagged by those steps generally reduces both memory usage and lint times.
+
+### Increasing the Memory Limit
+
+If you've reduced type complexity as much as is practical and still hit OOM errors, you can raise Node.js's memory limit with the [`--max-old-space-size`](https://nodejs.org/api/cli.html#--max-old-space-sizesize-in-mib) option.
+This increases the maximum size of the old memory section of the V8 heap, at the cost of allowing ESLint to consume more memory.
+
+You can enable the setting by prepending your ESLint command like:
+
+```bash
+NODE_OPTIONS=--max-old-space-size=8192 eslint <rest of your command>
+```
+
+The value is in MiB, so the example above allows up to 8 GB.
+Note that this only lets ESLint use more of the memory available on your machine: it does not reduce the amount of work being done.
+Prefer reducing type complexity where you can, and treat raising the memory limit as a last resort.
+
 ## Wide includes in your `tsconfig`
 
 When using type-aware linting, you provide us with one or more tsconfigs.

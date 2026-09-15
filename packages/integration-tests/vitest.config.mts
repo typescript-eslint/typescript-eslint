@@ -15,6 +15,7 @@ const vitestConfig = mergeConfig(
       globalSetup: ['./tools/pack-packages.ts'],
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
+      testTimeout: 60_000,
     },
   }),
 );

@@ -598,7 +598,11 @@ var a = 19;
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -613,7 +617,11 @@ var a = 19;
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -626,7 +634,11 @@ var a = 19;
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -638,7 +650,11 @@ var a = function () {};
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -650,7 +666,11 @@ var a = [1, 3];
       `,
       errors: [
         {
+          column: 7,
           data: { name: 'a' },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -666,11 +686,19 @@ function a() {
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
         {
+          column: 9,
           data: { name: 'b' },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -682,7 +710,11 @@ var a = function () {};
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -697,7 +729,11 @@ var a = function () {};
       `,
       errors: [
         {
+          column: 9,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -710,7 +746,11 @@ function a() {}
       `,
       errors: [
         {
+          column: 8,
           data: { name: 'a' },
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -727,7 +767,11 @@ try {
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -739,7 +783,11 @@ var a;
       `,
       errors: [
         {
+          column: 15,
           data: { name: 'a' },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -752,7 +800,11 @@ class A {}
       `,
       errors: [
         {
+          column: 5,
           data: { name: 'A' },
+          endColumn: 6,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -767,7 +819,11 @@ class A {}
       `,
       errors: [
         {
+          column: 7,
           data: { name: 'A' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -780,7 +836,11 @@ var A = class {};
       `,
       errors: [
         {
+          column: 5,
           data: { name: 'A' },
+          endColumn: 6,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -795,7 +855,11 @@ var A = class {};
       `,
       errors: [
         {
+          column: 7,
           data: { name: 'A' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -812,7 +876,11 @@ a++;
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -828,7 +896,11 @@ a++;
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'a' },
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -843,7 +915,11 @@ a++;
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'a' },
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -860,7 +936,11 @@ switch (foo) {
       `,
       errors: [
         {
+          column: 5,
           data: { name: 'a' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -877,7 +957,11 @@ if (true) {
       `,
       errors: [
         {
+          column: 5,
           data: { name: 'a' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -892,7 +976,11 @@ var a = function () {};
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'a' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -905,7 +993,11 @@ var A = class {};
       `,
       errors: [
         {
+          column: 5,
           data: { name: 'A' },
+          endColumn: 6,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -921,7 +1013,11 @@ var A = class {};
       `,
       errors: [
         {
+          column: 7,
           data: { name: 'A' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -934,7 +1030,11 @@ var A = class {};
       code: 'var a = a;',
       errors: [
         {
+          column: 9,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -943,7 +1043,11 @@ var A = class {};
       code: 'let a = a + b;',
       errors: [
         {
+          column: 9,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -953,7 +1057,11 @@ var A = class {};
       code: 'const a = foo(a);',
       errors: [
         {
+          column: 15,
           data: { name: 'a' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -963,7 +1071,11 @@ var A = class {};
       code: 'function foo(a = a) {}',
       errors: [
         {
+          column: 18,
           data: { name: 'a' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -973,7 +1085,11 @@ var A = class {};
       code: 'var { a = a } = [];',
       errors: [
         {
+          column: 11,
           data: { name: 'a' },
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -983,7 +1099,11 @@ var A = class {};
       code: 'var [a = a] = [];',
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -993,7 +1113,11 @@ var A = class {};
       code: 'var { b = a, a } = {};',
       errors: [
         {
+          column: 11,
           data: { name: 'a' },
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1003,7 +1127,11 @@ var A = class {};
       code: 'var [b = a, a] = {};',
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1013,7 +1141,11 @@ var A = class {};
       code: 'var { a = 0 } = a;',
       errors: [
         {
+          column: 17,
           data: { name: 'a' },
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1023,7 +1155,11 @@ var A = class {};
       code: 'var [a = 0] = a;',
       errors: [
         {
+          column: 15,
           data: { name: 'a' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1036,7 +1172,11 @@ for (var a in a) {
       `,
       errors: [
         {
+          column: 15,
           data: { name: 'a' },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1048,7 +1188,11 @@ for (var a of a) {
       `,
       errors: [
         {
+          column: 15,
           data: { name: 'a' },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1066,7 +1210,11 @@ const Foo = 2;
       `,
       errors: [
         {
+          column: 16,
           data: { name: 'Foo' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1084,7 +1232,11 @@ class Foo {
       `,
       errors: [
         {
+          column: 16,
           data: { name: 'Foo' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1104,7 +1256,11 @@ const Foo = {
       `,
       errors: [
         {
+          column: 16,
           data: { name: 'Foo' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1122,7 +1278,11 @@ const baz = '';
       `,
       errors: [
         {
+          column: 15,
           data: { name: 'baz' },
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1140,7 +1300,11 @@ var bar;
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'bar' },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1161,7 +1325,10 @@ enum Foo {
       `,
       errors: [
         {
+          column: 12,
           data: { name: 'Foo' },
+          endColumn: 15,
+          endLine: 4,
           line: 4,
           messageId: 'noUseBeforeDefine',
         },
@@ -1180,7 +1347,10 @@ enum Foo {
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'Foo' },
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'noUseBeforeDefine',
         },
@@ -1197,7 +1367,10 @@ enum Foo {
       `,
       errors: [
         {
+          column: 13,
           data: { name: 'Foo' },
+          endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'noUseBeforeDefine',
         },
@@ -1212,7 +1385,11 @@ const a = 1;
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1225,7 +1402,11 @@ const a = 1;
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1239,7 +1420,11 @@ const a = 1;
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1253,7 +1438,11 @@ const a = 1;
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1267,7 +1456,11 @@ const a = 1;
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1280,11 +1473,19 @@ let a, b;
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
         {
+          column: 13,
           data: { name: 'b' },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1297,7 +1498,11 @@ var a;
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1310,7 +1515,11 @@ function f() {}
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'f' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1323,7 +1532,11 @@ class C {}
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'C' },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1336,7 +1549,11 @@ const a = 1;
       `,
       errors: [
         {
+          column: 20,
           data: { name: 'a' },
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1352,7 +1569,11 @@ const a = 1;
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'a' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1370,7 +1591,11 @@ const a = 1;
       `,
       errors: [
         {
+          column: 12,
           data: { name: 'a' },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1387,7 +1612,11 @@ enum Foo {
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'Foo' },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1403,7 +1632,11 @@ namespace Foo {
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'Foo' },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1422,11 +1655,19 @@ enum Enum {}
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'Foo' },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
         {
+          column: 15,
           data: { name: 'baz' },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1440,7 +1681,11 @@ function f() {}
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'f' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1452,7 +1697,11 @@ var a = 10;
       `,
       errors: [
         {
+          column: 7,
           data: { name: 'a' },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1466,7 +1715,11 @@ function f() {
       `,
       errors: [
         {
+          column: 1,
           data: { name: 'f' },
+          endColumn: 2,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],
@@ -1478,7 +1731,11 @@ var a = { b: 5 };
       `,
       errors: [
         {
+          column: 7,
           data: { name: 'a' },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
           messageId: 'noUseBeforeDefine',
         },
       ],

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/no-unused-vars';
@@ -82,6 +81,8 @@ baz<Bar>();
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 13,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
@@ -114,6 +115,8 @@ console.log(a);
             additional: '',
             varName: 'Nullable',
           },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
@@ -146,6 +149,8 @@ console.log(a);
             additional: '',
             varName: 'SomeOther',
           },
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
@@ -184,6 +189,8 @@ new A();
             additional: '',
             varName: 'Another',
           },
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
@@ -225,6 +232,8 @@ new A();
             additional: '',
             varName: 'Another',
           },
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
@@ -266,6 +275,8 @@ new A();
             additional: '',
             varName: 'Another',
           },
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
@@ -304,6 +315,8 @@ export interface A {
             additional: '',
             varName: 'Another',
           },
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
@@ -339,6 +352,8 @@ export interface A {
             additional: '',
             varName: 'Another',
           },
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
@@ -374,6 +389,8 @@ foo();
             additional: '',
             varName: 'Nullable',
           },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
@@ -409,6 +426,8 @@ foo();
             additional: '',
             varName: 'Nullable',
           },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
@@ -446,6 +465,8 @@ new A();
             additional: '',
             varName: 'SomeOther',
           },
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
@@ -485,6 +506,8 @@ new A();
             additional: '',
             varName: 'SomeOther',
           },
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
@@ -521,6 +544,8 @@ enum FormFieldIds {
             additional: '',
             varName: 'FormFieldIds',
           },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -540,6 +565,8 @@ export interface Bar extends baz.test {}
             additional: '',
             varName: 'test',
           },
+          endColumn: 12,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
@@ -571,6 +598,8 @@ export class Bar implements baz.test {}
             additional: '',
             varName: 'test',
           },
+          endColumn: 12,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
@@ -600,6 +629,8 @@ namespace Foo {}
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -619,6 +650,8 @@ namespace Foo {
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -639,6 +672,8 @@ namespace Foo {
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -659,6 +694,8 @@ namespace Foo {
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -681,6 +718,8 @@ namespace Foo {
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -691,6 +730,8 @@ namespace Foo {
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -712,6 +753,8 @@ interface Foo {
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -729,6 +772,8 @@ type Foo = Array<Foo>;
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 9,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -752,6 +797,8 @@ export const ComponentFoo = () => {
             additional: '',
             varName: 'Fragment',
           },
+          endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
@@ -796,6 +843,8 @@ export const ComponentFoo = () => {
             additional: '',
             varName: 'React',
           },
+          endColumn: 13,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
@@ -841,6 +890,8 @@ export const ComponentFoo = () => {
             additional: '',
             varName: 'React',
           },
+          endColumn: 13,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
@@ -912,6 +963,8 @@ export namespace Foo {
             additional: '',
             varName: 'Bar',
           },
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'unusedVar',
         },
@@ -922,6 +975,8 @@ export namespace Foo {
             additional: '',
             varName: 'Baz',
           },
+          endColumn: 18,
+          endLine: 5,
           line: 5,
           messageId: 'unusedVar',
         },
@@ -932,6 +987,8 @@ export namespace Foo {
             additional: '',
             varName: 'Bam',
           },
+          endColumn: 20,
+          endLine: 6,
           line: 6,
           messageId: 'unusedVar',
         },
@@ -942,6 +999,8 @@ export namespace Foo {
             additional: '',
             varName: 'x',
           },
+          endColumn: 16,
+          endLine: 7,
           line: 7,
           messageId: 'unusedVar',
         },
@@ -964,6 +1023,8 @@ interface Foo {
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1004,6 +1065,8 @@ const Foo = 'bar';
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 10,
+          endLine: 5,
           line: 5,
           messageId: 'unusedVar',
         },
@@ -1022,6 +1085,8 @@ foo += 1;
             additional: '',
             varName: 'foo',
           },
+          endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1043,6 +1108,8 @@ export = Bar;
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1064,6 +1131,8 @@ export = Foo;
             additional: '',
             varName: 'Bar',
           },
+          endColumn: 9,
+          endLine: 5,
           line: 5,
           messageId: 'unusedVar',
         },
@@ -1086,6 +1155,8 @@ export namespace Bar {
             additional: '',
             varName: 'TheFoo',
           },
+          endColumn: 16,
+          endLine: 6,
           line: 6,
           messageId: 'unusedVar',
           suggestions: [
@@ -1134,11 +1205,14 @@ enum Foo {
       `,
       errors: [
         {
+          column: 6,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 9,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1153,10 +1227,13 @@ export const x: _Foo = 1;
       `,
       errors: [
         {
+          column: 6,
           data: {
             additional: '. Used vars must not match /^_/u',
             varName: '_Foo',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'usedIgnoredVar',
         },
@@ -1170,10 +1247,13 @@ export const x: _Foo = 1;
       `,
       errors: [
         {
+          column: 11,
           data: {
             additional: '. Used vars must not match /^_/u',
             varName: '_Foo',
           },
+          endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'usedIgnoredVar',
         },
@@ -1189,10 +1269,13 @@ export const x = _Foo.A;
       `,
       errors: [
         {
+          column: 6,
           data: {
             additional: '. Used vars must not match /^_/u',
             varName: '_Foo',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'usedIgnoredVar',
         },
@@ -1206,10 +1289,13 @@ export const x = _Foo;
       `,
       errors: [
         {
+          column: 11,
           data: {
             additional: '. Used vars must not match /^_/u',
             varName: '_Foo',
           },
+          endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'usedIgnoredVar',
         },
@@ -1218,19 +1304,19 @@ export const x = _Foo;
     },
     {
       code: `
-        const foo: number = 1;
+const foo: number = 1;
 
-        export type Foo = typeof foo;
+export type Foo = typeof foo;
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 18,
+          endColumn: 10,
           endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
@@ -1239,39 +1325,18 @@ export const x = _Foo;
     },
     {
       code: `
-        declare const foo: number;
+declare const foo: number;
 
-        export type Foo = typeof foo;
+export type Foo = typeof foo;
       `,
       errors: [
         {
-          column: 23,
+          column: 15,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 26,
-          endLine: 2,
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo: number = 1;
-
-        export type Foo = typeof foo | string;
-      `,
-      errors: [
-        {
-          column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -1281,19 +1346,19 @@ export const x = _Foo;
     },
     {
       code: `
-        const foo: number = 1;
+const foo: number = 1;
 
-        export type Foo = (typeof foo | string) & { __brand: 'foo' };
+export type Foo = typeof foo | string;
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 18,
+          endColumn: 10,
           endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
@@ -1302,23 +1367,19 @@ export const x = _Foo;
     },
     {
       code: `
-        const foo = {
-          bar: {
-            baz: 123,
-          },
-        };
+const foo: number = 1;
 
-        export type Bar = typeof foo.bar;
+export type Foo = (typeof foo | string) & { __brand: 'foo' };
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 18,
+          endColumn: 10,
           endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
@@ -1327,23 +1388,48 @@ export const x = _Foo;
     },
     {
       code: `
-        const foo = {
-          bar: {
-            baz: 123,
-          },
-        };
+const foo = {
+  bar: {
+    baz: 123,
+  },
+};
 
-        export type Bar = (typeof foo)['bar'];
+export type Bar = typeof foo.bar;
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'foo',
           },
-          endColumn: 18,
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  bar: {
+    baz: 123,
+  },
+};
+
+export type Bar = (typeof foo)['bar'];
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
           endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
@@ -1362,11 +1448,14 @@ export class Foo {
       `,
       errors: [
         {
+          column: 18,
           data: {
             action: 'defined',
             additional: '',
             varName: 'command',
           },
+          endColumn: 25,
+          endLine: 7,
           line: 7,
           messageId: 'unusedVar',
         },
@@ -1388,15 +1477,20 @@ export class Foo {
             additional: '',
             varName: 'deco',
           },
+          endColumn: 19,
+          endLine: 5,
           line: 5,
           messageId: 'unusedVar',
         },
         {
+          column: 29,
           data: {
             action: 'defined',
             additional: '',
             varName: 'param',
           },
+          endColumn: 34,
+          endLine: 5,
           line: 5,
           messageId: 'unusedVar',
         },
@@ -1411,11 +1505,14 @@ export namespace Foo {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1429,11 +1526,14 @@ export {};
       `,
       errors: [
         {
+          column: 7,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1449,11 +1549,14 @@ declare module 'foo' {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1471,11 +1574,14 @@ export namespace Foo {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1491,11 +1597,14 @@ export { bar };
       `,
       errors: [
         {
+          column: 7,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1513,11 +1622,14 @@ declare module 'foo' {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1536,11 +1648,14 @@ export namespace Foo {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1557,11 +1672,14 @@ export { bar };
       `,
       errors: [
         {
+          column: 7,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1580,11 +1698,14 @@ declare module 'foo' {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1602,11 +1723,14 @@ export namespace Foo {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1622,11 +1746,14 @@ export default bar;
       `,
       errors: [
         {
+          column: 7,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1644,11 +1771,14 @@ declare module 'foo' {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1667,11 +1797,14 @@ export namespace Foo {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1688,11 +1821,14 @@ export default bar;
       `,
       errors: [
         {
+          column: 7,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1711,11 +1847,14 @@ declare module 'foo' {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1733,11 +1872,14 @@ export namespace Foo {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1753,11 +1895,14 @@ export * from '...';
       `,
       errors: [
         {
+          column: 7,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1775,11 +1920,14 @@ declare module 'foo' {
       `,
       errors: [
         {
+          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1797,11 +1945,14 @@ namespace Foo {
       `,
       errors: [
         {
+          column: 8,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1817,11 +1968,14 @@ export = Bar;
       `,
       errors: [
         {
+          column: 6,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 9,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1839,11 +1993,14 @@ declare module 'foo' {
       `,
       errors: [
         {
+          column: 8,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1859,11 +2016,14 @@ declare module 'foo' {
       `,
       errors: [
         {
+          column: 8,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Test',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unusedVar',
         },
@@ -1886,11 +2046,14 @@ export declare namespace Foo {
       `,
       errors: [
         {
+          column: 17,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Bam',
           },
+          endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'unusedVar',
         },
@@ -1912,11 +2075,14 @@ declare module 'foo' {
       `,
       errors: [
         {
+          column: 17,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Bam',
           },
+          endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'unusedVar',
         },
@@ -1929,11 +2095,14 @@ export {};
       `,
       errors: [
         {
+          column: 14,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 17,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1947,11 +2116,14 @@ export {};
       `,
       errors: [
         {
+          column: 15,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Bar',
           },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1966,11 +2138,14 @@ export {};
       `,
       errors: [
         {
+          column: 7,
           data: {
             action: 'defined',
             additional: '',
             varName: 'Foo',
           },
+          endColumn: 10,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -1983,11 +2158,14 @@ using resource = getResource();
       `,
       errors: [
         {
+          column: 7,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'resource',
           },
+          endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -2004,11 +2182,14 @@ await using resource = getResource();
       `,
       errors: [
         {
+          column: 13,
           data: {
             action: 'assigned a value',
             additional: '',
             varName: 'resource',
           },
+          endColumn: 21,
+          endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
@@ -2027,11 +2208,14 @@ export const myTypeGuard2 = (data2: unknown): typeof data2 => {
       `,
       errors: [
         {
+          column: 30,
           data: {
             action: 'defined',
             additional: '',
             varName: 'data2',
           },
+          endColumn: 35,
+          endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
         },
@@ -2045,11 +2229,14 @@ export const myTypeGuard = (data: unknown): data is string => {
       `,
       errors: [
         {
+          column: 29,
           data: {
             action: 'defined',
             additional: '',
             varName: 'data',
           },
+          endColumn: 33,
+          endLine: 2,
           line: 2,
           messageId: 'usedOnlyAsType',
         },
@@ -2902,11 +3089,11 @@ export type Test<U> = U extends (arg: {
     // https://github.com/typescript-eslint/typescript-eslint/issues/2455
     {
       code: `
-        import React from 'react';
+import React from 'react';
 
-        export const ComponentFoo: React.FC = () => {
-          return <div>Foo Foo</div>;
-        };
+export const ComponentFoo: React.FC = () => {
+  return <div>Foo Foo</div>;
+};
       `,
       languageOptions: {
         parserOptions: {
@@ -2918,11 +3105,11 @@ export type Test<U> = U extends (arg: {
     },
     {
       code: `
-        import { h } from 'some-other-jsx-lib';
+import { h } from 'some-other-jsx-lib';
 
-        export const ComponentFoo: h.FC = () => {
-          return <div>Foo Foo</div>;
-        };
+export const ComponentFoo: h.FC = () => {
+  return <div>Foo Foo</div>;
+};
       `,
       languageOptions: {
         parserOptions: {
@@ -2935,11 +3122,11 @@ export type Test<U> = U extends (arg: {
     },
     {
       code: `
-        import { Fragment } from 'react';
+import { Fragment } from 'react';
 
-        export const ComponentFoo: Fragment = () => {
-          return <>Foo Foo</>;
-        };
+export const ComponentFoo: Fragment = () => {
+  return <>Foo Foo</>;
+};
       `,
       languageOptions: {
         parserOptions: {

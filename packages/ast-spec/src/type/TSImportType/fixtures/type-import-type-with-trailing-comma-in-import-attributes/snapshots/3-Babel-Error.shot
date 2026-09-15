@@ -1,4 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > type > TSImportType > type-import-type-with-trailing-comma-in-import-attributes > Babel - Error`]
-NO ERROR

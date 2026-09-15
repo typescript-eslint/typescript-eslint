@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSDeclareFunction _error_ declare-with-body Babel - Error 1`] = `[SyntaxError: An implementation cannot be declared in ambient contexts. (1:0)]`;

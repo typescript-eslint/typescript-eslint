@@ -1,7 +1,7 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isTypeFlagSet } from '../../util';
+import { isNumberLike, isStringLike, isTypeFlagSet } from '../../util';
 
 /*
  * If passed an enum member, returns the type of the parent. Otherwise,
@@ -54,6 +54,88 @@ export function getEnumTypes(
   type: ts.Type,
 ): ts.Type[] {
   return getEnumLiterals(type).map(type => getBaseEnumType(typeChecker, type));
+}
+
+/**
+ * @returns Whether two types compare unsafely because an enum value is being
+ * compared against a non-enum value of the same primitive kind.
+ */
+export function isMismatchedEnumComparisonTypes(
+  typeChecker: ts.TypeChecker,
+  leftType: ts.Type,
+  rightType: ts.Type,
+): boolean {
+  // Allow comparisons that don't have anything to do with enums:
+  //
+  // ```ts
+  // 1 === 2;
+  // ```
+  const leftEnumTypes = getEnumTypes(typeChecker, leftType);
+  const rightEnumTypes = new Set(getEnumTypes(typeChecker, rightType));
+  if (leftEnumTypes.length === 0 && rightEnumTypes.size === 0) {
+    return false;
+  }
+
+  // Allow comparisons that share an enum type:
+  //
+  // ```ts
+  // Fruit.Apple === Fruit.Banana;
+  // ```
+  for (const leftEnumType of leftEnumTypes) {
+    if (rightEnumTypes.has(leftEnumType)) {
+      return false;
+    }
+  }
+
+  // We need to split the type into the union type parts in order to find
+  // valid enum comparisons like:
+  //
+  // ```ts
+  // declare const something: Fruit | Vegetable;
+  // something === Fruit.Apple;
+  // ```
+  const leftTypeParts = tsutils.unionConstituents(leftType);
+  const rightTypeParts = tsutils.unionConstituents(rightType);
+
+  // If a type exists in both sides, we consider this comparison safe:
+  //
+  // ```ts
+  // declare const fruit: Fruit.Apple | 0;
+  // fruit === 0;
+  // ```
+  for (const leftTypePart of leftTypeParts) {
+    if (rightTypeParts.includes(leftTypePart)) {
+      return false;
+    }
+  }
+
+  return (
+    typeViolates(leftTypeParts, rightType) ||
+    typeViolates(rightTypeParts, leftType)
+  );
+}
+
+/**
+ * @returns Whether the right type is an unsafe comparison against any left type.
+ */
+function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
+  const leftEnumValueTypes = new Set(leftTypeParts.map(getEnumValueType));
+
+  return (
+    (leftEnumValueTypes.has(ts.TypeFlags.Number) && isNumberLike(rightType)) ||
+    (leftEnumValueTypes.has(ts.TypeFlags.String) && isStringLike(rightType))
+  );
+}
+
+/**
+ * @returns What type a type's enum value is (number or string), if either.
+ */
+function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
+  return tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
+    ? tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
+      ? ts.TypeFlags.Number
+      : ts.TypeFlags.String
+    : undefined;
 }
 
 /**

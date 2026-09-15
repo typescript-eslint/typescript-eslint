@@ -6,7 +6,7 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import { createRule, isDefinitionFile } from '../util';
 import { isTypeImport } from '../util/isTypeImport';
 
-export type MessageIds = 'noShadow' | 'noShadowGlobal';
+export type MessageIds = 'noEnumShadow' | 'noShadow' | 'noShadowGlobal';
 export type Options = [
   {
     allow?: string[];
@@ -45,6 +45,8 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     messages: {
+      noEnumShadow:
+        "Enum members are added to the enum scope, so references to '{{name}}' in enum member initializers resolve to this member instead of the declaration in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}.",
       noShadow:
         "'{{name}}' is already declared in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}.",
       noShadowGlobal: "'{{name}}' is already a global variable.",
@@ -709,6 +711,10 @@ export default createRule<Options, MessageIds>({
         ) {
           const location = getDeclaredLocation(shadowed);
 
+          const isEnumDeclaration = shadowed.defs.some(
+            def => def.type === DefinitionType.TSEnumName,
+          );
+
           context.report({
             node: variable.identifiers[0],
             ...(location.global
@@ -719,7 +725,7 @@ export default createRule<Options, MessageIds>({
                   },
                 }
               : {
-                  messageId: 'noShadow',
+                  messageId: isEnumDeclaration ? 'noEnumShadow' : 'noShadow',
                   data: {
                     name: variable.name,
                     shadowedColumn: location.column,

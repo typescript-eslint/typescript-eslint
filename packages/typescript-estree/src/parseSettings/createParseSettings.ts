@@ -23,7 +23,7 @@ import {
 import { getProjectConfigFiles } from './getProjectConfigFiles';
 import { inferSingleRun } from './inferSingleRun';
 import { resolveProjectList } from './resolveProjectList';
-import { warnAboutTSVersion } from './warnAboutTSVersion';
+import { handleUnsupportedTSVersion } from './warnAboutTSVersion';
 
 const log = debug(
   'typescript-eslint:typescript-estree:parseSettings:createParseSettings',
@@ -243,7 +243,11 @@ export function createParseSettings(
     parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
   }
 
-  warnAboutTSVersion(parseSettings, passedLoggerFn);
+  handleUnsupportedTSVersion(
+    parseSettings,
+    tsestreeOptions.onUnsupportedTypeScriptVersion ?? 'warn',
+    passedLoggerFn,
+  );
 
   return parseSettings;
 }
