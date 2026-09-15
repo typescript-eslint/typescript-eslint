@@ -732,6 +732,14 @@ const {
   foo: { notDeprecatedProperty: deprecatedProperty },
 } = a;
     `,
+    `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+declare function func(x: A): void;
+func({ deprecatedField: 'string' });
+    `,
   ],
   invalid: [
     {
@@ -3777,6 +3785,67 @@ class A {
           endColumn: 12,
           endLine: 7,
           line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+const x: A = { deprecatedField: 'string' };
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: 'deprecatedField' },
+          endColumn: 31,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+let x: A;
+x = { deprecatedField: 'string' };
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { name: 'deprecatedField' },
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+interface B {
+  nested: A;
+}
+const y: B = { nested: { deprecatedField: 'string' } };
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { name: 'deprecatedField' },
+          endColumn: 41,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
