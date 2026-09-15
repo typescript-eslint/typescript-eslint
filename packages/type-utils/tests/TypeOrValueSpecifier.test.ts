@@ -396,6 +396,19 @@ describe('TypeOrValueSpecifier', () => {
           package: '@babel/code-frame',
         },
       ],
+      // The @types package that provides the type can also be named directly.
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: '@types/semver' },
+      ],
+      [
+        'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
+        {
+          from: 'package',
+          name: 'BabelCodeFrameOptions',
+          package: '@types/babel__code-frame',
+        },
+      ],
       // TODO: Skipped pending resolution of https://github.com/typescript-eslint/typescript-eslint/issues/11504
       //
       // The following type is available from the multi-file @types/node package.
@@ -575,6 +588,26 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: 'TsNode', package: 'typescript' },
+      ],
+      // A package name must match whole path components, not any substring of the
+      // declaration file's package path.
+      [
+        'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: 'Node', package: 'script' },
+      ],
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: 'semve' },
+      ],
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: 'sem' },
+      ],
+      // Package names are compared literally; regular expression syntax in them
+      // carries no special meaning.
+      [
+        'import {SemVer} from "semver"; type Test = SemVer;',
+        { from: 'package', name: 'SemVer', package: 's.mver' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
