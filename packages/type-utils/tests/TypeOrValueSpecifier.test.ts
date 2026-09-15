@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -382,6 +383,14 @@ describe('TypeOrValueSpecifier', () => {
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: ['Node', 'Symbol'], package: 'typescript' },
       ],
+      [
+        'type Test = URL;',
+        { from: 'package', name: 'URL', package: 'node:url' },
+      ],
+      [
+        'import {URL as NodeURL} from "node:url"; type Test = NodeURL;',
+        { from: 'package', name: 'URL', package: 'node:url' },
+      ],
       // The following type is available from the @types/semver package.
       [
         'import {SemVer} from "semver"; type Test = SemVer;',
@@ -575,6 +584,14 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: 'TsNode', package: 'typescript' },
+      ],
+      [
+        'type Test = URL;',
+        { from: 'package', name: 'URL', package: 'node:buffer' },
+      ],
+      [
+        'type Test = string;',
+        { from: 'package', name: 'string', package: 'typescript' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
@@ -782,6 +799,10 @@ describe('TypeOrValueSpecifier', () => {
           `const fs: typeof import("fs"); const module = fs;`,
           { from: 'package', name: 'fs', package: 'fs' },
         ],
+        [
+          'import { URL } from "node:url"; const value = URL;',
+          { from: 'package', name: 'URL', package: 'node:url' },
+        ],
       ])('matches a matching package specifier: %s', runTestPositive);
 
       it.each<[string, TypeOrValueSpecifier]>([
@@ -797,7 +818,35 @@ describe('TypeOrValueSpecifier', () => {
           'const mock = 42; const hoge = mock;',
           { from: 'package', name: 'mock', package: 'node:test' },
         ],
+        [
+          'const value = URL;',
+          { from: 'package', name: 'URL', package: 'node:buffer' },
+        ],
       ])("doesn't match a mismatched package specifier: %s", runTestNegative);
+
+      it('does not match a package when a value symbol has no declarations', () => {
+        const symbol = {
+          getDeclarations: () => undefined,
+          name: 'value',
+        } as unknown as ts.Symbol;
+        const program = {
+          getTypeChecker: () => ({ getAmbientModules: () => [] }),
+        } as unknown as ts.Program;
+        const type = { getSymbol: () => symbol } as unknown as ts.Type;
+        const node = {
+          name: 'value',
+          type: AST_NODE_TYPES.Identifier,
+        } as TSESTree.Identifier;
+
+        expect(
+          valueMatchesSpecifier(
+            node,
+            { from: 'package', name: 'value', package: 'example' },
+            program,
+            type,
+          ),
+        ).toBe(false);
+      });
     });
 
     describe(AST_NODE_TYPES.ClassDeclaration, () => {
