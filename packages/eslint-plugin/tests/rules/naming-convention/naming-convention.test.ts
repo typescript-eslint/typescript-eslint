@@ -29,7 +29,6 @@ ruleTester.run('naming-convention', rule, {
           data: {
             formats: 'camelCase, UPPER_CASE',
             name: 'x_x',
-            processedName: 'processedName',
             type: 'Variable',
           },
           endColumn: 10,
@@ -48,7 +47,6 @@ ruleTester.run('naming-convention', rule, {
           data: {
             formats: 'camelCase, UPPER_CASE',
             name: 'x_x',
-            processedName: 'processedName',
             type: 'Variable',
           },
           endColumn: 10,
@@ -69,7 +67,6 @@ ruleTester.run('naming-convention', rule, {
           data: {
             formats: 'camelCase',
             name: 'child_process',
-            processedName: 'processedName',
             type: 'Variable',
           },
           endColumn: 28,
