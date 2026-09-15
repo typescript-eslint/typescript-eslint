@@ -35,8 +35,7 @@ runs:
       with:
         cache: true
         install: false
-        package-json-file: ${{ inputs.working-directory }}/package.json
-        cache-dependency-path: ${{ inputs.working-directory }}/pnpm-lock.yaml
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
