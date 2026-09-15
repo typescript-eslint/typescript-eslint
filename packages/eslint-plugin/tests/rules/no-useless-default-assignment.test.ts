@@ -226,6 +226,26 @@ useCallback((value: number[] = []) => {});
 declare const tuple: [string];
 const [a, b = 'default'] = tuple;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12767
+    `
+declare const commands: [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+declare const commands: readonly [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+function run([cmd, arg = 'run']: [string, ...string[]]) {}
+    `,
+    `
+declare const mixed: [boolean, ...number[], string];
+const [a, b, c = 0] = mixed;
+    `,
+    `
+declare const items: [...string[], string | undefined];
+const [first = 'fallback'] = items;
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11911
     `
 const run = (cb: (...args: unknown[]) => void) => cb();
@@ -352,6 +372,26 @@ const fn: Fn = (value = 'default') => {
     `,
   ],
   invalid: [
+    {
+      code: `
+declare const mixed: [boolean, ...number[], string];
+const [a, b = 0] = mixed;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+declare const mixed: [boolean, ...number[], string];
+const [a, b] = mixed;
+      `,
+    },
     {
       code: `
 function Bar({ foo = '' }: { foo: string }) {
