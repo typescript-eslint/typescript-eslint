@@ -623,14 +623,70 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
       return;
     }
 
-    if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
-      result.push(convertToken(node, ast));
+    const { kind } = node;
+    if (isToken(node) && kind !== SyntaxKind.EndOfFileToken) {
+      const token = convertToken(node, ast);
+
+      // TypeScript drops first half of a `<<` in some cases.
+      // Gating on `kind` (a cheap check) keeps the rest of the check,
+      // which has to look at the text, off the hot path.
+      if (kind === SyntaxKind.LessThanToken) {
+        addMissingLessThanToken(result, token, ast);
+      }
+
+      result.push(token);
     } else {
       node.getChildren(ast).forEach(walk);
     }
   }
   walk(ast);
   return result;
+}
+
+/**
+ * TypeScript recovers the tokens its parser did not keep as children of a node
+ * (`<` and `>` of a type argument list, for instance) by re-scanning the source
+ * text in the gaps between the children it did keep, and discards any token
+ * that runs past the end of the gap being filled.
+ *
+ * Its scanner produces `<<` as a single token, which the parser splits back
+ * apart when the second `<` opens a type parameter list, as in
+ * `ReturnType<<T>(x: T) => number>`. The re-scan is not aware of that split,
+ * so the `<<` it scans overruns the gap left by the first `<`, and that token
+ * is dropped from `getChildren()` entirely.
+ *
+ * Text skipped in front of a token can otherwise only be trivia, and no trivia
+ * can end in a `<`: line comments, shebangs and conflict markers all run to the
+ * end of a line, and block comments all end in `*` + `/`. So a `<` sitting
+ * directly in front of a token, with anything at all skipped before it,
+ * is unambiguously a token TypeScript lost.
+ *
+ * Only ever called for a `<` token — see the caller.
+ */
+function addMissingLessThanToken(
+  result: TSESTree.Token[],
+  token: TSESTree.Token,
+  ast: ts.SourceFile,
+): void {
+  if (result.length === 0) {
+    return;
+  }
+
+  const currentTokenStart = token.range[0];
+  const previousTokenEnd = result[result.length - 1].range[1];
+
+  if (
+    currentTokenStart > previousTokenEnd &&
+    ast.text[currentTokenStart - 1] === '<'
+  ) {
+    const range: TSESTree.Range = [currentTokenStart - 1, currentTokenStart];
+    result.push({
+      type: AST_TOKEN_TYPES.Punctuator,
+      loc: getLocFor(range, ast),
+      range,
+      value: '<',
+    });
+  }
 }
 
 export class TSError extends Error {

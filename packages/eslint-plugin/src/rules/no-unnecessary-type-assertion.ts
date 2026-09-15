@@ -17,8 +17,8 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
-  isStartOfArrowFunctionBody,
-  isStartOfExpressionStatement,
+  isStartOfArrowFunctionBodyNeedingParentheses,
+  isStartOfExpressionStatementNeedingParentheses,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -226,7 +226,7 @@ export default createRule<Options, MessageIds>({
       if (
         (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
           !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
-        (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
+        hasIndexSignature(uncast) !== hasIndexSignature(cast) ||
         containsAny(uncast) ||
         containsAny(cast) ||
         (containsTypeVariable(cast) && !containsTypeVariable(uncast))
@@ -949,14 +949,16 @@ export default createRule<Options, MessageIds>({
             context.sourceCode.getTokenAfter(closingAngleBracket),
             NullThrowsReasons.MissingToken('operand', 'type assertion'),
           );
-          const breaksExpressionStatement =
-            ['{', 'function', 'class'].includes(firstOperandToken.value) &&
-            isStartOfExpressionStatement(node);
-          const breaksArrowFunctionBody =
-            firstOperandToken.value === '{' &&
-            isStartOfArrowFunctionBody(node, context.sourceCode);
           const needsParens =
-            breaksExpressionStatement || breaksArrowFunctionBody;
+            isStartOfExpressionStatementNeedingParentheses(
+              node,
+              firstOperandToken,
+            ) ||
+            isStartOfArrowFunctionBodyNeedingParentheses(
+              node,
+              firstOperandToken,
+              context.sourceCode,
+            );
 
           const fixes: RuleFix[] = [];
           if (needsParens) {
