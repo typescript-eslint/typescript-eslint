@@ -176,6 +176,72 @@ async function shouldAwait() {
 </TabItem>
 </Tabs>
 
+## Promise Aggregator Methods
+
+This rule also inspects the iterable passed to a promise aggregator method (`Promise.all`, `Promise.allSettled`, `Promise.race`, and `Promise.any`), and reports if it contains values that are never Thenables.
+Because these methods await their inputs, passing a non-Thenable to them is the same kind of mistake as writing an unnecessary `await`.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare const values: number[];
+await Promise.all(values);
+
+declare const createValue: () => Promise<number>;
+await Promise.all([createValue(), 'value']);
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+declare const promises: Promise<number>[];
+await Promise.all(promises);
+
+declare const createValue: () => Promise<number>;
+await Promise.all([createValue(), createValue()]);
+```
+
+</TabItem>
+</Tabs>
+
+## Options
+
+### `allowMixedPromiseArrays`
+
+{/* insert option description */}
+
+By default, an array or other iterable whose values may or may not be Thenables is reported when it is passed to a promise aggregator method, unless it is written as an array literal.
+Setting this option to `true` allows any input that mixes Thenables with other values, as long as at least one of its values could be a Thenable.
+This can be useful for code that collects optional work, such as an array of `Promise<T> | null`.
+
+Inputs that contain no Thenables at all are still reported.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{"allowMixedPromiseArrays": true}'
+declare const values: number[];
+await Promise.all(values);
+
+await Promise.all([1, 2]);
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{"allowMixedPromiseArrays": true}'
+declare const maybePromises: (Promise<number> | null)[];
+await Promise.all(maybePromises);
+
+declare const createValue: () => Promise<number>;
+await Promise.all([createValue(), 'value']);
+```
+
+</TabItem>
+</Tabs>
+
 ## When Not To Use It
 
 If you want to allow code to `await` non-Promise values.

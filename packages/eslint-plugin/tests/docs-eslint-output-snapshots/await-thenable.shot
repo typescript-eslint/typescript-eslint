@@ -108,3 +108,41 @@ function makeAsyncDisposable(): AsyncDisposable {
 async function shouldAwait() {
   await using resource = makeAsyncDisposable();
 }
+
+Incorrect
+
+declare const values: number[];
+await Promise.all(values);
+                  ~~~~~~ Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+
+declare const createValue: () => Promise<number>;
+await Promise.all([createValue(), 'value']);
+                                  ~~~~~~~ Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+
+Correct
+
+declare const promises: Promise<number>[];
+await Promise.all(promises);
+
+declare const createValue: () => Promise<number>;
+await Promise.all([createValue(), createValue()]);
+
+Incorrect
+Options: {"allowMixedPromiseArrays": true}
+
+declare const values: number[];
+await Promise.all(values);
+                  ~~~~~~ Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+
+await Promise.all([1, 2]);
+                   ~ Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+                      ~ Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+
+Correct
+Options: {"allowMixedPromiseArrays": true}
+
+declare const maybePromises: (Promise<number> | null)[];
+await Promise.all(maybePromises);
+
+declare const createValue: () => Promise<number>;
+await Promise.all([createValue(), 'value']);
