@@ -385,12 +385,18 @@ const [a, b = 0] = mixed;
           endLine: 3,
           line: 3,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 declare const mixed: [boolean, ...number[], string];
 const [a, b] = mixed;
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
