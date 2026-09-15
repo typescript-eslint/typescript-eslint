@@ -9,6 +9,9 @@ const ruleTester = createRuleTesterWithTypes({
 });
 
 ruleTester.run('consistent-type-exports', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // unknown module should be ignored
     "export { Foo } from 'foo';",
@@ -115,6 +118,7 @@ export { A };
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1' },
           endColumn: 59,
           endLine: 1,
           line: 1,
@@ -131,6 +135,7 @@ export { Type1, value1, value2 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1' },
           endColumn: 67,
           endLine: 2,
           line: 2,
@@ -149,6 +154,7 @@ export { Type1, value1, Type2, value2 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1 and Type2' },
           endColumn: 74,
           endLine: 2,
           line: 2,
@@ -180,6 +186,7 @@ export { Type2 as Foo, value1 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type2' },
           endColumn: 66,
           endLine: 2,
           line: 2,
@@ -202,6 +209,7 @@ export {
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type2' },
           endColumn: 36,
           endLine: 6,
           line: 2,
@@ -240,6 +248,7 @@ export { value2, Type2 };
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type2' },
           endColumn: 26,
           endLine: 3,
           line: 3,
@@ -266,6 +275,7 @@ export { Alias, IFace, TypeNS };
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Alias and IFace' },
           endColumn: 33,
           endLine: 9,
           line: 9,
@@ -356,6 +366,7 @@ export { type T, T, x };
       errors: [
         {
           column: 1,
+          data: { exportNames: 'T' },
           endColumn: 25,
           endLine: 4,
           line: 4,
@@ -378,6 +389,7 @@ export { T, x };
       errors: [
         {
           column: 1,
+          data: { exportNames: 'T' },
           endColumn: 17,
           endLine: 4,
           line: 4,
@@ -423,6 +435,7 @@ export {
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1 and Type2' },
           endColumn: 36,
           endLine: 7,
           line: 2,
@@ -447,6 +460,7 @@ export {
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1 and Type2' },
           endColumn: 36,
           endLine: 7,
           line: 2,

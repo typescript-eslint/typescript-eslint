@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-empty-object-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-object-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 interface Base {
@@ -92,6 +95,7 @@ class Derived {}
               output: `type Base = object`,
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyInterface',
               output: `type Base = unknown`,
             },
@@ -116,6 +120,7 @@ class Derived {}
               output: `type Base = object`,
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyInterface',
               output: `type Base = unknown`,
             },
@@ -725,6 +730,7 @@ let value: unknown;
       errors: [
         {
           column: 13,
+          data: { option: 'allowObjectTypes' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -750,6 +756,7 @@ let value: unknown;
       errors: [
         {
           column: 13,
+          data: { option: 'allowObjectTypes' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -775,6 +782,7 @@ let value: unknown;
       errors: [
         {
           column: 11,
+          data: { option: 'allowInterfaces' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -786,6 +794,7 @@ let value: unknown;
               output: `type Base = object`,
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyInterface',
               output: `type Base = unknown`,
             },

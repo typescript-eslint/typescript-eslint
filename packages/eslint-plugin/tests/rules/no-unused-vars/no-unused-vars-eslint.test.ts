@@ -108,6 +108,9 @@ function usedIgnoredError(
 }
 
 ruleTester.run('no-unused-vars', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: `

@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-namespace-keyword';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-namespace-keyword', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "declare module 'foo';",
     "declare module 'foo' {}",

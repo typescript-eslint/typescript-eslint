@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-unnecessary-parameter-property-assignment';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-parameter-property-assignment', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Foo {

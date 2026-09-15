@@ -7,6 +7,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-floating-promises', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 async function test() {

@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-misused-promises', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 if (true) {

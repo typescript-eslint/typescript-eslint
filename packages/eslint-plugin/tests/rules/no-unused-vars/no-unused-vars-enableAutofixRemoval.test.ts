@@ -15,6 +15,9 @@ const ruleTester = new RuleTester({
 
 describe('no-unused-vars', () => {
   ruleTester.run('enableAutofixRemoval.imports = true', rule, {
+    assertionOptions: {
+      requireData: true,
+    },
     invalid: [
       {
         code: `
@@ -655,6 +658,11 @@ export { Used };
         errors: [
           {
             column: 43,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'assert',
+            },
             endColumn: 49,
             endLine: 2,
             line: 2,
@@ -669,7 +677,7 @@ export { Used };
           },
         ],
         output: `
-/* this is an important comment */ 
+/* this is an important comment */\u0020
         `,
       },
       {
@@ -679,6 +687,11 @@ import assert from 'assert'; /* this is an important comment */
         errors: [
           {
             column: 8,
+            data: {
+              action: 'defined',
+              additional: '',
+              varName: 'assert',
+            },
             endColumn: 14,
             endLine: 2,
             line: 2,

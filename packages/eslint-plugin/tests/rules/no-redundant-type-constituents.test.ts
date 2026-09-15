@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-redundant-type-constituents', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 type T = any;
