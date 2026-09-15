@@ -202,7 +202,7 @@ export default createRule<Options, MessageIds>({
       cast: ts.Type,
     ): boolean {
       if (uncast === cast) {
-        return true;
+        return !isContextuallyTypedGenericCall(expression);
       }
 
       if (
@@ -509,6 +509,76 @@ export default createRule<Options, MessageIds>({
 
     function hasGenericCallSignature(type: ts.Type): boolean {
       return type.getCallSignatures().some(hasTypeParams);
+    }
+
+    function isWeakInferenceArgument(
+      argument: TSESTree.CallExpressionArgument,
+    ): boolean {
+      const argumentType = services.getTypeAtLocation(argument);
+      return (
+        isTypeFlagSet(argumentType, ts.TypeFlags.Any | ts.TypeFlags.Never) ||
+        isEmptyObjectType(argumentType)
+      );
+    }
+
+    function signatureNeedsContextualReturnType(
+      expression: TSESTree.CallExpression,
+      signature: ts.Signature,
+    ): boolean {
+      const typeParameters = signature.getTypeParameters();
+      if (typeParameters == null) {
+        return false;
+      }
+
+      const returnType = signature.getReturnType();
+      const returnedTypeParameters = typeParameters.filter(typeParameter =>
+        typeContains(returnType, type => type === typeParameter),
+      );
+      if (returnedTypeParameters.length === 0) {
+        return false;
+      }
+
+      const parameters = signature.getParameters();
+      for (const [index, argument] of expression.arguments.entries()) {
+        if (index >= parameters.length || !isWeakInferenceArgument(argument)) {
+          continue;
+        }
+
+        const parameter = parameters[index];
+        const parameterType = checker.getTypeOfSymbol(parameter);
+        if (
+          returnedTypeParameters.some(typeParameter =>
+            typeContains(parameterType, type => type === typeParameter),
+          )
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    function isContextuallyTypedGenericCall(
+      expression: TSESTree.Expression,
+    ): boolean {
+      if (
+        expression.type !== AST_NODE_TYPES.CallExpression ||
+        expression.typeArguments != null
+      ) {
+        return false;
+      }
+
+      const signatures = services
+        .getTypeAtLocation(expression.callee)
+        .getNonNullableType()
+        .getCallSignatures();
+      if (signatures.length <= 1) {
+        return false;
+      }
+
+      return signatures.some(signature =>
+        signatureNeedsContextualReturnType(expression, signature),
+      );
     }
 
     function isArgumentToOverloadedFunction(
