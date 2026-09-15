@@ -84,6 +84,20 @@ const SUPPORTED_GLOBAL_TYPES = [
   'JSON',
 ];
 
+/**
+ * Methods on instances of built-in classes that are defined by the ECMAScript
+ * spec as *bound* to their instance (i.e. they are safe to call without their
+ * receiver), but whose TypeScript declarations don't model that binding - they
+ * are declared as plain methods that would require a `this` value.
+ *
+ * For example, `Intl.Collator.prototype.compare` is defined as a bound getter
+ * function per the ECMA-402 spec:
+ * https://tc39.es/ecma402/#sec-intl.collator.prototype.compare
+ * ...but `lib.es5.d.ts` declares it as a regular method, so this rule would
+ * otherwise incorrectly flag usages such as `array.sort(collator.compare)`.
+ */
+const nativelyBoundInstanceMethods = new Set<string>(['Collator.compare']);
+
 const isNotImported = (
   symbol: ts.Symbol,
   currentSourceFile: ts.SourceFile | undefined,
@@ -99,6 +113,26 @@ const isNotImported = (
     currentSourceFile !== valueDeclaration.getSourceFile()
   );
 };
+
+/**
+ * Returns `true` if `propertyName` is a member of a built-in class instance
+ * that is defined by the spec as bound to that instance (see
+ * `nativelyBoundInstanceMethods` above).
+ */
+function isSpecBoundBuiltinMethod(
+  program: ts.Program,
+  objectType: ts.Type,
+  propertyName: string,
+): boolean {
+  const symbol = objectType.getSymbol();
+  if (!symbol || !isSymbolFromDefaultLibrary(program, symbol)) {
+    return false;
+  }
+
+  return nativelyBoundInstanceMethods.has(
+    `${symbol.getName()}.${propertyName}`,
+  );
+}
 
 const BASE_MESSAGE = [
   `A method that is not declared with \`this: void\` may cause unintentional scoping of \`this\` when separated from its object.`,
@@ -227,6 +261,15 @@ export default createRule<Options, MessageIds>({
         if (
           notImported &&
           nativelyBoundMembers.has(`${object.name}.${property.name}`)
+        ) {
+          return true;
+        }
+      }
+
+      if (property.type === AST_NODE_TYPES.Identifier) {
+        const objectType = services.getTypeAtLocation(object);
+        if (
+          isSpecBoundBuiltinMethod(services.program, objectType, property.name)
         ) {
           return true;
         }
