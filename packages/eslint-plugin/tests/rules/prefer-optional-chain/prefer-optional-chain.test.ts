@@ -1802,6 +1802,48 @@ const baz = foo?.bar;
       ],
       output: 'foo?.bar && (a && b) && c',
     },
+    {
+      code: `
+interface Foo {
+  outermostFoo(): Foo | null;
+}
+
+function eitherFooOrNull(): Foo | null {
+  return Math.random() < 0.5 ? { outermostFoo: () => null } : null;
+}
+
+const foo = eitherFooOrNull();
+if (!foo || foo.outermostFoo() !== foo) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 39,
+          endLine: 11,
+          line: 11,
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: `
+interface Foo {
+  outermostFoo(): Foo | null;
+}
+
+function eitherFooOrNull(): Foo | null {
+  return Math.random() < 0.5 ? { outermostFoo: () => null } : null;
+}
+
+const foo = eitherFooOrNull();
+if (foo?.outermostFoo() !== foo) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
   valid: [
     '!a || !b;',
@@ -1901,6 +1943,13 @@ foo !== null && foo.bar !== null;
     `
 declare const foo: { bar: string | null } | null;
 foo != null && foo.bar !== null;
+    `,
+    `
+declare const foo: { bar: number | null } | undefined;
+if (foo === undefined || foo.bar === null) {
+} else {
+  foo.bar.toExponential();
+}
     `,
     {
       code: `
