@@ -14,7 +14,7 @@ permissions: {}
 
 jobs:
   check-force-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       pull-requests: write
 

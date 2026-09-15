@@ -297,6 +297,7 @@ const a = {
         {
           column: 12,
           endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noStringSpread',
         },
@@ -312,6 +313,7 @@ function withText<Text extends string>(text: Text) {
         {
           column: 11,
           endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -326,6 +328,7 @@ const a = [...test];
         {
           column: 12,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -340,6 +343,7 @@ const a = [...test];
         {
           column: 12,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -354,6 +358,7 @@ const a = [...test];
         {
           column: 12,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -368,6 +373,7 @@ const a = [...test];
         {
           column: 12,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -382,6 +388,7 @@ const a = [...test];
         {
           column: 12,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -396,6 +403,7 @@ const a = [...test];
         {
           column: 12,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -410,6 +418,7 @@ const a = [...getString()];
         {
           column: 12,
           endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -427,6 +436,7 @@ textIdentity(...text);
         {
           column: 14,
           endColumn: 21,
+          endLine: 6,
           line: 6,
           messageId: 'noStringSpread',
         },
@@ -444,12 +454,14 @@ textIdentity(...text, 'and', ...text);
         {
           column: 14,
           endColumn: 21,
+          endLine: 6,
           line: 6,
           messageId: 'noStringSpread',
         },
         {
           column: 30,
           endColumn: 37,
+          endLine: 6,
           line: 6,
           messageId: 'noStringSpread',
         },
@@ -467,6 +479,7 @@ function withText<Text extends string>(text: Text) {
         {
           column: 16,
           endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'noStringSpread',
         },
@@ -481,6 +494,7 @@ const a = [...getString()];
         {
           column: 12,
           endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -495,6 +509,7 @@ const a = [...getString()];
         {
           column: 12,
           endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'noStringSpread',
         },
@@ -506,6 +521,7 @@ const a = [...getString()];
         {
           column: 13,
           endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'noArraySpreadInObject',
         },
@@ -520,6 +536,7 @@ const o = { ...arr };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -534,6 +551,7 @@ const o = { ...arr };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -548,6 +566,7 @@ const o = { ...arr };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -562,6 +581,7 @@ const o = { ...arr };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -576,6 +596,7 @@ const o = { ...arr };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -590,6 +611,7 @@ const o = { ...arr };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -604,6 +626,7 @@ const o = { ...getArray() };
         {
           column: 13,
           endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -618,6 +641,7 @@ const o = { ...getArray() };
         {
           column: 13,
           endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'noArraySpreadInObject',
         },
@@ -629,6 +653,7 @@ const o = { ...getArray() };
         {
           column: 13,
           endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'noIterableSpreadInObject',
         },
@@ -643,6 +668,7 @@ const o = { ...set };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -657,6 +683,7 @@ const o = { ...set };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -671,6 +698,7 @@ const o = { ...set };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -685,6 +713,7 @@ const o = { ...set };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -699,6 +728,7 @@ const o = { ...set };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -713,6 +743,7 @@ const o = { ...getSet() };
         {
           column: 13,
           endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'noIterableSpreadInObject',
         },
@@ -761,6 +792,7 @@ const o = { ...map };
         {
           column: 13,
           endColumn: 19,
+          endLine: 7,
           line: 7,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -788,6 +820,7 @@ const o = { ...map };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -811,6 +844,7 @@ const o = Object.fromEntries(map);
         {
           column: 21,
           endColumn: 29,
+          endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -834,6 +868,7 @@ const o = { ...(map, map) };
         {
           column: 13,
           endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -858,6 +893,7 @@ const o = { ...map, ...others };
         {
           column: 13,
           endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -882,6 +918,7 @@ const o = { other: 1, ...map };
         {
           column: 23,
           endColumn: 29,
+          endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -905,6 +942,7 @@ const o = { ...map };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -928,19 +966,66 @@ const o = { ...map };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
-          suggestions: [
-            {
-              messageId: 'replaceMapSpreadInObject',
-              output: `
-declare const map: WeakMap<{ a: number }, string>;
-const o = Object.fromEntries(map);
-      `,
-            },
-          ],
+          suggestions: [],
         },
       ],
+    },
+    {
+      code: `
+declare const map: Map<object, string> | WeakMap<object, string>;
+const o = { other: 1, ...map };
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+class CustomWeakMap extends WeakMap<object, string> {}
+declare const map: CustomWeakMap;
+const o = { ...map };
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+declare const map: WeakMap<object, string>;
+const element = <Component {...map} />;
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { jsx: true },
+        },
+      },
     },
     {
       code: `
@@ -951,6 +1036,7 @@ const o = { ...map };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
         },
@@ -965,6 +1051,7 @@ const o = { ...getMap() };
         {
           column: 13,
           endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -988,6 +1075,7 @@ const o = { ...a };
         {
           column: 13,
           endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -1011,6 +1099,7 @@ const o = { ...ref };
         {
           column: 13,
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1025,6 +1114,7 @@ const o = { ...promise };
         {
           column: 13,
           endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
@@ -1050,6 +1140,7 @@ async function foo() {
         {
           column: 12,
           endColumn: 30,
+          endLine: 4,
           line: 4,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
@@ -1077,6 +1168,7 @@ async function foo() {
         {
           column: 12,
           endColumn: 51,
+          endLine: 4,
           line: 4,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
@@ -1103,6 +1195,7 @@ function withPromise<P extends Promise<void>>(promise: P) {
         {
           column: 12,
           endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
@@ -1127,6 +1220,7 @@ const o = { ...maybePromise };
         {
           column: 13,
           endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
@@ -1150,6 +1244,7 @@ const o = { ...promise };
         {
           column: 13,
           endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
@@ -1173,6 +1268,7 @@ const o = { ...getPromise() };
         {
           column: 13,
           endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
@@ -1196,6 +1292,7 @@ const o = { ...getPromise() };
         {
           column: 13,
           endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
@@ -1220,6 +1317,7 @@ const o = { ...f };
         {
           column: 13,
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1242,6 +1340,7 @@ const o = { ...obj };
         {
           column: 13,
           endColumn: 19,
+          endLine: 11,
           line: 11,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1257,6 +1356,7 @@ const o = { ...f };
         {
           column: 13,
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1272,6 +1372,7 @@ const o = { ...f };
         {
           column: 13,
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1287,6 +1388,7 @@ const o = { ...getFunction() };
         {
           column: 13,
           endColumn: 29,
+          endLine: 4,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1302,6 +1404,7 @@ const o = { ...f };
         {
           column: 13,
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1317,6 +1420,7 @@ const o = { ...f };
         {
           column: 13,
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1332,6 +1436,7 @@ const o = { ...generator };
         {
           column: 13,
           endColumn: 25,
+          endLine: 4,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1351,6 +1456,7 @@ const o = { ...iterator };
         {
           column: 13,
           endColumn: 24,
+          endLine: 8,
           line: 8,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1374,6 +1480,7 @@ const a = { ...iterator };
         {
           column: 13,
           endColumn: 24,
+          endLine: 12,
           line: 12,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1398,6 +1505,7 @@ const a = { ...iterator };
         {
           column: 13,
           endColumn: 24,
+          endLine: 12,
           line: 12,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1418,6 +1526,7 @@ const o = { ...iterator };
         {
           column: 13,
           endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1433,6 +1542,7 @@ const o = { ...iterator };
         {
           column: 13,
           endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1448,6 +1558,7 @@ const o = { ...getIterable() };
         {
           column: 13,
           endColumn: 29,
+          endLine: 4,
           line: 4,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1471,6 +1582,7 @@ const a = { ...new A() };
         {
           column: 13,
           endColumn: 23,
+          endLine: 12,
           line: 12,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1484,6 +1596,7 @@ const o = { ...new Date() };
         {
           column: 13,
           endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1499,6 +1612,7 @@ const o = { ...element };
         {
           column: 13,
           endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1513,6 +1627,7 @@ const o = { ...regex };
         {
           column: 13,
           endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1534,6 +1649,7 @@ const o = { ...new A() };
         {
           column: 13,
           endColumn: 23,
+          endLine: 10,
           line: 10,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1553,6 +1669,7 @@ const o = { ...a };
         {
           column: 13,
           endColumn: 17,
+          endLine: 8,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1572,6 +1689,7 @@ const o = { ...a };
         {
           column: 13,
           endColumn: 17,
+          endLine: 8,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1591,6 +1709,7 @@ const o = { ...getA() };
         {
           column: 13,
           endColumn: 22,
+          endLine: 8,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1610,6 +1729,7 @@ const o = { ...getA() };
         {
           column: 13,
           endColumn: 22,
+          endLine: 8,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1629,6 +1749,7 @@ const o = { ...new B() };
         {
           column: 13,
           endColumn: 23,
+          endLine: 8,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1648,6 +1769,7 @@ const o = { ...a };
         {
           column: 13,
           endColumn: 17,
+          endLine: 8,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1667,6 +1789,7 @@ const o = { ...a };
         {
           column: 13,
           endColumn: 17,
+          endLine: 8,
           line: 8,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1682,6 +1805,7 @@ const o = { ...A };
         {
           column: 13,
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1697,6 +1821,7 @@ const o = { ...A };
         {
           column: 13,
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1719,6 +1844,7 @@ const o = { ...either };
         {
           column: 13,
           endColumn: 22,
+          endLine: 11,
           line: 11,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1734,6 +1860,7 @@ const o = { ...A };
         {
           column: 13,
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1766,6 +1893,7 @@ const a = {
         {
           column: 21,
           endColumn: 54,
+          endLine: 2,
           line: 2,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1779,6 +1907,7 @@ const a = {
         {
           column: 21,
           endColumn: 61,
+          endLine: 2,
           line: 2,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1793,6 +1922,7 @@ const o = <div {...[1, 2, 3]} />;
         {
           column: 16,
           endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'noArraySpreadInObject',
         },
@@ -1815,6 +1945,7 @@ const o = <div {...A} />;
         {
           column: 16,
           endColumn: 22,
+          endLine: 4,
           line: 4,
           messageId: 'noClassDeclarationSpreadInObject',
         },
@@ -1835,6 +1966,7 @@ const o = <div {...new Date()} />;
         {
           column: 16,
           endColumn: 31,
+          endLine: 2,
           line: 2,
           messageId: 'noClassInstanceSpreadInObject',
         },
@@ -1857,6 +1989,7 @@ const o = <div {...f} />;
         {
           column: 16,
           endColumn: 22,
+          endLine: 4,
           line: 4,
           messageId: 'noFunctionSpreadInObject',
         },
@@ -1877,6 +2010,7 @@ const o = <div {...new Set([1, 2, 3])} />;
         {
           column: 16,
           endColumn: 39,
+          endLine: 2,
           line: 2,
           messageId: 'noIterableSpreadInObject',
         },
@@ -1899,6 +2033,7 @@ const o = <div {...map} />;
         {
           column: 16,
           endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'noMapSpreadInObject',
           suggestions: [
@@ -1931,6 +2066,7 @@ const o = <div {...promise} />;
         {
           column: 16,
           endColumn: 28,
+          endLine: 4,
           line: 4,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [

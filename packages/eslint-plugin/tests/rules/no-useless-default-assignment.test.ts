@@ -226,6 +226,26 @@ useCallback((value: number[] = []) => {});
 declare const tuple: [string];
 const [a, b = 'default'] = tuple;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12767
+    `
+declare const commands: [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+declare const commands: readonly [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+function run([cmd, arg = 'run']: [string, ...string[]]) {}
+    `,
+    `
+declare const mixed: [boolean, ...number[], string];
+const [a, b, c = 0] = mixed;
+    `,
+    `
+declare const items: [...string[], string | undefined];
+const [first = 'fallback'] = items;
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11911
     `
 const run = (cb: (...args: unknown[]) => void) => cb();
@@ -354,6 +374,26 @@ const fn: Fn = (value = 'default') => {
   invalid: [
     {
       code: `
+declare const mixed: [boolean, ...number[], string];
+const [a, b = 0] = mixed;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+        },
+      ],
+      output: `
+declare const mixed: [boolean, ...number[], string];
+const [a, b] = mixed;
+      `,
+    },
+    {
+      code: `
 function Bar({ foo = '' }: { foo: string }) {
   return foo;
 }
@@ -363,6 +403,7 @@ function Bar({ foo = '' }: { foo: string }) {
           column: 22,
           data: { type: 'property' },
           endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -386,6 +427,7 @@ class C {
           column: 25,
           data: { type: 'property' },
           endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'uselessDefaultAssignment',
         },
@@ -407,6 +449,7 @@ const { 'literal-key': literalKey = 'default' } = { 'literal-key': 'value' };
           column: 37,
           data: { type: 'property' },
           endColumn: 46,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -424,6 +467,7 @@ const { 'literal-key': literalKey } = { 'literal-key': 'value' };
           column: 20,
           data: { type: 'parameter' },
           endColumn: 22,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -445,6 +489,7 @@ function getValue({ value = '' }: { value: string } = {}): string | undefined {
           column: 29,
           data: { type: 'property' },
           endColumn: 31,
+          endLine: 4,
           line: 4,
           messageId: 'uselessDefaultAssignment',
         },
@@ -468,6 +513,7 @@ function getValue([value = '']: [string]) {
           column: 28,
           data: { type: 'property' },
           endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -491,6 +537,7 @@ const {
           column: 20,
           data: { type: 'property' },
           endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'uselessDefaultAssignment',
         },
@@ -516,6 +563,7 @@ const {
           column: 21,
           data: { type: 'property' },
           endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'uselessDefaultAssignment',
         },
@@ -543,6 +591,7 @@ const h: B = {
           column: 13,
           data: { type: 'parameter' },
           endColumn: 18,
+          endLine: 7,
           line: 7,
           messageId: 'uselessDefaultAssignment',
         },
@@ -566,6 +615,7 @@ function foo(a = undefined) {}
           column: 18,
           data: { type: 'parameter' },
           endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
         },
@@ -583,6 +633,7 @@ const { a = undefined } = {};
           column: 13,
           data: { type: 'property' },
           endColumn: 22,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
         },
@@ -600,6 +651,7 @@ const [a = undefined] = [];
           column: 12,
           data: { type: 'property' },
           endColumn: 21,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
         },
@@ -617,6 +669,7 @@ function foo({ a = undefined }) {}
           column: 20,
           data: { type: 'property' },
           endColumn: 29,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
         },
@@ -636,6 +689,7 @@ function myFunction(p1: string, p2: number | undefined = undefined) {
         {
           column: 58,
           endColumn: 67,
+          endLine: 2,
           line: 2,
           messageId: 'preferOptionalSyntax',
         },
@@ -657,6 +711,7 @@ function f(
         {
           column: 96,
           endColumn: 105,
+          endLine: 4,
           line: 4,
           messageId: 'preferOptionalSyntax',
         },
@@ -678,6 +733,8 @@ function Bar({ foo = '' }: { foo: string }) {
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
@@ -685,6 +742,7 @@ function Bar({ foo = '' }: { foo: string }) {
           column: 22,
           data: { type: 'property' },
           endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -707,6 +765,8 @@ function foo(a = undefined) {}
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
@@ -714,6 +774,7 @@ function foo(a = undefined) {}
           column: 18,
           data: { type: 'parameter' },
           endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
         },
@@ -738,6 +799,7 @@ function Bar({ foo = '' }: { foo: string }) {
           column: 22,
           data: { type: 'property' },
           endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -767,6 +829,7 @@ const { a = 'baz' } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
         {
           column: 13,
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -788,6 +851,7 @@ const { a = 'baz' } =
         {
           column: 13,
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -809,6 +873,7 @@ const { a = 'baz' } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
         {
           column: 13,
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -825,6 +890,7 @@ const { a = 'baz' } = cond ? { a() {} } : { a: 'bar' };
         {
           column: 13,
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },
@@ -841,6 +907,7 @@ const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
         {
           column: 13,
           endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
         },

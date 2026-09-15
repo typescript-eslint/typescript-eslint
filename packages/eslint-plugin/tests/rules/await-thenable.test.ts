@@ -697,12 +697,15 @@ Promise.all([
       code: 'await 0;',
       errors: [
         {
+          column: 1,
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
-              output: ' 0;',
+              output: '0;',
             },
           ],
         },
@@ -712,12 +715,15 @@ Promise.all([
       code: "await 'value';",
       errors: [
         {
+          column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'await',
           suggestions: [
             {
               messageId: 'removeAwait',
-              output: " 'value';",
+              output: "'value';",
             },
           ],
         },
@@ -727,21 +733,9 @@ Promise.all([
       code: "async () => await (Math.random() > 0.5 ? '' : 0);",
       errors: [
         {
-          line: 1,
-          messageId: 'await',
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: "async () =>  (Math.random() > 0.5 ? '' : 0);",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: noFormat`async () => await(Math.random() > 0.5 ? '' : 0);`,
-      errors: [
-        {
+          column: 13,
+          endColumn: 49,
+          endLine: 1,
           line: 1,
           messageId: 'await',
           suggestions: [
@@ -754,12 +748,243 @@ Promise.all([
       ],
     },
     {
+      code: noFormat`async () => await(Math.random() > 0.5 ? '' : 0);`,
+      errors: [
+        {
+          column: 13,
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: "async () => (Math.random() > 0.5 ? '' : 0);",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await { a: 1 };',
+      errors: [
+        {
+          column: 26,
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => ({ a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await { a: 1 }.a;',
+      errors: [
+        {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => ({ a: 1 }.a);',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`const test = async () => await ({ a: 1 });`,
+      errors: [
+        {
+          column: 26,
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => ({ a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`const test = async () => (await { a: 1 });`,
+      errors: [
+        {
+          column: 27,
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => ({ a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const cond: boolean;
+const test = async () => (cond ? await { a: 1 } : 2);
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 48,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const cond: boolean;
+const test = async () => (cond ? { a: 1 } : 2);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await /* comment */ 1;',
+      errors: [
+        {
+          column: 26,
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => /* comment */ 1;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'const test = async () => await /* comment */ { a: 1 };',
+      errors: [
+        {
+          column: 26,
+          endColumn: 54,
+          endLine: 1,
+          line: 1,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: 'const test = async () => /* comment */ ({ a: 1 });',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await { a: 1 };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  ({ a: 1 });
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await function () {};
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  (function () {});
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  await class {};
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  (class {});
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
 class NonPromise extends Array {}
 await new NonPromise();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'await',
           suggestions: [
@@ -767,7 +992,7 @@ await new NonPromise();
               messageId: 'removeAwait',
               output: `
 class NonPromise extends Array {}
- new NonPromise();
+new NonPromise();
       `,
             },
           ],
@@ -787,6 +1012,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 17,
+          endLine: 8,
           line: 8,
           messageId: 'await',
           suggestions: [
@@ -799,7 +1027,7 @@ async function test() {
   }
   const thenable = new IncorrectThenable();
 
-   thenable;
+  thenable;
 }
       `,
             },
@@ -814,6 +1042,9 @@ await callback?.();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'await',
           suggestions: [
@@ -821,7 +1052,7 @@ await callback?.();
               messageId: 'removeAwait',
               output: `
 declare const callback: (() => void) | undefined;
- callback?.();
+callback?.();
       `,
             },
           ],
@@ -835,6 +1066,9 @@ await obj.a?.b?.();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'await',
           suggestions: [
@@ -842,7 +1076,7 @@ await obj.a?.b?.();
               messageId: 'removeAwait',
               output: `
 declare const obj: { a?: { b?: () => void } };
- obj.a?.b?.();
+obj.a?.b?.();
       `,
             },
           ],
@@ -856,6 +1090,9 @@ await obj?.a.b.c?.();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'await',
           suggestions: [
@@ -863,7 +1100,7 @@ await obj?.a.b.c?.();
               messageId: 'removeAwait',
               output: `
 declare const obj: { a: { b: { c?: () => void } } } | undefined;
- obj?.a.b.c?.();
+obj?.a.b.c?.();
       `,
             },
           ],
@@ -897,7 +1134,7 @@ function* yieldNumbers() {
   yield 2;
   yield 3;
 }
-for  (const value of yieldNumbers()) {
+for (const value of yieldNumbers()) {
   console.log(value);
 }
       `,
@@ -919,6 +1156,10 @@ for await (const value of yieldNumberPromises()) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 49,
+          endLine: 7,
+          line: 7,
           messageId: 'forAwaitOfNonAsyncIterable',
           suggestions: [
             {
@@ -929,7 +1170,7 @@ function* yieldNumberPromises() {
   yield Promise.resolve(2);
   yield Promise.resolve(3);
 }
-for  (const value of yieldNumberPromises()) {
+for (const value of yieldNumberPromises()) {
   console.log(value);
 }
       `,
@@ -958,7 +1199,7 @@ async function foo() {
               output: `
 declare const disposable: Disposable;
 async function foo() {
-   using d = disposable;
+  using d = disposable;
 }
       `,
             },
@@ -986,7 +1227,7 @@ async function foo() {
               messageId: 'removeAwait',
               output: `
 async function foo() {
-   using _ = {
+  using _ = {
     async [Symbol.dispose]() {},
   };
 }
@@ -1069,7 +1310,7 @@ async function wrapper<T extends number>(value: T) {
               messageId: 'removeAwait',
               output: `
 async function wrapper<T extends number>(value: T) {
-  return  value;
+  return value;
 }
       `,
             },
@@ -1098,7 +1339,7 @@ class C<T> {
               output: `
 class C<T> {
   async wrapper<T extends string>(value: T) {
-    return  value;
+    return value;
   }
 }
       `,
@@ -1128,7 +1369,7 @@ class C<R extends number> {
               output: `
 class C<R extends number> {
   async wrapper<T extends R>(value: T) {
-    return  value;
+    return value;
   }
 }
       `,
@@ -1145,6 +1386,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1156,6 +1401,10 @@ Promise.race(x);
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1167,6 +1416,10 @@ Promise.allSettled(x);
       `,
       errors: [
         {
+          column: 20,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1178,6 +1431,10 @@ Promise.any(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1190,6 +1447,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1201,6 +1462,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1212,6 +1477,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1223,6 +1492,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1235,6 +1508,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1246,6 +1523,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1257,6 +1538,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1269,6 +1554,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1280,6 +1569,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1291,6 +1584,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1302,6 +1599,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1315,6 +1616,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1331,6 +1636,10 @@ Promise.all(x());
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 16,
+          endLine: 8,
+          line: 8,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1345,6 +1654,10 @@ Promise.all(x());
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1359,6 +1672,10 @@ Promise.all(x());
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1370,6 +1687,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1381,6 +1702,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1392,6 +1717,10 @@ Promise.all(x);
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
@@ -1404,6 +1733,7 @@ Promise.all([Promise.resolve(1), 2, Promise.resolve(3)]);
         {
           column: 34,
           endColumn: 35,
+          endLine: 2,
           line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
@@ -1417,12 +1747,14 @@ Promise.all([1, 2, Promise.resolve(3)]);
         {
           column: 14,
           endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
         {
           column: 17,
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
@@ -1436,6 +1768,7 @@ Promise.all([...[1, 2, 3]]);
         {
           column: 14,
           endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },

@@ -310,21 +310,29 @@ execScript('x = 1');
       errors: [
         {
           column: 12,
+          endColumn: 19,
+          endLine: 2,
           line: 2,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 19,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
@@ -340,21 +348,29 @@ execScript(undefined);
       errors: [
         {
           column: 12,
+          endColumn: 21,
+          endLine: 2,
           line: 2,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 21,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
@@ -370,21 +386,29 @@ execScript(1 + '' + (() => {}));
       errors: [
         {
           column: 12,
+          endColumn: 31,
+          endLine: 2,
           line: 2,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 32,
+          endLine: 3,
           line: 3,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 33,
+          endLine: 4,
           line: 4,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 31,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
@@ -402,21 +426,29 @@ execScript(foo);
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 4,
           line: 4,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 17,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 15,
+          endLine: 7,
           line: 7,
           messageId: 'noImpliedEvalError',
         },
@@ -436,21 +468,29 @@ execScript(foo());
       errors: [
         {
           column: 12,
+          endColumn: 17,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 18,
+          endLine: 7,
           line: 7,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 19,
+          endLine: 8,
           line: 8,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 17,
+          endLine: 9,
           line: 9,
           messageId: 'noImpliedEvalError',
         },
@@ -470,21 +510,29 @@ execScript(foo()());
       errors: [
         {
           column: 12,
+          endColumn: 19,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 20,
+          endLine: 7,
           line: 7,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 21,
+          endLine: 8,
           line: 8,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 19,
+          endLine: 9,
           line: 9,
           messageId: 'noImpliedEvalError',
         },
@@ -502,21 +550,29 @@ execScript(fn + '');
       errors: [
         {
           column: 12,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 21,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 19,
+          endLine: 7,
           line: 7,
           messageId: 'noImpliedEvalError',
         },
@@ -534,21 +590,29 @@ execScript(foo);
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 4,
           line: 4,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 17,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 15,
+          endLine: 7,
           line: 7,
           messageId: 'noImpliedEvalError',
         },
@@ -566,21 +630,29 @@ execScript(foo);
       errors: [
         {
           column: 12,
+          endColumn: 15,
+          endLine: 4,
           line: 4,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 17,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 15,
+          endLine: 7,
           line: 7,
           messageId: 'noImpliedEvalError',
         },
@@ -598,21 +670,29 @@ execScript(foo as any);
       errors: [
         {
           column: 12,
+          endColumn: 22,
+          endLine: 4,
           line: 4,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 13,
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 24,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 12,
+          endColumn: 22,
+          endLine: 7,
           line: 7,
           messageId: 'noImpliedEvalError',
         },
@@ -630,21 +710,29 @@ const fn = (foo: string | any) => {
       errors: [
         {
           column: 14,
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 15,
+          endColumn: 18,
+          endLine: 4,
           line: 4,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 16,
+          endColumn: 19,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 14,
+          endColumn: 17,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
@@ -660,6 +748,8 @@ setTimeout(Math.radom() > 0.5 ? foo : bar, 0);
       errors: [
         {
           column: 12,
+          endColumn: 42,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
@@ -682,41 +772,57 @@ window['execScript'](\`\`);
       errors: [
         {
           column: 19,
+          endColumn: 21,
+          endLine: 2,
           line: 2,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 22,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 20,
+          endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 23,
+          endColumn: 25,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 21,
+          endColumn: 23,
+          endLine: 8,
           line: 8,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 24,
+          endColumn: 26,
+          endLine: 9,
           line: 9,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 19,
+          endColumn: 21,
+          endLine: 11,
           line: 11,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 22,
+          endColumn: 24,
+          endLine: 12,
           line: 12,
           messageId: 'noImpliedEvalError',
         },
@@ -739,41 +845,57 @@ global['execScript'](\`\`);
       errors: [
         {
           column: 19,
+          endColumn: 21,
+          endLine: 2,
           line: 2,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 22,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 20,
+          endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 23,
+          endColumn: 25,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 21,
+          endColumn: 23,
+          endLine: 8,
           line: 8,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 24,
+          endColumn: 26,
+          endLine: 9,
           line: 9,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 19,
+          endColumn: 21,
+          endLine: 11,
           line: 11,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 22,
+          endColumn: 24,
+          endLine: 12,
           line: 12,
           messageId: 'noImpliedEvalError',
         },
@@ -796,41 +918,57 @@ globalThis['execScript'](\`\`);
       errors: [
         {
           column: 23,
+          endColumn: 25,
+          endLine: 2,
           line: 2,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 26,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 24,
+          endColumn: 26,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 27,
+          endColumn: 29,
+          endLine: 6,
           line: 6,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 25,
+          endColumn: 27,
+          endLine: 8,
           line: 8,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 28,
+          endColumn: 30,
+          endLine: 9,
           line: 9,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 23,
+          endColumn: 25,
+          endLine: 11,
           line: 11,
           messageId: 'noImpliedEvalError',
         },
         {
           column: 26,
+          endColumn: 28,
+          endLine: 12,
           line: 12,
           messageId: 'noImpliedEvalError',
         },
@@ -846,6 +984,8 @@ setTimeout(foo || bar, 500);
       errors: [
         {
           column: 12,
+          endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'noImpliedEvalError',
         },
@@ -856,6 +996,8 @@ setTimeout(foo || bar, 500);
       errors: [
         {
           column: 12,
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noFunctionConstructor',
         },
@@ -866,6 +1008,8 @@ setTimeout(foo || bar, 500);
       errors: [
         {
           column: 12,
+          endColumn: 50,
+          endLine: 1,
           line: 1,
           messageId: 'noFunctionConstructor',
         },
@@ -876,6 +1020,8 @@ setTimeout(foo || bar, 500);
       errors: [
         {
           column: 12,
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noFunctionConstructor',
         },
@@ -886,6 +1032,8 @@ setTimeout(foo || bar, 500);
       errors: [
         {
           column: 12,
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'noFunctionConstructor',
         },
@@ -896,6 +1044,8 @@ setTimeout(foo || bar, 500);
       errors: [
         {
           column: 12,
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'noFunctionConstructor',
         },
@@ -906,6 +1056,8 @@ setTimeout(foo || bar, 500);
       errors: [
         {
           column: 12,
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'noFunctionConstructor',
         },

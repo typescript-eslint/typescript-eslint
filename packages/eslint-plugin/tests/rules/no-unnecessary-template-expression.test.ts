@@ -316,6 +316,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 6,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -328,6 +329,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -340,6 +342,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 9,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -352,12 +355,14 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 11,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
         {
           column: 12,
           endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -370,6 +375,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 9,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -382,6 +388,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -394,6 +401,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 11,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -405,6 +413,10 @@ function foo<T extends string>() {
       code: noFormat`\`\${    1    }\`;`,
       errors: [
         {
+          column: 2,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -415,6 +427,10 @@ function foo<T extends string>() {
       code: noFormat`\`\${    'a'    }\`;`,
       errors: [
         {
+          column: 6,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -425,6 +441,10 @@ function foo<T extends string>() {
       code: noFormat`\`\${    "a"    }\`;`,
       errors: [
         {
+          column: 6,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -435,6 +455,10 @@ function foo<T extends string>() {
       code: noFormat`\`\${    'a' + 'b'    }\`;`,
       errors: [
         {
+          column: 6,
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -447,6 +471,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 9,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -458,6 +483,10 @@ function foo<T extends string>() {
       code: noFormat`\`\${    true    }\`;`,
       errors: [
         {
+          column: 2,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -470,6 +499,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 9,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -481,6 +511,10 @@ function foo<T extends string>() {
       code: noFormat`\`\${    null    }\`;`,
       errors: [
         {
+          column: 2,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -493,6 +527,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -504,6 +539,10 @@ function foo<T extends string>() {
       code: noFormat`\`\${    undefined    }\`;`,
       errors: [
         {
+          column: 2,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -516,6 +555,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -529,6 +569,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -542,12 +583,14 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
         {
           column: 9,
           endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -559,9 +602,17 @@ function foo<T extends string>() {
       code: noFormat`\`\${   'a'   } \${   'b'   }\`;`,
       errors: [
         {
+          column: 2,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
         {
+          column: 15,
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -572,6 +623,9 @@ function foo<T extends string>() {
       code: "`use${'less'}`;",
       errors: [
         {
+          column: 5,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -583,6 +637,9 @@ function foo<T extends string>() {
       code: '`use${`less`}`;',
       errors: [
         {
+          column: 5,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -658,12 +715,14 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
         {
           column: 15,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -677,12 +736,14 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
         {
           column: 9,
           endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -696,6 +757,7 @@ function foo<T extends string>() {
         {
           column: 2,
           endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -707,6 +769,10 @@ function foo<T extends string>() {
       code: "`${'`'}`;",
       errors: [
         {
+          column: 2,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -717,6 +783,10 @@ function foo<T extends string>() {
       code: "`back${'`'}tick`;",
       errors: [
         {
+          column: 6,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -727,6 +797,10 @@ function foo<T extends string>() {
       code: "`dollar${'${`this is test`}'}sign`;",
       errors: [
         {
+          column: 8,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -737,6 +811,10 @@ function foo<T extends string>() {
       code: '`complex${\'`${"`${test}`"}`\'}case`;',
       errors: [
         {
+          column: 9,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -747,6 +825,10 @@ function foo<T extends string>() {
       code: "`some ${'\\\\${test}'} string`;",
       errors: [
         {
+          column: 7,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -757,6 +839,10 @@ function foo<T extends string>() {
       code: "`some ${'\\\\`'} string`;",
       errors: [
         {
+          column: 7,
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -767,6 +853,10 @@ function foo<T extends string>() {
       code: '`some ${/`/} string`;',
       errors: [
         {
+          column: 7,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -776,6 +866,10 @@ function foo<T extends string>() {
       code: '`some ${/\\`/} string`;',
       errors: [
         {
+          column: 7,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -785,6 +879,10 @@ function foo<T extends string>() {
       code: '`some ${/\\\\`/} string`;',
       errors: [
         {
+          column: 7,
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -794,6 +892,10 @@ function foo<T extends string>() {
       code: '`some ${/\\\\\\`/} string`;',
       errors: [
         {
+          column: 7,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -803,6 +905,10 @@ function foo<T extends string>() {
       code: '`some ${/${}/} string`;',
       errors: [
         {
+          column: 7,
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -812,6 +918,10 @@ function foo<T extends string>() {
       code: '`some ${/$ {}/} string`;',
       errors: [
         {
+          column: 7,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -821,6 +931,10 @@ function foo<T extends string>() {
       code: '`some ${/\\\\/} string`;',
       errors: [
         {
+          column: 7,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -830,6 +944,10 @@ function foo<T extends string>() {
       code: '`some ${/\\\\\\b/} string`;',
       errors: [
         {
+          column: 7,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -839,6 +957,10 @@ function foo<T extends string>() {
       code: '`some ${/\\\\\\\\/} string`;',
       errors: [
         {
+          column: 7,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -846,227 +968,601 @@ function foo<T extends string>() {
     },
     {
       code: "` ${''} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '`  `;',
     },
     {
       code: noFormat`\` \${""} \`;`,
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '`  `;',
     },
     {
       code: '` ${``} `;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '`  `;',
     },
     {
       code: "` ${'\\`'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\` `;',
     },
     {
       code: "` ${'\\\\`'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\\\\\` `;',
     },
     {
       code: "` ${'$'}{} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\${} `;',
     },
     {
       code: "` ${'\\$'}{} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\${} `;',
     },
     {
       code: "` ${'\\\\$'}{} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\\\\\${} `;',
     },
     {
       code: "` ${'\\\\$ '}{} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\\\$ {} `;',
     },
     {
       code: "` ${'\\\\\\$'}{} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\\\\\${} `;',
     },
     {
       code: "` \\\\${'\\\\$'}{} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\\\\\\\\\${} `;',
     },
     {
       code: "` $${'{$'}{} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 4,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\${\\${} `;',
     },
     {
       code: "` $${'${$'}{} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 4,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` $\\${\\${} `;',
     },
     {
       code: "` ${'foo$'}{} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` foo\\${} `;',
     },
     {
       code: '` ${`$`} `;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` $ `;',
     },
     {
       code: '` ${`$`}{} `;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\${} `;',
     },
     {
       code: '` ${`$`} {} `;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` $ {} `;',
     },
     {
       code: '` ${`$`}${undefined}{} `;',
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ['` $${undefined}{} `;', '` $undefined{} `;'],
     },
     {
       code: '` ${`foo$`}{} `;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` foo\\${} `;',
     },
     {
       code: "` ${'$'}${''}{} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ["` \\$${''}{} `;", '` \\${} `;'],
     },
     {
       code: "` ${'$'}${``}{} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ['` \\$${``}{} `;', '` \\${} `;'],
     },
     {
       code: "` ${'foo$'}${''}${``}{} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 12,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 17,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ["` foo\\$${''}{} `;", '` foo\\${} `;'],
     },
     {
       code: "` $${'{}'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 4,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\${} `;',
     },
     {
       code: "` $${undefined}${'{}'} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 16,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ["` $undefined${'{}'} `;", '` $undefined{} `;'],
     },
     {
       code: "` $${''}${undefined}${'{}'} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 21,
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ['` $${undefined}{} `;', '` $undefined{} `;'],
     },
     {
       code: "` \\$${'{}'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\${} `;',
     },
     {
       code: "` $${'foo'}${'{'} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ["` $foo${'{'} `;", '` $foo{ `;'],
     },
     {
       code: "` $${'{ foo'}${'{'} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 14,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ["` \\${ foo${'{'} `;", '` \\${ foo{ `;'],
     },
     {
       code: "` \\\\$${'{}'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 6,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\\\\\${} `;',
     },
     {
       code: "` \\\\\\$${'{}'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\\\\\${} `;',
     },
     {
       code: "` foo$${'{}'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 7,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` foo\\${} `;',
     },
     {
       code: "` $${''}${'{}'} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ["` \\$${'{}'} `;", '` \\${} `;'],
     },
     {
       code: "` $${''} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 4,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` $ `;',
     },
     {
       code: '` $${`{}`} `;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 4,
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\${} `;',
     },
     {
       code: '` $${``}${`{}`} `;',
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ['` \\$${`{}`} `;', '` \\${} `;'],
     },
     {
       code: '` $${``}${`foo{}`} `;',
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ['` $${`foo{}`} `;', '` $foo{} `;'],
     },
     {
       code: "` $${`${''}${`${``}`}`}${`{a}`} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 7,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 12,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 15,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 24,
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: [
         "` \\$${''}${`${``}`}${`{a}`} `;",
@@ -1077,104 +1573,272 @@ function foo<T extends string>() {
     {
       code: "` $${''}${`{}`} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ['` \\$${`{}`} `;', '` \\${} `;'],
     },
     {
       code: "` $${``}${'{}'} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ["` \\$${'{}'} `;", '` \\${} `;'],
     },
     {
       code: "` $${''}${``}${'{}'} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 4,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 14,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ['` \\$${``}{} `;', '` \\${} `;'],
     },
     {
       code: "` ${'$'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` $ `;',
     },
     {
       code: "` ${'$'}${'{}'} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ["` \\$${'{}'} `;", '` \\${} `;'],
     },
     {
       code: "` ${'$'}${''}${'{'} `;",
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 3,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 9,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 14,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: ["` \\$${''}{ `;", '` \\${ `;'],
     },
     {
       code: '` ${`\n\\$`}{} `;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 2,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \n\\${} `;',
     },
     {
       code: '` ${`\n\\\\$`}{} `;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 6,
+          endLine: 2,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \n\\\\\\${} `;',
     },
 
     {
       code: "`${'\\u00E5'}`;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 2,
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: "'\\u00E5';",
     },
     {
       code: "`${'\\n'}`;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 2,
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: "'\\n';",
     },
     {
       code: "` ${'\\u00E5'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\u00E5 `;',
     },
     {
       code: "` ${'\\n'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\n `;',
     },
     {
       code: noFormat`\` \${"\\n"} \`;`,
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\n `;',
     },
     {
       code: '` ${`\\n`} `;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\n `;',
     },
     {
       code: noFormat`\` \${ 'A\\u0307\\u0323' } \`;`,
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` A\\u0307\\u0323 `;',
     },
     {
       code: "` ${'👨‍👩‍👧‍👦'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` 👨‍👩‍👧‍👦 `;',
     },
     {
       code: "` ${'\\ud83d\\udc68'} `;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: '` \\ud83d\\udc68 `;',
     },
     {
@@ -1184,6 +1848,10 @@ this code does not have trailing whitespace: \${' '}\\n even though it might loo
       `,
       errors: [
         {
+          column: 46,
+          endColumn: 52,
+          endLine: 3,
+          line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1200,6 +1868,10 @@ this code has trailing position template expression \${"but it isn't whitespace"
       `,
       errors: [
         {
+          column: 53,
+          endColumn: 81,
+          endLine: 3,
+          line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1215,6 +1887,10 @@ this code has trailing position template expression but it isn't whitespace
       `,
       errors: [
         {
+          column: 59,
+          endColumn: 65,
+          endLine: 2,
+          line: 2,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1229,9 +1905,17 @@ this code has trailing position template expression but it isn't whitespace
       `,
       errors: [
         {
+          column: 60,
+          endColumn: 85,
+          endLine: 2,
+          line: 2,
           messageId: 'noUnnecessaryTemplateExpression',
         },
         {
+          column: 64,
+          endColumn: 82,
+          endLine: 2,
+          line: 2,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1256,6 +1940,7 @@ function func<T extends string>(arg: T) {
         {
           column: 4,
           endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -1275,6 +1960,7 @@ declare const b: 'b';
         {
           column: 7,
           endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -1291,6 +1977,10 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1306,6 +1996,10 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1323,6 +2017,7 @@ declare const string: 'a';
         {
           column: 2,
           endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -1341,6 +2036,7 @@ declare const intersection: string & { _brand: 'test-brand' };
         {
           column: 2,
           endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -1354,6 +2050,10 @@ intersection;
       code: "true ? `${'test' || ''}`.trim() : undefined;",
       errors: [
         {
+          column: 9,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1361,22 +2061,54 @@ intersection;
     },
     {
       code: 'type Foo = `${1}`;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: 'type Foo = `1`;',
     },
     {
       code: 'type Foo = `${null}`;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: 'type Foo = `null`;',
     },
     {
       code: 'type Foo = `${undefined}`;',
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: 'type Foo = `undefined`;',
     },
     {
       code: "type Foo = `${'foo'}`;",
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: "type Foo = 'foo';",
     },
     {
@@ -1435,6 +2167,10 @@ type Bar = Foo;
       code: "type FooBarBaz = `foo${'bar'}baz`;",
       errors: [
         {
+          column: 22,
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1444,6 +2180,10 @@ type Bar = Foo;
       code: 'type FooBar = `foo${`bar`}`;',
       errors: [
         {
+          column: 19,
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1453,6 +2193,10 @@ type Bar = Foo;
       code: "type FooBar = `${'foo' | 'bar'}`;",
       errors: [
         {
+          column: 16,
+          endColumn: 32,
+          endLine: 1,
+          line: 1,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
