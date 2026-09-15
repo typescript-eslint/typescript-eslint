@@ -1250,10 +1250,10 @@ switch (value) {
               output: `
 declare const value: (string & { foo: 'bar' }) | '1' | 1 | null | undefined;
 switch (value) {
-case undefined: { throw new Error('Not implemented yet: undefined case') }
-case null: { throw new Error('Not implemented yet: null case') }
 case "1": { throw new Error('Not implemented yet: "1" case') }
 case 1: { throw new Error('Not implemented yet: 1 case') }
+case undefined: { throw new Error('Not implemented yet: undefined case') }
+case null: { throw new Error('Not implemented yet: null case') }
 }
       `,
             },
@@ -1575,8 +1575,8 @@ declare const value: boolean | 1;
 switch (value) {
   case false:
     break;
-  case true: { throw new Error('Not implemented yet: true case') }
   case 1: { throw new Error('Not implemented yet: 1 case') }
+  case true: { throw new Error('Not implemented yet: true case') }
 }
       `,
             },
@@ -1787,7 +1787,7 @@ switch (day) {
           column: 9,
           data: {
             missingBranches:
-              '"Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
+              '"Friday" | "Saturday" | "Sunday" | "Thursday" | "Tuesday" | "Wednesday"',
           },
           endColumn: 12,
           endLine: 14,
@@ -1814,12 +1814,12 @@ switch (day) {
     result = 1;
     break;
   }
-  case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
-  case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
-  case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
   case "Friday": { throw new Error('Not implemented yet: "Friday" case') }
   case "Saturday": { throw new Error('Not implemented yet: "Saturday" case') }
   case "Sunday": { throw new Error('Not implemented yet: "Sunday" case') }
+  case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
+  case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
+  case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
 }
       `,
             },
@@ -1935,7 +1935,7 @@ function test(value: Union): number {
       errors: [
         {
           column: 11,
-          data: { missingBranches: 'true | 1' },
+          data: { missingBranches: '1 | true' },
           endColumn: 16,
           endLine: 9,
           line: 9,
@@ -1954,8 +1954,8 @@ function test(value: Union): number {
   switch (value) {
     case 'a':
       return 1;
-    case true: { throw new Error('Not implemented yet: true case') }
     case 1: { throw new Error('Not implemented yet: 1 case') }
+    case true: { throw new Error('Not implemented yet: true case') }
   }
 }
       `,
@@ -2024,7 +2024,7 @@ switch (day) {
           column: 9,
           data: {
             missingBranches:
-              '"Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
+              '"Friday" | "Monday" | "Saturday" | "Sunday" | "Thursday" | "Tuesday" | "Wednesday"',
           },
           endColumn: 12,
           endLine: 13,
@@ -2046,13 +2046,13 @@ type Day =
 const day = 'Monday' as Day;
 
 switch (day) {
-case "Monday": { throw new Error('Not implemented yet: "Monday" case') }
-case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
-case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
-case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
 case "Friday": { throw new Error('Not implemented yet: "Friday" case') }
+case "Monday": { throw new Error('Not implemented yet: "Monday" case') }
 case "Saturday": { throw new Error('Not implemented yet: "Saturday" case') }
 case "Sunday": { throw new Error('Not implemented yet: "Sunday" case') }
+case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
+case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
+case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
 }
       `,
             },
@@ -3100,6 +3100,183 @@ switch (foo) {
     break;
   }
   case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 10 | 2 | 1 | 20 | 100;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: '1 | 2 | 10 | 20 | 100' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 10 | 2 | 1 | 20 | 100;
+switch (value) {
+case 1: { throw new Error('Not implemented yet: 1 case') }
+case 2: { throw new Error('Not implemented yet: 2 case') }
+case 10: { throw new Error('Not implemented yet: 10 case') }
+case 20: { throw new Error('Not implemented yet: 20 case') }
+case 100: { throw new Error('Not implemented yet: 100 case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 10n | 2n | 1n;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: '1n | 2n | 10n' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 10n | 2n | 1n;
+switch (value) {
+case 1n: { throw new Error('Not implemented yet: 1n case') }
+case 2n: { throw new Error('Not implemented yet: 2n case') }
+case 10n: { throw new Error('Not implemented yet: 10n case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'c' | 'a' | 'B' | null | undefined;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: '"B" | "a" | "c" | undefined | null' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 'c' | 'a' | 'B' | null | undefined;
+switch (value) {
+case "B": { throw new Error('Not implemented yet: "B" case') }
+case "a": { throw new Error('Not implemented yet: "a" case') }
+case "c": { throw new Error('Not implemented yet: "c" case') }
+case undefined: { throw new Error('Not implemented yet: undefined case') }
+case null: { throw new Error('Not implemented yet: null case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  zebra = 'z',
+  apple = 'a',
+}
+declare const value: Enum;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: 'Enum.zebra | Enum.apple' },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Enum {
+  zebra = 'z',
+  apple = 'a',
+}
+declare const value: Enum;
+switch (value) {
+case Enum.zebra: { throw new Error('Not implemented yet: Enum.zebra case') }
+case Enum.apple: { throw new Error('Not implemented yet: Enum.apple case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  b = 'b',
+  a = 'a',
+}
+declare const value: 'x' | 10 | 2n | true | Enum | null | undefined;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            missingBranches:
+              '"x" | 10 | 2n | true | undefined | null | Enum.b | Enum.a',
+          },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Enum {
+  b = 'b',
+  a = 'a',
+}
+declare const value: 'x' | 10 | 2n | true | Enum | null | undefined;
+switch (value) {
+case "x": { throw new Error('Not implemented yet: "x" case') }
+case 10: { throw new Error('Not implemented yet: 10 case') }
+case 2n: { throw new Error('Not implemented yet: 2n case') }
+case true: { throw new Error('Not implemented yet: true case') }
+case undefined: { throw new Error('Not implemented yet: undefined case') }
+case null: { throw new Error('Not implemented yet: null case') }
+case Enum.b: { throw new Error('Not implemented yet: Enum.b case') }
+case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
 }
       `,
             },
