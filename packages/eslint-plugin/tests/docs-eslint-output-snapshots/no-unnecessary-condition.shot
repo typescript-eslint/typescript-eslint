@@ -144,6 +144,10 @@ function assertIsString(value: unknown): asserts value is string {
 assertIsString(s); // Unnecessary; s is always a string.
                ~ Unnecessary conditional, expression already has the type being checked by the assertion function.
 
+declare const strings: string[];
+strings.filter(isString); // Unnecessary; each element is already a string.
+               ~~~~~~~~ Unnecessary conditional, expression already has the type being checked by the type guard.
+
 
 
 const array: string[] = [];
