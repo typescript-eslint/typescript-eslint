@@ -4,6 +4,7 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-and-neq-null', rule, {
+  valid: [],
   invalid: [
     {
       code: `
@@ -895,5 +896,4 @@ foo.bar?.()?.baz;
       output: null,
     },
   ],
-  valid: [],
 });

@@ -6,6 +6,255 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain', rule, {
+  valid: [
+    '!a || !b;',
+    '!a || a.b;',
+    '!a && a.b;',
+    '!a && !a.b;',
+    '!a.b || a.b?.();',
+    '!a.b || a.b();',
+    'foo ||= bar;',
+    'foo ||= bar?.baz;',
+    'foo ||= bar?.baz?.buzz;',
+    'foo && bar;',
+    'foo && foo;',
+    'foo || bar;',
+    'foo ?? bar;',
+    'foo || foo.bar;',
+    'foo ?? foo.bar;',
+    "file !== 'index.ts' && file.endsWith('.ts');",
+    'nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken);',
+    'result && this.options.shouldPreserveNodeMaps;',
+    'foo && fooBar.baz;',
+    'match && match$1 !== undefined;',
+    "typeof foo === 'number' && foo.toFixed();",
+    "foo === 'undefined' && foo.length;",
+    'foo == bar && foo.bar == null;',
+    'foo === 1 && foo.toFixed();',
+    // call arguments are considered
+    'foo.bar(a) && foo.bar(a, b).baz;',
+    // type parameters are considered
+    'foo.bar<a>() && foo.bar<a, b>().baz;',
+    // array elements are considered
+    '[1, 2].length && [1, 2, 3].length.toFixed();',
+    noFormat`[1,].length && [1, 2].length.toFixed();`,
+    // short-circuiting chains are considered
+    '(foo?.a).b && foo.a.b.c;',
+    '(foo?.a)() && foo.a().b;',
+    '(foo?.a)() && foo.a()();',
+    // looks like a chain, but isn't actually a chain - just a pair of strict nullish checks
+    'foo !== null && foo !== undefined;',
+    "x['y'] !== undefined && x['y'] !== null;",
+    // private properties
+    'this.#a && this.#b;',
+    '!this.#a || !this.#b;',
+    'a.#foo?.bar;',
+    '!a.#foo?.bar;',
+    '!foo().#a || a;',
+    '!a.b.#a || a;',
+    '!new A().#b || a;',
+    '!(await a).#b || a;',
+    "!(foo as any).bar || 'anything';",
+    // computed properties should be interrogated and correctly ignored
+    '!foo[1 + 1] || !foo[1 + 2];',
+    '!foo[1 + 1] || !foo[1 + 2].foo;',
+    // currently do not handle 'this' as the first part of a chain
+    'this && this.foo;',
+    '!this || !this.foo;',
+    '!entity.__helper!.__initialized || options.refresh;',
+    'import.meta || true;',
+    'import.meta || import.meta.foo;',
+    '!import.meta && false;',
+    '!import.meta && !import.meta.foo;',
+    'new.target || new.target.length;',
+    '!new.target || true;',
+    // Do not handle direct optional chaining on private properties because this TS limitation (https://github.com/microsoft/TypeScript/issues/42734)
+    'foo && foo.#bar;',
+    '!foo || !foo.#bar;',
+    // weird non-constant cases are ignored
+    '({}) && {}.toString();',
+    '[] && [].length;',
+    '(() => {}) && (() => {}).name;',
+    '(function () {}) && function () {}.name;',
+    '(class Foo {}) && class Foo {}.constructor;',
+    "new Map().get('a') && new Map().get('a').what;",
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7654
+    'data && data.value !== null;',
+    {
+      code: '<div /> && (<div />).wtf;',
+      filename: 'react.tsx',
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    {
+      code: '<></> && (<></>).wtf;',
+      filename: 'react.tsx',
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+    },
+    'foo[x++] && foo[x++].bar;',
+    'foo[yield x] && foo[yield x].bar;',
+    'a = b && (a = b).wtf;',
+    // TODO - should we handle this?
+    '(x || y) != null && (x || y).foo;',
+    // TODO - should we handle this?
+    '(await foo) && (await foo).bar;',
+    `
+declare const foo: { bar: string } | null;
+foo !== null && foo.bar !== null;
+    `,
+    `
+declare const foo: { bar: string | null } | null;
+foo != null && foo.bar !== null;
+    `,
+    {
+      code: `
+declare const x: string;
+x && x.length;
+      `,
+      options: [{ requireNullish: true }],
+    },
+    {
+      code: `
+declare const foo: string;
+foo && foo.toString();
+      `,
+      options: [{ requireNullish: true }],
+    },
+    {
+      code: `
+declare const x: string | number | boolean | object;
+x && x.toString();
+      `,
+      options: [{ requireNullish: true }],
+    },
+    {
+      code: `
+declare const foo: { bar: string };
+foo && foo.bar && foo.bar.toString();
+      `,
+      options: [{ requireNullish: true }],
+    },
+    {
+      code: `
+declare const foo: string;
+foo && foo.toString() && foo.toString();
+      `,
+      options: [{ requireNullish: true }],
+    },
+    {
+      code: `
+declare const foo: { bar: string };
+foo && foo.bar && foo.bar.toString() && foo.bar.toString();
+      `,
+      options: [{ requireNullish: true }],
+    },
+    {
+      code: `
+declare const foo1: { bar: string | null };
+foo1 && foo1.bar;
+      `,
+      options: [{ requireNullish: true }],
+    },
+    {
+      code: `
+declare const foo: string;
+(foo || {}).toString();
+      `,
+      options: [{ requireNullish: true }],
+    },
+
+    {
+      code: `
+declare const foo: string | null;
+(foo || 'a' || {}).toString();
+      `,
+      options: [{ requireNullish: true }],
+    },
+    {
+      code: `
+declare const x: any;
+x && x.length;
+      `,
+      options: [{ checkAny: false }],
+    },
+    {
+      code: `
+declare const x: bigint;
+x && x.length;
+      `,
+      options: [{ checkBigInt: false }],
+    },
+    {
+      code: `
+declare const x: boolean;
+x && x.length;
+      `,
+      options: [{ checkBoolean: false }],
+    },
+    {
+      code: `
+declare const x: number;
+x && x.length;
+      `,
+      options: [{ checkNumber: false }],
+    },
+    {
+      code: `
+declare const x: string;
+x && x.length;
+      `,
+      options: [{ checkString: false }],
+    },
+    {
+      code: `
+declare const x: unknown;
+x && x.length;
+      `,
+      options: [{ checkUnknown: false }],
+    },
+    '(x = {}) && (x.y = true) != null && x.y.toString();',
+    "('x' as `${'x'}`) && ('x' as `${'x'}`).length;",
+    '`x` && `x`.length;',
+    '`x${a}` && `x${a}`.length;',
+
+    // falsy unions should be ignored
+    `
+declare const x: false | { a: string };
+x && x.a;
+    `,
+    `
+declare const x: false | { a: string };
+!x || x.a;
+    `,
+    `
+declare const x: '' | { a: string };
+x && x.a;
+    `,
+    `
+declare const x: '' | { a: string };
+!x || x.a;
+    `,
+    `
+declare const x: 0 | { a: string };
+x && x.a;
+    `,
+    `
+declare const x: 0 | { a: string };
+!x || x.a;
+    `,
+    `
+declare const x: 0n | { a: string };
+x && x.a;
+    `,
+    `
+declare const x: 0n | { a: string };
+!x || x.a;
+    `,
+    "typeof globalThis !== 'undefined' && globalThis.Array();",
+    `
+declare const x: void | (() => void);
+x && x();
+    `,
+  ],
   invalid: [
     // two  errors
     {
@@ -1802,254 +2051,5 @@ const baz = foo?.bar;
       ],
       output: 'foo?.bar && (a && b) && c',
     },
-  ],
-  valid: [
-    '!a || !b;',
-    '!a || a.b;',
-    '!a && a.b;',
-    '!a && !a.b;',
-    '!a.b || a.b?.();',
-    '!a.b || a.b();',
-    'foo ||= bar;',
-    'foo ||= bar?.baz;',
-    'foo ||= bar?.baz?.buzz;',
-    'foo && bar;',
-    'foo && foo;',
-    'foo || bar;',
-    'foo ?? bar;',
-    'foo || foo.bar;',
-    'foo ?? foo.bar;',
-    "file !== 'index.ts' && file.endsWith('.ts');",
-    'nextToken && sourceCode.isSpaceBetweenTokens(prevToken, nextToken);',
-    'result && this.options.shouldPreserveNodeMaps;',
-    'foo && fooBar.baz;',
-    'match && match$1 !== undefined;',
-    "typeof foo === 'number' && foo.toFixed();",
-    "foo === 'undefined' && foo.length;",
-    'foo == bar && foo.bar == null;',
-    'foo === 1 && foo.toFixed();',
-    // call arguments are considered
-    'foo.bar(a) && foo.bar(a, b).baz;',
-    // type parameters are considered
-    'foo.bar<a>() && foo.bar<a, b>().baz;',
-    // array elements are considered
-    '[1, 2].length && [1, 2, 3].length.toFixed();',
-    noFormat`[1,].length && [1, 2].length.toFixed();`,
-    // short-circuiting chains are considered
-    '(foo?.a).b && foo.a.b.c;',
-    '(foo?.a)() && foo.a().b;',
-    '(foo?.a)() && foo.a()();',
-    // looks like a chain, but isn't actually a chain - just a pair of strict nullish checks
-    'foo !== null && foo !== undefined;',
-    "x['y'] !== undefined && x['y'] !== null;",
-    // private properties
-    'this.#a && this.#b;',
-    '!this.#a || !this.#b;',
-    'a.#foo?.bar;',
-    '!a.#foo?.bar;',
-    '!foo().#a || a;',
-    '!a.b.#a || a;',
-    '!new A().#b || a;',
-    '!(await a).#b || a;',
-    "!(foo as any).bar || 'anything';",
-    // computed properties should be interrogated and correctly ignored
-    '!foo[1 + 1] || !foo[1 + 2];',
-    '!foo[1 + 1] || !foo[1 + 2].foo;',
-    // currently do not handle 'this' as the first part of a chain
-    'this && this.foo;',
-    '!this || !this.foo;',
-    '!entity.__helper!.__initialized || options.refresh;',
-    'import.meta || true;',
-    'import.meta || import.meta.foo;',
-    '!import.meta && false;',
-    '!import.meta && !import.meta.foo;',
-    'new.target || new.target.length;',
-    '!new.target || true;',
-    // Do not handle direct optional chaining on private properties because this TS limitation (https://github.com/microsoft/TypeScript/issues/42734)
-    'foo && foo.#bar;',
-    '!foo || !foo.#bar;',
-    // weird non-constant cases are ignored
-    '({}) && {}.toString();',
-    '[] && [].length;',
-    '(() => {}) && (() => {}).name;',
-    '(function () {}) && function () {}.name;',
-    '(class Foo {}) && class Foo {}.constructor;',
-    "new Map().get('a') && new Map().get('a').what;",
-    // https://github.com/typescript-eslint/typescript-eslint/issues/7654
-    'data && data.value !== null;',
-    {
-      code: '<div /> && (<div />).wtf;',
-      filename: 'react.tsx',
-      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
-    },
-    {
-      code: '<></> && (<></>).wtf;',
-      filename: 'react.tsx',
-      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
-    },
-    'foo[x++] && foo[x++].bar;',
-    'foo[yield x] && foo[yield x].bar;',
-    'a = b && (a = b).wtf;',
-    // TODO - should we handle this?
-    '(x || y) != null && (x || y).foo;',
-    // TODO - should we handle this?
-    '(await foo) && (await foo).bar;',
-    `
-declare const foo: { bar: string } | null;
-foo !== null && foo.bar !== null;
-    `,
-    `
-declare const foo: { bar: string | null } | null;
-foo != null && foo.bar !== null;
-    `,
-    {
-      code: `
-declare const x: string;
-x && x.length;
-      `,
-      options: [{ requireNullish: true }],
-    },
-    {
-      code: `
-declare const foo: string;
-foo && foo.toString();
-      `,
-      options: [{ requireNullish: true }],
-    },
-    {
-      code: `
-declare const x: string | number | boolean | object;
-x && x.toString();
-      `,
-      options: [{ requireNullish: true }],
-    },
-    {
-      code: `
-declare const foo: { bar: string };
-foo && foo.bar && foo.bar.toString();
-      `,
-      options: [{ requireNullish: true }],
-    },
-    {
-      code: `
-declare const foo: string;
-foo && foo.toString() && foo.toString();
-      `,
-      options: [{ requireNullish: true }],
-    },
-    {
-      code: `
-declare const foo: { bar: string };
-foo && foo.bar && foo.bar.toString() && foo.bar.toString();
-      `,
-      options: [{ requireNullish: true }],
-    },
-    {
-      code: `
-declare const foo1: { bar: string | null };
-foo1 && foo1.bar;
-      `,
-      options: [{ requireNullish: true }],
-    },
-    {
-      code: `
-declare const foo: string;
-(foo || {}).toString();
-      `,
-      options: [{ requireNullish: true }],
-    },
-
-    {
-      code: `
-declare const foo: string | null;
-(foo || 'a' || {}).toString();
-      `,
-      options: [{ requireNullish: true }],
-    },
-    {
-      code: `
-declare const x: any;
-x && x.length;
-      `,
-      options: [{ checkAny: false }],
-    },
-    {
-      code: `
-declare const x: bigint;
-x && x.length;
-      `,
-      options: [{ checkBigInt: false }],
-    },
-    {
-      code: `
-declare const x: boolean;
-x && x.length;
-      `,
-      options: [{ checkBoolean: false }],
-    },
-    {
-      code: `
-declare const x: number;
-x && x.length;
-      `,
-      options: [{ checkNumber: false }],
-    },
-    {
-      code: `
-declare const x: string;
-x && x.length;
-      `,
-      options: [{ checkString: false }],
-    },
-    {
-      code: `
-declare const x: unknown;
-x && x.length;
-      `,
-      options: [{ checkUnknown: false }],
-    },
-    '(x = {}) && (x.y = true) != null && x.y.toString();',
-    "('x' as `${'x'}`) && ('x' as `${'x'}`).length;",
-    '`x` && `x`.length;',
-    '`x${a}` && `x${a}`.length;',
-
-    // falsy unions should be ignored
-    `
-declare const x: false | { a: string };
-x && x.a;
-    `,
-    `
-declare const x: false | { a: string };
-!x || x.a;
-    `,
-    `
-declare const x: '' | { a: string };
-x && x.a;
-    `,
-    `
-declare const x: '' | { a: string };
-!x || x.a;
-    `,
-    `
-declare const x: 0 | { a: string };
-x && x.a;
-    `,
-    `
-declare const x: 0 | { a: string };
-!x || x.a;
-    `,
-    `
-declare const x: 0n | { a: string };
-x && x.a;
-    `,
-    `
-declare const x: 0n | { a: string };
-!x || x.a;
-    `,
-    "typeof globalThis !== 'undefined' && globalThis.Array();",
-    `
-declare const x: void | (() => void);
-x && x();
-    `,
   ],
 });

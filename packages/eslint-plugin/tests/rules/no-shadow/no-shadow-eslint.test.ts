@@ -9,6 +9,346 @@ import rule from '../../../src/rules/no-shadow';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-shadow', rule, {
+  valid: [
+    `
+var a = 3;
+function b(x) {
+  a++;
+  return x + a;
+}
+setTimeout(function () {
+  b(a);
+}, 0);
+    `,
+    `
+(function () {
+  var doSomething = function doSomething() {};
+  doSomething();
+})();
+    `,
+    {
+      code: `
+var a = foo || function a() {};
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var a = foo ? function a() {} : bar;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo(a = function a() {}) {}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    `
+var arguments;
+function bar() {}
+    `,
+    {
+      code: `
+var a = 3;
+var b = x => {
+  a++;
+  return x + a;
+};
+setTimeout(() => {
+  b(a);
+}, 0);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'class A {}',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+class A {
+  constructor() {
+    var a;
+  }
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function () {
+  var A = class A {};
+})();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+{
+  var a;
+}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    }, // this case reports `no-redeclare`, not shadowing.
+    {
+      code: `
+{
+  let a;
+}
+let a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  let a;
+}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  let a;
+}
+function a() {}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  const a = 0;
+}
+const a = 1;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  const a = 0;
+}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  const a = 0;
+}
+function a() {}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+function foo() {
+  let a;
+}
+let a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+function foo() {
+  let a;
+}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+function foo() {
+  let a;
+}
+function a() {}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+function foo() {
+  var a;
+}
+let a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+function foo() {
+  var a;
+}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+function foo() {
+  var a;
+}
+function a() {}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+function foo(a) {}
+let a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+function foo(a) {}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+function foo(a) {}
+function a() {}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  let a;
+}
+let a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+{
+  let a;
+}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+{
+  const a = 0;
+}
+const a = 1;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+{
+  const a = 0;
+}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo() {
+  let a;
+}
+let a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo() {
+  let a;
+}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo() {
+  var a;
+}
+let a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo() {
+  var a;
+}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo(a) {}
+let a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo(a) {}
+var a;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    `
+function foo() {
+  var Object = 0;
+}
+    `,
+    {
+      code: `
+function foo() {
+  var top = 0;
+}
+      `,
+    },
+    {
+      code: 'var top = 0;',
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+function foo(cb) {
+  (function (cb) {
+    cb(42);
+  })(cb);
+}
+      `,
+      options: [{ allow: ['cb'] }],
+    },
+  ],
   invalid: [
     {
       code: `
@@ -1223,346 +1563,6 @@ var b = function a() {};
           messageId: 'noShadow',
         },
       ],
-    },
-  ],
-  valid: [
-    `
-var a = 3;
-function b(x) {
-  a++;
-  return x + a;
-}
-setTimeout(function () {
-  b(a);
-}, 0);
-    `,
-    `
-(function () {
-  var doSomething = function doSomething() {};
-  doSomething();
-})();
-    `,
-    {
-      code: `
-var a = foo || function a() {};
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var a = foo ? function a() {} : bar;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo(a = function a() {}) {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    `
-var arguments;
-function bar() {}
-    `,
-    {
-      code: `
-var a = 3;
-var b = x => {
-  a++;
-  return x + a;
-};
-setTimeout(() => {
-  b(a);
-}, 0);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'class A {}',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-class A {
-  constructor() {
-    var a;
-  }
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-(function () {
-  var A = class A {};
-})();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-{
-  var a;
-}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    }, // this case reports `no-redeclare`, not shadowing.
-    {
-      code: `
-{
-  let a;
-}
-let a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-{
-  let a;
-}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-{
-  let a;
-}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-{
-  const a = 0;
-}
-const a = 1;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-{
-  const a = 0;
-}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-{
-  const a = 0;
-}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-}
-let a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-function foo() {
-  var a;
-}
-let a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-function foo() {
-  var a;
-}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-function foo() {
-  var a;
-}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-function foo(a) {}
-let a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-function foo(a) {}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-function foo(a) {}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ hoist: 'never' }],
-    },
-    {
-      code: `
-{
-  let a;
-}
-let a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-{
-  let a;
-}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-{
-  const a = 0;
-}
-const a = 1;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-{
-  const a = 0;
-}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo() {
-  let a;
-}
-let a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo() {
-  let a;
-}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo() {
-  var a;
-}
-let a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo() {
-  var a;
-}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo(a) {}
-let a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo(a) {}
-var a;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    `
-function foo() {
-  var Object = 0;
-}
-    `,
-    {
-      code: `
-function foo() {
-  var top = 0;
-}
-      `,
-    },
-    {
-      code: 'var top = 0;',
-      options: [{ builtinGlobals: true }],
-    },
-    {
-      code: `
-function foo(cb) {
-  (function (cb) {
-    cb(42);
-  })(cb);
-}
-      `,
-      options: [{ allow: ['cb'] }],
     },
   ],
 });

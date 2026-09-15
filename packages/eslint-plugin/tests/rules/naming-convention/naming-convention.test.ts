@@ -16,6 +16,996 @@ const parserOptions = {
 };
 
 ruleTester.run('naming-convention', rule, {
+  valid: [
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          filter: {
+            match: false,
+            regex: 'child_process',
+          },
+          format: ['camelCase'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        declare const ANY_UPPER_CASE: any;
+        declare const ANY_UPPER_CASE: any | null;
+        declare const ANY_UPPER_CASE: any | null | undefined;
+
+        declare const string_camelCase: string;
+        declare const string_camelCase: string | null;
+        declare const string_camelCase: string | null | undefined;
+        declare const string_camelCase: 'a' | null | undefined;
+        declare const string_camelCase: string | 'a' | null | undefined;
+
+        declare const number_camelCase: number;
+        declare const number_camelCase: number | null;
+        declare const number_camelCase: number | null | undefined;
+        declare const number_camelCase: 1 | null | undefined;
+        declare const number_camelCase: number | 2 | null | undefined;
+
+        declare const boolean_camelCase: boolean;
+        declare const boolean_camelCase: boolean | null;
+        declare const boolean_camelCase: boolean | null | undefined;
+        declare const boolean_camelCase: true | null | undefined;
+        declare const boolean_camelCase: false | null | undefined;
+        declare const boolean_camelCase: true | false | null | undefined;
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['const'],
+          prefix: ['ANY_'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          prefix: ['string_'],
+          selector: 'variable',
+          types: ['string'],
+        },
+        {
+          format: ['camelCase'],
+          prefix: ['number_'],
+          selector: 'variable',
+          types: ['number'],
+        },
+        {
+          format: ['camelCase'],
+          prefix: ['boolean_'],
+          selector: 'variable',
+          types: ['boolean'],
+        },
+      ],
+    },
+    {
+      code: `
+        let foo = 'a';
+        const _foo = 1;
+        interface Foo {}
+        class Bar {}
+        function foo_function_bar() {}
+      `,
+      options: [
+        {
+          custom: {
+            match: false,
+            regex: /^unused_\w/.source,
+          },
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+          selector: 'default',
+        },
+        {
+          custom: {
+            match: false,
+            regex: /^I[A-Z]/.source,
+          },
+          format: ['PascalCase'],
+          selector: 'typeLike',
+        },
+        {
+          custom: {
+            match: true,
+            regex: /_function_/.source,
+          },
+          format: ['snake_case'],
+          leadingUnderscore: 'allow',
+          selector: 'function',
+        },
+      ],
+    },
+    {
+      code: `
+        let foo = 'a';
+        const _foo = 1;
+        interface foo {}
+        class bar {}
+        function fooFunctionBar() {}
+        function _fooFunctionBar() {}
+      `,
+      options: [
+        {
+          custom: {
+            match: false,
+            regex: /^unused_\w/.source,
+          },
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+          selector: ['default', 'typeLike', 'function'],
+        },
+      ],
+    },
+    {
+      code: `
+        const match = 'test'.match(/test/);
+        const [, key, value] = match;
+      `,
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'default',
+        },
+      ],
+    },
+    // no format selector
+    {
+      code: 'const snake_case = 1;',
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'default',
+        },
+        {
+          format: null,
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: 'const snake_case = 1;',
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'default',
+        },
+        {
+          format: [],
+          selector: 'variable',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1478
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      options: [
+        { format: ['camelCase', 'UPPER_CASE'], selector: 'variable' },
+        {
+          filter: 'child_process',
+          format: ['snake_case'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          'Property-Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          filter: {
+            match: false,
+            regex: /-/.source,
+          },
+          format: ['strictCamelCase'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          'Property-Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          filter: {
+            match: false,
+            regex: /^(Property-Name)$/.source,
+          },
+          format: ['strictCamelCase'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        let isFoo = 1;
+        class foo {
+          shouldBoo: number;
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
+          selector: ['variable', 'parameter', 'property', 'accessor'],
+          types: ['number'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private readonly FooBoo: boolean;
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          modifiers: ['private', 'readonly'],
+          selector: ['property', 'accessor'],
+          types: ['boolean'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private fooBoo: number;
+        }
+      `,
+      options: [
+        {
+          format: ['camelCase'],
+          modifiers: ['private'],
+          selector: ['property', 'accessor'],
+        },
+      ],
+    },
+    {
+      code: `
+        const isfooBar = 1;
+        function fun(goodfunFoo: number) {}
+        class foo {
+          private VanFooBar: number;
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['StrictPascalCase'],
+          modifiers: ['private'],
+          prefix: ['Van'],
+          selector: ['property', 'accessor'],
+        },
+        {
+          format: ['camelCase'],
+          prefix: ['is', 'good'],
+          selector: ['variable', 'parameter'],
+          types: ['number'],
+        },
+      ],
+    },
+    {
+      code: `
+        class SomeClass {
+          static OtherConstant = 'hello';
+        }
+
+        export const { OtherConstant: otherConstant } = SomeClass;
+      `,
+      options: [
+        { format: ['PascalCase'], selector: 'property' },
+        { format: ['camelCase'], selector: 'variable' },
+      ],
+    },
+    // treat properties with function expressions as typeMethod
+    {
+      code: `
+        interface SOME_INTERFACE {
+          SomeMethod: () => void;
+
+          some_property: string;
+        }
+      `,
+      options: [
+        {
+          format: ['UPPER_CASE'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'typeMethod',
+        },
+        {
+          format: ['snake_case'],
+          selector: 'typeProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        type Ignored = {
+          ignored_due_to_modifiers: string;
+          readonly FOO: string;
+        };
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['readonly'],
+          selector: 'typeProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        const camelCaseVar = 1;
+        enum camelCaseEnum {}
+        class camelCaseClass {}
+        function camelCaseFunction() {}
+        interface camelCaseInterface {}
+        type camelCaseType = {};
+        export const PascalCaseVar = 1;
+        export enum PascalCaseEnum {}
+        export class PascalCaseClass {}
+        export function PascalCaseFunction() {}
+        export interface PascalCaseInterface {}
+        export type PascalCaseType = {};
+      `,
+      options: [
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+        const camelCaseVar = 1;
+        enum camelCaseEnum {}
+        class camelCaseClass {}
+        function camelCaseFunction() {}
+        interface camelCaseInterface {}
+        type camelCaseType = {};
+        const PascalCaseVar = 1;
+        enum PascalCaseEnum {}
+        class PascalCaseClass {}
+        function PascalCaseFunction() {}
+        interface PascalCaseInterface {}
+        type PascalCaseType = {};
+        export {
+          PascalCaseVar,
+          PascalCaseEnum,
+          PascalCaseClass,
+          PascalCaseFunction,
+          PascalCaseInterface,
+          PascalCaseType,
+        };
+      `,
+      options: [
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+        {
+          const camelCaseVar = 1;
+          function camelCaseFunction() {}
+          declare function camelCaseDeclaredFunction();
+        }
+        const PascalCaseVar = 1;
+        function PascalCaseFunction() {}
+        declare function PascalCaseDeclaredFunction();
+      `,
+      options: [
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['PascalCase'],
+          modifiers: ['global'],
+          selector: 'variable',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['global'],
+          selector: 'function',
+        },
+      ],
+    },
+    {
+      code: `
+        const { some_name1 } = {};
+        const { ignore: IgnoredDueToModifiers1 } = {};
+        const { some_name2 = 2 } = {};
+        const IgnoredDueToModifiers2 = 1;
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['destructured'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+        const { some_name1 } = {};
+        const { ignore: IgnoredDueToModifiers1 } = {};
+        const { some_name2 = 2 } = {};
+        const IgnoredDueToModifiers2 = 1;
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: null,
+          modifiers: ['destructured'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+        export function Foo(
+          { aName },
+          { anotherName = 1 },
+          { ignored: IgnoredDueToModifiers1 },
+          { ignored: IgnoredDueToModifiers1 = 2 },
+          IgnoredDueToModifiers2,
+        ) {}
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['destructured'],
+          selector: 'parameter',
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static abstract readonly some_name;
+          IgnoredDueToModifiers = 1;
+        }
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['static', 'readonly'],
+          selector: 'classProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          constructor(
+            private readonly some_name,
+            IgnoredDueToModifiers,
+          ) {}
+        }
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['readonly'],
+          selector: 'parameterProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static some_name() {}
+          IgnoredDueToModifiers() {}
+        }
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['static'],
+          selector: 'classMethod',
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static get some_name() {}
+          get IgnoredDueToModifiers() {}
+        }
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['private', 'static'],
+          selector: 'accessor',
+        },
+      ],
+    },
+    {
+      code: `
+        abstract class some_name {}
+        class IgnoredDueToModifier {}
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['abstract'],
+          selector: 'class',
+        },
+      ],
+    },
+    {
+      code: `
+        const UnusedVar = 1;
+        function UnusedFunc(
+          // this line is intentionally broken out
+          UnusedParam: string,
+        ) {}
+        class UnusedClass {}
+        interface UnusedInterface {}
+        type UnusedType<
+          // this line is intentionally broken out
+          UnusedTypeParam,
+        > = {};
+
+        export const used_var = 1;
+        export function used_func(
+          // this line is intentionally broken out
+          used_param: string,
+        ) {
+          return used_param;
+        }
+        export class used_class {}
+        export interface used_interface {}
+        export type used_type<
+          // this line is intentionally broken out
+          used_typeparam,
+        > = used_typeparam;
+      `,
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['unused'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        const ignored1 = {
+          'a a': 1,
+          'b b'() {},
+          get 'c c'() {
+            return 1;
+          },
+          set 'd d'(value: string) {},
+        };
+        class ignored2 {
+          'a a' = 1;
+          'b b'() {}
+          get 'c c'() {
+            return 1;
+          }
+          set 'd d'(value: string) {}
+        }
+        interface ignored3 {
+          'a a': 1;
+          'b b'(): void;
+        }
+        type ignored4 = {
+          'a a': 1;
+          'b b'(): void;
+        };
+        enum ignored5 {
+          'a a',
+        }
+      `,
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: null,
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        const ignored1 = {
+          'a a': 1,
+          'b b'() {},
+          get 'c c'() {
+            return 1;
+          },
+          set 'd d'(value: string) {},
+        };
+        class ignored2 {
+          'a a' = 1;
+          'b b'() {}
+          get 'c c'() {
+            return 1;
+          }
+          set 'd d'(value: string) {}
+        }
+        interface ignored3 {
+          'a a': 1;
+          'b b'(): void;
+        }
+        type ignored4 = {
+          'a a': 1;
+          'b b'(): void;
+        };
+        enum ignored5 {
+          'a a',
+        }
+      `,
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: null,
+          modifiers: ['requiresQuotes'],
+          selector: [
+            'classProperty',
+            'objectLiteralProperty',
+            'typeProperty',
+            'classMethod',
+            'objectLiteralMethod',
+            'typeMethod',
+            'accessor',
+            'enumMember',
+          ],
+        },
+        // making sure the `requiresQuotes` modifier appropriately overrides this
+        {
+          format: ['PascalCase'],
+          selector: [
+            'classProperty',
+            'objectLiteralProperty',
+            'typeProperty',
+            'classMethod',
+            'objectLiteralMethod',
+            'typeMethod',
+            'accessor',
+            'enumMember',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        const obj = {
+          Foo: 42,
+          Bar() {
+            return 42;
+          },
+        };
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'property',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+      ],
+    },
+    {
+      code: `
+        const obj = {
+          Bar() {
+            return 42;
+          },
+          async async_bar() {
+            return 42;
+          },
+        };
+        class foo {
+          public Bar() {
+            return 42;
+          }
+          public async async_bar() {
+            return 42;
+          }
+        }
+        abstract class foo {
+          public Bar() {
+            return 42;
+          }
+          public async async_bar() {
+            return 42;
+          }
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['method', 'objectLiteralMethod'],
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+      ],
+    },
+    {
+      code: `
+        const async_bar1 = async () => {};
+        async function async_bar2() {}
+        const async_bar3 = async function async_bar4() {};
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['variable'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo extends bar {
+          public someAttribute = 1;
+          public override some_attribute_override = 1;
+          public someMethod() {
+            return 42;
+          }
+          public override some_method_override2() {
+            return 42;
+          }
+        }
+        abstract class foo extends bar {
+          public abstract someAttribute: string;
+          public abstract override some_attribute_override: string;
+          public abstract someMethod(): string;
+          public abstract override some_method_override2(): string;
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['override'],
+          selector: ['memberLike'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private someAttribute = 1;
+          #some_attribute = 1;
+
+          private someMethod() {}
+          #some_method() {}
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['#private'],
+          selector: ['memberLike'],
+        },
+      ],
+    },
+    {
+      code: "import * as FooBar from 'foo_bar';",
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: "import fooBar from 'foo_bar';",
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: "import { default as fooBar } from 'foo_bar';",
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: "import { foo_bar } from 'foo_bar';",
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: 'import { "🍎" as Foo } from \'foo_bar\';',
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+      ],
+    },
+  ],
   invalid: [
     {
       // make sure we handle no options and apply defaults
@@ -2174,996 +3164,6 @@ ruleTester.run('naming-convention', rule, {
           messageId: 'doesNotMatchFormat',
         },
       ],
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: ['import'],
-        },
-      ],
-    },
-  ],
-  valid: [
-    {
-      code: `
-        const child_process = require('child_process');
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          filter: {
-            match: false,
-            regex: 'child_process',
-          },
-          format: ['camelCase'],
-          selector: 'default',
-        },
-      ],
-    },
-    {
-      code: `
-        declare const ANY_UPPER_CASE: any;
-        declare const ANY_UPPER_CASE: any | null;
-        declare const ANY_UPPER_CASE: any | null | undefined;
-
-        declare const string_camelCase: string;
-        declare const string_camelCase: string | null;
-        declare const string_camelCase: string | null | undefined;
-        declare const string_camelCase: 'a' | null | undefined;
-        declare const string_camelCase: string | 'a' | null | undefined;
-
-        declare const number_camelCase: number;
-        declare const number_camelCase: number | null;
-        declare const number_camelCase: number | null | undefined;
-        declare const number_camelCase: 1 | null | undefined;
-        declare const number_camelCase: number | 2 | null | undefined;
-
-        declare const boolean_camelCase: boolean;
-        declare const boolean_camelCase: boolean | null;
-        declare const boolean_camelCase: boolean | null | undefined;
-        declare const boolean_camelCase: true | null | undefined;
-        declare const boolean_camelCase: false | null | undefined;
-        declare const boolean_camelCase: true | false | null | undefined;
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['UPPER_CASE'],
-          modifiers: ['const'],
-          prefix: ['ANY_'],
-          selector: 'variable',
-        },
-        {
-          format: ['camelCase'],
-          prefix: ['string_'],
-          selector: 'variable',
-          types: ['string'],
-        },
-        {
-          format: ['camelCase'],
-          prefix: ['number_'],
-          selector: 'variable',
-          types: ['number'],
-        },
-        {
-          format: ['camelCase'],
-          prefix: ['boolean_'],
-          selector: 'variable',
-          types: ['boolean'],
-        },
-      ],
-    },
-    {
-      code: `
-        let foo = 'a';
-        const _foo = 1;
-        interface Foo {}
-        class Bar {}
-        function foo_function_bar() {}
-      `,
-      options: [
-        {
-          custom: {
-            match: false,
-            regex: /^unused_\w/.source,
-          },
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
-          selector: 'default',
-        },
-        {
-          custom: {
-            match: false,
-            regex: /^I[A-Z]/.source,
-          },
-          format: ['PascalCase'],
-          selector: 'typeLike',
-        },
-        {
-          custom: {
-            match: true,
-            regex: /_function_/.source,
-          },
-          format: ['snake_case'],
-          leadingUnderscore: 'allow',
-          selector: 'function',
-        },
-      ],
-    },
-    {
-      code: `
-        let foo = 'a';
-        const _foo = 1;
-        interface foo {}
-        class bar {}
-        function fooFunctionBar() {}
-        function _fooFunctionBar() {}
-      `,
-      options: [
-        {
-          custom: {
-            match: false,
-            regex: /^unused_\w/.source,
-          },
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
-          selector: ['default', 'typeLike', 'function'],
-        },
-      ],
-    },
-    {
-      code: `
-        const match = 'test'.match(/test/);
-        const [, key, value] = match;
-      `,
-      options: [
-        {
-          format: ['camelCase'],
-          selector: 'default',
-        },
-      ],
-    },
-    // no format selector
-    {
-      code: 'const snake_case = 1;',
-      options: [
-        {
-          format: ['camelCase'],
-          selector: 'default',
-        },
-        {
-          format: null,
-          selector: 'variable',
-        },
-      ],
-    },
-    {
-      code: 'const snake_case = 1;',
-      options: [
-        {
-          format: ['camelCase'],
-          selector: 'default',
-        },
-        {
-          format: [],
-          selector: 'variable',
-        },
-      ],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1478
-    {
-      code: `
-        const child_process = require('child_process');
-      `,
-      options: [
-        { format: ['camelCase', 'UPPER_CASE'], selector: 'variable' },
-        {
-          filter: 'child_process',
-          format: ['snake_case'],
-          selector: 'variable',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo = {
-          'Property-Name': 'asdf',
-        };
-      `,
-      options: [
-        {
-          filter: {
-            match: false,
-            regex: /-/.source,
-          },
-          format: ['strictCamelCase'],
-          selector: 'default',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo = {
-          'Property-Name': 'asdf',
-        };
-      `,
-      options: [
-        {
-          filter: {
-            match: false,
-            regex: /^(Property-Name)$/.source,
-          },
-          format: ['strictCamelCase'],
-          selector: 'default',
-        },
-      ],
-    },
-    {
-      code: `
-        let isFoo = 1;
-        class foo {
-          shouldBoo: number;
-        }
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['PascalCase'],
-          prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
-          selector: ['variable', 'parameter', 'property', 'accessor'],
-          types: ['number'],
-        },
-      ],
-    },
-    {
-      code: `
-        class foo {
-          private readonly FooBoo: boolean;
-        }
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['PascalCase'],
-          modifiers: ['private', 'readonly'],
-          selector: ['property', 'accessor'],
-          types: ['boolean'],
-        },
-      ],
-    },
-    {
-      code: `
-        class foo {
-          private fooBoo: number;
-        }
-      `,
-      options: [
-        {
-          format: ['camelCase'],
-          modifiers: ['private'],
-          selector: ['property', 'accessor'],
-        },
-      ],
-    },
-    {
-      code: `
-        const isfooBar = 1;
-        function fun(goodfunFoo: number) {}
-        class foo {
-          private VanFooBar: number;
-        }
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['StrictPascalCase'],
-          modifiers: ['private'],
-          prefix: ['Van'],
-          selector: ['property', 'accessor'],
-        },
-        {
-          format: ['camelCase'],
-          prefix: ['is', 'good'],
-          selector: ['variable', 'parameter'],
-          types: ['number'],
-        },
-      ],
-    },
-    {
-      code: `
-        class SomeClass {
-          static OtherConstant = 'hello';
-        }
-
-        export const { OtherConstant: otherConstant } = SomeClass;
-      `,
-      options: [
-        { format: ['PascalCase'], selector: 'property' },
-        { format: ['camelCase'], selector: 'variable' },
-      ],
-    },
-    // treat properties with function expressions as typeMethod
-    {
-      code: `
-        interface SOME_INTERFACE {
-          SomeMethod: () => void;
-
-          some_property: string;
-        }
-      `,
-      options: [
-        {
-          format: ['UPPER_CASE'],
-          selector: 'default',
-        },
-        {
-          format: ['PascalCase'],
-          selector: 'typeMethod',
-        },
-        {
-          format: ['snake_case'],
-          selector: 'typeProperty',
-        },
-      ],
-    },
-    {
-      code: `
-        type Ignored = {
-          ignored_due_to_modifiers: string;
-          readonly FOO: string;
-        };
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['UPPER_CASE'],
-          modifiers: ['readonly'],
-          selector: 'typeProperty',
-        },
-      ],
-    },
-    {
-      code: `
-        const camelCaseVar = 1;
-        enum camelCaseEnum {}
-        class camelCaseClass {}
-        function camelCaseFunction() {}
-        interface camelCaseInterface {}
-        type camelCaseType = {};
-        export const PascalCaseVar = 1;
-        export enum PascalCaseEnum {}
-        export class PascalCaseClass {}
-        export function PascalCaseFunction() {}
-        export interface PascalCaseInterface {}
-        export type PascalCaseType = {};
-      `,
-      options: [
-        { format: ['camelCase'], selector: 'default' },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'variable',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'function',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'class',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'interface',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'typeAlias',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'enum',
-        },
-      ],
-    },
-    {
-      code: `
-        const camelCaseVar = 1;
-        enum camelCaseEnum {}
-        class camelCaseClass {}
-        function camelCaseFunction() {}
-        interface camelCaseInterface {}
-        type camelCaseType = {};
-        const PascalCaseVar = 1;
-        enum PascalCaseEnum {}
-        class PascalCaseClass {}
-        function PascalCaseFunction() {}
-        interface PascalCaseInterface {}
-        type PascalCaseType = {};
-        export {
-          PascalCaseVar,
-          PascalCaseEnum,
-          PascalCaseClass,
-          PascalCaseFunction,
-          PascalCaseInterface,
-          PascalCaseType,
-        };
-      `,
-      options: [
-        { format: ['camelCase'], selector: 'default' },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'variable',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'function',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'class',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'interface',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'typeAlias',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-          selector: 'enum',
-        },
-      ],
-    },
-    {
-      code: `
-        {
-          const camelCaseVar = 1;
-          function camelCaseFunction() {}
-          declare function camelCaseDeclaredFunction();
-        }
-        const PascalCaseVar = 1;
-        function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction();
-      `,
-      options: [
-        { format: ['camelCase'], selector: 'default' },
-        {
-          format: ['PascalCase'],
-          modifiers: ['global'],
-          selector: 'variable',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['global'],
-          selector: 'function',
-        },
-      ],
-    },
-    {
-      code: `
-        const { some_name1 } = {};
-        const { ignore: IgnoredDueToModifiers1 } = {};
-        const { some_name2 = 2 } = {};
-        const IgnoredDueToModifiers2 = 1;
-      `,
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: 'default',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['destructured'],
-          selector: 'variable',
-        },
-      ],
-    },
-    {
-      code: `
-        const { some_name1 } = {};
-        const { ignore: IgnoredDueToModifiers1 } = {};
-        const { some_name2 = 2 } = {};
-        const IgnoredDueToModifiers2 = 1;
-      `,
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: 'default',
-        },
-        {
-          format: null,
-          modifiers: ['destructured'],
-          selector: 'variable',
-        },
-      ],
-    },
-    {
-      code: `
-        export function Foo(
-          { aName },
-          { anotherName = 1 },
-          { ignored: IgnoredDueToModifiers1 },
-          { ignored: IgnoredDueToModifiers1 = 2 },
-          IgnoredDueToModifiers2,
-        ) {}
-      `,
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: 'default',
-        },
-        {
-          format: ['camelCase'],
-          modifiers: ['destructured'],
-          selector: 'parameter',
-        },
-      ],
-    },
-    {
-      code: `
-        class Ignored {
-          private static abstract readonly some_name;
-          IgnoredDueToModifiers = 1;
-        }
-      `,
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: 'default',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['static', 'readonly'],
-          selector: 'classProperty',
-        },
-      ],
-    },
-    {
-      code: `
-        class Ignored {
-          constructor(
-            private readonly some_name,
-            IgnoredDueToModifiers,
-          ) {}
-        }
-      `,
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: 'default',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['readonly'],
-          selector: 'parameterProperty',
-        },
-      ],
-    },
-    {
-      code: `
-        class Ignored {
-          private static some_name() {}
-          IgnoredDueToModifiers() {}
-        }
-      `,
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: 'default',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['static'],
-          selector: 'classMethod',
-        },
-      ],
-    },
-    {
-      code: `
-        class Ignored {
-          private static get some_name() {}
-          get IgnoredDueToModifiers() {}
-        }
-      `,
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: 'default',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['private', 'static'],
-          selector: 'accessor',
-        },
-      ],
-    },
-    {
-      code: `
-        abstract class some_name {}
-        class IgnoredDueToModifier {}
-      `,
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: 'default',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['abstract'],
-          selector: 'class',
-        },
-      ],
-    },
-    {
-      code: `
-        const UnusedVar = 1;
-        function UnusedFunc(
-          // this line is intentionally broken out
-          UnusedParam: string,
-        ) {}
-        class UnusedClass {}
-        interface UnusedInterface {}
-        type UnusedType<
-          // this line is intentionally broken out
-          UnusedTypeParam,
-        > = {};
-
-        export const used_var = 1;
-        export function used_func(
-          // this line is intentionally broken out
-          used_param: string,
-        ) {
-          return used_param;
-        }
-        export class used_class {}
-        export interface used_interface {}
-        export type used_type<
-          // this line is intentionally broken out
-          used_typeparam,
-        > = used_typeparam;
-      `,
-      options: [
-        {
-          format: ['snake_case'],
-          selector: 'default',
-        },
-        {
-          format: ['PascalCase'],
-          modifiers: ['unused'],
-          selector: 'default',
-        },
-      ],
-    },
-    {
-      code: `
-        const ignored1 = {
-          'a a': 1,
-          'b b'() {},
-          get 'c c'() {
-            return 1;
-          },
-          set 'd d'(value: string) {},
-        };
-        class ignored2 {
-          'a a' = 1;
-          'b b'() {}
-          get 'c c'() {
-            return 1;
-          }
-          set 'd d'(value: string) {}
-        }
-        interface ignored3 {
-          'a a': 1;
-          'b b'(): void;
-        }
-        type ignored4 = {
-          'a a': 1;
-          'b b'(): void;
-        };
-        enum ignored5 {
-          'a a',
-        }
-      `,
-      options: [
-        {
-          format: ['snake_case'],
-          selector: 'default',
-        },
-        {
-          format: null,
-          modifiers: ['requiresQuotes'],
-          selector: 'default',
-        },
-      ],
-    },
-    {
-      code: `
-        const ignored1 = {
-          'a a': 1,
-          'b b'() {},
-          get 'c c'() {
-            return 1;
-          },
-          set 'd d'(value: string) {},
-        };
-        class ignored2 {
-          'a a' = 1;
-          'b b'() {}
-          get 'c c'() {
-            return 1;
-          }
-          set 'd d'(value: string) {}
-        }
-        interface ignored3 {
-          'a a': 1;
-          'b b'(): void;
-        }
-        type ignored4 = {
-          'a a': 1;
-          'b b'(): void;
-        };
-        enum ignored5 {
-          'a a',
-        }
-      `,
-      options: [
-        {
-          format: ['snake_case'],
-          selector: 'default',
-        },
-        {
-          format: null,
-          modifiers: ['requiresQuotes'],
-          selector: [
-            'classProperty',
-            'objectLiteralProperty',
-            'typeProperty',
-            'classMethod',
-            'objectLiteralMethod',
-            'typeMethod',
-            'accessor',
-            'enumMember',
-          ],
-        },
-        // making sure the `requiresQuotes` modifier appropriately overrides this
-        {
-          format: ['PascalCase'],
-          selector: [
-            'classProperty',
-            'objectLiteralProperty',
-            'typeProperty',
-            'classMethod',
-            'objectLiteralMethod',
-            'typeMethod',
-            'accessor',
-            'enumMember',
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-        const obj = {
-          Foo: 42,
-          Bar() {
-            return 42;
-          },
-        };
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['camelCase'],
-          selector: 'memberLike',
-        },
-        {
-          format: ['PascalCase'],
-          selector: 'property',
-        },
-        {
-          format: ['PascalCase'],
-          selector: 'method',
-        },
-      ],
-    },
-    {
-      code: `
-        const obj = {
-          Bar() {
-            return 42;
-          },
-          async async_bar() {
-            return 42;
-          },
-        };
-        class foo {
-          public Bar() {
-            return 42;
-          }
-          public async async_bar() {
-            return 42;
-          }
-        }
-        abstract class foo {
-          public Bar() {
-            return 42;
-          }
-          public async async_bar() {
-            return 42;
-          }
-        }
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['camelCase'],
-          selector: 'memberLike',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['async'],
-          selector: ['method', 'objectLiteralMethod'],
-        },
-        {
-          format: ['PascalCase'],
-          selector: 'method',
-        },
-      ],
-    },
-    {
-      code: `
-        const async_bar1 = async () => {};
-        async function async_bar2() {}
-        const async_bar3 = async function async_bar4() {};
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['camelCase'],
-          selector: 'memberLike',
-        },
-        {
-          format: ['PascalCase'],
-          selector: 'method',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['async'],
-          selector: ['variable'],
-        },
-      ],
-    },
-    {
-      code: `
-        class foo extends bar {
-          public someAttribute = 1;
-          public override some_attribute_override = 1;
-          public someMethod() {
-            return 42;
-          }
-          public override some_method_override2() {
-            return 42;
-          }
-        }
-        abstract class foo extends bar {
-          public abstract someAttribute: string;
-          public abstract override some_attribute_override: string;
-          public abstract someMethod(): string;
-          public abstract override some_method_override2(): string;
-        }
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['camelCase'],
-          selector: 'memberLike',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['override'],
-          selector: ['memberLike'],
-        },
-      ],
-    },
-    {
-      code: `
-        class foo {
-          private someAttribute = 1;
-          #some_attribute = 1;
-
-          private someMethod() {}
-          #some_method() {}
-        }
-      `,
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['camelCase'],
-          selector: 'memberLike',
-        },
-        {
-          format: ['snake_case'],
-          modifiers: ['#private'],
-          selector: ['memberLike'],
-        },
-      ],
-    },
-    {
-      code: "import * as FooBar from 'foo_bar';",
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: ['import'],
-        },
-        {
-          format: ['camelCase'],
-          modifiers: ['default'],
-          selector: ['import'],
-        },
-      ],
-    },
-    {
-      code: "import fooBar from 'foo_bar';",
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: ['import'],
-        },
-        {
-          format: ['camelCase'],
-          modifiers: ['default'],
-          selector: ['import'],
-        },
-      ],
-    },
-    {
-      code: "import { default as fooBar } from 'foo_bar';",
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: ['import'],
-        },
-        {
-          format: ['camelCase'],
-          modifiers: ['default'],
-          selector: ['import'],
-        },
-      ],
-    },
-    {
-      code: "import { foo_bar } from 'foo_bar';",
-      languageOptions: { parserOptions },
-      options: [
-        {
-          format: ['PascalCase'],
-          selector: ['import'],
-        },
-        {
-          format: ['camelCase'],
-          modifiers: ['default'],
-          selector: ['import'],
-        },
-      ],
-    },
-    {
-      code: 'import { "🍎" as Foo } from \'foo_bar\';',
       languageOptions: { parserOptions },
       options: [
         {

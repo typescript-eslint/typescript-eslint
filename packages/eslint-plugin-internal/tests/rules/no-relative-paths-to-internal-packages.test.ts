@@ -14,6 +14,42 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-relative-paths-to-internal-packages', rule, {
+  valid: [
+    "import { parse } from '@typescript-eslint/typescript-estree';",
+    "import { something } from 'not/a/relative/path';",
+    {
+      code: "import { something } from './utils';",
+      filename: path.resolve(
+        PACKAGES_DIR,
+        'eslint-plugin/src/rules/my-awesome-rule.ts',
+      ),
+    },
+    {
+      code: "import type { ValueOf } from './utils';",
+      filename: path.resolve(
+        PACKAGES_DIR,
+        'ast-spec/src/expression/AssignmentExpression/spec.ts',
+      ),
+    },
+    {
+      code: "import type { ValueOf } from '../../utils';",
+      filename: path.resolve(
+        PACKAGES_DIR,
+        'ast-spec/src/expression/AssignmentExpression/spec.ts',
+      ),
+    },
+    {
+      code: "import type { ValueOf } from '../../../utils';",
+      filename: path.resolve(
+        PACKAGES_DIR,
+        'ast-spec/src/expression/AssignmentExpression/spec.ts',
+      ),
+    },
+    {
+      code: "import packageJson from '../../package.json' with { type: 'json' };",
+      filename: path.resolve(PACKAGES_DIR, 'ast-spec/vitest.config.mts'),
+    },
+  ],
   invalid: [
     {
       code: "import { parse } from '../../../typescript-estree';",
@@ -92,42 +128,6 @@ import type {
   MemberExpressionNonComputedName,
 } from '@typescript-eslint/types/src/generated/ast-spec';
       `,
-    },
-  ],
-  valid: [
-    "import { parse } from '@typescript-eslint/typescript-estree';",
-    "import { something } from 'not/a/relative/path';",
-    {
-      code: "import { something } from './utils';",
-      filename: path.resolve(
-        PACKAGES_DIR,
-        'eslint-plugin/src/rules/my-awesome-rule.ts',
-      ),
-    },
-    {
-      code: "import type { ValueOf } from './utils';",
-      filename: path.resolve(
-        PACKAGES_DIR,
-        'ast-spec/src/expression/AssignmentExpression/spec.ts',
-      ),
-    },
-    {
-      code: "import type { ValueOf } from '../../utils';",
-      filename: path.resolve(
-        PACKAGES_DIR,
-        'ast-spec/src/expression/AssignmentExpression/spec.ts',
-      ),
-    },
-    {
-      code: "import type { ValueOf } from '../../../utils';",
-      filename: path.resolve(
-        PACKAGES_DIR,
-        'ast-spec/src/expression/AssignmentExpression/spec.ts',
-      ),
-    },
-    {
-      code: "import packageJson from '../../package.json' with { type: 'json' };",
-      filename: path.resolve(PACKAGES_DIR, 'ast-spec/vitest.config.mts'),
     },
   ],
 });
