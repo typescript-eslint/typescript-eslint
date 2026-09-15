@@ -1072,10 +1072,35 @@ foo.bar[key] ??= 1;
     },
     {
       code: `
-declare let record: {
-  optional?: number;
-} & Record<string, number | undefined>;
+declare const record: { optional?: number } & Record<
+  string,
+  number | undefined
+>;
+record.optional ?? 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const record: { optional?: number } & Record<
+  string,
+  number | undefined
+>;
+record['optional'] ?? 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare let record: { optional?: number } & Record<string, number | undefined>;
 record.optional ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare let record: { optional?: number } & Record<string, number | undefined>;
+record['optional'] ??= 1;
       `,
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
@@ -1085,22 +1110,71 @@ foo &&= 1;
     `,
     `
 declare const read: Record<string, number | undefined>;
-read['missing'] ?? 1;
 read.missing ?? 1;
-
+    `,
+    `
+declare const read: Record<string, number | undefined>;
+read['missing'] ?? 1;
+    `,
+    `
+declare const read: Record<string, number | undefined>;
+declare const key: string;
+read[key] ?? 1;
+    `,
+    `
+declare let assignment: Record<string, number | undefined>;
+assignment.missing ??= 1;
+    `,
+    `
 declare let assignment: Record<string, number | undefined>;
 assignment['missing'] ??= 1;
-assignment.missing ??= 1;
+    `,
+    `
+declare let assignment: Record<string, number | undefined>;
+declare const key: string;
+assignment[key] ??= 1;
     `,
     {
       code: `
 declare const read: Record<string, number>;
 read.missing ?? 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare const read: Record<string, number>;
 read['missing'] ?? 1;
-
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare const read: Record<string, number>;
+declare const key: string;
+read[key] ?? 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
 declare let assignment: Record<string, number>;
 assignment.missing ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
 assignment['missing'] ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+declare const key: string;
+assignment[key] ??= 1;
       `,
       languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
     },
@@ -4288,11 +4362,6 @@ foo.bar ??= 1;
       code: `
 declare const read: Record<string, number>;
 read.missing ?? 1;
-read['missing'] ?? 1;
-
-declare let assignment: Record<string, number>;
-assignment.missing ??= 1;
-assignment['missing'] ??= 1;
       `,
       errors: [
         {
@@ -4302,6 +4371,76 @@ assignment['missing'] ??= 1;
           line: 3,
           messageId: 'neverNullish',
         },
+      ],
+    },
+    {
+      code: `
+declare const read: Record<string, number>;
+read['missing'] ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const read: Record<string, number>;
+declare const key: string;
+read[key] ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+assignment.missing ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+assignment['missing'] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+declare const key: string;
+assignment[key] ??= 1;
+      `,
+      errors: [
         {
           column: 1,
           endColumn: 16,
@@ -4309,33 +4448,22 @@ assignment['missing'] ??= 1;
           line: 4,
           messageId: 'neverNullish',
         },
-        {
-          column: 1,
-          endColumn: 19,
-          endLine: 7,
-          line: 7,
-          messageId: 'neverNullish',
-        },
-        {
-          column: 1,
-          endColumn: 22,
-          endLine: 8,
-          line: 8,
-          messageId: 'neverNullish',
-        },
       ],
     },
     {
       code: `
-declare let record: { required: number } & Record<string, number | undefined>;
-record.required ??= 1;
+declare const record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record.required ?? 1;
       `,
       errors: [
         {
           column: 1,
           endColumn: 16,
-          endLine: 3,
-          line: 3,
+          endLine: 6,
+          line: 6,
           messageId: 'neverNullish',
         },
       ],
@@ -4343,15 +4471,132 @@ record.required ??= 1;
     },
     {
       code: `
-declare const record: { required: number } & Record<string, number>;
+declare const record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record['required'] ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare let record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record.required ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare let record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record['required'] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
 record.required ?? 1;
       `,
       errors: [
         {
           column: 1,
           endColumn: 16,
-          endLine: 3,
-          line: 3,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare const record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record['required'] ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare let record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record.required ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare let record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record['required'] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
           messageId: 'neverNullish',
         },
       ],

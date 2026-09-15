@@ -760,6 +760,9 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    // Optional-chain checks conservatively treat index signatures as nullable,
+    // even without noUncheckedIndexedAccess. Nullish coalescing opts out of that
+    // assumption and uses the index value type and compiler option instead.
     function isNullablePropertyType(
       objType: ts.Type,
       propertyType: ts.Type,
