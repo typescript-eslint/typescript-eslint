@@ -7,8 +7,8 @@ const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
  * Gets all of the type flags in a type, iterating through unions automatically.
  */
 export function getTypeFlags(type: ts.Type): ts.TypeFlags {
-  // @ts-expect-error Since typescript 5.0, this is invalid, but uses 0 as the default value of TypeFlags.
-  let flags: ts.TypeFlags = 0;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- a flags accumulator starts out holding no flags
+  let flags = 0 as ts.TypeFlags;
   for (const t of tsutils.unionConstituents(type)) {
     flags |= t.flags;
   }

@@ -71,6 +71,7 @@ function ErrorBlock({
   setIsLocked,
 }: ErrorBlockProps): React.JSX.Element {
   return (
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- monaco is only available as a type import here
     <AlertBlock type={severityClass(item.severity)}>
       <div className={clsx(!!item.fixer && styles.fixerContainer)}>
         <pre className={styles.errorPre}>

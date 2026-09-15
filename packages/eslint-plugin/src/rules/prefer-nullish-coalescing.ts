@@ -259,13 +259,12 @@ export default createRule<Options, MessageIds>({
       }
 
       if (
-        tsutils
-          .typeConstituents(type)
-          .some(t =>
-            tsutils
-              .intersectionConstituents(t)
-              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
-          )
+        tsutils.typeConstituents(type).some(t =>
+          tsutils
+            .intersectionConstituents(t)
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- ignorableFlags is a computed flags mask
+            .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
+        )
       ) {
         return false;
       }

@@ -1,7 +1,7 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isNumberLike, isStringLike, isTypeFlagSet } from '../../util';
+import { isTypeFlagSet } from '../../util';
 
 /*
  * If passed an enum member, returns the type of the parent. Otherwise,
@@ -116,6 +116,56 @@ export function isMismatchedEnumComparisonTypes(
 }
 
 /**
+ * @returns Whether assigning a sender type to a receiver type is unsafe because
+ * the receiver expects an enum value but the sender only provides non-enum
+ * values of the same primitive kind.
+ */
+export function isMismatchedEnumAssignmentTypes(
+  typeChecker: ts.TypeChecker,
+  senderType: ts.Type,
+  receiverType: ts.Type,
+): boolean {
+  const receiverEnumTypes = getEnumTypes(typeChecker, receiverType);
+  if (receiverEnumTypes.length === 0) {
+    return false;
+  }
+
+  const receiverTypeParts = tsutils.unionConstituents(receiverType);
+  const receiverNonEnumParts = receiverTypeParts.filter(
+    receiverTypePart =>
+      getEnumTypes(typeChecker, receiverTypePart).length === 0,
+  );
+  const receiverEnumValueTypes = new Set(
+    receiverTypeParts.map(getEnumValueType),
+  );
+
+  for (const senderTypePart of tsutils.unionConstituents(senderType)) {
+    if (hasSharedEnumType(typeChecker, senderTypePart, receiverEnumTypes)) {
+      continue;
+    }
+
+    if (
+      receiverNonEnumParts.some(receiverTypePart =>
+        typeChecker.isTypeAssignableTo(senderTypePart, receiverTypePart),
+      )
+    ) {
+      continue;
+    }
+
+    if (
+      (receiverEnumValueTypes.has(ts.TypeFlags.Number) &&
+        isNumberLike(senderTypePart)) ||
+      (receiverEnumValueTypes.has(ts.TypeFlags.String) &&
+        isStringLike(senderTypePart))
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * @returns Whether the right type is an unsafe comparison against any left type.
  */
 function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
@@ -125,6 +175,52 @@ function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
     (leftEnumValueTypes.has(ts.TypeFlags.Number) && isNumberLike(rightType)) ||
     (leftEnumValueTypes.has(ts.TypeFlags.String) && isStringLike(rightType))
   );
+}
+
+function hasSharedEnumType(
+  typeChecker: ts.TypeChecker,
+  type: ts.Type,
+  expectedEnumTypes: readonly ts.Type[],
+): boolean {
+  const typeEnumTypes = new Set(getEnumTypes(typeChecker, type));
+
+  for (const expectedEnumType of expectedEnumTypes) {
+    if (typeEnumTypes.has(expectedEnumType)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function isNumberLike(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .every(unionPart =>
+      tsutils
+        .intersectionConstituents(unionPart)
+        .some(intersectionPart =>
+          tsutils.isTypeFlagSet(
+            intersectionPart,
+            ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
+          ),
+        ),
+    );
+}
+
+function isStringLike(type: ts.Type): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .every(unionPart =>
+      tsutils
+        .intersectionConstituents(unionPart)
+        .some(intersectionPart =>
+          tsutils.isTypeFlagSet(
+            intersectionPart,
+            ts.TypeFlags.String | ts.TypeFlags.StringLike,
+          ),
+        ),
+    );
 }
 
 /**
