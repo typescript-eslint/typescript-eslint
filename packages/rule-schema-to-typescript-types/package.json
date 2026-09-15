@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "8.68.0",
+  "version": "8.70.0",
   "description": "Converts ESLint rule schemas to equivalent TypeScript type strings.",
   "type": "module",
   "exports": {
@@ -73,10 +73,10 @@
           "build"
         ],
         "cache": false,
+        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile esm-only",
         "options": {
           "cwd": "{projectRoot}"
-        },
-        "command": "pnpm pack --out attw-check.tgz && attw attw-check.tgz --profile esm-only"
+        }
       }
     }
   }
