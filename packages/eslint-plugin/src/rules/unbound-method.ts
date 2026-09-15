@@ -96,10 +96,7 @@ const SUPPORTED_GLOBAL_TYPES = [
  * ...but `lib.es5.d.ts` declares it as a regular method, so this rule would
  * otherwise incorrectly flag usages such as `array.sort(collator.compare)`.
  */
-const SPEC_BOUND_INSTANCE_METHODS: ReadonlyMap<
-  string,
-  ReadonlySet<string>
-> = new Map([['Collator', new Set(['compare'])]]);
+const nativelyBoundInstanceMethods = new Set<string>(['Collator.compare']);
 
 const isNotImported = (
   symbol: ts.Symbol,
@@ -120,7 +117,7 @@ const isNotImported = (
 /**
  * Returns `true` if `propertyName` is a member of a built-in class instance
  * that is defined by the spec as bound to that instance (see
- * `SPEC_BOUND_INSTANCE_METHODS` above).
+ * `nativelyBoundInstanceMethods` above).
  */
 function isSpecBoundBuiltinMethod(
   program: ts.Program,
@@ -132,9 +129,8 @@ function isSpecBoundBuiltinMethod(
     return false;
   }
 
-  return (
-    SPEC_BOUND_INSTANCE_METHODS.get(symbol.getName())?.has(propertyName) ??
-    false
+  return nativelyBoundInstanceMethods.has(
+    `${symbol.getName()}.${propertyName}`,
   );
 }
 
