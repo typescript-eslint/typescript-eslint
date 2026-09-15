@@ -210,7 +210,9 @@ export default createRule<Options, MessageIds>({
       return {
         containsNonLiteralType,
         defaultCase: defaultCase ?? getCommentDefaultCase(node),
-        missingLiteralBranchTypes,
+        missingLiteralBranchTypes: missingLiteralBranchTypes.sort(
+          compareMissingLiteralBranchTypes,
+        ),
         symbolName,
       };
     }
@@ -408,6 +410,70 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function compareMissingLiteralBranchTypes(a: ts.Type, b: ts.Type): number {
+  return (
+    getLiteralKind(a) - getLiteralKind(b) ||
+    compare(getSortKey(a), getSortKey(b))
+  );
+}
+
+function getSortKey(type: ts.Type): bigint | boolean | number | string {
+  if (
+    tsutils.isTypeFlagSet(
+      type,
+      ts.TypeFlags.EnumLike | ts.TypeFlags.UniqueESSymbol,
+    )
+  ) {
+    return getSymbolName(type);
+  }
+
+  if (tsutils.isStringLiteralType(type) || tsutils.isNumberLiteralType(type)) {
+    return type.value;
+  }
+
+  if (tsutils.isBigIntLiteralType(type)) {
+    return toBigInt(type.value);
+  }
+
+  return tsutils.isTrueLiteralType(type);
+}
+
+const LITERAL_KINDS = [
+  ts.TypeFlags.StringLiteral,
+  ts.TypeFlags.NumberLiteral,
+  ts.TypeFlags.BigIntLiteral,
+  ts.TypeFlags.BooleanLiteral,
+  ts.TypeFlags.UniqueESSymbol,
+  ts.TypeFlags.Undefined,
+  ts.TypeFlags.Null,
+  ts.TypeFlags.EnumLike,
+];
+
+function getLiteralKind(type: ts.Type): number {
+  // An enum member also carries StringLiteral or NumberLiteral.
+  return tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
+    ? LITERAL_KINDS.length - 1
+    : LITERAL_KINDS.findIndex(flag => tsutils.isTypeFlagSet(type, flag));
+}
+
+function getSymbolName(type: ts.Type): string {
+  return nullThrows(
+    type.getSymbol(),
+    'an enum member or unique symbol always has a symbol',
+  ).name;
+}
+
+function compare<T extends bigint | boolean | number | string>(
+  a: T,
+  b: T,
+): number {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
+function toBigInt({ base10Value, negative }: ts.PseudoBigInt): bigint {
+  return BigInt(negative ? `-${base10Value}` : base10Value);
+}
 
 function isTypeLiteralLikeType(type: ts.Type): boolean {
   return tsutils.isTypeFlagSet(
