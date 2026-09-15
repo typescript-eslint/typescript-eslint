@@ -2,14 +2,15 @@ import type { TSESTree } from '@typescript-eslint/types';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import type { Scope } from '../scope';
+import type { ConditionalTypeScope } from '../scope';
 import type { Referencer } from './Referencer';
 
 import { ParameterDefinition, TypeDefinition } from '../definition';
-import { ScopeType } from '../scope';
 import { Visitor } from './Visitor';
 
 export class TypeVisitor extends Visitor {
+  // conditional types whose `extendsType` is currently being visited, innermost last
+  readonly #inferTypeContainers: ConditionalTypeScope[] = [];
   readonly #referencer: Referencer;
 
   constructor(referencer: Referencer) {
@@ -98,10 +99,16 @@ export class TypeVisitor extends Visitor {
   protected TSConditionalType(node: TSESTree.TSConditionalType): void {
     // conditional types can define inferred type parameters
     // which are only accessible from inside the conditional parameter
-    this.#referencer.scopeManager.nestConditionalTypeScope(node);
+    const scope = this.#referencer.scopeManager.nestConditionalTypeScope(node);
+
+    this.visit(node.checkType);
+
+    this.#inferTypeContainers.push(scope);
+    this.visit(node.extendsType);
+    this.#inferTypeContainers.pop();
 
     // type parameters inferred in the condition clause are not accessible within the false branch
-    this.visitChildren(node, ['falseType']);
+    this.visit(node.trueType);
 
     this.#referencer.close(node);
 
@@ -139,35 +146,12 @@ export class TypeVisitor extends Visitor {
 
   protected TSInferType(node: TSESTree.TSInferType): void {
     const typeParameter = node.typeParameter;
-    let scope = this.#referencer.currentScope();
 
-    /*
-    In cases where there is a sub-type scope created within a conditional type, then the generic should be defined in the
-    conditional type's scope, not the child type scope.
-    If we define it within the child type's scope then it won't be able to be referenced outside the child type
-    */
-    if (
-      scope.type === ScopeType.functionType ||
-      scope.type === ScopeType.mappedType
-    ) {
-      // search up the scope tree to figure out if we're in a nested type scope
-      let currentScope = scope.upper as Scope | undefined;
-      while (currentScope) {
-        if (
-          currentScope.type === ScopeType.functionType ||
-          currentScope.type === ScopeType.mappedType
-        ) {
-          // ensure valid type parents only
-          currentScope = currentScope.upper;
-          continue;
-        }
-        if (currentScope.type === ScopeType.conditionalType) {
-          scope = currentScope;
-          break;
-        }
-        break;
-      }
-    }
+    // the inferred type parameter belongs to the innermost conditional type whose `extendsType` contains it,
+    // not to any function type, mapped type or conditional type nested in between.
+    // an `infer` outside of an `extendsType` is a TS error, so it just falls back to the current scope
+    const scope =
+      this.#inferTypeContainers.at(-1) ?? this.#referencer.currentScope();
 
     scope.defineIdentifier(
       typeParameter.name,
