@@ -5,6 +5,16 @@ import rule from '../../src/rules/prefer-tsutils-methods.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-tsutils-methods', rule, {
+  valid: [
+    'tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined);',
+    'tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember);',
+    'tsutils.isObjectFlagSet(type, ts.ObjectFlags.Interface);',
+    'a & b;',
+    'flags & OTHER_FLAGS;',
+    'type.flags & CUSTOM_FLAGS;',
+    'ts.TypeFlags.Undefined;',
+    'type.flags;',
+  ],
   invalid: [
     {
       code: 'type.flags & ts.TypeFlags.Undefined;',
@@ -229,15 +239,5 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       output:
         'tsutils.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Void);',
     },
-  ],
-  valid: [
-    'tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined);',
-    'tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember);',
-    'tsutils.isObjectFlagSet(type, ts.ObjectFlags.Interface);',
-    'a & b;',
-    'flags & OTHER_FLAGS;',
-    'type.flags & CUSTOM_FLAGS;',
-    'ts.TypeFlags.Undefined;',
-    'type.flags;',
   ],
 });

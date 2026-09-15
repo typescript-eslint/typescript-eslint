@@ -4,6 +4,7 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-or-boolean', rule, {
+  valid: [],
   invalid: [
     {
       code: `
@@ -744,5 +745,4 @@ declare const foo: { bar: () => { baz: number } | null | undefined };
       `,
     },
   ],
-  valid: [],
 });

@@ -5,6 +5,11 @@ import rule from '../../src/rules/no-typescript-estree-import.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-typescript-estree-import', rule, {
+  valid: [
+    "import { foo } from '@typescript-eslint/utils';",
+    "import foo from '@typescript-eslint/utils';",
+    "import * as foo from '@typescript-eslint/utils';",
+  ],
   invalid: [
     {
       code: "import { foo } from '@typescript-eslint/typescript-estree';",
@@ -84,10 +89,5 @@ ruleTester.run('no-typescript-estree-import', rule, {
       ],
       output: "import * as foo from '@typescript-eslint/utils';",
     },
-  ],
-  valid: [
-    "import { foo } from '@typescript-eslint/utils';",
-    "import foo from '@typescript-eslint/utils';",
-    "import * as foo from '@typescript-eslint/utils';",
   ],
 });

@@ -5,6 +5,32 @@ import rule from '../../src/rules/debug-namespace.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('debug-namespace', rule, {
+  valid: [
+    {
+      code: "const log = debug('typescript-eslint:example:file');",
+      filename: 'typescript-eslint/packages/example/file.ts',
+    },
+    {
+      code: "const logCustom = debug('typescript-eslint:example:file');",
+      filename: 'typescript-eslint/packages/example/file.ts',
+    },
+    {
+      code: "const logCustom = debug('...');",
+      filename: 'typescript-eslint/packages/example/file.ts',
+    },
+    {
+      code: "debug('...');",
+      filename: 'typescript-eslint/packages/example/file.ts',
+    },
+    {
+      code: 'const log = debug(null);',
+      filename: 'typescript-eslint/packages/example/file.ts',
+    },
+    {
+      code: 'const log = debug(123);',
+      filename: 'typescript-eslint/packages/example/file.ts',
+    },
+  ],
   invalid: [
     {
       code: "const log = debug('not:correct');",
@@ -47,32 +73,6 @@ ruleTester.run('debug-namespace', rule, {
       ],
       filename: 'C:\\Code\\typescript-eslint\\packages\\example\\file.ts',
       output: "const log = debug('typescript-eslint:example:file');",
-    },
-  ],
-  valid: [
-    {
-      code: "const log = debug('typescript-eslint:example:file');",
-      filename: 'typescript-eslint/packages/example/file.ts',
-    },
-    {
-      code: "const logCustom = debug('typescript-eslint:example:file');",
-      filename: 'typescript-eslint/packages/example/file.ts',
-    },
-    {
-      code: "const logCustom = debug('...');",
-      filename: 'typescript-eslint/packages/example/file.ts',
-    },
-    {
-      code: "debug('...');",
-      filename: 'typescript-eslint/packages/example/file.ts',
-    },
-    {
-      code: 'const log = debug(null);',
-      filename: 'typescript-eslint/packages/example/file.ts',
-    },
-    {
-      code: 'const log = debug(123);',
-      filename: 'typescript-eslint/packages/example/file.ts',
     },
   ],
 });

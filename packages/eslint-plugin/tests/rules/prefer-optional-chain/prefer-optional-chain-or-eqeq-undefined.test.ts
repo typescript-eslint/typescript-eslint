@@ -4,6 +4,7 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-or-eqeq-undefined', rule, {
+  valid: [],
   invalid: [
     {
       code: `
@@ -783,5 +784,4 @@ foo.bar?.()?.baz == undefined;
       `,
     },
   ],
-  valid: [],
 });

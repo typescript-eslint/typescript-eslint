@@ -6,6 +6,616 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-ending-comparison', rule, {
+  valid: [
+    'foo && foo.bar == undeclaredVar;',
+    'foo && foo.bar == null;',
+    'foo && foo.bar == undefined;',
+    'foo && foo.bar === undeclaredVar;',
+    'foo && foo.bar === undefined;',
+    'foo && foo.bar === too.bar;',
+    'foo && foo.bar === foo.baz;',
+    'foo && foo.bar !== 0;',
+    'foo && foo.bar !== 1;',
+    "foo && foo.bar !== '123';",
+    'foo && foo.bar !== {};',
+    'foo && foo.bar !== false;',
+    'foo && foo.bar !== true;',
+    'foo && foo.bar !== null;',
+    'foo && foo.bar !== undeclaredVar;',
+    'foo && foo.bar !== too.bar;',
+    'foo && foo.bar !== foo.baz;',
+    'foo && foo.bar != 0;',
+    'foo && foo.bar != 1;',
+    "foo && foo.bar != '123';",
+    'foo && foo.bar != {};',
+    'foo && foo.bar != false;',
+    'foo && foo.bar != true;',
+    'foo && foo.bar != undeclaredVar;',
+    'foo && foo.bar != too.bar;',
+    'foo && foo.bar != foo.baz;',
+    'foo != null && foo.bar == undeclaredVar;',
+    'foo != null && foo.bar == null;',
+    'foo != null && foo.bar == undefined;',
+    'foo != null && foo.bar === undeclaredVar;',
+    'foo != null && foo.bar === undefined;',
+    'foo != null && foo.bar !== 0;',
+    'foo != null && foo.bar !== 1;',
+    "foo != null && foo.bar !== '123';",
+    'foo != null && foo.bar !== {};',
+    'foo != null && foo.bar !== false;',
+    'foo != null && foo.bar !== true;',
+    'foo != null && foo.bar !== null;',
+    'foo != null && foo.bar !== undeclaredVar;',
+    'foo != null && foo.bar != 0;',
+    'foo != null && foo.bar != 1;',
+    "foo != null && foo.bar != '123';",
+    'foo != null && foo.bar != {};',
+    'foo != null && foo.bar != false;',
+    'foo != null && foo.bar != true;',
+    'foo != null && foo.bar != undeclaredVar;',
+    `
+declare const foo: { bar: number; baz: number } | null;
+foo != null && foo.bar == foo.baz;
+    `,
+    `
+declare const foo: { bar: number; baz: () => number } | null;
+foo != null && foo.bar == foo.baz();
+    `,
+    `
+declare const foo: { bar: number; baz: number } | null;
+foo != null && foo.bar === foo.baz;
+    `,
+    `
+declare const foo: { bar: number; baz: () => number } | null;
+foo != null && foo.bar === foo.baz();
+    `,
+    `
+declare const foo: { bar: number; baz: undefined } | null;
+foo != null && foo.bar != foo.baz;
+    `,
+    `
+declare const foo: { bar: number; baz: () => undefined } | null;
+foo != null && foo.bar != foo.baz();
+    `,
+    `
+declare const foo: { bar: number; baz: undefined } | null;
+foo != null && foo.bar !== foo.baz;
+    `,
+    `
+declare const foo: { bar: number; baz: () => undefined } | null;
+foo != null && foo.bar !== foo.baz();
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar == undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar == null;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar == undefined;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar === undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar === undefined;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar !== 0;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar !== 1;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar !== '123';
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar !== {};
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar !== false;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar !== true;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar !== null;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar !== undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar != 0;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar != 1;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar != '123';
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar != {};
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar != false;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar != true;
+    `,
+    `
+declare const foo: { bar: number };
+foo && foo.bar != undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar == undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar == null;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar == undefined;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar === undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar === undefined;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar !== 0;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar !== 1;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar !== '123';
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar !== {};
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar !== false;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar !== true;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar !== null;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar !== undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar != 0;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar != 1;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar != '123';
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar != {};
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar != false;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar != true;
+    `,
+    `
+declare const foo: { bar: number };
+foo != null && foo.bar != undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number } | 1;
+foo && foo.bar == undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number } | 0;
+foo != null && foo.bar == undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar == undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar == null;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar == undefined;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar === undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar === undefined;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar !== 0;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar !== 1;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar !== '123';
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar !== {};
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar !== false;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar !== true;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar !== null;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo && foo.bar !== undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar == undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar == null;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar == undefined;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar === undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar === undefined;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar !== 0;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar !== 1;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar !== '123';
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar !== {};
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar !== false;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar !== true;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar !== null;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo != null && foo.bar !== undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo !== null && foo !== undefined && foo.bar == null;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo !== null && foo !== undefined && foo.bar === undefined;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo !== null && foo !== undefined && foo.bar !== 1;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo !== null && foo !== undefined && foo.bar != 1;
+    `,
+
+    `
+declare const foo: { bar: number } | undefined;
+foo !== null && foo !== undefined && foo.bar == null;
+    `,
+    `
+declare const foo: { bar: number } | undefined;
+foo !== null && foo !== undefined && foo.bar === undefined;
+    `,
+    `
+declare const foo: { bar: number } | undefined;
+foo !== null && foo !== undefined && foo.bar !== 1;
+    `,
+    `
+declare const foo: { bar: number } | undefined;
+foo !== null && foo !== undefined && foo.bar != 1;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo !== undefined && foo !== undefined && foo.bar == null;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo !== undefined && foo !== undefined && foo.bar === undefined;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo !== undefined && foo !== undefined && foo.bar !== 1;
+    `,
+    `
+declare const foo: { bar: number } | null;
+foo !== undefined && foo !== undefined && foo.bar != 1;
+    `,
+
+    `
+declare const foo: { bar: number } | undefined;
+foo !== undefined && foo !== undefined && foo.bar == null;
+    `,
+    `
+declare const foo: { bar: number } | undefined;
+foo !== undefined && foo !== undefined && foo.bar === undefined;
+    `,
+    `
+declare const foo: { bar: number } | undefined;
+foo !== undefined && foo !== undefined && foo.bar !== 1;
+    `,
+    `
+declare const foo: { bar: number } | undefined;
+foo !== undefined && foo !== undefined && foo.bar != 1;
+    `,
+    `
+declare const foo: { bar: number };
+!foo || foo.bar == undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+!foo || foo.bar === undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+!foo || foo.bar !== undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+!foo || foo.bar != null;
+    `,
+    `
+declare const foo: { bar: number };
+!foo || foo.bar != undeclaredVar;
+    `,
+    '!foo && foo.bar == 0;',
+    '!foo && foo.bar == 1;',
+    "!foo && foo.bar == '123';",
+    '!foo && foo.bar == {};',
+    '!foo && foo.bar == false;',
+    '!foo && foo.bar == true;',
+    '!foo && foo.bar === 0;',
+    '!foo && foo.bar === 1;',
+    "!foo && foo.bar === '123';",
+    '!foo && foo.bar === {};',
+    '!foo && foo.bar === false;',
+    '!foo && foo.bar === true;',
+    '!foo && foo.bar === null;',
+    '!foo && foo.bar !== undefined;',
+    '!foo && foo.bar != undefined;',
+    '!foo && foo.bar != null;',
+    'foo == null && foo.bar == 0;',
+    'foo == null && foo.bar == 1;',
+    "foo == null && foo.bar == '123';",
+    'foo == null && foo.bar == {};',
+    'foo == null && foo.bar == false;',
+    'foo == null && foo.bar == true;',
+    'foo == null && foo.bar === 0;',
+    'foo == null && foo.bar === 1;',
+    "foo == null && foo.bar === '123';",
+    'foo == null && foo.bar === {};',
+    'foo == null && foo.bar === false;',
+    'foo == null && foo.bar === true;',
+    'foo == null && foo.bar === null;',
+    'foo == null && foo.bar !== undefined;',
+    'foo == null && foo.bar != null;',
+    'foo == null && foo.bar != undefined;',
+    `
+declare const foo: false | { a: string };
+foo && foo.a == undeclaredVar;
+    `,
+    `
+declare const foo: '' | { a: string };
+foo && foo.a == undeclaredVar;
+    `,
+    `
+declare const foo: 0 | { a: string };
+foo && foo.a == undeclaredVar;
+    `,
+    `
+declare const foo: 0n | { a: string };
+foo && foo.a;
+    `,
+    '!foo || foo.bar != undeclaredVar;',
+    '!foo || foo.bar != null;',
+    '!foo || foo.bar != undefined;',
+    '!foo || foo.bar === 0;',
+    '!foo || foo.bar === 1;',
+    "!foo || foo.bar === '123';",
+    '!foo || foo.bar === {};',
+    '!foo || foo.bar === false;',
+    '!foo || foo.bar === true;',
+    '!foo || foo.bar === null;',
+    '!foo || foo.bar === undeclaredVar;',
+    '!foo || foo.bar == 0;',
+    '!foo || foo.bar == 1;',
+    "!foo || foo.bar == '123';",
+    '!foo || foo.bar == {};',
+    '!foo || foo.bar == false;',
+    '!foo || foo.bar == true;',
+    '!foo || foo.bar == undeclaredVar;',
+    '!foo || foo.bar !== undeclaredVar;',
+    '!foo || foo.bar !== undefined;',
+    `
+declare const foo: { bar: number };
+foo == null || foo.bar == undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+foo == null || foo.bar === undeclaredVar;
+    `,
+    `
+declare const foo: { bar: number };
+foo == null || foo.bar !== undeclaredVar;
+    `,
+    'foo == null || foo.bar != undeclaredVar;',
+    'foo == null || foo.bar != null;',
+    'foo == null || foo.bar != undefined;',
+    'foo == null || foo.bar === 0;',
+    'foo == null || foo.bar === 1;',
+    "foo == null || foo.bar === '123';",
+    'foo == null || foo.bar === {};',
+    'foo == null || foo.bar === false;',
+    'foo == null || foo.bar === true;',
+    'foo == null || foo.bar === null;',
+    'foo == null || foo.bar === undeclaredVar;',
+    'foo == null || foo.bar == 0;',
+    'foo == null || foo.bar == 1;',
+    "foo == null || foo.bar == '123';",
+    'foo == null || foo.bar == {};',
+    'foo == null || foo.bar == false;',
+    'foo == null || foo.bar == true;',
+    'foo == null || foo.bar == undeclaredVar;',
+    'foo == null || foo.bar !== undeclaredVar;',
+    'foo == null || foo.bar !== undefined;',
+    `
+declare const foo: { bar: number; baz: number } | null;
+foo == null || foo.bar != foo.baz;
+    `,
+    `
+declare const foo: { bar: number; baz: () => number } | null;
+foo == null || foo.bar != foo.baz();
+    `,
+    `
+declare const foo: { bar: number; baz: undefined } | null;
+foo == null || foo.bar === foo.baz;
+    `,
+    `
+declare const foo: { bar: number; baz: () => undefined } | null;
+foo == null || foo.bar === foo.baz();
+    `,
+    `
+declare const foo: { bar: number; baz: undefined } | null;
+foo == null || foo.bar == foo.baz;
+    `,
+    `
+declare const foo: { bar: number; baz: () => undefined } | null;
+foo == null || foo.bar == foo.baz();
+    `,
+    `
+declare const foo: { bar: number; baz: number } | null;
+foo == null || foo.bar !== foo.baz;
+    `,
+    `
+declare const foo: { bar: number; baz: () => number } | null;
+foo == null || foo.bar !== foo.baz();
+    `,
+    'foo || foo.bar != 0;',
+    'foo || foo.bar != 1;',
+    "foo || foo.bar != '123';",
+    'foo || foo.bar != {};',
+    'foo || foo.bar != false;',
+    'foo || foo.bar != true;',
+    'foo || foo.bar === undefined;',
+    'foo || foo.bar == undefined;',
+    'foo || foo.bar == null;',
+    'foo || foo.bar !== 0;',
+    'foo || foo.bar !== 1;',
+    "foo || foo.bar !== '123';",
+    'foo || foo.bar !== {};',
+    'foo || foo.bar !== false;',
+    'foo || foo.bar !== true;',
+    'foo || foo.bar !== null;',
+    'foo != null || foo.bar != 0;',
+    'foo != null || foo.bar != 1;',
+    "foo != null || foo.bar != '123';",
+    'foo != null || foo.bar != {};',
+    'foo != null || foo.bar != false;',
+    'foo != null || foo.bar != true;',
+    'foo != null || foo.bar === undefined;',
+    'foo != null || foo.bar == undefined;',
+    'foo != null || foo.bar == null;',
+    'foo != null || foo.bar !== 0;',
+    'foo != null || foo.bar !== 1;',
+    "foo != null || foo.bar !== '123';",
+    'foo != null || foo.bar !== {};',
+    'foo != null || foo.bar !== false;',
+    'foo != null || foo.bar !== true;',
+    'foo != null || foo.bar !== null;',
+    `
+declare const record: Record<string, { kind: string }>;
+record['key'] && record['key'].kind !== '1';
+    `,
+    `
+declare const array: { b?: string }[];
+!array[1] || array[1].b === 'foo';
+    `,
+  ],
   invalid: [
     {
       code: 'foo && foo.bar == 0;',
@@ -2313,615 +2923,5 @@ foo.three === a?.b();
         },
       ],
     },
-  ],
-  valid: [
-    'foo && foo.bar == undeclaredVar;',
-    'foo && foo.bar == null;',
-    'foo && foo.bar == undefined;',
-    'foo && foo.bar === undeclaredVar;',
-    'foo && foo.bar === undefined;',
-    'foo && foo.bar === too.bar;',
-    'foo && foo.bar === foo.baz;',
-    'foo && foo.bar !== 0;',
-    'foo && foo.bar !== 1;',
-    "foo && foo.bar !== '123';",
-    'foo && foo.bar !== {};',
-    'foo && foo.bar !== false;',
-    'foo && foo.bar !== true;',
-    'foo && foo.bar !== null;',
-    'foo && foo.bar !== undeclaredVar;',
-    'foo && foo.bar !== too.bar;',
-    'foo && foo.bar !== foo.baz;',
-    'foo && foo.bar != 0;',
-    'foo && foo.bar != 1;',
-    "foo && foo.bar != '123';",
-    'foo && foo.bar != {};',
-    'foo && foo.bar != false;',
-    'foo && foo.bar != true;',
-    'foo && foo.bar != undeclaredVar;',
-    'foo && foo.bar != too.bar;',
-    'foo && foo.bar != foo.baz;',
-    'foo != null && foo.bar == undeclaredVar;',
-    'foo != null && foo.bar == null;',
-    'foo != null && foo.bar == undefined;',
-    'foo != null && foo.bar === undeclaredVar;',
-    'foo != null && foo.bar === undefined;',
-    'foo != null && foo.bar !== 0;',
-    'foo != null && foo.bar !== 1;',
-    "foo != null && foo.bar !== '123';",
-    'foo != null && foo.bar !== {};',
-    'foo != null && foo.bar !== false;',
-    'foo != null && foo.bar !== true;',
-    'foo != null && foo.bar !== null;',
-    'foo != null && foo.bar !== undeclaredVar;',
-    'foo != null && foo.bar != 0;',
-    'foo != null && foo.bar != 1;',
-    "foo != null && foo.bar != '123';",
-    'foo != null && foo.bar != {};',
-    'foo != null && foo.bar != false;',
-    'foo != null && foo.bar != true;',
-    'foo != null && foo.bar != undeclaredVar;',
-    `
-declare const foo: { bar: number; baz: number } | null;
-foo != null && foo.bar == foo.baz;
-    `,
-    `
-declare const foo: { bar: number; baz: () => number } | null;
-foo != null && foo.bar == foo.baz();
-    `,
-    `
-declare const foo: { bar: number; baz: number } | null;
-foo != null && foo.bar === foo.baz;
-    `,
-    `
-declare const foo: { bar: number; baz: () => number } | null;
-foo != null && foo.bar === foo.baz();
-    `,
-    `
-declare const foo: { bar: number; baz: undefined } | null;
-foo != null && foo.bar != foo.baz;
-    `,
-    `
-declare const foo: { bar: number; baz: () => undefined } | null;
-foo != null && foo.bar != foo.baz();
-    `,
-    `
-declare const foo: { bar: number; baz: undefined } | null;
-foo != null && foo.bar !== foo.baz;
-    `,
-    `
-declare const foo: { bar: number; baz: () => undefined } | null;
-foo != null && foo.bar !== foo.baz();
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar == undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar == null;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar == undefined;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar === undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar === undefined;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar !== 0;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar !== 1;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar !== '123';
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar !== {};
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar !== false;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar !== true;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar !== null;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar !== undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar != 0;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar != 1;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar != '123';
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar != {};
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar != false;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar != true;
-    `,
-    `
-declare const foo: { bar: number };
-foo && foo.bar != undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar == undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar == null;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar == undefined;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar === undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar === undefined;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar !== 0;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar !== 1;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar !== '123';
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar !== {};
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar !== false;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar !== true;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar !== null;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar !== undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar != 0;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar != 1;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar != '123';
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar != {};
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar != false;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar != true;
-    `,
-    `
-declare const foo: { bar: number };
-foo != null && foo.bar != undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number } | 1;
-foo && foo.bar == undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number } | 0;
-foo != null && foo.bar == undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar == undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar == null;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar == undefined;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar === undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar === undefined;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar !== 0;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar !== 1;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar !== '123';
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar !== {};
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar !== false;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar !== true;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar !== null;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo && foo.bar !== undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar == undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar == null;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar == undefined;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar === undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar === undefined;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar !== 0;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar !== 1;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar !== '123';
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar !== {};
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar !== false;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar !== true;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar !== null;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo != null && foo.bar !== undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo !== null && foo !== undefined && foo.bar == null;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo !== null && foo !== undefined && foo.bar === undefined;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo !== null && foo !== undefined && foo.bar !== 1;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo !== null && foo !== undefined && foo.bar != 1;
-    `,
-
-    `
-declare const foo: { bar: number } | undefined;
-foo !== null && foo !== undefined && foo.bar == null;
-    `,
-    `
-declare const foo: { bar: number } | undefined;
-foo !== null && foo !== undefined && foo.bar === undefined;
-    `,
-    `
-declare const foo: { bar: number } | undefined;
-foo !== null && foo !== undefined && foo.bar !== 1;
-    `,
-    `
-declare const foo: { bar: number } | undefined;
-foo !== null && foo !== undefined && foo.bar != 1;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo !== undefined && foo !== undefined && foo.bar == null;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo !== undefined && foo !== undefined && foo.bar === undefined;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo !== undefined && foo !== undefined && foo.bar !== 1;
-    `,
-    `
-declare const foo: { bar: number } | null;
-foo !== undefined && foo !== undefined && foo.bar != 1;
-    `,
-
-    `
-declare const foo: { bar: number } | undefined;
-foo !== undefined && foo !== undefined && foo.bar == null;
-    `,
-    `
-declare const foo: { bar: number } | undefined;
-foo !== undefined && foo !== undefined && foo.bar === undefined;
-    `,
-    `
-declare const foo: { bar: number } | undefined;
-foo !== undefined && foo !== undefined && foo.bar !== 1;
-    `,
-    `
-declare const foo: { bar: number } | undefined;
-foo !== undefined && foo !== undefined && foo.bar != 1;
-    `,
-    `
-declare const foo: { bar: number };
-!foo || foo.bar == undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-!foo || foo.bar === undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-!foo || foo.bar !== undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-!foo || foo.bar != null;
-    `,
-    `
-declare const foo: { bar: number };
-!foo || foo.bar != undeclaredVar;
-    `,
-    '!foo && foo.bar == 0;',
-    '!foo && foo.bar == 1;',
-    "!foo && foo.bar == '123';",
-    '!foo && foo.bar == {};',
-    '!foo && foo.bar == false;',
-    '!foo && foo.bar == true;',
-    '!foo && foo.bar === 0;',
-    '!foo && foo.bar === 1;',
-    "!foo && foo.bar === '123';",
-    '!foo && foo.bar === {};',
-    '!foo && foo.bar === false;',
-    '!foo && foo.bar === true;',
-    '!foo && foo.bar === null;',
-    '!foo && foo.bar !== undefined;',
-    '!foo && foo.bar != undefined;',
-    '!foo && foo.bar != null;',
-    'foo == null && foo.bar == 0;',
-    'foo == null && foo.bar == 1;',
-    "foo == null && foo.bar == '123';",
-    'foo == null && foo.bar == {};',
-    'foo == null && foo.bar == false;',
-    'foo == null && foo.bar == true;',
-    'foo == null && foo.bar === 0;',
-    'foo == null && foo.bar === 1;',
-    "foo == null && foo.bar === '123';",
-    'foo == null && foo.bar === {};',
-    'foo == null && foo.bar === false;',
-    'foo == null && foo.bar === true;',
-    'foo == null && foo.bar === null;',
-    'foo == null && foo.bar !== undefined;',
-    'foo == null && foo.bar != null;',
-    'foo == null && foo.bar != undefined;',
-    `
-declare const foo: false | { a: string };
-foo && foo.a == undeclaredVar;
-    `,
-    `
-declare const foo: '' | { a: string };
-foo && foo.a == undeclaredVar;
-    `,
-    `
-declare const foo: 0 | { a: string };
-foo && foo.a == undeclaredVar;
-    `,
-    `
-declare const foo: 0n | { a: string };
-foo && foo.a;
-    `,
-    '!foo || foo.bar != undeclaredVar;',
-    '!foo || foo.bar != null;',
-    '!foo || foo.bar != undefined;',
-    '!foo || foo.bar === 0;',
-    '!foo || foo.bar === 1;',
-    "!foo || foo.bar === '123';",
-    '!foo || foo.bar === {};',
-    '!foo || foo.bar === false;',
-    '!foo || foo.bar === true;',
-    '!foo || foo.bar === null;',
-    '!foo || foo.bar === undeclaredVar;',
-    '!foo || foo.bar == 0;',
-    '!foo || foo.bar == 1;',
-    "!foo || foo.bar == '123';",
-    '!foo || foo.bar == {};',
-    '!foo || foo.bar == false;',
-    '!foo || foo.bar == true;',
-    '!foo || foo.bar == undeclaredVar;',
-    '!foo || foo.bar !== undeclaredVar;',
-    '!foo || foo.bar !== undefined;',
-    `
-declare const foo: { bar: number };
-foo == null || foo.bar == undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-foo == null || foo.bar === undeclaredVar;
-    `,
-    `
-declare const foo: { bar: number };
-foo == null || foo.bar !== undeclaredVar;
-    `,
-    'foo == null || foo.bar != undeclaredVar;',
-    'foo == null || foo.bar != null;',
-    'foo == null || foo.bar != undefined;',
-    'foo == null || foo.bar === 0;',
-    'foo == null || foo.bar === 1;',
-    "foo == null || foo.bar === '123';",
-    'foo == null || foo.bar === {};',
-    'foo == null || foo.bar === false;',
-    'foo == null || foo.bar === true;',
-    'foo == null || foo.bar === null;',
-    'foo == null || foo.bar === undeclaredVar;',
-    'foo == null || foo.bar == 0;',
-    'foo == null || foo.bar == 1;',
-    "foo == null || foo.bar == '123';",
-    'foo == null || foo.bar == {};',
-    'foo == null || foo.bar == false;',
-    'foo == null || foo.bar == true;',
-    'foo == null || foo.bar == undeclaredVar;',
-    'foo == null || foo.bar !== undeclaredVar;',
-    'foo == null || foo.bar !== undefined;',
-    `
-declare const foo: { bar: number; baz: number } | null;
-foo == null || foo.bar != foo.baz;
-    `,
-    `
-declare const foo: { bar: number; baz: () => number } | null;
-foo == null || foo.bar != foo.baz();
-    `,
-    `
-declare const foo: { bar: number; baz: undefined } | null;
-foo == null || foo.bar === foo.baz;
-    `,
-    `
-declare const foo: { bar: number; baz: () => undefined } | null;
-foo == null || foo.bar === foo.baz();
-    `,
-    `
-declare const foo: { bar: number; baz: undefined } | null;
-foo == null || foo.bar == foo.baz;
-    `,
-    `
-declare const foo: { bar: number; baz: () => undefined } | null;
-foo == null || foo.bar == foo.baz();
-    `,
-    `
-declare const foo: { bar: number; baz: number } | null;
-foo == null || foo.bar !== foo.baz;
-    `,
-    `
-declare const foo: { bar: number; baz: () => number } | null;
-foo == null || foo.bar !== foo.baz();
-    `,
-    'foo || foo.bar != 0;',
-    'foo || foo.bar != 1;',
-    "foo || foo.bar != '123';",
-    'foo || foo.bar != {};',
-    'foo || foo.bar != false;',
-    'foo || foo.bar != true;',
-    'foo || foo.bar === undefined;',
-    'foo || foo.bar == undefined;',
-    'foo || foo.bar == null;',
-    'foo || foo.bar !== 0;',
-    'foo || foo.bar !== 1;',
-    "foo || foo.bar !== '123';",
-    'foo || foo.bar !== {};',
-    'foo || foo.bar !== false;',
-    'foo || foo.bar !== true;',
-    'foo || foo.bar !== null;',
-    'foo != null || foo.bar != 0;',
-    'foo != null || foo.bar != 1;',
-    "foo != null || foo.bar != '123';",
-    'foo != null || foo.bar != {};',
-    'foo != null || foo.bar != false;',
-    'foo != null || foo.bar != true;',
-    'foo != null || foo.bar === undefined;',
-    'foo != null || foo.bar == undefined;',
-    'foo != null || foo.bar == null;',
-    'foo != null || foo.bar !== 0;',
-    'foo != null || foo.bar !== 1;',
-    "foo != null || foo.bar !== '123';",
-    'foo != null || foo.bar !== {};',
-    'foo != null || foo.bar !== false;',
-    'foo != null || foo.bar !== true;',
-    'foo != null || foo.bar !== null;',
-    `
-declare const record: Record<string, { kind: string }>;
-record['key'] && record['key'].kind !== '1';
-    `,
-    `
-declare const array: { b?: string }[];
-!array[1] || array[1].b === 'foo';
-    `,
   ],
 });

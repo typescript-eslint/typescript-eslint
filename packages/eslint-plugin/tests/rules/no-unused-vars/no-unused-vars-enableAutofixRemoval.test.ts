@@ -15,6 +15,7 @@ const ruleTester = new RuleTester({
 
 describe('no-unused-vars', () => {
   ruleTester.run('enableAutofixRemoval.imports = true', rule, {
+    valid: [],
     invalid: [
       {
         code: `
@@ -697,6 +698,5 @@ import assert from 'assert'; /* this is an important comment */
         `,
       },
     ],
-    valid: [],
   });
 });
