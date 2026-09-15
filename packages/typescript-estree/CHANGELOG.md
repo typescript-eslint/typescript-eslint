@@ -1,3 +1,23 @@
+## 8.70.0 (2026-09-07)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-generated-empty-object-type] add rule ([#12730](https://github.com/typescript-eslint/typescript-eslint/pull/12730))
+
+### 🩹 Fixes
+
+- **typescript-estree:** clarify the parserOptions.project error message ([#12817](https://github.com/typescript-eslint/typescript-eslint/pull/12817))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.69.0 (2026-08-31)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.

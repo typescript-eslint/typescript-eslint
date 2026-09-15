@@ -2205,5 +2205,184 @@ declare function f(): (A extends B ? C : D) | null;
         },
       ],
     },
+    {
+      code: 'declare function foo<T extends () => number>(arg: T[]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: (() => number)[]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  a: string;
+  b: number;
+}
+declare function foo<T extends keyof Foo>(arg: T[]): void;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 41,
+          endLine: 6,
+          line: 6,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+interface Foo {
+  a: string;
+  b: number;
+}
+declare function foo(arg: (keyof Foo)[]): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends () => void>(arg: T | string): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: (() => void) | string): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  x: string;
+  shared: string;
+}
+interface B {
+  y: string;
+  shared: string;
+}
+declare function foo<T extends A | B>(k: keyof T): void;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 10,
+          line: 10,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+interface A {
+  x: string;
+  shared: string;
+}
+interface B {
+  y: string;
+  shared: string;
+}
+declare function foo(k: keyof (A | B)): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+declare function bar<T extends new () => Foo>(arg: T[]): void;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class Foo {}
+declare function bar(arg: (new () => Foo)[]): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo<T extends () => Promise<string>>(
+  arg: T extends () => Promise<infer R> ? R : never,
+): void;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 53,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare function foo(
+  arg: (() => Promise<string>) extends () => Promise<infer R> ? R : never,
+): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends readonly string[]>(x: T[]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 49,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(x: (readonly string[])[]): void;',
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

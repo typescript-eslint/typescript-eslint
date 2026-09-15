@@ -1774,7 +1774,7 @@ function foo(a: number, ...rest: never[]): void {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'function foo5(...args: unknown) {}',
+              output: 'function foo5(...args: unknown[]) {}',
             },
             {
               messageId: 'suggestNever',
@@ -1783,7 +1783,8 @@ function foo(a: number, ...rest: never[]): void {
           ],
         },
       ],
-      options: [{ ignoreRestArgs: true }],
+      options: [{ fixToUnknown: true, ignoreRestArgs: true }],
+      output: 'function foo5(...args: unknown[]) {}',
     },
     {
       code: 'const bar5 = function (...args: any) {};',
@@ -1797,7 +1798,7 @@ function foo(a: number, ...rest: never[]): void {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'const bar5 = function (...args: unknown) {};',
+              output: 'const bar5 = function (...args: unknown[]) {};',
             },
             {
               messageId: 'suggestNever',
@@ -1820,7 +1821,7 @@ function foo(a: number, ...rest: never[]): void {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'const baz5 = (...args: unknown) => {};',
+              output: 'const baz5 = (...args: unknown[]) => {};',
             },
             {
               messageId: 'suggestNever',
@@ -1849,7 +1850,7 @@ interface Qux5 {
               messageId: 'suggestUnknown',
               output: `
 interface Qux5 {
-  (...args: unknown): void;
+  (...args: unknown[]): void;
 }
       `,
             },
@@ -1878,7 +1879,8 @@ interface Qux5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'function quux5(fn: (...args: unknown) => void): void {}',
+              output:
+                'function quux5(fn: (...args: unknown[]) => void): void {}',
             },
             {
               messageId: 'suggestNever',
@@ -1901,7 +1903,7 @@ interface Qux5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'function quuz5(): (...args: unknown) => void {}',
+              output: 'function quuz5(): (...args: unknown[]) => void {}',
             },
             {
               messageId: 'suggestNever',
@@ -1923,7 +1925,7 @@ interface Qux5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'type Fred5 = (...args: unknown) => void;',
+              output: 'type Fred5 = (...args: unknown[]) => void;',
             },
             {
               messageId: 'suggestNever',
@@ -1946,7 +1948,7 @@ interface Qux5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'type Corge5 = new (...args: unknown) => void;',
+              output: 'type Corge5 = new (...args: unknown[]) => void;',
             },
             {
               messageId: 'suggestNever',
@@ -1975,7 +1977,7 @@ interface Grault5 {
               messageId: 'suggestUnknown',
               output: `
 interface Grault5 {
-  new (...args: unknown): void;
+  new (...args: unknown[]): void;
 }
       `,
             },
@@ -2010,7 +2012,7 @@ interface Garply5 {
               messageId: 'suggestUnknown',
               output: `
 interface Garply5 {
-  f(...args: unknown): void;
+  f(...args: unknown[]): void;
 }
       `,
             },
@@ -2039,7 +2041,7 @@ interface Garply5 {
           suggestions: [
             {
               messageId: 'suggestUnknown',
-              output: 'declare function waldo5(...args: unknown): void;',
+              output: 'declare function waldo5(...args: unknown[]): void;',
             },
             {
               messageId: 'suggestNever',
