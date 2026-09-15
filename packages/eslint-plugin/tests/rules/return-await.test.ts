@@ -7,6 +7,9 @@ const ruleTester = createRuleTesterWithTypes();
 
 // default rule is in-try-catch
 ruleTester.run('return-await', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'return;', // No function in scope, so behave like return in a commonjs module
     `

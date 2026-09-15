@@ -14,6 +14,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-relative-paths-to-internal-packages', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: "import { parse } from '../../../typescript-estree';",

@@ -7,6 +7,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-useless-default-assignment', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function Bar({ foo = '' }: { foo?: string }) {
@@ -928,9 +931,7 @@ function Bar({ foo }: { foo: string }) {
         },
       },
       options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
+        { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true },
       ],
       output: null,
     },
@@ -942,6 +943,7 @@ const { a = 'baz' } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -970,6 +972,7 @@ const { a = 'baz' } =
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -998,6 +1001,7 @@ const { a = 'baz' } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -1021,6 +1025,7 @@ const { a = 'baz' } = cond ? { a() {} } : { a: 'bar' };
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -1044,6 +1049,7 @@ const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 16,
           endLine: 2,
           line: 2,

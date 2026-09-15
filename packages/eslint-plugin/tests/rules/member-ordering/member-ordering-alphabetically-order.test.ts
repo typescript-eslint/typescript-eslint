@@ -5,6 +5,9 @@ import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 const ruleTester = new RuleTester();
 
 ruleTester.run('member-ordering-alphabetically-order', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     // Without grouping
     // default option + interface + wrong order

@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unsafe-declaration-merging', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 interface Foo {}
