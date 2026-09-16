@@ -1,24 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/explicit-function-return-type.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 19
-    }
-  },
-  "packages/eslint-plugin/tests/rules/explicit-member-accessibility.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 12
-    }
-  },
-  "packages/eslint-plugin/tests/rules/explicit-module-boundary-types.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 16
-    }
-  },
-  "packages/eslint-plugin/tests/rules/init-declarations.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 5
-    }
-  },
   "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-case-insensitive-order.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 11
