@@ -1,9 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/dot-notation.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
   "packages/eslint-plugin/tests/rules/explicit-function-return-type.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 19
