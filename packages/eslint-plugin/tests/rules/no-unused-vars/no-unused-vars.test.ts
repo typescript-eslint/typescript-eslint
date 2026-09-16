@@ -1349,26 +1349,6 @@ export type A = typeof A;
     },
     {
       code: `
-export const Both = 0;
-export type Both = typeof Both;
-      `,
-      errors: [
-        {
-          column: 14,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'Both',
-          },
-          endColumn: 18,
-          endLine: 2,
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
 const foo = 1;
 export type Foo = typeof foo;
       `,
@@ -3458,6 +3438,10 @@ export const x: _Foo = 1;
 export const foo: number = 1;
 
 export type Foo = typeof foo;
+    `,
+    `
+export const Both = 0;
+export type Both = typeof Both;
     `,
     `
 import { foo } from 'foo';
