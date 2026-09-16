@@ -1326,6 +1326,87 @@ export type Foo = typeof foo;
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10658
+    {
+      code: `
+const A = 0;
+export type A = typeof A;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'A',
+          },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+export const Both = 0;
+export type Both = typeof Both;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'Both',
+          },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = 1;
+export type Foo = typeof foo;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const inner = 0;
+export type Outer = typeof inner;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'inner',
+          },
+          endColumn: 12,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
     {
       code: `
 declare const foo: number;
@@ -3394,6 +3475,16 @@ export const value = 1234 as typeof SomeType;
 import { foo } from 'foo';
 
 export type Bar = typeof foo;
+    `,
+    `
+const value = 123;
+console.log(value);
+export type Value = typeof value;
+    `,
+    `
+interface LocalName {}
+const LocalName = 0;
+export type UsesLocalName = LocalName;
     `,
     {
       code: `

@@ -419,11 +419,35 @@ const MERGEABLE_TYPES = new Set([
   AST_NODE_TYPES.TSModuleDeclaration,
   AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
+
+function isMergedTypeValueVariable(variable: ScopeVariable): boolean {
+  return (
+    'isTypeVariable' in variable &&
+    'isValueVariable' in variable &&
+    variable.isTypeVariable &&
+    variable.isValueVariable
+  );
+}
+
+function hasTypeQueryOrPredicateReference(variable: ScopeVariable): boolean {
+  return variable.references.some(
+    ref =>
+      referenceContainsTypeQuery(ref.identifier) ||
+      referenceContainsTypePredicate(ref.identifier),
+  );
+}
 /**
  * Determine if the variable is directly exported
  * @param variable the variable to check
  */
 function isMergeableExported(variable: ScopeVariable): boolean {
+  if (
+    isMergedTypeValueVariable(variable) &&
+    hasTypeQueryOrPredicateReference(variable)
+  ) {
+    return false;
+  }
+
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
   for (const def of variable.defs) {
     // parameters can never be exported.
@@ -451,6 +475,13 @@ function isMergeableExported(variable: ScopeVariable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: ScopeVariable): boolean {
+  if (
+    isMergedTypeValueVariable(variable) &&
+    hasTypeQueryOrPredicateReference(variable)
+  ) {
+    return false;
+  }
+
   return variable.defs.some(definition => {
     let node = definition.node;
 
