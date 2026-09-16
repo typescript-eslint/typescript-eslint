@@ -1,19 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/consistent-indexed-object-style.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
-  "packages/eslint-plugin/tests/rules/consistent-return.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/consistent-type-imports.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 15
-    }
-  },
   "packages/eslint-plugin/tests/rules/dot-notation.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 1
