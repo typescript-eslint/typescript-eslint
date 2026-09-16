@@ -790,6 +790,7 @@ interface Foo {
         },
       ],
     },
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 interface Foo {
@@ -819,6 +820,7 @@ interface Foo {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class Foo {
@@ -971,6 +973,7 @@ class Foo {
       ],
     },
     // private members
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class Test {
@@ -999,5 +1002,6 @@ class Test {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
   ],
 });

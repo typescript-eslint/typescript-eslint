@@ -1,14 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/adjacent-overload-signatures.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
-  "packages/eslint-plugin/tests/rules/await-thenable.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
   "packages/eslint-plugin/tests/rules/consistent-indexed-object-style.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 2
