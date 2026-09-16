@@ -1,9 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-case-insensitive-order.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 11
-    }
-  },
   "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-order.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 32
