@@ -53,7 +53,9 @@
       "outputs": [
         "{projectRoot}/dist/**/*.{d.ts,d.cts,d.mts}",
         "{projectRoot}/dist/*.tsbuildinfo",
-        "{workspaceRoot}/dist/packages/{projectName}"
+        "{workspaceRoot}/dist/packages/{projectName}",
+        "{workspaceRoot}/dist/tsconfig.spec.tsbuildinfo",
+        "{workspaceRoot}/dist/*.{d.ts,d.cts,d.mts}"
       ]
     },
     "typecheck": {
@@ -67,7 +69,9 @@
       "outputs": [
         "{projectRoot}/dist/**/*.{d.ts,d.cts,d.mts}",
         "{projectRoot}/dist/*.tsbuildinfo",
-        "{workspaceRoot}/dist/packages/{projectName}"
+        "{workspaceRoot}/dist/packages/{projectName}",
+        "{workspaceRoot}/dist/tsconfig.spec.tsbuildinfo",
+        "{workspaceRoot}/dist/*.{d.ts,d.cts,d.mts}"
       ]
     },
     "lint": {
