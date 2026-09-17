@@ -14,44 +14,9 @@
       "count": 4
     }
   },
-  "packages/eslint-plugin/tests/rules/method-signature-style.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 21
-    }
-  },
   "packages/eslint-plugin/tests/rules/naming-convention/naming-convention.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 77
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-deprecated.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-dupe-class-members.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-duplicate-enum-values.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-empty-object-type.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-explicit-any.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
     }
   },
   "packages/eslint-plugin/tests/rules/no-floating-promises.test.ts": {

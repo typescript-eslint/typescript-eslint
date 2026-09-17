@@ -236,6 +236,8 @@ interface Base {
         },
       ],
     },
+    // Verify multiple empty interfaces with same name
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 interface Base {}
@@ -261,6 +263,7 @@ interface Base {}
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 interface Base {}
