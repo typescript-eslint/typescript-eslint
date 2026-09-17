@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > special > ImportAttribute > _error_ > expression-value > TSESTree - Error`]
+TSError
+> 1 | export { data } from 'mod' with { type: getType() };
+    |                                         ^^^^^^^^^ String literal expected.
+  2 |
