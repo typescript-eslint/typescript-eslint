@@ -42,7 +42,7 @@ await createValue();
 
 ## Async Iteration (`for await...of` Loops)
 
-This rule also inspects [`for await...of` statements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of), and reports if the value being iterated over is not async-iterable.
+This rule also inspects [`for await...of` statements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of), and reports if the value being iterated over is not an async iterable or if the values produced are not Thenables.
 
 :::info[Why does the rule report on `for await...of` loops used on an array of Promises?]
 
@@ -51,9 +51,9 @@ There are some tiny nuances that you may want to consider.
 
 The biggest difference between using `for await...of` and using `for...of` (apart from awaiting each result yourself) is error handling.
 When an error occurs within the loop body, `for await...of` does _not_ close the original sync iterable, while `for...of` does.
-For detailed examples of this, see the [MDN documentation on using `for await...of` with sync-iterables](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of#iterating_over_sync_iterables_and_generators).
+For detailed examples of this, see the [MDN documentation on using `for await...of` with sync-iterables](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of).
 
-Also consider whether you need sequential awaiting at all. Using `for await...of` may obscure potential opportunities for concurrent processing, such as those reported by [`no-await-in-loop`](https://eslint.org/docs/latest/rules/no-await-in-loop). Consider instead using one of the [promise concurrency methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#promise_concurrency) for better performance.
+Also consider whether you need sequential awaiting at all. Using `for await...of` may obscure potential opportunities for concurrent processing, such as those reported by [`no-await-in-loop`](https://eslint.org/docs/latest/rules/no-await-in-loop).
 
 :::
 
@@ -210,10 +210,8 @@ await Promise.all([createValue(), createValue()]);
 
 ### `allowMixedPromiseArrays`
 
-{/* insert option description */}
-
-By default, an array or other iterable whose values may or may not be Thenables is reported when it is passed to a promise aggregator method, unless it is written as an array literal.
-Setting this option to `true` allows any input that mixes Thenables with other values, as long as at least one of its values could be a Thenable.
+By default, this rule reports arrays and other iterables whose values are never Thenables when they are passed to a promise aggregator method.
+Setting this option to `true` allows inputs that mix Thenables with other values, as long as at least one value could be a Thenable.
 This can be useful for code that collects optional work, such as an array of `Promise<T> | null`.
 
 Inputs that contain no Thenables at all are still reported.
