@@ -21,8 +21,6 @@ export const CONTENTS = {
 
 const homeOrTmpDir = os.tmpdir() || os.homedir();
 
-// The persistent parse tests are split across multiple files so they can run in parallel,
-// so each file gets its own parent directory to avoid removing another file's projects.
 let tmpDirsParentDirectory: string;
 
 /**
