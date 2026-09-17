@@ -39,19 +39,21 @@ const WINDOWS_EXCLUDED_PACKAGES = [
 const LINUX_GROUPS = [
   ['typescript-estree'],
   [
-    'ast-spec',
-    'eslint-plugin-internal',
-    'parser',
     'project-service',
     'repo',
     'rule-schema-to-typescript-types',
-    'rule-tester',
-    'scope-manager',
     'tsconfig-utils',
     'type-utils',
-    'types',
     'typescript-eslint',
     'utils',
+  ],
+  [
+    'ast-spec',
+    'eslint-plugin-internal',
+    'parser',
+    'rule-tester',
+    'scope-manager',
+    'types',
     'visitor-keys',
   ],
 ];
