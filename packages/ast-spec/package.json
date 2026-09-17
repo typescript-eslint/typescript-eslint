@@ -83,19 +83,11 @@
         "command": "eslint"
       },
       "typecheck": {
-        "outputs": [
-          "{workspaceRoot}/dist",
-          "{projectRoot}/dist"
-        ],
         "dependsOn": [
           "typescript-estree:build"
         ]
       },
       "typecheck:tsgo": {
-        "outputs": [
-          "{workspaceRoot}/dist",
-          "{projectRoot}/dist"
-        ],
         "dependsOn": [
           "typescript-estree:build"
         ]
