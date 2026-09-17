@@ -97,7 +97,7 @@ jobs:
       # so we're creating the whole matrix dynamically instead.
       - name: Create test matrices from affected projects
         id: filter
-        run: pnpm exec tsx tools/scripts/generate-ci-test-matrices.mts
+        run: node tools/scripts/generate-ci-test-matrices.mts
         env:
           AFFECTED: ${{ steps.affected.outputs.affected }}
 
