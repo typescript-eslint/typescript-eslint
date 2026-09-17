@@ -23,7 +23,7 @@ jobs:
       github.event.review.state == 'approved' ||
       github.event.review.state == 'changes_requested'
 
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     steps:
       - name: Record intent
         env:
