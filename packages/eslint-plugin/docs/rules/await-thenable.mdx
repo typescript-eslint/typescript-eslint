@@ -210,6 +210,8 @@ await Promise.all([createValue(), createValue()]);
 
 ### `allowMixedPromiseArrays`
 
+{/* insert option description */}
+
 By default, this rule reports arrays and other iterables whose values are never Thenables when they are passed to a promise aggregator method.
 Setting this option to `true` allows inputs that mix Thenables with other values, as long as at least one value could be a Thenable.
 This can be useful for code that collects optional work, such as an array of `Promise<T> | null`.
