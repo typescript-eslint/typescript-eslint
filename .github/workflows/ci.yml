@@ -1,5 +1,6 @@
 # NOTE: The name of this workflow is significant - it is used as the identifier for the workflow_run trigger in the release workflow
 name: CI
+# CI timing sample 1 (temporary, to be removed)
 
 on:
   push:
