@@ -5,18 +5,26 @@ import { useCodeBlockContext } from '@docusaurus/theme-common/internal';
 import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 
+import type { CodeDiagnostic } from '../../../../plugins/generated-rule-docs/codeDiagnostics';
+
 import styles from './styles.module.css';
 
 interface DiagnosticMarkerProps {
   children: ReactNode;
   focusable: boolean;
-  messages: readonly string[];
+  diagnostics: readonly CodeDiagnostic[];
 }
 
 interface UnderlineSegment {
   bottom: number;
   left: number;
   width: number;
+}
+
+function formatDiagnosticLocation(diagnostic: CodeDiagnostic) {
+  const start = `${diagnostic.startLine + 1}:${diagnostic.startColumn + 1}`;
+  const end = `${diagnostic.endLine + 1}:${diagnostic.endColumn + 1}`;
+  return `${start} - ${end}`;
 }
 
 function getWrappedUnderlineSegments(
@@ -68,15 +76,18 @@ function getWrappedUnderlineSegments(
 
 export function DiagnosticMarker({
   children,
+  diagnostics,
   focusable,
-  messages,
 }: DiagnosticMarkerProps): React.JSX.Element {
   const { wordWrap } = useCodeBlockContext();
   const contentRef = useRef<HTMLSpanElement>(null);
   const [underlineSegments, setUnderlineSegments] = useState<
     UnderlineSegment[]
   >([]);
-  const accessibleMessage = messages.join('; ');
+  const diagnosticMessages = diagnostics.map(
+    diagnostic =>
+      `${diagnostic.message} ${formatDiagnosticLocation(diagnostic)}`,
+  );
 
   useEffect(() => {
     if (!wordWrap.isEnabled) {
@@ -105,7 +116,7 @@ export function DiagnosticMarker({
       <Tooltip.Trigger
         aria-label={
           focusable
-            ? `Lint error${messages.length > 1 ? 's' : ''}: ${accessibleMessage}`
+            ? `Lint error${diagnostics.length > 1 ? 's' : ''}: ${diagnosticMessages.join('; ')}`
             : undefined
         }
         className={clsx(
@@ -133,11 +144,10 @@ export function DiagnosticMarker({
           sideOffset={8}
         >
           <Tooltip.Popup className={styles.diagnosticTooltip}>
-            {messages.map((message, index) => (
-              <React.Fragment key={`${index}:${message}`}>
-                {index > 0 && <br />}
+            {diagnosticMessages.map((message, index) => (
+              <div key={index} className={styles.diagnosticTooltipItem}>
                 {message}
-              </React.Fragment>
+              </div>
             ))}
           </Tooltip.Popup>
         </Tooltip.Positioner>

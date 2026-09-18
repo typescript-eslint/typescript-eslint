@@ -101,10 +101,10 @@ function groupLineParts(parts: readonly LinePart[]) {
   return groups;
 }
 
-function getDiagnosticMessages(ranges: readonly LineDiagnosticRange[]) {
+function getUniqueDiagnostics(ranges: readonly LineDiagnosticRange[]) {
   return [
     ...new Map(
-      ranges.map(range => [range.diagnosticIndex, range.diagnostic.message]),
+      ranges.map(range => [range.diagnosticIndex, range.diagnostic] as const),
     ).values(),
   ];
 }
@@ -146,7 +146,7 @@ export function DiagnosticLine({
           <DiagnosticMarker
             key={group.parts[0].key}
             focusable={focusable}
-            messages={getDiagnosticMessages(group.ranges)}
+            diagnostics={getUniqueDiagnostics(group.ranges)}
           >
             {group.parts.map(part => {
               const tokenProps = getTokenProps({

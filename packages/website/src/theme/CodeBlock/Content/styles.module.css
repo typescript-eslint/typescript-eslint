@@ -81,6 +81,10 @@
   white-space: normal;
 }
 
+.diagnosticTooltipItem + .diagnosticTooltipItem {
+  margin-top: 0.25rem;
+}
+
 :global(html[data-theme='dark']) .diagnostic {
   --diagnostic-color: #ff8a80;
 }
