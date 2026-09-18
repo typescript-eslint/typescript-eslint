@@ -28,7 +28,6 @@
   background-color: transparent;
   color: inherit;
   font: inherit;
-  line-height: inherit;
   text-align: inherit;
 }
 
@@ -71,7 +70,7 @@
   padding: 0.5rem 0.65rem;
   border: 1px solid #ef9a9a;
   border-radius: var(--ifm-global-radius);
-  background: #fff5f5;
+  background-color: #fff5f5;
   box-shadow: var(--ifm-global-shadow-md);
   color: #731515;
   font-family: var(--ifm-font-family-base);

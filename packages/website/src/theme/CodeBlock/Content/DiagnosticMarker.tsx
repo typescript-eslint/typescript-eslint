@@ -21,10 +21,10 @@ interface UnderlineSegment {
   width: number;
 }
 
-function formatDiagnosticLocation(diagnostic: CodeDiagnostic) {
-  const start = `${diagnostic.startLine + 1}:${diagnostic.startColumn + 1}`;
-  const end = `${diagnostic.endLine + 1}:${diagnostic.endColumn + 1}`;
-  return `${start} - ${end}`;
+function formatDiagnosticMessage(diagnostic: CodeDiagnostic) {
+  const startLocation = `${diagnostic.startLine + 1}:${diagnostic.startColumn + 1}`;
+  const endLocation = `${diagnostic.endLine + 1}:${diagnostic.endColumn + 1}`;
+  return `${diagnostic.message} ${startLocation} - ${endLocation}`;
 }
 
 function getWrappedUnderlineSegments(
@@ -40,7 +40,7 @@ function getWrappedUnderlineSegments(
   const lineHeight = Number.parseFloat(getComputedStyle(marker).lineHeight);
   const lines = new Map<number, { left: number; right: number; top: number }>();
 
-  // Syntax-highlighted spans produce multiple rectangles on each rendered line.
+  // A wrapped diagnostic can span multiple rendered lines, but one ::after element cannot underline each line independently.
   for (const rect of rects) {
     if (rect.width === 0) {
       continue;
@@ -84,10 +84,7 @@ export function DiagnosticMarker({
   const [underlineSegments, setUnderlineSegments] = useState<
     UnderlineSegment[]
   >([]);
-  const diagnosticMessages = diagnostics.map(
-    diagnostic =>
-      `${diagnostic.message} ${formatDiagnosticLocation(diagnostic)}`,
-  );
+  const diagnosticMessages = diagnostics.map(formatDiagnosticMessage);
 
   useEffect(() => {
     if (!wordWrap.isEnabled) {

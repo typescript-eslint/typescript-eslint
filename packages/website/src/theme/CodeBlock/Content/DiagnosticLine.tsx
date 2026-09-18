@@ -8,7 +8,7 @@ import type { LineDiagnosticRange } from '../diagnosticRanges';
 import { DiagnosticMarker } from './DiagnosticMarker';
 
 interface DiagnosticLineProps {
-  classNames: string[] | undefined;
+  classNames?: string[] | undefined;
   getLineProps: RenderProps['getLineProps'];
   getTokenProps: RenderProps['getTokenProps'];
   line: Token[];
