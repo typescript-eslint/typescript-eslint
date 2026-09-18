@@ -3089,6 +3089,19 @@ export type Test<U> = U extends (arg: {
   ? I
   : never;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6253
+    `
+export type Test<T> = T extends (T extends unknown ? infer U : never)
+  ? U
+  : never;
+    `,
+    `
+export type Test<T> = T extends (
+  T extends object ? NonNullable<infer U> : infer U
+)
+  ? { [K in keyof U]: U[K] }
+  : never;
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/2455
     {
       code: `
