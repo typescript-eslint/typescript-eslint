@@ -1160,31 +1160,39 @@ function hasMatchingPromiseTypeArgument(
     checker.getApparentType(type),
   );
 
-  const promiseType = unionConstituents.find(type =>
+  const promiseTypes = unionConstituents.filter(type =>
     tsutils.isThenableType(checker, node, type),
   );
-  if (!promiseType) {
+  if (promiseTypes.length === 0) {
     return false;
   }
 
   const nonPromiseUnionConstituents = unionConstituents.filter(
-    type => type !== promiseType,
+    type => !promiseTypes.includes(type),
   );
-  const awaitedType = checker.getAwaitedType(promiseType);
+  const awaitedTypeConstituents: ts.Type[] = [];
 
-  if (!awaitedType) {
-    return false;
+  for (const promiseType of promiseTypes) {
+    const awaitedType = checker.getAwaitedType(promiseType);
+    if (!awaitedType) {
+      return false;
+    }
+    awaitedTypeConstituents.push(...tsutils.unionConstituents(awaitedType));
   }
 
-  const awaitedTypeConstituents = tsutils.unionConstituents(awaitedType);
+  const typesAreEquivalent = (left: ts.Type, right: ts.Type): boolean =>
+    checker.isTypeAssignableTo(left, right) &&
+    checker.isTypeAssignableTo(right, left);
 
   return (
-    nonPromiseUnionConstituents.length === awaitedTypeConstituents.length &&
     nonPromiseUnionConstituents.every(type =>
-      awaitedTypeConstituents.some(
-        awaited =>
-          checker.isTypeAssignableTo(type, awaited) &&
-          checker.isTypeAssignableTo(awaited, type),
+      awaitedTypeConstituents.some(awaited =>
+        typesAreEquivalent(type, awaited),
+      ),
+    ) &&
+    awaitedTypeConstituents.every(awaited =>
+      nonPromiseUnionConstituents.some(type =>
+        typesAreEquivalent(type, awaited),
       ),
     )
   );
