@@ -419,6 +419,32 @@ const MERGEABLE_TYPES = new Set([
   AST_NODE_TYPES.TSModuleDeclaration,
   AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
+
+function isMergedTypeValueVariable(variable: ScopeVariable): boolean {
+  return (
+    'isTypeVariable' in variable &&
+    'isValueVariable' in variable &&
+    variable.isTypeVariable &&
+    variable.isValueVariable
+  );
+}
+
+/**
+ * @param variable the variable to check
+ * @param node the node from a some def of variable
+ * @returns `true` if variable is type/value duality and declaration is type declaration
+ */
+function isMergedTypeDeclaration(
+  variable: ScopeVariable,
+  node: TSESTree.Node,
+): boolean {
+  return (
+    (node.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+      node.type === AST_NODE_TYPES.TSInterfaceDeclaration) &&
+    isMergedTypeValueVariable(variable)
+  );
+}
+
 /**
  * Determine if the variable is directly exported
  * @param variable the variable to check
@@ -438,7 +464,7 @@ function isMergeableExported(variable: ScopeVariable): boolean {
         def.node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
       def.node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ) {
-      return true;
+      return !isMergedTypeDeclaration(variable, def.node);
     }
   }
 
@@ -451,17 +477,49 @@ function isMergeableExported(variable: ScopeVariable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: ScopeVariable): boolean {
-  return variable.defs.some(definition => {
-    let node = definition.node;
+  if (!isMergedTypeValueVariable(variable)) {
+    return variable.defs.some(definition => {
+      let node = definition.node;
 
-    if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-      node = node.parent;
-    } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
-      return false;
+      if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+        node = node.parent;
+      } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
+        return false;
+      }
+
+      return node.parent.type.startsWith('Export');
+    });
+  }
+
+  let hasExportedValue = false;
+  for (const definition of variable.defs) {
+    if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
+      continue;
     }
 
-    return node.parent.type.startsWith('Export');
-  });
+    const node =
+      definition.node.type === AST_NODE_TYPES.VariableDeclarator
+        ? definition.node.parent
+        : definition.node;
+
+    if (
+      node.type === AST_NODE_TYPES.TSEnumDeclaration ||
+      node.type === AST_NODE_TYPES.TSModuleDeclaration ||
+      node.type === AST_NODE_TYPES.ClassDeclaration ||
+      node.type === AST_NODE_TYPES.TSImportEqualsDeclaration
+    ) {
+      return node.parent.type.startsWith('Export');
+    }
+
+    if (
+      !isMergedTypeDeclaration(variable, node) &&
+      node.parent.type.startsWith('Export')
+    ) {
+      hasExportedValue = true;
+    }
+  }
+
+  return hasExportedValue;
 }
 
 const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['??=', '&&=', '||=']);
