@@ -32,9 +32,8 @@
   text-align: inherit;
 }
 
-.diagnostic::after {
-  right: 0;
-  left: 0;
+.diagnostic::after,
+.diagnosticUnderline {
   position: absolute;
   bottom: 0;
   height: 3px;
@@ -44,7 +43,16 @@
   mask-repeat: repeat-x;
   mask-size: 6px 3px;
   pointer-events: none;
+}
+
+.diagnostic::after {
+  right: 0;
+  left: 0;
   content: '';
+}
+
+.diagnosticWrapped::after {
+  display: none;
 }
 
 .diagnostic:focus-visible {
