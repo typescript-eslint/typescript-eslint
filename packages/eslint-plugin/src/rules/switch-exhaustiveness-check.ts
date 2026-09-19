@@ -7,7 +7,6 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  getValueOfLiteralType,
   isClosingBraceToken,
   isOpeningBraceToken,
   nullThrows,
@@ -151,6 +150,14 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function getSortKey(type: ts.Type): string {
+      const declaration = type.getSymbol()?.valueDeclaration?.parent;
+
+      return declaration && ts.isEnumDeclaration(declaration)
+        ? declaration.name.text
+        : typeToString(type);
+    }
+
     function getSwitchMetadata(node: TSESTree.SwitchStatement): SwitchMetadata {
       const defaultCase = node.cases.find(
         switchCase => switchCase.test == null,
@@ -211,8 +218,8 @@ export default createRule<Options, MessageIds>({
       return {
         containsNonLiteralType,
         defaultCase: defaultCase ?? getCommentDefaultCase(node),
-        missingLiteralBranchTypes: missingLiteralBranchTypes.sort(
-          compareMissingLiteralBranchTypes,
+        missingLiteralBranchTypes: missingLiteralBranchTypes.sort((a, b) =>
+          getSortKey(a).localeCompare(getSortKey(b), 'en', { numeric: true }),
         ),
         symbolName,
       };
@@ -411,77 +418,6 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
-
-const LITERAL_KINDS = [
-  ts.TypeFlags.StringLiteral,
-  ts.TypeFlags.NumberLiteral,
-  ts.TypeFlags.BigIntLiteral,
-  ts.TypeFlags.BooleanLiteral,
-  ts.TypeFlags.UniqueESSymbol,
-  ts.TypeFlags.Undefined,
-  ts.TypeFlags.Null,
-  ts.TypeFlags.EnumLike,
-];
-
-/** Kinds from this one on have no value to sort by. */
-const FIRST_DECLARATION_ORDER_KIND = LITERAL_KINDS.indexOf(
-  ts.TypeFlags.UniqueESSymbol,
-);
-
-function compareMissingLiteralBranchTypes(a: ts.Type, b: ts.Type): number {
-  const kind = getLiteralKind(a);
-  const kindDifference = kind - getLiteralKind(b);
-
-  if (kindDifference !== 0) {
-    return kindDifference;
-  }
-
-  if (kind < FIRST_DECLARATION_ORDER_KIND) {
-    return compareValues(getSortKey(a), getSortKey(b));
-  }
-
-  // Enum members keep the declaration order the compiler reports them in, since
-  // `Enum.Up | Enum.Down` reads better than the alphabetical `Enum.Down |
-  // Enum.Up`. They still need grouping by their enum: which of two enums the
-  // compiler resolved first depends on the other files in the lint run. Two
-  // enums that share a name still tie, and so still follow the compiler.
-  return compareValues(getEnumName(a), getEnumName(b));
-}
-
-function getEnumName(type: ts.Type): string {
-  const declaration = type.getSymbol()?.valueDeclaration?.parent;
-
-  return declaration && ts.isEnumDeclaration(declaration)
-    ? declaration.name.text
-    : '';
-}
-
-function getLiteralKind(type: ts.Type): number {
-  // An enum member also carries StringLiteral or NumberLiteral, so it has to be
-  // matched before them.
-  return tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
-    ? LITERAL_KINDS.indexOf(ts.TypeFlags.EnumLike)
-    : LITERAL_KINDS.findIndex(flag => tsutils.isTypeFlagSet(type, flag));
-}
-
-function getSortKey(type: ts.Type): bigint | boolean | number | string {
-  if (
-    tsutils.isStringLiteralType(type) ||
-    tsutils.isNumberLiteralType(type) ||
-    tsutils.isBigIntLiteralType(type)
-  ) {
-    return getValueOfLiteralType(type);
-  }
-
-  return tsutils.isTrueLiteralType(type);
-}
-
-function compareValues<T extends bigint | boolean | number | string>(
-  a: T,
-  b: T,
-): number {
-  return a < b ? -1 : a > b ? 1 : 0;
-}
 
 function isTypeLiteralLikeType(type: ts.Type): boolean {
   return tsutils.isTypeFlagSet(

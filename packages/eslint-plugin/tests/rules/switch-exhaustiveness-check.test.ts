@@ -1250,7 +1250,7 @@ switch (value) {
       errors: [
         {
           column: 9,
-          data: { missingBranches: '"1" | 1 | undefined | null' },
+          data: { missingBranches: '"1" | 1 | null | undefined' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1263,8 +1263,8 @@ declare const value: (string & { foo: 'bar' }) | '1' | 1 | null | undefined;
 switch (value) {
 case "1": { throw new Error('Not implemented yet: "1" case') }
 case 1: { throw new Error('Not implemented yet: 1 case') }
-case undefined: { throw new Error('Not implemented yet: undefined case') }
 case null: { throw new Error('Not implemented yet: null case') }
+case undefined: { throw new Error('Not implemented yet: undefined case') }
 }
       `,
             },
@@ -3221,7 +3221,7 @@ switch (value) {
       errors: [
         {
           column: 9,
-          data: { missingBranches: '"B" | "a" | "c" | undefined | null' },
+          data: { missingBranches: '"a" | "B" | "c" | null | undefined' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -3232,11 +3232,11 @@ switch (value) {
               output: `
 declare const value: 'c' | 'a' | 'B' | null | undefined;
 switch (value) {
-case "B": { throw new Error('Not implemented yet: "B" case') }
 case "a": { throw new Error('Not implemented yet: "a" case') }
+case "B": { throw new Error('Not implemented yet: "B" case') }
 case "c": { throw new Error('Not implemented yet: "c" case') }
-case undefined: { throw new Error('Not implemented yet: undefined case') }
 case null: { throw new Error('Not implemented yet: null case') }
+case undefined: { throw new Error('Not implemented yet: undefined case') }
 }
       `,
             },
@@ -3296,7 +3296,7 @@ switch (value) {
           column: 9,
           data: {
             missingBranches:
-              '"x" | 10 | 2n | true | undefined | null | Enum.b | Enum.a',
+              '"x" | 2n | 10 | Enum.b | Enum.a | null | true | undefined',
           },
           endColumn: 14,
           endLine: 7,
@@ -3313,13 +3313,13 @@ enum Enum {
 declare const value: 'x' | 10 | 2n | true | Enum | null | undefined;
 switch (value) {
 case "x": { throw new Error('Not implemented yet: "x" case') }
-case 10: { throw new Error('Not implemented yet: 10 case') }
 case 2n: { throw new Error('Not implemented yet: 2n case') }
-case true: { throw new Error('Not implemented yet: true case') }
-case undefined: { throw new Error('Not implemented yet: undefined case') }
-case null: { throw new Error('Not implemented yet: null case') }
+case 10: { throw new Error('Not implemented yet: 10 case') }
 case Enum.b: { throw new Error('Not implemented yet: Enum.b case') }
 case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
+case null: { throw new Error('Not implemented yet: null case') }
+case true: { throw new Error('Not implemented yet: true case') }
+case undefined: { throw new Error('Not implemented yet: undefined case') }
 }
       `,
             },
