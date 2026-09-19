@@ -49,7 +49,7 @@ nodeIntegrationTest(__filename, 'lint.mjs', stderr => {
   ) as { devDependencies: Record<string, string> };
 
   expect(packageJson.devDependencies['@typescript/native']).toBe(
-    'npm:typescript@7.1.0-dev.20260822.1',
+    'npm:typescript@7.1.0-dev.20260918.1',
   );
   expect(packageJson.devDependencies.typescript).toBe(
     'npm:@typescript/typescript6@6.0.2',

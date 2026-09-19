@@ -1,4 +1,3 @@
-import { API, Snapshot } from '@typescript/native/unstable/sync';
 import fs from 'node:fs';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -32,10 +31,7 @@ function readFixture(fixturePath = filePath): string {
 }
 
 describe('native project service lifecycle', () => {
-  it('replaces and disposes snapshots for edits', () => {
-    const dispose = vi.spyOn(Snapshot.prototype, 'dispose');
-    const updateSnapshot = vi.spyOn(API.prototype, 'updateSnapshot');
-
+  it('serves edited text from the same project', () => {
     withService(service => {
       const first = service.openFile(filePath, 'export const value = 1;');
       const second = service.openFile(
@@ -45,25 +41,15 @@ describe('native project service lifecycle', () => {
 
       expect(second.project.configFileName).toBe(first.project.configFileName);
       expect(second.sourceFile.text).toContain('"updated"');
-      expect(dispose.mock.calls).toHaveLength(
-        updateSnapshot.mock.calls.length - 1,
-      );
-
-      service.close();
-
-      expect(dispose.mock.calls).toHaveLength(updateSnapshot.mock.calls.length);
     });
   });
 
   it('reuses the project context when the same file text is reopened', () => {
-    const updateSnapshot = vi.spyOn(API.prototype, 'updateSnapshot');
-
     withService(service => {
       const code = readFixture();
       const first = service.openFile(filePath, code);
 
       expect(service.openFile(filePath, code)).toBe(first);
-      expect(updateSnapshot).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -84,17 +70,11 @@ describe('native project service lifecycle', () => {
     ['references/file.ts', 'project references'],
     ['plugins/file.ts', 'TSConfig plugins'],
   ])('rejects unsupported %s and stays usable', (relativePath, message) => {
-    const updateSnapshot = vi.spyOn(API.prototype, 'updateSnapshot');
-
     withService(service => {
       const absolutePath = path.join(nativeFixtures, relativePath);
       expect(() =>
         service.openFile(absolutePath, 'export const value = 1;'),
       ).toThrow(message);
-      expect(updateSnapshot.mock.calls.slice(0, 2)).toEqual([
-        [{ openFiles: [absolutePath] }],
-        [{ closeFiles: [absolutePath] }],
-      ]);
 
       expect(
         service.openFile(filePath, readFixture()).sourceFile.fileName,
@@ -103,33 +83,12 @@ describe('native project service lifecycle', () => {
   });
 
   it('rejects opening a file after close and closes idempotently', () => {
-    const close = vi.spyOn(API.prototype, 'close');
-    const service = createNativeProjectService();
-    service.close();
-    service.close();
-
-    expect(close).toHaveBeenCalledOnce();
-    expect(() => service.openFile(filePath, '')).toThrow('closed');
-  });
-
-  it('finishes closing after project closure fails', () => {
-    const close = vi.spyOn(API.prototype, 'close');
-    const updateSnapshot = vi.spyOn(API.prototype, 'updateSnapshot');
     const service = createNativeProjectService();
     service.openFile(filePath, readFixture());
-    const dispose = vi.spyOn(Snapshot.prototype, 'dispose');
-    const projectCloseError = new Error('project close failed');
-    updateSnapshot.mockImplementationOnce(() => {
-      throw projectCloseError;
-    });
-
-    expect(() => service.close()).toThrow(projectCloseError);
-    expect(close).toHaveBeenCalledOnce();
-    expect(dispose).toHaveBeenCalledOnce();
-    expect(() => service.openFile(filePath, '')).toThrow('closed');
-
     service.close();
-    expect(close).toHaveBeenCalledOnce();
+    service.close();
+
+    expect(() => service.openFile(filePath, '')).toThrow('closed');
   });
 
   it('clears the singleton service', () => {

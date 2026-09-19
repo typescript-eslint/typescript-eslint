@@ -540,9 +540,6 @@ jobs:
         package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
         backend: [classic, native]
         include:
-          # The typed rule tests are where the native backend needs coverage,
-          # and they run against the built package where the lazy `require`
-          # resolves.
           - package: eslint-plugin
             backend: native
     env:
@@ -557,7 +554,6 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-          # The native backend requires Node.js 22 or newer.
           node-version: 22
       - name: Build
         uses: ./.github/actions/prepare-build

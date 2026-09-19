@@ -1,7 +1,9 @@
-import type { Project, Snapshot } from '@typescript/native/unstable/sync';
+import type {
+  CreateSnapshotParams,
+  Project,
+  Snapshot,
+} from '@typescript/native/unstable/sync';
 
-import nativePackage from '@typescript/native/package.json';
-import { SyntaxKind } from '@typescript/native/unstable/ast';
 import { API } from '@typescript/native/unstable/sync';
 import path from 'node:path';
 import * as ts from 'typescript';
@@ -9,33 +11,6 @@ import * as ts from 'typescript';
 import type { NativeProjectContext, NativeProjectService } from './types';
 
 const CLOSED_ERROR = 'The TypeScript native project service is closed.';
-const SUPPORTED_NATIVE_VERSION = '7.1.0-dev.20260822.1';
-
-function verifyNativeCompatibility(): void {
-  if (nativePackage.version !== SUPPORTED_NATIVE_VERSION) {
-    throw new Error(
-      `Incompatible @typescript/native version "${nativePackage.version}". This version of typescript-eslint supports only "${SUPPORTED_NATIVE_VERSION}". Install @typescript/native@${SUPPORTED_NATIVE_VERSION}.`,
-    );
-  }
-
-  const api: unknown = API;
-  const prototype = (api as { prototype?: Record<string, unknown> }).prototype;
-  const missingSurface = (
-    [
-      ['API', api],
-      ['API.prototype.updateSnapshot', prototype?.updateSnapshot],
-      ['API.prototype.close', prototype?.close],
-      ['SyntaxKind.SourceFile', SyntaxKind.SourceFile],
-    ] as const
-  ).find(
-    ([, value]) => typeof value !== 'function' && typeof value !== 'number',
-  )?.[0];
-  if (missingSurface) {
-    throw new Error(
-      `Incompatible @typescript/native API version "${nativePackage.version}": required surface "${missingSurface}" is missing. Reinstall @typescript/native@${SUPPORTED_NATIVE_VERSION}.`,
-    );
-  }
-}
 
 function startupError(error: unknown): Error {
   return new Error(
@@ -72,7 +47,6 @@ function verifySupportedConfig(project: Project): void {
 export function createNativeProjectService(
   cwd = process.cwd(),
 ): NativeProjectService {
-  verifyNativeCompatibility();
   const overlays = new Map<string, string>();
   const syncedFiles = new Map<string, string>();
   const verifiedConfigs = new Set<string>();
@@ -102,23 +76,23 @@ export function createNativeProjectService(
     }
   }
 
-  function replaceSnapshot(
-    params: Parameters<API['updateSnapshot']>[0],
-  ): Snapshot {
+  function replaceSnapshot(params: CreateSnapshotParams): Snapshot {
+    const previousSnapshot = snapshot;
+    let nextSnapshot: Snapshot;
     try {
-      const previousSnapshot = snapshot;
-      snapshot = api.updateSnapshot(params);
-      fileContexts.clear();
-      if (previousSnapshot) {
-        previousSnapshot.dispose();
-      }
+      nextSnapshot = previousSnapshot
+        ? previousSnapshot.update(params)
+        : api.createSnapshot(params);
     } catch (error) {
-      if (!snapshot) {
+      if (!previousSnapshot) {
         throw startupError(error);
       }
       throw error;
     }
-    return snapshot;
+    snapshot = nextSnapshot;
+    fileContexts.clear();
+    previousSnapshot?.dispose();
+    return nextSnapshot;
   }
 
   function contextFor(
@@ -126,7 +100,7 @@ export function createNativeProjectService(
     configFileName: string,
     normalizedPath: string,
   ): NativeProjectContext {
-    const project = nextSnapshot.getProject(configFileName);
+    const project = nextSnapshot.getConfiguredProject(configFileName);
     const sourceFile = project?.program.getSourceFile(normalizedPath);
     if (!project || !sourceFile) {
       throw new Error(
@@ -203,7 +177,7 @@ export function createNativeProjectService(
         for (const candidate of openProjects) {
           if (
             snapshot
-              .getProject(candidate)
+              .getConfiguredProject(candidate)
               ?.program.getSourceFile(normalizedPath)
           ) {
             knownConfigFileName = candidate;
@@ -217,7 +191,10 @@ export function createNativeProjectService(
         return contextFor(
           unchanged && snapshot
             ? snapshot
-            : replaceSnapshot({ fileChanges: { changed: [normalizedPath] } }),
+            : replaceSnapshot({
+                ensurePrograms: true,
+                fileNotifications: { changed: [normalizedPath] },
+              }),
           knownConfigFileName,
           normalizedPath,
         );

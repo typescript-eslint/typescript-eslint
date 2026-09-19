@@ -390,8 +390,7 @@ export function createNativeNodeAdapter(
           return adaptArray(value);
         }
         if (typeof value === 'function') {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-          return value.bind(target);
+          return (value as (...args: never[]) => unknown).bind(target);
         }
         return value;
       },

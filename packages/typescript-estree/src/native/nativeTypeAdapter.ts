@@ -80,6 +80,7 @@ interface NativeTypeInternals {
   getOuterTypeParameters: () => readonly NativeType[];
   getRegularType: () => NativeType | undefined;
   getTarget: () => NativeType;
+  getThisType: () => NativeType | undefined;
   getTrueType: () => NativeType;
   getTypeParameters: () => readonly NativeType[];
   indexType: number;
@@ -88,6 +89,7 @@ interface NativeTypeInternals {
   substConstraint: number;
   symbol: number;
   target: number;
+  thisType: number;
 }
 
 /**
@@ -286,9 +288,7 @@ export function createNativeTypeAdapter({
               : undefined;
 
           case 'thisType':
-            throw new Error(
-              'Type#thisType is not available on the TypeScript native preview API.',
-            );
+            return wrapType(native.getThisType());
 
           case 'typeParameters':
             return target.isClassOrInterface()

@@ -30,8 +30,8 @@ function typeOfDeclaration(code: string) {
   };
 }
 
-describe('native preview API gaps', () => {
-  it('has no way to read an interface type’s `this` type', () => {
+describe('native preview API parity', () => {
+  it('reads an interface type’s `this` type', () => {
     const { ast, services } = parse('class C { m() {} }');
     assert.isNotNull(services.program);
     const checker = services.program.getTypeChecker();
@@ -39,17 +39,17 @@ describe('native preview API gaps', () => {
       services.esTreeNodeToTSNodeMap.get(ast.body[0]),
     ) as ts.InterfaceType;
 
-    expect(() => classType.thisType).toThrow(
-      'Type#thisType is not available on the TypeScript native preview API.',
-    );
+    expect(checker.typeToString(classType.thisType!)).toBe('this');
   });
 
-  it('cannot await a union whose constituents await to different types', () => {
+  it('awaits a union whose constituents await to different types', () => {
     const { checker, type } = typeOfDeclaration(
       'declare const p: Promise<number> | Promise<string>;',
     );
 
-    expect(checker.getAwaitedType(type)).toBeUndefined();
+    expect(checker.typeToString(checker.getAwaitedType(type)!)).toBe(
+      'string | number',
+    );
   });
 
   it('awaits a single thenable the same way classic does', () => {
