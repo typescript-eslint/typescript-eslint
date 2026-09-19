@@ -1,0 +1,62 @@
+---
+description: 'Disallow object literals where a class instance is expected.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-object-literal-class-instances** for documentation.
+
+TypeScript's type system is structural, so a class's name can be used as a type for any value with the same shape.
+That includes object literals that were never passed through the class's constructor.
+
+Constructors are often relied on to validate inputs or set up internal state.
+An object literal that skips the constructor also skips those guarantees, and won't pass `instanceof` checks for the class.
+This rule reports object literals used where an instance of a class is expected: in assignments, arguments, return values, type assertions, and so on.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+
+const point: Point = { x: -1, y: -2 };
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+
+const point = new Point(1, 2);
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If you intentionally use classes as structural types, such as for lightweight data containers that don't rely on constructor logic, you might prefer to declare those shapes as interfaces or type aliases instead.
+If your project intentionally relies on that pattern, this rule may not be for you.
+
+Note that this rule only reports object literals.
+Values of other types that happen to be structurally compatible with a class are not reported.
+
+## Related To
+
+- [`no-unsafe-type-assertion`](./no-unsafe-type-assertion.mdx)

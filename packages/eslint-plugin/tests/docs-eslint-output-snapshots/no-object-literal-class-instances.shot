@@ -1,0 +1,22 @@
+Incorrect
+
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+
+const point: Point = { x: -1, y: -2 };
+                     ~~~~~~~~~~~~~~~~ This object literal is used where an instance of class `Point` is expected.
+
+Correct
+
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+
+const point = new Point(1, 2);
