@@ -263,6 +263,12 @@ export function createNativeTypeAdapter({
         switch (property) {
           case 'symbol':
             return native.symbol ? wrapSymbol(target.getSymbol()) : undefined;
+          // `UniqueESSymbolType` spells its name the way the checker does for
+          // the symbol's own property, which native only exposes piecewise.
+          case 'escapedName': {
+            const symbol = native.symbol ? target.getSymbol() : undefined;
+            return symbol && `__@${symbol.name}@${symbol.id}`;
+          }
           case 'aliasSymbol':
             return native.aliasSymbol
               ? wrapSymbol(target.getAliasSymbol())
