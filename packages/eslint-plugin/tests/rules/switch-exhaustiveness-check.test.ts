@@ -3413,9 +3413,9 @@ case apple: { throw new Error('Not implemented yet: apple case') }
     {
       code: `
 enum Status {
-  Pending,
-  Active,
-  Done,
+  Pending = 2,
+  Active = 0,
+  Done = 1,
 }
 declare const value: Status;
 switch (value) {
@@ -3436,9 +3436,9 @@ switch (value) {
               messageId: 'addMissingCases',
               output: `
 enum Status {
-  Pending,
-  Active,
-  Done,
+  Pending = 2,
+  Active = 0,
+  Done = 1,
 }
 declare const value: Status;
 switch (value) {

@@ -430,10 +430,10 @@ const FIRST_DECLARATION_ORDER_KIND = LITERAL_KINDS.indexOf(
 
 function compareMissingLiteralBranchTypes(a: ts.Type, b: ts.Type): number {
   const kind = getLiteralKind(a);
-  const kinds = kind - getLiteralKind(b);
+  const kindDifference = kind - getLiteralKind(b);
 
-  if (kinds !== 0) {
-    return kinds;
+  if (kindDifference !== 0) {
+    return kindDifference;
   }
 
   if (kind < FIRST_DECLARATION_ORDER_KIND) {
@@ -443,7 +443,8 @@ function compareMissingLiteralBranchTypes(a: ts.Type, b: ts.Type): number {
   // Enum members keep the declaration order the compiler reports them in, since
   // `Enum.Up | Enum.Down` reads better than the alphabetical `Enum.Down |
   // Enum.Up`. They still need grouping by their enum: which of two enums the
-  // compiler resolved first depends on the other files in the lint run.
+  // compiler resolved first depends on the other files in the lint run. Two
+  // enums that share a name still tie, and so still follow the compiler.
   return compareValues(getEnumName(a), getEnumName(b));
 }
 
