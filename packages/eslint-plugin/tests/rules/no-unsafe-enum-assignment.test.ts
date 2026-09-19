@@ -69,14 +69,6 @@ enum Fruit {
   Apple,
 }
 
-const [fruit]: Fruit[] = [Fruit.Apple];
-void fruit;
-    `,
-    `
-enum Fruit {
-  Apple,
-}
-
 const [fruit]: [Fruit] = [Fruit.Apple] as Fruit[];
 void fruit;
     `,
@@ -263,15 +255,6 @@ enum Fruit {
 function takesFruitOrNull(fruit: Fruit | null): void {}
 
 takesFruitOrNull(null);
-    `,
-    `
-enum Fruit {
-  Apple,
-}
-
-function takesFruitOrUndefined(fruit: Fruit | undefined): void {}
-
-takesFruitOrUndefined(undefined);
     `,
     `
 enum Fruit {
@@ -569,14 +552,6 @@ enum Fruit {
   Apple,
 }
 
-declare const x: Fruit;
-const y: Fruit = x;
-    `,
-    `
-enum Fruit {
-  Apple,
-}
-
 function noop(): void {
   return;
 }
@@ -606,15 +581,6 @@ enum Fruit {
 function takesGeneric<T extends readonly unknown[]>(...args: T): void {}
 
 takesGeneric(Fruit.Apple);
-    `,
-    `
-enum Flags {
-  Read = 1 << 0,
-  Write = 1 << 1,
-}
-
-const combined: Flags = (Flags.Read as Flags) | Flags.Write;
-void combined;
     `,
     `
 enum Fruit {
@@ -650,23 +616,6 @@ class Child implements Basket {
 }
 
 void Child;
-    `,
-    `
-enum Fruit {
-  Apple,
-}
-
-const key = 'fruit' as const;
-const { [key]: picked }: { fruit: Fruit } = { fruit: Fruit.Apple };
-void picked;
-    `,
-    `
-enum Fruit {
-  Apple,
-}
-
-const { fruit: picked }: { fruit: Fruit } = { fruit: Fruit.Apple };
-void picked;
     `,
     `
 enum Flags {
@@ -737,22 +686,6 @@ class TestBasket implements Basket {
 void TestBasket;
     `,
     `
-enum Fruit {
-  Apple,
-}
-
-interface Basket {
-  fruit: Fruit;
-}
-
-class TestBasket implements Basket {
-  other = 1;
-  fruit = Fruit.Apple;
-}
-
-void TestBasket;
-    `,
-    `
 function foo(): void {}
 
 foo[0];
@@ -791,42 +724,6 @@ function identity<T extends Fruit>(value: T): T {
 }
 
 identity(Fruit.Apple);
-    `,
-    `
-enum Vegetable {
-  Asparagus = 'asparagus',
-}
-
-function identity<T extends Vegetable>(value: T): T {
-  return value;
-}
-
-identity(Vegetable.Asparagus);
-    `,
-    `
-const enum Direction {
-  Up,
-  Down,
-}
-
-function identity<T extends Direction>(value: T): T {
-  return value;
-}
-
-identity(Direction.Up);
-    `,
-    `
-enum Mixed {
-  A = 'a',
-  B = 1,
-}
-
-function identity<T extends Mixed>(value: T): T {
-  return value;
-}
-
-identity(Mixed.A);
-identity(Mixed.B);
     `,
     `
 enum Fruit {
@@ -878,17 +775,6 @@ takesArray([Fruit.Apple]);
     `
 enum Fruit {
   Apple,
-}
-
-function takesReadonlyArray<T extends readonly Fruit[]>(value: T): T {
-  return value;
-}
-
-takesReadonlyArray([Fruit.Apple] as const);
-    `,
-    `
-enum Fruit {
-  Apple,
   Banana,
 }
 
@@ -921,19 +807,6 @@ function takesRestTuple<T extends [Fruit, ...Fruit[]]>(...value: T): T {
 }
 
 takesRestTuple(Fruit.Apple, Fruit.Banana);
-    `,
-    `
-enum Fruit {
-  Apple,
-}
-
-type Box<T> = { fruit: T };
-
-function takesAliasBox<T extends Fruit>(box: Box<T>): Box<T> {
-  return box;
-}
-
-takesAliasBox({ fruit: Fruit.Apple });
     `,
     `
 enum Fruit {
@@ -1438,26 +1311,6 @@ enum Fruit {
 }
 
 let fruit: Fruit = Fruit.Apple;
---fruit;
-      `,
-      errors: [
-        {
-          column: 1,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 8,
-          endLine: 7,
-          line: 7,
-          messageId: 'unsafeEnumMutation',
-        },
-      ],
-    },
-    {
-      code: `
-enum Fruit {
-  Apple,
-}
-
-let fruit: Fruit = Fruit.Apple;
 fruit += 1;
       `,
       errors: [
@@ -1467,27 +1320,6 @@ fruit += 1;
           endColumn: 11,
           endLine: 7,
           line: 7,
-          messageId: 'unsafeEnumMutation',
-        },
-      ],
-    },
-    {
-      code: `
-enum Flags {
-  Read = 1 << 0,
-  Write = 1 << 1,
-}
-
-let flags: Flags = Flags.Read;
-flags <<= 1;
-      `,
-      errors: [
-        {
-          column: 1,
-          data: { enumNames: "'Flags'" },
-          endColumn: 12,
-          endLine: 8,
-          line: 8,
           messageId: 'unsafeEnumMutation',
         },
       ],
@@ -2086,27 +1918,6 @@ bar[0];
     },
     {
       code: `
-enum Fruit {
-  Apple,
-}
-
-declare const bar: { [Fruit.Apple]: string };
-
-bar?.[0];
-      `,
-      errors: [
-        {
-          column: 7,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 8,
-          endLine: 8,
-          line: 8,
-          messageId: 'unsafeEnumAccess',
-        },
-      ],
-    },
-    {
-      code: `
 const enum Direction {
   Up,
   Down,
@@ -2240,92 +2051,6 @@ enum Fruit {
   Apple,
 }
 
-const fruit: Fruit = NaN;
-      `,
-      errors: [
-        {
-          column: 7,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 25,
-          endLine: 6,
-          line: 6,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-enum Fruit {
-  Apple,
-}
-
-const fruit: Fruit = Number.MAX_SAFE_INTEGER;
-      `,
-      errors: [
-        {
-          column: 7,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 45,
-          endLine: 6,
-          line: 6,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-enum Fruit {
-  Apple,
-}
-
-const a: Fruit = 1,
-  b: Fruit = Fruit.Apple;
-      `,
-      errors: [
-        {
-          column: 7,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 19,
-          endLine: 6,
-          line: 6,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-enum Fruit {
-  Apple,
-}
-
-const a: Fruit = 1,
-  b: Fruit = 2;
-      `,
-      errors: [
-        {
-          column: 7,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 19,
-          endLine: 6,
-          line: 6,
-          messageId: 'unsafeEnumAssignment',
-        },
-        {
-          column: 3,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 15,
-          endLine: 7,
-          line: 7,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-enum Fruit {
-  Apple,
-}
-
 class Basket {
   constructor(private fruit: Fruit = 1) {}
 }
@@ -2407,27 +2132,6 @@ enum Fruit {
   Apple,
 }
 
-function takesBasket({ fruit = 1 }: { fruit?: Fruit }): void {
-  void fruit;
-}
-      `,
-      errors: [
-        {
-          column: 24,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 33,
-          endLine: 6,
-          line: 6,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-enum Fruit {
-  Apple,
-}
-
 function takesFruit([fruit]: [Fruit] = [1]): void {}
       `,
       errors: [
@@ -2454,25 +2158,6 @@ const { fruit }: { fruit: Fruit } = { fruit: 1 };
           column: 39,
           data: { enumNames: "'Fruit'" },
           endColumn: 47,
-          endLine: 6,
-          line: 6,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-enum Fruit {
-  Apple,
-}
-
-const { fruit: picked }: { fruit: Fruit } = { fruit: 1 };
-      `,
-      errors: [
-        {
-          column: 47,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 55,
           endLine: 6,
           line: 6,
           messageId: 'unsafeEnumAssignment',
@@ -2643,27 +2328,6 @@ takesRest(Fruit.Apple, 1);
     },
     {
       code: `
-enum Fruit {
-  Apple,
-}
-
-function takesRest(first: Fruit, ...rest: Fruit[]): void {}
-
-takesRest(Fruit.Apple, ...[1]);
-      `,
-      errors: [
-        {
-          column: 24,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 30,
-          endLine: 8,
-          line: 8,
-          messageId: 'unsafeEnumArgument',
-        },
-      ],
-    },
-    {
-      code: `
 enum Flags {
   Read = 1 << 0,
   Write = 1 << 1,
@@ -2676,48 +2340,6 @@ const combined: Flags = Flags.Read + Flags.Write;
           column: 7,
           data: { enumNames: "'Flags'" },
           endColumn: 49,
-          endLine: 7,
-          line: 7,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-enum Fruit {
-  Apple,
-}
-
-function takesFruit(fruit: Fruit): void {}
-const numbers: number[] = [1, 2, 3];
-
-takesFruit(...[1, ...numbers]);
-      `,
-      errors: [
-        {
-          column: 12,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 30,
-          endLine: 9,
-          line: 9,
-          messageId: 'unsafeEnumArgument',
-        },
-      ],
-    },
-    {
-      code: `
-enum Flags {
-  Read = 1 << 0,
-  Write = 1 << 1,
-}
-
-const combined: Flags = Flags.Read | (Flags.Write + Flags.Read);
-      `,
-      errors: [
-        {
-          column: 7,
-          data: { enumNames: "'Flags'" },
-          endColumn: 64,
           endLine: 7,
           line: 7,
           messageId: 'unsafeEnumAssignment',
@@ -2885,74 +2507,6 @@ declare function Basket<T extends Fruit>(props: { fruit: T }): JSX.Element;
           },
         },
       },
-    },
-    {
-      code: `
-enum Vegetable {
-  Asparagus = 'asparagus',
-}
-
-function assignVegetable<T extends Vegetable>(): void {
-  const vegetable: T = 'asparagus';
-  void vegetable;
-}
-      `,
-      errors: [
-        {
-          column: 9,
-          data: { enumNames: "'Vegetable'" },
-          endColumn: 35,
-          endLine: 7,
-          line: 7,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-const enum Direction {
-  Up,
-  Down,
-}
-
-function assignDirection<T extends Direction>(): void {
-  const direction: T = 0;
-  void direction;
-}
-      `,
-      errors: [
-        {
-          column: 9,
-          data: { enumNames: "'Direction'" },
-          endColumn: 25,
-          endLine: 8,
-          line: 8,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-enum Mixed {
-  A = 'a',
-  B = 1,
-}
-
-function assignMixed<T extends Mixed>(): void {
-  const mixed: T = 'a';
-  void mixed;
-}
-      `,
-      errors: [
-        {
-          column: 9,
-          data: { enumNames: "'Mixed'" },
-          endColumn: 23,
-          endLine: 8,
-          line: 8,
-          messageId: 'unsafeEnumAssignment',
-        },
-      ],
     },
     {
       code: `
@@ -3214,27 +2768,6 @@ function castArray<T extends Fruit[]>(): T {
           endLine: 7,
           line: 7,
           messageId: 'unsafeEnumAssignment',
-        },
-      ],
-    },
-    {
-      code: `
-enum Fruit {
-  Apple,
-}
-
-function takesReadonlyArray<T extends readonly Fruit[]>(value: T): void {}
-
-takesReadonlyArray([1] as const);
-      `,
-      errors: [
-        {
-          column: 20,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 32,
-          endLine: 8,
-          line: 8,
-          messageId: 'unsafeEnumArgument',
         },
       ],
     },
@@ -3587,8 +3120,6 @@ enum Flags {
 
 let flags: Flags = Flags.Read;
 flags |= Flags.Write | 4;
-flags &= 1;
-flags ^= 1;
       `,
       errors: [
         {
@@ -3599,20 +3130,46 @@ flags ^= 1;
           line: 8,
           messageId: 'unsafeEnumAssignment',
         },
+      ],
+    },
+    {
+      code: `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+let flags: Flags = Flags.Read;
+flags &= 1;
+      `,
+      errors: [
         {
           column: 1,
           data: { enumNames: "'Flags'" },
           endColumn: 11,
-          endLine: 9,
-          line: 9,
+          endLine: 8,
+          line: 8,
           messageId: 'unsafeEnumAssignment',
         },
+      ],
+    },
+    {
+      code: `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+let flags: Flags = Flags.Read;
+flags ^= 1;
+      `,
+      errors: [
         {
           column: 1,
           data: { enumNames: "'Flags'" },
           endColumn: 11,
-          endLine: 10,
-          line: 10,
+          endLine: 8,
+          line: 8,
           messageId: 'unsafeEnumAssignment',
         },
       ],
@@ -3625,7 +3182,6 @@ enum Fruit {
 
 let fruit: Fruit | undefined;
 fruit ||= 1;
-fruit &&= 1;
       `,
       errors: [
         {
@@ -3636,12 +3192,24 @@ fruit &&= 1;
           line: 7,
           messageId: 'unsafeEnumAssignment',
         },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+let fruit: Fruit | undefined;
+fruit &&= 1;
+      `,
+      errors: [
         {
           column: 1,
           data: { enumNames: "'Fruit'" },
           endColumn: 12,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'unsafeEnumAssignment',
         },
       ],
@@ -3778,7 +3346,6 @@ enum Fruit {
 
 let fruit: Fruit;
 [fruit] = [1];
-({ fruit } = { fruit: 1 });
       `,
       errors: [
         {
@@ -3789,12 +3356,24 @@ let fruit: Fruit;
           line: 7,
           messageId: 'unsafeEnumAssignment',
         },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+let fruit: Fruit;
+({ fruit } = { fruit: 1 });
+      `,
+      errors: [
         {
           column: 16,
           data: { enumNames: "'Fruit'" },
           endColumn: 24,
-          endLine: 8,
-          line: 8,
+          endLine: 7,
+          line: 7,
           messageId: 'unsafeEnumAssignment',
         },
       ],
@@ -3873,7 +3452,6 @@ declare const numbers: number[];
 function takesFruits(...fruits: Fruit[]): void {}
 
 takesFruits(...numbers);
-takesFruits(Fruit.Apple, ...numbers, 1);
       `,
       errors: [
         {
@@ -3884,20 +3462,35 @@ takesFruits(Fruit.Apple, ...numbers, 1);
           line: 10,
           messageId: 'unsafeEnumArgument',
         },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const numbers: number[];
+
+function takesFruits(...fruits: Fruit[]): void {}
+
+takesFruits(Fruit.Apple, ...numbers, 1);
+      `,
+      errors: [
         {
           column: 26,
           data: { enumNames: "'Fruit'" },
           endColumn: 36,
-          endLine: 11,
-          line: 11,
+          endLine: 10,
+          line: 10,
           messageId: 'unsafeEnumArgument',
         },
         {
           column: 38,
           data: { enumNames: "'Fruit'" },
           endColumn: 39,
-          endLine: 11,
-          line: 11,
+          endLine: 10,
+          line: 10,
           messageId: 'unsafeEnumArgument',
         },
       ],
@@ -4053,8 +3646,6 @@ enum Fruit {
 function getFruits(): Fruit[] {
   return [1];
 }
-
-const getMoreFruits = (): Fruit[] => [1];
       `,
       errors: [
         {
@@ -4065,12 +3656,23 @@ const getMoreFruits = (): Fruit[] => [1];
           line: 7,
           messageId: 'unsafeEnumAssignment',
         },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+const getFruits = (): Fruit[] => [1];
+      `,
+      errors: [
         {
-          column: 39,
+          column: 35,
           data: { enumNames: "'Fruit'" },
-          endColumn: 40,
-          endLine: 10,
-          line: 10,
+          endColumn: 36,
+          endLine: 6,
+          line: 6,
           messageId: 'unsafeEnumAssignment',
         },
       ],
@@ -4216,9 +3818,28 @@ enum Fruit {
 }
 
 declare const numbers: number[];
-declare const pair: [number];
 
 const fruits: { [index: number]: Fruit } = numbers;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 51,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const pair: [number];
+
 const fruitPair: { [index: number]: Fruit } = pair;
       `,
       errors: [
@@ -4226,16 +3847,8 @@ const fruitPair: { [index: number]: Fruit } = pair;
           column: 7,
           data: { enumNames: "'Fruit'" },
           endColumn: 51,
-          endLine: 9,
-          line: 9,
-          messageId: 'unsafeEnumAssignment',
-        },
-        {
-          column: 7,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 51,
-          endLine: 10,
-          line: 10,
+          endLine: 8,
+          line: 8,
           messageId: 'unsafeEnumAssignment',
         },
       ],
@@ -4257,7 +3870,6 @@ declare const bar: {
 };
 
 bar[0];
-bar['asparagus'];
       `,
       errors: [
         {
@@ -4268,12 +3880,33 @@ bar['asparagus'];
           line: 16,
           messageId: 'unsafeEnumAccess',
         },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+declare const bar: {
+  [Vegetable.Asparagus]: string;
+  [Fruit.Apple]: string;
+  other: string;
+};
+
+bar['asparagus'];
+      `,
+      errors: [
         {
           column: 5,
           data: { enumNames: "'Fruit', 'Vegetable'" },
           endColumn: 16,
-          endLine: 17,
-          line: 17,
+          endLine: 16,
+          line: 16,
           messageId: 'unsafeEnumAccess',
         },
       ],

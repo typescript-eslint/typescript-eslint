@@ -116,53 +116,6 @@ export function isMismatchedEnumComparisonTypes(
 }
 
 /**
- * @returns Whether assigning a sender type to a receiver type is unsafe because
- * the receiver expects an enum value but the sender only provides non-enum
- * values of the same primitive kind.
- */
-export function isMismatchedEnumAssignmentTypes(
-  checker: ts.TypeChecker,
-  senderType: ts.Type,
-  receiverType: ts.Type,
-): boolean {
-  const receiverEnumTypes = getEnumTypes(checker, receiverType);
-  const receiverTypeParts = tsutils.unionConstituents(receiverType);
-  const receiverEnumValueTypes = new Set(
-    receiverTypeParts.map(getEnumValueType),
-  );
-  const receiverNonEnumParts = receiverTypeParts.filter(
-    receiverTypePart => getEnumTypes(checker, receiverTypePart).length === 0,
-  );
-
-  return tsutils.unionConstituents(senderType).some(
-    senderTypePart =>
-      // Only a plain number or string could be masquerading as an enum value:
-      //
-      // ```ts
-      // const fruit: Fruit = 1;
-      // ```
-      ((receiverEnumValueTypes.has(ts.TypeFlags.Number) &&
-        isNumberLike(senderTypePart)) ||
-        (receiverEnumValueTypes.has(ts.TypeFlags.String) &&
-          isStringLike(senderTypePart))) &&
-      // Allow values that already share an enum type with the receiver:
-      //
-      // ```ts
-      // const fruit: Fruit = Fruit.Apple;
-      // ```
-      !hasSharedEnumType(checker, senderTypePart, receiverEnumTypes) &&
-      // Allow values accepted by a non-enum part of the receiver:
-      //
-      // ```ts
-      // const fruitOrNumber: Fruit | number = 1;
-      // ```
-      !receiverNonEnumParts.some(receiverTypePart =>
-        checker.isTypeAssignableTo(senderTypePart, receiverTypePart),
-      ),
-  );
-}
-
-/**
  * @returns Whether the right type is an unsafe comparison against any left type.
  */
 function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
@@ -174,22 +127,10 @@ function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
   );
 }
 
-function hasSharedEnumType(
-  checker: ts.TypeChecker,
-  type: ts.Type,
-  expectedEnumTypes: readonly ts.Type[],
-): boolean {
-  const typeEnumTypes = new Set(getEnumTypes(checker, type));
-
-  return expectedEnumTypes.some(expectedEnumType =>
-    typeEnumTypes.has(expectedEnumType),
-  );
-}
-
 /**
  * @returns What type a type's enum value is (number or string), if either.
  */
-function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
+export function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
   return tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
     ? tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
       ? ts.TypeFlags.Number

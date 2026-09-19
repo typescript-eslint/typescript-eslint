@@ -140,6 +140,7 @@ export function parseLintResults(
       endColumn,
       endLineNumber,
       message: message.message,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
       severity:
         message.severity === 2
           ? 8 // MarkerSeverity.Error

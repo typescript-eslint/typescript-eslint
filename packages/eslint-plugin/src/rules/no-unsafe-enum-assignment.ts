@@ -9,13 +9,12 @@ import {
   FunctionSignature,
   getParserServices,
   getStaticMemberAccessValue,
+  isNumberLike,
+  isStringLike,
   nullThrows,
 } from '../util';
 import { getParentFunctionNode } from '../util/getParentFunctionNode';
-import {
-  getEnumTypes,
-  isMismatchedEnumAssignmentTypes,
-} from './enum-utils/shared';
+import { getEnumTypes, getEnumValueType } from './enum-utils/shared';
 
 type MessageIds =
   | 'unsafeEnumAccess'
@@ -67,15 +66,13 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    // Nodes whose entire value was reported, so that the object properties and
-    // array elements nested inside them aren't reported a second time.
     const reportedNodes = new WeakSet<TSESTree.Node>();
 
     function report(
       node: TSESTree.Node,
       messageId: MessageIds,
       receiverTypes: readonly ts.Type[],
-    ): void {
+    ) {
       reportedNodes.add(node);
       context.report({
         node,
@@ -84,7 +81,7 @@ export default createRule<[], MessageIds>({
       });
     }
 
-    function isWithinReportedNode(node: TSESTree.Node): boolean {
+    function isWithinReportedNode(node: TSESTree.Node) {
       for (
         let current: TSESTree.Node | undefined = node;
         current;
@@ -98,20 +95,12 @@ export default createRule<[], MessageIds>({
       return false;
     }
 
-    function getContextualType(node: TSESTree.Node): ts.Type | undefined {
+    function getContextualType(node: TSESTree.Node) {
       return checker.getContextualType(
         services.esTreeNodeToTSNodeMap.get(node) as ts.Expression,
       );
     }
 
-    /**
-     * Whether a bitwise combination only involves values of the receiver's
-     * enum, and so can only produce a value made up of its members:
-     *
-     * ```ts
-     * const readWrite: Flags = Flags.Read | Flags.Write;
-     * ```
-     */
     function isSafeEnumBitwiseExpression(
       node: TSESTree.Node,
       receiverType: ts.Type,
@@ -147,7 +136,7 @@ export default createRule<[], MessageIds>({
       senderNode: TSESTree.Node,
       receiverType: ts.Type,
       senderType = services.getTypeAtLocation(senderNode),
-    ): boolean {
+    ) {
       return (
         hasDeepEnumAssignmentMismatch(checker, senderType, receiverType) &&
         !isSafeEnumBitwiseExpression(senderNode, receiverType)
@@ -160,9 +149,7 @@ export default createRule<[], MessageIds>({
       reportingNode: TSESTree.Node,
       messageId: MessageIds = 'unsafeEnumAssignment',
       senderType?: ts.Type,
-    ): void {
-      // Object and array literals are instead checked by their own handlers,
-      // which report on their individual properties and elements.
+    ) {
       if (
         senderNode.type === AST_NODE_TYPES.ArrayExpression ||
         senderNode.type === AST_NODE_TYPES.ObjectExpression
@@ -181,7 +168,7 @@ export default createRule<[], MessageIds>({
         | TSESTree.NewExpression
         | TSESTree.TaggedTemplateExpression,
       args: readonly (TSESTree.Expression | TSESTree.SpreadElement)[],
-    ): void {
+    ) {
       const signature = FunctionSignature.create(
         checker,
         services.esTreeNodeToTSNodeMap.get(node),
@@ -196,7 +183,6 @@ export default createRule<[], MessageIds>({
         if (argument.type === AST_NODE_TYPES.SpreadElement) {
           const spreadType = services.getTypeAtLocation(argument.argument);
 
-          // Spreading a tuple fills one parameter per element.
           if (checker.isTupleType(spreadType)) {
             const mismatchedParameterTypes = checker
               .getTypeArguments(spreadType)
@@ -224,9 +210,6 @@ export default createRule<[], MessageIds>({
           }
         }
 
-        // Any other argument fills one parameter. That includes spreading a
-        // non-tuple, which can only be done into a rest parameter, and whose
-        // type at the spread itself is the type of the elements it yields.
         const parameterType = signature.getNextParameterType();
         if (
           parameterType != null &&
@@ -241,7 +224,7 @@ export default createRule<[], MessageIds>({
       node: (TSESTree.AccessorProperty | TSESTree.PropertyDefinition) & {
         value: TSESTree.Expression;
       },
-    ): void {
+    ) {
       // Class members don't get contextually typed by the members they
       // implement or override, so those types are also checked explicitly:
       //
@@ -266,7 +249,7 @@ export default createRule<[], MessageIds>({
 
     function getHeritageMemberTypes(
       node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
-    ): ts.Type[] {
+    ) {
       const memberName = getStaticMemberAccessValue(node, context);
       if (typeof memberName !== 'string') {
         return [];
@@ -288,7 +271,7 @@ export default createRule<[], MessageIds>({
     function checkMutation(
       targetNode: TSESTree.Expression,
       reportingNode: TSESTree.Node,
-    ): void {
+    ) {
       const targetType = services.getTypeAtLocation(targetNode);
 
       if (
@@ -301,10 +284,9 @@ export default createRule<[], MessageIds>({
     function checkReturn(
       returnNode: TSESTree.Expression,
       reportingNode: TSESTree.Node,
-    ): void {
+    ) {
       const functionNode = getParentFunctionNode(returnNode);
       if (functionNode == null) {
-        // Returning outside of a function isn't valid, but is still parsed.
         return;
       }
 
@@ -337,7 +319,7 @@ export default createRule<[], MessageIds>({
 
     function checkTypeAssertion(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
-    ): void {
+    ) {
       checkAssignment(
         services.getTypeAtLocation(node.typeAnnotation),
         node.expression,
@@ -349,13 +331,11 @@ export default createRule<[], MessageIds>({
     return {
       'AccessorProperty[value != null], PropertyDefinition[value != null]':
         checkClassMember,
-      ArrayExpression(node): void {
+      ArrayExpression(node) {
         if (isWithinReportedNode(node)) {
           return;
         }
 
-        // TypeScript gives each element, including spreads, the contextual
-        // type of its position, and gives spreads the type of their elements.
         for (const element of node.elements.filter(
           element => element != null,
         )) {
@@ -367,10 +347,10 @@ export default createRule<[], MessageIds>({
       },
       'ArrowFunctionExpression[body.type != "BlockStatement"]'(
         node: TSESTree.ArrowFunctionExpression & { body: TSESTree.Expression },
-      ): void {
+      ) {
         checkReturn(node.body, node.body);
       },
-      AssignmentExpression(node): void {
+      AssignmentExpression(node) {
         if (assigningOperators.has(node.operator)) {
           checkAssignment(
             services.getTypeAtLocation(node.left),
@@ -381,7 +361,7 @@ export default createRule<[], MessageIds>({
           checkMutation(node.left, node);
         }
       },
-      AssignmentPattern(node): void {
+      AssignmentPattern(node) {
         checkAssignment(
           services.getTypeAtLocation(node.left),
           node.right,
@@ -390,12 +370,12 @@ export default createRule<[], MessageIds>({
       },
       'CallExpression, NewExpression'(
         node: TSESTree.CallExpression | TSESTree.NewExpression,
-      ): void {
+      ) {
         checkArguments(node, node.arguments);
       },
       'JSXAttribute > JSXExpressionContainer > :not(JSXEmptyExpression)'(
         node: TSESTree.Expression,
-      ): void {
+      ) {
         const receiverType = getContextualType(node);
         if (receiverType != null && isUnsafeAssignment(node, receiverType)) {
           report(node, 'unsafeEnumAssignment', [receiverType]);
@@ -403,7 +383,7 @@ export default createRule<[], MessageIds>({
       },
       'MemberExpression[computed = true]'(
         node: TSESTree.MemberExpressionComputedName,
-      ): void {
+      ) {
         const receiverTypes =
           checker
             .getSymbolAtLocation(
@@ -416,7 +396,6 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        // The key only needs to be safely accepted by one of the enum keys.
         const senderType = services.getTypeAtLocation(node.property);
         if (
           receiverTypes.every(
@@ -431,14 +410,12 @@ export default createRule<[], MessageIds>({
           report(node.property, 'unsafeEnumAccess', receiverTypes);
         }
       },
-      ObjectExpression(node): void {
+      ObjectExpression(node) {
         if (isWithinReportedNode(node)) {
           return;
         }
 
         for (const property of node.properties) {
-          // A spread contributes its whole value, so it's compared against the
-          // contextual type of the object itself.
           const [receiverNode, senderNode] =
             property.type === AST_NODE_TYPES.SpreadElement
               ? [node, property.argument]
@@ -450,43 +427,36 @@ export default createRule<[], MessageIds>({
           }
         }
       },
-      ReturnStatement(node): void {
+      ReturnStatement(node) {
         if (node.argument) {
           checkReturn(node.argument, node);
         }
       },
-      TaggedTemplateExpression(node): void {
+      TaggedTemplateExpression(node) {
         checkArguments(node, node.quasi.expressions);
       },
       TSAsExpression: checkTypeAssertion,
       TSTypeAssertion: checkTypeAssertion,
-      UpdateExpression(node): void {
+      UpdateExpression(node) {
         checkMutation(node.argument, node);
       },
       'VariableDeclarator[init != null]'(
         node: TSESTree.VariableDeclarator & { init: TSESTree.Expression },
-      ): void {
+      ) {
         checkAssignment(services.getTypeAtLocation(node.id), node.init, node);
       },
     };
   },
 });
 
-function getConstraintType(checker: ts.TypeChecker, type: ts.Type): ts.Type {
+function getConstraintType(checker: ts.TypeChecker, type: ts.Type) {
   return checker.getBaseConstraintOfType(type) ?? type;
 }
 
-function getTypeArguments(
-  checker: ts.TypeChecker,
-  type: ts.Type,
-): readonly ts.Type[] {
+function getTypeArguments(checker: ts.TypeChecker, type: ts.Type) {
   return tsutils.isTypeReference(type) ? checker.getTypeArguments(type) : [];
 }
 
-/**
- * Whether a sender type, or any of its type arguments, elements, or
- * properties, would unsafely be assigned to the receiver type's equivalent.
- */
 function hasDeepEnumAssignmentMismatch(
   checker: ts.TypeChecker,
   senderType: ts.Type,
@@ -570,18 +540,10 @@ function hasDeepEnumAssignmentMismatch(
   });
 }
 
-/**
- * Retrieves the enum types that keys of an object are declared to be:
- *
- * ```ts
- * declare const mapped: { [key in Fruit]: string };
- * declare const literal: { [Fruit.Apple]: string };
- * ```
- */
 function getMappedKeyConstraintTypes(
   checker: ts.TypeChecker,
   declaration: ts.Declaration,
-): ts.Type[] {
+) {
   if (
     !(
       ts.isGetAccessorDeclaration(declaration) ||
@@ -621,18 +583,11 @@ function getMappedKeyConstraintTypes(
   return [];
 }
 
-/**
- * Formats the names of all enums found anywhere within the given types, such
- * as `'Fruit', 'Vegetable'` for `[Fruit, Set<Vegetable>]`.
- */
-function describeEnumTypes(
-  checker: ts.TypeChecker,
-  types: readonly ts.Type[],
-): string {
+function describeEnumTypes(checker: ts.TypeChecker, types: readonly ts.Type[]) {
   const enumNames = new Set<string>();
   const visited = new Set<ts.Type>();
 
-  function visit(type: ts.Type): void {
+  function visit(type: ts.Type) {
     const constrainedType = getConstraintType(checker, type);
     if (visited.has(constrainedType)) {
       return;
@@ -663,4 +618,45 @@ function describeEnumTypes(
     .sort()
     .map(enumName => `'${enumName}'`)
     .join(', ');
+}
+
+function isMismatchedEnumAssignmentTypes(
+  checker: ts.TypeChecker,
+  senderType: ts.Type,
+  receiverType: ts.Type,
+) {
+  const receiverEnumTypes = getEnumTypes(checker, receiverType);
+  const receiverTypeParts = tsutils.unionConstituents(receiverType);
+  const receiverEnumValueTypes = new Set(
+    receiverTypeParts.map(getEnumValueType),
+  );
+  const receiverNonEnumParts = receiverTypeParts.filter(
+    receiverTypePart => getEnumTypes(checker, receiverTypePart).length === 0,
+  );
+
+  return tsutils
+    .unionConstituents(senderType)
+    .some(
+      senderTypePart =>
+        ((receiverEnumValueTypes.has(ts.TypeFlags.Number) &&
+          isNumberLike(senderTypePart)) ||
+          (receiverEnumValueTypes.has(ts.TypeFlags.String) &&
+            isStringLike(senderTypePart))) &&
+        !hasSharedEnumType(checker, senderTypePart, receiverEnumTypes) &&
+        !receiverNonEnumParts.some(receiverTypePart =>
+          checker.isTypeAssignableTo(senderTypePart, receiverTypePart),
+        ),
+    );
+}
+
+function hasSharedEnumType(
+  checker: ts.TypeChecker,
+  type: ts.Type,
+  expectedEnumTypes: readonly ts.Type[],
+) {
+  const typeEnumTypes = new Set(getEnumTypes(checker, type));
+
+  return expectedEnumTypes.some(expectedEnumType =>
+    typeEnumTypes.has(expectedEnumType),
+  );
 }
