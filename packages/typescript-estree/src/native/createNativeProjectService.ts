@@ -230,6 +230,7 @@ export function createNativeProjectService(
         }
         nextSnapshot = replaceSnapshot({
           closeFiles: [compilerPath],
+          ensurePrograms: true,
           openProjects: openProjects.has(configFileName)
             ? undefined
             : [configFileName],

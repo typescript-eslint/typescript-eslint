@@ -1,4 +1,4 @@
-import type * as ts from 'typescript';
+import * as ts from 'typescript';
 
 import { parseAndGenerateServices } from '../../src/index.js';
 import {
@@ -30,7 +30,72 @@ function typeOfDeclaration(code: string) {
   };
 }
 
+/** Runs a checker query on both backends so their answers can be compared. */
+function onBothBackends(
+  code: string,
+  query: (checker: ts.TypeChecker, type: ts.Type) => string | undefined,
+): { classic: string | undefined; native: string | undefined } {
+  const run = (native: boolean): string | undefined => {
+    const { ast, services } = parseAndGenerateServices(code, {
+      filePath,
+      projectService: native ? { backend: 'native' as const } : true,
+    });
+    assert.isNotNull(services.program);
+    const declaration = ast.body.at(-1) as never as {
+      declarations: { id: never }[];
+    };
+    const checker = services.program.getTypeChecker();
+    return query(
+      checker,
+      checker.getTypeAtLocation(
+        services.esTreeNodeToTSNodeMap.get(declaration.declarations[0].id),
+      ),
+    );
+  };
+  return { classic: run(false), native: run(true) };
+}
+
 describe('native preview API parity', () => {
+  it.each([
+    [
+      'string index info',
+      'declare const v: { [key: string]: number };',
+      (checker: ts.TypeChecker, type: ts.Type) =>
+        checker.typeToString(
+          checker.getIndexInfoOfType(type, ts.IndexKind.String)!.type,
+        ),
+    ],
+    [
+      'number index type',
+      'declare const v: { [key: number]: string };',
+      (checker: ts.TypeChecker, type: ts.Type) =>
+        checker.typeToString(
+          checker.getIndexTypeOfType(type, ts.IndexKind.Number)!,
+        ),
+    ],
+    [
+      'a type parameter default',
+      'interface Box<T = string> { t: T }\ndeclare const v: Box;',
+      (checker: ts.TypeChecker, type: ts.Type) =>
+        checker.typeToString(
+          checker.getDefaultFromTypeParameter(
+            (type as ts.TypeReference).target.typeParameters![0],
+          )!,
+        ),
+    ],
+    [
+      'the non-primitive type',
+      'declare const v: object;',
+      (checker: ts.TypeChecker) =>
+        checker.typeToString(checker.getNonPrimitiveType()),
+    ],
+  ])('answers the same as classic for %s', (_name, code, query) => {
+    const { classic, native } = onBothBackends(code, query);
+
+    expect(native).toBe(classic);
+    expect(native).toBeDefined();
+  });
+
   it('reads an interface type’s `this` type', () => {
     const { ast, services } = parse('class C { m() {} }');
     assert.isNotNull(services.program);
