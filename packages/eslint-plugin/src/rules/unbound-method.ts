@@ -397,15 +397,12 @@ function checkIfMethod(
   switch (valueDeclaration.kind) {
     case ts.SyntaxKind.PropertyAssignment:
     case ts.SyntaxKind.PropertyDeclaration: {
-      const assignee = (
-        valueDeclaration as ts.PropertyAssignment | ts.PropertyDeclaration
-      ).initializer;
-      if (assignee?.kind !== ts.SyntaxKind.FunctionExpression) {
-        return {
-          dangerous: false,
-        };
+      const { initializer } = valueDeclaration as
+        ts.PropertyAssignment | ts.PropertyDeclaration;
+      if (!initializer || !ts.isFunctionExpression(initializer)) {
+        return { dangerous: false };
       }
-      return checkMethod(assignee as ts.FunctionExpression, ignoreStatic);
+      return checkMethod(initializer, ignoreStatic);
     }
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature: {
