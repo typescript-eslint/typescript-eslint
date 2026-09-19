@@ -7,6 +7,9 @@ import rule from '../../../src/rules/class-methods-use-this';
 const ruleTester = new RuleTester();
 
 ruleTester.run('class-methods-use-this', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: 'class A { foo() {} }',

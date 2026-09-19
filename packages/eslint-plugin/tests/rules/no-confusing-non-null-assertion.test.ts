@@ -8,6 +8,9 @@ import rule from '../../src/rules/no-confusing-non-null-assertion';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-confusing-non-null-assertion', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     //
     'a == b!;',
@@ -67,6 +70,7 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
           messageId: 'confusingEqual',
           suggestions: [
             {
+              data: { operator: '==' },
               messageId: 'wrapUpLeft',
               output: '(a + b!) == c;',
             },
@@ -176,10 +180,12 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
           messageId: 'confusingOperator',
           suggestions: [
             {
+              data: { operator: 'in' },
               messageId: 'notNeedInOperator',
               output: 'a in b;',
             },
             {
+              data: { operator: 'in' },
               messageId: 'wrapUpLeft',
               output: '(a!) in b;',
             },
@@ -201,12 +207,14 @@ a !in b;
           messageId: 'confusingOperator',
           suggestions: [
             {
+              data: { operator: 'in' },
               messageId: 'notNeedInOperator',
               output: `
 a in b;
       `,
             },
             {
+              data: { operator: 'in' },
               messageId: 'wrapUpLeft',
               output: `
 (a !)in b;
@@ -228,10 +236,12 @@ a in b;
           messageId: 'confusingOperator',
           suggestions: [
             {
+              data: { operator: 'instanceof' },
               messageId: 'notNeedInOperator',
               output: 'a instanceof b;',
             },
             {
+              data: { operator: 'instanceof' },
               messageId: 'wrapUpLeft',
               output: '(a!) instanceof b;',
             },

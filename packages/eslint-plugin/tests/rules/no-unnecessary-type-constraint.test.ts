@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-unnecessary-type-constraint';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-type-constraint', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'function data() {}',
     'function data<T>() {}',

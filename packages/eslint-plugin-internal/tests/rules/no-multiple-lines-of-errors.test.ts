@@ -7,6 +7,9 @@ import rule from '../../src/rules/no-multiple-lines-of-errors.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-multiple-lines-of-errors', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: `
@@ -43,6 +46,70 @@ ruleTester.run('test', rule, {
       ],
     },
   ],
+});
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 38,
+          endLine: 7,
+          line: 7,
+          messageId: 'multipleLines',
+        },
+        {
+          column: 9,
+          endColumn: 38,
+          endLine: 8,
+          line: 8,
+          messageId: 'multipleLines',
+        },
+      ],
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  assertionOptions: { requireData: true },
+  invalid: [
+    {
+      errors: [
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 2 },
+        { messageId: '...', line: 3 },
+      ],
+    },
+  ],
+});
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 38,
+          endLine: 8,
+          line: 8,
+          messageId: 'multipleLines',
+        },
+        {
+          column: 9,
+          endColumn: 38,
+          endLine: 9,
+          line: 9,
+          messageId: 'multipleLines',
+        },
+      ],
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
+      errors: [
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 2 },
+        { messageId: '...', line: 3 },
+      ],
+    },
+  ],
+  assertionOptions: { requireData: true },
 });
       `,
       errors: [
@@ -240,6 +307,34 @@ ruleTester.run('test', rule, {
       ],
     },
   ],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  assertionOptions: { requireData: true },
+  invalid: [
+    {
+      errors: [
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 1 },
+      ],
+    },
+  ],
+});
+    `,
+    `
+ruleTester.run('test', rule, {
+  invalid: [
+    {
+      errors: [
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 1 },
+        { messageId: '...', line: 1 },
+      ],
+    },
+  ],
+  assertionOptions: { requireData: true },
 });
     `,
   ],

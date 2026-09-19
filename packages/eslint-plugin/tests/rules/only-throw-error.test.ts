@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('only-throw-error', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'throw new Error();',
     "throw new Error('error');",

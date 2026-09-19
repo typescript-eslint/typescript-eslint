@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-typescript-default-import.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-typescript-default-import', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   invalid: [
     {
       code: "import ts from 'typescript';",

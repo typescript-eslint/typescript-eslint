@@ -1,4 +1,5 @@
 import { clearWatchCaches } from './create-program/getWatchProgramsForProjects';
+import { clearRealPathCache } from './create-program/shared';
 import { clearNativeBackendCaches } from './nativeParserRegistry';
 import {
   clearDefaultProjectMatchedFiles,
@@ -22,6 +23,7 @@ export function clearCaches(): void {
   clearCandidateTSConfigRootDirs();
   clearDefaultProjectMatchedFiles();
   clearProgramCacheOriginal();
+  clearRealPathCache();
   clearWatchCaches();
   clearTSConfigMatchCache();
   clearTSServerProjectService();

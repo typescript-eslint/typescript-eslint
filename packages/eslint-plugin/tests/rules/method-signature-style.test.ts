@@ -5,6 +5,9 @@ import rule from '../../src/rules/method-signature-style';
 const ruleTester = new RuleTester();
 
 ruleTester.run('method-signature-style', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 interface Test {

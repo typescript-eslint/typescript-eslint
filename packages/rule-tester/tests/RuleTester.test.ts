@@ -2635,7 +2635,7 @@ describe('RuleTester - multipass fixer', () => {
       }).not.toThrow();
     });
 
-    it('throws with string output', () => {
+    it('throws with string output not matching the final output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
           invalid: [
@@ -2643,6 +2643,21 @@ describe('RuleTester - multipass fixer', () => {
               code: 'foo',
               errors: [{ messageId: 'error' }],
               output: 'bar',
+            },
+          ],
+          valid: [],
+        });
+      }).toThrow('Output is incorrect.');
+    });
+
+    it('throws with string output matching the final output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+              output: 'baz',
             },
           ],
           valid: [],
