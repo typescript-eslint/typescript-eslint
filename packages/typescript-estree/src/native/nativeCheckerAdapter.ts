@@ -179,8 +179,12 @@ export function createNativeChecker({
           unwrapType(type) as Parameters<NativeChecker['getTypeArguments']>[0],
         )
         .map(toType),
-    getTypeAtLocation: node =>
-      wrapType(checker.getTypeAtLocation(unwrapNode(node))),
+    // Classic answers the error type for a node it does not recognise, and
+    // rules lean on that when a syntax node has no type of its own.
+    getTypeAtLocation: (node: ts.Node | undefined) =>
+      node == null
+        ? wrapType(checker.getAnyType())
+        : wrapType(checker.getTypeAtLocation(unwrapNode(node))),
     getTypeFromTypeNode: node =>
       wrapType(
         checker.getTypeFromTypeNode(
