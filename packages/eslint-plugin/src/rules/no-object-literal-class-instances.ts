@@ -143,14 +143,20 @@ export default createRule({
       }
 
       if (resolvedSource.isUnion()) {
-        return findFirstViolation(resolvedSource.types, part =>
-          findViolation(part, resolvedTarget, shallow),
+        return findFirstViolation(
+          resolvedSource.types.filter(part =>
+            checker.isTypeAssignableTo(part, resolvedTarget),
+          ),
+          part => findViolation(part, resolvedTarget, shallow),
         );
       }
 
       if (
         !tsutils.isObjectType(resolvedSource) &&
-        !resolvedSource.isIntersection()
+        !(
+          resolvedSource.isIntersection() &&
+          !checker.isTypeAssignableTo(resolvedSource, checker.getNeverType())
+        )
       ) {
         return undefined;
       }

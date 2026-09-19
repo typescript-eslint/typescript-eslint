@@ -452,6 +452,27 @@ class Point {
 declare const plain: { x: number; y: number };
 const point: Readonly<Point> = Object.freeze(plain);
     `,
+    `
+class Alpha {
+  type = 'alpha' as const;
+}
+class Beta {
+  type = 'beta' as const;
+}
+declare function useBeta(beta: Beta): void;
+declare const definition: (Alpha | Beta) & { type: 'beta' };
+useBeta(definition);
+    `,
+    `
+class Alpha {
+  alpha = 1;
+}
+class Beta {
+  beta = 1;
+}
+declare const scope: Alpha | Beta;
+const beta = scope as Beta;
+    `,
   ],
   invalid: [
     {
@@ -2222,6 +2243,25 @@ const marker = <Marker>{plain}</Marker>;
         },
       ],
       filename: 'react.tsx',
+    },
+    {
+      code: `
+class Beta {
+  beta = 1;
+}
+declare const value: string | { beta: number };
+const beta = value as Beta;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { type: 'Beta' },
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'nonInstance',
+        },
+      ],
     },
   ],
 });

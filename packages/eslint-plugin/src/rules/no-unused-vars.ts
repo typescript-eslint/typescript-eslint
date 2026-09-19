@@ -376,8 +376,6 @@ export default createRule<Options, MessageIds>({
 
             case VariableType.ImportBinding:
               return {
-                // def is narrowed by intersecting the Definition union with a discriminant, so it isn't nominally an ImportBindingDefinition.
-                // eslint-disable-next-line @typescript-eslint/no-object-literal-class-instances
                 ...getImportFixer(def),
                 useAutofix: options.enableAutofixRemoval.imports,
               };
