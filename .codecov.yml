@@ -1,7 +1,5 @@
 codecov:
   require_ci_to_pass: no
-  notify:
-    wait_for_ci: no
 
 coverage:
   status:
@@ -20,3 +18,7 @@ comment:
 flag_management:
   default_rules:
     carryforward: true
+  individual_flags:
+    # Don't keep carrying the old whole-repo flag from before per-package uploads
+    - name: unittest
+      carryforward: false
