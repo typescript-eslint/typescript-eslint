@@ -66,14 +66,13 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    const reportedNodes = new WeakSet<TSESTree.Node>();
+    const checkedNodes = new WeakSet<TSESTree.Node>();
 
     function report(
       node: TSESTree.Node,
       messageId: MessageIds,
       receiverTypes: readonly ts.Type[],
     ) {
-      reportedNodes.add(node);
       context.report({
         node,
         messageId,
@@ -81,18 +80,29 @@ export default createRule<[], MessageIds>({
       });
     }
 
-    function isWithinReportedNode(node: TSESTree.Node) {
-      for (
-        let current: TSESTree.Node | undefined = node;
-        current;
-        current = current.parent
-      ) {
-        if (reportedNodes.has(current)) {
-          return true;
-        }
-      }
+    function markChecked(node: TSESTree.Node) {
+      checkedNodes.add(node);
 
-      return false;
+      switch (node.type) {
+        case AST_NODE_TYPES.ArrayExpression:
+          node.elements.forEach(element => element && markChecked(element));
+          break;
+        case AST_NODE_TYPES.ObjectExpression:
+          node.properties.forEach(markChecked);
+          break;
+        case AST_NODE_TYPES.Property:
+          markChecked(node.value);
+          break;
+        case AST_NODE_TYPES.SpreadElement:
+          markChecked(node.argument);
+          break;
+        case AST_NODE_TYPES.TSAsExpression:
+        case AST_NODE_TYPES.TSNonNullExpression:
+        case AST_NODE_TYPES.TSSatisfiesExpression:
+        case AST_NODE_TYPES.TSTypeAssertion:
+          markChecked(node.expression);
+          break;
+      }
     }
 
     function getContextualType(node: TSESTree.Node) {
@@ -159,6 +169,7 @@ export default createRule<[], MessageIds>({
 
       if (isUnsafeAssignment(senderNode, receiverType, senderType)) {
         report(reportingNode, messageId, [receiverType]);
+        markChecked(senderNode);
       }
     }
 
@@ -211,11 +222,13 @@ export default createRule<[], MessageIds>({
         }
 
         const parameterType = signature.getNextParameterType();
-        if (
-          parameterType != null &&
-          isUnsafeAssignment(argument, parameterType)
-        ) {
-          report(argument, 'unsafeEnumArgument', [parameterType]);
+        if (parameterType != null) {
+          checkAssignment(
+            parameterType,
+            argument,
+            argument,
+            'unsafeEnumArgument',
+          );
         }
       }
     }
@@ -241,6 +254,7 @@ export default createRule<[], MessageIds>({
         )
       ) {
         report(node, 'unsafeEnumAssignment', heritageMemberTypes);
+        markChecked(node.value);
         return;
       }
 
@@ -332,7 +346,7 @@ export default createRule<[], MessageIds>({
       'AccessorProperty[value != null], PropertyDefinition[value != null]':
         checkClassMember,
       ArrayExpression(node) {
-        if (isWithinReportedNode(node)) {
+        if (checkedNodes.has(node)) {
           return;
         }
 
@@ -377,8 +391,8 @@ export default createRule<[], MessageIds>({
         node: TSESTree.Expression,
       ) {
         const receiverType = getContextualType(node);
-        if (receiverType != null && isUnsafeAssignment(node, receiverType)) {
-          report(node, 'unsafeEnumAssignment', [receiverType]);
+        if (receiverType != null) {
+          checkAssignment(receiverType, node, node);
         }
       },
       'MemberExpression[computed = true]'(
@@ -411,7 +425,7 @@ export default createRule<[], MessageIds>({
         }
       },
       ObjectExpression(node) {
-        if (isWithinReportedNode(node)) {
+        if (checkedNodes.has(node)) {
           return;
         }
 

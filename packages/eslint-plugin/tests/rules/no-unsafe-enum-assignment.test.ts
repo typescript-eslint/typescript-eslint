@@ -1795,12 +1795,12 @@ takesFruits([1]);
       `,
       errors: [
         {
-          column: 13,
+          column: 14,
           data: { enumNames: "'Fruit'" },
-          endColumn: 16,
+          endColumn: 15,
           endLine: 8,
           line: 8,
-          messageId: 'unsafeEnumArgument',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -2541,12 +2541,12 @@ takesBox({ fruit: 1 });
       `,
       errors: [
         {
-          column: 10,
+          column: 12,
           data: { enumNames: "'Fruit'" },
-          endColumn: 22,
+          endColumn: 20,
           endLine: 8,
           line: 8,
-          messageId: 'unsafeEnumArgument',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -2628,12 +2628,12 @@ new Box({ fruit: 1 });
       `,
       errors: [
         {
-          column: 9,
+          column: 11,
           data: { enumNames: "'Fruit'" },
-          endColumn: 21,
+          endColumn: 19,
           endLine: 10,
           line: 10,
-          messageId: 'unsafeEnumArgument',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -2677,12 +2677,12 @@ takesNestedBox({ box: { fruit: 1 } });
       `,
       errors: [
         {
-          column: 16,
+          column: 25,
           data: { enumNames: "'Fruit'" },
-          endColumn: 37,
+          endColumn: 33,
           endLine: 8,
           line: 8,
-          messageId: 'unsafeEnumArgument',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -2698,12 +2698,12 @@ takesArray([1]);
       `,
       errors: [
         {
-          column: 12,
+          column: 13,
           data: { enumNames: "'Fruit'" },
-          endColumn: 15,
+          endColumn: 14,
           endLine: 8,
           line: 8,
-          messageId: 'unsafeEnumArgument',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -2783,12 +2783,12 @@ takesBoxes([{ fruit: 1 }]);
       `,
       errors: [
         {
-          column: 12,
+          column: 15,
           data: { enumNames: "'Fruit'" },
-          endColumn: 26,
+          endColumn: 23,
           endLine: 8,
           line: 8,
-          messageId: 'unsafeEnumArgument',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -2851,12 +2851,12 @@ takesAliasBox({ fruit: 1 });
       `,
       errors: [
         {
-          column: 15,
+          column: 17,
           data: { enumNames: "'Fruit'" },
-          endColumn: 27,
+          endColumn: 25,
           endLine: 10,
           line: 10,
-          messageId: 'unsafeEnumArgument',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -3528,12 +3528,12 @@ takesBoxes([{ fruit: 1 }]);
       `,
       errors: [
         {
-          column: 12,
+          column: 15,
           data: { enumNames: "'Fruit'" },
-          endColumn: 26,
+          endColumn: 23,
           endLine: 8,
           line: 8,
-          messageId: 'unsafeEnumArgument',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -3996,6 +3996,75 @@ class Basket {
           endLine: 12,
           line: 12,
           messageId: 'unsafeEnumAccess',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+function assignNestedBox<T extends { box: { fruit: Fruit } }>(): void {
+  const value: T = { box: { fruit: 1 } } as const;
+  void value;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 50,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+function assignSpreadBox<T extends { fruit: Fruit }>(): void {
+  const value: T = { ...{ fruit: 1 } } as const;
+  void value;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 48,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+interface HasBox {
+  box: { fruit: Fruit };
+}
+
+class Basket implements HasBox {
+  box: { fruit: Fruit } = { fruit: 1 };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 40,
+          endLine: 11,
+          line: 11,
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
