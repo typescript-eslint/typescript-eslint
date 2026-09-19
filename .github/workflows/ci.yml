@@ -445,8 +445,6 @@ jobs:
         env:
           CI: true
 
-      # Each package uploads under its own flag so Codecov can carry forward coverage
-      # for packages whose tests didn't run (see flag_management in .codecov.yml)
       - name: Upload coverage to Codecov
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
@@ -521,8 +519,6 @@ jobs:
           CI: true
           PACKAGE: ${{ matrix.package }}
 
-      # Each package uploads under its own flag so Codecov can carry forward coverage
-      # for packages whose tests didn't run (see flag_management in .codecov.yml)
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2

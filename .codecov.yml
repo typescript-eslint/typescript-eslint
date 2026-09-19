@@ -17,9 +17,6 @@ comment:
   layout: diff, flags, files
   require_changes: true
 
-# Each package uploads coverage under its own flag (see ci.yml).
-# PRs only run tests for affected packages, so carry forward the most recent
-# coverage for any package whose tests didn't run rather than treating it as 0%.
 flag_management:
   default_rules:
     carryforward: true
