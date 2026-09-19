@@ -1,19 +1,39 @@
+import type { CreateProjectServiceSettings } from '@typescript-eslint/project-service';
+
 import {
   addCandidateTSConfigRootDir,
   clearCandidateTSConfigRootDirs,
 } from '../../src/parseSettings/candidateTSConfigRootDirs';
-import { createParseSettings } from '../../src/parseSettings/createParseSettings';
+import {
+  clearTSServerProjectService,
+  createParseSettings,
+} from '../../src/parseSettings/createParseSettings';
 
-const projectService = { service: true };
-
+const { createProjectService, projectService } = vi.hoisted(() => {
+  const projectService = { service: true };
+  return {
+    createProjectService: vi.fn(
+      (_settings: CreateProjectServiceSettings) => projectService,
+    ),
+    projectService,
+  };
+});
 const isWindows = process.platform === 'win32';
 
 vi.mock('@typescript-eslint/project-service', () => ({
-  createProjectService: () => projectService,
+  createProjectService,
 }));
 
 describe(createParseSettings, () => {
   describe('projectService', () => {
+    beforeEach(() => {
+      clearTSServerProjectService();
+      createProjectService.mockClear();
+      // These assertions are about the classic project service, so the blanket
+      // native switch has to stay out of the way.
+      vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
+    });
+
     it('is created when options.projectService is enabled', () => {
       vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'false');
 
@@ -22,6 +42,16 @@ describe(createParseSettings, () => {
       });
 
       expect(parseSettings.projectService).toBe(projectService);
+    });
+
+    it('forwards classic options to the project service', () => {
+      const options = {
+        maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING: 9,
+      };
+
+      createParseSettings('', { projectService: options });
+
+      expect(createProjectService.mock.calls[0][0].options).toBe(options);
     });
 
     it('is created when options.projectService is undefined, options.project is true, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
@@ -69,6 +99,57 @@ describe(createParseSettings, () => {
       });
 
       assert.isUndefined(parseSettings.projectService);
+    });
+
+    it.each([
+      [{ project: './tsconfig.json' }, 'parserOptions.project'],
+      [
+        {
+          projectService: {
+            backend: 'native' as const,
+            defaultProject: 'tsconfig.eslint.json',
+          },
+        },
+        'defaultProject',
+      ],
+    ])('rejects unsupported native option %s', (options, identifyingTerm) => {
+      expect(() =>
+        createParseSettings('', {
+          filePath: '/project/file.ts',
+          projectService: { backend: 'native' },
+          ...options,
+        }),
+      ).toThrow(identifyingTerm);
+      expect(createProjectService).not.toHaveBeenCalled();
+    });
+
+    it('stores valid native options without creating the classic service', () => {
+      const options = { backend: 'native' as const };
+
+      const parseSettings = createParseSettings('', {
+        filePath: '/project/file.ts',
+        projectService: options,
+      });
+
+      expect(parseSettings.nativeProjectService).toBe(options);
+      expect(parseSettings.projectService).toBeUndefined();
+      expect(createProjectService).not.toHaveBeenCalled();
+    });
+
+    it('requires Node.js 22 for the native service', () => {
+      vi.spyOn(process, 'versions', 'get').mockReturnValue({
+        ...process.versions,
+        node: '20.19.0',
+      });
+
+      expect(() =>
+        createParseSettings('', {
+          filePath: '/project/file.ts',
+          projectService: { backend: 'native' },
+        }),
+      ).toThrow(
+        'The experimental native project service requires Node.js 22 or newer.',
+      );
     });
   });
 
