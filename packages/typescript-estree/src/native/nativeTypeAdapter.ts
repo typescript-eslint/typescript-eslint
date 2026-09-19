@@ -142,6 +142,13 @@ const TYPE_HANDLE_PROPERTIES = new Map<
   ['type', ['target', native => native.getTarget()]],
 ]);
 
+function toPseudoBigInt(value: bigint): ts.PseudoBigInt {
+  return {
+    base10Value: (value < 0n ? -value : value).toString(),
+    negative: value < 0n,
+  };
+}
+
 const SYMBOL_GETTER_PROPERTIES = new Map<string, string>([
   ['getDeclarations', 'declarations'],
   ['getEscapedName', 'escapedName'],
@@ -326,6 +333,12 @@ export function createNativeTypeAdapter({
             return target.isTypeParameter()
               ? wrapType(native.getDefault())
               : undefined;
+
+          // Classic carries a bigint literal as a `PseudoBigInt`.
+          case 'value':
+            return target.flags & TypeFlags.BigIntLiteral
+              ? toPseudoBigInt(native.value as bigint)
+              : native.value;
 
           // Native spells a boolean literal's name as a `value` instead.
           case 'intrinsicName':
