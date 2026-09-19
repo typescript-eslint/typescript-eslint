@@ -797,7 +797,6 @@ interface Foo {
   foo(): void;
   new (n: number);
   bar(): void;
-  new (sn: string | number);
 }
       `,
       errors: [
@@ -809,12 +808,24 @@ interface Foo {
           line: 5,
           messageId: 'adjacentSignature',
         },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  new (s: string);
+  foo(): void;
+  bar(): void;
+  new (sn: string | number);
+}
+      `,
+      errors: [
         {
           column: 3,
           data: { name: 'new' },
           endColumn: 29,
-          endLine: 7,
-          line: 7,
+          endLine: 6,
+          line: 6,
           messageId: 'adjacentSignature',
         },
       ],
@@ -976,8 +987,8 @@ class Foo {
 class Test {
   #private(): void;
   '#private'(): void;
-  #private(arg: number): void {}
   '#private'(arg: number): void {}
+  #private(arg: number): void {}
 }
       `,
       errors: [
@@ -985,10 +996,22 @@ class Test {
           column: 3,
           data: { name: '#private' },
           endColumn: 33,
-          endLine: 5,
-          line: 5,
+          endLine: 6,
+          line: 6,
           messageId: 'adjacentSignature',
         },
+      ],
+    },
+    {
+      code: `
+class Test {
+  '#private'(): void;
+  #private(): void;
+  #private(arg: number): void {}
+  '#private'(arg: number): void {}
+}
+      `,
+      errors: [
         {
           column: 3,
           data: { name: '"#private"' },

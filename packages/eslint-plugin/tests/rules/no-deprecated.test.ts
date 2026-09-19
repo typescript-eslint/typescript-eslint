@@ -1195,9 +1195,6 @@ const { c } = a.b;
 declare const test: string;
 const myObj = {
   prop: test,
-  deep: {
-    prop: test,
-  },
 };
       `,
       errors: [
@@ -1209,12 +1206,25 @@ const myObj = {
           line: 5,
           messageId: 'deprecated',
         },
+      ],
+    },
+    {
+      code: `
+/** @deprecated */
+declare const test: string;
+const myObj = {
+  deep: {
+    prop: test,
+  },
+};
+      `,
+      errors: [
         {
           column: 11,
           data: { name: 'test' },
           endColumn: 15,
-          endLine: 7,
-          line: 7,
+          endLine: 6,
+          line: 6,
           messageId: 'deprecated',
         },
       ],
@@ -2712,8 +2722,6 @@ const foo = deprecatedVariable;
 import { DeprecatedClass } from './deprecated';
 
 declare const x: DeprecatedClass;
-
-const { foo } = x;
       `,
       errors: [
         {
@@ -2724,10 +2732,29 @@ const { foo } = x;
           line: 4,
           messageId: 'deprecated',
         },
+      ],
+    },
+    {
+      code: `
+import { DeprecatedClass } from './deprecated';
+
+declare const x: unknown;
+
+const { foo } = x as DeprecatedClass;
+      `,
+      errors: [
         {
           column: 9,
           data: { name: 'foo' },
           endColumn: 12,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+        {
+          column: 22,
+          data: { name: 'DeprecatedClass' },
+          endColumn: 37,
           endLine: 6,
           line: 6,
           messageId: 'deprecated',

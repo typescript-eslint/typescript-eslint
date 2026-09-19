@@ -953,15 +953,6 @@ export class Test {
   get prop() {
     return 1;
   }
-  set prop(value) {}
-  method() {
-    return;
-  }
-  arrow = arg => 'arrow';
-  private method() {
-    return;
-  }
-  abstract abs(arg);
 }
       `,
       errors: [
@@ -972,28 +963,57 @@ export class Test {
           line: 4,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  set prop(value) {}
+}
+      `,
+      errors: [
         {
           column: 12,
           data: {
             name: 'value',
           },
           endColumn: 17,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'missingArgType',
         },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  method() {
+    return;
+  }
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 9,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  arrow = arg => 'arrow';
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 11,
-          endLine: 11,
-          line: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
         {
@@ -1002,15 +1022,27 @@ export class Test {
             name: 'arg',
           },
           endColumn: 14,
-          endLine: 11,
-          line: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'missingArgType',
         },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  private method() {
+    return;
+  }
+  abstract abs(arg);
+}
+      `,
+      errors: [
         {
           column: 15,
           endColumn: 21,
-          endLine: 15,
-          line: 15,
+          endLine: 6,
+          line: 6,
           messageId: 'missingReturnType',
         },
         {
@@ -1019,8 +1051,8 @@ export class Test {
             name: 'arg',
           },
           endColumn: 19,
-          endLine: 15,
-          line: 15,
+          endLine: 6,
+          line: 6,
           messageId: 'missingArgType',
         },
       ],
@@ -1029,11 +1061,6 @@ export class Test {
       code: `
 export class Foo {
   public a = () => {};
-  public b = function () {};
-  public c = function test() {};
-
-  static d = () => {};
-  static e = function () {};
 }
       `,
       errors: [
@@ -1044,32 +1071,68 @@ export class Foo {
           line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+export class Foo {
+  public b = function () {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 23,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+export class Foo {
+  public c = function test() {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 27,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+export class Foo {
+  static d = () => {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 14,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+export class Foo {
+  static e = function () {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 23,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
       ],
@@ -1275,23 +1338,30 @@ export default () => () => {
       options: [{ allowHigherOrderFunctions: true }],
     },
     {
-      code: `
-export const func1 = (value: number) => ({ type: 'X', value }) as any;
-export const func2 = (value: number) => ({ type: 'X', value }) as Action;
-      `,
+      code: "export const func1 = (value: number) => ({ type: 'X', value }) as any;",
       errors: [
         {
           column: 38,
           endColumn: 40,
-          endLine: 2,
-          line: 2,
+          endLine: 1,
+          line: 1,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: "export const func2 = (value: number) => ({ type: 'X', value }) as Action;",
+      errors: [
         {
           column: 38,
           endColumn: 40,
-          endLine: 3,
-          line: 3,
+          endLine: 1,
+          line: 1,
           messageId: 'missingReturnType',
         },
       ],
@@ -1356,8 +1426,6 @@ export class Test {
   method() {
     return;
   }
-  arrow = (): string => 'arrow';
-  foo = () => 'bar';
 }
       `,
       errors: [
@@ -1368,11 +1436,26 @@ export class Test {
           line: 8,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowedNames: ['prop'],
+        },
+      ],
+    },
+    {
+      code: `
+export class Test {
+  arrow = (): string => 'arrow';
+  foo = () => 'bar';
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 9,
-          endLine: 12,
-          line: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'missingReturnType',
         },
       ],
@@ -1460,7 +1543,7 @@ export const fn = (one: number, two): string => '123';
     {
       code: `
 export function foo(outer) {
-  return function (inner) {};
+  return function (inner: string): void {};
 }
       `,
       errors: [
@@ -1474,6 +1557,16 @@ export function foo(outer) {
           line: 2,
           messageId: 'missingArgType',
         },
+      ],
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+export function foo(outer: string) {
+  return function (inner) {};
+}
+      `,
+      errors: [
         {
           column: 10,
           endColumn: 19,
@@ -2012,21 +2105,11 @@ export var arrowFn = () => () => {};
     },
     {
       code: `
-export function foo(outer) {
+export function foo(outer: string) {
   return function (inner): void {};
 }
       `,
       errors: [
-        {
-          column: 21,
-          data: {
-            name: 'outer',
-          },
-          endColumn: 26,
-          endLine: 2,
-          line: 2,
-          messageId: 'missingArgType',
-        },
         {
           column: 20,
           data: {
@@ -2228,11 +2311,6 @@ export function foo(...[a]: any): void {}
 export function func1() {
   return 0;
 }
-export const foo = {
-  func2() {
-    return 0;
-  },
-};
       `,
       errors: [
         {
@@ -2242,11 +2320,27 @@ export const foo = {
           line: 2,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowedNames: [],
+        },
+      ],
+    },
+    {
+      code: `
+export const foo = {
+  func2() {
+    return 0;
+  },
+};
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 8,
-          endLine: 6,
-          line: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
       ],
