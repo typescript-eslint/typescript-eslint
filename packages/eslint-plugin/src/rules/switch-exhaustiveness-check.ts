@@ -423,24 +423,36 @@ const LITERAL_KINDS = [
   ts.TypeFlags.EnumLike,
 ];
 
-/**
- * Kinds from this one on keep the order they were declared in: `Enum.Up |
- * Enum.Down` reads better than the alphabetical `Enum.Down | Enum.Up`, and
- * `undefined` and `null` only ever appear once each.
- */
+/** Kinds from this one on have no value to sort by. */
 const FIRST_DECLARATION_ORDER_KIND = LITERAL_KINDS.indexOf(
   ts.TypeFlags.UniqueESSymbol,
 );
 
 function compareMissingLiteralBranchTypes(a: ts.Type, b: ts.Type): number {
   const kind = getLiteralKind(a);
+  const kinds = kind - getLiteralKind(b);
 
-  return (
-    kind - getLiteralKind(b) ||
-    (kind < FIRST_DECLARATION_ORDER_KIND
-      ? compare(getSortKey(a), getSortKey(b))
-      : 0)
-  );
+  if (kinds !== 0) {
+    return kinds;
+  }
+
+  if (kind < FIRST_DECLARATION_ORDER_KIND) {
+    return compareValues(getSortKey(a), getSortKey(b));
+  }
+
+  // Enum members keep the declaration order the compiler reports them in, since
+  // `Enum.Up | Enum.Down` reads better than the alphabetical `Enum.Down |
+  // Enum.Up`. They still need grouping by their enum: which of two enums the
+  // compiler resolved first depends on the other files in the lint run.
+  return compareValues(getEnumName(a), getEnumName(b));
+}
+
+function getEnumName(type: ts.Type): string {
+  const declaration = type.getSymbol()?.valueDeclaration?.parent;
+
+  return declaration && ts.isEnumDeclaration(declaration)
+    ? declaration.name.text
+    : '';
 }
 
 function getLiteralKind(type: ts.Type): number {
@@ -463,7 +475,7 @@ function getSortKey(type: ts.Type): bigint | boolean | number | string {
   return tsutils.isTrueLiteralType(type);
 }
 
-function compare<T extends bigint | boolean | number | string>(
+function compareValues<T extends bigint | boolean | number | string>(
   a: T,
   b: T,
 ): number {

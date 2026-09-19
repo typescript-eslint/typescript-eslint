@@ -3329,15 +3329,15 @@ case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
     },
     {
       code: `
-enum First {
-  same = 'first',
-  zFirst = 'zFirst',
+enum Zebra {
+  same = 'zebra',
+  zLast = 'zLast',
 }
-enum Second {
-  same = 'second',
-  zSecond = 'zSecond',
+enum Apple {
+  same = 'apple',
+  aLast = 'aLast',
 }
-declare const value: First | Second;
+declare const value: Zebra | Apple;
 switch (value) {
 }
       `,
@@ -3346,7 +3346,7 @@ switch (value) {
           column: 9,
           data: {
             missingBranches:
-              'First.same | First.zFirst | Second.same | Second.zSecond',
+              'Apple.same | Apple.aLast | Zebra.same | Zebra.zLast',
           },
           endColumn: 14,
           endLine: 11,
@@ -3356,20 +3356,20 @@ switch (value) {
             {
               messageId: 'addMissingCases',
               output: `
-enum First {
-  same = 'first',
-  zFirst = 'zFirst',
+enum Zebra {
+  same = 'zebra',
+  zLast = 'zLast',
 }
-enum Second {
-  same = 'second',
-  zSecond = 'zSecond',
+enum Apple {
+  same = 'apple',
+  aLast = 'aLast',
 }
-declare const value: First | Second;
+declare const value: Zebra | Apple;
 switch (value) {
-case First.same: { throw new Error('Not implemented yet: First.same case') }
-case First.zFirst: { throw new Error('Not implemented yet: First.zFirst case') }
-case Second.same: { throw new Error('Not implemented yet: Second.same case') }
-case Second.zSecond: { throw new Error('Not implemented yet: Second.zSecond case') }
+case Apple.same: { throw new Error('Not implemented yet: Apple.same case') }
+case Apple.aLast: { throw new Error('Not implemented yet: Apple.aLast case') }
+case Zebra.same: { throw new Error('Not implemented yet: Zebra.same case') }
+case Zebra.zLast: { throw new Error('Not implemented yet: Zebra.zLast case') }
 }
       `,
             },
