@@ -2224,7 +2224,7 @@ function test(arg: Enum): string {
       errors: [
         {
           column: 11,
-          data: { missingBranches: 'Enum.test | (typeof Enum)["test-test"]' },
+          data: { missingBranches: '(typeof Enum)["test-test"] | Enum.test' },
           endColumn: 14,
           endLine: 8,
           line: 8,
@@ -2240,8 +2240,8 @@ export enum Enum {
 
 function test(arg: Enum): string {
   switch (arg) {
-  case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
   case Enum['test-test']: { throw new Error('Not implemented yet: Enum[\\'test-test\\'] case') }
+  case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
   }
 }
       `,
@@ -2391,7 +2391,7 @@ switch (value) {
         {
           column: 17,
           data: {
-            missingBranches: '(typeof Enum)["\'a\' `b` \\"c\\""] | Enum.a',
+            missingBranches: 'Enum.a | (typeof Enum)["\'a\' `b` \\"c\\""]',
           },
           endColumn: 18,
           endLine: 9,
@@ -2409,8 +2409,8 @@ switch (value) {
         declare const a: Enum;
 
         switch (a) {
-        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\\\'a\\\\\\' \`b\` "c"\\'] case') }
         case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
+        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\\\'a\\\\\\' \`b\` "c"\\'] case') }
         }
       `,
             },
@@ -3257,7 +3257,7 @@ switch (value) {
       errors: [
         {
           column: 9,
-          data: { missingBranches: 'Enum.apple | Enum.zebra' },
+          data: { missingBranches: 'Enum.zebra | Enum.apple' },
           endColumn: 14,
           endLine: 7,
           line: 7,
@@ -3272,8 +3272,8 @@ enum Enum {
 }
 declare const value: Enum;
 switch (value) {
-case Enum.apple: { throw new Error('Not implemented yet: Enum.apple case') }
 case Enum.zebra: { throw new Error('Not implemented yet: Enum.zebra case') }
+case Enum.apple: { throw new Error('Not implemented yet: Enum.apple case') }
 }
       `,
             },
@@ -3296,7 +3296,7 @@ switch (value) {
           column: 9,
           data: {
             missingBranches:
-              '"x" | 10 | 2n | true | undefined | null | Enum.a | Enum.b',
+              '"x" | 10 | 2n | true | undefined | null | Enum.b | Enum.a',
           },
           endColumn: 14,
           endLine: 7,
@@ -3318,8 +3318,8 @@ case 2n: { throw new Error('Not implemented yet: 2n case') }
 case true: { throw new Error('Not implemented yet: true case') }
 case undefined: { throw new Error('Not implemented yet: undefined case') }
 case null: { throw new Error('Not implemented yet: null case') }
-case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
 case Enum.b: { throw new Error('Not implemented yet: Enum.b case') }
+case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
 }
       `,
             },
@@ -3329,15 +3329,15 @@ case Enum.b: { throw new Error('Not implemented yet: Enum.b case') }
     },
     {
       code: `
-enum First {
-  same = 'first',
-  zFirst = 'zFirst',
+enum Zebra {
+  same = 'zebra',
+  zLast = 'zLast',
 }
-enum Second {
-  same = 'second',
-  zSecond = 'zSecond',
+enum Apple {
+  same = 'apple',
+  aLast = 'aLast',
 }
-declare const value: First | Second;
+declare const value: Zebra | Apple;
 switch (value) {
 }
       `,
@@ -3346,7 +3346,7 @@ switch (value) {
           column: 9,
           data: {
             missingBranches:
-              'First.same | Second.same | First.zFirst | Second.zSecond',
+              'Apple.same | Apple.aLast | Zebra.same | Zebra.zLast',
           },
           endColumn: 14,
           endLine: 11,
@@ -3356,20 +3356,95 @@ switch (value) {
             {
               messageId: 'addMissingCases',
               output: `
-enum First {
-  same = 'first',
-  zFirst = 'zFirst',
+enum Zebra {
+  same = 'zebra',
+  zLast = 'zLast',
 }
-enum Second {
-  same = 'second',
-  zSecond = 'zSecond',
+enum Apple {
+  same = 'apple',
+  aLast = 'aLast',
 }
-declare const value: First | Second;
+declare const value: Zebra | Apple;
 switch (value) {
-case First.same: { throw new Error('Not implemented yet: First.same case') }
-case Second.same: { throw new Error('Not implemented yet: Second.same case') }
-case First.zFirst: { throw new Error('Not implemented yet: First.zFirst case') }
-case Second.zSecond: { throw new Error('Not implemented yet: Second.zSecond case') }
+case Apple.same: { throw new Error('Not implemented yet: Apple.same case') }
+case Apple.aLast: { throw new Error('Not implemented yet: Apple.aLast case') }
+case Zebra.same: { throw new Error('Not implemented yet: Zebra.same case') }
+case Zebra.zLast: { throw new Error('Not implemented yet: Zebra.zLast case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const zebra = Symbol('zebra');
+const apple = Symbol('apple');
+declare const value: typeof zebra | typeof apple;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: 'typeof zebra | typeof apple' },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+const zebra = Symbol('zebra');
+const apple = Symbol('apple');
+declare const value: typeof zebra | typeof apple;
+switch (value) {
+case zebra: { throw new Error('Not implemented yet: zebra case') }
+case apple: { throw new Error('Not implemented yet: apple case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Status {
+  Pending = 2,
+  Active = 0,
+  Done = 1,
+}
+declare const value: Status;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            missingBranches: 'Status.Pending | Status.Active | Status.Done',
+          },
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Status {
+  Pending = 2,
+  Active = 0,
+  Done = 1,
+}
+declare const value: Status;
+switch (value) {
+case Status.Pending: { throw new Error('Not implemented yet: Status.Pending case') }
+case Status.Active: { throw new Error('Not implemented yet: Status.Active case') }
+case Status.Done: { throw new Error('Not implemented yet: Status.Done case') }
 }
       `,
             },
