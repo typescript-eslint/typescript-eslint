@@ -369,6 +369,7 @@ export default createRule<Options, MessageIds>({
           const synthesizedImport: TSESTree.ImportDeclaration = {
             ...node,
             type: AST_NODE_TYPES.ImportDeclaration,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated -- `assertions` is a required property of `ImportDeclaration` until it is removed
             assertions: [],
             attributes: [],
             source: node.moduleReference.expression,
