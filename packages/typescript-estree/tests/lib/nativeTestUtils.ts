@@ -5,7 +5,10 @@ import { clearCaches } from '../../src/index.js';
 
 /** Matches how the compiler spells paths back, so Windows comparisons line up. */
 export function nativePath(...segments: string[]): string {
-  return path.join(...segments).replaceAll('\\', '/');
+  return path
+    .join(...segments)
+    .replaceAll('\\', '/')
+    .replace(/^[A-Z]:\//, drive => drive.toLowerCase());
 }
 
 export const nativeFixtures = nativePath(

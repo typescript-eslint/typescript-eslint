@@ -19,9 +19,15 @@ function startupError(error: unknown): Error {
   );
 }
 
-/** The compiler echoes this back as `SourceFile#fileName`, so it keeps its case. */
+/**
+ * The compiler echoes this back as `SourceFile#fileName`, and normalizes both
+ * the separators and a Windows drive letter on the way.
+ */
 function toCompilerPath(filePath: string): string {
-  return path.resolve(filePath).replaceAll('\\', '/');
+  return path
+    .resolve(filePath)
+    .replaceAll('\\', '/')
+    .replace(/^[A-Z]:\//, drive => drive.toLowerCase());
 }
 
 function toCacheKey(compilerPath: string): string {
