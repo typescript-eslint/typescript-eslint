@@ -473,6 +473,86 @@ class Beta {
 declare const scope: Alpha | Beta;
 const beta = scope as Beta;
     `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+function wrap<T>(value: T) {
+  const promise: Promise<T> = Promise.resolve(value);
+}
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+class Point3 extends Point {}
+const point: Point | Point3 = new Point3(1, 2);
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+const shorthand = { point = new Point(1, 2) };
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+declare function draw(...points: Point[]): void;
+declare const points: Point[];
+draw(...points);
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+let count = 0;
+count += 1;
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+function noop(): void {
+  return;
+}
+    `,
+    `
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+function* points(): Generator<Point | undefined> {
+  yield;
+}
+    `,
+    {
+      code: `
+declare function Marker(props: { children?: Point }): null;
+const marker = <Marker>{/* empty */}</Marker>;
+      `,
+      filename: 'react.tsx',
+    },
   ],
   invalid: [
     {

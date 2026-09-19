@@ -313,15 +313,7 @@ export default createRule({
       },
       NewExpression: checkArguments,
       'Property[parent.type="ObjectExpression"]'(node: TSESTree.Property) {
-        switch (node.value.type) {
-          case AST_NODE_TYPES.ArrayPattern:
-          case AST_NODE_TYPES.AssignmentPattern:
-          case AST_NODE_TYPES.ObjectPattern:
-          case AST_NODE_TYPES.TSEmptyBodyFunctionExpression:
-            return;
-          default:
-            checkSite(node.value);
-        }
+        checkSite(node.value as TSESTree.Expression);
       },
       'PropertyDefinition, AccessorProperty'(
         node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
