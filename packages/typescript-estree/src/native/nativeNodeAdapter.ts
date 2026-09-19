@@ -82,6 +82,13 @@ const POSTFIX_TOKEN_KINDS = new Map<string, NativeSyntaxKind>([
   ['questionToken', NativeSyntaxKind.QuestionToken],
 ]);
 
+function isHeritageTypeReference(node: NativeNode): boolean {
+  return (
+    node.kind === NativeSyntaxKind.TypeReference &&
+    node.parent.kind === NativeSyntaxKind.HeritageClause
+  );
+}
+
 function isNativeNode(value: unknown): value is NativeNode {
   return (
     typeof value === 'object' &&
@@ -274,7 +281,15 @@ export function createNativeNodeAdapter(
     const proxy = new Proxy(node, {
       get(target, property) {
         if (property === 'kind') {
-          return translateKind(target.kind);
+          return isHeritageTypeReference(target)
+            ? ts.SyntaxKind.ExpressionWithTypeArguments
+            : translateKind(target.kind);
+        }
+        // Classic always spells a heritage element as an expression.
+        if (property === 'expression' && isHeritageTypeReference(target)) {
+          return wrapNode(
+            (target as unknown as { typeName: NativeNode }).typeName,
+          );
         }
         if (property === 'flags') {
           return translateNodeFlags(target);
