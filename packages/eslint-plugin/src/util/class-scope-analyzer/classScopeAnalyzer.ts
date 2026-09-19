@@ -399,6 +399,8 @@ abstract class ThisScope extends Visitor {
   }
 
   private visitClass(node: ClassNode): void {
+    // ClassScopeAnalyzer is a ThisScope sibling of IntermediateScope rather than a subclass, but is structurally usable as an upper scope.
+    // eslint-disable-next-line @typescript-eslint/no-object-literal-class-instances
     const classScope = new ClassScope(node, this, this.scopeManager);
     this.childScopes.push(classScope);
     classScope.visitChildren(node);

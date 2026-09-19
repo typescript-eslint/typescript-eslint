@@ -10,6 +10,10 @@ class Point {
 const point: Point = { x: -1, y: -2 };
                      ~~~~~~~~~~~~~~~~ This object literal is used where an instance of class `Point` is expected.
 
+declare const plain: { x: number; y: number };
+const points: Point[] = [plain];
+                         ~~~~~ This value is used where an instance of class `Point` is expected, but was not created by its constructor.
+
 Correct
 
 class Point {
@@ -20,3 +24,5 @@ class Point {
 }
 
 const point = new Point(1, 2);
+
+const points: Point[] = [new Point(1, 2)];

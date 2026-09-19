@@ -270,6 +270,8 @@ class UnusedVarsVisitor extends Visitor {
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
   ): void {
     // skip a variable of class itself name in the class scope
+    // getScope returns the structural TSESLint.Scope.Scope type, which only mirrors scope-manager's ClassScope class.
+    // eslint-disable-next-line @typescript-eslint/no-object-literal-class-instances
     const scope = this.getScope(node) as TSESLint.Scope.Scopes.ClassScope;
     for (const variable of scope.variables) {
       if (variable.identifiers[0] === scope.block.id) {

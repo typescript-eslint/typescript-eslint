@@ -14,7 +14,8 @@ That includes object literals that were never passed through the class's constru
 
 Constructors are often relied on to validate inputs or set up internal state.
 An object literal that skips the constructor also skips those guarantees, and won't pass `instanceof` checks for the class.
-This rule reports object literals used where an instance of a class is expected: in assignments, arguments, return values, type assertions, and so on.
+This rule reports values that are not instances of a class used where one is expected: in assignments, arguments, return values, type assertions, and so on.
+That includes object literals as well as other values whose types are only structurally compatible with the class, such as a `Promise<{ x: number; y: number }>` assigned to a `Promise<Point>`.
 
 ## Examples
 
@@ -30,6 +31,9 @@ class Point {
 }
 
 const point: Point = { x: -1, y: -2 };
+
+declare const plain: { x: number; y: number };
+const points: Point[] = [plain];
 ```
 
 </TabItem>
@@ -44,6 +48,8 @@ class Point {
 }
 
 const point = new Point(1, 2);
+
+const points: Point[] = [new Point(1, 2)];
 ```
 
 </TabItem>
@@ -53,9 +59,6 @@ const point = new Point(1, 2);
 
 If you intentionally use classes as structural types, such as for lightweight data containers that don't rely on constructor logic, you might prefer to declare those shapes as interfaces or type aliases instead.
 If your project intentionally relies on that pattern, this rule may not be for you.
-
-Note that this rule only reports object literals.
-Values of other types that happen to be structurally compatible with a class are not reported.
 
 ## Related To
 
