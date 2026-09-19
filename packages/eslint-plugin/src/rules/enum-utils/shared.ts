@@ -130,7 +130,7 @@ function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
 /**
  * @returns What type a type's enum value is (number or string), if either.
  */
-function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
+export function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
   return tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
     ? tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
       ? ts.TypeFlags.Number

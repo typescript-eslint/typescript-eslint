@@ -49,6 +49,7 @@ function includesType(
   const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
   const types = unionConstituents(parserServices.getTypeAtLocation(node));
   for (const type of types) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
     if (isTypeFlagSet(type, typeFlag)) {
       return true;
     }
@@ -70,6 +71,7 @@ function isValidAndLastChainOperand(
       const isNullish = types.some(t =>
         isTypeFlagSet(
           t,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
           ANY_UNKNOWN_FLAGS | ts.TypeFlags.Null | ts.TypeFlags.Undefined,
         ),
       );
@@ -77,6 +79,7 @@ function isValidAndLastChainOperand(
     }
     case ComparisonType.StrictEqual: {
       const isUndefined = types.some(t =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
         isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
       );
       return !isUndefined;
@@ -105,6 +108,7 @@ function isValidOrLastChainOperand(
       const isNullish = types.some(t =>
         isTypeFlagSet(
           t,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
           ANY_UNKNOWN_FLAGS | ts.TypeFlags.Null | ts.TypeFlags.Undefined,
         ),
       );
@@ -112,6 +116,7 @@ function isValidOrLastChainOperand(
     }
     case ComparisonType.NotStrictEqual: {
       const isUndefined = types.some(t =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
         isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
       );
       return !isUndefined;

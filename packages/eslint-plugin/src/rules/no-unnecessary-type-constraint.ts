@@ -43,6 +43,7 @@ export default createRule({
     function checkRequiresGenericDeclarationDisambiguation(
       filename: string,
     ): boolean {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
       const pathExt = extname(filename).toLocaleLowerCase() as ts.Extension;
       switch (pathExt) {
         case ts.Extension.Cts:
