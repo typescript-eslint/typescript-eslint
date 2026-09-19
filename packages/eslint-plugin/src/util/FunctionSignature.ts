@@ -45,9 +45,6 @@ export class FunctionSignature {
   public static create(
     checker: ts.TypeChecker,
     tsNode: ts.CallLikeExpression,
-    options?: {
-      useDeclaredParameterTypes?: boolean;
-    },
   ): FunctionSignature {
     // getResolvedSignature only returns undefined for nodes outside the parse
     // tree, and tsNode always comes from the AST node map.
@@ -63,13 +60,7 @@ export class FunctionSignature {
     for (let index = 0; index < parameters.length; index += 1) {
       const param = parameters[index];
       const declaration = param.getDeclarations()?.[0];
-      const type =
-        options?.useDeclaredParameterTypes &&
-        declaration != null &&
-        ts.isParameter(declaration) &&
-        declaration.type != null
-          ? checker.getTypeFromTypeNode(declaration.type)
-          : checker.getTypeOfSymbolAtLocation(param, tsNode);
+      const type = checker.getTypeOfSymbolAtLocation(param, tsNode);
       const constrainedType = checker.getBaseConstraintOfType(type) ?? type;
 
       if (declaration && isRestParameterDeclaration(declaration)) {

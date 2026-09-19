@@ -1168,6 +1168,247 @@ declare namespace JSX {
         },
       },
     },
+    `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+function getFlags(): Flags {
+  return Flags.Read | Flags.Write;
+}
+    `,
+    `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+const combined = (Flags.Read | Flags.Write) as Flags;
+    `,
+    {
+      code: `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+declare function Basket(props: { flags: Flags }): JSX.Element;
+
+<Basket flags={Flags.Read | Flags.Write} />;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+function takesFlags(flags: Flags): void {}
+
+takesFlags(Flags.Read | Flags.Write);
+    `,
+    `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+interface HasFlags {
+  flags: Flags;
+}
+
+class Permissions implements HasFlags {
+  flags = Flags.Read | Flags.Write;
+}
+    `,
+    `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+let flags: Flags = Flags.Read;
+flags |= Flags.Read | Flags.Write;
+flags &= ~Flags.Write;
+flags ^= Flags.Read ^ Flags.Write;
+    `,
+    `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+const combined: Flags = Flags.Read ^ Flags.Write;
+const masked: Flags = Flags.Read & ~Flags.Write;
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+return 1;
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+declare const fruits: Fruit[];
+declare const fruitSet: Set<Fruit>;
+
+const more: Fruit[] = [...fruits, ...fruitSet, , Fruit.Apple];
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+declare const source: { fruit: Fruit };
+
+const box: { fruit: Fruit } = { ...source };
+({ ...source });
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+const box: { getFruit(): Fruit } = {
+  getFruit() {
+    return Fruit.Apple;
+  },
+};
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+class Basket {
+  fruits: { [key in Fruit]: string } = { [Fruit.Apple]: 'apple' };
+
+  getApple(): string {
+    return this.fruits[Fruit.Apple];
+  }
+}
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+declare const basket: { fruits: { [key in Fruit]: string } };
+
+basket.fruits[Fruit.Apple];
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+declare const bar: { [Fruit.Apple]: string; other: string };
+
+bar[Fruit.Apple];
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+declare const fruits: Fruit[];
+declare const fruitSet: Set<Fruit>;
+const notFn = 1;
+
+function takesFruits(...fruits: Fruit[]): void {}
+
+takesFruits(...fruitSet);
+notFn(...fruits);
+    `,
+    `
+interface FruitNode {
+  next: FruitNode;
+  value: string;
+}
+
+interface OtherNode {
+  next: OtherNode;
+  value: string;
+}
+
+declare const other: OtherNode;
+
+const node: FruitNode = other;
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+function takesStrings(...strings: string[]): void {}
+
+takesStrings(...'abc');
+    `,
+    `
+const label: string = 'label';
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+declare const bar: {
+  [Vegetable.Asparagus]: string;
+  [Fruit.Apple]: string;
+  other: string;
+};
+
+bar[Vegetable.Asparagus];
+bar[Fruit.Apple];
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+function takes(first: Fruit, second: number, ...rest: Fruit[]): void {}
+
+takes(...([Fruit.Apple] as const), 1);
+    `,
+    `
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+declare const something: any;
+
+const vegetable: Vegetable = something;
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+declare function getFruits(): { [key in Fruit]: string };
+
+getFruits[0];
+    `,
+    `
+function first() {
+  return arguments[0];
+}
+    `,
   ],
   invalid: [
     {
@@ -1722,12 +1963,12 @@ takesFruits([1]);
       `,
       errors: [
         {
-          column: 14,
+          column: 13,
           data: { enumNames: "'Fruit'" },
-          endColumn: 15,
+          endColumn: 16,
           endLine: 8,
           line: 8,
-          messageId: 'unsafeEnumAssignment',
+          messageId: 'unsafeEnumArgument',
         },
       ],
     },
@@ -2131,9 +2372,9 @@ const [fruit]: [Fruit] = [1];
       `,
       errors: [
         {
-          column: 8,
+          column: 27,
           data: { enumNames: "'Fruit'" },
-          endColumn: 13,
+          endColumn: 28,
           endLine: 6,
           line: 6,
           messageId: 'unsafeEnumAssignment',
@@ -2191,9 +2432,9 @@ function takesFruit([fruit]: [Fruit] = [1]): void {}
       `,
       errors: [
         {
-          column: 22,
+          column: 41,
           data: { enumNames: "'Fruit'" },
-          endColumn: 27,
+          endColumn: 42,
           endLine: 6,
           line: 6,
           messageId: 'unsafeEnumAssignment',
@@ -2210,9 +2451,9 @@ const { fruit }: { fruit: Fruit } = { fruit: 1 };
       `,
       errors: [
         {
-          column: 9,
+          column: 39,
           data: { enumNames: "'Fruit'" },
-          endColumn: 14,
+          endColumn: 47,
           endLine: 6,
           line: 6,
           messageId: 'unsafeEnumAssignment',
@@ -2229,9 +2470,9 @@ const { fruit: picked }: { fruit: Fruit } = { fruit: 1 };
       `,
       errors: [
         {
-          column: 16,
+          column: 47,
           data: { enumNames: "'Fruit'" },
-          endColumn: 22,
+          endColumn: 55,
           endLine: 6,
           line: 6,
           messageId: 'unsafeEnumAssignment',
@@ -2248,9 +2489,9 @@ function takesBox({ fruit }: { fruit: Fruit } = { fruit: 1 }): void {}
       `,
       errors: [
         {
-          column: 21,
+          column: 51,
           data: { enumNames: "'Fruit'" },
-          endColumn: 26,
+          endColumn: 59,
           endLine: 6,
           line: 6,
           messageId: 'unsafeEnumAssignment',
@@ -2495,14 +2736,6 @@ const numbers: number[] = [1, 2, 3];
 takesFruits(...[1, ...numbers]);
       `,
       errors: [
-        {
-          column: 13,
-          data: { enumNames: "'Fruit'" },
-          endColumn: 31,
-          endLine: 9,
-          line: 9,
-          messageId: 'unsafeEnumArgument',
-        },
         {
           column: 13,
           data: { enumNames: "'Fruit'" },
@@ -2797,12 +3030,12 @@ function getBox<T extends { fruit: Fruit }>(): T {
       `,
       errors: [
         {
-          column: 3,
+          column: 12,
           data: { enumNames: "'Fruit'" },
-          endColumn: 23,
+          endColumn: 20,
           endLine: 7,
           line: 7,
-          messageId: 'unsafeEnumReturn',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -2818,12 +3051,12 @@ function castBox<T extends { fruit: Fruit }>(): T {
       `,
       errors: [
         {
-          column: 10,
+          column: 12,
           data: { enumNames: "'Fruit'" },
-          endColumn: 27,
+          endColumn: 20,
           endLine: 7,
           line: 7,
-          messageId: 'unsafeEnumAssertion',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -2933,9 +3166,9 @@ function assignArray<T extends Fruit[]>(): void {
       `,
       errors: [
         {
-          column: 9,
+          column: 22,
           data: { enumNames: "'Fruit'" },
-          endColumn: 24,
+          endColumn: 23,
           endLine: 7,
           line: 7,
           messageId: 'unsafeEnumAssignment',
@@ -2954,12 +3187,12 @@ function getArray<T extends Fruit[]>(): T {
       `,
       errors: [
         {
-          column: 3,
+          column: 11,
           data: { enumNames: "'Fruit'" },
-          endColumn: 14,
+          endColumn: 12,
           endLine: 7,
           line: 7,
-          messageId: 'unsafeEnumReturn',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -2975,12 +3208,12 @@ function castArray<T extends Fruit[]>(): T {
       `,
       errors: [
         {
-          column: 10,
+          column: 11,
           data: { enumNames: "'Fruit'" },
-          endColumn: 18,
+          endColumn: 12,
           endLine: 7,
           line: 7,
-          messageId: 'unsafeEnumAssertion',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -3154,12 +3387,12 @@ async function getBox<T extends { fruit: Fruit }>(): Promise<T> {
       `,
       errors: [
         {
-          column: 3,
+          column: 12,
           data: { enumNames: "'Fruit'" },
-          endColumn: 23,
+          endColumn: 20,
           endLine: 7,
           line: 7,
-          messageId: 'unsafeEnumReturn',
+          messageId: 'unsafeEnumAssignment',
         },
       ],
     },
@@ -3281,6 +3514,854 @@ function readValue<K extends number>(
           endColumn: 17,
           endLine: 10,
           line: 10,
+          messageId: 'unsafeEnumAccess',
+        },
+      ],
+    },
+    {
+      code: `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+const combined: Flags = Flags.Read | (Flags.Write | 1);
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Flags'" },
+          endColumn: 55,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+const negated: Flags = -Flags.Read;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Flags'" },
+          endColumn: 35,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+const shifted: Flags = Flags.Read << Flags.Write;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Flags'" },
+          endColumn: 49,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Flags {
+  Read = 1 << 0,
+  Write = 1 << 1,
+}
+
+let flags: Flags = Flags.Read;
+flags |= Flags.Write | 4;
+flags &= 1;
+flags ^= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { enumNames: "'Flags'" },
+          endColumn: 25,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+        {
+          column: 1,
+          data: { enumNames: "'Flags'" },
+          endColumn: 11,
+          endLine: 9,
+          line: 9,
+          messageId: 'unsafeEnumAssignment',
+        },
+        {
+          column: 1,
+          data: { enumNames: "'Flags'" },
+          endColumn: 11,
+          endLine: 10,
+          line: 10,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+let fruit: Fruit | undefined;
+fruit ||= 1;
+fruit &&= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumAssignment',
+        },
+        {
+          column: 1,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 12,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const numbers: number[];
+
+const fruits: Fruit[] = [Fruit.Apple, ...numbers];
+      `,
+      errors: [
+        {
+          column: 39,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 49,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+const pair: [Fruit, number] = [1, 2];
+      `,
+      errors: [
+        {
+          column: 32,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 33,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+const fruitOrFruits: Fruit | Fruit[] = [1];
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 42,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+const nested: Fruit[][] = [[1]];
+      `,
+      errors: [
+        {
+          column: 29,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 30,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+const box: { 0: Fruit; 'the-fruit': Fruit } = { 0: 1, 'the-fruit': 1 };
+      `,
+      errors: [
+        {
+          column: 49,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 53,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+        {
+          column: 55,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 69,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+const box: { fruits: Fruit[] } = { fruits: [1] };
+      `,
+      errors: [
+        {
+          column: 45,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 46,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+let fruit: Fruit;
+[fruit] = [1];
+({ fruit } = { fruit: 1 });
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 13,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumAssignment',
+        },
+        {
+          column: 16,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 24,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const pair: [number];
+
+const [fruit]: [Fruit] = pair;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 30,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const source: { fruit: number };
+
+const { fruit }: { fruit: Fruit } = source;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 43,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const source: { fruit: number };
+
+const box: { fruit: Fruit } = { ...source };
+      `,
+      errors: [
+        {
+          column: 33,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 42,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const numbers: number[];
+
+function takesFruits(...fruits: Fruit[]): void {}
+
+takesFruits(...numbers);
+takesFruits(Fruit.Apple, ...numbers, 1);
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 23,
+          endLine: 10,
+          line: 10,
+          messageId: 'unsafeEnumArgument',
+        },
+        {
+          column: 26,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 36,
+          endLine: 11,
+          line: 11,
+          messageId: 'unsafeEnumArgument',
+        },
+        {
+          column: 38,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 39,
+          endLine: 11,
+          line: 11,
+          messageId: 'unsafeEnumArgument',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+async function getFruit(): Promise<Fruit> {
+  return Promise.resolve(1);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 29,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumReturn',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+function takesBoxes<T extends { fruit: Fruit }>(boxes: T[]): void {}
+
+takesBoxes([{ fruit: 1 }]);
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 26,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumArgument',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+class Basket {
+  fruits: { [key in Fruit]: string } = { [Fruit.Apple]: 'apple' };
+
+  getFirst(): string {
+    return this.fruits[0];
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 25,
+          endLine: 10,
+          line: 10,
+          messageId: 'unsafeEnumAccess',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const basket: { fruits: { [key in Fruit]: string } };
+
+basket.fruits[0];
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 16,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAccess',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+interface HasFruit {
+  fruit: Fruit;
+}
+
+interface AlsoHasFruit {
+  fruit: Fruit;
+}
+
+class Basket implements HasFruit, AlsoHasFruit {
+  fruit = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 13,
+          endLine: 15,
+          line: 15,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+interface HasNumber {
+  fruit: number;
+}
+
+class Basket implements HasNumber {
+  fruit: Fruit = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 20,
+          endLine: 11,
+          line: 11,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+function getFruits(): Fruit[] {
+  return [1];
+}
+
+const getMoreFruits = (): Fruit[] => [1];
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumAssignment',
+        },
+        {
+          column: 39,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 40,
+          endLine: 10,
+          line: 10,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+const box = { fruit: 1 } satisfies { fruit: Fruit };
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 23,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+const fruits: Map<string, Fruit> = new Map<string, number>();
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 61,
+          endLine: 6,
+          line: 6,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+interface FruitNode {
+  fruit: Fruit;
+  next: FruitNode;
+}
+
+interface NumberNode {
+  fruit: number;
+  next: NumberNode;
+}
+
+declare const numberNode: NumberNode;
+
+const fruitNode: FruitNode = numberNode;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 40,
+          endLine: 18,
+          line: 18,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+function increment<T extends Fruit>(fruit: T): void {
+  fruit++;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 10,
+          endLine: 7,
+          line: 7,
+          messageId: 'unsafeEnumMutation',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const numberSet: Set<number>;
+
+const fruits: Fruit[] = [...numberSet];
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 38,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const numberSet: Set<number>;
+
+function takesFruits(...fruits: Fruit[]): void {}
+
+takesFruits(...numberSet);
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 25,
+          endLine: 10,
+          line: 10,
+          messageId: 'unsafeEnumArgument',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const numbers: number[];
+declare const pair: [number];
+
+const fruits: { [index: number]: Fruit } = numbers;
+const fruitPair: { [index: number]: Fruit } = pair;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 51,
+          endLine: 9,
+          line: 9,
+          messageId: 'unsafeEnumAssignment',
+        },
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 51,
+          endLine: 10,
+          line: 10,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+declare const bar: {
+  [Vegetable.Asparagus]: string;
+  [Fruit.Apple]: string;
+  other: string;
+};
+
+bar[0];
+bar['asparagus'];
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { enumNames: "'Fruit', 'Vegetable'" },
+          endColumn: 6,
+          endLine: 16,
+          line: 16,
+          messageId: 'unsafeEnumAccess',
+        },
+        {
+          column: 5,
+          data: { enumNames: "'Fruit', 'Vegetable'" },
+          endColumn: 16,
+          endLine: 17,
+          line: 17,
+          messageId: 'unsafeEnumAccess',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const spread: [Fruit, ...Fruit[]];
+
+function takes(
+  first: Fruit,
+  second: number,
+  third: number,
+  ...rest: Fruit[]
+): void {}
+
+takes(...spread, 1);
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 19,
+          endLine: 15,
+          line: 15,
+          messageId: 'unsafeEnumArgument',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+interface FruitThenable {
+  fruit: Fruit;
+  then(onfulfilled: string): unknown;
+}
+
+interface NumberThenable {
+  fruit: number;
+  then(onfulfilled: string): unknown;
+}
+
+declare const numberThenable: NumberThenable;
+
+function getThenable(): FruitThenable {
+  return numberThenable;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 25,
+          endLine: 19,
+          line: 19,
+          messageId: 'unsafeEnumReturn',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+class Basket {
+  get fruits(): { [key in Fruit]: string } {
+    return { [Fruit.Apple]: 'apple' };
+  }
+
+  getFirst(): string {
+    return this.fruits[0];
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 25,
+          endLine: 12,
+          line: 12,
           messageId: 'unsafeEnumAccess',
         },
       ],

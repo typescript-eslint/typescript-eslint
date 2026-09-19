@@ -1,7 +1,7 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isTypeFlagSet } from '../../util';
+import { isNumberLike, isStringLike, isTypeFlagSet } from '../../util';
 
 /*
  * If passed an enum member, returns the type of the parent. Otherwise,
@@ -11,14 +11,14 @@ import { isTypeFlagSet } from '../../util';
  * - `Fruit` --> `Fruit`
  * - `Fruit.Apple` --> `Fruit`
  */
-function getBaseEnumType(typeChecker: ts.TypeChecker, type: ts.Type): ts.Type {
+function getBaseEnumType(checker: ts.TypeChecker, type: ts.Type): ts.Type {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const symbol = type.getSymbol()!;
   if (!tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
     return type;
   }
 
-  return typeChecker.getTypeAtLocation(
+  return checker.getTypeAtLocation(
     (symbol.valueDeclaration as ts.EnumMember).parent,
   );
 }
@@ -50,10 +50,10 @@ export function getEnumLiterals(type: ts.Type): ts.LiteralType[] {
  * - T extends Fruit --> [Fruit]
  */
 export function getEnumTypes(
-  typeChecker: ts.TypeChecker,
+  checker: ts.TypeChecker,
   type: ts.Type,
 ): ts.Type[] {
-  return getEnumLiterals(type).map(type => getBaseEnumType(typeChecker, type));
+  return getEnumLiterals(type).map(type => getBaseEnumType(checker, type));
 }
 
 /**
@@ -61,7 +61,7 @@ export function getEnumTypes(
  * compared against a non-enum value of the same primitive kind.
  */
 export function isMismatchedEnumComparisonTypes(
-  typeChecker: ts.TypeChecker,
+  checker: ts.TypeChecker,
   leftType: ts.Type,
   rightType: ts.Type,
 ): boolean {
@@ -70,8 +70,8 @@ export function isMismatchedEnumComparisonTypes(
   // ```ts
   // 1 === 2;
   // ```
-  const leftEnumTypes = getEnumTypes(typeChecker, leftType);
-  const rightEnumTypes = new Set(getEnumTypes(typeChecker, rightType));
+  const leftEnumTypes = getEnumTypes(checker, leftType);
+  const rightEnumTypes = new Set(getEnumTypes(checker, rightType));
   if (leftEnumTypes.length === 0 && rightEnumTypes.size === 0) {
     return false;
   }
@@ -121,48 +121,45 @@ export function isMismatchedEnumComparisonTypes(
  * values of the same primitive kind.
  */
 export function isMismatchedEnumAssignmentTypes(
-  typeChecker: ts.TypeChecker,
+  checker: ts.TypeChecker,
   senderType: ts.Type,
   receiverType: ts.Type,
 ): boolean {
-  const receiverEnumTypes = getEnumTypes(typeChecker, receiverType);
-  if (receiverEnumTypes.length === 0) {
-    return false;
-  }
-
+  const receiverEnumTypes = getEnumTypes(checker, receiverType);
   const receiverTypeParts = tsutils.unionConstituents(receiverType);
-  const receiverNonEnumParts = receiverTypeParts.filter(
-    receiverTypePart =>
-      getEnumTypes(typeChecker, receiverTypePart).length === 0,
-  );
   const receiverEnumValueTypes = new Set(
     receiverTypeParts.map(getEnumValueType),
   );
+  const receiverNonEnumParts = receiverTypeParts.filter(
+    receiverTypePart => getEnumTypes(checker, receiverTypePart).length === 0,
+  );
 
-  for (const senderTypePart of tsutils.unionConstituents(senderType)) {
-    if (hasSharedEnumType(typeChecker, senderTypePart, receiverEnumTypes)) {
-      continue;
-    }
-
-    if (
-      receiverNonEnumParts.some(receiverTypePart =>
-        typeChecker.isTypeAssignableTo(senderTypePart, receiverTypePart),
-      )
-    ) {
-      continue;
-    }
-
-    if (
-      (receiverEnumValueTypes.has(ts.TypeFlags.Number) &&
+  return tsutils.unionConstituents(senderType).some(
+    senderTypePart =>
+      // Only a plain number or string could be masquerading as an enum value:
+      //
+      // ```ts
+      // const fruit: Fruit = 1;
+      // ```
+      ((receiverEnumValueTypes.has(ts.TypeFlags.Number) &&
         isNumberLike(senderTypePart)) ||
-      (receiverEnumValueTypes.has(ts.TypeFlags.String) &&
-        isStringLike(senderTypePart))
-    ) {
-      return true;
-    }
-  }
-
-  return false;
+        (receiverEnumValueTypes.has(ts.TypeFlags.String) &&
+          isStringLike(senderTypePart))) &&
+      // Allow values that already share an enum type with the receiver:
+      //
+      // ```ts
+      // const fruit: Fruit = Fruit.Apple;
+      // ```
+      !hasSharedEnumType(checker, senderTypePart, receiverEnumTypes) &&
+      // Allow values accepted by a non-enum part of the receiver:
+      //
+      // ```ts
+      // const fruitOrNumber: Fruit | number = 1;
+      // ```
+      !receiverNonEnumParts.some(receiverTypePart =>
+        checker.isTypeAssignableTo(senderTypePart, receiverTypePart),
+      ),
+  );
 }
 
 /**
@@ -178,49 +175,15 @@ function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
 }
 
 function hasSharedEnumType(
-  typeChecker: ts.TypeChecker,
+  checker: ts.TypeChecker,
   type: ts.Type,
   expectedEnumTypes: readonly ts.Type[],
 ): boolean {
-  const typeEnumTypes = new Set(getEnumTypes(typeChecker, type));
+  const typeEnumTypes = new Set(getEnumTypes(checker, type));
 
-  for (const expectedEnumType of expectedEnumTypes) {
-    if (typeEnumTypes.has(expectedEnumType)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function isNumberLike(type: ts.Type): boolean {
-  return tsutils
-    .unionConstituents(type)
-    .every(unionPart =>
-      tsutils
-        .intersectionConstituents(unionPart)
-        .some(intersectionPart =>
-          tsutils.isTypeFlagSet(
-            intersectionPart,
-            ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
-          ),
-        ),
-    );
-}
-
-function isStringLike(type: ts.Type): boolean {
-  return tsutils
-    .unionConstituents(type)
-    .every(unionPart =>
-      tsutils
-        .intersectionConstituents(unionPart)
-        .some(intersectionPart =>
-          tsutils.isTypeFlagSet(
-            intersectionPart,
-            ts.TypeFlags.String | ts.TypeFlags.StringLike,
-          ),
-        ),
-    );
+  return expectedEnumTypes.some(expectedEnumType =>
+    typeEnumTypes.has(expectedEnumType),
+  );
 }
 
 /**
