@@ -2391,7 +2391,7 @@ switch (value) {
         {
           column: 17,
           data: {
-            missingBranches: 'Enum.a | (typeof Enum)["\'a\' `b` \\"c\\""]',
+            missingBranches: '(typeof Enum)["\'a\' `b` \\"c\\""] | Enum.a',
           },
           endColumn: 18,
           endLine: 9,
@@ -2409,8 +2409,8 @@ switch (value) {
         declare const a: Enum;
 
         switch (a) {
-        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
         case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\\\'a\\\\\\' \`b\` "c"\\'] case') }
+        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
         }
       `,
             },
@@ -3159,7 +3159,7 @@ switch (value) {
       errors: [
         {
           column: 9,
-          data: { missingBranches: '1 | 2 | 10 | 20 | 100' },
+          data: { missingBranches: '1 | 10 | 100 | 2 | 20' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -3171,10 +3171,10 @@ switch (value) {
 declare const value: 10 | 2 | 1 | 20 | 100;
 switch (value) {
 case 1: { throw new Error('Not implemented yet: 1 case') }
-case 2: { throw new Error('Not implemented yet: 2 case') }
 case 10: { throw new Error('Not implemented yet: 10 case') }
-case 20: { throw new Error('Not implemented yet: 20 case') }
 case 100: { throw new Error('Not implemented yet: 100 case') }
+case 2: { throw new Error('Not implemented yet: 2 case') }
+case 20: { throw new Error('Not implemented yet: 20 case') }
 }
       `,
             },
@@ -3191,7 +3191,7 @@ switch (value) {
       errors: [
         {
           column: 9,
-          data: { missingBranches: '-2n | 1n | 10n' },
+          data: { missingBranches: '-2n | 10n | 1n' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -3203,8 +3203,8 @@ switch (value) {
 declare const value: 10n | -2n | 1n;
 switch (value) {
 case -2n: { throw new Error('Not implemented yet: -2n case') }
-case 1n: { throw new Error('Not implemented yet: 1n case') }
 case 10n: { throw new Error('Not implemented yet: 10n case') }
+case 1n: { throw new Error('Not implemented yet: 1n case') }
 }
       `,
             },
@@ -3221,7 +3221,7 @@ switch (value) {
       errors: [
         {
           column: 9,
-          data: { missingBranches: '"a" | "B" | "c" | null | undefined' },
+          data: { missingBranches: '"B" | "a" | "c" | null | undefined' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -3232,8 +3232,8 @@ switch (value) {
               output: `
 declare const value: 'c' | 'a' | 'B' | null | undefined;
 switch (value) {
-case "a": { throw new Error('Not implemented yet: "a" case') }
 case "B": { throw new Error('Not implemented yet: "B" case') }
+case "a": { throw new Error('Not implemented yet: "a" case') }
 case "c": { throw new Error('Not implemented yet: "c" case') }
 case null: { throw new Error('Not implemented yet: null case') }
 case undefined: { throw new Error('Not implemented yet: undefined case') }
@@ -3257,7 +3257,7 @@ switch (value) {
       errors: [
         {
           column: 9,
-          data: { missingBranches: 'Enum.zebra | Enum.apple' },
+          data: { missingBranches: 'Enum.apple | Enum.zebra' },
           endColumn: 14,
           endLine: 7,
           line: 7,
@@ -3272,8 +3272,8 @@ enum Enum {
 }
 declare const value: Enum;
 switch (value) {
-case Enum.zebra: { throw new Error('Not implemented yet: Enum.zebra case') }
 case Enum.apple: { throw new Error('Not implemented yet: Enum.apple case') }
+case Enum.zebra: { throw new Error('Not implemented yet: Enum.zebra case') }
 }
       `,
             },
@@ -3296,7 +3296,7 @@ switch (value) {
           column: 9,
           data: {
             missingBranches:
-              '"x" | 2n | 10 | Enum.b | Enum.a | null | true | undefined',
+              '"x" | 10 | 2n | Enum.a | Enum.b | null | true | undefined',
           },
           endColumn: 14,
           endLine: 7,
@@ -3313,10 +3313,10 @@ enum Enum {
 declare const value: 'x' | 10 | 2n | true | Enum | null | undefined;
 switch (value) {
 case "x": { throw new Error('Not implemented yet: "x" case') }
-case 2n: { throw new Error('Not implemented yet: 2n case') }
 case 10: { throw new Error('Not implemented yet: 10 case') }
-case Enum.b: { throw new Error('Not implemented yet: Enum.b case') }
+case 2n: { throw new Error('Not implemented yet: 2n case') }
 case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
+case Enum.b: { throw new Error('Not implemented yet: Enum.b case') }
 case null: { throw new Error('Not implemented yet: null case') }
 case true: { throw new Error('Not implemented yet: true case') }
 case undefined: { throw new Error('Not implemented yet: undefined case') }
@@ -3346,7 +3346,7 @@ switch (value) {
           column: 9,
           data: {
             missingBranches:
-              'Apple.same | Apple.aLast | Zebra.same | Zebra.zLast',
+              'Apple.aLast | Apple.same | Zebra.same | Zebra.zLast',
           },
           endColumn: 14,
           endLine: 11,
@@ -3366,8 +3366,8 @@ enum Apple {
 }
 declare const value: Zebra | Apple;
 switch (value) {
-case Apple.same: { throw new Error('Not implemented yet: Apple.same case') }
 case Apple.aLast: { throw new Error('Not implemented yet: Apple.aLast case') }
+case Apple.same: { throw new Error('Not implemented yet: Apple.same case') }
 case Zebra.same: { throw new Error('Not implemented yet: Zebra.same case') }
 case Zebra.zLast: { throw new Error('Not implemented yet: Zebra.zLast case') }
 }
@@ -3425,7 +3425,7 @@ switch (value) {
         {
           column: 9,
           data: {
-            missingBranches: 'Status.Pending | Status.Active | Status.Done',
+            missingBranches: 'Status.Active | Status.Done | Status.Pending',
           },
           endColumn: 14,
           endLine: 8,
@@ -3442,9 +3442,9 @@ enum Status {
 }
 declare const value: Status;
 switch (value) {
-case Status.Pending: { throw new Error('Not implemented yet: Status.Pending case') }
 case Status.Active: { throw new Error('Not implemented yet: Status.Active case') }
 case Status.Done: { throw new Error('Not implemented yet: Status.Done case') }
+case Status.Pending: { throw new Error('Not implemented yet: Status.Pending case') }
 }
       `,
             },

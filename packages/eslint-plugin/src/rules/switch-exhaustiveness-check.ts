@@ -150,14 +150,6 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function getSortKey(type: ts.Type): string {
-      const declaration = type.getSymbol()?.valueDeclaration?.parent;
-
-      return declaration && ts.isEnumDeclaration(declaration)
-        ? declaration.name.text
-        : typeToString(type);
-    }
-
     function getSwitchMetadata(node: TSESTree.SwitchStatement): SwitchMetadata {
       const defaultCase = node.cases.find(
         switchCase => switchCase.test == null,
@@ -218,9 +210,11 @@ export default createRule<Options, MessageIds>({
       return {
         containsNonLiteralType,
         defaultCase: defaultCase ?? getCommentDefaultCase(node),
-        missingLiteralBranchTypes: missingLiteralBranchTypes.sort((a, b) =>
-          getSortKey(a).localeCompare(getSortKey(b), 'en', { numeric: true }),
-        ),
+        missingLiteralBranchTypes: missingLiteralBranchTypes.sort((a, b) => {
+          const keyA = typeToString(a);
+          const keyB = typeToString(b);
+          return keyA < keyB ? -1 : keyA > keyB ? 1 : 0;
+        }),
         symbolName,
       };
     }
