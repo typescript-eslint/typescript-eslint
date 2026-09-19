@@ -86,8 +86,10 @@ interface NativeTypeInternals {
   indexType: number;
   objectFlags: ObjectFlags;
   objectType: number;
+  intrinsicName: string;
   substConstraint: number;
   symbol: number;
+  value: unknown;
   target: number;
   thisType: number;
 }
@@ -324,6 +326,12 @@ export function createNativeTypeAdapter({
             return target.isTypeParameter()
               ? wrapType(native.getDefault())
               : undefined;
+
+          // Native spells a boolean literal's name as a `value` instead.
+          case 'intrinsicName':
+            return target.flags & TypeFlags.BooleanLiteral
+              ? String(native.value)
+              : native.intrinsicName;
 
           case 'freshType':
             return target.flags & TypeFlags.Freshable
