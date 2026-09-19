@@ -2477,6 +2477,23 @@ const unbound = new Foo().unbound;
     {
       code: `
 class Foo {
+  unbound = function (this: Foo) {};
+}
+const unbound = new Foo().unbound;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 34,
+          endLine: 5,
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
   unbound() {}
 }
 const { unbound } = new Foo();
