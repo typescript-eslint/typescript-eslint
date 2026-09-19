@@ -80,6 +80,12 @@ export default createRule<[], MessageIds>({
       });
     }
 
+    // Literals inside an already reported value would otherwise be reported
+    // again by their own handlers:
+    //
+    // ```ts
+    // const value: T = [Fruit.Apple, 1] as const;
+    // ```
     function markChecked(node: TSESTree.Node) {
       checkedNodes.add(node);
 
@@ -115,6 +121,12 @@ export default createRule<[], MessageIds>({
       );
     }
 
+    // Bitwise combinations of an enum's own members are its bit flags:
+    //
+    // ```ts
+    // const readWrite: Flags = Flags.Read | Flags.Write;
+    // flags &= ~Flags.Write;
+    // ```
     function isSafeEnumBitwiseExpression(
       node: TSESTree.Node,
       receiverType: ts.Type,
@@ -164,6 +176,12 @@ export default createRule<[], MessageIds>({
       messageId: MessageIds = 'unsafeEnumAssignment',
       senderType?: ts.Type,
     ) {
+      // Object and array literals are reported per property and element by
+      // their own handlers instead:
+      //
+      // ```ts
+      // const box: { fruit: Fruit } = { fruit: 1 };
+      // ```
       if (
         senderNode.type === AST_NODE_TYPES.ArrayExpression ||
         senderNode.type === AST_NODE_TYPES.ObjectExpression ||
@@ -197,6 +215,7 @@ export default createRule<[], MessageIds>({
         if (argument.type === AST_NODE_TYPES.SpreadElement) {
           const spreadType = services.getTypeAtLocation(argument.argument);
 
+          // takesFruits(...[Fruit.Apple, 1]);
           if (checker.isTupleType(spreadType)) {
             const mismatchedParameterTypes = checker
               .getTypeArguments(spreadType)
@@ -224,6 +243,8 @@ export default createRule<[], MessageIds>({
           }
         }
 
+        // takesFruit(1);
+        // takesFruits(...numbers);
         const parameterType = signature.getNextParameterType();
         if (parameterType != null) {
           checkAssignment(
@@ -304,6 +325,7 @@ export default createRule<[], MessageIds>({
     ) {
       const functionNode = getParentFunctionNode(returnNode);
       if (functionNode == null) {
+        // return 1;
         return;
       }
 
@@ -318,6 +340,9 @@ export default createRule<[], MessageIds>({
       let senderType: ts.Type | undefined =
         services.getTypeAtLocation(returnNode);
 
+      // async function getFruit(): Promise<Fruit> {
+      //   return Promise.resolve(1);
+      // }
       if (functionNode.async) {
         receiverType = checker.getAwaitedType(receiverType);
         senderType = checker.getAwaitedType(senderType);
@@ -353,6 +378,7 @@ export default createRule<[], MessageIds>({
           return;
         }
 
+        // const fruits: Fruit[] = [1, ...numbers];
         for (const element of node.elements) {
           if (element) {
             const receiverType = getContextualType(element);
@@ -413,6 +439,8 @@ export default createRule<[], MessageIds>({
           return;
         }
 
+        // declare const foo: { [key in Fruit]: string };
+        // foo[0];
         const senderType = services.getTypeAtLocation(node.property);
         if (
           receiverTypes.every(
@@ -432,6 +460,7 @@ export default createRule<[], MessageIds>({
           return;
         }
 
+        // const box: { fruit: Fruit } = { fruit: 1, ...source };
         for (const property of node.properties) {
           const [receiverNode, senderNode] =
             property.type === AST_NODE_TYPES.SpreadElement
@@ -576,6 +605,7 @@ function getMappedKeyConstraintTypes(
 
   const typeNode = declaration.type;
 
+  // { [key in Fruit]: string } -> [Fruit]
   if (ts.isMappedTypeNode(typeNode)) {
     return [
       checker.getTypeFromTypeNode(
@@ -587,6 +617,7 @@ function getMappedKeyConstraintTypes(
     ];
   }
 
+  // { [Fruit.Apple]: string; [Vegetable.Asparagus]: string } -> [Fruit.Apple, Vegetable.Asparagus]
   if (ts.isTypeLiteralNode(typeNode)) {
     return typeNode.members.flatMap(member => {
       const name = ts.getNameOfDeclaration(member);
@@ -600,6 +631,7 @@ function getMappedKeyConstraintTypes(
   return [];
 }
 
+// [Fruit, Set<Vegetable>] -> 'Fruit', 'Vegetable'
 function describeEnumTypes(checker: ts.TypeChecker, types: readonly ts.Type[]) {
   const enumNames = new Set<string>();
   const visited = new Set<ts.Type>();
@@ -651,19 +683,20 @@ function isMismatchedEnumAssignmentTypes(
     receiverTypePart => getEnumTypes(checker, receiverTypePart).length === 0,
   );
 
-  return tsutils
-    .unionConstituents(senderType)
-    .some(
-      senderTypePart =>
-        ((receiverEnumValueTypes.has(ts.TypeFlags.Number) &&
-          isNumberLike(senderTypePart)) ||
-          (receiverEnumValueTypes.has(ts.TypeFlags.String) &&
-            isStringLike(senderTypePart))) &&
-        !hasSharedEnumType(checker, senderTypePart, receiverEnumTypes) &&
-        !receiverNonEnumParts.some(receiverTypePart =>
-          checker.isTypeAssignableTo(senderTypePart, receiverTypePart),
-        ),
-    );
+  return tsutils.unionConstituents(senderType).some(
+    senderTypePart =>
+      // const fruit: Fruit = 1;
+      ((receiverEnumValueTypes.has(ts.TypeFlags.Number) &&
+        isNumberLike(senderTypePart)) ||
+        (receiverEnumValueTypes.has(ts.TypeFlags.String) &&
+          isStringLike(senderTypePart))) &&
+      // const fruit: Fruit = Fruit.Apple;
+      !hasSharedEnumType(checker, senderTypePart, receiverEnumTypes) &&
+      // const fruitOrNumber: Fruit | number = 1;
+      !receiverNonEnumParts.some(receiverTypePart =>
+        checker.isTypeAssignableTo(senderTypePart, receiverTypePart),
+      ),
+  );
 }
 
 function hasSharedEnumType(
