@@ -5,6 +5,9 @@ import rule from '../../src/rules/consistent-type-definitions';
 const ruleTester = new RuleTester();
 
 ruleTester.run('consistent-type-definitions', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'var foo = {};',

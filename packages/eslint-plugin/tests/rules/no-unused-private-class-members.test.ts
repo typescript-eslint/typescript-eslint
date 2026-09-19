@@ -9,6 +9,9 @@ import rule from '../../src/rules/no-unused-private-class-members';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unused-private-class-members', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'class Foo {}',
     `

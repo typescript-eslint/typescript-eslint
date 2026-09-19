@@ -5,6 +5,9 @@ import rule from '../../src/rules/ban-ts-comment';
 const ruleTester = new RuleTester();
 
 ruleTester.run('ts-expect-error', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     '// just a comment containing @ts-expect-error somewhere',
     `

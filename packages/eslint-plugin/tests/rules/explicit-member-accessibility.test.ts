@@ -5,6 +5,9 @@ import rule from '../../src/rules/explicit-member-accessibility';
 const ruleTester = new RuleTester();
 
 ruleTester.run('explicit-member-accessibility', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `
@@ -334,6 +337,7 @@ export class XXXX {
       errors: [
         {
           column: 22,
+          data: { name: 'value', type: 'parameter property' },
           endColumn: 36,
           endLine: 3,
           line: 3,
@@ -388,6 +392,7 @@ export class WithParameterProperty {
       errors: [
         {
           column: 22,
+          data: { name: 'value', type: 'parameter property' },
           endColumn: 36,
           endLine: 3,
           line: 3,
@@ -435,6 +440,7 @@ export class XXXX {
       errors: [
         {
           column: 22,
+          data: { name: 'samosa', type: 'parameter property' },
           endColumn: 37,
           endLine: 3,
           line: 3,
@@ -490,6 +496,7 @@ class Test {
       errors: [
         {
           column: 22,
+          data: { name: 'foo', type: 'parameter property' },
           endColumn: 34,
           endLine: 3,
           line: 3,
@@ -545,10 +552,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'x',
-            type: 'class property',
-          },
+          data: { name: 'x', type: 'class property' },
           endColumn: 4,
           endLine: 3,
           line: 3,
@@ -610,10 +614,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'getX',
-            type: 'method definition',
-          },
+          data: { name: 'getX', type: 'method definition' },
           endColumn: 7,
           endLine: 4,
           line: 4,
@@ -672,10 +673,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'x',
-            type: 'class property',
-          },
+          data: { name: 'x', type: 'class property' },
           endColumn: 4,
           endLine: 3,
           line: 3,
@@ -721,10 +719,7 @@ class Test {
         },
         {
           column: 3,
-          data: {
-            name: 'getX',
-            type: 'method definition',
-          },
+          data: { name: 'getX', type: 'method definition' },
           endColumn: 7,
           endLine: 4,
           line: 4,
@@ -784,10 +779,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'getX',
-            type: 'method definition',
-          },
+          data: { name: 'getX', type: 'method definition' },
           endColumn: 9,
           endLine: 5,
           line: 5,
@@ -818,10 +810,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'foo',
-            type: 'class property',
-          },
+          data: { name: 'foo', type: 'class property' },
           endColumn: 9,
           endLine: 4,
           line: 4,
@@ -851,6 +840,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'x', type: 'class property' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -858,6 +848,7 @@ class Test {
         },
         {
           column: 3,
+          data: { name: 'getX', type: 'method definition' },
           endColumn: 9,
           endLine: 4,
           line: 4,
@@ -892,6 +883,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'internalValue', type: 'get property accessor' },
           endColumn: 20,
           endLine: 7,
           line: 7,
@@ -955,6 +947,7 @@ class Test {
         },
         {
           column: 3,
+          data: { name: 'internalValue', type: 'set property accessor' },
           endColumn: 20,
           endLine: 10,
           line: 10,
@@ -1038,6 +1031,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'constructor', type: 'method definition' },
           endColumn: 14,
           endLine: 4,
           line: 4,
@@ -1101,6 +1095,7 @@ class Test {
         },
         {
           column: 3,
+          data: { name: 'internalValue', type: 'get property accessor' },
           endColumn: 20,
           endLine: 7,
           line: 7,
@@ -1164,6 +1159,7 @@ class Test {
         },
         {
           column: 3,
+          data: { name: 'internalValue', type: 'set property accessor' },
           endColumn: 20,
           endLine: 10,
           line: 10,
@@ -1240,6 +1236,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'constructor', type: 'method definition' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1300,6 +1297,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'constructor', type: 'method definition' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1346,6 +1344,7 @@ class Test {
       errors: [
         {
           column: 15,
+          data: { name: 'x', type: 'parameter property' },
           endColumn: 21,
           endLine: 3,
           line: 3,
@@ -1373,6 +1372,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'x', type: 'class property' },
           endColumn: 4,
           endLine: 3,
           line: 3,
@@ -1426,6 +1426,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'x', type: 'class property' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -1454,6 +1455,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'constructor', type: 'method definition' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -1501,6 +1503,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'constructor', type: 'method definition' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -1528,6 +1531,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'foo', type: 'method definition' },
           endColumn: 9,
           endLine: 4,
           line: 4,
@@ -1556,6 +1560,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'foo', type: 'class property' },
           endColumn: 9,
           endLine: 4,
           line: 4,
@@ -1583,6 +1588,7 @@ class Test {
       errors: [
         {
           column: 3,
+          data: { name: 'foo', type: 'class property' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -1609,6 +1615,7 @@ class Test {
       errors: [
         {
           column: 15,
+          data: { name: 'foo', type: 'parameter property' },
           endColumn: 21,
           endLine: 3,
           line: 3,
@@ -1636,6 +1643,7 @@ class Test {
       errors: [
         {
           column: 15,
+          data: { name: 'foo', type: 'parameter property' },
           endColumn: 21,
           endLine: 3,
           line: 3,
@@ -1662,6 +1670,7 @@ class EnsureWhiteSPaceSpan {
       errors: [
         {
           column: 3,
+          data: { name: 'constructor', type: 'method definition' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -1689,6 +1698,7 @@ class EnsureWhiteSPaceSpan {
       errors: [
         {
           column: 3,
+          data: { name: 'constructor', type: 'method definition' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -1720,10 +1730,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'foo',
-            type: 'class property',
-          },
+          data: { name: 'foo', type: 'class property' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -1731,10 +1738,7 @@ class Test {
         },
         {
           column: 3,
-          data: {
-            name: '"foo foo"',
-            type: 'class property',
-          },
+          data: { name: '"foo foo"', type: 'class property' },
           endColumn: 9,
           endLine: 4,
           line: 4,
@@ -1742,10 +1746,7 @@ class Test {
         },
         {
           column: 3,
-          data: {
-            name: 'bar',
-            type: 'method definition',
-          },
+          data: { name: 'bar', type: 'method definition' },
           endColumn: 9,
           endLine: 5,
           line: 5,
@@ -1753,10 +1754,7 @@ class Test {
         },
         {
           column: 3,
-          data: {
-            name: '"bar bar"',
-            type: 'method definition',
-          },
+          data: { name: '"bar bar"', type: 'method definition' },
           endColumn: 9,
           endLine: 6,
           line: 6,
@@ -1782,6 +1780,7 @@ abstract class SomeClass {
       errors: [
         {
           column: 3,
+          data: { name: 'method', type: 'method definition' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -1829,6 +1828,7 @@ abstract class SomeClass {
       errors: [
         {
           column: 3,
+          data: { name: 'method', type: 'method definition' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -1857,6 +1857,7 @@ abstract class SomeClass {
       errors: [
         {
           column: 3,
+          data: { name: 'x', type: 'class property' },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -1904,6 +1905,7 @@ abstract class SomeClass {
       errors: [
         {
           column: 3,
+          data: { name: 'x', type: 'class property' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -1931,6 +1933,7 @@ class SomeClass {
       errors: [
         {
           column: 3,
+          data: { name: 'foo', type: 'class property' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -1977,6 +1980,7 @@ abstract class SomeClass {
       errors: [
         {
           column: 3,
+          data: { name: 'foo', type: 'class property' },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -2035,6 +2039,7 @@ class DecoratedClass {
       errors: [
         {
           column: 3,
+          data: { name: 'constructor', type: 'method definition' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -2107,6 +2112,7 @@ class DecoratedClass {
         },
         {
           column: 27,
+          data: { name: 'arg', type: 'parameter property' },
           endColumn: 39,
           endLine: 3,
           line: 3,
@@ -2179,6 +2185,7 @@ class DecoratedClass {
         },
         {
           column: 15,
+          data: { name: 'x', type: 'class property' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -2251,6 +2258,7 @@ class DecoratedClass {
         },
         {
           column: 15,
+          data: { name: 'getX', type: 'method definition' },
           endColumn: 19,
           endLine: 5,
           line: 5,
@@ -2323,6 +2331,7 @@ class DecoratedClass {
         },
         {
           column: 3,
+          data: { name: 'y', type: 'get property accessor' },
           endColumn: 8,
           endLine: 10,
           line: 10,
@@ -2395,6 +2404,7 @@ class DecoratedClass {
         },
         {
           column: 15,
+          data: { name: 'z', type: 'set property accessor' },
           endColumn: 20,
           endLine: 13,
           line: 13,
@@ -2477,6 +2487,7 @@ abstract class SomeClass {
       errors: [
         {
           column: 3,
+          data: { name: '"computed-method-name"', type: 'method definition' },
           endColumn: 36,
           endLine: 3,
           line: 3,

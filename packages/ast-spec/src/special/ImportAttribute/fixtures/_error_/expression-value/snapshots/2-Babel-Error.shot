@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > special > ImportAttribute > _error_ > expression-value > Babel - Error`]
+BabelError
+> 1 | export { data } from 'mod' with { type: getType() };
+    |                                         ^ Only string literals are allowed as module attribute values. (1:40)
+  2 |
+  

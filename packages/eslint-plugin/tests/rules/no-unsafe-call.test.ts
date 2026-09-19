@@ -8,6 +8,9 @@ const ruleTester = createRuleTesterWithTypes({
 });
 
 ruleTester.run('no-unsafe-call', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function foo(x: () => void) {
@@ -214,6 +217,7 @@ function foo(x: any) {
       errors: [
         {
           column: 3,
+          data: { type: 'an `any`' },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -230,6 +234,7 @@ function foo(x: { a: any }) {
       errors: [
         {
           column: 3,
+          data: { type: 'an `any`' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -246,6 +251,7 @@ function foo(x: any) {
       errors: [
         {
           column: 3,
+          data: { type: 'an `any`' },
           endColumn: 4,
           endLine: 3,
           line: 3,
@@ -262,6 +268,7 @@ function foo(x: { tag: any }) {
       errors: [
         {
           column: 3,
+          data: { type: 'an `any`' },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -287,6 +294,7 @@ const methods = {
       errors: [
         {
           column: 12,
+          data: { type: 'an `any`' },
           endColumn: 24,
           endLine: 4,
           line: 4,
@@ -294,6 +302,7 @@ const methods = {
         },
         {
           column: 12,
+          data: { type: 'an `any`' },
           endColumn: 16,
           endLine: 10,
           line: 10,

@@ -363,6 +363,14 @@ export function checkSyntaxError(
       break;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    case SyntaxKind.AssertEntry:
+    case SyntaxKind.ImportAttribute:
+      if (node.value.kind !== SyntaxKind.StringLiteral) {
+        throw createError(node.value, 'String literal expected.');
+      }
+      break;
+
     case SyntaxKind.ExternalModuleReference:
       if (node.expression.kind !== SyntaxKind.StringLiteral) {
         throw createError(node.expression, 'String literal expected.');

@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-regexp-exec', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "'something'.match();",
     "'something'.match(/thing/g);",
