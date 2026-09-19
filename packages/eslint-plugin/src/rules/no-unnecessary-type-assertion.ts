@@ -516,15 +516,32 @@ export default createRule<Options, MessageIds>({
       return type.getCallSignatures().some(hasTypeParams);
     }
 
+    function getInnermostCall(
+      expression: TSESTree.Expression,
+    ): TSESTree.CallExpression | undefined {
+      switch (expression.type) {
+        case AST_NODE_TYPES.AwaitExpression:
+          return getInnermostCall(expression.argument);
+        case AST_NODE_TYPES.CallExpression:
+          return expression;
+        case AST_NODE_TYPES.ChainExpression:
+        case AST_NODE_TYPES.TSNonNullExpression:
+          return getInnermostCall(expression.expression);
+        case AST_NODE_TYPES.SequenceExpression:
+          return getInnermostCall(
+            expression.expressions[expression.expressions.length - 1],
+          );
+        default:
+          return undefined;
+      }
+    }
+
     function isGenericCallWithInferredTypeArguments(
       expression: TSESTree.Expression,
     ): boolean {
-      const call =
-        expression.type === AST_NODE_TYPES.AwaitExpression
-          ? expression.argument
-          : expression;
+      const call = getInnermostCall(expression);
       return (
-        call.type === AST_NODE_TYPES.CallExpression &&
+        call != null &&
         call.typeArguments == null &&
         hasGenericCallSignature(services.getTypeAtLocation(call.callee))
       );

@@ -3366,6 +3366,82 @@ const results = (await db.list()) as Map<string, Uint8Array>;
     },
     {
       code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = (alert(), db.list()) as Promise<Map<string, Uint8Array>>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 73,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = db?.list() as Promise<Map<string, Uint8Array>>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 63,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = (await db?.list()) as Map<string, Uint8Array>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 62,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>> | undefined;
+};
+declare const db: Storage;
+const results = db.list()! as Promise<Map<string, Uint8Array>>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 63,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
 declare function get<T>(): T;
 const value = get<string>() as string;
       `,
