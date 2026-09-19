@@ -15,30 +15,41 @@ ruleTester.run('member-ordering-alphabetically-case-insensitive-order', rule, {
 interface Foo {
   c: string;
   B: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'c', member: 'B' },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  B: string;
   a: string;
 }
       `,
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'B',
-          },
+          data: { beforeMember: 'B', member: 'a' },
           endColumn: 13,
           endLine: 4,
           line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'B',
-            member: 'a',
-          },
-          endColumn: 13,
-          endLine: 5,
-          line: 5,
           messageId: 'incorrectOrder',
         },
       ],
@@ -63,10 +74,7 @@ interface Foo {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'B',
-            member: 'a',
-          },
+          data: { beforeMember: 'B', member: 'a' },
           endColumn: 8,
           endLine: 4,
           line: 4,
@@ -94,10 +102,7 @@ type Foo = {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'B',
-            member: 'a',
-          },
+          data: { beforeMember: 'B', member: 'a' },
           endColumn: 8,
           endLine: 4,
           line: 4,
@@ -125,10 +130,7 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'B',
-            member: 'a',
-          },
+          data: { beforeMember: 'B', member: 'a' },
           endColumn: 27,
           endLine: 4,
           line: 4,
@@ -156,10 +158,7 @@ const foo = class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'B',
-            member: 'a',
-          },
+          data: { beforeMember: 'B', member: 'a' },
           endColumn: 27,
           endLine: 4,
           line: 4,
@@ -187,9 +186,102 @@ interface Foo {
 
   c(): void;
   B(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'c', member: 'B' },
+          endColumn: 13,
+          endLine: 10,
+          line: 10,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
+  B(): void;
+  a(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'B', member: 'a' },
+          endColumn: 13,
+          endLine: 10,
+          line: 10,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
   a(): void;
 
   (): Baz;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'call', rank: 'field' },
+          endColumn: 11,
+          endLine: 11,
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
+  a(): void;
 
   new (): Bar;
 }
@@ -197,46 +289,10 @@ interface Foo {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'B',
-          },
-          endColumn: 13,
-          endLine: 10,
-          line: 10,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'B',
-            member: 'a',
-          },
-          endColumn: 13,
+          data: { name: 'new', rank: 'method' },
+          endColumn: 15,
           endLine: 11,
           line: 11,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-          endColumn: 11,
-          endLine: 13,
-          line: 13,
-          messageId: 'incorrectGroupOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-          endColumn: 15,
-          endLine: 15,
-          line: 15,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -262,9 +318,102 @@ type Foo = {
 
   c(): void;
   B(): void;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'c', member: 'B' },
+          endColumn: 13,
+          endLine: 10,
+          line: 10,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
+  B(): void;
+  a(): void;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'B', member: 'a' },
+          endColumn: 13,
+          endLine: 10,
+          line: 10,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
   a(): void;
 
   (): Baz;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'call', rank: 'field' },
+          endColumn: 11,
+          endLine: 11,
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  [a: string]: number;
+
+  a: x;
+  B: x;
+  c: x;
+
+  a(): void;
 
   new (): Bar;
 };
@@ -272,46 +421,10 @@ type Foo = {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'B',
-          },
-          endColumn: 13,
-          endLine: 10,
-          line: 10,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'B',
-            member: 'a',
-          },
-          endColumn: 13,
+          data: { name: 'new', rank: 'method' },
+          endColumn: 15,
           endLine: 11,
           line: 11,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-          endColumn: 11,
-          endLine: 13,
-          line: 13,
-          messageId: 'incorrectGroupOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-          endColumn: 15,
-          endLine: 15,
-          line: 15,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -331,8 +444,60 @@ type Foo = {
 class Foo {
   public static c: string = '';
   public static B: string = '';
+
+  constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'c', member: 'B' },
+          endColumn: 32,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  public static B: string = '';
   public static a: string;
 
+  constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'B', member: 'a' },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
   constructor() {}
 
   public d: string = '';
@@ -341,35 +506,10 @@ class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'B',
-          },
-          endColumn: 32,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'B',
-            member: 'a',
-          },
-          endColumn: 27,
+          data: { name: 'd', rank: 'public constructor' },
+          endColumn: 25,
           endLine: 5,
           line: 5,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'd',
-            rank: 'public constructor',
-          },
-          endColumn: 25,
-          endLine: 9,
-          line: 9,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -389,8 +529,60 @@ class Foo {
 const foo = class Foo {
   public static c: string = '';
   public static B: string = '';
+
+  constructor() {}
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'c', member: 'B' },
+          endColumn: 32,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class Foo {
+  public static B: string = '';
   public static a: string;
 
+  constructor() {}
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { beforeMember: 'B', member: 'a' },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class Foo {
   constructor() {}
 
   public d: string = '';
@@ -399,35 +591,10 @@ const foo = class Foo {
       errors: [
         {
           column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'B',
-          },
-          endColumn: 32,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'B',
-            member: 'a',
-          },
-          endColumn: 27,
+          data: { name: 'd', rank: 'public constructor' },
+          endColumn: 25,
           endLine: 5,
           line: 5,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'd',
-            rank: 'public constructor',
-          },
-          endColumn: 25,
-          endLine: 9,
-          line: 9,
           messageId: 'incorrectGroupOrder',
         },
       ],

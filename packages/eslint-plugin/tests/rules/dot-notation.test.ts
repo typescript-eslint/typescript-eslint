@@ -417,6 +417,8 @@ a
   .SHOUT_CASE;
       `,
     },
+    // Verify multiple instances of error
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 getResource()
@@ -451,6 +453,7 @@ getResource()
   .catch(function () {});
       `,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: noFormat`
 foo

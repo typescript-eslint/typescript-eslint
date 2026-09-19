@@ -46,61 +46,33 @@ class Test {
     },
     {
       code: 'fn(() => {});',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
+      options: [{ allowExpressions: true }],
     },
     {
       code: 'fn(function () {});',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
+      options: [{ allowExpressions: true }],
     },
     {
       code: '[function () {}, () => {}];',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
+      options: [{ allowExpressions: true }],
     },
     {
       code: '(function () {});',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
+      options: [{ allowExpressions: true }],
     },
     {
       code: '(() => {})();',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
+      options: [{ allowExpressions: true }],
     },
     {
       code: 'export default (): void => {};',
-      options: [
-        {
-          allowExpressions: true,
-        },
-      ],
+      options: [{ allowExpressions: true }],
     },
     {
       code: `
 var arrowFn: Foo = () => 'test';
       `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: `
@@ -108,11 +80,7 @@ var funcExpr: Foo = function () {
   return 'test';
 };
       `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: 'const x = (() => {}) as Foo;',
@@ -185,57 +153,27 @@ class App {
     // https://github.com/typescript-eslint/typescript-eslint/issues/7552
     {
       code: 'const foo = <button onClick={() => {}} />;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: 'const foo = <button on={{ click: () => {} }} />;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: 'const foo = <Bar>{() => {}}</Bar>;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: 'const foo = <button {...{ onClick: () => {} }} />;',
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: true }],
     },
 
@@ -367,11 +305,7 @@ foo(() => null);
 foo(() => true);
 foo(() => '');
       `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: `
@@ -382,11 +316,7 @@ foo?.bar?.(() => null);
 foo.bar?.(() => true);
 foo?.(() => '');
       `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: `
@@ -400,11 +330,7 @@ class Accumulator {
 
 new Accumulator().accumulate(() => 1);
       `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: `
@@ -425,11 +351,7 @@ foo({
   },
 });
       `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: `
@@ -438,11 +360,7 @@ const func = (value: number) => ({ type: 'X', value }) as const;
 const func = (value: number) => x as const;
 const func = (value: number) => x as const;
       `,
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
+      options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
       code: `
@@ -453,11 +371,7 @@ interface R {
 
 const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
       `,
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
+      options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
       code: `
@@ -469,11 +383,7 @@ interface R {
 const func = (value: number) =>
   ({ type: 'X', value }) as const satisfies R satisfies R;
       `,
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
+      options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
       code: `
@@ -485,22 +395,14 @@ interface R {
 const func = (value: number) =>
   ({ type: 'X', value }) as const satisfies R satisfies R satisfies R;
       `,
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
+      options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
       code: `
 new Promise(resolve => {});
 new Foo(1, () => {});
       `,
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: 'const log = (message: string) => void console.log(message);',
@@ -556,11 +458,7 @@ const foo = function test2() {
   return;
 };
       `,
-      options: [
-        {
-          allowedNames: ['test1', 'test2'],
-        },
-      ],
+      options: [{ allowedNames: ['test1', 'test2'] }],
     },
     {
       code: `
@@ -571,11 +469,7 @@ const foo = function () {
   return function test2() {};
 };
       `,
-      options: [
-        {
-          allowedNames: ['test1', 'test2'],
-        },
-      ],
+      options: [{ allowedNames: ['test1', 'test2'] }],
     },
     {
       code: `
@@ -588,11 +482,7 @@ export const foo = {
   },
 };
       `,
-      options: [
-        {
-          allowedNames: ['test1', 'test2'],
-        },
-      ],
+      options: [{ allowedNames: ['test1', 'test2'] }],
     },
     {
       code: `
@@ -611,11 +501,7 @@ class Test {
   }
 }
       `,
-      options: [
-        {
-          allowedNames: ['prop', 'method', 'arrow'],
-        },
-      ],
+      options: [{ allowedNames: ['prop', 'method', 'arrow'] }],
     },
     {
       code: `
@@ -628,11 +514,7 @@ const x = {
   },
 };
       `,
-      options: [
-        {
-          allowedNames: ['arrowFn', 'fn'],
-        },
-      ],
+      options: [{ allowedNames: ['arrowFn', 'fn'] }],
     },
     {
       code: `
@@ -698,11 +580,7 @@ let foo = function (): number {
   return 1;
 };
       `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
@@ -710,11 +588,7 @@ const foo = (function () {
   return 1;
 })();
       `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
@@ -722,11 +596,7 @@ const foo = (() => {
   return 1;
 })();
       `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
@@ -734,21 +604,13 @@ const foo = ((arg: number): number => {
   return arg;
 })(0);
       `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
 const foo = (() => (() => 'foo')())();
       `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
@@ -756,11 +618,7 @@ let foo = (() => (): string => {
   return 'foo';
 })()();
       `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
@@ -768,12 +626,7 @@ let foo = (() => (): string => {
   return 'foo';
 })();
       `,
-      options: [
-        {
-          allowHigherOrderFunctions: false,
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowHigherOrderFunctions: false, allowIIFEs: true }],
     },
     {
       code: `
@@ -781,32 +634,19 @@ let foo = (() => (): string => {
   return 'foo';
 })()();
       `,
-      options: [
-        {
-          allowHigherOrderFunctions: true,
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowHigherOrderFunctions: true, allowIIFEs: true }],
     },
     {
       code: `
 let foo = (() => (): void => {})()();
       `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
 let foo = (() => (() => {})())();
       `,
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
@@ -925,13 +765,6 @@ class Test {
     return 1;
   }
   set prop() {}
-  method() {
-    return;
-  }
-  arrow = () => 'arrow';
-  private method() {
-    return;
-  }
 }
       `,
       errors: [
@@ -942,25 +775,59 @@ class Test {
           line: 4,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+class Test {
+  constructor() {}
+  method() {
+    return;
+  }
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 9,
-          endLine: 8,
-          line: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+class Test {
+  constructor() {}
+  arrow = () => 'arrow';
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 11,
-          endLine: 11,
-          line: 11,
+          endLine: 4,
+          line: 4,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+class Test {
+  constructor() {}
+  private method() {
+    return;
+  }
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 17,
-          endLine: 12,
-          line: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'missingReturnType',
         },
       ],
@@ -1038,11 +905,6 @@ function test() {
       code: `
 class Foo {
   public a = () => {};
-  public b = function () {};
-  public c = function test() {};
-
-  static d = () => {};
-  static e = function () {};
 }
       `,
       errors: [
@@ -1053,32 +915,72 @@ class Foo {
           line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowExpressions: true }],
+    },
+    {
+      code: `
+class Foo {
+  public b = function () {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 23,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowExpressions: true }],
+    },
+    {
+      code: `
+class Foo {
+  public c = function test() {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 27,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowExpressions: true }],
+    },
+    {
+      code: `
+class Foo {
+  static d = () => {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 14,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowExpressions: true }],
+    },
+    {
+      code: `
+class Foo {
+  static e = function () {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 23,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
       ],
@@ -1112,11 +1014,7 @@ function foo(): any {
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: `
@@ -1134,11 +1032,7 @@ function foo(): any {
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: `
@@ -1159,11 +1053,7 @@ class Foo {
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: `
@@ -1243,13 +1133,7 @@ const x: Foo = {
           messageId: 'missingReturnType',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: false }],
     },
     {
@@ -1263,13 +1147,7 @@ const x: Foo = {
           messageId: 'missingReturnType',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: false }],
     },
     {
@@ -1283,13 +1161,7 @@ const x: Foo = {
           messageId: 'missingReturnType',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: false }],
     },
     {
@@ -1303,13 +1175,7 @@ const x: Foo = {
           messageId: 'missingReturnType',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: false }],
     },
     {
@@ -1323,13 +1189,7 @@ const x: Foo = {
           messageId: 'missingReturnType',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ allowTypedFunctionExpressions: false }],
     },
     {
@@ -1351,11 +1211,7 @@ function foo(): any {
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowTypedFunctionExpressions: true,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: true }],
     },
     {
       code: '() => () => {};',
@@ -1539,9 +1395,69 @@ function FunctionDeclaration() {
       code: `
 declare function foo(arg: () => void): void;
 foo(() => 1);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowTypedFunctionExpressions: false }],
+    },
+    {
+      code: `
+declare function foo(arg: () => void): void;
 foo(() => {});
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowTypedFunctionExpressions: false }],
+    },
+    {
+      code: `
+declare function foo(arg: () => void): void;
 foo(() => null);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowTypedFunctionExpressions: false }],
+    },
+    {
+      code: `
+declare function foo(arg: () => void): void;
 foo(() => true);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowTypedFunctionExpressions: false }],
+    },
+    {
+      code: `
+declare function foo(arg: () => void): void;
 foo(() => '');
       `,
       errors: [
@@ -1552,40 +1468,8 @@ foo(() => '');
           line: 3,
           messageId: 'missingReturnType',
         },
-        {
-          column: 8,
-          endColumn: 10,
-          endLine: 4,
-          line: 4,
-          messageId: 'missingReturnType',
-        },
-        {
-          column: 8,
-          endColumn: 10,
-          endLine: 5,
-          line: 5,
-          messageId: 'missingReturnType',
-        },
-        {
-          column: 8,
-          endColumn: 10,
-          endLine: 6,
-          line: 6,
-          messageId: 'missingReturnType',
-        },
-        {
-          column: 8,
-          endColumn: 10,
-          endLine: 7,
-          line: 7,
-          messageId: 'missingReturnType',
-        },
       ],
-      options: [
-        {
-          allowTypedFunctionExpressions: false,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: false }],
     },
     {
       code: `
@@ -1608,11 +1492,7 @@ new Accumulator().accumulate(() => 1);
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowTypedFunctionExpressions: false,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: false }],
     },
     {
       code: '(() => true)();',
@@ -1625,27 +1505,13 @@ new Accumulator().accumulate(() => 1);
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowTypedFunctionExpressions: false,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: false }],
     },
     {
       code: `
 declare function foo(arg: { meth: () => number }): void;
 foo({
   meth() {
-    return 1;
-  },
-});
-foo({
-  meth: function () {
-    return 1;
-  },
-});
-foo({
-  meth: () => {
     return 1;
   },
 });
@@ -1658,26 +1524,48 @@ foo({
           line: 4,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowTypedFunctionExpressions: false }],
+    },
+    {
+      code: `
+declare function foo(arg: { meth: () => number }): void;
+foo({
+  meth: function () {
+    return 1;
+  },
+});
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 18,
-          endLine: 9,
-          line: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowTypedFunctionExpressions: false }],
+    },
+    {
+      code: `
+declare function foo(arg: { meth: () => number }): void;
+foo({
+  meth: () => {
+    return 1;
+  },
+});
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 9,
-          endLine: 14,
-          line: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowTypedFunctionExpressions: false,
-        },
-      ],
+      options: [{ allowTypedFunctionExpressions: false }],
     },
     {
       code: `
@@ -1738,6 +1626,20 @@ const x: HigherOrderType = () => arg1 => arg2 => 'foo';
     {
       code: `
 const func = (value: number) => ({ type: 'X', value }) as any;
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [{ allowDirectConstAssertionInArrowFunctions: true }],
+    },
+    {
+      code: `
 const func = (value: number) => ({ type: 'X', value }) as Action;
       `,
       errors: [
@@ -1748,19 +1650,8 @@ const func = (value: number) => ({ type: 'X', value }) as Action;
           line: 2,
           messageId: 'missingReturnType',
         },
-        {
-          column: 30,
-          endColumn: 32,
-          endLine: 3,
-          line: 3,
-          messageId: 'missingReturnType',
-        },
       ],
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
+      options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
       code: `
@@ -1775,11 +1666,7 @@ const func = (value: number) => ({ type: 'X', value }) as const;
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: false,
-        },
-      ],
+      options: [{ allowDirectConstAssertionInArrowFunctions: false }],
     },
     {
       code: `
@@ -1799,11 +1686,7 @@ const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: false,
-        },
-      ],
+      options: [{ allowDirectConstAssertionInArrowFunctions: false }],
     },
     {
       code: 'const log = (message: string) => void console.log(message);',
@@ -1889,25 +1772,6 @@ const log = function <A>(a: A) {
 function hoge() {
   return;
 }
-const foo = () => {
-  return;
-};
-const baz = function () {
-  return;
-};
-let [test, test] = function () {
-  return;
-};
-class X {
-  [test] = function () {
-    return;
-  };
-}
-const x = {
-  1: function () {
-    reutrn;
-  },
-};
       `,
       errors: [
         {
@@ -1917,47 +1781,97 @@ const x = {
           line: 2,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowedNames: ['test', '1'] }],
+    },
+    {
+      code: `
+const foo = () => {
+  return;
+};
+      `,
+      errors: [
         {
           column: 16,
           endColumn: 18,
-          endLine: 5,
-          line: 5,
+          endLine: 2,
+          line: 2,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowedNames: ['test', '1'] }],
+    },
+    {
+      code: `
+const baz = function () {
+  return;
+};
+      `,
+      errors: [
         {
           column: 13,
           endColumn: 22,
-          endLine: 8,
-          line: 8,
+          endLine: 2,
+          line: 2,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowedNames: ['test', '1'] }],
+    },
+    {
+      code: `
+let [test, test] = function () {
+  return;
+};
+      `,
+      errors: [
         {
           column: 20,
           endColumn: 29,
-          endLine: 11,
-          line: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowedNames: ['test', '1'] }],
+    },
+    {
+      code: `
+class X {
+  [test] = function () {
+    return;
+  };
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 21,
-          endLine: 15,
-          line: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowedNames: ['test', '1'] }],
+    },
+    {
+      code: `
+const x = {
+  1: function () {
+    reutrn;
+  },
+};
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 15,
-          endLine: 20,
-          line: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowedNames: ['test', '1'],
-        },
-      ],
+      options: [{ allowedNames: ['test', '1'] }],
     },
     {
       code: `
@@ -2012,11 +1926,7 @@ const foo = (function () {
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowIIFEs: false,
-        },
-      ],
+      options: [{ allowIIFEs: false }],
     },
     {
       code: `
@@ -2035,11 +1945,7 @@ const foo = (function () {
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
@@ -2056,11 +1962,7 @@ let foo = function () {
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
@@ -2075,11 +1977,7 @@ let foo = (() => () => {})()();
           messageId: 'missingReturnType',
         },
       ],
-      options: [
-        {
-          allowIIFEs: true,
-        },
-      ],
+      options: [{ allowIIFEs: true }],
     },
     {
       code: `
