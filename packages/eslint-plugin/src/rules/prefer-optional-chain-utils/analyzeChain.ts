@@ -46,8 +46,7 @@ function includesType(
   node: TSESTree.Node,
   typeFlagIn: ts.TypeFlags,
 ): boolean {
-  const typeFlag: ts.TypeFlags =
-    typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
   const types = unionConstituents(parserServices.getTypeAtLocation(node));
   for (const type of types) {
     if (isTypeFlagSet(type, typeFlag)) {
@@ -63,8 +62,7 @@ function isValidAndLastChainOperand(
   parserServices: ParserServicesWithTypeInformation,
 ) {
   const type = parserServices.getTypeAtLocation(ComparisonValueType);
-  const ANY_UNKNOWN_FLAGS: ts.TypeFlags =
-    ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
   const types = unionConstituents(type);
   switch (comparisonType) {
@@ -99,8 +97,7 @@ function isValidOrLastChainOperand(
   parserServices: ParserServicesWithTypeInformation,
 ) {
   const type = parserServices.getTypeAtLocation(ComparisonValueType);
-  const ANY_UNKNOWN_FLAGS: ts.TypeFlags =
-    ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 
   const types = unionConstituents(type);
   switch (comparisonType) {

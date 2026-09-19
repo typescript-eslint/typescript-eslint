@@ -60,7 +60,6 @@ class NoInheritPlugin {
     if (reflection instanceof DeclarationReflection) {
       // class or interface that won't inherit docs
       if (
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- ReflectionKind.ClassOrInterface is a composed flags value
         reflection.kindOf(ReflectionKind.ClassOrInterface)
         // Fork: always add reflections, regardless of a @noInheritDoc tag
         // &&
@@ -75,7 +74,6 @@ class NoInheritPlugin {
       if (
         reflection.inheritedFrom &&
         reflection.parent &&
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- ReflectionKind.ClassOrInterface is a composed flags value
         reflection.parent.kindOf(ReflectionKind.ClassOrInterface) &&
         (!reflection.overwrites ||
           (reflection.overwrites &&

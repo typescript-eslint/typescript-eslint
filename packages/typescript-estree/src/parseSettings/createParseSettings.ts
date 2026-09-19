@@ -96,7 +96,6 @@ export function createParseSettings(
       : getFileName(tsestreeOptions.jsx),
     tsconfigRootDir,
   );
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- narrowing a file extension string to ts.Extension at a parse boundary
   const extension = path.extname(filePath).toLowerCase() as ts.Extension;
   const jsDocParsingMode = ((): ts.JSDocParsingMode => {
     switch (tsestreeOptions.jsDocParsingMode) {

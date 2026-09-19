@@ -56,7 +56,6 @@ export function createFileSystem(
 
   system.deleteFile = (fileName): void => {
     files.delete(fileName);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- typescript is only available as a type import here
     triggerCallbacks(fileName, 1);
   };
 
@@ -70,7 +69,6 @@ export function createFileSystem(
       return;
     }
     files.set(fileName, contents);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- typescript is only available as a type import here
     triggerCallbacks(fileName, file ? 2 : 0);
   };
 

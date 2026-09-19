@@ -1,4 +1,44 @@
 {
+  "packages/eslint-plugin/src/rules/no-redundant-type-constituents.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/src/rules/no-unnecessary-condition.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/src/rules/no-unnecessary-type-constraint.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/src/rules/prefer-nullish-coalescing.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/src/rules/prefer-optional-chain-utils/analyzeChain.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 5
+    }
+  },
+  "packages/eslint-plugin/src/rules/prefer-optional-chain-utils/gatherLogicalOperands.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/src/rules/strict-void-return.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/src/util/getOperatorPrecedence.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
   "packages/eslint-plugin/tests/rules/adjacent-overload-signatures.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 2
@@ -341,6 +381,56 @@
   },
   "packages/eslint-plugin/tests/rules/use-unknown-in-catch-callback-variable.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/type-utils/src/typeFlagUtils.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/typescript-estree/src/convert.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 2
+    }
+  },
+  "packages/typescript-estree/src/create-program/getScriptKind.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/typescript-estree/src/parseSettings/createParseSettings.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/website/src/components/ErrorsViewer.tsx": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/website/src/components/editor/LoadedEditor.tsx": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 2
+    }
+  },
+  "packages/website/src/components/editor/useSandboxServices.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/website/src/components/linter/bridge.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 2
+    }
+  },
+  "packages/website/src/components/linter/utils.ts": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
+      "count": 1
+    }
+  },
+  "packages/website/tools/typedoc-plugin-no-inherit-fork.mjs": {
+    "@typescript-eslint/no-unsafe-enum-assignment": {
       "count": 2
     }
   }

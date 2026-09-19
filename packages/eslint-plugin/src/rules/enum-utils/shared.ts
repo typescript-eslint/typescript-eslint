@@ -11,14 +11,14 @@ import { isNumberLike, isStringLike, isTypeFlagSet } from '../../util';
  * - `Fruit` --> `Fruit`
  * - `Fruit.Apple` --> `Fruit`
  */
-function getBaseEnumType(checker: ts.TypeChecker, type: ts.Type): ts.Type {
+function getBaseEnumType(typeChecker: ts.TypeChecker, type: ts.Type): ts.Type {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const symbol = type.getSymbol()!;
   if (!tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
     return type;
   }
 
-  return checker.getTypeAtLocation(
+  return typeChecker.getTypeAtLocation(
     (symbol.valueDeclaration as ts.EnumMember).parent,
   );
 }
@@ -50,10 +50,10 @@ export function getEnumLiterals(type: ts.Type): ts.LiteralType[] {
  * - T extends Fruit --> [Fruit]
  */
 export function getEnumTypes(
-  checker: ts.TypeChecker,
+  typeChecker: ts.TypeChecker,
   type: ts.Type,
 ): ts.Type[] {
-  return getEnumLiterals(type).map(type => getBaseEnumType(checker, type));
+  return getEnumLiterals(type).map(type => getBaseEnumType(typeChecker, type));
 }
 
 /**
@@ -61,7 +61,7 @@ export function getEnumTypes(
  * compared against a non-enum value of the same primitive kind.
  */
 export function isMismatchedEnumComparisonTypes(
-  checker: ts.TypeChecker,
+  typeChecker: ts.TypeChecker,
   leftType: ts.Type,
   rightType: ts.Type,
 ): boolean {
@@ -70,8 +70,8 @@ export function isMismatchedEnumComparisonTypes(
   // ```ts
   // 1 === 2;
   // ```
-  const leftEnumTypes = getEnumTypes(checker, leftType);
-  const rightEnumTypes = new Set(getEnumTypes(checker, rightType));
+  const leftEnumTypes = getEnumTypes(typeChecker, leftType);
+  const rightEnumTypes = new Set(getEnumTypes(typeChecker, rightType));
   if (leftEnumTypes.length === 0 && rightEnumTypes.size === 0) {
     return false;
   }
