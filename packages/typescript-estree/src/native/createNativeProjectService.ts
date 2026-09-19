@@ -19,11 +19,15 @@ function startupError(error: unknown): Error {
   );
 }
 
-function normalizePath(filePath: string): string {
-  const absolutePath = path.resolve(filePath);
+/** The compiler echoes this back as `SourceFile#fileName`, so it keeps its case. */
+function toCompilerPath(filePath: string): string {
+  return path.resolve(filePath).replaceAll('\\', '/');
+}
+
+function toCacheKey(compilerPath: string): string {
   return process.platform === 'win32'
-    ? absolutePath.toLowerCase()
-    : absolutePath;
+    ? compilerPath.toLowerCase()
+    : compilerPath;
 }
 
 function verifySupportedConfig(project: Project): void {
@@ -62,8 +66,9 @@ export function createNativeProjectService(
       cwd,
       fs: {
         fileExists: fileName =>
-          overlays.has(normalizePath(fileName)) ? true : undefined,
-        readFile: fileName => overlays.get(normalizePath(fileName)),
+          overlays.has(toCacheKey(toCompilerPath(fileName))) ? true : undefined,
+        readFile: fileName =>
+          overlays.get(toCacheKey(toCompilerPath(fileName))),
       },
     });
   } catch (error) {
@@ -98,13 +103,13 @@ export function createNativeProjectService(
   function contextFor(
     nextSnapshot: Snapshot,
     configFileName: string,
-    normalizedPath: string,
+    compilerPath: string,
   ): NativeProjectContext {
     const project = nextSnapshot.getConfiguredProject(configFileName);
-    const sourceFile = project?.program.getSourceFile(normalizedPath);
+    const sourceFile = project?.program.getSourceFile(compilerPath);
     if (!project || !sourceFile) {
       throw new Error(
-        `The TypeScript native project did not contain '${normalizedPath}'.`,
+        `The TypeScript native project did not contain '${compilerPath}'.`,
       );
     }
     const context = {
@@ -113,7 +118,7 @@ export function createNativeProjectService(
       project,
       sourceFile,
     };
-    fileContexts.set(normalizedPath, context);
+    fileContexts.set(toCacheKey(compilerPath), context);
     return context;
   }
 
@@ -155,33 +160,33 @@ export function createNativeProjectService(
 
     openFile(filePath, code): NativeProjectContext {
       assertOpen();
-      const normalizedPath = normalizePath(filePath);
-      const cachedContext = fileContexts.get(normalizedPath);
-      if (syncedFiles.get(normalizedPath) === code && cachedContext) {
+      const compilerPath = toCompilerPath(filePath);
+      const cacheKey = toCacheKey(compilerPath);
+      const cachedContext = fileContexts.get(cacheKey);
+      if (syncedFiles.get(cacheKey) === code && cachedContext) {
         return cachedContext;
       }
-      const previousSynced = syncedFiles.get(normalizedPath);
+      const previousSynced = syncedFiles.get(cacheKey);
 
       // Once an overlay exists the server has read it, so a matching disk file
       // would leave that overlay stale — hence the `has` check.
       const servedFromDisk =
-        !overlays.has(normalizedPath) &&
-        ts.sys.readFile(normalizedPath) === code;
+        !overlays.has(cacheKey) && ts.sys.readFile(compilerPath) === code;
       if (!servedFromDisk) {
-        overlays.set(normalizedPath, code);
+        overlays.set(cacheKey, code);
       }
-      syncedFiles.set(normalizedPath, code);
-      let knownConfigFileName = fileProjects.get(normalizedPath);
+      syncedFiles.set(cacheKey, code);
+      let knownConfigFileName = fileProjects.get(cacheKey);
 
       if (!knownConfigFileName && snapshot && openProjects.size) {
         for (const candidate of openProjects) {
           if (
             snapshot
               .getConfiguredProject(candidate)
-              ?.program.getSourceFile(normalizedPath)
+              ?.program.getSourceFile(compilerPath)
           ) {
             knownConfigFileName = candidate;
-            fileProjects.set(normalizedPath, candidate);
+            fileProjects.set(cacheKey, candidate);
             break;
           }
         }
@@ -193,30 +198,30 @@ export function createNativeProjectService(
             ? snapshot
             : replaceSnapshot({
                 ensurePrograms: true,
-                fileNotifications: { changed: [normalizedPath] },
+                fileNotifications: { changed: [compilerPath] },
               }),
           knownConfigFileName,
-          normalizedPath,
+          compilerPath,
         );
       }
 
       const discoverySnapshot = replaceSnapshot({
-        openFiles: [normalizedPath],
+        openFiles: [compilerPath],
       });
       let configFileName: string;
       let nextSnapshot: Snapshot;
       try {
         const discoveredProject =
-          discoverySnapshot.getDefaultProjectForFile(normalizedPath);
+          discoverySnapshot.getDefaultProjectForFile(compilerPath);
         if (!discoveredProject) {
           throw new Error(
-            `No TypeScript native project was located for '${normalizedPath}'.`,
+            `No TypeScript native project was located for '${compilerPath}'.`,
           );
         }
         configFileName = discoveredProject.configFileName;
         if (!ts.sys.fileExists(configFileName)) {
           throw new Error(
-            `No TypeScript native configured project was located for '${normalizedPath}'.`,
+            `No TypeScript native configured project was located for '${compilerPath}'.`,
           );
         }
         if (!verifiedConfigs.has(configFileName)) {
@@ -224,7 +229,7 @@ export function createNativeProjectService(
           verifiedConfigs.add(configFileName);
         }
         nextSnapshot = replaceSnapshot({
-          closeFiles: [normalizedPath],
+          closeFiles: [compilerPath],
           openProjects: openProjects.has(configFileName)
             ? undefined
             : [configFileName],
@@ -232,15 +237,15 @@ export function createNativeProjectService(
       } catch (error) {
         // Leave no half-open file behind, without masking the real failure.
         try {
-          replaceSnapshot({ closeFiles: [normalizedPath] });
+          replaceSnapshot({ closeFiles: [compilerPath] });
         } catch {
           // Intentionally ignored.
         }
         throw error;
       }
       openProjects.add(configFileName);
-      fileProjects.set(normalizedPath, configFileName);
-      return contextFor(nextSnapshot, configFileName, normalizedPath);
+      fileProjects.set(cacheKey, configFileName);
+      return contextFor(nextSnapshot, configFileName, compilerPath);
     },
   };
   return service;

@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { NativeProjectService } from '../../src/native';
@@ -10,7 +9,11 @@ import {
   createNativeProjectService,
   getNativeProjectService,
 } from '../../src/native';
-import { nativeFilePath as filePath, nativeFixtures } from './nativeTestUtils';
+import {
+  nativeFilePath as filePath,
+  nativeFixtures,
+  nativePath,
+} from './nativeTestUtils';
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -56,7 +59,7 @@ describe('native project service lifecycle', () => {
   it('discovers different configured projects with one process', () => {
     withService(service => {
       const first = service.openFile(filePath, readFixture());
-      const secondPath = path.join(nativeFixtures, 'second/file.ts');
+      const secondPath = nativePath(nativeFixtures, 'second/file.ts');
       const second = service.openFile(secondPath, readFixture(secondPath));
 
       expect(second.project.configFileName).not.toBe(
@@ -71,7 +74,7 @@ describe('native project service lifecycle', () => {
     ['plugins/file.ts', 'TSConfig plugins'],
   ])('rejects unsupported %s and stays usable', (relativePath, message) => {
     withService(service => {
-      const absolutePath = path.join(nativeFixtures, relativePath);
+      const absolutePath = nativePath(nativeFixtures, relativePath);
       expect(() =>
         service.openFile(absolutePath, 'export const value = 1;'),
       ).toThrow(message);

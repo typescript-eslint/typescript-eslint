@@ -1,13 +1,12 @@
-import path from 'node:path';
-
 import { parseAndGenerateServices } from '../../src/index.js';
 import {
   isolateNativeBackend,
   nativeFilePath as filePath,
   nativeFixtures,
+  nativePath,
 } from './nativeTestUtils';
 
-const tsxFilePath = path.join(nativeFixtures, 'component.tsx');
+const tsxFilePath = nativePath(nativeFixtures, 'component.tsx');
 
 isolateNativeBackend();
 

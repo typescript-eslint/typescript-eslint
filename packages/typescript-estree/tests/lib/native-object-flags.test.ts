@@ -1,13 +1,16 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import fs from 'node:fs';
-import path from 'node:path';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { parseAndGenerateServices } from '../../src/index.js';
-import { isolateNativeBackend, nativeFixtures } from './nativeTestUtils';
+import {
+  isolateNativeBackend,
+  nativeFixtures,
+  nativePath,
+} from './nativeTestUtils';
 
-const filePath = path.join(nativeFixtures, 'instantiation.ts');
+const filePath = nativePath(nativeFixtures, 'instantiation.ts');
 
 isolateNativeBackend();
 
