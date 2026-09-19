@@ -283,6 +283,7 @@ jobs:
               - repo
               - website-eslint
               - integration-tests
+              - project-service
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
