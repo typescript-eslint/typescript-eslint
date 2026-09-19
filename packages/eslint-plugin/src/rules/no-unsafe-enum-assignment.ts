@@ -97,6 +97,14 @@ export default createRule<[], MessageIds>({
             }
           });
           break;
+        case AST_NODE_TYPES.ConditionalExpression:
+          markChecked(node.consequent);
+          markChecked(node.alternate);
+          break;
+        case AST_NODE_TYPES.LogicalExpression:
+          markChecked(node.left);
+          markChecked(node.right);
+          break;
         case AST_NODE_TYPES.ObjectExpression:
           node.properties.forEach(markChecked);
           break;

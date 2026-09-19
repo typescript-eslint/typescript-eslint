@@ -4068,5 +4068,48 @@ class Basket implements HasBox {
         },
       ],
     },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const cond: boolean;
+declare const source: { fruit: Fruit };
+
+const box: { fruit: Fruit } = cond ? { fruit: 1 } : source;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 59,
+          endLine: 9,
+          line: 9,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const source: { fruit: Fruit } | undefined;
+
+const box: { fruit: Fruit } = source ?? { fruit: 1 };
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 53,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
   ],
 });
