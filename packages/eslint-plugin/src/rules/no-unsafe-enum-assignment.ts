@@ -85,7 +85,11 @@ export default createRule<[], MessageIds>({
 
       switch (node.type) {
         case AST_NODE_TYPES.ArrayExpression:
-          node.elements.forEach(element => element && markChecked(element));
+          node.elements.forEach(element => {
+            if (element) {
+              markChecked(element);
+            }
+          });
           break;
         case AST_NODE_TYPES.ObjectExpression:
           node.properties.forEach(markChecked);
@@ -162,15 +166,14 @@ export default createRule<[], MessageIds>({
     ) {
       if (
         senderNode.type === AST_NODE_TYPES.ArrayExpression ||
-        senderNode.type === AST_NODE_TYPES.ObjectExpression
+        senderNode.type === AST_NODE_TYPES.ObjectExpression ||
+        !isUnsafeAssignment(senderNode, receiverType, senderType)
       ) {
         return;
       }
 
-      if (isUnsafeAssignment(senderNode, receiverType, senderType)) {
-        report(reportingNode, messageId, [receiverType]);
-        markChecked(senderNode);
-      }
+      report(reportingNode, messageId, [receiverType]);
+      markChecked(senderNode);
     }
 
     function checkArguments(
@@ -350,12 +353,12 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        for (const element of node.elements.filter(
-          element => element != null,
-        )) {
-          const receiverType = getContextualType(element);
-          if (receiverType != null) {
-            checkAssignment(receiverType, element, element);
+        for (const element of node.elements) {
+          if (element) {
+            const receiverType = getContextualType(element);
+            if (receiverType) {
+              checkAssignment(receiverType, element, element);
+            }
           }
         }
       },
@@ -391,7 +394,7 @@ export default createRule<[], MessageIds>({
         node: TSESTree.Expression,
       ) {
         const receiverType = getContextualType(node);
-        if (receiverType != null) {
+        if (receiverType) {
           checkAssignment(receiverType, node, node);
         }
       },
@@ -436,7 +439,7 @@ export default createRule<[], MessageIds>({
               : [property.value, property.value];
 
           const receiverType = getContextualType(receiverNode);
-          if (receiverType != null) {
+          if (receiverType) {
             checkAssignment(receiverType, senderNode, property);
           }
         }
