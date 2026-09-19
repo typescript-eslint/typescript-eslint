@@ -445,14 +445,14 @@ jobs:
         env:
           CI: true
 
-      - name: Store coverage for uploading
+      - name: Upload coverage to Codecov
         if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
-          name: ${{ matrix.package.name }}-coverage-${{ strategy.job-index }}
-          path: packages/${{ matrix.package.name }}/coverage/lcov.info
-          # Sadly 1 day is the minimum
-          retention-days: 1
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.package.name }}/coverage/lcov.info
+          flags: ${{ matrix.package.name }}
+          name: ${{ matrix.package.name }}-${{ strategy.job-index }}
 
   unit_tests:
     name: Run Unit Tests
@@ -519,14 +519,14 @@ jobs:
           CI: true
           PACKAGE: ${{ matrix.package }}
 
-      - name: Store coverage for uploading
+      - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
-          name: ${{ matrix.package }}-coverage-${{ strategy.job-index }}
-          path: packages/${{ matrix.package }}/coverage/lcov.info
-          # Sadly 1 day is the minimum
-          retention-days: 1
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.package }}/coverage/lcov.info
+          flags: ${{ matrix.package }}
+          name: ${{ matrix.package }}
 
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
@@ -586,27 +586,3 @@ jobs:
       - name: Fail if any dependency failed or was cancelled
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
         run: exit 1
-
-  upload_coverage:
-    name: Upload Codecov Coverage
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [unit_tests, plugin_unit_tests]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        with:
-          persist-credentials: false
-
-      - name: Download coverage reports
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          path: coverage
-
-      - name: Publish code coverage report
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/**/lcov.info
-          flags: unittest
-          name: codecov
