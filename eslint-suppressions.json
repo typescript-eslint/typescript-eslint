@@ -19,21 +19,6 @@
       "count": 77
     }
   },
-  "packages/eslint-plugin/tests/rules/no-invalid-this.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 43
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-magic-numbers.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 8
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-misused-new.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-misused-promises.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 13
