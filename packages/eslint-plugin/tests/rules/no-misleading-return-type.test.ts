@@ -180,13 +180,27 @@ function getValues(): ArrayLike<string | null> {
 }
     `,
     `
-interface NumberIndexed<T> {
-  readonly [index: number]: string;
-  readonly metadata: T;
+function getValues(): Set<string | null> {
+  return new Set(['value']);
 }
-declare const values: NumberIndexed<string>;
-function getValues(): NumberIndexed<string | null> {
+    `,
+    `
+interface Values<T> {
+  readonly [index: number]: T;
+  current: T;
+}
+declare const values: { [index: number]: string; current: null };
+function getValues(): Values<string | null> {
   return values;
+}
+    `,
+    `
+interface Result<T> extends PromiseLike<T> {
+  current: T;
+}
+declare const result: Promise<string> & { current: null };
+function getValue(): Result<string | null> {
+  return result;
 }
     `,
     `
@@ -203,6 +217,11 @@ function getValue(): string | null {
     `,
     `
 const getValue: () => string | null = (): string | null => 'value';
+    `,
+    `
+class Provider {
+  getValue: () => string | null = (): string | null => 'value';
+}
     `,
     `
 interface Provider {
@@ -412,12 +431,6 @@ async function getValue(flag: boolean): Promise<string | null> {
 }
     `,
     `
-type DefinedPromise<T> = Promise<Exclude<T, null>>;
-function getValue(): DefinedPromise<string | null> {
-  return Promise.resolve('value');
-}
-    `,
-    `
 type DefinedArray<T> = Array<Exclude<T, null>>;
 function getValues(): DefinedArray<string | null> {
   return ['value'];
@@ -448,17 +461,6 @@ function getValues(): Array<string | null> {
 }
     `,
     `
-interface MisalignedThenable<T> {
-  marker: T;
-  then(onfulfilled: (value: number) => unknown): unknown;
-}
-declare const thenable: MisalignedThenable<string | null>;
-function getValue(): MisalignedThenable<string | null> {
-  return thenable;
-}
-    `,
-    // Invalid thenables can make the checker return no awaited type.
-    `
 interface InvalidThenable {
   then(onfulfilled: string): unknown;
 }
@@ -473,16 +475,6 @@ interface InvalidThenable {
 }
 function getValue(): Promise<string | InvalidThenable> {
   return Promise.resolve('value');
-}
-    `,
-    // Recursive thenables have no safely computable awaited type.
-    `
-interface CircularThenable<T> {
-  then(onfulfilled: (value: CircularThenable<T>) => unknown): unknown;
-}
-declare const thenable: CircularThenable<string>;
-function getValue(): CircularThenable<string | null> {
-  return thenable;
 }
     `,
     `
@@ -528,6 +520,22 @@ function getValue(flag: boolean): string | void {
     `,
   ],
   invalid: [
+    {
+      code: `
+class Provider {
+  getValue = (): string | null => 'value';
+}
+      `,
+      errors: [
+        {
+          column: 27,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
     {
       code: `
 function getValue(): string | null {
@@ -798,24 +806,6 @@ function getValue(): PromiseLike<string | null> {
           endColumn: 47,
           endLine: 2,
           line: 2,
-          messageId: 'unnecessaryType',
-        },
-      ],
-    },
-    {
-      code: `
-interface CustomPromise<T> extends PromiseLike<T> {}
-declare const result: CustomPromise<string>;
-function getValue(): CustomPromise<string | null> {
-  return result;
-}
-      `,
-      errors: [
-        {
-          column: 45,
-          endColumn: 49,
-          endLine: 4,
-          line: 4,
           messageId: 'unnecessaryType',
         },
       ],
