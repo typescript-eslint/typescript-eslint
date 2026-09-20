@@ -40,7 +40,7 @@
     "lint-stylelint": "nx lint website stylelint",
     "lint-prune-suppressions": "nx run-many -t lint --projects=eslint-plugin-internal,eslint-plugin --prune-suppressions",
     "lint": "nx run-many -t lint",
-    "attw-check": "nx run-many -t attw-check --exclude repo ast-spec website website-eslint eslint-plugin-internal integration-tests",
+    "attw-check": "nx run-many -t attw-check --exclude ast-spec website website-eslint eslint-plugin-internal integration-tests",
     "postinstall": "tsx tools/scripts/postinstall.mts",
     "pre-commit": "lint-staged",
     "release": "tsx tools/release/release.mts",
@@ -113,7 +113,6 @@
   "nx": {
     "name": "repo",
     "includedScripts": [
-      "attw-check",
       "generate-configs",
       "generate-lib",
       "generate-sponsors"
@@ -165,6 +164,7 @@
         "command": "rimraf dist/ coverage/ .eslintcache"
       },
       "test": {
+        "cache": true,
         "command": "vitest",
         "outputs": [
           "{projectRoot}/tools/coverage"
