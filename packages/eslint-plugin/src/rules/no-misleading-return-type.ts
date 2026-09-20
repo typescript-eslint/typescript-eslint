@@ -10,6 +10,7 @@ import {
   getParserServices,
   getValueOfLiteralType,
   hasOverloadSignatures,
+  isSymbolFromDefaultLibrary,
   isTypeAnyType,
   isTypeNeverType,
   isTypeUnknownType,
@@ -53,8 +54,7 @@ type UnionCandidate =
     }
   | {
       kind: 'reference';
-      returnType: TSESTree.TypeNode;
-      typeArgument: TSESTree.TSUnionType;
+      returnType: TSESTree.TSTypeReference;
       types: TSESTree.TypeNode[];
     };
 
@@ -83,24 +83,13 @@ export default createRule({
         : [type];
     }
 
-    function hasUnresolvedTemplatePart(types: readonly ts.Type[]) {
-      function isUnresolved(type: ts.Type): boolean {
-        if (
+    function hasUnresolvedTemplatePart(types: readonly ts.Type[]): boolean {
+      return types.some(
+        type =>
           tsutils.isTypeFlagSet(type, ts.TypeFlags.Instantiable) ||
-          tsutils.isConditionalType(type) ||
-          tsutils.isStringMappingType(type)
-        ) {
-          return true;
-        }
-
-        return (
-          (type.isUnionOrIntersection() ||
-            tsutils.isTemplateLiteralType(type)) &&
-          type.types.some(isUnresolved)
-        );
-      }
-
-      return types.some(isUnresolved);
+          (type.isUnionOrIntersection() &&
+            hasUnresolvedTemplatePart(type.types)),
+      );
     }
 
     function isUnresolvedTypeOperation(type: ts.Type) {
@@ -229,7 +218,7 @@ export default createRule({
       const returnExpressions: ts.Expression[] = [];
       if (ts.isBlock(body)) {
         forEachReturnStatement(body, statement => {
-          if (statement.expression) {
+          if (statement.expression != null) {
             returnExpressions.push(statement.expression);
           }
         });
@@ -256,7 +245,7 @@ export default createRule({
       return returnedTypes;
     }
 
-    function getUnionCandidate(node: FunctionNode): UnionCandidate | null {
+    function getUnionCandidate(node: FunctionNode) {
       const returnType = node.returnType?.typeAnnotation;
       if (returnType == null) {
         return null;
@@ -267,7 +256,7 @@ export default createRule({
           kind: 'direct',
           returnType,
           types: getUnionMembers(returnType),
-        };
+        } satisfies UnionCandidate;
       }
 
       const operatedType =
@@ -286,7 +275,7 @@ export default createRule({
           kind: 'array',
           returnType,
           types: getUnionMembers(arrayType.elementType),
-        };
+        } satisfies UnionCandidate;
       }
 
       if (
@@ -301,30 +290,34 @@ export default createRule({
       return {
         kind: 'reference',
         returnType,
-        typeArgument,
         types: getUnionMembers(typeArgument),
-      };
+      } satisfies UnionCandidate;
     }
 
-    function getProjection(
-      candidate: UnionCandidate,
-      returnType: ts.Type,
-    ): TypeProjection | null {
-      if (candidate.kind === 'direct') {
-        return 'identity';
-      }
-      if (candidate.kind === 'array') {
-        return 'arrayElement';
+    function getProjection(candidate: UnionCandidate) {
+      if (candidate.kind !== 'reference') {
+        return candidate.kind === 'direct' ? 'identity' : 'arrayElement';
       }
 
-      if (checker.getIndexTypeOfType(returnType, ts.IndexKind.Number) != null) {
-        return 'arrayElement';
-      }
-
-      const tsReturnType = services.esTreeNodeToTSNodeMap.get(
-        candidate.returnType,
+      // Custom containers may use their type argument in properties that an
+      // array or promise projection does not inspect.
+      const symbol = services.getSymbolAtLocation(
+        candidate.returnType.typeName,
       );
-      if (tsutils.isThenableType(checker, tsReturnType, returnType)) {
+      if (
+        symbol == null ||
+        !isSymbolFromDefaultLibrary(services.program, symbol)
+      ) {
+        return null;
+      }
+      if (
+        symbol.name === 'Array' ||
+        symbol.name === 'ReadonlyArray' ||
+        symbol.name === 'ArrayLike'
+      ) {
+        return 'arrayElement';
+      }
+      if (symbol.name === 'Promise' || symbol.name === 'PromiseLike') {
         return 'awaited';
       }
 
@@ -339,51 +332,6 @@ export default createRule({
         return checker.getAwaitedType(type) ?? null;
       }
       return checker.getIndexTypeOfType(type, ts.IndexKind.Number) ?? null;
-    }
-
-    function getProjectedTypeArgument(
-      type: ts.Type,
-      projection: TypeProjection,
-    ) {
-      return projection === 'awaited'
-        ? (checker.getAwaitedType(type) ?? null)
-        : type;
-    }
-
-    function getEffectiveReturnType(
-      candidate: UnionCandidate,
-      projection: TypeProjection,
-      returnType: ts.Type,
-    ) {
-      const projectedReturnType = getProjectedType(returnType, projection);
-      if (
-        projectedReturnType == null ||
-        tsutils.isIntrinsicErrorType(projectedReturnType)
-      ) {
-        return null;
-      }
-      if (candidate.kind !== 'reference') {
-        return projectedReturnType;
-      }
-
-      const projectedTypeArgument = getProjectedTypeArgument(
-        services.getTypeAtLocation(candidate.typeArgument),
-        projection,
-      );
-
-      if (
-        projectedTypeArgument == null ||
-        tsutils.isIntrinsicErrorType(projectedTypeArgument) ||
-        !checker.isTypeAssignableTo(
-          projectedReturnType,
-          projectedTypeArgument,
-        ) ||
-        !checker.isTypeAssignableTo(projectedTypeArgument, projectedReturnType)
-      ) {
-        return null;
-      }
-
-      return projectedReturnType;
     }
 
     function hasBaseClassMember(
@@ -501,27 +449,16 @@ export default createRule({
           const baseType = checker.getTypeAtLocation(
             isStaticMember ? baseTypeNode.expression : baseTypeNode,
           );
-          if (checker.getPropertyOfType(baseType, memberSymbolName) != null) {
-            return true;
-          }
-
-          const nameType = getMemberNameType();
           if (
-            nameType != null &&
-            tsutils.isTypeFlagSet(nameType, ts.TypeFlags.UniqueESSymbol) &&
-            checker
-              .getPropertiesOfType(baseType)
-              .some(
-                baseMember =>
-                  baseMember.escapedName === memberSymbol.escapedName,
-              )
+            tsutils.getPropertyOfType(baseType, memberSymbol.escapedName) !=
+            null
           ) {
             return true;
           }
 
           if (
             !isStaticMember &&
-            hasMatchingIndexSignature(baseType, nameType)
+            hasMatchingIndexSignature(baseType, getMemberNameType())
           ) {
             return true;
           }
@@ -554,7 +491,9 @@ export default createRule({
           return true;
         }
 
-        return hasBaseClassMember(node.parent);
+        if (hasBaseClassMember(node.parent)) {
+          return true;
+        }
       }
 
       if (
@@ -573,19 +512,16 @@ export default createRule({
         return;
       }
 
-      const returnType = services.getTypeAtLocation(candidate.returnType);
-      const projection = getProjection(candidate, returnType);
+      const projection = getProjection(candidate);
       if (projection == null) {
         return;
       }
 
-      const effectiveReturnType = getEffectiveReturnType(
-        candidate,
-        projection,
-        returnType,
-      );
+      const returnType = services.getTypeAtLocation(candidate.returnType);
+      const effectiveReturnType = getProjectedType(returnType, projection);
       if (
         effectiveReturnType == null ||
+        tsutils.isIntrinsicErrorType(effectiveReturnType) ||
         isTypeAnyType(effectiveReturnType) ||
         isTypeUnknownType(effectiveReturnType)
       ) {
@@ -615,7 +551,10 @@ export default createRule({
       }[] = [];
       for (const typeNode of candidate.types) {
         const typeAtNode = services.getTypeAtLocation(typeNode);
-        const type = getProjectedTypeArgument(typeAtNode, projection);
+        const type =
+          projection === 'awaited'
+            ? checker.getAwaitedType(typeAtNode)
+            : typeAtNode;
         if (
           type == null ||
           tsutils.isIntrinsicErrorType(type) ||

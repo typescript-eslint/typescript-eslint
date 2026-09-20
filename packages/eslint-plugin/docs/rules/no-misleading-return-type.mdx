@@ -16,7 +16,7 @@ This rule compares explicitly written union return types with the types of a fun
 It reports a union constituent when no returned type is assignable to it and no returned type is a supertype of it.
 Literal types satisfy their corresponding primitive types, so returning `'ready'` satisfies a `string` constituent.
 The rule treats enum members with the same string or number value as the same returned value.
-It also checks unions written as array element types and as the awaited value of `Promise` and compatible promise-like return types.
+It also checks unions written as array element types and as the type argument of the built-in `Array`, `ReadonlyArray`, `ArrayLike`, `Promise`, and `PromiseLike` types.
 
 ## Examples
 
@@ -51,9 +51,9 @@ async function getAsyncStatus(): Promise<string> {
 
 ## Limitations
 
-This rule checks unions in three places: directly in a return type, in an array element type, and as the single type argument of an array-like or promise-like return type.
-For the type-argument form, the projected return type must be equivalent to the type argument.
-It does not expand a type alias used as the complete return type or inspect unions nested in other containers or object properties.
+This rule does not expand a type alias used as the complete return type, including generic aliases.
+It does not inspect unions inside custom containers or object properties.
+Checking only a custom container's array elements or awaited value could miss other properties that require the same type argument.
 It skips comparisons involving `any` or `unknown`.
 For unresolved conditional and string mapping constituents, and template literal constituents that depend on type parameters, it reports only when a stable constraint proves that the returned types are disjoint from the constituent.
 
