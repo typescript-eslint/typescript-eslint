@@ -1,0 +1,94 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`define-config-rule-creator-plugin > eslint > should work successfully 1`] = `
+[
+  {
+    "errorCount": 3,
+    "fatalErrorCount": 0,
+    "filePath": "<root>/index.ts",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "column": 7,
+        "endColumn": 10,
+        "endLine": 1,
+        "line": 1,
+        "message": "Identifier \`foo\` is not allowed.",
+        "messageId": "noFoo",
+        "nodeType": "Identifier",
+        "ruleId": "example/no-foo",
+        "severity": 2,
+        "suggestions": [
+          {
+            "desc": "Rename to \`bar\`.",
+            "fix": {
+              "range": [
+                6,
+                9,
+              ],
+              "text": "bar",
+            },
+            "messageId": "renameToBar",
+          },
+        ],
+      },
+      {
+        "column": 10,
+        "endColumn": 13,
+        "endLine": 3,
+        "line": 3,
+        "message": "Identifier \`foo\` is not allowed.",
+        "messageId": "noFoo",
+        "nodeType": "Identifier",
+        "ruleId": "example/no-foo",
+        "severity": 2,
+        "suggestions": [
+          {
+            "desc": "Rename to \`bar\`.",
+            "fix": {
+              "range": [
+                25,
+                28,
+              ],
+              "text": "bar",
+            },
+            "messageId": "renameToBar",
+          },
+        ],
+      },
+      {
+        "column": 10,
+        "endColumn": 13,
+        "endLine": 3,
+        "line": 3,
+        "message": "Identifier \`foo\` is not allowed.",
+        "messageId": "noFoo",
+        "nodeType": "Identifier",
+        "ruleId": "example/no-foo",
+        "severity": 2,
+        "suggestions": [
+          {
+            "desc": "Rename to \`bar\`.",
+            "fix": {
+              "range": [
+                25,
+                28,
+              ],
+              "text": "bar",
+            },
+            "messageId": "renameToBar",
+          },
+        ],
+      },
+    ],
+    "source": "const foo = 1;
+
+export { foo };
+",
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+]
+`;

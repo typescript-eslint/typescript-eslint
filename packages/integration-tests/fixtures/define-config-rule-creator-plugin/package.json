@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "eslint": "9.39.2",
+    "jiti": "2.7.0"
+  }
+}

@@ -270,6 +270,57 @@ export type ReportDescriptor<MessageIds extends string> = (
 ) &
   ReportDescriptorWithSuggestion<MessageIds>;
 
+/*
+The types below are narrower versions of `ReportDescriptor` and friends that
+match the shape ESLint core's own rule types expect: primitive-only message
+data, mutable fix ranges, and mutable suggestion arrays. They exist only so that a
+`RuleModule` is structurally assignable to ESLint's `RuleDefinition` (and thus
+usable in `defineConfig()`); see https://github.com/typescript-eslint/typescript-eslint/issues/11543
+
+They are used as a first overload of `RuleContext#report`. Because they are a
+strict subtype of the existing `ReportDescriptor` overload, callers are not
+affected at all.
+*/
+export type ESLintCompatibleReportDescriptorMessageData = Readonly<
+  Record<string, bigint | boolean | number | string | null | undefined>
+>;
+
+export interface ESLintCompatibleRuleFix {
+  range: AST.Range;
+  text: string;
+}
+
+// This intentionally takes the same `RuleFixer` parameter as
+// `ReportFixFunction`: TypeScript fixes the contextual type of a lambda's
+// parameters from the first overload it tries, so the two `report` overloads
+// must agree on it.
+export type ESLintCompatibleReportFixFunction = (
+  fixer: RuleFixer,
+) =>
+  | ESLintCompatibleRuleFix
+  | IterableIterator<ESLintCompatibleRuleFix>
+  | readonly ESLintCompatibleRuleFix[]
+  | null;
+
+export type ESLintCompatibleSuggestionReportDescriptor<
+  MessageIds extends string,
+> = Omit<SuggestionReportDescriptor<MessageIds>, 'data' | 'fix'> & {
+  readonly data?: ESLintCompatibleReportDescriptorMessageData;
+  readonly fix: ESLintCompatibleReportFixFunction;
+};
+
+export type ESLintCompatibleReportDescriptor<MessageIds extends string> =
+  ReportDescriptor<MessageIds> extends infer Descriptor
+    ? Descriptor extends object
+      ? Omit<Descriptor, 'data' | 'fix' | 'suggest'> & {
+          readonly data?: ESLintCompatibleReportDescriptorMessageData;
+          readonly fix?: ESLintCompatibleReportFixFunction | null;
+          readonly suggest?:
+            ESLintCompatibleSuggestionReportDescriptor<MessageIds>[] | null;
+        }
+      : never
+    : never;
+
 /**
  * Plugins can add their settings using declaration
  * merging against this interface.
@@ -408,6 +459,11 @@ export interface RuleContext<
   /**
    * Reports a problem in the code.
    */
+  // This overload is a strict subtype of the one below it and exists only so
+  // that our rule types are assignable to ESLint's own. See the comment on
+  // `ESLintCompatibleReportDescriptor`.
+  report(descriptor: ESLintCompatibleReportDescriptor<MessageIds>): void;
+  // eslint-disable-next-line @typescript-eslint/unified-signatures -- intentionally separate, see above
   report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
@@ -687,7 +743,13 @@ type RuleListenerExitSelectors = {
     K in keyof RuleListenerBaseSelectors as `${K}:exit`
   ]: RuleListenerBaseSelectors[K];
 };
-type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
+// `any` rather than the default `never` so that this is assignable to ESLint's
+// own `RuleVisitor` type (`(...args: any[]) => void`)
+type RuleListenerCatchAllBaseCase = Record<
+  string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  RuleFunction<any> | undefined
+>;
 // Interface to merge into for anyone that wants to add more selectors
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface RuleListenerExtension {
@@ -799,28 +861,26 @@ export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
  *
  * @see {@link LooseParserModule}, {@link LooseProcessorModule}
  */
-export type LooseRuleDefinition =
-  // TODO - remove RuleCreateFunction once we no longer support ESLint 8
-  | LooseRuleCreateFunction
-  | {
-      create: LooseRuleCreateFunction;
-      meta?: object | undefined;
-    };
+export interface LooseRuleDefinition {
+  create: LooseRuleCreateFunction;
+  meta?: object;
+}
 /*
-eslint-disable-next-line @typescript-eslint/no-explicit-any --
+eslint-disable @typescript-eslint/no-explicit-any --
 intentionally using `any` to allow bi-directional assignment (unknown and
 never only allow unidirectional)
 */
 export type LooseRuleCreateFunction = (context: any) => Record<
   string,
   /*
-  eslint-disable-next-line @typescript-eslint/no-unsafe-function-type --
-  intentionally use Function here to give us the basic "is a function" validation
-  without enforcing specific argument types so that different AST types can still
-  be passed to configs
+  intentionally use a maximally-loose function type here to give us the basic
+  "is a function" validation without enforcing specific argument types so that
+  different AST types can still be passed to configs. This matches ESLint's own
+  `RuleVisitor` type, which `Function` is not assignable to.
   */
-  Function | undefined
+  ((...args: any[]) => void) | undefined
 >;
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export type RuleCreateFunction<
   MessageIds extends string = never,

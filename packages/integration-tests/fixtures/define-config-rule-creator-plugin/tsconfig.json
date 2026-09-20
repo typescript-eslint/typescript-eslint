@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": true,
+    "module": "nodenext",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["eslint.config.ts", "plugin.ts"]
+}

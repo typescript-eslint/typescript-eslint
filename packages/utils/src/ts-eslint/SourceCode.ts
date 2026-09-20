@@ -3,6 +3,7 @@
 import { SourceCode as ESLintSourceCode } from 'eslint';
 
 import type { ParserServices, TSESTree } from '../ts-estree';
+import type { SharedConfig } from './Config';
 import type { Parser } from './Parser';
 import type { Scope } from './Scope';
 
@@ -226,9 +227,30 @@ declare class SourceCodeBase extends TokenStore {
    * The parsed AST for the source code.
    */
   ast: SourceCode.Program;
-  applyInlineConfig(): void;
+  applyInlineConfig(): {
+    configs: SourceCode.InlineConfigElement[];
+    problems: SourceCode.FileProblem[];
+  };
   applyLanguageOptions(): void;
   finalize(): void;
+  /**
+   * Returns the location of the given node or token.
+   *
+   * Since ESLint 9.
+   */
+  getLoc(nodeOrToken: TSESTree.Node | TSESTree.Token): TSESTree.SourceLocation;
+  /**
+   * Returns the range of the given node or token.
+   *
+   * Since ESLint 9.
+   */
+  getRange(nodeOrToken: TSESTree.Node | TSESTree.Token): TSESTree.Range;
+  /**
+   * Traverse the source code and return the steps that were taken.
+   *
+   * Since ESLint 9.
+   */
+  traverse(): Iterable<SourceCode.TraversalStep>;
   /**
    * Retrieves an array containing all comments in the source code.
    * @returns An array of comment nodes.
@@ -389,10 +411,41 @@ namespace SourceCode {
     /**
      * The visitor keys to traverse AST.
      */
-    visitorKeys: VisitorKeys | null;
+    visitorKeys: Parser.VisitorKeys | null;
   }
 
-  export type VisitorKeys = Parser.VisitorKeys;
+  // This is intentionally mutable, unlike `Parser.VisitorKeys`, to match
+  // ESLint's own `SourceCode` type.
+  export type VisitorKeys = Record<string, string[]>;
+
+  export interface FileProblem {
+    loc: TSESTree.SourceLocation;
+    message: string;
+    ruleId: string | null;
+  }
+
+  export interface InlineConfigElement {
+    config: {
+      rules: Record<string, SharedConfig.RuleEntry>;
+    };
+    loc: TSESTree.SourceLocation;
+  }
+
+  export interface VisitTraversalStep {
+    args: unknown[];
+    kind: 1;
+    phase: 1 | 2;
+    target: TSESTree.Node;
+  }
+
+  export interface CallTraversalStep {
+    args: unknown[];
+    kind: 2;
+    phase?: string;
+    target: string;
+  }
+
+  export type TraversalStep = CallTraversalStep | VisitTraversalStep;
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
   export type GetFilterPredicate<Filter, Default> =

@@ -70,6 +70,42 @@ export const createRule = ESLintUtils.RuleCreator<ExamplePluginDocs>(
 );
 ```
 
+## Plugin and Config Types
+
+Rules created with `RuleCreator` are compatible with ESLint's own rule types.
+You can type your plugin and its shared configs with the `FlatConfig` types from `@typescript-eslint/utils`, and users will be able to pass them to ESLint's `defineConfig()`:
+
+```ts
+import type { TSESLint } from '@typescript-eslint/utils';
+
+import { noFoo } from './rules/no-foo';
+
+export const plugin: TSESLint.FlatConfig.Plugin = {
+  meta: {
+    name: 'eslint-plugin-example',
+    version: '1.0.0',
+  },
+  rules: {
+    'no-foo': noFoo,
+  },
+};
+
+export const recommended: TSESLint.FlatConfig.Config = {
+  name: 'example/recommended',
+  plugins: {
+    example: plugin,
+  },
+  rules: {
+    'example/no-foo': 'error',
+  },
+};
+```
+
+:::note
+ESLint's types require rule options to be mutable arrays.
+A rule whose `Options` type parameter is a `readonly` tuple, or values typed as `AnyRuleModule`, won't be assignable to ESLint's rule types.
+:::
+
 ## Type Checking and Configs
 
 Most ESLint plugins export a _"`recommended`"_ [ESLint shared config](https://eslint.org/docs/latest/extend/shareable-configs).

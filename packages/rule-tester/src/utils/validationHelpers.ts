@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { Parser, SourceCode } from '@typescript-eslint/utils/ts-eslint';
+import type { Parser } from '@typescript-eslint/utils/ts-eslint';
 
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 
@@ -87,7 +87,7 @@ export function wrapParser(
    */
   function defineStartEndAsErrorInTree(
     ast: TSESTree.Program,
-    visitorKeys?: Readonly<SourceCode.VisitorKeys>,
+    visitorKeys?: Parser.VisitorKeys,
   ): void {
     /**
      * Define `start`/`end` properties as throwing error.

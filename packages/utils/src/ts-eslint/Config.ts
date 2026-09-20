@@ -172,7 +172,7 @@ export namespace FlatConfig {
      * The definition of plugin processors.
      * Users can stringly reference the processor using the key in their config (i.e., `"pluginName/processorName"`).
      */
-    processors?: Partial<Record<string, Processor>> | undefined;
+    processors?: Record<string, Processor> | undefined;
     /**
      * The definition of plugin rules.
      * The key must be the name of the rule that users will use
@@ -215,7 +215,12 @@ export namespace FlatConfig {
       SharedConfig.Severity | SharedConfig.SeverityString;
   }
 
-  export interface LanguageOptions {
+  // This is a type alias rather than an interface so that it gets an implicit
+  // index signature, which makes it assignable to ESLint core's
+  // `LanguageOptions` (`{ [key: string]: unknown }`) and thus usable in
+  // `defineConfig()`. See https://github.com/typescript-eslint/typescript-eslint/issues/11543
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+  export type LanguageOptions = {
     /**
      * The version of ECMAScript to support.
      * May be any year (i.e., `2022`) or version (i.e., `5`).
@@ -253,7 +258,7 @@ export namespace FlatConfig {
      * ```
      */
     sourceType?: SourceType | undefined;
-  }
+  };
 
   // it's not a json schema so it's nowhere near as nice to read and convert...
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
