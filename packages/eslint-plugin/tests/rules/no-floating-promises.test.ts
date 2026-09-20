@@ -910,9 +910,6 @@ function wrapNode<T>(getNode: () => CustomNode<T>) {
       code: `
 async function test() {
   Promise.resolve('value');
-  Promise.resolve('value').then(() => {});
-  Promise.resolve('value').catch();
-  Promise.resolve('value').finally();
 }
       `,
       errors: [
@@ -928,9 +925,6 @@ async function test() {
               output: `
 async function test() {
   void Promise.resolve('value');
-  Promise.resolve('value').then(() => {});
-  Promise.resolve('value').catch();
-  Promise.resolve('value').finally();
 }
       `,
             },
@@ -939,29 +933,32 @@ async function test() {
               output: `
 async function test() {
   await Promise.resolve('value');
-  Promise.resolve('value').then(() => {});
-  Promise.resolve('value').catch();
-  Promise.resolve('value').finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  Promise.resolve('value').then(() => {});
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 43,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  Promise.resolve('value');
   void Promise.resolve('value').then(() => {});
-  Promise.resolve('value').catch();
-  Promise.resolve('value').finally();
 }
       `,
             },
@@ -969,30 +966,33 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  Promise.resolve('value');
   await Promise.resolve('value').then(() => {});
-  Promise.resolve('value').catch();
-  Promise.resolve('value').finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  Promise.resolve('value').catch();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 36,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  Promise.resolve('value');
-  Promise.resolve('value').then(() => {});
   void Promise.resolve('value').catch();
-  Promise.resolve('value').finally();
 }
       `,
             },
@@ -1000,29 +1000,32 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  Promise.resolve('value');
-  Promise.resolve('value').then(() => {});
   await Promise.resolve('value').catch();
-  Promise.resolve('value').finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  Promise.resolve('value').finally();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 38,
-          endLine: 6,
-          line: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  Promise.resolve('value');
-  Promise.resolve('value').then(() => {});
-  Promise.resolve('value').catch();
   void Promise.resolve('value').finally();
 }
       `,
@@ -1031,11 +1034,324 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  Promise.resolve('value');
-  Promise.resolve('value').then(() => {});
-  Promise.resolve('value').catch();
   await Promise.resolve('value').finally();
 }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const doSomething = async (obj: {
+  a?: { b?: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  obj.a?.b?.c?.();
+};
+
+void doSomething();
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const doSomething = async (obj: {
+  a?: { b?: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  void obj.a?.b?.c?.();
+};
+
+void doSomething();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+const doSomething = async (obj: {
+  a?: { b?: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  await obj.a?.b?.c?.();
+};
+
+void doSomething();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const doSomething = async (obj: {
+  a?: { b?: { c: () => Promise<void> } };
+}): Promise<void> => {
+  obj.a?.b?.c();
+};
+
+void doSomething();
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const doSomething = async (obj: {
+  a?: { b?: { c: () => Promise<void> } };
+}): Promise<void> => {
+  void obj.a?.b?.c();
+};
+
+void doSomething();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+const doSomething = async (obj: {
+  a?: { b?: { c: () => Promise<void> } };
+}): Promise<void> => {
+  await obj.a?.b?.c();
+};
+
+void doSomething();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const doSomething = async (obj: {
+  a?: { b: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  obj.a?.b.c?.();
+};
+
+void doSomething();
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const doSomething = async (obj: {
+  a?: { b: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  void obj.a?.b.c?.();
+};
+
+void doSomething();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+const doSomething = async (obj: {
+  a?: { b: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  await obj.a?.b.c?.();
+};
+
+void doSomething();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const doSomething = async (obj: {
+  a: { b: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  obj.a.b.c?.();
+};
+
+void doSomething();
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const doSomething = async (obj: {
+  a: { b: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  void obj.a.b.c?.();
+};
+
+void doSomething();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+const doSomething = async (obj: {
+  a: { b: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  await obj.a.b.c?.();
+};
+
+void doSomething();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const doSomething = async (obj: {
+  a?: () => { b?: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  obj.a?.().b?.c?.();
+};
+
+void doSomething();
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 5,
+          line: 5,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const doSomething = async (obj: {
+  a?: () => { b?: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  void obj.a?.().b?.c?.();
+};
+
+void doSomething();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+const doSomething = async (obj: {
+  a?: () => { b?: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  await obj.a?.().b?.c?.();
+};
+
+void doSomething();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const doSomething = async (obj?: {
+  a: { b: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  obj?.a.b.c?.();
+};
+
+void doSomething();
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const doSomething = async (obj?: {
+  a: { b: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  void obj?.a.b.c?.();
+};
+
+void doSomething();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+const doSomething = async (obj?: {
+  a: { b: { c?: () => Promise<void> } };
+}): Promise<void> => {
+  await obj?.a.b.c?.();
+};
+
+void doSomething();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const doSomething = async (callback?: () => Promise<void>): Promise<void> => {
+  callback?.();
+};
+
+void doSomething();
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const doSomething = async (callback?: () => Promise<void>): Promise<void> => {
+  void callback?.();
+};
+
+void doSomething();
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+const doSomething = async (callback?: () => Promise<void>): Promise<void> => {
+  await callback?.();
+};
+
+void doSomething();
       `,
             },
           ],
@@ -1053,432 +1369,19 @@ const doSomething = async (
   obj6?: { a: { b: { c?: () => Promise<void> } } },
   callback?: () => Promise<void>,
 ): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-      errors: [
-        {
-          column: 3,
-          endColumn: 20,
-          endLine: 11,
-          line: 11,
-          messageId: 'floatingVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  void obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
   await obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-          ],
-        },
-        {
-          column: 3,
-          endColumn: 18,
-          endLine: 12,
-          line: 12,
-          messageId: 'floatingVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  void obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
   await obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-          ],
-        },
-        {
-          column: 3,
-          endColumn: 19,
-          endLine: 13,
-          line: 13,
-          messageId: 'floatingVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  void obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
   await obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-          ],
-        },
-        {
-          column: 3,
-          endColumn: 18,
-          endLine: 14,
-          line: 14,
-          messageId: 'floatingVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  void obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
   await obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-          ],
-        },
-        {
-          column: 3,
-          endColumn: 23,
-          endLine: 15,
-          line: 15,
-          messageId: 'floatingVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  void obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
   await obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-          ],
-        },
-        {
-          column: 3,
-          endColumn: 19,
-          endLine: 16,
-          line: 16,
-          messageId: 'floatingVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  void obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
   await obj6?.a.b.c?.();
-
-  callback?.();
-};
-
-doSomething();
-      `,
-            },
-          ],
-        },
-        {
-          column: 3,
-          endColumn: 16,
-          endLine: 18,
-          line: 18,
-          messageId: 'floatingVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
-
-  void callback?.();
-};
-
-doSomething();
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
 
   await callback?.();
 };
 
 doSomething();
       `,
-            },
-          ],
-        },
+      errors: [
         {
           column: 1,
           endColumn: 15,
@@ -1498,14 +1401,14 @@ const doSomething = async (
   obj6?: { a: { b: { c?: () => Promise<void> } } },
   callback?: () => Promise<void>,
 ): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
+  await obj1.a?.b?.c?.();
+  await obj2.a?.b?.c();
+  await obj3.a?.b.c?.();
+  await obj4.a.b.c?.();
+  await obj5.a?.().b?.c?.();
+  await obj6?.a.b.c?.();
 
-  callback?.();
+  await callback?.();
 };
 
 void doSomething();
@@ -1523,14 +1426,14 @@ const doSomething = async (
   obj6?: { a: { b: { c?: () => Promise<void> } } },
   callback?: () => Promise<void>,
 ): Promise<void> => {
-  obj1.a?.b?.c?.();
-  obj2.a?.b?.c();
-  obj3.a?.b.c?.();
-  obj4.a.b.c?.();
-  obj5.a?.().b?.c?.();
-  obj6?.a.b.c?.();
+  await obj1.a?.b?.c?.();
+  await obj2.a?.b?.c();
+  await obj3.a?.b.c?.();
+  await obj4.a.b.c?.();
+  await obj5.a?.().b?.c?.();
+  await obj6?.a.b.c?.();
 
-  callback?.();
+  await callback?.();
 };
 
 await doSomething();
@@ -1673,9 +1576,6 @@ async function test() {
       code: `
 async function test() {
   Promise.reject(new Error('message'));
-  Promise.reject(new Error('message')).then(() => {});
-  Promise.reject(new Error('message')).catch();
-  Promise.reject(new Error('message')).finally();
 }
       `,
       errors: [
@@ -1691,9 +1591,6 @@ async function test() {
               output: `
 async function test() {
   void Promise.reject(new Error('message'));
-  Promise.reject(new Error('message')).then(() => {});
-  Promise.reject(new Error('message')).catch();
-  Promise.reject(new Error('message')).finally();
 }
       `,
             },
@@ -1702,29 +1599,32 @@ async function test() {
               output: `
 async function test() {
   await Promise.reject(new Error('message'));
-  Promise.reject(new Error('message')).then(() => {});
-  Promise.reject(new Error('message')).catch();
-  Promise.reject(new Error('message')).finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  Promise.reject(new Error('message')).then(() => {});
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 55,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  Promise.reject(new Error('message'));
   void Promise.reject(new Error('message')).then(() => {});
-  Promise.reject(new Error('message')).catch();
-  Promise.reject(new Error('message')).finally();
 }
       `,
             },
@@ -1732,30 +1632,33 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  Promise.reject(new Error('message'));
   await Promise.reject(new Error('message')).then(() => {});
-  Promise.reject(new Error('message')).catch();
-  Promise.reject(new Error('message')).finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  Promise.reject(new Error('message')).catch();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 48,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  Promise.reject(new Error('message'));
-  Promise.reject(new Error('message')).then(() => {});
   void Promise.reject(new Error('message')).catch();
-  Promise.reject(new Error('message')).finally();
 }
       `,
             },
@@ -1763,29 +1666,32 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  Promise.reject(new Error('message'));
-  Promise.reject(new Error('message')).then(() => {});
   await Promise.reject(new Error('message')).catch();
-  Promise.reject(new Error('message')).finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  Promise.reject(new Error('message')).finally();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 50,
-          endLine: 6,
-          line: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  Promise.reject(new Error('message'));
-  Promise.reject(new Error('message')).then(() => {});
-  Promise.reject(new Error('message')).catch();
   void Promise.reject(new Error('message')).finally();
 }
       `,
@@ -1794,9 +1700,6 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  Promise.reject(new Error('message'));
-  Promise.reject(new Error('message')).then(() => {});
-  Promise.reject(new Error('message')).catch();
   await Promise.reject(new Error('message')).finally();
 }
       `,
@@ -1809,8 +1712,6 @@ async function test() {
       code: `
 async function test() {
   (async () => true)();
-  (async () => true)().then(() => {});
-  (async () => true)().catch();
 }
       `,
       errors: [
@@ -1826,8 +1727,6 @@ async function test() {
               output: `
 async function test() {
   void (async () => true)();
-  (async () => true)().then(() => {});
-  (async () => true)().catch();
 }
       `,
             },
@@ -1836,27 +1735,32 @@ async function test() {
               output: `
 async function test() {
   await (async () => true)();
-  (async () => true)().then(() => {});
-  (async () => true)().catch();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  (async () => true)().then(() => {});
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 39,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  (async () => true)();
   void (async () => true)().then(() => {});
-  (async () => true)().catch();
 }
       `,
             },
@@ -1864,27 +1768,32 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  (async () => true)();
   await (async () => true)().then(() => {});
-  (async () => true)().catch();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  (async () => true)().catch();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 32,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  (async () => true)();
-  (async () => true)().then(() => {});
   void (async () => true)().catch();
 }
       `,
@@ -1893,8 +1802,6 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  (async () => true)();
-  (async () => true)().then(() => {});
   await (async () => true)().catch();
 }
       `,
@@ -1909,9 +1816,6 @@ async function test() {
   async function returnsPromise() {}
 
   returnsPromise();
-  returnsPromise().then(() => {});
-  returnsPromise().catch();
-  returnsPromise().finally();
 }
       `,
       errors: [
@@ -1929,9 +1833,6 @@ async function test() {
   async function returnsPromise() {}
 
   void returnsPromise();
-  returnsPromise().then(() => {});
-  returnsPromise().catch();
-  returnsPromise().finally();
 }
       `,
             },
@@ -1942,19 +1843,27 @@ async function test() {
   async function returnsPromise() {}
 
   await returnsPromise();
-  returnsPromise().then(() => {});
-  returnsPromise().catch();
-  returnsPromise().finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  async function returnsPromise() {}
+
+  returnsPromise().then(() => {});
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 35,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -1963,10 +1872,7 @@ async function test() {
 async function test() {
   async function returnsPromise() {}
 
-  returnsPromise();
   void returnsPromise().then(() => {});
-  returnsPromise().catch();
-  returnsPromise().finally();
 }
       `,
             },
@@ -1976,20 +1882,28 @@ async function test() {
 async function test() {
   async function returnsPromise() {}
 
-  returnsPromise();
   await returnsPromise().then(() => {});
-  returnsPromise().catch();
-  returnsPromise().finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  async function returnsPromise() {}
+
+  returnsPromise().catch();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 28,
-          endLine: 7,
-          line: 7,
+          endLine: 5,
+          line: 5,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -1998,10 +1912,7 @@ async function test() {
 async function test() {
   async function returnsPromise() {}
 
-  returnsPromise();
-  returnsPromise().then(() => {});
   void returnsPromise().catch();
-  returnsPromise().finally();
 }
       `,
             },
@@ -2011,20 +1922,28 @@ async function test() {
 async function test() {
   async function returnsPromise() {}
 
-  returnsPromise();
-  returnsPromise().then(() => {});
   await returnsPromise().catch();
-  returnsPromise().finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  async function returnsPromise() {}
+
+  returnsPromise().finally();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 30,
-          endLine: 8,
-          line: 8,
+          endLine: 5,
+          line: 5,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -2033,9 +1952,6 @@ async function test() {
 async function test() {
   async function returnsPromise() {}
 
-  returnsPromise();
-  returnsPromise().then(() => {});
-  returnsPromise().catch();
   void returnsPromise().finally();
 }
       `,
@@ -2046,9 +1962,6 @@ async function test() {
 async function test() {
   async function returnsPromise() {}
 
-  returnsPromise();
-  returnsPromise().then(() => {});
-  returnsPromise().catch();
   await returnsPromise().finally();
 }
       `,
@@ -2061,7 +1974,6 @@ async function test() {
       code: `
 async function test() {
   Math.random() > 0.5 ? Promise.resolve() : null;
-  Math.random() > 0.5 ? null : Promise.resolve();
 }
       `,
       errors: [
@@ -2077,7 +1989,6 @@ async function test() {
               output: `
 async function test() {
   void (Math.random() > 0.5 ? Promise.resolve() : null);
-  Math.random() > 0.5 ? null : Promise.resolve();
 }
       `,
             },
@@ -2086,24 +1997,31 @@ async function test() {
               output: `
 async function test() {
   await (Math.random() > 0.5 ? Promise.resolve() : null);
-  Math.random() > 0.5 ? null : Promise.resolve();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  Math.random() > 0.5 ? null : Promise.resolve();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 50,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  Math.random() > 0.5 ? Promise.resolve() : null;
   void (Math.random() > 0.5 ? null : Promise.resolve());
 }
       `,
@@ -2112,7 +2030,6 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  Math.random() > 0.5 ? Promise.resolve() : null;
   await (Math.random() > 0.5 ? null : Promise.resolve());
 }
       `,
@@ -2125,8 +2042,6 @@ async function test() {
       code: `
 async function test() {
   (Promise.resolve(), 123);
-  (123, Promise.resolve());
-  (123, Promise.resolve(), 123);
 }
       `,
       errors: [
@@ -2142,8 +2057,6 @@ async function test() {
               output: `
 async function test() {
   void (Promise.resolve(), 123);
-  (123, Promise.resolve());
-  (123, Promise.resolve(), 123);
 }
       `,
             },
@@ -2152,27 +2065,32 @@ async function test() {
               output: `
 async function test() {
   await (Promise.resolve(), 123);
-  (123, Promise.resolve());
-  (123, Promise.resolve(), 123);
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  (123, Promise.resolve());
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 28,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  (Promise.resolve(), 123);
   void (123, Promise.resolve());
-  (123, Promise.resolve(), 123);
 }
       `,
             },
@@ -2180,27 +2098,32 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  (Promise.resolve(), 123);
   await (123, Promise.resolve());
-  (123, Promise.resolve(), 123);
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  (123, Promise.resolve(), 123);
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 33,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
 async function test() {
-  (Promise.resolve(), 123);
-  (123, Promise.resolve());
   void (123, Promise.resolve(), 123);
 }
       `,
@@ -2209,8 +2132,6 @@ async function test() {
               messageId: 'floatingFixAwait',
               output: `
 async function test() {
-  (Promise.resolve(), 123);
-  (123, Promise.resolve());
   await (123, Promise.resolve(), 123);
 }
       `,
@@ -2469,9 +2390,6 @@ declare const promiseValue: Promise<number>;
 
 async function test() {
   promiseValue;
-  promiseValue.then(() => {});
-  promiseValue.catch();
-  promiseValue.finally();
 }
       `,
       errors: [
@@ -2489,9 +2407,6 @@ declare const promiseValue: Promise<number>;
 
 async function test() {
   void promiseValue;
-  promiseValue.then(() => {});
-  promiseValue.catch();
-  promiseValue.finally();
 }
       `,
             },
@@ -2502,19 +2417,27 @@ declare const promiseValue: Promise<number>;
 
 async function test() {
   await promiseValue;
-  promiseValue.then(() => {});
-  promiseValue.catch();
-  promiseValue.finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+declare const promiseValue: Promise<number>;
+
+async function test() {
+  promiseValue.then(() => {});
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 31,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -2523,10 +2446,7 @@ async function test() {
 declare const promiseValue: Promise<number>;
 
 async function test() {
-  promiseValue;
   void promiseValue.then(() => {});
-  promiseValue.catch();
-  promiseValue.finally();
 }
       `,
             },
@@ -2536,20 +2456,28 @@ async function test() {
 declare const promiseValue: Promise<number>;
 
 async function test() {
-  promiseValue;
   await promiseValue.then(() => {});
-  promiseValue.catch();
-  promiseValue.finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+declare const promiseValue: Promise<number>;
+
+async function test() {
+  promiseValue.catch();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 24,
-          endLine: 7,
-          line: 7,
+          endLine: 5,
+          line: 5,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -2558,10 +2486,7 @@ async function test() {
 declare const promiseValue: Promise<number>;
 
 async function test() {
-  promiseValue;
-  promiseValue.then(() => {});
   void promiseValue.catch();
-  promiseValue.finally();
 }
       `,
             },
@@ -2571,20 +2496,28 @@ async function test() {
 declare const promiseValue: Promise<number>;
 
 async function test() {
-  promiseValue;
-  promiseValue.then(() => {});
   await promiseValue.catch();
-  promiseValue.finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+declare const promiseValue: Promise<number>;
+
+async function test() {
+  promiseValue.finally();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 26,
-          endLine: 8,
-          line: 8,
+          endLine: 5,
+          line: 5,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -2593,9 +2526,6 @@ async function test() {
 declare const promiseValue: Promise<number>;
 
 async function test() {
-  promiseValue;
-  promiseValue.then(() => {});
-  promiseValue.catch();
   void promiseValue.finally();
 }
       `,
@@ -2606,9 +2536,6 @@ async function test() {
 declare const promiseValue: Promise<number>;
 
 async function test() {
-  promiseValue;
-  promiseValue.then(() => {});
-  promiseValue.catch();
   await promiseValue.finally();
 }
       `,
@@ -2663,8 +2590,6 @@ declare const promiseIntersection: Promise<number> & number;
 
 async function test() {
   promiseIntersection;
-  promiseIntersection.then(() => {});
-  promiseIntersection.catch();
 }
       `,
       errors: [
@@ -2682,8 +2607,6 @@ declare const promiseIntersection: Promise<number> & number;
 
 async function test() {
   void promiseIntersection;
-  promiseIntersection.then(() => {});
-  promiseIntersection.catch();
 }
       `,
             },
@@ -2694,18 +2617,27 @@ declare const promiseIntersection: Promise<number> & number;
 
 async function test() {
   await promiseIntersection;
-  promiseIntersection.then(() => {});
-  promiseIntersection.catch();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+declare const promiseIntersection: Promise<number> & number;
+
+async function test() {
+  promiseIntersection.then(() => {});
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 38,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -2714,9 +2646,7 @@ async function test() {
 declare const promiseIntersection: Promise<number> & number;
 
 async function test() {
-  promiseIntersection;
   void promiseIntersection.then(() => {});
-  promiseIntersection.catch();
 }
       `,
             },
@@ -2726,19 +2656,28 @@ async function test() {
 declare const promiseIntersection: Promise<number> & number;
 
 async function test() {
-  promiseIntersection;
   await promiseIntersection.then(() => {});
-  promiseIntersection.catch();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+declare const promiseIntersection: Promise<number> & number;
+
+async function test() {
+  promiseIntersection.catch();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 31,
-          endLine: 7,
-          line: 7,
+          endLine: 5,
+          line: 5,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -2747,8 +2686,6 @@ async function test() {
 declare const promiseIntersection: Promise<number> & number;
 
 async function test() {
-  promiseIntersection;
-  promiseIntersection.then(() => {});
   void promiseIntersection.catch();
 }
       `,
@@ -2759,8 +2696,6 @@ async function test() {
 declare const promiseIntersection: Promise<number> & number;
 
 async function test() {
-  promiseIntersection;
-  promiseIntersection.then(() => {});
   await promiseIntersection.catch();
 }
       `,
@@ -2776,9 +2711,6 @@ async function test() {
   const canThen: CanThen = Foo.resolve(2);
 
   canThen;
-  canThen.then(() => {});
-  canThen.catch();
-  canThen.finally();
 }
       `,
       errors: [
@@ -2797,9 +2729,6 @@ async function test() {
   const canThen: CanThen = Foo.resolve(2);
 
   void canThen;
-  canThen.then(() => {});
-  canThen.catch();
-  canThen.finally();
 }
       `,
             },
@@ -2811,19 +2740,28 @@ async function test() {
   const canThen: CanThen = Foo.resolve(2);
 
   await canThen;
-  canThen.then(() => {});
-  canThen.catch();
-  canThen.finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  class CanThen extends Promise<number> {}
+  const canThen: CanThen = Foo.resolve(2);
+
+  canThen.then(() => {});
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 26,
-          endLine: 7,
-          line: 7,
+          endLine: 6,
+          line: 6,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -2833,10 +2771,7 @@ async function test() {
   class CanThen extends Promise<number> {}
   const canThen: CanThen = Foo.resolve(2);
 
-  canThen;
   void canThen.then(() => {});
-  canThen.catch();
-  canThen.finally();
 }
       `,
             },
@@ -2847,20 +2782,29 @@ async function test() {
   class CanThen extends Promise<number> {}
   const canThen: CanThen = Foo.resolve(2);
 
-  canThen;
   await canThen.then(() => {});
-  canThen.catch();
-  canThen.finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  class CanThen extends Promise<number> {}
+  const canThen: CanThen = Foo.resolve(2);
+
+  canThen.catch();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 19,
-          endLine: 8,
-          line: 8,
+          endLine: 6,
+          line: 6,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -2870,10 +2814,7 @@ async function test() {
   class CanThen extends Promise<number> {}
   const canThen: CanThen = Foo.resolve(2);
 
-  canThen;
-  canThen.then(() => {});
   void canThen.catch();
-  canThen.finally();
 }
       `,
             },
@@ -2884,20 +2825,29 @@ async function test() {
   class CanThen extends Promise<number> {}
   const canThen: CanThen = Foo.resolve(2);
 
-  canThen;
-  canThen.then(() => {});
   await canThen.catch();
-  canThen.finally();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  class CanThen extends Promise<number> {}
+  const canThen: CanThen = Foo.resolve(2);
+
+  canThen.finally();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 21,
-          endLine: 9,
-          line: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -2907,9 +2857,6 @@ async function test() {
   class CanThen extends Promise<number> {}
   const canThen: CanThen = Foo.resolve(2);
 
-  canThen;
-  canThen.then(() => {});
-  canThen.catch();
   void canThen.finally();
 }
       `,
@@ -2921,9 +2868,6 @@ async function test() {
   class CanThen extends Promise<number> {}
   const canThen: CanThen = Foo.resolve(2);
 
-  canThen;
-  canThen.then(() => {});
-  canThen.catch();
   await canThen.finally();
 }
       `,
@@ -2943,7 +2887,6 @@ async function test() {
   const thenable = new CatchableThenable();
 
   thenable;
-  thenable.then(() => {});
 }
       `,
       errors: [
@@ -2966,7 +2909,6 @@ async function test() {
   const thenable = new CatchableThenable();
 
   void thenable;
-  thenable.then(() => {});
 }
       `,
             },
@@ -2982,17 +2924,33 @@ async function test() {
   const thenable = new CatchableThenable();
 
   await thenable;
-  thenable.then(() => {});
 }
       `,
             },
           ],
         },
+      ],
+      options: [{ checkThenables: true }],
+    },
+    {
+      code: `
+async function test() {
+  class CatchableThenable {
+    then(callback: () => void, callback: () => void): CatchableThenable {
+      return new CatchableThenable();
+    }
+  }
+  const thenable = new CatchableThenable();
+
+  thenable.then(() => {});
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 27,
-          endLine: 11,
-          line: 11,
+          endLine: 10,
+          line: 10,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -3006,7 +2964,6 @@ async function test() {
   }
   const thenable = new CatchableThenable();
 
-  thenable;
   void thenable.then(() => {});
 }
       `,
@@ -3022,7 +2979,6 @@ async function test() {
   }
   const thenable = new CatchableThenable();
 
-  thenable;
   await thenable.then(() => {});
 }
       `,
@@ -3051,8 +3007,6 @@ async function test() {
   const promise = new PromisePolyfill(() => {});
 
   promise;
-  promise.then(() => {});
-  promise.catch();
 }
       `,
       errors: [
@@ -3083,8 +3037,6 @@ async function test() {
   const promise = new PromisePolyfill(() => {});
 
   void promise;
-  promise.then(() => {});
-  promise.catch();
 }
       `,
             },
@@ -3108,18 +3060,40 @@ async function test() {
   const promise = new PromisePolyfill(() => {});
 
   await promise;
-  promise.then(() => {});
-  promise.catch();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/promise-polyfill/index.d.ts
+// Type definitions for promise-polyfill 6.0
+// Project: https://github.com/taylorhakes/promise-polyfill
+// Definitions by: Steve Jenkins <https://github.com/skysteve>
+//                 Daniel Cassidy <https://github.com/djcsdy>
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+
+interface PromisePolyfillConstructor extends PromiseConstructor {
+  _immediateFn?: (handler: (() => void) | string) => void;
+}
+
+declare const PromisePolyfill: PromisePolyfillConstructor;
+
+async function test() {
+  const promise = new PromisePolyfill(() => {});
+
+  promise.then(() => {});
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 26,
-          endLine: 19,
-          line: 19,
+          endLine: 18,
+          line: 18,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -3141,9 +3115,7 @@ declare const PromisePolyfill: PromisePolyfillConstructor;
 async function test() {
   const promise = new PromisePolyfill(() => {});
 
-  promise;
   void promise.then(() => {});
-  promise.catch();
 }
       `,
             },
@@ -3166,19 +3138,41 @@ declare const PromisePolyfill: PromisePolyfillConstructor;
 async function test() {
   const promise = new PromisePolyfill(() => {});
 
-  promise;
   await promise.then(() => {});
-  promise.catch();
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/promise-polyfill/index.d.ts
+// Type definitions for promise-polyfill 6.0
+// Project: https://github.com/taylorhakes/promise-polyfill
+// Definitions by: Steve Jenkins <https://github.com/skysteve>
+//                 Daniel Cassidy <https://github.com/djcsdy>
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+
+interface PromisePolyfillConstructor extends PromiseConstructor {
+  _immediateFn?: (handler: (() => void) | string) => void;
+}
+
+declare const PromisePolyfill: PromisePolyfillConstructor;
+
+async function test() {
+  const promise = new PromisePolyfill(() => {});
+
+  promise.catch();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 19,
-          endLine: 20,
-          line: 20,
+          endLine: 18,
+          line: 18,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -3200,8 +3194,6 @@ declare const PromisePolyfill: PromisePolyfillConstructor;
 async function test() {
   const promise = new PromisePolyfill(() => {});
 
-  promise;
-  promise.then(() => {});
   void promise.catch();
 }
       `,
@@ -3225,8 +3217,6 @@ declare const PromisePolyfill: PromisePolyfillConstructor;
 async function test() {
   const promise = new PromisePolyfill(() => {});
 
-  promise;
-  promise.then(() => {});
   await promise.catch();
 }
       `,
@@ -3476,9 +3466,6 @@ await (async function () {
 declare const promiseIntersection: Promise<number> & number;
 (async function () {
   promiseIntersection;
-  promiseIntersection.then(() => {});
-  promiseIntersection.catch();
-  promiseIntersection.finally();
 })();
       `,
       errors: [
@@ -3495,9 +3482,6 @@ declare const promiseIntersection: Promise<number> & number;
 declare const promiseIntersection: Promise<number> & number;
 (async function () {
   void promiseIntersection;
-  promiseIntersection.then(() => {});
-  promiseIntersection.catch();
-  promiseIntersection.finally();
 })();
       `,
             },
@@ -3507,19 +3491,27 @@ declare const promiseIntersection: Promise<number> & number;
 declare const promiseIntersection: Promise<number> & number;
 (async function () {
   await promiseIntersection;
-  promiseIntersection.then(() => {});
-  promiseIntersection.catch();
-  promiseIntersection.finally();
 })();
       `,
             },
           ],
         },
+      ],
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection.then(() => {});
+})();
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 38,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -3527,10 +3519,7 @@ declare const promiseIntersection: Promise<number> & number;
               output: `
 declare const promiseIntersection: Promise<number> & number;
 (async function () {
-  promiseIntersection;
   void promiseIntersection.then(() => {});
-  promiseIntersection.catch();
-  promiseIntersection.finally();
 })();
       `,
             },
@@ -3539,20 +3528,28 @@ declare const promiseIntersection: Promise<number> & number;
               output: `
 declare const promiseIntersection: Promise<number> & number;
 (async function () {
-  promiseIntersection;
   await promiseIntersection.then(() => {});
-  promiseIntersection.catch();
-  promiseIntersection.finally();
 })();
       `,
             },
           ],
         },
+      ],
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection.catch();
+})();
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 31,
-          endLine: 6,
-          line: 6,
+          endLine: 4,
+          line: 4,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -3560,10 +3557,7 @@ declare const promiseIntersection: Promise<number> & number;
               output: `
 declare const promiseIntersection: Promise<number> & number;
 (async function () {
-  promiseIntersection;
-  promiseIntersection.then(() => {});
   void promiseIntersection.catch();
-  promiseIntersection.finally();
 })();
       `,
             },
@@ -3572,20 +3566,28 @@ declare const promiseIntersection: Promise<number> & number;
               output: `
 declare const promiseIntersection: Promise<number> & number;
 (async function () {
-  promiseIntersection;
-  promiseIntersection.then(() => {});
   await promiseIntersection.catch();
-  promiseIntersection.finally();
 })();
       `,
             },
           ],
         },
+      ],
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection.finally();
+})();
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 33,
-          endLine: 7,
-          line: 7,
+          endLine: 4,
+          line: 4,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -3593,9 +3595,6 @@ declare const promiseIntersection: Promise<number> & number;
               output: `
 declare const promiseIntersection: Promise<number> & number;
 (async function () {
-  promiseIntersection;
-  promiseIntersection.then(() => {});
-  promiseIntersection.catch();
   void promiseIntersection.finally();
 })();
       `,
@@ -3605,9 +3604,6 @@ declare const promiseIntersection: Promise<number> & number;
               output: `
 declare const promiseIntersection: Promise<number> & number;
 (async function () {
-  promiseIntersection;
-  promiseIntersection.then(() => {});
-  promiseIntersection.catch();
   await promiseIntersection.finally();
 })();
       `,
@@ -3960,24 +3956,99 @@ async function foo() {
     },
     {
       code: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
 Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
       errors: [
         {
           column: 1,
           endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.resolve().then(() => {}, undefined);
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.resolve().then(() => {}, undefined);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.resolve().then(() => {}, null);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.resolve().then(() => {}, null);
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.resolve().then(() => {}, null);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Promise.resolve().then(() => {}, 3);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.resolve().then(() => {}, 3);
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.resolve().then(() => {}, 3);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const maybeCallable: string | (() => void);
+declare const definitelyCallable: () => void;
+Promise.resolve().then(() => {}, maybeCallable);
+Promise.resolve().then(() => {}, definitelyCallable);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 49,
           endLine: 4,
           line: 4,
           messageId: 'floatingUselessRejectionHandlerVoid',
@@ -3987,152 +4058,8 @@ Promise.resolve().catch(definitelyCallable);
               output: `
 declare const maybeCallable: string | (() => void);
 declare const definitelyCallable: () => void;
-void Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-await Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
-      `,
-            },
-          ],
-        },
-        {
-          column: 1,
-          endColumn: 40,
-          endLine: 5,
-          line: 5,
-          messageId: 'floatingUselessRejectionHandlerVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-void Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-await Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
-      `,
-            },
-          ],
-        },
-        {
-          column: 1,
-          endColumn: 37,
-          endLine: 6,
-          line: 6,
-          messageId: 'floatingUselessRejectionHandlerVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-void Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
-      `,
-            },
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-await Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
-      `,
-            },
-          ],
-        },
-        {
-          column: 1,
-          endColumn: 49,
-          endLine: 7,
-          line: 7,
-          messageId: 'floatingUselessRejectionHandlerVoid',
-          suggestions: [
-            {
-              messageId: 'floatingFixVoid',
-              output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
 void Promise.resolve().then(() => {}, maybeCallable);
 Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
             {
@@ -4140,161 +4067,111 @@ Promise.resolve().catch(definitelyCallable);
               output: `
 declare const maybeCallable: string | (() => void);
 declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
 await Promise.resolve().then(() => {}, maybeCallable);
 Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+Promise.resolve().catch(undefined);
+      `,
+      errors: [
         {
           column: 1,
           endColumn: 36,
-          endLine: 10,
-          line: 10,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
 void Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
 await Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+Promise.resolve().catch(null);
+      `,
+      errors: [
         {
           column: 1,
           endColumn: 31,
-          endLine: 11,
-          line: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
 void Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
 await Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+Promise.resolve().catch(3);
+      `,
+      errors: [
         {
           column: 1,
           endColumn: 28,
-          endLine: 12,
-          line: 12,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
               output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
 void Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
             {
               messageId: 'floatingFixAwait',
               output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
 await Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+declare const maybeCallable: string | (() => void);
+declare const definitelyCallable: () => void;
+Promise.resolve().catch(maybeCallable);
+Promise.resolve().catch(definitelyCallable);
+      `,
+      errors: [
         {
           column: 1,
           endColumn: 40,
-          endLine: 13,
-          line: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
             {
@@ -4302,15 +4179,6 @@ Promise.resolve().catch(definitelyCallable);
               output: `
 declare const maybeCallable: string | (() => void);
 declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
 void Promise.resolve().catch(maybeCallable);
 Promise.resolve().catch(definitelyCallable);
       `,
@@ -4320,15 +4188,6 @@ Promise.resolve().catch(definitelyCallable);
               output: `
 declare const maybeCallable: string | (() => void);
 declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
 await Promise.resolve().catch(maybeCallable);
 Promise.resolve().catch(definitelyCallable);
       `,
@@ -4415,24 +4274,84 @@ await Promise.resolve().then(() => {}, maybeCallable);
     },
     {
       code: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
 Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
       errors: [
         {
           column: 1,
           endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingUselessRejectionHandler',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.resolve().then(() => {}, undefined);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+Promise.resolve().then(() => {}, null);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingUselessRejectionHandler',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.resolve().then(() => {}, null);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+Promise.resolve().then(() => {}, 3);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 37,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingUselessRejectionHandler',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.resolve().then(() => {}, 3);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+declare const maybeCallable: string | (() => void);
+declare const definitelyCallable: () => void;
+Promise.resolve().then(() => {}, maybeCallable);
+Promise.resolve().then(() => {}, definitelyCallable);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 49,
           endLine: 4,
           line: 4,
           messageId: 'floatingUselessRejectionHandler',
@@ -4442,188 +4361,97 @@ Promise.resolve().catch(definitelyCallable);
               output: `
 declare const maybeCallable: string | (() => void);
 declare const definitelyCallable: () => void;
-await Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
-      `,
-            },
-          ],
-        },
-        {
-          column: 1,
-          endColumn: 40,
-          endLine: 5,
-          line: 5,
-          messageId: 'floatingUselessRejectionHandler',
-          suggestions: [
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-await Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
-      `,
-            },
-          ],
-        },
-        {
-          column: 1,
-          endColumn: 37,
-          endLine: 6,
-          line: 6,
-          messageId: 'floatingUselessRejectionHandler',
-          suggestions: [
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-await Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
-      `,
-            },
-          ],
-        },
-        {
-          column: 1,
-          endColumn: 49,
-          endLine: 7,
-          line: 7,
-          messageId: 'floatingUselessRejectionHandler',
-          suggestions: [
-            {
-              messageId: 'floatingFixAwait',
-              output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
 await Promise.resolve().then(() => {}, maybeCallable);
 Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
           ],
         },
+      ],
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+Promise.resolve().catch(undefined);
+      `,
+      errors: [
         {
           column: 1,
           endColumn: 36,
-          endLine: 10,
-          line: 10,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
             {
               messageId: 'floatingFixAwait',
               output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
 await Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
           ],
         },
+      ],
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+Promise.resolve().catch(null);
+      `,
+      errors: [
         {
           column: 1,
           endColumn: 31,
-          endLine: 11,
-          line: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
             {
               messageId: 'floatingFixAwait',
               output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
 await Promise.resolve().catch(null);
-Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
           ],
         },
+      ],
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+Promise.resolve().catch(3);
+      `,
+      errors: [
         {
           column: 1,
           endColumn: 28,
-          endLine: 12,
-          line: 12,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
             {
               messageId: 'floatingFixAwait',
               output: `
-declare const maybeCallable: string | (() => void);
-declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
 await Promise.resolve().catch(3);
-Promise.resolve().catch(maybeCallable);
-Promise.resolve().catch(definitelyCallable);
       `,
             },
           ],
         },
+      ],
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+declare const maybeCallable: string | (() => void);
+declare const definitelyCallable: () => void;
+Promise.resolve().catch(maybeCallable);
+Promise.resolve().catch(definitelyCallable);
+      `,
+      errors: [
         {
           column: 1,
           endColumn: 40,
-          endLine: 13,
-          line: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
             {
@@ -4631,15 +4459,6 @@ Promise.resolve().catch(definitelyCallable);
               output: `
 declare const maybeCallable: string | (() => void);
 declare const definitelyCallable: () => void;
-Promise.resolve().then(() => {}, undefined);
-Promise.resolve().then(() => {}, null);
-Promise.resolve().then(() => {}, 3);
-Promise.resolve().then(() => {}, maybeCallable);
-Promise.resolve().then(() => {}, definitelyCallable);
-
-Promise.resolve().catch(undefined);
-Promise.resolve().catch(null);
-Promise.resolve().catch(3);
 await Promise.resolve().catch(maybeCallable);
 Promise.resolve().catch(definitelyCallable);
       `,

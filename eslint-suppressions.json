@@ -19,21 +19,6 @@
       "count": 77
     }
   },
-  "packages/eslint-plugin/tests/rules/no-floating-promises.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 49
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-implied-eval.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 54
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-inferrable-types.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-invalid-this.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 43
