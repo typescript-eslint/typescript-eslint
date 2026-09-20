@@ -210,11 +210,9 @@ export default createRule<Options, MessageIds>({
       return {
         containsNonLiteralType,
         defaultCase: defaultCase ?? getCommentDefaultCase(node),
-        missingLiteralBranchTypes: missingLiteralBranchTypes.sort((a, b) => {
-          const keyA = typeToString(a);
-          const keyB = typeToString(b);
-          return keyA < keyB ? -1 : keyA > keyB ? 1 : 0;
-        }),
+        missingLiteralBranchTypes: missingLiteralBranchTypes.sort((a, b) =>
+          typeToString(a).localeCompare(typeToString(b)),
+        ),
         symbolName,
       };
     }

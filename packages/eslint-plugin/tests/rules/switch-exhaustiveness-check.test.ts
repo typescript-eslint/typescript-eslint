@@ -3221,7 +3221,7 @@ switch (value) {
       errors: [
         {
           column: 9,
-          data: { missingBranches: '"B" | "a" | "c" | null | undefined' },
+          data: { missingBranches: '"a" | "B" | "c" | null | undefined' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -3232,8 +3232,8 @@ switch (value) {
               output: `
 declare const value: 'c' | 'a' | 'B' | null | undefined;
 switch (value) {
-case "B": { throw new Error('Not implemented yet: "B" case') }
 case "a": { throw new Error('Not implemented yet: "a" case') }
+case "B": { throw new Error('Not implemented yet: "B" case') }
 case "c": { throw new Error('Not implemented yet: "c" case') }
 case null: { throw new Error('Not implemented yet: null case') }
 case undefined: { throw new Error('Not implemented yet: undefined case') }
