@@ -1100,7 +1100,7 @@ describe('RuleTester - AssertionOptions', () => {
   > = {
     create(context) {
       return {
-        'Identifier[name=bothData]'(node): void {
+        'Identifier[name=bothData]'(node: TSESTree.Identifier): void {
           context.report({
             data: { bar: 'John', foo: 'Jane' },
             messageId: 'bothData',
@@ -1116,7 +1116,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
           });
         },
-        'Identifier[name=errorData]'(node): void {
+        'Identifier[name=errorData]'(node: TSESTree.Identifier): void {
           context.report({
             data: { bar: 'Jane', foo: 'John' },
             messageId: 'errorData',
@@ -1131,14 +1131,14 @@ describe('RuleTester - AssertionOptions', () => {
             ],
           });
         },
-        'Identifier[name=noEnd]'(node): void {
+        'Identifier[name=noEnd]'(node: TSESTree.Identifier): void {
           context.report({
             loc: { column: 0, line: 1 },
             messageId: 'noEnd',
             node,
           });
         },
-        'Identifier[name=suggestionData]'(node): void {
+        'Identifier[name=suggestionData]'(node: TSESTree.Identifier): void {
           context.report({
             messageId: 'suggestionData',
             node,
@@ -1153,7 +1153,7 @@ describe('RuleTester - AssertionOptions', () => {
             ],
           });
         },
-        'Identifier[name=withEnd]'(node): void {
+        'Identifier[name=withEnd]'(node: TSESTree.Identifier): void {
           context.report({
             loc: {
               end: { column: 1, line: 2 },
@@ -2172,7 +2172,7 @@ describe('RuleTester - hooks', () => {
   const noFooRule: RuleModule<'error'> = {
     create(context) {
       return {
-        'Identifier[name=foo]'(node): void {
+        'Identifier[name=foo]'(node: TSESTree.Identifier): void {
           context.report({
             messageId: 'error',
             node,
@@ -2395,7 +2395,7 @@ describe('RuleTester - multipass fixer', () => {
     const rule: RuleModule<'error'> = {
       create(context) {
         return {
-          'Identifier[name=foo]'(node): void {
+          'Identifier[name=foo]'(node: TSESTree.Identifier): void {
             context.report({
               messageId: 'error',
               node,
@@ -2478,7 +2478,7 @@ describe('RuleTester - multipass fixer', () => {
     const rule: RuleModule<'error'> = {
       create(context) {
         return {
-          'Identifier[name=foo]'(node): void {
+          'Identifier[name=foo]'(node: TSESTree.Identifier): void {
             context.report({
               fix: fixer => fixer.replaceText(node, 'bar'),
               messageId: 'error',
@@ -2593,14 +2593,14 @@ describe('RuleTester - multipass fixer', () => {
     const rule: RuleModule<'error'> = {
       create(context) {
         return {
-          'Identifier[name=bar]'(node): void {
+          'Identifier[name=bar]'(node: TSESTree.Identifier): void {
             context.report({
               fix: fixer => fixer.replaceText(node, 'baz'),
               messageId: 'error',
               node,
             });
           },
-          'Identifier[name=foo]'(node): void {
+          'Identifier[name=foo]'(node: TSESTree.Identifier): void {
             context.report({
               fix: fixer => fixer.replaceText(node, 'bar'),
               messageId: 'error',

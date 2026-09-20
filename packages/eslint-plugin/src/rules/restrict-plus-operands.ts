@@ -253,7 +253,9 @@ export default createRule<Options, MessageIds>({
     return {
       "BinaryExpression[operator='+']": checkPlusOperands,
       ...(!skipCompoundAssignments && {
-        "AssignmentExpression[operator='+=']"(node): void {
+        "AssignmentExpression[operator='+=']"(
+          node: TSESTree.AssignmentExpression,
+        ): void {
           checkPlusOperands(node);
         },
       }),
