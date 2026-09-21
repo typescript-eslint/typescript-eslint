@@ -422,8 +422,7 @@ a
 getResource()
   .then(function () {})
   ['catch'](function () {})
-  .then(function () {})
-  ['catch'](function () {});
+  .then(function () {});
       `,
       errors: [
         {
@@ -434,6 +433,23 @@ getResource()
           line: 4,
           messageId: 'useDot',
         },
+      ],
+      output: `
+getResource()
+  .then(function () {})
+  .catch(function () {})
+  .then(function () {});
+      `,
+    },
+    {
+      code: `
+getResource()
+  .then(function () {})
+  .catch(function () {})
+  .then(function () {})
+  ['catch'](function () {});
+      `,
+      errors: [
         {
           column: 4,
           data: { key: '"catch"' },

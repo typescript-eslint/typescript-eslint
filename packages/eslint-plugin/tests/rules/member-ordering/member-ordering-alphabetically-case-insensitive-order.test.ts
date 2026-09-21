@@ -15,7 +15,6 @@ ruleTester.run('member-ordering-alphabetically-case-insensitive-order', rule, {
 interface Foo {
   c: string;
   B: string;
-  a: string;
 }
       `,
       errors: [
@@ -30,6 +29,24 @@ interface Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  B: string;
+  a: string;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -37,8 +54,8 @@ interface Foo {
             member: 'a',
           },
           endColumn: 13,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -175,6 +192,13 @@ const foo = class Foo {
         },
       ],
     },
+
+    // The following cases are regression tests for
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8100:
+    // alphabetical order must be reported for every member group even when
+    // the group order is incorrect, so they inherently assert multiple errors.
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+
     // default option + interface + wrong order within group and wrong group order + alphabetically
     {
       code: `
@@ -440,6 +464,7 @@ const foo = class Foo {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
   ],
   valid: [
     // default option + interface + lower/upper case

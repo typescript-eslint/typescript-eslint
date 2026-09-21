@@ -1246,10 +1246,7 @@ declare const disposable: Disposable;
 declare const asyncDisposable: AsyncDisposable;
 async function foo() {
   await using a = disposable,
-    b = asyncDisposable,
-    c = disposable,
-    d = asyncDisposable,
-    e = disposable;
+    b = asyncDisposable;
 }
       `,
       errors: [
@@ -1260,18 +1257,44 @@ async function foo() {
           line: 5,
           messageId: 'awaitUsingOfNonAsyncDisposable',
         },
+      ],
+    },
+    {
+      code: `
+declare const disposable: Disposable;
+declare const asyncDisposable: AsyncDisposable;
+async function foo() {
+  await using a = asyncDisposable,
+    b = disposable,
+    c = asyncDisposable;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
+    {
+      code: `
+declare const disposable: Disposable;
+declare const asyncDisposable: AsyncDisposable;
+async function foo() {
+  await using a = asyncDisposable,
+    b = asyncDisposable,
+    c = disposable;
+}
+      `,
+      errors: [
         {
           column: 9,
           endColumn: 19,
           endLine: 7,
           line: 7,
-          messageId: 'awaitUsingOfNonAsyncDisposable',
-        },
-        {
-          column: 9,
-          endColumn: 19,
-          endLine: 9,
-          line: 9,
           messageId: 'awaitUsingOfNonAsyncDisposable',
         },
       ],

@@ -400,8 +400,7 @@ declare namespace myLib1 {
     {
       code: `
 var foo,
-  bar = false,
-  baz;
+  bar = false;
       `,
       errors: [
         {
@@ -412,12 +411,21 @@ var foo,
           line: 2,
           messageId: 'initialized',
         },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+var bar = false,
+  baz;
+      `,
+      errors: [
         {
           column: 3,
           data: { idName: 'baz' },
           endColumn: 6,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'initialized',
         },
       ],
@@ -503,7 +511,6 @@ function foo() {
 function foo() {
   let a;
   const b = false;
-  var c;
 }
       `,
       errors: [
@@ -515,12 +522,23 @@ function foo() {
           line: 3,
           messageId: 'initialized',
         },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+function foo() {
+  const b = false;
+  var c;
+}
+      `,
+      errors: [
         {
           column: 7,
           data: { idName: 'c' },
           endColumn: 8,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'initialized',
         },
       ],
@@ -557,8 +575,7 @@ function foo() {
     {
       code: `
 var foo,
-  bar = 5,
-  baz = 3;
+  bar = 5;
       `,
       errors: [
         {
@@ -569,6 +586,16 @@ var foo,
           line: 3,
           messageId: 'notInitialized',
         },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+var foo,
+  bar,
+  baz = 3;
+      `,
+      errors: [
         {
           column: 3,
           data: { idName: 'baz' },
@@ -825,12 +852,6 @@ namespace myLib {
       code: `
 namespace myLib1 {
   const foo: number;
-  namespace myLib2 {
-    let bar: string;
-    namespace myLib3 {
-      let baz: object;
-    }
-  }
 }
       `,
       errors: [
@@ -842,20 +863,46 @@ namespace myLib1 {
           line: 3,
           messageId: 'initialized',
         },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+namespace myLib1 {
+  namespace myLib2 {
+    let bar: string;
+  }
+}
+      `,
+      errors: [
         {
           column: 9,
           data: { idName: 'bar' },
           endColumn: 12,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'initialized',
         },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+namespace myLib1 {
+  namespace myLib2 {
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      errors: [
         {
           column: 11,
           data: { idName: 'baz' },
           endColumn: 14,
-          endLine: 7,
-          line: 7,
+          endLine: 5,
+          line: 5,
           messageId: 'initialized',
         },
       ],
