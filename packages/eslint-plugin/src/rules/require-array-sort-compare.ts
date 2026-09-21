@@ -61,7 +61,13 @@ export default createRule<Options, MessageIds>({
 
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
         const typeArgs = checker.getTypeArguments(type);
-        return typeArgs.every(arg => getTypeName(checker, arg) === 'string');
+        return typeArgs.every(
+          arg =>
+            getTypeName(
+              checker,
+              checker.getBaseConstraintOfType(arg) ?? arg,
+            ) === 'string',
+        );
       }
       return false;
     }
