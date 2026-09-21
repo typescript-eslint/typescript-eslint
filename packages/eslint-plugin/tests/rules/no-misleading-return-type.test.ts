@@ -266,6 +266,14 @@ class Provider {
 interface Provider {
   getValue(): string | null;
 }
+class ProviderImpl implements Provider {
+  accessor getValue = (): string | null => 'value';
+}
+    `,
+    `
+interface Provider {
+  getValue(): string | null;
+}
 const provider = {
   getValue(): string | null {
     return 'value';
@@ -559,6 +567,22 @@ function getValue(flag: boolean): string | void {
     `,
   ],
   invalid: [
+    {
+      code: `
+class Provider {
+  accessor getValue = (): string | null => 'value';
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryType',
+        },
+      ],
+    },
     {
       code: `
 class Provider {

@@ -386,7 +386,10 @@ export default createRule({
     }
 
     function hasBaseClassMember(
-      memberNode: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
+      memberNode:
+        | TSESTree.AccessorProperty
+        | TSESTree.MethodDefinition
+        | TSESTree.PropertyDefinition,
     ) {
       const memberTsNode = services.esTreeNodeToTSNodeMap.get(
         memberNode,
@@ -529,6 +532,7 @@ export default createRule({
       }
 
       if (
+        node.parent.type === AST_NODE_TYPES.AccessorProperty ||
         node.parent.type === AST_NODE_TYPES.MethodDefinition ||
         node.parent.type === AST_NODE_TYPES.PropertyDefinition
       ) {
