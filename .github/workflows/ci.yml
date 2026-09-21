@@ -29,7 +29,7 @@ defaults:
 #
 # Workflow for how the CI spawns jobs:
 # 1) Run the install and cache the install artefacts
-# 2) Run the build and cache the output
+# 2) Run the build to populate the Nx Cloud remote cache
 #    - In parallel we also any steps that don't need the build (like prettier)
 # 3) Run the steps that depend on the build
 #
@@ -117,8 +117,10 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      # Downstream jobs don't restore these outputs from disk -- their Nx targets depend on `build`
+      # and pull it from the Nx Cloud remote cache, which this job populates.
       - name: Build
-        uses: ./.github/actions/prepare-build
+        run: pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
 
   generate_configs:
     name: Generate Configs
@@ -196,8 +198,10 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      # knip runs outside of Nx, but loads config files (e.g. the website's docusaurus config) that import built packages
       - name: Build
-        uses: ./.github/actions/prepare-build
+        if: matrix.lint-task == 'knip'
+        run: pnpm build
 
       - name: Run Check
         run: pnpm ${{ matrix.lint-task }}
@@ -218,8 +222,6 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       - name: Run Check
         run: pnpm attw-check
@@ -277,7 +279,6 @@ jobs:
       - uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - uses: ./.github/actions/prepare-build
       - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} ${{ matrix.args }}
 
   integration_tests:
@@ -296,8 +297,6 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       - name: Run integration tests
         run: pnpm run test-integration
@@ -321,8 +320,6 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       - name: Delete all ast-spec fixture snapshots
         id: ast_spec_clean
@@ -397,8 +394,6 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       # collect coverage on just the primary node version and on linux
       # we don't collect coverage on the old node versions or other OSs so that they run faster
@@ -446,8 +441,6 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       # collect coverage on just linux
       # we don't collect coverage on other OSs so that they run faster
@@ -492,8 +485,6 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: 18
-      - name: Build
-        uses: ./.github/actions/prepare-build
       - name: Run unit tests
         run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage=false
         env:
