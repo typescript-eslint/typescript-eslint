@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-use-before-define';
 
@@ -101,6 +101,13 @@ function foo() {
 var foo = function () {
   foo();
 };
+    `,
+    `
+const debounced = (() => {
+  return function later() {
+    console.log(debounced);
+  };
+})();
     `,
     `
 var a;
@@ -1742,6 +1749,25 @@ var a = { b: 5 };
           messageId: 'noUseBeforeDefine',
         },
       ],
+    },
+    {
+      code: `
+const a = (function () {
+  console.log(a);
+  return 1;
+})();
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { name: 'a' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
     },
   ],
 });

@@ -165,38 +165,109 @@ function isClassRefInClassDecorator(
  * - for (var a in a) {}
  * - for (var a of a) {}
  */
+/**
+ * Checks whether a given function node is an IIFE (Immediately Invoked
+ * Function Expression) — i.e. the function itself is the callee of the
+ * CallExpression that invokes it directly.
+ */
+function isIIFE(
+  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+): boolean {
+  const { parent } = node;
+  return (
+    parent.type === AST_NODE_TYPES.CallExpression && parent.callee === node
+  );
+}
+
+/**
+ * Checks whether or not a given reference is inside of the initializers of a given variable.
+ *
+ * @returns `true` in the following cases:
+ * - var a = a
+ * - var [a = a] = list
+ * - var {a = a} = obj
+ * - for (var a in a) {}
+ * - for (var a of a) {}
+ * - var a = (function () { return a; })();   <- IIFE case, synchronously executed
+ */
 function isInInitializer(
   variable: TSESLint.Scope.Variable,
   reference: TSESLint.Scope.Reference,
 ): boolean {
-  if (variable.scope !== reference.from) {
+  const location = reference.identifier.range[1];
+
+  // Same-scope case: e.g. `var a = a`, `var [a = a] = list` (existing behavior).
+  if (variable.scope === reference.from) {
+    let node: TSESTree.Node | undefined = variable.identifiers[0].parent;
+
+    while (node) {
+      if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+        if (isInRange(node.init, location)) {
+          return true;
+        }
+        if (
+          (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
+            node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
+          isInRange(node.parent.parent.right, location)
+        ) {
+          return true;
+        }
+        break;
+      } else if (node.type === AST_NODE_TYPES.AssignmentPattern) {
+        if (isInRange(node.right, location)) {
+          return true;
+        }
+      } else if (SENTINEL_TYPE.test(node.type)) {
+        break;
+      }
+
+      node = node.parent;
+    }
+
     return false;
   }
 
+  // Nested-scope case: the reference is inside a function expression that
+  // lives inside the variable's own initializer. We can only be certain
+  // this runs synchronously — before the variable finishes initializing —
+  // if that function is a directly Immediately Invoked Function Expression
+  // (IIFE). Any other nested function (e.g. a callback merely passed to
+  // another function, which may or may not call it synchronously) cannot
+  // be statically proven either way, so we deliberately do NOT flag it —
+  // doing so would false-positive on common, valid patterns like:
+  //   const fib = (n) => (n <= 1 ? n : fib(n - 1) + fib(n - 2));
+  let fnNode: TSESTree.Node | undefined = reference.identifier;
+
+  while (fnNode) {
+    if (
+      fnNode.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+      fnNode.type === AST_NODE_TYPES.FunctionExpression
+    ) {
+      if (!isIIFE(fnNode)) {
+        return false;
+      }
+      break;
+    }
+    if (SENTINEL_TYPE.test(fnNode.type)) {
+      return false;
+    }
+    fnNode = fnNode.parent;
+  }
+
+  if (!fnNode) {
+    return false;
+  }
+
+  // Confirm the IIFE call itself sits inside the variable's own initializer.
   let node: TSESTree.Node | undefined = variable.identifiers[0].parent;
-  const location = reference.identifier.range[1];
 
   while (node) {
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-      if (isInRange(node.init, location)) {
-        return true;
-      }
-      if (
-        (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
-          node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
-        isInRange(node.parent.parent.right, location)
-      ) {
-        return true;
-      }
-      break;
-    } else if (node.type === AST_NODE_TYPES.AssignmentPattern) {
-      if (isInRange(node.right, location)) {
-        return true;
-      }
-    } else if (SENTINEL_TYPE.test(node.type)) {
+      return isInRange(node.init, fnNode.range[1]);
+    }
+    if (SENTINEL_TYPE.test(node.type)) {
       break;
     }
-
     node = node.parent;
   }
 
