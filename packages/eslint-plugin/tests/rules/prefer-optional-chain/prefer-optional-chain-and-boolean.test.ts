@@ -7,6 +7,7 @@ ruleTester.run('prefer-optional-chain-and-boolean', rule, {
   assertionOptions: {
     requireData: true,
   },
+  valid: [],
   invalid: [
     {
       code: `
@@ -2246,5 +2247,4 @@ foo.bar?.()?.baz && bing.bong;
       `,
     },
   ],
-  valid: [],
 });

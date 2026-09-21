@@ -29,7 +29,7 @@ defaults:
 #
 # Workflow for how the CI spawns jobs:
 # 1) Run the install and cache the install artefacts
-# 2) Run the build and cache the output
+# 2) Run the build to populate the Nx Cloud remote cache
 #    - In parallel we also any steps that don't need the build (like prettier)
 # 3) Run the steps that depend on the build
 #
@@ -63,7 +63,8 @@ jobs:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     outputs:
       is_plugin_affected: ${{ steps.filter.outputs.is_plugin_affected }}
-      unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
+      unit_tests_matrix: ${{ steps.filter.outputs.unit_tests_matrix }}
+      snapshot_packages: ${{ steps.filter.outputs.snapshot_packages }}
       project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
     steps:
       - name: Checkout
@@ -94,28 +95,11 @@ jobs:
 
       # We want to skip non-affected packages, but GH Actions doesn't support `contains(affected, matrix.package)` in `if` conditions,
       # so we're creating the whole matrix dynamically instead.
-      - name: Filter affected packages for test matrices
+      - name: Create test matrices from affected projects
         id: filter
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
-        with:
-          script: |
-            const affected = ${{ steps.affected.outputs.affected }};
-
-            // Packages that should also be tested with the project service enabled.
-            const projectServicePackages = ['eslint-plugin-internal', 'typescript-estree'];
-
-            // `eslint-plugin` runs in its own sharded job; gate it with a boolean.
-            const isPluginAffected = affected.includes('eslint-plugin');
-
-            // Packages that have their own tests CI job.
-            const EXCLUDED_PACKAGES = ['eslint-plugin', 'integration-tests'];
-
-            const affectedUnitTests = affected.filter((pkg) => !EXCLUDED_PACKAGES.includes(pkg));
-            const affectedProjectService = projectServicePackages.filter((pkg) => affected.includes(pkg));
-
-            core.setOutput('is_plugin_affected', isPluginAffected);
-            core.setOutput('unit_tests_packages', JSON.stringify(affectedUnitTests));
-            core.setOutput('project_service_packages', JSON.stringify(affectedProjectService));
+        run: node tools/scripts/generate-ci-test-matrices.mts
+        env:
+          AFFECTED: ${{ steps.affected.outputs.affected }}
 
   build:
     name: Build All Packages
@@ -133,8 +117,10 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      # Downstream jobs don't restore these outputs from disk -- their Nx targets depend on `build`
+      # and pull it from the Nx Cloud remote cache, which this job populates.
       - name: Build
-        uses: ./.github/actions/prepare-build
+        run: pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
 
   generate_configs:
     name: Generate Configs
@@ -212,8 +198,10 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      # knip runs outside of Nx, but loads config files (e.g. the website's docusaurus config) that import built packages
       - name: Build
-        uses: ./.github/actions/prepare-build
+        if: matrix.lint-task == 'knip'
+        run: pnpm build
 
       - name: Run Check
         run: pnpm ${{ matrix.lint-task }}
@@ -234,8 +222,6 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       - name: Run Check
         run: pnpm attw-check
@@ -293,7 +279,6 @@ jobs:
       - uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - uses: ./.github/actions/prepare-build
       - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} ${{ matrix.args }}
 
   integration_tests:
@@ -312,19 +297,17 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       - name: Run integration tests
         run: pnpm run test-integration
         env:
           CI: true
 
-  ast_spec_snapshots_clean:
-    name: Verify ast-spec snapshots are clean
+  snapshots_clean:
+    name: Verify snapshots are clean
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build, affected-for-tests]
-    if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.unit_tests_packages), 'ast-spec') }}
+    if: ${{ needs['affected-for-tests'].outputs.snapshot_packages != '[]' && needs['affected-for-tests'].outputs.snapshot_packages != '' }}
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -337,18 +320,20 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       - name: Delete all ast-spec fixture snapshots
+        id: ast_spec_clean
+        if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.snapshot_packages), 'ast-spec') }}
         run: pnpm exec nx run ast-spec:clean-fixtures
 
       - name: Regenerate ast-spec fixture snapshots
+        if: ${{ steps.ast_spec_clean.outcome == 'success' }}
         run: pnpm exec nx test ast-spec -u
         env:
           CI: true
 
-      - name: Fail if regenerating snapshots produced a diff
+      - name: Fail if regenerating ast-spec snapshots produced a diff
+        if: ${{ steps.ast_spec_clean.outcome == 'success' }}
         run: |
           changes="$(git status --porcelain -- packages/ast-spec/src)"
           if [ -n "$changes" ]; then
@@ -357,35 +342,19 @@ jobs:
             exit 1
           fi
 
-  scope_manager_snapshots_clean:
-    name: Verify scope-manager snapshots are clean
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build, affected-for-tests]
-    if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.unit_tests_packages), 'scope-manager') }}
-    runs-on: ubuntu-latest
-    env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        with:
-          persist-credentials: false
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
-
       - name: Delete all scope-manager fixture snapshots
+        id: scope_manager_clean
+        if: ${{ !cancelled() && contains(fromJson(needs['affected-for-tests'].outputs.snapshot_packages), 'scope-manager') }}
         run: pnpm exec nx run scope-manager:clean-fixtures
 
       - name: Regenerate scope-manager fixture snapshots
+        if: ${{ !cancelled() && steps.scope_manager_clean.outcome == 'success' }}
         run: pnpm exec nx test scope-manager -u
         env:
           CI: true
 
-      - name: Fail if regenerating snapshots produced a diff
+      - name: Fail if regenerating scope-manager snapshots produced a diff
+        if: ${{ !cancelled() && steps.scope_manager_clean.outcome == 'success' }}
         run: |
           changes="$(git status --porcelain -- packages/scope-manager/tests/fixtures)"
           if [ -n "$changes" ]; then
@@ -414,11 +383,7 @@ jobs:
             { name: 'eslint-plugin', params: '--shard=3/4' },
             { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
-        # Windows CI skips the rules tests so there isn't enough left to be worth sharding.
-        include:
-          - os: windows-latest
-            node-version: 24
-            package: { name: 'eslint-plugin', params: '' }
+        # Windows CI skips the rules tests, so eslint-plugin runs with other packages in the grouped unit tests job.
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -429,8 +394,6 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       # collect coverage on just the primary node version and on linux
       # we don't collect coverage on the old node versions or other OSs so that they run faster
@@ -455,41 +418,18 @@ jobs:
           name: ${{ matrix.package.name }}-${{ strategy.job-index }}
 
   unit_tests:
-    name: Run Unit Tests
+    name: Run Unit Tests (${{ matrix.os }}, ${{ matrix.name }})
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build, affected-for-tests]
-    if: ${{ needs['affected-for-tests'].outputs.unit_tests_packages != '[]' && needs['affected-for-tests'].outputs.unit_tests_packages != '' }}
+    if: ${{ needs['affected-for-tests'].outputs.unit_tests_matrix != '[]' && needs['affected-for-tests'].outputs.unit_tests_matrix != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
         # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version
-        node-version: [24]
-        package: ${{ fromJson(needs['affected-for-tests'].outputs.unit_tests_packages) }}
-
-        # Packages that have no (or we don't care about their) platform-specific,
-        # runtime behavior, so skipping them on Windows to have less jobs to run.
-        exclude:
-          - os: windows-latest
-            package: ast-spec
-
-          - os: windows-latest
-            package: eslint-plugin-internal
-
-          - os: windows-latest
-            package: rule-schema-to-typescript-types
-
-          - os: windows-latest
-            package: scope-manager
-
-          - os: windows-latest
-            package: utils
-
-          - os: windows-latest
-            package: visitor-keys
+        include: ${{ fromJson(needs['affected-for-tests'].outputs.unit_tests_matrix) }}
     env:
-      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - Node ${{ matrix.node-version }}'
+      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - ${{ matrix.name }}'
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
@@ -500,33 +440,31 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
       # collect coverage on just linux
       # we don't collect coverage on other OSs so that they run faster
-      - name: Run unit tests with coverage for ${{ matrix.package }}
+      - name: Run unit tests with coverage
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm exec nx test "$PACKAGE" -- --coverage
+        run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage
         env:
           CI: true
-          PACKAGE: ${{ matrix.package }}
-      - name: Run unit tests for ${{ matrix.package }}
+          PROJECTS: ${{ join(matrix.projects, ',') }}
+      - name: Run unit tests
         if: matrix.os != 'ubuntu-latest'
-        run: pnpm exec nx test "$PACKAGE"
+        run: pnpm exec nx run-many -t test --projects="$PROJECTS"
         env:
           CI: true
-          PACKAGE: ${{ matrix.package }}
+          PROJECTS: ${{ join(matrix.projects, ',') }}
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: packages/${{ matrix.package }}/coverage/lcov.info
-          flags: ${{ matrix.package }}
-          name: ${{ matrix.package }}
+          files: packages/*/coverage/lcov.info
+          flags: ${{ join(matrix.projects, ',') }}
+          name: ${{ join(matrix.projects, '-') }}
 
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
@@ -534,10 +472,6 @@ jobs:
     needs: [build, affected-for-tests]
     if: ${{ needs['affected-for-tests'].outputs.project_service_packages != '[]' && needs['affected-for-tests'].outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        package: ${{ fromJson(needs['affected-for-tests'].outputs.project_service_packages) }}
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,
@@ -551,14 +485,12 @@ jobs:
         uses: ./.github/actions/prepare-install
         with:
           node-version: 18
-      - name: Build
-        uses: ./.github/actions/prepare-build
-      - name: Run unit tests for ${{ matrix.package }}
-        run: pnpm exec nx test "$PACKAGE" --coverage=false
+      - name: Run unit tests
+        run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
-          PACKAGE: ${{ matrix.package }}
+          PROJECTS: ${{ join(fromJson(needs['affected-for-tests'].outputs.project_service_packages), ',') }}
 
   # Some test jobs are created dynamically and conditionally skipped (see affected-for-tests),
   # so they can't be marked in the branch ruleset as required.
@@ -576,8 +508,7 @@ jobs:
       - lint_with_build
       - lint_with_build_eslint
       - integration_tests
-      - ast_spec_snapshots_clean
-      - scope_manager_snapshots_clean
+      - snapshots_clean
       - plugin_unit_tests
       - unit_tests
       - unit_tests_project_service
