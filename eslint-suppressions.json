@@ -1,19 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-order.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 32
-    }
-  },
-  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-natural-case-insensitive-order.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
-  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-natural-order.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 4
-    }
-  },
   "packages/eslint-plugin/tests/rules/naming-convention/naming-convention.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 77
