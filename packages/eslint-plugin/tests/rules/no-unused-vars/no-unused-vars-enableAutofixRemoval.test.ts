@@ -18,6 +18,7 @@ describe('no-unused-vars', () => {
     assertionOptions: {
       requireData: true,
     },
+    valid: [],
     invalid: [
       {
         code: `
@@ -710,6 +711,5 @@ import assert from 'assert'; /* this is an important comment */
         `,
       },
     ],
-    valid: [],
   });
 });
