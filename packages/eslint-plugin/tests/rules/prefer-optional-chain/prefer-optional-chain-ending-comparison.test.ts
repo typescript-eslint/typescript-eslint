@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-ending-comparison', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'foo && foo.bar == undeclaredVar;',
     'foo && foo.bar == null;',

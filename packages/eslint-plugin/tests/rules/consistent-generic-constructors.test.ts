@@ -5,6 +5,9 @@ import rule from '../../src/rules/consistent-generic-constructors';
 const ruleTester = new RuleTester();
 
 ruleTester.run('consistent-generic-constructors', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // default: constructor
     'const a = new Foo();',

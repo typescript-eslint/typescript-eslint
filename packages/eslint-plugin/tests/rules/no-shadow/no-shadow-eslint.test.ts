@@ -9,6 +9,9 @@ import rule from '../../../src/rules/no-shadow';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-shadow', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 var a = 3;

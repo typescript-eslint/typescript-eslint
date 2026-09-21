@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     '!a || !b;',
     '!a || a.b;',

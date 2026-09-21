@@ -5,6 +5,9 @@ import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 const ruleTester = new RuleTester();
 
 ruleTester.run('member-ordering-alphabetically-case-insensitive-order', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // default option + interface + lower/upper case
     {

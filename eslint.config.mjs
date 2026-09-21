@@ -716,6 +716,10 @@ export default defineConfig(
         {
           customGroups: [
             {
+              elementNamePattern: '^assertionOptions$',
+              groupName: 'assertion',
+            },
+            {
               elementNamePattern: '^valid$',
               groupName: 'top',
             },
@@ -724,7 +728,7 @@ export default defineConfig(
               groupName: 'skip',
             },
           ],
-          groups: ['top', 'skip', 'unknown'],
+          groups: ['assertion', 'top', 'skip', 'unknown'],
         },
       ],
     },

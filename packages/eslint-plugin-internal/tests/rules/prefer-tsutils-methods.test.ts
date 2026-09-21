@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-tsutils-methods.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-tsutils-methods', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined);',
     'tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember);',

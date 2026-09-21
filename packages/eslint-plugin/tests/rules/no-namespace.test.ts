@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-namespace';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-namespace', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'declare global {}',
     "declare module 'foo' {}",

@@ -35,6 +35,9 @@ ruleTester.defineRule('collect-unused-vars', {
 });
 
 ruleTester.run('no-unused-vars', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 import { ClassDecoratorFactory } from 'decorators';

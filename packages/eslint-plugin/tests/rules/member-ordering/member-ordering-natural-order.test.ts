@@ -5,6 +5,9 @@ import rule from '../../../src/rules/member-ordering';
 const ruleTester = new RuleTester();
 
 ruleTester.run('member-ordering-natural-order', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `

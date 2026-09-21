@@ -5,6 +5,9 @@ import rule from '../../../src/rules/no-shadow';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-shadow TS tests', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'function foo<T = (arg: any) => any>(arg: T) {}',
     'function foo<T = ([arg]: [any]) => any>(arg: T) {}',

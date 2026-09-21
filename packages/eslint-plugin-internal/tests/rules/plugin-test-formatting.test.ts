@@ -16,6 +16,10 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('plugin-test-formatting', rule, {
+  assertionOptions: {
+    requireData: true,
+    requireLocation: true,
+  },
   valid: [
     // sanity check for valid tests non-object style
     `
@@ -193,10 +197,6 @@ ruleTester.run({
       `,
     },
   ],
-  assertionOptions: {
-    requireData: true,
-    requireLocation: true,
-  },
   invalid: [
     // Literal
     {

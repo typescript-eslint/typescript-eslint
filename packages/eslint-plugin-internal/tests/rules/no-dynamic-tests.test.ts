@@ -13,6 +13,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-dynamic-tests', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `

@@ -16,6 +16,9 @@ const parserOptions = {
 };
 
 ruleTester.run('naming-convention', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `
@@ -1013,6 +1016,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 7,
+          data: {
+            formats: 'camelCase, UPPER_CASE',
+            name: 'x_x',
+            type: 'Variable',
+          },
           endColumn: 10,
           endLine: 1,
           line: 1,
@@ -1026,6 +1034,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 7,
+          data: {
+            formats: 'camelCase, UPPER_CASE',
+            name: 'x_x',
+            type: 'Variable',
+          },
           endColumn: 10,
           endLine: 1,
           line: 1,
@@ -1041,6 +1054,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 15,
+          data: {
+            formats: 'camelCase',
+            name: 'child_process',
+            type: 'Variable',
+          },
           endColumn: 28,
           endLine: 2,
           line: 2,
@@ -1084,6 +1102,12 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 23,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'any_camelCase01',
+            processedName: 'camelCase01',
+            type: 'Variable',
+          },
           endColumn: 43,
           endLine: 2,
           line: 2,
@@ -1091,6 +1115,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'any_camelCase02',
+            processedName: 'camelCase02',
+            type: 'Variable',
+          },
           endColumn: 50,
           endLine: 3,
           line: 3,
@@ -1098,6 +1128,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'any_camelCase03',
+            processedName: 'camelCase03',
+            type: 'Variable',
+          },
           endColumn: 62,
           endLine: 4,
           line: 4,
@@ -1105,6 +1141,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase01',
+            processedName: 'camelCase01',
+            type: 'Variable',
+          },
           endColumn: 49,
           endLine: 5,
           line: 5,
@@ -1112,6 +1154,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase02',
+            processedName: 'camelCase02',
+            type: 'Variable',
+          },
           endColumn: 56,
           endLine: 6,
           line: 6,
@@ -1119,6 +1167,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase03',
+            processedName: 'camelCase03',
+            type: 'Variable',
+          },
           endColumn: 68,
           endLine: 7,
           line: 7,
@@ -1126,6 +1180,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase04',
+            processedName: 'camelCase04',
+            type: 'Variable',
+          },
           endColumn: 65,
           endLine: 8,
           line: 8,
@@ -1133,6 +1193,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase05',
+            processedName: 'camelCase05',
+            type: 'Variable',
+          },
           endColumn: 74,
           endLine: 9,
           line: 9,
@@ -1140,6 +1206,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase06',
+            processedName: 'camelCase06',
+            type: 'Variable',
+          },
           endColumn: 49,
           endLine: 10,
           line: 10,
@@ -1147,6 +1219,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase07',
+            processedName: 'camelCase07',
+            type: 'Variable',
+          },
           endColumn: 56,
           endLine: 11,
           line: 11,
@@ -1154,6 +1232,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase08',
+            processedName: 'camelCase08',
+            type: 'Variable',
+          },
           endColumn: 68,
           endLine: 12,
           line: 12,
@@ -1161,6 +1245,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase09',
+            processedName: 'camelCase09',
+            type: 'Variable',
+          },
           endColumn: 63,
           endLine: 13,
           line: 13,
@@ -1168,6 +1258,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase10',
+            processedName: 'camelCase10',
+            type: 'Variable',
+          },
           endColumn: 72,
           endLine: 14,
           line: 14,
@@ -1175,6 +1271,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase11',
+            processedName: 'camelCase11',
+            type: 'Variable',
+          },
           endColumn: 51,
           endLine: 15,
           line: 15,
@@ -1182,6 +1284,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase12',
+            processedName: 'camelCase12',
+            type: 'Variable',
+          },
           endColumn: 58,
           endLine: 16,
           line: 16,
@@ -1189,6 +1297,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase13',
+            processedName: 'camelCase13',
+            type: 'Variable',
+          },
           endColumn: 70,
           endLine: 17,
           line: 17,
@@ -1196,6 +1310,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase14',
+            processedName: 'camelCase14',
+            type: 'Variable',
+          },
           endColumn: 67,
           endLine: 18,
           line: 18,
@@ -1203,6 +1323,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase15',
+            processedName: 'camelCase15',
+            type: 'Variable',
+          },
           endColumn: 68,
           endLine: 19,
           line: 19,
@@ -1210,6 +1336,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase16',
+            processedName: 'camelCase16',
+            type: 'Variable',
+          },
           endColumn: 75,
           endLine: 20,
           line: 20,
@@ -1258,6 +1390,12 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'function_camelCase1',
+            processedName: 'camelCase1',
+            type: 'Variable',
+          },
           endColumn: 54,
           endLine: 2,
           line: 2,
@@ -1265,6 +1403,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'function_camelCase2',
+            processedName: 'camelCase2',
+            type: 'Variable',
+          },
           endColumn: 63,
           endLine: 3,
           line: 3,
@@ -1272,6 +1416,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'function_camelCase3',
+            processedName: 'camelCase3',
+            type: 'Variable',
+          },
           endColumn: 75,
           endLine: 4,
           line: 4,
@@ -1279,6 +1429,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'function_camelCase4',
+            processedName: 'camelCase4',
+            type: 'Variable',
+          },
           endColumn: 22,
           endLine: 9,
           line: 5,
@@ -1318,6 +1474,12 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'array_camelCase1',
+            processedName: 'camelCase1',
+            type: 'Variable',
+          },
           endColumn: 54,
           endLine: 2,
           line: 2,
@@ -1325,6 +1487,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'array_camelCase2',
+            processedName: 'camelCase2',
+            type: 'Variable',
+          },
           endColumn: 69,
           endLine: 3,
           line: 3,
@@ -1332,6 +1500,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'array_camelCase3',
+            processedName: 'camelCase3',
+            type: 'Variable',
+          },
           endColumn: 68,
           endLine: 4,
           line: 4,
@@ -1339,6 +1513,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'array_camelCase4',
+            processedName: 'camelCase4',
+            type: 'Variable',
+          },
           endColumn: 77,
           endLine: 5,
           line: 5,
@@ -1346,6 +1526,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'array_camelCase5',
+            processedName: 'camelCase5',
+            type: 'Variable',
+          },
           endColumn: 22,
           endLine: 10,
           line: 6,
@@ -1353,6 +1539,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'array_camelCase6',
+            processedName: 'camelCase6',
+            type: 'Variable',
+          },
           endColumn: 62,
           endLine: 11,
           line: 11,
@@ -1360,6 +1552,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'array_camelCase7',
+            processedName: 'camelCase7',
+            type: 'Variable',
+          },
           endColumn: 68,
           endLine: 12,
           line: 12,
@@ -1367,6 +1565,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 23,
+          data: {
+            formats: 'snake_case',
+            name: 'array_camelCase8',
+            processedName: 'camelCase8',
+            type: 'Variable',
+          },
           endColumn: 22,
           endLine: 18,
           line: 13,
@@ -1722,6 +1926,12 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 15,
+          data: {
+            formats: 'PascalCase',
+            name: 'myfoo_bar',
+            processedName: 'foo_bar',
+            type: 'Variable',
+          },
           endColumn: 24,
           endLine: 2,
           line: 2,
@@ -1729,6 +1939,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 22,
+          data: {
+            formats: 'PascalCase',
+            name: 'myfoo',
+            processedName: 'foo',
+            type: 'Parameter',
+          },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -1736,6 +1952,12 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'Myfoo',
+            processedName: 'foo',
+            type: 'Class Property',
+          },
           endColumn: 16,
           endLine: 5,
           line: 5,
@@ -1761,6 +1983,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 28,
+          data: {
+            formats: 'PascalCase',
+            name: 'fooBar',
+            type: 'Class Property',
+          },
           endColumn: 34,
           endLine: 3,
           line: 3,
@@ -1782,6 +2009,12 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 18,
+          data: {
+            formats: 'PascalCase',
+            name: 'my_foo_bar',
+            processedName: '_foo_bar',
+            type: 'Function',
+          },
           endColumn: 28,
           endLine: 2,
           line: 2,
@@ -1809,6 +2042,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 18,
+          data: {
+            formats: 'PascalCase',
+            name: 'otherConstant',
+            type: 'Class Property',
+          },
           endColumn: 31,
           endLine: 3,
           line: 3,
@@ -1830,6 +2068,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 15,
+          data: {
+            formats: 'camelCase',
+            name: 'Baz',
+            type: 'Parameter',
+          },
           endColumn: 26,
           endLine: 3,
           line: 3,
@@ -1851,6 +2094,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 22,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseVar',
+            type: 'Variable',
+          },
           endColumn: 35,
           endLine: 2,
           line: 2,
@@ -1858,6 +2106,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 21,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseEnum',
+            type: 'Enum',
+          },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -1865,6 +2118,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 22,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseClass',
+            type: 'Class',
+          },
           endColumn: 37,
           endLine: 4,
           line: 4,
@@ -1872,6 +2130,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 25,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseFunction',
+            type: 'Function',
+          },
           endColumn: 43,
           endLine: 5,
           line: 5,
@@ -1879,6 +2142,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 26,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseInterface',
+            type: 'Interface',
+          },
           endColumn: 45,
           endLine: 6,
           line: 6,
@@ -1886,6 +2154,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 21,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseType',
+            type: 'Type Alias',
+          },
           endColumn: 35,
           endLine: 7,
           line: 7,
@@ -1949,6 +2222,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 15,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseVar',
+            type: 'Variable',
+          },
           endColumn: 28,
           endLine: 2,
           line: 2,
@@ -1956,6 +2234,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 14,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseEnum',
+            type: 'Enum',
+          },
           endColumn: 28,
           endLine: 3,
           line: 3,
@@ -1963,6 +2246,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 15,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseClass',
+            type: 'Class',
+          },
           endColumn: 30,
           endLine: 4,
           line: 4,
@@ -1970,6 +2258,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 18,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseFunction',
+            type: 'Function',
+          },
           endColumn: 36,
           endLine: 5,
           line: 5,
@@ -1977,6 +2270,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 19,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseInterface',
+            type: 'Interface',
+          },
           endColumn: 38,
           endLine: 6,
           line: 6,
@@ -1984,6 +2282,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 14,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseType',
+            type: 'Type Alias',
+          },
           endColumn: 28,
           endLine: 7,
           line: 7,
@@ -2033,6 +2336,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 15,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseVar',
+            type: 'Variable',
+          },
           endColumn: 28,
           endLine: 2,
           line: 2,
@@ -2040,6 +2348,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 18,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseFunction',
+            type: 'Function',
+          },
           endColumn: 36,
           endLine: 3,
           line: 3,
@@ -2047,6 +2360,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 26,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseDeclaredFunction',
+            type: 'Function',
+          },
           endColumn: 52,
           endLine: 4,
           line: 4,
@@ -2078,6 +2396,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 17,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'some_name1',
+            type: 'Variable',
+          },
           endColumn: 27,
           endLine: 2,
           line: 2,
@@ -2085,6 +2408,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 17,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'some_name2',
+            type: 'Variable',
+          },
           endColumn: 27,
           endLine: 3,
           line: 3,
@@ -2116,6 +2444,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 13,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'aName',
+            type: 'Parameter',
+          },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -2123,6 +2456,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 13,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'anotherName',
+            type: 'Parameter',
+          },
           endColumn: 24,
           endLine: 4,
           line: 4,
@@ -2151,6 +2489,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 44,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'some_name',
+            type: 'Class Property',
+          },
           endColumn: 53,
           endLine: 3,
           line: 3,
@@ -2181,6 +2524,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 30,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'some_name',
+            type: 'Parameter Property',
+          },
           endColumn: 39,
           endLine: 4,
           line: 4,
@@ -2209,6 +2557,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 26,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'some_name',
+            type: 'Class Method',
+          },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -2237,6 +2590,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 30,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'some_name',
+            type: 'Classic Accessor',
+          },
           endColumn: 39,
           endLine: 3,
           line: 3,
@@ -2263,6 +2621,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 24,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'some_name',
+            type: 'Class',
+          },
           endColumn: 33,
           endLine: 2,
           line: 2,
@@ -2298,6 +2661,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'UnusedVar',
+            type: 'Variable',
+          },
           endColumn: 24,
           endLine: 2,
           line: 2,
@@ -2305,6 +2673,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 18,
+          data: {
+            formats: 'snake_case',
+            name: 'UnusedFunc',
+            type: 'Function',
+          },
           endColumn: 28,
           endLine: 3,
           line: 3,
@@ -2312,6 +2685,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'snake_case',
+            name: 'UnusedParam',
+            type: 'Parameter',
+          },
           endColumn: 30,
           endLine: 5,
           line: 5,
@@ -2319,6 +2697,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'UnusedClass',
+            type: 'Class',
+          },
           endColumn: 26,
           endLine: 7,
           line: 7,
@@ -2326,6 +2709,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 19,
+          data: {
+            formats: 'snake_case',
+            name: 'UnusedInterface',
+            type: 'Interface',
+          },
           endColumn: 34,
           endLine: 8,
           line: 8,
@@ -2333,6 +2721,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 14,
+          data: {
+            formats: 'snake_case',
+            name: 'UnusedType',
+            type: 'Type Alias',
+          },
           endColumn: 24,
           endLine: 9,
           line: 9,
@@ -2340,6 +2733,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'snake_case',
+            name: 'UnusedTypeParam',
+            type: 'Type Parameter',
+          },
           endColumn: 26,
           endLine: 11,
           line: 11,
@@ -2391,6 +2789,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'a a',
+            type: 'Object Literal Property',
+          },
           endColumn: 16,
           endLine: 3,
           line: 3,
@@ -2398,6 +2801,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'b b',
+            type: 'Object Literal Method',
+          },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -2405,6 +2813,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 15,
+          data: {
+            formats: 'PascalCase',
+            name: 'c c',
+            type: 'Classic Accessor',
+          },
           endColumn: 20,
           endLine: 5,
           line: 5,
@@ -2412,6 +2825,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 15,
+          data: {
+            formats: 'PascalCase',
+            name: 'd d',
+            type: 'Classic Accessor',
+          },
           endColumn: 20,
           endLine: 8,
           line: 8,
@@ -2419,6 +2837,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'a a',
+            type: 'Class Property',
+          },
           endColumn: 16,
           endLine: 11,
           line: 11,
@@ -2426,6 +2849,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'b b',
+            type: 'Class Method',
+          },
           endColumn: 16,
           endLine: 12,
           line: 12,
@@ -2433,6 +2861,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 15,
+          data: {
+            formats: 'PascalCase',
+            name: 'c c',
+            type: 'Classic Accessor',
+          },
           endColumn: 20,
           endLine: 13,
           line: 13,
@@ -2440,6 +2873,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 15,
+          data: {
+            formats: 'PascalCase',
+            name: 'd d',
+            type: 'Classic Accessor',
+          },
           endColumn: 20,
           endLine: 16,
           line: 16,
@@ -2447,6 +2885,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'a a',
+            type: 'Type Property',
+          },
           endColumn: 16,
           endLine: 19,
           line: 19,
@@ -2454,6 +2897,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'b b',
+            type: 'Type Method',
+          },
           endColumn: 16,
           endLine: 20,
           line: 20,
@@ -2461,6 +2909,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'a a',
+            type: 'Type Property',
+          },
           endColumn: 16,
           endLine: 23,
           line: 23,
@@ -2468,6 +2921,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'b b',
+            type: 'Type Method',
+          },
           endColumn: 16,
           endLine: 24,
           line: 24,
@@ -2475,6 +2933,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'PascalCase',
+            name: 'a a',
+            type: 'Enum Member',
+          },
           endColumn: 16,
           endLine: 27,
           line: 27,
@@ -2512,6 +2975,11 @@ ruleTester.run('naming-convention', rule, {
       errors: [
         {
           column: 11,
+          data: {
+            formats: 'camelCase',
+            name: 'foo     Bar',
+            type: 'Type Property',
+          },
           endColumn: 24,
           endLine: 3,
           line: 3,
@@ -2519,6 +2987,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'camelCase',
+            name: '',
+            type: 'Type Property',
+          },
           endColumn: 13,
           endLine: 4,
           line: 4,
@@ -2526,6 +2999,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'camelCase',
+            name: '0',
+            type: 'Type Property',
+          },
           endColumn: 14,
           endLine: 5,
           line: 5,
@@ -2533,6 +3011,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'camelCase',
+            name: 'foo-bar',
+            type: 'Type Property',
+          },
           endColumn: 20,
           endLine: 7,
           line: 7,
@@ -2540,6 +3023,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'camelCase',
+            name: '#foo-bar',
+            type: 'Type Property',
+          },
           endColumn: 21,
           endLine: 8,
           line: 8,
@@ -2547,6 +3035,11 @@ ruleTester.run('naming-convention', rule, {
         },
         {
           column: 11,
+          data: {
+            formats: 'camelCase',
+            name: 'boo-----foo',
+            type: 'Type Property',
+          },
           endColumn: 24,
           endLine: 12,
           line: 12,

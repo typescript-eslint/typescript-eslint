@@ -7,6 +7,9 @@ import rule from '../../src/rules/no-multiple-lines-of-errors.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-multiple-lines-of-errors', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 ruleTester.run('test', rule, other);

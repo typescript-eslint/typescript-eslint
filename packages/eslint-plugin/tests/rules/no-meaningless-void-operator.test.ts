@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-meaningless-void-operator', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 (() => {})();
@@ -109,6 +112,7 @@ void ((x = 1), (y = 2));
       errors: [
         {
           column: 1,
+          data: { type: 'void' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -125,6 +129,7 @@ void foo();
       errors: [
         {
           column: 1,
+          data: { type: 'void' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -378,6 +383,7 @@ void fail();
       errors: [
         {
           column: 1,
+          data: { type: 'never' },
           endColumn: 12,
           endLine: 3,
           line: 3,
