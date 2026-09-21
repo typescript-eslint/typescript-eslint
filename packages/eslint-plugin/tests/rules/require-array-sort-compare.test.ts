@@ -145,6 +145,14 @@ function f<T extends string>(a: T[]) {
     },
     {
       code: `
+function sort<T>(values: (T extends 0 ? string : string)[]) {
+  values.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
 function f(a: number[]) {
   a.toSorted((a, b) => a - b);
 }
