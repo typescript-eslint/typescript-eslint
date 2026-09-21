@@ -54,6 +54,8 @@ async function getAsyncStatus(): Promise<string> {
 This rule does not expand a type alias used as the complete return type, including generic aliases.
 It does not inspect unions inside custom containers or object properties.
 Checking only a custom container's array elements or awaited value could miss other properties that require the same type argument.
+For `Array`, `ReadonlyArray`, and non-async promise returns, the rule requires a compatible built-in container type or base type.
+It skips returned objects whose indexed or awaited type does not account for the rest of the container's contract.
 It skips comparisons involving `any` or `unknown`.
 For unresolved conditional and string mapping constituents, and template literal constituents that depend on type parameters, it reports only when a stable constraint proves that the returned types are disjoint from the constituent.
 
