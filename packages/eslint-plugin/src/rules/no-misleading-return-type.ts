@@ -14,6 +14,7 @@ import {
   isTypeAnyType,
   isTypeNeverType,
   isTypeUnknownType,
+  matchesTypeOrBaseType,
 } from '../util';
 
 // TypeFlags.Primitive is not declared in TypeScript's public API.
@@ -44,7 +45,8 @@ type ClassMemberDeclaration =
   | ts.PropertyDeclaration
   | ts.SetAccessorDeclaration;
 
-type TypeProjection = 'arrayElement' | 'awaited' | 'identity';
+type TypeProjection =
+  'arrayElement' | 'arrayLikeElement' | 'awaited' | 'identity';
 
 type UnionCandidate =
   | {
@@ -210,7 +212,11 @@ export default createRule({
       );
     }
 
-    function getReturnedTypes(node: FunctionNode, projection: TypeProjection) {
+    function getReturnedTypes(
+      node: FunctionNode,
+      projection: TypeProjection,
+      returnType: ts.Type,
+    ) {
       const body = services.esTreeNodeToTSNodeMap.get(
         node.body,
       ) as ts.ConciseBody;
@@ -236,6 +242,51 @@ export default createRule({
           tsutils.isIntrinsicErrorType(returnedType) ||
           isTypeAnyType(returnedType) ||
           isTypeUnknownType(returnedType)
+        ) {
+          return null;
+        }
+
+        if (
+          (projection === 'arrayElement' ||
+            (projection === 'awaited' && !node.async)) &&
+          !tsutils
+            .unionConstituents(getStableBaseConstraint(type) ?? type)
+            .every(part =>
+              tsutils.intersectionConstituents(part).some(part =>
+                matchesTypeOrBaseType(
+                  services,
+                  containerType => {
+                    if (
+                      getBuiltinProjection(containerType.getSymbol()) !==
+                        projection &&
+                      !(
+                        projection === 'arrayElement' &&
+                        checker.isTupleType(containerType)
+                      )
+                    ) {
+                      return false;
+                    }
+
+                    const projectedContainerType = getProjectedType(
+                      containerType,
+                      projection,
+                    );
+                    // An index or awaited type alone does not describe the
+                    // container's methods. Require a compatible built-in base.
+                    return (
+                      projectedContainerType != null &&
+                      checker.isTypeAssignableTo(part, containerType) &&
+                      checker.isTypeAssignableTo(containerType, returnType) &&
+                      checker.isTypeAssignableTo(
+                        projectedContainerType,
+                        returnedType,
+                      )
+                    );
+                  },
+                  part,
+                ),
+              ),
+            )
         ) {
           return null;
         }
@@ -299,23 +350,23 @@ export default createRule({
         return candidate.kind === 'direct' ? 'identity' : 'arrayElement';
       }
 
-      // Custom containers may use their type argument in properties that an
-      // array or promise projection does not inspect.
-      const symbol = services.getSymbolAtLocation(
-        candidate.returnType.typeName,
+      return getBuiltinProjection(
+        services.getSymbolAtLocation(candidate.returnType.typeName),
       );
+    }
+
+    function getBuiltinProjection(symbol: ts.Symbol | undefined) {
       if (
         symbol == null ||
         !isSymbolFromDefaultLibrary(services.program, symbol)
       ) {
         return null;
       }
-      if (
-        symbol.name === 'Array' ||
-        symbol.name === 'ReadonlyArray' ||
-        symbol.name === 'ArrayLike'
-      ) {
+      if (symbol.name === 'Array' || symbol.name === 'ReadonlyArray') {
         return 'arrayElement';
+      }
+      if (symbol.name === 'ArrayLike') {
+        return 'arrayLikeElement';
       }
       if (symbol.name === 'Promise' || symbol.name === 'PromiseLike') {
         return 'awaited';
@@ -528,7 +579,7 @@ export default createRule({
         return;
       }
 
-      const returnedTypes = getReturnedTypes(node, projection);
+      const returnedTypes = getReturnedTypes(node, projection, returnType);
 
       if (returnedTypes == null || returnedTypes.length === 0) {
         return;
