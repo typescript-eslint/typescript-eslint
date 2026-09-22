@@ -59,6 +59,10 @@ jobs:
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
+    permissions:
+      actions: read # to find the last successful run of this workflow (nrwl/nx-set-shas)
+      contents: read # to fetch code (actions/checkout)
+      pull-requests: read # to resolve the base of a merge group (nrwl/nx-set-shas)
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     outputs:
@@ -70,17 +74,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+          filter: tree:0
           persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
+      # Sets NX_BASE and NX_HEAD, used by `nx show projects --affected`
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
+
       - name: Get affected projects for tests
         id: affected
         run: |
-          affected=$(pnpm exec nx show projects --affected --withTarget=test --json --base=HEAD~1 --head=HEAD)
+          affected=$(pnpm exec nx show projects --affected --withTarget=test --json)
 
           echo "affected=$affected" >> "$GITHUB_OUTPUT"
 
