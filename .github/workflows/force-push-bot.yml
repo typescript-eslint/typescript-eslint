@@ -30,7 +30,7 @@ jobs:
           AFTER_SHA: ${{ github.event.pull_request.head.sha }}
         with:
           script: |
-            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+            const { data: reviews } = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number,
@@ -56,9 +56,25 @@ jobs:
               return;
             }
 
+            const marker = '<!-- force-push-bot -->';
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+            });
+
+            // Post only one force push comment per PR.
+            if (comments.some(comment => comment.body?.includes(marker))) {
+              return;
+            }
+
             const author = context.payload.pull_request.user.login;
 
             const lines = [
+              `${marker}\n\n`,
+
               `Hi @${author}, thanks for the update!\n\n`,
 
               'Just a quick heads-up: please try to avoid force-pushing moving forward. ',
