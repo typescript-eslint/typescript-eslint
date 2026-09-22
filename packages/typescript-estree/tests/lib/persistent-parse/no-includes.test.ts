@@ -1,11 +1,11 @@
-import { clearCaches } from '../../src/clear-caches';
+import { clearCaches } from '../../../src/clear-caches';
 import {
   baseTests,
   parseFile,
   setup,
   setupPersistentParseTests,
   writeFile,
-} from '../test-utils/persistentParse';
+} from '../../test-utils/persistentParse';
 
 setupPersistentParseTests();
 

@@ -3,7 +3,7 @@ import {
   setup,
   setupPersistentParseTests,
   writeFile,
-} from '../test-utils/persistentParse';
+} from '../../test-utils/persistentParse';
 
 setupPersistentParseTests();
 

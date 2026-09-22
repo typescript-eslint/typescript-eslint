@@ -1,7 +1,7 @@
 import {
   baseTests,
   setupPersistentParseTests,
-} from '../test-utils/persistentParse';
+} from '../../test-utils/persistentParse';
 
 setupPersistentParseTests();
 
