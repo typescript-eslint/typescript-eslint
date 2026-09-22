@@ -7,6 +7,7 @@ ruleTester.run('prefer-optional-chain-or-boolean', rule, {
   assertionOptions: {
     requireData: true,
   },
+  valid: [],
   invalid: [
     {
       code: `
@@ -747,5 +748,4 @@ declare const foo: { bar: () => { baz: number } | null | undefined };
       `,
     },
   ],
-  valid: [],
 });

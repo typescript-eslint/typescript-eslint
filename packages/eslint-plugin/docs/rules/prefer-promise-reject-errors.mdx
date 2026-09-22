@@ -98,3 +98,50 @@ const defaultOptions: Options = {
   allowThrowingUnknown: false,
 };
 ```
+
+### `allow`
+
+{/* insert option description */}
+
+This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
+It can be useful for rejecting with error types defined by libraries that do not extend `Error`.
+
+Examples of code for this rule with:
+
+```jsonc
+{
+  "allow": [{ "from": "file", "name": "CustomError" }],
+}
+```
+
+```ts option='{ "allow": [{ "from": "file", "name": "CustomError" }] }' showPlaygroundButton
+class CustomError /* does NOT extend Error */ {
+  // ...
+}
+
+Promise.reject(new CustomError());
+```
+
+### `allowThrowingAny`
+
+{/* insert option description */}
+
+Examples of **correct** code with `{ allowThrowingAny: true }`:
+
+```ts option='{ "allowThrowingAny": true }' showPlaygroundButton
+declare const value: any;
+
+Promise.reject(value);
+```
+
+### `allowThrowingUnknown`
+
+{/* insert option description */}
+
+Examples of **correct** code with `{ allowThrowingUnknown: true }`:
+
+```ts option='{ "allowThrowingUnknown": true }' showPlaygroundButton
+declare const value: unknown;
+
+Promise.reject(value);
+```
