@@ -10,6 +10,23 @@ ruleTester.run('prefer-ast-types-enum', rule, {
   assertionOptions: {
     requireData: true,
   },
+  valid: [
+    "node.type === 'constructor';",
+    'node.type === AST_NODE_TYPES.Literal;',
+    'node.type === AST_TOKEN_TYPES.Keyword;',
+    'node.type === DefinitionType.Parameter;',
+    'node.type === 1;',
+    `
+enum MY_ENUM {
+  Literal = 1,
+}
+    `,
+    `
+enum AST_NODE_TYPES {
+  Literal = 'Literal',
+}
+    `,
+  ],
   invalid: [
     {
       code: "node.type === 'Literal';",
@@ -59,22 +76,5 @@ ruleTester.run('prefer-ast-types-enum', rule, {
       ],
       output: 'node.type === DefinitionType.Parameter;',
     },
-  ],
-  valid: [
-    "node.type === 'constructor';",
-    'node.type === AST_NODE_TYPES.Literal;',
-    'node.type === AST_TOKEN_TYPES.Keyword;',
-    'node.type === DefinitionType.Parameter;',
-    'node.type === 1;',
-    `
-enum MY_ENUM {
-  Literal = 1,
-}
-    `,
-    `
-enum AST_NODE_TYPES {
-  Literal = 'Literal',
-}
-    `,
   ],
 });

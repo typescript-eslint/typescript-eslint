@@ -1177,6 +1177,20 @@ if (f()) {
     },
     {
       code: `
+declare const f: () => number | string | Promise<number> | Promise<boolean>;
+if (f()) {
+}
+      `,
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
 declare const f: () => string[] | Promise<number[]>;
 if (f()) {
 }
@@ -3274,6 +3288,29 @@ using e = d;
     {
       code: `
 declare const f: () => number | Promise<number>;
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: () => number | string | Promise<number> | Promise<string>;
 if (f()) {
 }
       `,

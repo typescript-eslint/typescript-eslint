@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "8.70.0",
+  "version": "8.70.1",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -83,19 +83,11 @@
         "command": "eslint"
       },
       "typecheck": {
-        "outputs": [
-          "{workspaceRoot}/dist",
-          "{projectRoot}/dist"
-        ],
         "dependsOn": [
           "typescript-estree:build"
         ]
       },
       "typecheck:tsgo": {
-        "outputs": [
-          "{workspaceRoot}/dist",
-          "{projectRoot}/dist"
-        ],
         "dependsOn": [
           "typescript-estree:build"
         ]

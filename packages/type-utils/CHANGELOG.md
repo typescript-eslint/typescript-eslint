@@ -1,3 +1,17 @@
+## 8.70.1 (2026-09-21)
+
+### 🩹 Fixes
+
+- **type-utils:** match package specifiers on whole path components ([#12838](https://github.com/typescript-eslint/typescript-eslint/pull/12838))
+
+### ❤️ Thank You
+
+- Amin @amiin-dev
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.70.0 (2026-09-07)
 
 This was a version bump only for type-utils to align it with other projects, there were no code changes.
