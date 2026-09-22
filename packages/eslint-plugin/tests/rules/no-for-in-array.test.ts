@@ -7,6 +7,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-for-in-array', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 for (const x of [3, 4, 5]) {

@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-for-of';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-for-of', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 for (let i = 0; i < arr1.length; i++) {

@@ -6,6 +6,9 @@ import rule, { phrases } from '../../src/rules/prefer-function-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-function-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 interface Foo {

@@ -4,6 +4,10 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-and-neq-undefined', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
+  valid: [],
   invalid: [
     {
       code: `
@@ -907,5 +911,4 @@ foo.bar?.()?.baz;
       output: null,
     },
   ],
-  valid: [],
 });

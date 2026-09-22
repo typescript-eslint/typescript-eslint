@@ -13,6 +13,85 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-dynamic-tests', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
+  valid: [
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: ['const x = 1;'],
+  invalid: [],
+});
+      `,
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: ['const x = 1;', 'let y = 2;'],
+  invalid: [
+    {
+      code: 'var z = 3;',
+      errors: [{ messageId: 'error' }],
+    },
+  ],
+});
+      `,
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [{ code: 'const x = 1;' }, { code: 'let y = 2;' }],
+  invalid: [],
+});
+      `,
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [noFormat\`const x = 1;\`],
+  invalid: [],
+});
+      `,
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  valid: [{ code: noFormat\`const x = 1;\` }],
+  invalid: [],
+});
+      `,
+    },
+    {
+      code: `
+ruleTester.run('test', rule, {
+  code: "import type { ValueOf } from './utils';",
+  filename: path.resolve(
+    PACKAGES_DIR,
+    'ast-spec/src/expression/AssignmentExpression/spec.ts',
+  ),
+});
+      `,
+    },
+    `
+ruleTester.run('test', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: 'x.y!;',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'noNonNull',
+          suggestions: undefined,
+        },
+      ],
+    },
+  ],
+});
+    `,
+  ],
   invalid: [
     // Function calls in test arrays
     {
@@ -352,81 +431,5 @@ ruleTester.run('test', rule, {
 });
       `,
     },
-  ],
-  valid: [
-    {
-      code: `
-ruleTester.run('test', rule, {
-  valid: ['const x = 1;'],
-  invalid: [],
-});
-      `,
-    },
-    {
-      code: `
-ruleTester.run('test', rule, {
-  valid: ['const x = 1;', 'let y = 2;'],
-  invalid: [
-    {
-      code: 'var z = 3;',
-      errors: [{ messageId: 'error' }],
-    },
-  ],
-});
-      `,
-    },
-    {
-      code: `
-ruleTester.run('test', rule, {
-  valid: [{ code: 'const x = 1;' }, { code: 'let y = 2;' }],
-  invalid: [],
-});
-      `,
-    },
-    {
-      code: `
-ruleTester.run('test', rule, {
-  valid: [noFormat\`const x = 1;\`],
-  invalid: [],
-});
-      `,
-    },
-    {
-      code: `
-ruleTester.run('test', rule, {
-  valid: [{ code: noFormat\`const x = 1;\` }],
-  invalid: [],
-});
-      `,
-    },
-    {
-      code: `
-ruleTester.run('test', rule, {
-  code: "import type { ValueOf } from './utils';",
-  filename: path.resolve(
-    PACKAGES_DIR,
-    'ast-spec/src/expression/AssignmentExpression/spec.ts',
-  ),
-});
-      `,
-    },
-    `
-ruleTester.run('test', rule, {
-  valid: [],
-  invalid: [
-    {
-      code: 'x.y!;',
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'noNonNull',
-          suggestions: undefined,
-        },
-      ],
-    },
-  ],
-});
-    `,
   ],
 });

@@ -3,7 +3,7 @@
 // License      : https://github.com/eslint/eslint/blob/eb76282e0a2db8aa10a3d5659f5f9237d9729121/LICENSE
 
 // We try not to change this file, as every modification is added maintenance burden
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors, @typescript-eslint/internal/no-dynamic-tests */
+/* eslint-disable @typescript-eslint/internal/no-dynamic-tests */
 
 // cspell:ignore fooz
 
@@ -108,6 +108,1331 @@ function usedIgnoredError(
 }
 
 ruleTester.run('no-unused-vars', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
+  valid: [
+    `
+var foo = 5;
+
+label: while (true) {
+  console.log(foo);
+  break label;
+}
+    `,
+    `
+var foo = 5;
+
+while (true) {
+  console.log(foo);
+  break;
+}
+    `,
+    {
+      code: `
+for (let prop in box) {
+  box[prop] = parseInt(box[prop]);
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    `
+var box = { a: 2 };
+for (var prop in box) {
+  box[prop] = parseInt(box[prop]);
+}
+    `,
+    `
+f({
+  set foo(a) {
+    return;
+  },
+});
+    `,
+    {
+      code: `
+a;
+var a;
+      `,
+      options: ['all'],
+    },
+    {
+      code: `
+var a = 10;
+alert(a);
+      `,
+      options: ['all'],
+    },
+    {
+      code: `
+var a = 10;
+(function () {
+  alert(a);
+})();
+      `,
+      options: ['all'],
+    },
+    {
+      code: `
+var a = 10;
+(function () {
+  setTimeout(function () {
+    alert(a);
+  }, 0);
+})();
+      `,
+      options: ['all'],
+    },
+    {
+      code: `
+var a = 10;
+d[a] = 0;
+      `,
+      options: ['all'],
+    },
+    {
+      code: `
+(function () {
+  var a = 10;
+  return a;
+})();
+      `,
+      options: ['all'],
+    },
+    {
+      code: '(function g() {})();',
+      options: ['all'],
+    },
+    {
+      code: `
+function f(a) {
+  alert(a);
+}
+f();
+      `,
+      options: ['all'],
+    },
+    {
+      code: `
+var c = 0;
+function f(a) {
+  var b = a;
+  return b;
+}
+f(c);
+      `,
+      options: ['all'],
+    },
+    {
+      code: `
+function a(x, y) {
+  return y;
+}
+a();
+      `,
+      options: ['all'],
+    },
+    {
+      code: `
+var arr1 = [1, 2];
+var arr2 = [3, 4];
+for (var i in arr1) {
+  arr1[i] = 5;
+}
+for (var i in arr2) {
+  arr2[i] = 10;
+}
+      `,
+      options: ['all'],
+    },
+    {
+      code: 'var a = 10;',
+      options: ['local'],
+    },
+    {
+      code: `
+var min = 'min';
+Math[min];
+      `,
+      options: ['all'],
+    },
+    {
+      code: `
+Foo.bar = function (baz) {
+  return baz;
+};
+      `,
+      options: ['all'],
+    },
+    'myFunc(function foo() {}.bind(this));',
+    'myFunc(function foo() {}.toString());',
+    `
+function foo(first, second) {
+  doStuff(function () {
+    console.log(second);
+  });
+}
+foo();
+    `,
+    `
+(function () {
+  var doSomething = function doSomething() {};
+  doSomething();
+})();
+    `,
+    '/*global a */ a;',
+    {
+      code: `
+var a = 10;
+(function () {
+  alert(a);
+})();
+      `,
+      options: [{ vars: 'all' }],
+    },
+    {
+      code: `
+function g(bar, baz) {
+  return baz;
+}
+g();
+      `,
+      options: [{ vars: 'all' }],
+    },
+    {
+      code: `
+function g(bar, baz) {
+  return baz;
+}
+g();
+      `,
+      options: [{ args: 'after-used', vars: 'all' }],
+    },
+    {
+      code: `
+function g(bar, baz) {
+  return bar;
+}
+g();
+      `,
+      options: [{ args: 'none', vars: 'all' }],
+    },
+    {
+      code: `
+function g(bar, baz) {
+  return 2;
+}
+g();
+      `,
+      options: [{ args: 'none', vars: 'all' }],
+    },
+    {
+      code: `
+function g(bar, baz) {
+  return bar + baz;
+}
+g();
+      `,
+      options: [{ args: 'all', vars: 'local' }],
+    },
+    {
+      code: `
+var g = function (bar, baz) {
+  return 2;
+};
+g();
+      `,
+      options: [{ args: 'none', vars: 'all' }],
+    },
+    `
+(function z() {
+  z();
+})();
+    `,
+    {
+      code: ' ',
+      languageOptions: { globals: { a: true } },
+    },
+    {
+      code: `
+var who = 'Paul';
+module.exports = \`Hello \${who}!\`;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: 'export var foo = 123;',
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
+    },
+    {
+      code: 'export function foo() {}',
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
+    },
+    {
+      code: `
+let toUpper = partial => partial.toUpperCase;
+export { toUpper };
+      `,
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
+    },
+    {
+      code: 'export class foo {}',
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
+    },
+    {
+      code: `
+class Foo {}
+var x = new Foo();
+x.foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const foo = 'hello!';
+function bar(foobar = foo) {
+  foobar.replace(/!$/, ' world!');
+}
+bar();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    `
+function Foo() {}
+var x = new Foo();
+x.foo();
+    `,
+    `
+function foo() {
+  var foo = 1;
+  return foo;
+}
+foo();
+    `,
+    `
+function foo(foo) {
+  return foo;
+}
+foo(1);
+    `,
+    `
+function foo() {
+  function foo() {
+    return 1;
+  }
+  return foo();
+}
+foo();
+    `,
+    {
+      code: `
+function foo() {
+  var foo = 1;
+  return foo;
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo(foo) {
+  return foo;
+}
+foo(1);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo() {
+  function foo() {
+    return 1;
+  }
+  return foo();
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = 1;
+const [y = x] = [];
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = 1;
+const { y = x } = {};
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = 1;
+const {
+  z: [y = x],
+} = {};
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = [];
+const { z: [y] = x } = {};
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = 1;
+let y;
+[y = x] = [];
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = 1;
+let y;
+({
+  z: [y = x],
+} = {});
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = [];
+let y;
+({ z: [y] = x } = {});
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = 1;
+function foo(y = x) {
+  bar(y);
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = 1;
+function foo({ y = x } = {}) {
+  bar(y);
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = 1;
+function foo(
+  y = function (z = x) {
+    bar(z);
+  },
+) {
+  y();
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+const x = 1;
+function foo(
+  y = function () {
+    bar(x);
+  },
+) {
+  y();
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = 1;
+var [y = x] = [];
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = 1;
+var { y = x } = {};
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = 1;
+var {
+  z: [y = x],
+} = {};
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = [];
+var { z: [y] = x } = {};
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = 1,
+  y;
+[y = x] = [];
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = 1,
+  y;
+({
+  z: [y = x],
+} = {});
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = [],
+  y;
+({ z: [y] = x } = {});
+foo(y);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = 1;
+function foo(y = x) {
+  bar(y);
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = 1;
+function foo({ y = x } = {}) {
+  bar(y);
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = 1;
+function foo(
+  y = function (z = x) {
+    bar(z);
+  },
+) {
+  y();
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+var x = 1;
+function foo(
+  y = function () {
+    bar(x);
+  },
+) {
+  y();
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+
+    // exported variables should work
+    "/*exported toaster*/ var toaster = 'great';",
+    `
+/*exported toaster, poster*/ var toaster = 1;
+poster = 0;
+    `,
+    {
+      code: '/*exported x*/ var { x } = y;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: '/*exported x, y*/ var { x, y } = z;',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+
+    // Can mark variables as used via context.markVariableAsUsed()
+    '/*eslint @rule-tester/use-every-a:1*/ var a;',
+    `
+/*eslint @rule-tester/use-every-a:1*/ !function (a) {
+  return 1;
+};
+    `,
+    `
+/*eslint @rule-tester/use-every-a:1*/ !function () {
+  var a;
+  return 1;
+};
+    `,
+
+    // ignore pattern
+    {
+      code: 'var _a;',
+      options: [{ vars: 'all', varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+var a;
+function foo() {
+  var _b;
+}
+foo();
+      `,
+      options: [{ vars: 'local', varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+function foo(_a) {}
+foo();
+      `,
+      options: [{ args: 'all', argsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+function foo(a, _b) {
+  return a;
+}
+foo();
+      `,
+      options: [{ args: 'after-used', argsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+var [firstItemIgnored, secondItem] = items;
+console.log(secondItem);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ vars: 'all', varsIgnorePattern: '[iI]gnored' }],
+    },
+    {
+      code: `
+const [a, _b, c] = items;
+console.log(a + c);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+const [[a, _b, c]] = items;
+console.log(a + c);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+const {
+  x: [_a, foo],
+} = bar;
+console.log(foo);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+function baz([_b, foo]) {
+  foo;
+}
+baz();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+function baz({ x: [_b, foo] }) {
+  foo;
+}
+baz();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+function baz([
+  {
+    x: [_b, foo],
+  },
+]) {
+  foo;
+}
+baz();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+let _a, b;
+foo.forEach(item => {
+  [_a, b] = item;
+  doSomething(b);
+});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+// doesn't report _x
+let _x, y;
+_x = 1;
+[_x, y] = foo;
+y;
+
+// doesn't report _a
+let _a, b;
+[_a, b] = foo;
+_a = 1;
+b;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
+      options: [{ destructuredArrayIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+// doesn't report _x
+let _x, y;
+_x = 1;
+[_x, y] = foo;
+y;
+
+// doesn't report _a
+let _a, b;
+_a = 1;
+({ _a, ...b } = foo);
+b;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
+      options: [
+        { destructuredArrayIgnorePattern: '^_', ignoreRestSiblings: true },
+      ],
+    },
+
+    // for-in loops (see #2342)
+    `
+(function (obj) {
+  var name;
+  for (name in obj) return;
+})({});
+    `,
+    `
+(function (obj) {
+  var name;
+  for (name in obj) {
+    return;
+  }
+})({});
+    `,
+    `
+(function (obj) {
+  for (var name in obj) {
+    return true;
+  }
+})({});
+    `,
+    `
+(function (obj) {
+  for (var name in obj) return true;
+})({});
+    `,
+
+    {
+      code: `
+(function (obj) {
+  let name;
+  for (name in obj) return;
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function (obj) {
+  let name;
+  for (name in obj) {
+    return;
+  }
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function (obj) {
+  for (let name in obj) {
+    return true;
+  }
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function (obj) {
+  for (let name in obj) return true;
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+
+    {
+      code: `
+(function (obj) {
+  for (const name in obj) {
+    return true;
+  }
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function (obj) {
+  for (const name in obj) return true;
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+
+    // For-of loops
+    {
+      code: `
+(function (iter) {
+  let name;
+  for (name of iter) return;
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function (iter) {
+  let name;
+  for (name of iter) {
+    return;
+  }
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function (iter) {
+  for (let name of iter) {
+    return true;
+  }
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function (iter) {
+  for (let name of iter) return true;
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+
+    {
+      code: `
+(function (iter) {
+  for (const name of iter) {
+    return true;
+  }
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function (iter) {
+  for (const name of iter) return true;
+})({});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+
+    // Sequence Expressions (See https://github.com/eslint/eslint/issues/14325)
+    {
+      code: `
+let x = 0;
+foo = (0, x++);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+let x = 0;
+foo = (0, (x += 1));
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+let x = 0;
+foo = (0, (x = x + 1));
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+
+    // caughtErrors
+    {
+      code: `
+try {
+} catch (err) {}
+      `,
+      options: [{ caughtErrors: 'none' }],
+    },
+    {
+      code: `
+try {
+} catch (err) {
+  console.error(err);
+}
+      `,
+      options: [{ caughtErrors: 'all' }],
+    },
+    {
+      code: `
+try {
+} catch (ignoreErr) {}
+      `,
+      options: [{ caughtErrorsIgnorePattern: '^ignore' }],
+    },
+    {
+      code: `
+try {
+} catch (ignoreErr) {}
+      `,
+      options: [{ caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' }],
+    },
+
+    // caughtErrors with other combinations
+    {
+      code: `
+try {
+} catch (err) {}
+      `,
+      options: [{ args: 'all', caughtErrors: 'none', vars: 'all' }],
+    },
+
+    // Using object rest for variable omission
+    {
+      code: `
+const data = { type: 'coords', x: 1, y: 2 };
+const { type, ...coords } = data;
+console.log(coords);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
+      options: [{ ignoreRestSiblings: true }],
+    },
+
+    // https://github.com/eslint/eslint/issues/6348
+    `
+var a = 0,
+  b;
+b = a = a + 1;
+foo(b);
+    `,
+    `
+var a = 0,
+  b;
+b = a += a + 1;
+foo(b);
+    `,
+    `
+var a = 0,
+  b;
+b = a++;
+foo(b);
+    `,
+    `
+function foo(a) {
+  var b = (a = a + 1);
+  bar(b);
+}
+foo();
+    `,
+    `
+function foo(a) {
+  var b = (a += a + 1);
+  bar(b);
+}
+foo();
+    `,
+    `
+function foo(a) {
+  var b = a++;
+  bar(b);
+}
+foo();
+    `,
+
+    // https://github.com/eslint/eslint/issues/6576
+    `
+var unregisterFooWatcher;
+// ...
+unregisterFooWatcher = $scope.$watch('foo', function () {
+  // ...some code..
+  unregisterFooWatcher();
+});
+    `,
+    `
+var ref;
+ref = setInterval(function () {
+  clearInterval(ref);
+}, 10);
+    `,
+    `
+var _timer;
+function f() {
+  _timer = setTimeout(function () {}, _timer ? 100 : 0);
+}
+f();
+    `,
+    `
+function foo(cb) {
+  cb = (function () {
+    function something(a) {
+      cb(1 + a);
+    }
+    register(something);
+  })();
+}
+foo();
+    `,
+    {
+      code: `
+function* foo(cb) {
+  cb = yield function (a) {
+    cb(1 + a);
+  };
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo(cb) {
+  cb = tag\`hello\${function (a) {
+    cb(1 + a);
+  }}\`;
+}
+foo();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    `
+function foo(cb) {
+  var b;
+  cb = b = function (a) {
+    cb(1 + a);
+  };
+  b();
+}
+foo();
+    `,
+
+    // https://github.com/eslint/eslint/issues/6646
+    `
+function someFunction() {
+  var a = 0,
+    i;
+  for (i = 0; i < 2; i++) {
+    a = myFunction(a);
+  }
+}
+someFunction();
+    `,
+
+    // https://github.com/eslint/eslint/issues/7124
+    {
+      code: `
+(function (a, b, { c, d }) {
+  d;
+});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ argsIgnorePattern: 'c' }],
+    },
+    {
+      code: `
+(function (a, b, { c, d }) {
+  c;
+});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ argsIgnorePattern: 'd' }],
+    },
+
+    // https://github.com/eslint/eslint/issues/7250
+    {
+      code: `
+(function (a, b, c) {
+  c;
+});
+      `,
+      options: [{ argsIgnorePattern: 'c' }],
+    },
+    {
+      code: `
+(function (a, b, { c, d }) {
+  c;
+});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ argsIgnorePattern: '[cd]' }],
+    },
+
+    // https://github.com/eslint/eslint/issues/7351
+    {
+      code: `
+(class {
+  set foo(UNUSED) {}
+});
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+class Foo {
+  set bar(UNUSED) {}
+}
+console.log(Foo);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+
+    // https://github.com/eslint/eslint/issues/8119
+    {
+      code: '({ a, ...rest }) => rest;',
+      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
+      options: [{ args: 'all', ignoreRestSiblings: true }],
+    },
+
+    // https://github.com/eslint/eslint/issues/14163
+    {
+      code: `
+let foo, rest;
+({ foo, ...rest } = something);
+console.log(rest);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2020 } },
+      options: [{ ignoreRestSiblings: true }],
+    },
+
+    // https://github.com/eslint/eslint/issues/10952
+    `
+/*eslint @rule-tester/use-every-a:1*/ !function (b, a) {
+  return 1;
+};
+    `,
+
+    // https://github.com/eslint/eslint/issues/10982
+    `
+var a = function () {
+  a();
+};
+a();
+    `,
+    `
+var a = function () {
+  return function () {
+    a();
+  };
+};
+a();
+    `,
+    {
+      code: `
+const a = () => {
+  a();
+};
+a();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2015 } },
+    },
+    {
+      code: `
+const a = () => () => {
+  a();
+};
+a();
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2015 } },
+    },
+
+    // export * as ns from "source"
+    {
+      code: "export * as ns from 'source';",
+      languageOptions: {
+        parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
+      },
+    },
+
+    // import.meta
+    {
+      code: 'import.meta;',
+      languageOptions: {
+        parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
+      },
+    },
+
+    // https://github.com/eslint/eslint/issues/17299
+    {
+      code: `
+var a;
+a ||= 1;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
+    },
+    {
+      code: `
+var a;
+a &&= 1;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
+    },
+    {
+      code: `
+var a;
+a ??= 1;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
+    },
+
+    // ignore class with static initialization block https://github.com/eslint/eslint/issues/17772
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+      options: [
+        { ignoreClassWithStaticInitBlock: true, varsIgnorePattern: '^_' },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
+      options: [
+        { ignoreClassWithStaticInitBlock: false, varsIgnorePattern: '^Foo' },
+      ],
+    },
+
+    // https://github.com/eslint/eslint/issues/17568
+    {
+      code: `
+const a = 5;
+const _c = a + 5;
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [
+        {
+          args: 'all',
+          reportUsedIgnorePattern: true,
+          varsIgnorePattern: '^_',
+        },
+      ],
+    },
+    {
+      code: `
+(function foo(a, _b) {
+  return a + 5;
+})(5);
+      `,
+      options: [
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          reportUsedIgnorePattern: true,
+        },
+      ],
+    },
+    {
+      code: `
+const [a, _b, c] = items;
+console.log(a + c);
+      `,
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [
+        {
+          destructuredArrayIgnorePattern: '^_',
+          reportUsedIgnorePattern: true,
+        },
+      ],
+    },
+  ],
   invalid: [
     {
       code: `
@@ -3108,1328 +4433,6 @@ _ => {
         {
           argsIgnorePattern: 'ignored',
           varsIgnorePattern: '_',
-        },
-      ],
-    },
-  ],
-  valid: [
-    `
-var foo = 5;
-
-label: while (true) {
-  console.log(foo);
-  break label;
-}
-    `,
-    `
-var foo = 5;
-
-while (true) {
-  console.log(foo);
-  break;
-}
-    `,
-    {
-      code: `
-for (let prop in box) {
-  box[prop] = parseInt(box[prop]);
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    `
-var box = { a: 2 };
-for (var prop in box) {
-  box[prop] = parseInt(box[prop]);
-}
-    `,
-    `
-f({
-  set foo(a) {
-    return;
-  },
-});
-    `,
-    {
-      code: `
-a;
-var a;
-      `,
-      options: ['all'],
-    },
-    {
-      code: `
-var a = 10;
-alert(a);
-      `,
-      options: ['all'],
-    },
-    {
-      code: `
-var a = 10;
-(function () {
-  alert(a);
-})();
-      `,
-      options: ['all'],
-    },
-    {
-      code: `
-var a = 10;
-(function () {
-  setTimeout(function () {
-    alert(a);
-  }, 0);
-})();
-      `,
-      options: ['all'],
-    },
-    {
-      code: `
-var a = 10;
-d[a] = 0;
-      `,
-      options: ['all'],
-    },
-    {
-      code: `
-(function () {
-  var a = 10;
-  return a;
-})();
-      `,
-      options: ['all'],
-    },
-    {
-      code: '(function g() {})();',
-      options: ['all'],
-    },
-    {
-      code: `
-function f(a) {
-  alert(a);
-}
-f();
-      `,
-      options: ['all'],
-    },
-    {
-      code: `
-var c = 0;
-function f(a) {
-  var b = a;
-  return b;
-}
-f(c);
-      `,
-      options: ['all'],
-    },
-    {
-      code: `
-function a(x, y) {
-  return y;
-}
-a();
-      `,
-      options: ['all'],
-    },
-    {
-      code: `
-var arr1 = [1, 2];
-var arr2 = [3, 4];
-for (var i in arr1) {
-  arr1[i] = 5;
-}
-for (var i in arr2) {
-  arr2[i] = 10;
-}
-      `,
-      options: ['all'],
-    },
-    {
-      code: 'var a = 10;',
-      options: ['local'],
-    },
-    {
-      code: `
-var min = 'min';
-Math[min];
-      `,
-      options: ['all'],
-    },
-    {
-      code: `
-Foo.bar = function (baz) {
-  return baz;
-};
-      `,
-      options: ['all'],
-    },
-    'myFunc(function foo() {}.bind(this));',
-    'myFunc(function foo() {}.toString());',
-    `
-function foo(first, second) {
-  doStuff(function () {
-    console.log(second);
-  });
-}
-foo();
-    `,
-    `
-(function () {
-  var doSomething = function doSomething() {};
-  doSomething();
-})();
-    `,
-    '/*global a */ a;',
-    {
-      code: `
-var a = 10;
-(function () {
-  alert(a);
-})();
-      `,
-      options: [{ vars: 'all' }],
-    },
-    {
-      code: `
-function g(bar, baz) {
-  return baz;
-}
-g();
-      `,
-      options: [{ vars: 'all' }],
-    },
-    {
-      code: `
-function g(bar, baz) {
-  return baz;
-}
-g();
-      `,
-      options: [{ args: 'after-used', vars: 'all' }],
-    },
-    {
-      code: `
-function g(bar, baz) {
-  return bar;
-}
-g();
-      `,
-      options: [{ args: 'none', vars: 'all' }],
-    },
-    {
-      code: `
-function g(bar, baz) {
-  return 2;
-}
-g();
-      `,
-      options: [{ args: 'none', vars: 'all' }],
-    },
-    {
-      code: `
-function g(bar, baz) {
-  return bar + baz;
-}
-g();
-      `,
-      options: [{ args: 'all', vars: 'local' }],
-    },
-    {
-      code: `
-var g = function (bar, baz) {
-  return 2;
-};
-g();
-      `,
-      options: [{ args: 'none', vars: 'all' }],
-    },
-    `
-(function z() {
-  z();
-})();
-    `,
-    {
-      code: ' ',
-      languageOptions: { globals: { a: true } },
-    },
-    {
-      code: `
-var who = 'Paul';
-module.exports = \`Hello \${who}!\`;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: 'export var foo = 123;',
-      languageOptions: {
-        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      },
-    },
-    {
-      code: 'export function foo() {}',
-      languageOptions: {
-        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      },
-    },
-    {
-      code: `
-let toUpper = partial => partial.toUpperCase;
-export { toUpper };
-      `,
-      languageOptions: {
-        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      },
-    },
-    {
-      code: 'export class foo {}',
-      languageOptions: {
-        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      },
-    },
-    {
-      code: `
-class Foo {}
-var x = new Foo();
-x.foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const foo = 'hello!';
-function bar(foobar = foo) {
-  foobar.replace(/!$/, ' world!');
-}
-bar();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    `
-function Foo() {}
-var x = new Foo();
-x.foo();
-    `,
-    `
-function foo() {
-  var foo = 1;
-  return foo;
-}
-foo();
-    `,
-    `
-function foo(foo) {
-  return foo;
-}
-foo(1);
-    `,
-    `
-function foo() {
-  function foo() {
-    return 1;
-  }
-  return foo();
-}
-foo();
-    `,
-    {
-      code: `
-function foo() {
-  var foo = 1;
-  return foo;
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo(foo) {
-  return foo;
-}
-foo(1);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo() {
-  function foo() {
-    return 1;
-  }
-  return foo();
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = 1;
-const [y = x] = [];
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = 1;
-const { y = x } = {};
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = 1;
-const {
-  z: [y = x],
-} = {};
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = [];
-const { z: [y] = x } = {};
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = 1;
-let y;
-[y = x] = [];
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = 1;
-let y;
-({
-  z: [y = x],
-} = {});
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = [];
-let y;
-({ z: [y] = x } = {});
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = 1;
-function foo(y = x) {
-  bar(y);
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = 1;
-function foo({ y = x } = {}) {
-  bar(y);
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = 1;
-function foo(
-  y = function (z = x) {
-    bar(z);
-  },
-) {
-  y();
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-const x = 1;
-function foo(
-  y = function () {
-    bar(x);
-  },
-) {
-  y();
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = 1;
-var [y = x] = [];
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = 1;
-var { y = x } = {};
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = 1;
-var {
-  z: [y = x],
-} = {};
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = [];
-var { z: [y] = x } = {};
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = 1,
-  y;
-[y = x] = [];
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = 1,
-  y;
-({
-  z: [y = x],
-} = {});
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = [],
-  y;
-({ z: [y] = x } = {});
-foo(y);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = 1;
-function foo(y = x) {
-  bar(y);
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = 1;
-function foo({ y = x } = {}) {
-  bar(y);
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = 1;
-function foo(
-  y = function (z = x) {
-    bar(z);
-  },
-) {
-  y();
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-var x = 1;
-function foo(
-  y = function () {
-    bar(x);
-  },
-) {
-  y();
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-
-    // exported variables should work
-    "/*exported toaster*/ var toaster = 'great';",
-    `
-/*exported toaster, poster*/ var toaster = 1;
-poster = 0;
-    `,
-    {
-      code: '/*exported x*/ var { x } = y;',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: '/*exported x, y*/ var { x, y } = z;',
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-
-    // Can mark variables as used via context.markVariableAsUsed()
-    '/*eslint @rule-tester/use-every-a:1*/ var a;',
-    `
-/*eslint @rule-tester/use-every-a:1*/ !function (a) {
-  return 1;
-};
-    `,
-    `
-/*eslint @rule-tester/use-every-a:1*/ !function () {
-  var a;
-  return 1;
-};
-    `,
-
-    // ignore pattern
-    {
-      code: 'var _a;',
-      options: [{ vars: 'all', varsIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-var a;
-function foo() {
-  var _b;
-}
-foo();
-      `,
-      options: [{ vars: 'local', varsIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-function foo(_a) {}
-foo();
-      `,
-      options: [{ args: 'all', argsIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-function foo(a, _b) {
-  return a;
-}
-foo();
-      `,
-      options: [{ args: 'after-used', argsIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-var [firstItemIgnored, secondItem] = items;
-console.log(secondItem);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ vars: 'all', varsIgnorePattern: '[iI]gnored' }],
-    },
-    {
-      code: `
-const [a, _b, c] = items;
-console.log(a + c);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ destructuredArrayIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-const [[a, _b, c]] = items;
-console.log(a + c);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ destructuredArrayIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-const {
-  x: [_a, foo],
-} = bar;
-console.log(foo);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ destructuredArrayIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-function baz([_b, foo]) {
-  foo;
-}
-baz();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ destructuredArrayIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-function baz({ x: [_b, foo] }) {
-  foo;
-}
-baz();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ destructuredArrayIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-function baz([
-  {
-    x: [_b, foo],
-  },
-]) {
-  foo;
-}
-baz();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ destructuredArrayIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-let _a, b;
-foo.forEach(item => {
-  [_a, b] = item;
-  doSomething(b);
-});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ destructuredArrayIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-// doesn't report _x
-let _x, y;
-_x = 1;
-[_x, y] = foo;
-y;
-
-// doesn't report _a
-let _a, b;
-[_a, b] = foo;
-_a = 1;
-b;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
-      options: [{ destructuredArrayIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-// doesn't report _x
-let _x, y;
-_x = 1;
-[_x, y] = foo;
-y;
-
-// doesn't report _a
-let _a, b;
-_a = 1;
-({ _a, ...b } = foo);
-b;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
-      options: [
-        { destructuredArrayIgnorePattern: '^_', ignoreRestSiblings: true },
-      ],
-    },
-
-    // for-in loops (see #2342)
-    `
-(function (obj) {
-  var name;
-  for (name in obj) return;
-})({});
-    `,
-    `
-(function (obj) {
-  var name;
-  for (name in obj) {
-    return;
-  }
-})({});
-    `,
-    `
-(function (obj) {
-  for (var name in obj) {
-    return true;
-  }
-})({});
-    `,
-    `
-(function (obj) {
-  for (var name in obj) return true;
-})({});
-    `,
-
-    {
-      code: `
-(function (obj) {
-  let name;
-  for (name in obj) return;
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-(function (obj) {
-  let name;
-  for (name in obj) {
-    return;
-  }
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-(function (obj) {
-  for (let name in obj) {
-    return true;
-  }
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-(function (obj) {
-  for (let name in obj) return true;
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-
-    {
-      code: `
-(function (obj) {
-  for (const name in obj) {
-    return true;
-  }
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-(function (obj) {
-  for (const name in obj) return true;
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-
-    // For-of loops
-    {
-      code: `
-(function (iter) {
-  let name;
-  for (name of iter) return;
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-(function (iter) {
-  let name;
-  for (name of iter) {
-    return;
-  }
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-(function (iter) {
-  for (let name of iter) {
-    return true;
-  }
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-(function (iter) {
-  for (let name of iter) return true;
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-
-    {
-      code: `
-(function (iter) {
-  for (const name of iter) {
-    return true;
-  }
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-(function (iter) {
-  for (const name of iter) return true;
-})({});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-
-    // Sequence Expressions (See https://github.com/eslint/eslint/issues/14325)
-    {
-      code: `
-let x = 0;
-foo = (0, x++);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-let x = 0;
-foo = (0, (x += 1));
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-let x = 0;
-foo = (0, (x = x + 1));
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-
-    // caughtErrors
-    {
-      code: `
-try {
-} catch (err) {}
-      `,
-      options: [{ caughtErrors: 'none' }],
-    },
-    {
-      code: `
-try {
-} catch (err) {
-  console.error(err);
-}
-      `,
-      options: [{ caughtErrors: 'all' }],
-    },
-    {
-      code: `
-try {
-} catch (ignoreErr) {}
-      `,
-      options: [{ caughtErrorsIgnorePattern: '^ignore' }],
-    },
-    {
-      code: `
-try {
-} catch (ignoreErr) {}
-      `,
-      options: [{ caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' }],
-    },
-
-    // caughtErrors with other combinations
-    {
-      code: `
-try {
-} catch (err) {}
-      `,
-      options: [{ args: 'all', caughtErrors: 'none', vars: 'all' }],
-    },
-
-    // Using object rest for variable omission
-    {
-      code: `
-const data = { type: 'coords', x: 1, y: 2 };
-const { type, ...coords } = data;
-console.log(coords);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
-      options: [{ ignoreRestSiblings: true }],
-    },
-
-    // https://github.com/eslint/eslint/issues/6348
-    `
-var a = 0,
-  b;
-b = a = a + 1;
-foo(b);
-    `,
-    `
-var a = 0,
-  b;
-b = a += a + 1;
-foo(b);
-    `,
-    `
-var a = 0,
-  b;
-b = a++;
-foo(b);
-    `,
-    `
-function foo(a) {
-  var b = (a = a + 1);
-  bar(b);
-}
-foo();
-    `,
-    `
-function foo(a) {
-  var b = (a += a + 1);
-  bar(b);
-}
-foo();
-    `,
-    `
-function foo(a) {
-  var b = a++;
-  bar(b);
-}
-foo();
-    `,
-
-    // https://github.com/eslint/eslint/issues/6576
-    `
-var unregisterFooWatcher;
-// ...
-unregisterFooWatcher = $scope.$watch('foo', function () {
-  // ...some code..
-  unregisterFooWatcher();
-});
-    `,
-    `
-var ref;
-ref = setInterval(function () {
-  clearInterval(ref);
-}, 10);
-    `,
-    `
-var _timer;
-function f() {
-  _timer = setTimeout(function () {}, _timer ? 100 : 0);
-}
-f();
-    `,
-    `
-function foo(cb) {
-  cb = (function () {
-    function something(a) {
-      cb(1 + a);
-    }
-    register(something);
-  })();
-}
-foo();
-    `,
-    {
-      code: `
-function* foo(cb) {
-  cb = yield function (a) {
-    cb(1 + a);
-  };
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-function foo(cb) {
-  cb = tag\`hello\${function (a) {
-    cb(1 + a);
-  }}\`;
-}
-foo();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    `
-function foo(cb) {
-  var b;
-  cb = b = function (a) {
-    cb(1 + a);
-  };
-  b();
-}
-foo();
-    `,
-
-    // https://github.com/eslint/eslint/issues/6646
-    `
-function someFunction() {
-  var a = 0,
-    i;
-  for (i = 0; i < 2; i++) {
-    a = myFunction(a);
-  }
-}
-someFunction();
-    `,
-
-    // https://github.com/eslint/eslint/issues/7124
-    {
-      code: `
-(function (a, b, { c, d }) {
-  d;
-});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ argsIgnorePattern: 'c' }],
-    },
-    {
-      code: `
-(function (a, b, { c, d }) {
-  c;
-});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ argsIgnorePattern: 'd' }],
-    },
-
-    // https://github.com/eslint/eslint/issues/7250
-    {
-      code: `
-(function (a, b, c) {
-  c;
-});
-      `,
-      options: [{ argsIgnorePattern: 'c' }],
-    },
-    {
-      code: `
-(function (a, b, { c, d }) {
-  c;
-});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [{ argsIgnorePattern: '[cd]' }],
-    },
-
-    // https://github.com/eslint/eslint/issues/7351
-    {
-      code: `
-(class {
-  set foo(UNUSED) {}
-});
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-    {
-      code: `
-class Foo {
-  set bar(UNUSED) {}
-}
-console.log(Foo);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-    },
-
-    // https://github.com/eslint/eslint/issues/8119
-    {
-      code: '({ a, ...rest }) => rest;',
-      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
-      options: [{ args: 'all', ignoreRestSiblings: true }],
-    },
-
-    // https://github.com/eslint/eslint/issues/14163
-    {
-      code: `
-let foo, rest;
-({ foo, ...rest } = something);
-console.log(rest);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2020 } },
-      options: [{ ignoreRestSiblings: true }],
-    },
-
-    // https://github.com/eslint/eslint/issues/10952
-    `
-/*eslint @rule-tester/use-every-a:1*/ !function (b, a) {
-  return 1;
-};
-    `,
-
-    // https://github.com/eslint/eslint/issues/10982
-    `
-var a = function () {
-  a();
-};
-a();
-    `,
-    `
-var a = function () {
-  return function () {
-    a();
-  };
-};
-a();
-    `,
-    {
-      code: `
-const a = () => {
-  a();
-};
-a();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2015 } },
-    },
-    {
-      code: `
-const a = () => () => {
-  a();
-};
-a();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2015 } },
-    },
-
-    // export * as ns from "source"
-    {
-      code: "export * as ns from 'source';",
-      languageOptions: {
-        parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
-      },
-    },
-
-    // import.meta
-    {
-      code: 'import.meta;',
-      languageOptions: {
-        parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
-      },
-    },
-
-    // https://github.com/eslint/eslint/issues/17299
-    {
-      code: `
-var a;
-a ||= 1;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
-    },
-    {
-      code: `
-var a;
-a &&= 1;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
-    },
-    {
-      code: `
-var a;
-a ??= 1;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
-    },
-
-    // ignore class with static initialization block https://github.com/eslint/eslint/issues/17772
-    {
-      code: `
-class Foo {
-  static {}
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-      options: [{ ignoreClassWithStaticInitBlock: true }],
-    },
-    {
-      code: `
-class Foo {
-  static {}
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-      options: [
-        { ignoreClassWithStaticInitBlock: true, varsIgnorePattern: '^_' },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  static {}
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 2022 } },
-      options: [
-        { ignoreClassWithStaticInitBlock: false, varsIgnorePattern: '^Foo' },
-      ],
-    },
-
-    // https://github.com/eslint/eslint/issues/17568
-    {
-      code: `
-const a = 5;
-const _c = a + 5;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [
-        {
-          args: 'all',
-          reportUsedIgnorePattern: true,
-          varsIgnorePattern: '^_',
-        },
-      ],
-    },
-    {
-      code: `
-(function foo(a, _b) {
-  return a + 5;
-})(5);
-      `,
-      options: [
-        {
-          args: 'all',
-          argsIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
-        },
-      ],
-    },
-    {
-      code: `
-const [a, _b, c] = items;
-console.log(a + c);
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      options: [
-        {
-          destructuredArrayIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
         },
       ],
     },

@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-misused-new';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-misused-new', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare abstract class C {

@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > special > ImportAttribute > _error_ > number-key > TSESTree - Error`]
+TSError
+> 1 | import data from 'mod' with { 1: 'json' };
+    |                               ^ Identifier or string literal expected.
+  2 |

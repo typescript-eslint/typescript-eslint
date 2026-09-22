@@ -84,7 +84,7 @@
     "monaco-editor": "0.54.0",
     "prismjs": "1.30.0",
     "rimraf": "catalog:",
-    "satori": "^0.29.0",
+    "satori": "^0.33.4",
     "stylelint": "^16.26.1",
     "stylelint-config-recommended": "^16.0.0",
     "stylelint-config-standard": "^38.0.0",
@@ -117,15 +117,15 @@
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "cwd": "{projectRoot}"
-        },
         "cache": true,
         "outputs": [
           "{projectRoot}/build",
           "{projectRoot}/data",
           "{projectRoot}/static/img/og"
-        ]
+        ],
+        "options": {
+          "cwd": "{projectRoot}"
+        }
       },
       "lint": {
         "command": "eslint",
