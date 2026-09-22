@@ -54,11 +54,15 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-  affected-for-tests:
-    name: Determine Affected Projects for Tests
+  build:
+    name: Build All Packages
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [install]
     runs-on: ubuntu-latest
+    permissions:
+      actions: read # to find the last successful run of this workflow (nrwl/nx-set-shas)
+      contents: read # to fetch code (actions/checkout)
+      pull-requests: read # to resolve the base of a merge group (nrwl/nx-set-shas)
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     outputs:
@@ -70,28 +74,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+          filter: tree:0
           persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Get affected projects
+
+      # Sets NX_BASE and NX_HEAD, used by `nx show projects --affected`
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
+
+      - name: Get affected projects for tests
         id: affected
         run: |
-          # Fetch base ref history so NX can determine affected projects
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --depth=1 origin "$BASE_REF"
-            BASE="origin/$BASE_REF"
-          else
-            BASE="HEAD~1"
-          fi
-
-          affected=$(pnpm exec nx show projects --affected --withTarget=test --json --base="$BASE" 2>/dev/null || echo '[]')
+          affected=$(pnpm exec nx show projects --affected --withTarget=test --json)
 
           echo "affected=$affected" >> "$GITHUB_OUTPUT"
-        env:
-          BASE_REF: ${{ github.base_ref }}
 
       # We want to skip non-affected packages, but GH Actions doesn't support `contains(affected, matrix.package)` in `if` conditions,
       # so we're creating the whole matrix dynamically instead.
@@ -101,22 +101,6 @@ jobs:
         env:
           AFFECTED: ${{ steps.affected.outputs.affected }}
 
-  build:
-    name: Build All Packages
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [install]
-    runs-on: ubuntu-latest
-    env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        with:
-          persist-credentials: false
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
       # Downstream jobs don't restore these outputs from disk -- their Nx targets depend on `build`
       # and pull it from the Nx Cloud remote cache, which this job populates.
       - name: Build
@@ -306,8 +290,8 @@ jobs:
   snapshots_clean:
     name: Verify snapshots are clean
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build, affected-for-tests]
-    if: ${{ needs['affected-for-tests'].outputs.snapshot_packages != '[]' && needs['affected-for-tests'].outputs.snapshot_packages != '' }}
+    needs: [build]
+    if: ${{ needs.build.outputs.snapshot_packages != '[]' && needs.build.outputs.snapshot_packages != '' }}
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -323,7 +307,7 @@ jobs:
 
       - name: Delete all ast-spec fixture snapshots
         id: ast_spec_clean
-        if: ${{ contains(fromJson(needs['affected-for-tests'].outputs.snapshot_packages), 'ast-spec') }}
+        if: ${{ contains(fromJson(needs.build.outputs.snapshot_packages), 'ast-spec') }}
         run: pnpm exec nx run ast-spec:clean-fixtures
 
       - name: Regenerate ast-spec fixture snapshots
@@ -344,7 +328,7 @@ jobs:
 
       - name: Delete all scope-manager fixture snapshots
         id: scope_manager_clean
-        if: ${{ !cancelled() && contains(fromJson(needs['affected-for-tests'].outputs.snapshot_packages), 'scope-manager') }}
+        if: ${{ !cancelled() && contains(fromJson(needs.build.outputs.snapshot_packages), 'scope-manager') }}
         run: pnpm exec nx run scope-manager:clean-fixtures
 
       - name: Regenerate scope-manager fixture snapshots
@@ -367,8 +351,8 @@ jobs:
     # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
     name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build, affected-for-tests]
-    if: ${{ needs['affected-for-tests'].outputs.is_plugin_affected == 'true' }}
+    needs: [build]
+    if: ${{ needs.build.outputs.is_plugin_affected == 'true' }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -420,14 +404,14 @@ jobs:
   unit_tests:
     name: Run Unit Tests (${{ matrix.os }}, ${{ matrix.name }})
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build, affected-for-tests]
-    if: ${{ needs['affected-for-tests'].outputs.unit_tests_matrix != '[]' && needs['affected-for-tests'].outputs.unit_tests_matrix != '' }}
+    needs: [build]
+    if: ${{ needs.build.outputs.unit_tests_matrix != '[]' && needs.build.outputs.unit_tests_matrix != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         # note: do not run these packages on the oldest supported node versions -- we assume that the plugin tests have enough e2e coverage to prove everything works on the lowest node version
-        include: ${{ fromJson(needs['affected-for-tests'].outputs.unit_tests_matrix) }}
+        include: ${{ fromJson(needs.build.outputs.unit_tests_matrix) }}
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - ${{ matrix.name }}'
       COLLECT_COVERAGE: false
@@ -469,8 +453,8 @@ jobs:
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [build, affected-for-tests]
-    if: ${{ needs['affected-for-tests'].outputs.project_service_packages != '[]' && needs['affected-for-tests'].outputs.project_service_packages != '' }}
+    needs: [build]
+    if: ${{ needs.build.outputs.project_service_packages != '[]' && needs.build.outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -490,9 +474,9 @@ jobs:
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
-          PROJECTS: ${{ join(fromJson(needs['affected-for-tests'].outputs.project_service_packages), ',') }}
+          PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
 
-  # Some test jobs are created dynamically and conditionally skipped (see affected-for-tests),
+  # Some test jobs are created dynamically and conditionally skipped (see the affected projects step in the build job),
   # so they can't be marked in the branch ruleset as required.
   # This static job aggregates all other jobs and is the single check we require in the branch ruleset.
   required_checks:
@@ -500,7 +484,6 @@ jobs:
     if: ${{ always() }}
     needs:
       - install
-      - affected-for-tests
       - attw
       - build
       - generate_configs
