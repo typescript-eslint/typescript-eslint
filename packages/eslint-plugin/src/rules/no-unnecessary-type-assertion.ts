@@ -529,7 +529,7 @@ export default createRule<Options, MessageIds>({
           return getInnermostCall(expression.expression);
         case AST_NODE_TYPES.SequenceExpression:
           return getInnermostCall(
-            expression.expressions[expression.expressions.length - 1],
+            expression.expressions.at(-1),
           );
         default:
           return undefined;
