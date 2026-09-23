@@ -1,3 +1,55 @@
+## 8.70.1 (2026-09-21)
+
+### 🩹 Fixes
+
+- **ast-spec:** narrow import attribute keys to identifiers and strings ([#12879](https://github.com/typescript-eslint/typescript-eslint/pull/12879))
+- **eslint-plugin:** [no-useless-default-assignment] avoid false positives on tuples with a rest element ([#12768](https://github.com/typescript-eslint/typescript-eslint/pull/12768))
+- **eslint-plugin:** [no-unnecessary-type-parameters] handle type precedence in the suggestion fixer ([#12637](https://github.com/typescript-eslint/typescript-eslint/pull/12637))
+- **eslint-plugin:** [no-explicit-any] use unknown[] for bare any rest parameters ([#12818](https://github.com/typescript-eslint/typescript-eslint/pull/12818))
+- **eslint-plugin:** [no-generated-empty-object-type] don't report a mapped type whose keys are not resolved yet ([#12854](https://github.com/typescript-eslint/typescript-eslint/pull/12854))
+- **eslint-plugin:** [no-misused-spread] omit WeakMap spread suggestions ([#12850](https://github.com/typescript-eslint/typescript-eslint/pull/12850))
+- **eslint-plugin:** [no-unnecessary-type-assertion] false positive for empty object asserted to a type alias of Record ([#12869](https://github.com/typescript-eslint/typescript-eslint/pull/12869))
+- **eslint-plugin:** [no-meaningless-void-operator] allow void on assignment expressions ([#12873](https://github.com/typescript-eslint/typescript-eslint/pull/12873))
+- **eslint-plugin:** [await-thenable] prevent autofix from breaking code when removing `await` ([#12716](https://github.com/typescript-eslint/typescript-eslint/pull/12716))
+- **eslint-plugin:** [no-unnecessary-parameter-property-assignment] account for parameter reassignment ([#12880](https://github.com/typescript-eslint/typescript-eslint/pull/12880))
+- **eslint-plugin:** [unbound-method] treat Intl.Collator.prototype.compare as spec-bound ([#12845](https://github.com/typescript-eslint/typescript-eslint/pull/12845))
+- **eslint-plugin:** [no-unnecessary-condition] handle union-keyed index access on the left-hand side of nullish assignment ([#12747](https://github.com/typescript-eslint/typescript-eslint/pull/12747))
+- **eslint-plugin:** [no-useless-default-assignment] convert the fixer to a suggestion fixer ([#12826](https://github.com/typescript-eslint/typescript-eslint/pull/12826))
+- **eslint-plugin:** [no-misused-promises] handle multiple Promise constituents ([#12904](https://github.com/typescript-eslint/typescript-eslint/pull/12904))
+- **rule-tester:** test the final autofix output instead of the first pass ([#12867](https://github.com/typescript-eslint/typescript-eslint/pull/12867))
+- **scope-manager:** merge implicit global definitions ([#12809](https://github.com/typescript-eslint/typescript-eslint/pull/12809))
+- **type-utils:** match package specifiers on whole path components ([#12838](https://github.com/typescript-eslint/typescript-eslint/pull/12838))
+- **typescript-estree:** resolve symlinked paths when matching files to projects ([#12725](https://github.com/typescript-eslint/typescript-eslint/pull/12725))
+- **typescript-estree:** add missing `<` token opening type arguments ([#12821](https://github.com/typescript-eslint/typescript-eslint/pull/12821))
+- **typescript-estree:** require string literal import attribute values ([#12894](https://github.com/typescript-eslint/typescript-eslint/pull/12894))
+- **website:** prevent playground from breaking down after opening link with the .js file type ([#12777](https://github.com/typescript-eslint/typescript-eslint/pull/12777))
+
+### ❤️ Thank You
+
+- Amin @amiin-dev
+- Brad Zacher @bradzacher
+- Cameron
+- Diptajoy Mistry @diptomistry
+- Evyatar Daud @StyleShit
+- Grit @Grit03
+- Hugo @hugop95
+- Josh Goldberg ✨
+- Michael Naumov @mnaoumov
+- Mikhail Baev @baevm
+- Om Rawat
+- overlookmotel
+- Sanath @sansynx
+- Shinji
+- stoicism @stoicism02
+- Vinccool96
+- Younsang Na @nayounsang
+- 김채영 @cchaeyoung
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.70.0 (2026-09-07)
 
 ### 🚀 Features
