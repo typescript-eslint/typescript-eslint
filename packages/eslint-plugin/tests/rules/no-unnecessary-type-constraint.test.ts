@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-unnecessary-type-constraint';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-type-constraint', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'function data() {}',
     'function data<T>() {}',
@@ -30,6 +33,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -49,6 +53,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -68,6 +73,7 @@ function data<T extends TODO>() {}
           column: 18,
           data: { constraint: 'any', name: 'U' },
           endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -87,6 +93,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -106,6 +113,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -132,6 +140,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -152,6 +161,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -172,6 +182,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -198,6 +209,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -224,6 +236,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -250,6 +263,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -276,6 +290,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -302,6 +317,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -316,6 +332,7 @@ function data<T extends TODO>() {}
           column: 30,
           data: { constraint: 'any', name: 'U' },
           endColumn: 43,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -342,6 +359,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'unknown', name: 'T' },
           endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -361,6 +379,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'any', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -380,6 +399,7 @@ function data<T extends TODO>() {}
           column: 15,
           data: { constraint: 'unknown', name: 'T' },
           endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -399,6 +419,7 @@ function data<T extends TODO>() {}
           column: 12,
           data: { constraint: 'unknown', name: 'T' },
           endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -418,6 +439,7 @@ function data<T extends TODO>() {}
           column: 20,
           data: { constraint: 'unknown', name: 'T' },
           endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -441,6 +463,7 @@ class Data {
           column: 10,
           data: { constraint: 'unknown', name: 'T' },
           endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -468,6 +491,7 @@ const Data = class {
           column: 10,
           data: { constraint: 'unknown', name: 'T' },
           endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -491,6 +515,7 @@ const Data = class {
           column: 16,
           data: { constraint: 'unknown', name: 'T' },
           endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [
@@ -510,6 +535,7 @@ const Data = class {
           column: 11,
           data: { constraint: 'unknown', name: 'T' },
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'unnecessaryConstraint',
           suggestions: [

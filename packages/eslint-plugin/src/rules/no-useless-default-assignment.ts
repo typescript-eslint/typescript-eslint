@@ -8,6 +8,7 @@ import {
   createRule,
   getParserServices,
   isFunction,
+  isRestParameterDeclaration,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownType,
@@ -18,8 +19,10 @@ import {
 type MessageId =
   | 'noStrictNullCheck'
   | 'preferOptionalSyntax'
+  | 'removeDefaultAssignment'
   | 'uselessDefaultAssignment'
-  | 'uselessUndefined';
+  | 'uselessUndefined'
+  | 'useOptionalSyntax';
 
 type Options = [
   {
@@ -36,16 +39,18 @@ export default createRule<Options, MessageId>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       preferOptionalSyntax:
-        'Using `= undefined` to make a parameter optional adds unnecessary runtime logic. Use the `?` optional syntax instead.',
+        'Using `= undefined` to make a parameter optional adds unnecessary runtime logic.',
+      removeDefaultAssignment: 'Remove the default value.',
       uselessDefaultAssignment:
         'Default value is useless because the {{ type }} is not optional.',
       uselessUndefined:
         'Default value is useless because it is undefined. Optional {{ type }}s are already undefined by default.',
+      useOptionalSyntax: 'Use the `?` optional syntax instead.',
     },
     schema: [
       {
@@ -166,28 +171,34 @@ export default createRule<Options, MessageId>({
               return;
             }
 
-            const params = signatures[0].getParameters();
-            if (paramIndex < params.length) {
+            const defaultCanBeUsed = signatures.some(signature => {
+              const params = signature.getParameters();
+              if (paramIndex >= params.length) {
+                return true;
+              }
+
               const paramSymbol = params[paramIndex];
               if (
                 paramSymbol.valueDeclaration &&
-                ts.isParameter(paramSymbol.valueDeclaration) &&
-                paramSymbol.valueDeclaration.dotDotDotToken != null
+                isRestParameterDeclaration(paramSymbol.valueDeclaration)
               ) {
-                return;
+                return true;
               }
 
               if (
-                !tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional)
+                tsutils.isSymbolFlagSet(paramSymbol, ts.SymbolFlags.Optional)
               ) {
-                const paramType = checker.getTypeOfSymbol(paramSymbol);
-                if (
-                  !tsutils.isTypeParameter(paramType) &&
-                  !canBeUndefined(paramType)
-                ) {
-                  reportUselessDefaultAssignment(node, 'parameter');
-                }
+                return true;
               }
+
+              const paramType = checker.getTypeOfSymbol(paramSymbol);
+              return (
+                tsutils.isTypeParameter(paramType) || canBeUndefined(paramType)
+              );
+            });
+
+            if (!defaultCanBeUsed) {
+              reportUselessDefaultAssignment(node, 'parameter');
             }
           }
         }
@@ -218,8 +229,18 @@ export default createRule<Options, MessageId>({
         if (elementIndex < 0 || elementIndex >= tupleArgs.length) {
           return;
         }
-        const elementType = tupleArgs[elementIndex];
-        if (!canBeUndefined(elementType)) {
+        const { fixedLength, minLength } = sourceType.target;
+
+        if (elementIndex >= minLength) {
+          return;
+        }
+
+        const elementTypes =
+          elementIndex < fixedLength
+            ? [tupleArgs[elementIndex]]
+            : tupleArgs.slice(fixedLength);
+
+        if (!elementTypes.some(canBeUndefined)) {
           reportUselessDefaultAssignment(node, 'property');
         }
       }
@@ -350,7 +371,7 @@ export default createRule<Options, MessageId>({
         node: node.right,
         messageId: 'uselessDefaultAssignment',
         data: { type },
-        fix: fixer => removeDefault(fixer, node),
+        suggest: [removeDefaultSuggestion(node)],
       });
     }
 
@@ -362,7 +383,7 @@ export default createRule<Options, MessageId>({
         node: node.right,
         messageId: 'uselessUndefined',
         data: { type },
-        fix: fixer => removeDefault(fixer, node),
+        suggest: [removeDefaultSuggestion(node)],
       });
     }
 
@@ -372,6 +393,15 @@ export default createRule<Options, MessageId>({
       context.report({
         node: node.right,
         messageId: 'preferOptionalSyntax',
+        suggest: [useOptionalSyntaxSuggestion(node)],
+      });
+    }
+
+    function useOptionalSyntaxSuggestion(
+      node: TSESTree.AssignmentPattern,
+    ): TSESLint.SuggestionReportDescriptor<MessageId> {
+      return {
+        messageId: 'useOptionalSyntax',
         *fix(fixer) {
           yield removeDefault(fixer, node);
 
@@ -383,7 +413,16 @@ export default createRule<Options, MessageId>({
             );
           }
         },
-      });
+      };
+    }
+
+    function removeDefaultSuggestion(
+      node: TSESTree.AssignmentPattern,
+    ): TSESLint.SuggestionReportDescriptor<MessageId> {
+      return {
+        messageId: 'removeDefaultAssignment',
+        fix: fixer => removeDefault(fixer, node),
+      };
     }
 
     function removeDefault(

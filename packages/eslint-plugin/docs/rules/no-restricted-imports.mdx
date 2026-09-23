@@ -9,6 +9,13 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-restricted-imports** for documentation.
 
+:::danger Deprecated
+
+As of [ESLint v9.37.0](https://github.com/eslint/eslint/releases/tag/v9.37.0), the base [`eslint/no-restricted-imports`](https://eslint.org/docs/rules/no-restricted-imports) rule supports TypeScript import syntaxes (`import type`, inline `type` specifiers, and `import x = require(...)`).
+There is no longer any need to use this extension rule.
+
+:::
+
 It adds support for type import syntaxes:
 
 - `import type X from "..."`

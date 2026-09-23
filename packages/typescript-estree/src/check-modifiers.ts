@@ -361,9 +361,9 @@ export function checkModifiers(node: ts.Node): void {
     ) {
       const func = getContainingFunction(node);
 
-      if (
-        !(func?.kind === SyntaxKind.Constructor && nodeIsPresent(func.body))
-      ) {
+      if (!(
+        func?.kind === SyntaxKind.Constructor && nodeIsPresent(func.body)
+      )) {
         throw createError(
           modifier,
           'A parameter property is only allowed in a constructor implementation.',

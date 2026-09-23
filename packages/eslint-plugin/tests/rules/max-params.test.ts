@@ -5,6 +5,9 @@ import rule from '../../src/rules/max-params';
 const ruleTester = new RuleTester();
 
 ruleTester.run('max-params', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'function foo() {}',
     'const foo = function () {};',
@@ -71,18 +74,57 @@ type sum = (a: number, b: number) => number;
     },
   ],
   invalid: [
-    { code: 'function foo(a, b, c, d) {}', errors: [{ messageId: 'exceed' }] },
+    {
+      code: 'function foo(a, b, c, d) {}',
+      errors: [
+        {
+          column: 1,
+          data: { count: '4', max: '3', name: "Function 'foo'" },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
+          messageId: 'exceed',
+        },
+      ],
+    },
     {
       code: 'const foo = function (a, b, c, d) {};',
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        {
+          column: 13,
+          data: { count: '4', max: '3', name: 'Function' },
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'exceed',
+        },
+      ],
     },
     {
       code: 'const foo = (a, b, c, d) => {};',
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        {
+          column: 26,
+          data: { count: '4', max: '3', name: 'Arrow function' },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'exceed',
+        },
+      ],
     },
     {
       code: 'const foo = a => {};',
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        {
+          column: 15,
+          data: { count: '1', max: '0', name: 'Arrow function' },
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
+          messageId: 'exceed',
+        },
+      ],
       options: [{ max: 0 }],
     },
     {
@@ -91,7 +133,16 @@ class Foo {
   method(this: void, a, b, c, d) {}
 }
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        {
+          column: 3,
+          data: { count: '4', max: '3', name: "Method 'method'" },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'exceed',
+        },
+      ],
     },
     {
       code: `
@@ -99,7 +150,16 @@ class Foo {
   method(this: void, a) {}
 }
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        {
+          column: 3,
+          data: { count: '2', max: '1', name: "Method 'method'" },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'exceed',
+        },
+      ],
       options: [{ countVoidThis: true, max: 1 }],
     },
     {
@@ -108,20 +168,47 @@ class Foo {
   method(this: Foo, a, b, c) {}
 }
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        {
+          column: 3,
+          data: { count: '4', max: '3', name: "Method 'method'" },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
+          messageId: 'exceed',
+        },
+      ],
     },
     {
       code: `
 declare function makeDate(m: number, d: number, y: number): Date;
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        {
+          column: 1,
+          data: { count: '3', max: '1', name: "Function 'makeDate'" },
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'exceed',
+        },
+      ],
       options: [{ max: 1 }],
     },
     {
       code: `
 type sum = (a: number, b: number) => number;
       `,
-      errors: [{ messageId: 'exceed' }],
+      errors: [
+        {
+          column: 12,
+          data: { count: '2', max: '1', name: 'Function' },
+          endColumn: 12,
+          endLine: 2,
+          line: 2,
+          messageId: 'exceed',
+        },
+      ],
       options: [{ max: 1 }],
     },
   ],

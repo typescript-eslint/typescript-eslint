@@ -200,9 +200,7 @@ declare module './generated/ast-spec' {
 
   interface TSIndexSignature {
     parent:
-      | TSESTree.ClassBody
-      | TSESTree.TSInterfaceBody
-      | TSESTree.TSTypeLiteral;
+      TSESTree.ClassBody | TSESTree.TSInterfaceBody | TSESTree.TSTypeLiteral;
   }
 
   interface TSInterfaceBody {

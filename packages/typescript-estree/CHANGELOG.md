@@ -1,3 +1,112 @@
+## 8.70.1 (2026-09-21)
+
+### 🩹 Fixes
+
+- **typescript-estree:** require string literal import attribute values ([#12894](https://github.com/typescript-eslint/typescript-eslint/pull/12894))
+- **typescript-estree:** add missing `<` token opening type arguments ([#12821](https://github.com/typescript-eslint/typescript-eslint/pull/12821))
+- **typescript-estree:** resolve symlinked paths when matching files to projects ([#12725](https://github.com/typescript-eslint/typescript-eslint/pull/12725))
+
+### ❤️ Thank You
+
+- Cameron
+- Josh Goldberg ✨
+- overlookmotel
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.70.0 (2026-09-07)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-generated-empty-object-type] add rule ([#12730](https://github.com/typescript-eslint/typescript-eslint/pull/12730))
+
+### 🩹 Fixes
+
+- **typescript-estree:** clarify the parserOptions.project error message ([#12817](https://github.com/typescript-eslint/typescript-eslint/pull/12817))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.69.0 (2026-08-31)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.69.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.68.0 (2026-08-24)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.68.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.67.0 (2026-08-10)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.67.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.66.0 (2026-08-03)
+
+### 🚀 Features
+
+- **typescript-estree:** handle import.defer() as ImportExpression ([#12609](https://github.com/typescript-eslint/typescript-eslint/pull/12609))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Kirk Waiblinger @kirkwaiblinger
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.66.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.65.0 (2026-07-20)
+
+### 🚀 Features
+
+- **parser:** add onUnsupportedTypeScriptVersion option to error on unsupported TypeScript versions ([#12465](https://github.com/typescript-eslint/typescript-eslint/pull/12465))
+- **typescript-estree:** throw for invalid import defer syntax ([#12552](https://github.com/typescript-eslint/typescript-eslint/pull/12552))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.65.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.64.0 (2026-07-13)
+
+### 🚀 Features
+
+- **typescript-estree:** throw for invalid definite assignment in class properties ([#12543](https://github.com/typescript-eslint/typescript-eslint/pull/12543))
+- support parsing `import defer` ([#12513](https://github.com/typescript-eslint/typescript-eslint/pull/12513))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.64.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.63.0 (2026-07-06)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.

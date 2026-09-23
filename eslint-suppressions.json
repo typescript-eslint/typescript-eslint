@@ -1,442 +1,347 @@
 {
-  "packages/eslint-plugin-internal/tests/rules/debug-namespace.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/no-multiple-lines-of-errors.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/no-poorly-typed-ts-props.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/no-relative-paths-to-internal-packages.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 4
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/no-typescript-default-import.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/no-typescript-estree.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 6
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/plugin-test-formatting.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 14
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/prefer-ast-types-enum.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin-internal/tests/rules/prefer-tsutils-methods.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 13
-    }
-  },
-  "packages/eslint-plugin/tests/eslint-rules/no-restricted-globals.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin/tests/eslint-rules/no-undef.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 10
-    }
-  },
   "packages/eslint-plugin/tests/rules/adjacent-overload-signatures.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 36
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
     }
   },
-  "packages/eslint-plugin/tests/rules/array-type.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 100
-    }
-  },
-  "packages/eslint-plugin/tests/rules/ban-ts-comment.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 62
-    }
-  },
-  "packages/eslint-plugin/tests/rules/ban-tslint-comment.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 8
-    }
-  },
-  "packages/eslint-plugin/tests/rules/class-literal-property-style.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 19
-    }
-  },
-  "packages/eslint-plugin/tests/rules/class-methods-use-this/class-methods-use-this-core.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 31
-    }
-  },
-  "packages/eslint-plugin/tests/rules/class-methods-use-this/class-methods-use-this.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 40
-    }
-  },
-  "packages/eslint-plugin/tests/rules/consistent-generic-constructors.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 35
+  "packages/eslint-plugin/tests/rules/await-thenable.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
     }
   },
   "packages/eslint-plugin/tests/rules/consistent-indexed-object-style.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 54
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
     }
   },
-  "packages/eslint-plugin/tests/rules/consistent-type-assertions.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 101
-    }
-  },
-  "packages/eslint-plugin/tests/rules/consistent-type-definitions.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 23
+  "packages/eslint-plugin/tests/rules/consistent-return.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
     }
   },
   "packages/eslint-plugin/tests/rules/consistent-type-imports.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 89
-    }
-  },
-  "packages/eslint-plugin/tests/rules/default-param-last.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 54
-    }
-  },
-  "packages/eslint-plugin/tests/rules/explicit-function-return-type.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 4
-    }
-  },
-  "packages/eslint-plugin/tests/rules/explicit-module-boundary-types.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 58
-    }
-  },
-  "packages/eslint-plugin/tests/rules/max-params.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 9
-    }
-  },
-  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-case-insensitive-order.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 20
-    }
-  },
-  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-order.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 61
-    }
-  },
-  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-natural-case-insensitive-order.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 4
-    }
-  },
-  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-natural-order.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 6
-    }
-  },
-  "packages/eslint-plugin/tests/rules/method-signature-style.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 55
-    }
-  },
-  "packages/eslint-plugin/tests/rules/naming-convention/naming-convention.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 125
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-array-constructor.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 13
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-confusing-non-null-assertion.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 11
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-dupe-class-members.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 11
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-duplicate-enum-values.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 16
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-empty-function.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 7
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-empty-interface.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 10
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-empty-object-type.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 12
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-explicit-any.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 65
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-extra-non-null-assertion.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 8
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 14
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-import-type-side-effects.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 4
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-inferrable-types.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 49
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-invalid-this.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 87
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-invalid-void-type.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 48
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-loop-func.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 21
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-loss-of-precision.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 4
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-magic-numbers.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 56
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-misused-new.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 7
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-namespace.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 39
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-non-null-asserted-nullish-coalescing.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 15
     }
   },
-  "packages/eslint-plugin/tests/rules/no-non-null-asserted-optional-chain.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 10
+  "packages/eslint-plugin/tests/rules/dot-notation.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
     }
   },
-  "packages/eslint-plugin/tests/rules/no-non-null-assertion.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 27
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-redeclare.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 35
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-require-imports.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 25
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-restricted-imports.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 31
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-restricted-types.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 35
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-shadow/no-shadow-eslint.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 55
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-shadow/no-shadow.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 46
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-this-alias.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 14
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-type-alias.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 231
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-parameter-property-assignment.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
+  "packages/eslint-plugin/tests/rules/explicit-function-return-type.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 19
     }
   },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-type-constraint.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 23
+  "packages/eslint-plugin/tests/rules/explicit-member-accessibility.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 12
     }
   },
-  "packages/eslint-plugin/tests/rules/no-unsafe-function-type.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
+  "packages/eslint-plugin/tests/rules/explicit-module-boundary-types.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 16
+    }
+  },
+  "packages/eslint-plugin/tests/rules/init-declarations.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 5
+    }
+  },
+  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-case-insensitive-order.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 11
+    }
+  },
+  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-alphabetically-order.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 32
+    }
+  },
+  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-natural-case-insensitive-order.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/member-ordering/member-ordering-natural-order.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 4
+    }
+  },
+  "packages/eslint-plugin/tests/rules/method-signature-style.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 21
+    }
+  },
+  "packages/eslint-plugin/tests/rules/naming-convention/naming-convention.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 77
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-deprecated.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-dupe-class-members.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-duplicate-enum-values.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-empty-object-type.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-explicit-any.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-extraneous-class.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-floating-promises.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 49
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-implied-eval.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 54
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-inferrable-types.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-invalid-this.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 43
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-magic-numbers.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 8
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-misused-new.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-misused-promises.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 13
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-mixed-enums.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-namespace.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 7
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-redeclare.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 3
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-require-imports.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 3
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-shadow/no-shadow-eslint.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-this-alias.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 8
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-type-alias.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 6
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unnecessary-condition.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 56
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unnecessary-parameter-property-assignment.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unnecessary-template-expression.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unnecessary-type-parameters.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unsafe-assignment.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unsafe-call.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unsafe-declaration-merging.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 3
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-unsafe-enum-comparison.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 5
     }
   },
   "packages/eslint-plugin/tests/rules/no-unsafe-member-access.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 24
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
     }
   },
   "packages/eslint-plugin/tests/rules/no-unsafe-return.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 35
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 3
     }
   },
   "packages/eslint-plugin/tests/rules/no-unused-private-class-members.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 49
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unused-vars/no-unused-vars-enableAutofixRemoval.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 25
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 3
     }
   },
   "packages/eslint-plugin/tests/rules/no-unused-vars/no-unused-vars-eslint.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 71
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 10
     }
   },
   "packages/eslint-plugin/tests/rules/no-unused-vars/no-unused-vars.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 75
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-use-before-define.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 65
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-useless-constructor.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 9
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 9
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-var-requires.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 18
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-wrapper-object-types.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 16
-    }
-  },
-  "packages/eslint-plugin/tests/rules/parameter-properties.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 43
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-as-const.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 15
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-enum-initializers.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 5
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-for-of.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 19
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-function-type.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 18
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-literal-enum-member.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 32
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-namespace-keyword.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 4
     }
   },
-  "packages/eslint-plugin/tests/rules/prefer-ts-expect-error.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
+  "packages/eslint-plugin/tests/rules/no-use-before-define.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-useless-default-assignment.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/no-var-requires.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/parameter-properties.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 12
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-enum-initializers.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-for-of.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-literal-enum-member.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 17
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-namespace-keyword.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-nullish-coalescing.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-readonly-parameter-types.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 3
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-readonly.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 3
+    }
+  },
+  "packages/eslint-plugin/tests/rules/prefer-regexp-exec.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 1
+    }
+  },
+  "packages/eslint-plugin/tests/rules/promise-function-async.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 13
     }
   },
-  "packages/eslint-plugin/tests/rules/sort-type-constituents.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 34
+  "packages/eslint-plugin/tests/rules/return-await.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 6
     }
   },
-  "packages/eslint-plugin/tests/rules/triple-slash-reference.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 5
+  "packages/eslint-plugin/tests/rules/strict-boolean-expressions.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 4
     }
   },
-  "packages/eslint-plugin/tests/rules/unified-signatures.test.ts": {
-    "eslint-plugin/require-test-error-positions": {
-      "count": 40
+  "packages/eslint-plugin/tests/rules/strict-void-return.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 19
+    }
+  },
+  "packages/eslint-plugin/tests/rules/typedef.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 6
+    }
+  },
+  "packages/eslint-plugin/tests/rules/unbound-method.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
+    }
+  },
+  "packages/eslint-plugin/tests/rules/use-unknown-in-catch-callback-variable.test.ts": {
+    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
+      "count": 2
     }
   }
 }

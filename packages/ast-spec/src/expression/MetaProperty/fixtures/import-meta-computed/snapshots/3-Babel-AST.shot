@@ -1,0 +1,74 @@
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: MemberExpression {
+        type: "MemberExpression",
+        computed: true,
+        object: MetaProperty {
+          type: "MetaProperty",
+          meta: Identifier {
+            type: "Identifier",
+            name: "import",
+
+            range: [0, 6],
+            loc: {
+              start: { column: 0, line: 1 },
+              end: { column: 6, line: 1 },
+            },
+          },
+          property: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "meta",
+            optional: false,
+
+            range: [7, 11],
+            loc: {
+              start: { column: 7, line: 1 },
+              end: { column: 11, line: 1 },
+            },
+          },
+
+          range: [0, 11],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 11, line: 1 },
+          },
+        },
+        optional: false,
+        property: Literal {
+          type: "Literal",
+          raw: "'url'",
+          value: "url",
+
+          range: [12, 17],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 17, line: 1 },
+          },
+        },
+
+        range: [0, 18],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+
+      range: [0, 19],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 19, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 20],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

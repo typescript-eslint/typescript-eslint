@@ -31,7 +31,7 @@ jobs:
           restore-keys: agentscan-cache-
 
       - name: AgentScan
-        uses: MatteoGabriele/agentscan-action@4eebb5210583641a015146ea52b6b92e1df14ed7 # main
+        uses: MatteoGabriele/agentscan-action@8112fb79b33fafb8506159df20129a34209ac410 # v2.5.0
         with:
           auto-close-classifications: automation
           auto-close: true
@@ -40,7 +40,7 @@ jobs:
           label-automation: spam:automated-account
           label-community-flagged: spam:community-flagged
           label-mixed: spam:mixed-signals
-          skip-comment-on-organic: true
+          scan-issues: true
 
   anti-slop:
     name: Anti Slop

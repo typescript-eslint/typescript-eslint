@@ -1,6 +1,6 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -12,7 +12,12 @@ type Options = [
   },
 ];
 
-type MessageId = `asyncFunc` | `nonVoidFunc` | `nonVoidReturn`;
+type MessageId =
+  | `asyncFunc`
+  | `nonVoidFunc`
+  | `nonVoidReturn`
+  | `suggestAddVoidOp`
+  | `suggestWrapInAsyncIIFE`;
 
 export default util.createRule<Options, MessageId>({
   name: 'strict-void-return',
@@ -23,6 +28,7 @@ export default util.createRule<Options, MessageId>({
         'Disallow passing a value-returning function in a position accepting a void function',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       asyncFunc:
         'Async function used in a context where a void function is expected.',
@@ -30,6 +36,8 @@ export default util.createRule<Options, MessageId>({
         'Value-returning function used in a context where a void function is expected.',
       nonVoidReturn:
         'Value returned in a context where a void return is expected.',
+      suggestAddVoidOp: 'Add a void operator to discard the return value.',
+      suggestWrapInAsyncIIFE: 'Wrap the function body in an async IIFE.',
     },
     schema: [
       {
@@ -387,22 +395,69 @@ export default util.createRule<Options, MessageId>({
 
       if (funcNode.async) {
         // The provided function is an async function.
-        // Async functions aren't allowed.
+
+        if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
+          // This async function is an arrow function shorthand without braces.
+
+          return context.report({
+            loc: util.getFunctionHeadLoc(funcNode, sourceCode),
+            messageId: 'asyncFunc',
+            suggest: ASTUtils.hasSideEffect(funcNode.body, sourceCode)
+              ? // This function has side effects, e.g. `async () => doSomething()`.
+                // Suggest removing the async keyword and adding a void operator.
+                [
+                  {
+                    messageId: 'suggestAddVoidOp',
+                    fix: fixer =>
+                      addVoidToArrowFix(
+                        fixer,
+                        funcNode as TSESTree.ArrowFunctionExpression,
+                      ),
+                  },
+                ]
+              : [],
+          });
+        }
+
+        // This async function has a block body.
+        // Suggest wrapping its body in an async IIFE.
         return context.report({
           loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-          messageId: `asyncFunc`,
+          messageId: 'asyncFunc',
+          suggest: [
+            {
+              messageId: 'suggestWrapInAsyncIIFE',
+              fix: fixer => wrapInAsyncIIFEFix(fixer, funcNode),
+            },
+          ],
         });
       }
+
+      // This function is a regular or arrow sync function.
 
       if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
-        // The provided function is an arrow function shorthand without braces.
+        // This function is an arrow function shorthand without braces.
         return context.report({
           node: funcNode.body,
-          messageId: `nonVoidReturn`,
+          messageId: 'nonVoidReturn',
+          suggest: ASTUtils.hasSideEffect(funcNode.body, sourceCode)
+            ? // This function has side effects, e.g. `() => doSomething()`.
+              // Suggest adding a void operator.
+              [
+                {
+                  messageId: 'suggestAddVoidOp',
+                  fix: fixer =>
+                    addVoidToArrowFix(
+                      fixer,
+                      funcNode as TSESTree.ArrowFunctionExpression,
+                    ),
+                },
+              ]
+            : [],
         });
       }
 
-      // The function is a regular or arrow function with a block body.
+      // This function is a regular or arrow sync function with a block body.
 
       // Check return type annotation.
       if (funcNode.returnType != null) {
@@ -449,6 +504,80 @@ export default util.createRule<Options, MessageId>({
       }
 
       // No invalid returns found. The function is allowed.
+    }
+
+    /**
+     * Removes the async keyword and replaces the return type with void.
+     */
+    function* makeSyncFuncFix(
+      fixer: TSESLint.RuleFixer,
+      funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+    ): Generator<TSESLint.RuleFix> {
+      if (funcNode.async) {
+        // Remove async keyword
+        const funcHeadNode =
+          funcNode.parent.type === AST_NODE_TYPES.Property ||
+          funcNode.parent.type === AST_NODE_TYPES.MethodDefinition
+            ? funcNode.parent
+            : funcNode;
+        const asyncToken = util.nullThrows(
+          sourceCode.getFirstToken(funcHeadNode, {
+            filter: token => token.value === 'async',
+          }),
+          util.NullThrowsReasons.MissingToken('async keyword', funcNode.type),
+        );
+        yield fixer.remove(asyncToken);
+      }
+      // Replace return type with void
+      if (funcNode.returnType != null) {
+        yield fixer.replaceText(funcNode.returnType.typeAnnotation, 'void');
+      }
+    }
+
+    /**
+     * Makes the function sync and adds a void operator to the arrow shorthand body.
+     */
+    function* addVoidToArrowFix(
+      fixer: TSESLint.RuleFixer,
+      funcNode: TSESTree.ArrowFunctionExpression,
+    ): Generator<TSESLint.RuleFix> {
+      yield* makeSyncFuncFix(fixer, funcNode);
+      // Add void operator
+      yield util.getWrappingFixer({
+        node: funcNode.body,
+        sourceCode,
+        wrap: code => `void ${code}`,
+      })(fixer);
+    }
+
+    /**
+     * Makes the function sync and wraps the body in an inner async IIFE.
+     */
+    function* wrapInAsyncIIFEFix(
+      fixer: TSESLint.RuleFixer,
+      funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+    ): Generator<TSESLint.RuleFix> {
+      yield* makeSyncFuncFix(fixer, funcNode);
+      // Wrap body in async IIFE.
+      // This preserves the node kind (normal/arrow) for the _outer_ function
+      // and uses an arrow function for the _inner_ function,
+      // so that `this` will always refer to the same value as before.
+      if (funcNode.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+        const arrowToken = util.nullThrows(
+          sourceCode.getTokenBefore(funcNode.body, {
+            filter: token => token.value === '=>',
+          }),
+          util.NullThrowsReasons.MissingToken(
+            'arrow token',
+            'before arrow function body',
+          ),
+        );
+        yield fixer.insertTextAfter(arrowToken, ' void (async () =>');
+        yield fixer.insertTextAfter(funcNode, ')()');
+      } else {
+        yield fixer.insertTextBefore(funcNode.body, '{ (async () => ');
+        yield fixer.insertTextAfter(funcNode.body, ')(); }');
+      }
     }
   },
 });

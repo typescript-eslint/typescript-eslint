@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-enum-initializers';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-enum-initializers', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 enum Direction {}
@@ -38,11 +41,15 @@ enum Direction {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Up' },
+          endColumn: 5,
+          endLine: 3,
           line: 3,
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Up', suggested: '0' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -51,6 +58,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -59,6 +67,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: "'Up'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -79,11 +88,15 @@ enum Direction {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Up' },
+          endColumn: 5,
+          endLine: 3,
           line: 3,
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Up', suggested: '0' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -93,6 +106,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -102,6 +116,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: "'Up'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -113,11 +128,15 @@ enum Direction {
           ],
         },
         {
+          column: 3,
           data: { name: 'Down' },
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Down', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -127,6 +146,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Down', suggested: '2' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -136,6 +156,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Down', suggested: "'Down'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -157,11 +178,15 @@ enum Direction {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Down' },
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Down', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -171,6 +196,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Down', suggested: '2' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -180,6 +206,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Down', suggested: "'Down'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -201,11 +228,15 @@ enum Direction {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Up' },
+          endColumn: 5,
+          endLine: 3,
           line: 3,
           messageId: 'defineInitializer',
           suggestions: [
             {
+              data: { name: 'Up', suggested: '0' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -215,6 +246,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: '1' },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {
@@ -224,6 +256,7 @@ enum Direction {
       `,
             },
             {
+              data: { name: 'Up', suggested: "'Up'" },
               messageId: 'defineInitializerSuggestion',
               output: `
 enum Direction {

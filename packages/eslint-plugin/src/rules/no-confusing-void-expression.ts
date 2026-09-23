@@ -14,9 +14,6 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  isClosingParenToken,
-  isOpeningParenToken,
-  isParenthesized,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -166,36 +163,25 @@ export default createRule<Options, MessageId>({
               if (!canFix(arrowFunction)) {
                 return null;
               }
-              const arrowBody = arrowFunction.body;
-              const arrowBodyText = context.sourceCode.getText(arrowBody);
-              const newArrowBodyText = `{ ${arrowBodyText}; }`;
-              if (isParenthesized(arrowBody, context.sourceCode)) {
-                const bodyOpeningParen = nullThrows(
-                  context.sourceCode.getTokenBefore(
-                    arrowBody,
-                    isOpeningParenToken,
-                  ),
-                  NullThrowsReasons.MissingToken(
-                    'opening parenthesis',
-                    'arrow body',
-                  ),
-                );
-                const bodyClosingParen = nullThrows(
-                  context.sourceCode.getTokenAfter(
-                    arrowBody,
-                    isClosingParenToken,
-                  ),
-                  NullThrowsReasons.MissingToken(
-                    'closing parenthesis',
-                    'arrow body',
-                  ),
-                );
-                return fixer.replaceTextRange(
-                  [bodyOpeningParen.range[0], bodyClosingParen.range[1]],
-                  newArrowBodyText,
-                );
-              }
-              return fixer.replaceText(arrowBody, newArrowBodyText);
+              const arrowToken = nullThrows(
+                context.sourceCode.getTokenBefore(arrowFunction.body, {
+                  filter: token => token.value === '=>',
+                }),
+                NullThrowsReasons.MissingToken(
+                  'arrow token',
+                  'before arrow function body',
+                ),
+              );
+              return [
+                fixer.replaceTextRange(
+                  [arrowToken.range[1], arrowFunction.body.range[0]],
+                  ' { ',
+                ),
+                fixer.replaceTextRange(
+                  [arrowFunction.body.range[1], arrowFunction.range[1]],
+                  '; }',
+                ),
+              ];
             },
           });
         }

@@ -5,6 +5,9 @@ import rule from '../../src/rules/parameter-properties';
 const ruleTester = new RuleTester();
 
 ruleTester.run('parameter-properties', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Foo {
@@ -322,6 +325,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 36,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -339,6 +344,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 35,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -356,6 +363,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 37,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -373,6 +382,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -390,6 +401,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 44,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -407,6 +420,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 46,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -424,6 +439,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 43,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -444,6 +461,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'preferClassProperty',
         },
@@ -464,6 +483,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 25,
+          endLine: 4,
           line: 4,
           messageId: 'preferClassProperty',
         },
@@ -472,6 +493,8 @@ class Foo {
           data: {
             parameter: 'age',
           },
+          endColumn: 24,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -492,6 +515,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 27,
+          endLine: 4,
           line: 4,
           messageId: 'preferClassProperty',
         },
@@ -500,6 +525,8 @@ class Foo {
           data: {
             parameter: 'age',
           },
+          endColumn: 26,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -520,6 +547,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'preferClassProperty',
         },
@@ -528,6 +557,8 @@ class Foo {
           data: {
             parameter: 'age',
           },
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -549,6 +580,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 25,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -570,6 +603,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 35,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -578,6 +613,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 25,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -599,6 +636,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 35,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -607,6 +646,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 25,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -615,6 +656,8 @@ class Foo {
           data: {
             parameter: 'age',
           },
+          endColumn: 25,
+          endLine: 6,
           line: 6,
           messageId: 'preferClassProperty',
         },
@@ -636,6 +679,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 27,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -657,6 +702,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 37,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -665,6 +712,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 27,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -686,6 +735,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 37,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -694,6 +745,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 27,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -702,6 +755,8 @@ class Foo {
           data: {
             parameter: 'age',
           },
+          endColumn: 27,
+          endLine: 6,
           line: 6,
           messageId: 'preferClassProperty',
         },
@@ -723,6 +778,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 24,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -744,6 +801,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -752,6 +811,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 24,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -773,6 +834,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -781,6 +844,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 24,
+          endLine: 5,
           line: 5,
           messageId: 'preferClassProperty',
         },
@@ -789,6 +854,8 @@ class Foo {
           data: {
             parameter: 'age',
           },
+          endColumn: 24,
+          endLine: 6,
           line: 6,
           messageId: 'preferClassProperty',
         },
@@ -807,6 +874,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 36,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -825,6 +894,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 35,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -843,6 +914,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 37,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -865,6 +938,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -893,6 +968,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 44,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -911,6 +988,8 @@ class Foo {
           data: {
             parameter: 'name',
           },
+          endColumn: 46,
+          endLine: 3,
           line: 3,
           messageId: 'preferClassProperty',
         },
@@ -942,6 +1021,8 @@ class Foo {
           data: {
             parameter: 'age',
           },
+          endColumn: 27,
+          endLine: 6,
           line: 6,
           messageId: 'preferClassProperty',
         },
@@ -964,6 +1045,8 @@ class Foo {
           data: {
             parameter: 'member',
           },
+          endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'preferParameterProperty',
         },
@@ -986,6 +1069,8 @@ class Foo {
           data: {
             parameter: 'member',
           },
+          endColumn: 18,
+          endLine: 7,
           line: 7,
           messageId: 'preferParameterProperty',
         },
@@ -1007,6 +1092,8 @@ class Foo {
           data: {
             parameter: 'member',
           },
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'preferParameterProperty',
         },
@@ -1028,6 +1115,8 @@ class Foo {
           data: {
             parameter: 'member',
           },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'preferParameterProperty',
         },

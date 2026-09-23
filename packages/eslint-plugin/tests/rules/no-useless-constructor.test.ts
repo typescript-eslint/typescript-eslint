@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-useless-constructor';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-useless-constructor', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'class A {}',
     `
@@ -216,6 +219,10 @@ class A {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {
@@ -240,6 +247,10 @@ class A extends B {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {
@@ -264,6 +275,10 @@ class A extends B {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {
@@ -288,6 +303,10 @@ class A extends B {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {
@@ -312,6 +331,10 @@ class A extends B {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {
@@ -336,6 +359,10 @@ class A extends B.C {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {
@@ -360,6 +387,10 @@ class A extends B {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {
@@ -384,6 +415,10 @@ class A extends B {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {
@@ -406,6 +441,10 @@ class A {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {

@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-magic-numbers';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-magic-numbers', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'const FOO = 10;',
@@ -34,12 +37,12 @@ ruleTester.run('no-magic-numbers', rule, {
     },
     {
       code: `
-        enum foo {
-          SECOND = 1000,
-          NUM = '0123456789',
-          NEG = -1,
-          POS = +1,
-        }
+enum foo {
+  SECOND = 1000,
+  NUM = '0123456789',
+  NEG = -1,
+  POS = +1,
+}
       `,
       options: [{ ignoreEnums: true }],
     },
@@ -245,6 +248,8 @@ type Foo = {
           data: {
             raw: '1',
           },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -259,6 +264,8 @@ type Foo = {
           data: {
             raw: '-1',
           },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -273,6 +280,8 @@ type Foo = {
           data: {
             raw: '1',
           },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -281,6 +290,8 @@ type Foo = {
           data: {
             raw: '2',
           },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -289,6 +300,8 @@ type Foo = {
           data: {
             raw: '3',
           },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -303,6 +316,8 @@ type Foo = {
           data: {
             raw: '1',
           },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -311,6 +326,8 @@ type Foo = {
           data: {
             raw: '-1',
           },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -329,6 +346,8 @@ interface Foo {
           data: {
             raw: '1',
           },
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
@@ -350,6 +369,8 @@ enum foo {
           data: {
             raw: '1000',
           },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
@@ -358,6 +379,8 @@ enum foo {
           data: {
             raw: '-1',
           },
+          endColumn: 11,
+          endLine: 5,
           line: 5,
           messageId: 'noMagic',
         },
@@ -366,6 +389,8 @@ enum foo {
           data: {
             raw: '1',
           },
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'noMagic',
         },
@@ -390,6 +415,8 @@ class Foo {
           data: {
             raw: '1',
           },
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
@@ -398,6 +425,8 @@ class Foo {
           data: {
             raw: '2',
           },
+          endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'noMagic',
         },
@@ -406,6 +435,8 @@ class Foo {
           data: {
             raw: '3',
           },
+          endColumn: 31,
+          endLine: 5,
           line: 5,
           messageId: 'noMagic',
         },
@@ -414,6 +445,8 @@ class Foo {
           data: {
             raw: '4',
           },
+          endColumn: 24,
+          endLine: 6,
           line: 6,
           messageId: 'noMagic',
         },
@@ -422,6 +455,8 @@ class Foo {
           data: {
             raw: '-5',
           },
+          endColumn: 18,
+          endLine: 7,
           line: 7,
           messageId: 'noMagic',
         },
@@ -430,6 +465,8 @@ class Foo {
           data: {
             raw: '6',
           },
+          endColumn: 18,
+          endLine: 8,
           line: 8,
           messageId: 'noMagic',
         },
@@ -438,6 +475,8 @@ class Foo {
           data: {
             raw: '100n',
           },
+          endColumn: 28,
+          endLine: 9,
           line: 9,
           messageId: 'noMagic',
         },
@@ -452,6 +491,8 @@ class Foo {
           data: {
             raw: '0',
           },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -466,6 +507,8 @@ class Foo {
           data: {
             raw: '-1',
           },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -480,6 +523,8 @@ class Foo {
           data: {
             raw: '0xab',
           },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -494,6 +539,8 @@ class Foo {
           data: {
             raw: '5.6e1',
           },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -508,6 +555,8 @@ class Foo {
           data: {
             raw: '10n',
           },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -522,6 +571,8 @@ class Foo {
           data: {
             raw: '1',
           },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -530,6 +581,8 @@ class Foo {
           data: {
             raw: '-2',
           },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -544,6 +597,8 @@ class Foo {
           data: {
             raw: '1',
           },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -552,6 +607,8 @@ class Foo {
           data: {
             raw: '-2',
           },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -566,6 +623,8 @@ class Foo {
           data: {
             raw: '1',
           },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -580,6 +639,8 @@ class Foo {
           data: {
             raw: '1',
           },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -588,6 +649,8 @@ class Foo {
           data: {
             raw: '-2',
           },
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -596,6 +659,8 @@ class Foo {
           data: {
             raw: '3',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -604,6 +669,8 @@ class Foo {
           data: {
             raw: '4',
           },
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -618,6 +685,8 @@ class Foo {
           data: {
             raw: '2',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -638,6 +707,8 @@ type Foo = {
           data: {
             raw: '0',
           },
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'noMagic',
         },
@@ -660,6 +731,8 @@ type Foo = {
           data: {
             raw: '0',
           },
+          endColumn: 5,
+          endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
@@ -668,6 +741,8 @@ type Foo = {
           data: {
             raw: '3',
           },
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
@@ -686,6 +761,8 @@ type Foo = {
           data: {
             raw: '0',
           },
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
@@ -694,6 +771,8 @@ type Foo = {
           data: {
             raw: '1',
           },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
@@ -702,6 +781,8 @@ type Foo = {
           data: {
             raw: '2',
           },
+          endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
@@ -710,6 +791,8 @@ type Foo = {
           data: {
             raw: '0',
           },
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
@@ -724,6 +807,8 @@ type Foo = {
           data: {
             raw: '1',
           },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -738,6 +823,8 @@ type Foo = {
           data: {
             raw: '-2',
           },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -752,6 +839,8 @@ type Foo = {
           data: {
             raw: '3n',
           },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -766,6 +855,8 @@ type Foo = {
           data: {
             raw: '-4n',
           },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -780,6 +871,8 @@ type Foo = {
           data: {
             raw: '5.6',
           },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -794,6 +887,8 @@ type Foo = {
           data: {
             raw: '-7.8',
           },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -808,6 +903,8 @@ type Foo = {
           data: {
             raw: '0x0a',
           },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -822,6 +919,8 @@ type Foo = {
           data: {
             raw: '-0xbc',
           },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -836,6 +935,8 @@ type Foo = {
           data: {
             raw: '1e2',
           },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -850,6 +951,8 @@ type Foo = {
           data: {
             raw: '-3e4',
           },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -864,6 +967,8 @@ type Foo = {
           data: {
             raw: '5e-6',
           },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -878,6 +983,8 @@ type Foo = {
           data: {
             raw: '-7e-8',
           },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -892,6 +999,8 @@ type Foo = {
           data: {
             raw: '1.1e2',
           },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -906,6 +1015,8 @@ type Foo = {
           data: {
             raw: '-3.1e4',
           },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -920,6 +1031,8 @@ type Foo = {
           data: {
             raw: '5.1e-6',
           },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },
@@ -934,6 +1047,8 @@ type Foo = {
           data: {
             raw: '-7.1e-8',
           },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noMagic',
         },

@@ -35,7 +35,7 @@ function getErrorStart(
       ? ` ${relativeProjects[0]}`
       : `\n${relativeProjects.map(project => `- ${project}`).join('\n')}`;
 
-  return `ESLint was configured to run on \`${describedFilePath}\` using \`parserOptions.project\`:${describedPrograms}`;
+  return `ESLint was configured to lint \`${describedFilePath}\` with type information from \`parserOptions.project\`:${describedPrograms}`;
 }
 
 function getErrorDetails(
@@ -97,7 +97,7 @@ function getErrorDetails(
 
   return [
     ...details,
-    `However, ${describedInclusions} include this file. Either:`,
+    `However, ${describedInclusions} include this file, so type information is not available for it. Either:`,
     `- Change ESLint's list of included files to not include this file`,
     `- Change ${describedSpecifiers} to include this file`,
     `- Create a new TSConfig that includes this file and include it in your parserOptions.project`,

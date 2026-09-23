@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-unnecessary-parameter-property-assignment';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-parameter-property-assignment', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Foo {
@@ -166,6 +169,53 @@ class Foo {
   init2 = (Foo.foo = 1);
 }
     `,
+    `
+class Foo {
+  constructor(public foo: string) {
+    this[foo] = foo;
+  }
+}
+    `,
+    `
+class User {
+  constructor(public name: string) {
+    name = name.trim();
+    this.name = name;
+  }
+}
+    `,
+    `
+class User {
+  constructor(public name: string) {
+    name += '!';
+    this.name = name;
+  }
+}
+    `,
+    `
+class User {
+  constructor(
+    public name: string,
+    flag: boolean,
+  ) {
+    if (flag) {
+      name = name.trim();
+    }
+    this.name = name;
+  }
+}
+    `,
+    `
+class User {
+  constructor(
+    public name: string,
+    public age: number,
+  ) {
+    name = name.trim();
+    this.name = name;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -179,6 +229,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -195,6 +247,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -211,6 +265,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 26,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -227,6 +283,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -244,6 +302,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -260,6 +320,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -276,6 +338,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -292,6 +356,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -308,6 +374,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 22,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -327,6 +395,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 7,
           line: 7,
           messageId: 'unnecessaryAssign',
         },
@@ -346,6 +416,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 7,
           line: 7,
           messageId: 'unnecessaryAssign',
         },
@@ -367,11 +439,15 @@ class Foo {
       errors: [
         {
           column: 9,
+          endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'unnecessaryAssign',
         },
         {
           column: 5,
+          endColumn: 19,
+          endLine: 9,
           line: 9,
           messageId: 'unnecessaryAssign',
         },
@@ -391,6 +467,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -410,6 +488,8 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
@@ -431,11 +511,15 @@ class Foo {
       errors: [
         {
           column: 5,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryAssign',
         },
         {
           column: 7,
+          endColumn: 21,
+          endLine: 8,
           line: 8,
           messageId: 'unnecessaryAssign',
         },
@@ -454,6 +538,8 @@ class Foo {
       errors: [
         {
           column: 7,
+          endColumn: 21,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryAssign',
         },
@@ -472,7 +558,72 @@ class Foo {
       errors: [
         {
           column: 7,
+          endColumn: 21,
+          endLine: 5,
           line: 5,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class User {
+  constructor(public name: string) {
+    this.name = name;
+    name = name.trim();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class User {
+  constructor(
+    public name: string,
+    public age: number,
+  ) {
+    name = name.trim();
+    this.name = name;
+    this.age = age;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      // Identifier write that is not the parameter must not suppress the report.
+      code: `
+class User {
+  constructor(public name: string) {
+    let local = name;
+    local = local.trim();
+    this.name = name;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
           messageId: 'unnecessaryAssign',
         },
       ],

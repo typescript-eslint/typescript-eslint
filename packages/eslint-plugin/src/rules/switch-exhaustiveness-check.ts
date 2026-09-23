@@ -55,9 +55,7 @@ export type Options = [
 ];
 
 export type MessageIds =
-  | 'addMissingCases'
-  | 'dangerousDefaultCase'
-  | 'switchIsNotExhaustive';
+  'addMissingCases' | 'dangerousDefaultCase' | 'switchIsNotExhaustive';
 
 export default createRule<Options, MessageIds>({
   name: 'switch-exhaustiveness-check',
@@ -163,8 +161,7 @@ export default createRule<Options, MessageIds>({
       );
 
       const symbolName = discriminantType.getSymbol()?.escapedName as
-        | string
-        | undefined;
+        string | undefined;
 
       const containsNonLiteralType =
         doesTypeContainNonLiteralType(discriminantType);
@@ -213,7 +210,9 @@ export default createRule<Options, MessageIds>({
       return {
         containsNonLiteralType,
         defaultCase: defaultCase ?? getCommentDefaultCase(node),
-        missingLiteralBranchTypes,
+        missingLiteralBranchTypes: missingLiteralBranchTypes.sort((a, b) =>
+          typeToString(a).localeCompare(typeToString(b)),
+        ),
         symbolName,
       };
     }

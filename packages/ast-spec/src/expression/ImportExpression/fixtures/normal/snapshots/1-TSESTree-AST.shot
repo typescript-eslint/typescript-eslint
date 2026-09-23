@@ -1,0 +1,43 @@
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: ImportExpression {
+        type: "ImportExpression",
+        options: null,
+        phase: null,
+        source: Literal {
+          type: "Literal",
+          raw: "'some-module'",
+          value: "some-module",
+
+          range: [7, 20],
+          loc: {
+            start: { column: 7, line: 1 },
+            end: { column: 20, line: 1 },
+          },
+        },
+
+        range: [0, 21],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 21, line: 1 },
+        },
+      },
+
+      range: [0, 22],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 22, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 23],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

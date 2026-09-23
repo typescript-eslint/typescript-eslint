@@ -33,8 +33,8 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSFunctionType {
                 type: "TSFunctionType",
-                parameters: [],
-                typeAnnotation: TSTypeAnnotation {
+                params: [],
+                returnType: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSBooleanKeyword {
                     type: "TSBooleanKeyword",
@@ -223,9 +223,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 159],
+  range: [0, 159],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 7 },
   },
 }

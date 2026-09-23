@@ -6,8 +6,7 @@ import type { Decorator } from '../../special/Decorator/spec';
 import type { AssignmentPattern } from '../AssignmentPattern/spec';
 
 type ParameterPropertyParameter =
-  | (AssignmentPattern & { left: Identifier })
-  | Identifier;
+  (AssignmentPattern & { left: Identifier }) | Identifier;
 
 export interface TSParameterProperty extends BaseNode {
   type: AST_NODE_TYPES.TSParameterProperty;

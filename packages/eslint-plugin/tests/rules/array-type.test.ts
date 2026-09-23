@@ -10,6 +10,9 @@ import { areOptionsValid } from '../areOptionsValid';
 const ruleTester = new RuleTester();
 
 ruleTester.run('array-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
     {
@@ -415,10 +418,10 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
     },
     {
       code: `
-        declare module '2' {
-          type Array<Y> = Y;
-          const y: Array<2>;
-        }
+declare module '2' {
+  type Array<Y> = Y;
+  const y: Array<2>;
+}
       `,
       options: [{ default: 'generic' }],
     },
@@ -447,6 +450,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -460,6 +465,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -477,6 +484,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -494,6 +503,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -507,6 +518,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -520,6 +533,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -537,6 +552,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -554,6 +571,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -567,6 +586,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -580,6 +601,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -597,6 +620,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -614,6 +639,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -627,6 +654,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -640,6 +669,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -657,6 +688,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -674,6 +707,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -687,6 +722,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -700,6 +737,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -717,6 +756,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -734,6 +775,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -747,6 +790,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -760,6 +805,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -777,6 +824,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -794,6 +843,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -807,6 +858,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -820,6 +873,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -837,6 +892,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -854,6 +911,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -867,6 +926,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -880,6 +941,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -897,6 +960,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -914,6 +979,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -927,6 +994,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -940,6 +1009,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -957,6 +1028,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -974,6 +1047,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -987,6 +1062,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1000,6 +1077,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1017,6 +1096,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1034,6 +1115,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1047,6 +1130,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1060,6 +1145,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1077,6 +1164,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -1094,6 +1183,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -1107,6 +1198,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1120,6 +1213,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1137,6 +1232,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'number',
           },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1154,6 +1251,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1167,6 +1266,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'bigint' },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1180,6 +1281,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1197,6 +1300,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'bigint',
           },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -1210,6 +1315,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1227,6 +1334,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'bigint',
           },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1244,6 +1353,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 36,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1260,6 +1371,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 15,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1273,6 +1386,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 21,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1286,6 +1401,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 27,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1299,12 +1416,16 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 17,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
         {
           column: 30,
           data: { className: 'Array', readonlyPrefix: '', type: 'Bar' },
+          endColumn: 40,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1318,6 +1439,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'undefined' },
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -1331,6 +1454,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 20,
           data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -1344,6 +1469,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -1357,6 +1484,8 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
         {
           column: 15,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -1373,6 +1502,8 @@ let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
         {
           column: 15,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 35,
+          endLine: 3,
           line: 3,
           messageId: 'errorStringGenericSimple',
         },
@@ -1396,6 +1527,8 @@ interface ArrayClass<T> {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'errorStringArraySimple',
         },
@@ -1420,6 +1553,8 @@ function barFunction(bar: ArrayClass<String>[]) {
         {
           column: 27,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 47,
+          endLine: 2,
           line: 2,
           messageId: 'errorStringGenericSimple',
         },
@@ -1437,6 +1572,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 13,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -1450,6 +1587,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 17,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 46,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -1463,6 +1602,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 43,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -1480,6 +1621,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
             readonlyPrefix: '',
             type: 'fooName.BarType',
           },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArraySimple',
         },
@@ -1493,6 +1636,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGenericSimple',
         },
@@ -1506,6 +1651,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'undefined' },
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1519,6 +1666,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 20,
           data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1532,6 +1681,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 15,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1548,6 +1699,8 @@ let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
         {
           column: 15,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 33,
+          endLine: 3,
           line: 3,
           messageId: 'errorStringArray',
         },
@@ -1570,6 +1723,8 @@ interface ArrayClass<T> {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'errorStringArray',
         },
@@ -1593,6 +1748,8 @@ function fooFunction(foo: Array<ArrayClass<string>>) {
         {
           column: 27,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 52,
+          endLine: 2,
           line: 2,
           messageId: 'errorStringArray',
         },
@@ -1610,6 +1767,8 @@ function fooFunction(foo: ArrayClass<string>[]) {
         {
           column: 13,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 41,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1623,6 +1782,8 @@ function fooFunction(foo: ArrayClass<string>[]) {
         {
           column: 17,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 49,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1636,6 +1797,8 @@ function fooFunction(foo: ArrayClass<string>[]) {
         {
           column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 46,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1649,6 +1812,8 @@ function fooFunction(foo: ArrayClass<string>[]) {
         {
           column: 31,
           data: { className: 'Array', readonlyPrefix: '', type: 'number' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1662,6 +1827,8 @@ function fooFunction(foo: ArrayClass<string>[]) {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1675,6 +1842,8 @@ function fooFunction(foo: ArrayClass<string>[]) {
         {
           column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1691,6 +1860,8 @@ let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
         {
           column: 15,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 35,
+          endLine: 3,
           line: 3,
           messageId: 'errorStringGeneric',
         },
@@ -1713,6 +1884,8 @@ interface ArrayClass<T> {
         {
           column: 8,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'errorStringGeneric',
         },
@@ -1736,6 +1909,8 @@ function barFunction(bar: ArrayClass<String>[]) {
         {
           column: 27,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 47,
+          endLine: 2,
           line: 2,
           messageId: 'errorStringGeneric',
         },
@@ -1753,6 +1928,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 13,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1766,6 +1943,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 17,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 46,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1779,6 +1958,8 @@ function barFunction(bar: Array<ArrayClass<String>>) {
         {
           column: 24,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 43,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1796,6 +1977,8 @@ interface FooInterface {
         {
           column: 18,
           data: { className: 'Array', readonlyPrefix: '', type: 'string' },
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'errorStringGeneric',
         },
@@ -1814,6 +1997,8 @@ interface FooInterface {
         {
           column: 28,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1828,6 +2013,8 @@ interface FooInterface {
         {
           column: 28,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringGeneric',
         },
@@ -1845,6 +2032,8 @@ interface FooInterface {
             readonlyPrefix: 'readonly ',
             type: 'object',
           },
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1858,6 +2047,8 @@ interface FooInterface {
         {
           column: 12,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 47,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1875,6 +2066,8 @@ interface FooInterface {
             readonlyPrefix: 'readonly ',
             type: 'T',
           },
+          endColumn: 55,
+          endLine: 1,
           line: 1,
           messageId: 'errorStringArray',
         },
@@ -1886,11 +2079,15 @@ interface FooInterface {
       code: "const x: Readonly<string[]> = ['a', 'b'];",
       errors: [
         {
+          column: 10,
           data: {
             className: 'Readonly',
             readonlyPrefix: 'readonly ',
             type: 'string[]',
           },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
           messageId: 'errorStringArrayReadonly',
         },
       ],
@@ -1901,11 +2098,15 @@ interface FooInterface {
       code: 'declare function foo<E extends Readonly<string[]>>(extra: E): E;',
       errors: [
         {
+          column: 32,
           data: {
             className: 'Readonly',
             readonlyPrefix: 'readonly ',
             type: 'string[]',
           },
+          endColumn: 50,
+          endLine: 1,
+          line: 1,
           messageId: 'errorStringArraySimpleReadonly',
         },
       ],
@@ -1916,7 +2117,11 @@ interface FooInterface {
       code: 'type Conditional<T> = Array<T extends string ? string : number>;',
       errors: [
         {
+          column: 23,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 64,
+          endLine: 1,
+          line: 1,
           messageId: 'errorStringArray',
         },
       ],
@@ -1927,7 +2132,11 @@ interface FooInterface {
       code: 'type Conditional<T> = (T extends string ? string : number)[];',
       errors: [
         {
+          column: 23,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 61,
+          endLine: 1,
+          line: 1,
           messageId: 'errorStringGenericSimple',
         },
       ],
@@ -1939,7 +2148,11 @@ interface FooInterface {
       code: 'type Conditional<T> = (T extends string ? string : number)[];',
       errors: [
         {
+          column: 23,
           data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          endColumn: 61,
+          endLine: 1,
+          line: 1,
           messageId: 'errorStringGeneric',
         },
       ],

@@ -5,6 +5,9 @@ import rule from '../../src/rules/class-literal-property-style';
 const ruleTester = new RuleTester();
 
 ruleTester.run('class-literal-property-style', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Mx {
@@ -47,92 +50,92 @@ abstract class Mx {
 }
     `,
     `
-      class Mx {
-        get mySetting() {
-          if (this._aValue) {
-            return 'on';
-          }
+class Mx {
+  get mySetting() {
+    if (this._aValue) {
+      return 'on';
+    }
 
-          return 'off';
-        }
-      }
+    return 'off';
+  }
+}
     `,
     `
-      class Mx {
-        get mySetting() {
-          return \`build-\${process.env.build}\`;
-        }
-      }
+class Mx {
+  get mySetting() {
+    return \`build-\${process.env.build}\`;
+  }
+}
     `,
     `
-      class Mx {
-        getMySetting() {
-          if (this._aValue) {
-            return 'on';
-          }
+class Mx {
+  getMySetting() {
+    if (this._aValue) {
+      return 'on';
+    }
 
-          return 'off';
-        }
-      }
+    return 'off';
+  }
+}
     `,
     `
-      class Mx {
-        public readonly myButton = styled.button\`
-          color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
-        \`;
-      }
+class Mx {
+  public readonly myButton = styled.button\`
+    color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+  \`;
+}
     `,
     `
-      class Mx {
-        set p1(val) {}
-        get p1() {
-          return '';
-        }
-      }
+class Mx {
+  set p1(val) {}
+  get p1() {
+    return '';
+  }
+}
     `,
     `
-      let p1 = 'p1';
-      class Mx {
-        set [p1](val) {}
-        get [p1]() {
-          return '';
-        }
-      }
+let p1 = 'p1';
+class Mx {
+  set [p1](val) {}
+  get [p1]() {
+    return '';
+  }
+}
     `,
     `
-      let p1 = 'p1';
-      class Mx {
-        set [/* before set */ p1 /* after set */](val) {}
-        get [/* before get */ p1 /* after get */]() {
-          return '';
-        }
-      }
+let p1 = 'p1';
+class Mx {
+  set [/* before set */ p1 /* after set */](val) {}
+  get [/* before get */ p1 /* after get */]() {
+    return '';
+  }
+}
     `,
     `
-      class Mx {
-        set ['foo'](val) {}
-        get foo() {
-          return '';
-        }
-        set bar(val) {}
-        get ['bar']() {
-          return '';
-        }
-        set ['baz'](val) {}
-        get baz() {
-          return '';
-        }
-      }
+class Mx {
+  set ['foo'](val) {}
+  get foo() {
+    return '';
+  }
+  set bar(val) {}
+  get ['bar']() {
+    return '';
+  }
+  set ['baz'](val) {}
+  get baz() {
+    return '';
+  }
+}
     `,
     {
       code: `
-        class Mx {
-          public get myButton() {
-            return styled.button\`
-              color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
-            \`;
-          }
-        }
+class Mx {
+  public get myButton() {
+    return styled.button\`
+      color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+    \`;
+  }
+}
       `,
       options: ['fields'],
     },
@@ -198,62 +201,62 @@ class Mx {
     },
     {
       code: `
-        class Mx {
-          public readonly myButton = styled.button\`
-            color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
-          \`;
-        }
+class Mx {
+  public readonly myButton = styled.button\`
+    color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+  \`;
+}
       `,
       options: ['getters'],
     },
     {
       code: `
-        class Mx {
-          public get myButton() {
-            return styled.button\`
-              color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
-            \`;
-          }
-        }
+class Mx {
+  public get myButton() {
+    return styled.button\`
+      color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
+    \`;
+  }
+}
       `,
       options: ['getters'],
     },
     {
       code: `
-        class A {
-          private readonly foo: string = 'bar';
-          constructor(foo: string) {
-            this.foo = foo;
-          }
-        }
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    this.foo = foo;
+  }
+}
       `,
       options: ['getters'],
     },
     {
       code: `
-        class A {
-          private readonly foo: string = 'bar';
-          constructor(foo: string) {
-            this['foo'] = foo;
-          }
-        }
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    this['foo'] = foo;
+  }
+}
       `,
       options: ['getters'],
     },
     {
       code: `
-        class A {
-          private readonly foo: string = 'bar';
-          constructor(foo: string) {
-            const bar = new (class {
-              private readonly foo: string = 'baz';
-              constructor() {
-                this.foo = 'qux';
-              }
-            })();
-            this['foo'] = foo;
-          }
-        }
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    const bar = new (class {
+      private readonly foo: string = 'baz';
+      constructor() {
+        this.foo = 'qux';
+      }
+    })();
+    this['foo'] = foo;
+  }
+}
       `,
       options: ['getters'],
     },
@@ -299,6 +302,8 @@ class Mx {
       errors: [
         {
           column: 7,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -325,6 +330,8 @@ class Mx {
       errors: [
         {
           column: 7,
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -351,6 +358,8 @@ class Mx {
       errors: [
         {
           column: 14,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -377,6 +386,8 @@ class Mx {
       errors: [
         {
           column: 21,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -395,6 +406,82 @@ class Mx {
     {
       code: `
 class Mx {
+  public static get n(): 1 | 2 {
+    return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferFieldStyle',
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  public static readonly n: 1 | 2 = 1;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Mx {
+  public static get n() /* before */ : 1 | 2 /* after */ {
+    return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferFieldStyle',
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  public static readonly n /* before */ : 1 | 2 /* after */ = 1;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Mx {
+  @logAccess
+  public static get foo(): number {
+    return 1;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferFieldStyle',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+class Mx {
   public get [myValue]() {
     return 'a literal value';
   }
@@ -403,6 +490,8 @@ class Mx {
       errors: [
         {
           column: 15,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -429,6 +518,8 @@ class Mx {
       errors: [
         {
           column: 15,
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -453,6 +544,8 @@ class Mx {
       errors: [
         {
           column: 20,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -478,6 +571,8 @@ class Mx {
       errors: [
         {
           column: 12,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -503,6 +598,8 @@ class Mx {
       errors: [
         {
           column: 12,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -528,6 +625,8 @@ class Mx {
       errors: [
         {
           column: 19,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -555,6 +654,8 @@ class Mx {
       errors: [
         {
           column: 17,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -580,6 +681,8 @@ class Mx {
       errors: [
         {
           column: 22,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -607,6 +710,8 @@ class Mx {
       errors: [
         {
           column: 21,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -631,6 +736,8 @@ class Mx {
       errors: [
         {
           column: 26,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -665,6 +772,8 @@ class Mx {
       errors: [
         {
           column: 14,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'preferFieldStyle',
           suggestions: [
@@ -703,6 +812,8 @@ class Mx {
       errors: [
         {
           column: 19,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -743,6 +854,8 @@ class A {
       errors: [
         {
           column: 20,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -786,6 +899,8 @@ class A {
       errors: [
         {
           column: 24,
+          endColumn: 27,
+          endLine: 6,
           line: 6,
           messageId: 'preferGetterStyle',
           suggestions: [
@@ -826,6 +941,8 @@ class A {
       errors: [
         {
           column: 20,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'preferGetterStyle',
           suggestions: [

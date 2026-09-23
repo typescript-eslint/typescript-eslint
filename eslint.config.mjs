@@ -445,6 +445,7 @@ export default defineConfig(
       'packages/*/src/index.ts',
       'vitest.config.mts',
       'packages/*/vitest.config.mts',
+      'tools/vitest.config.mts',
     ],
     rules: {
       // requirement
@@ -469,6 +470,12 @@ export default defineConfig(
       // TODO (43081j): maybe enable these one day?
       'eslint-plugin/no-meta-replaced-by': 'off',
       'eslint-plugin/require-meta-default-options': 'off',
+    },
+
+    settings: {
+      'eslint-plugin': {
+        ruleTesterConstructors: ['RuleTester', 'createRuleTesterWithTypes'],
+      },
     },
   },
   {
@@ -608,7 +615,7 @@ export default defineConfig(
   },
   {
     name: 'all-files',
-    files: ['**/*'],
+    files: [tseslint.globs.jsts],
     ignores: [
       'packages/eslint-plugin/src/configs/eslintrc/*',
       'packages/eslint-plugin/src/configs/flat/*',
@@ -699,12 +706,19 @@ export default defineConfig(
   },
   {
     name: 'eslint-plugin-rules-test-files',
-    files: ['packages/eslint-plugin/tests/rules/*.test.ts'],
+    files: [
+      'packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
+      'packages/eslint-plugin/tests/{eslint-rules,rules}/**/*.test.ts',
+    ],
     rules: {
       'perfectionist/sort-objects': [
         'error',
         {
           customGroups: [
+            {
+              elementNamePattern: '^assertionOptions$',
+              groupName: 'assertion',
+            },
             {
               elementNamePattern: '^valid$',
               groupName: 'top',
@@ -714,7 +728,7 @@ export default defineConfig(
               groupName: 'skip',
             },
           ],
-          groups: ['top', 'skip', 'unknown'],
+          groups: ['assertion', 'top', 'skip', 'unknown'],
         },
       ],
     },

@@ -10,8 +10,7 @@ Snapshot Diff:
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
           abstract: false,
@@ -86,10 +85,10 @@ Snapshot Diff:
     sourceType: 'module',
 
 -   range: [73, 101],
-+   range: [81, 101],
++   range: [0, 101],
     loc: {
 -     start: { column: 0, line: 3 },
-+     start: { column: 0, line: 4 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 5 },
     },
   }

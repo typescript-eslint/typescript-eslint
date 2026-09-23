@@ -1,9 +1,10 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "8.63.0",
+  "version": "8.70.1",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "type": "commonjs",
@@ -48,7 +49,8 @@
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
+    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
     "@typescript-eslint/project-service": "workspace:*",
@@ -62,7 +64,7 @@
     "ts-api-utils": "^2.5.0"
   },
   "devDependencies": {
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "glob": "catalog:",
@@ -87,7 +89,8 @@
       "lint": {
         "command": "eslint"
       },
-      "typecheck:tsgo": {}
+      "typecheck:tsgo": {},
+      "attw-check": {}
     }
   }
 }

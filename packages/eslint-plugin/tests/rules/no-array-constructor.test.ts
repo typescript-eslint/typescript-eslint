@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-array-constructor';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-array-constructor', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'new Array(x);',
     'Array(x);',
@@ -37,6 +40,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'new Array();',
       errors: [
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -46,6 +53,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'Array();',
       errors: [
         {
+          column: 1,
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -55,6 +66,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'Array?.();',
       errors: [
         {
+          column: 1,
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -64,6 +79,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: '/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(); /* g */ /* h */',
       errors: [
         {
+          column: 17,
+          endColumn: 58,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -73,6 +92,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'new Array(x, y);',
       errors: [
         {
+          column: 1,
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -82,6 +105,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'Array(x, y);',
       errors: [
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -91,6 +118,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'Array?.(x, y);',
       errors: [
         {
+          column: 1,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -100,6 +131,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: '/* a */ /* b */ Array /* c */ /* d */ /* e */ /* f */?.(x, y); /* g */ /* h */',
       errors: [
         {
+          column: 17,
+          endColumn: 62,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -109,6 +144,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'new Array(0, 1, 2);',
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -118,6 +157,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'Array(0, 1, 2);',
       errors: [
         {
+          column: 1,
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -127,6 +170,10 @@ ruleTester.run('no-array-constructor', rule, {
       code: 'Array?.(0, 1, 2);',
       errors: [
         {
+          column: 1,
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
           messageId: 'useLiteral',
         },
       ],
@@ -142,6 +189,10 @@ ruleTester.run('no-array-constructor', rule, {
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 2,
+          endLine: 6,
+          line: 2,
           messageId: 'useLiteral',
         },
       ],
@@ -159,6 +210,10 @@ new Array(0, 1, 2);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'useLiteral',
         },
       ],

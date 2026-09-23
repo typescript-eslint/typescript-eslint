@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-ts-expect-error';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-ts-expect-error', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     '// @ts-nocheck',
     '// @ts-check',
@@ -39,6 +42,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -50,6 +55,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -62,6 +69,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -78,6 +87,8 @@ if (false) {
       errors: [
         {
           column: 3,
+          endColumn: 40,
+          endLine: 3,
           line: 3,
           messageId: 'preferExpectErrorComment',
         },
@@ -94,6 +105,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -106,6 +119,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 2,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -118,6 +133,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 2,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -129,6 +146,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 2,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -140,6 +159,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 2,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -151,6 +172,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 2,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -167,6 +190,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 17,
+          endLine: 5,
           line: 2,
           messageId: 'preferExpectErrorComment',
         },
@@ -183,6 +208,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'preferExpectErrorComment',
         },
@@ -197,6 +224,8 @@ if (false) {
       errors: [
         {
           column: 1,
+          endColumn: 54,
+          endLine: 3,
           line: 2,
           messageId: 'preferExpectErrorComment',
         },

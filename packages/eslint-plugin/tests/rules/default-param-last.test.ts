@@ -5,6 +5,9 @@ import rule from '../../src/rules/default-param-last';
 const ruleTester = new RuleTester();
 
 ruleTester.run('default-param-last', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'function foo() {}',
     'function foo(a: number) {}',
@@ -118,6 +121,7 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -129,12 +133,14 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
         {
           column: 21,
           endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -146,12 +152,14 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
         {
           column: 32,
           endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -163,6 +171,7 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -174,6 +183,7 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -185,6 +195,7 @@ class Foo {
         {
           column: 14,
           endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -196,6 +207,7 @@ class Foo {
         {
           column: 25,
           endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -207,12 +219,14 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
         {
           column: 21,
           endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -224,6 +238,7 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -235,6 +250,7 @@ class Foo {
         {
           column: 14,
           endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -246,6 +262,7 @@ class Foo {
         {
           column: 14,
           endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -257,6 +274,7 @@ class Foo {
         {
           column: 14,
           endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -268,6 +286,7 @@ class Foo {
         {
           column: 14,
           endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -279,6 +298,7 @@ class Foo {
         {
           column: 23,
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -290,12 +310,14 @@ class Foo {
         {
           column: 23,
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
         {
           column: 30,
           endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -307,12 +329,14 @@ class Foo {
         {
           column: 23,
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
         {
           column: 41,
           endColumn: 46,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -324,6 +348,7 @@ class Foo {
         {
           column: 23,
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -335,6 +360,7 @@ class Foo {
         {
           column: 23,
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -346,6 +372,7 @@ class Foo {
         {
           column: 23,
           endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -357,6 +384,7 @@ class Foo {
         {
           column: 34,
           endColumn: 44,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -368,12 +396,14 @@ class Foo {
         {
           column: 23,
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
         {
           column: 30,
           endColumn: 40,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -385,6 +415,7 @@ class Foo {
         {
           column: 23,
           endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -396,6 +427,7 @@ class Foo {
         {
           column: 23,
           endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -407,6 +439,7 @@ class Foo {
         {
           column: 23,
           endColumn: 48,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -418,6 +451,7 @@ class Foo {
         {
           column: 23,
           endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -429,6 +463,7 @@ class Foo {
         {
           column: 23,
           endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -440,6 +475,7 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -451,12 +487,14 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
         {
           column: 21,
           endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -468,12 +506,14 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
         {
           column: 32,
           endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -485,6 +525,7 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -496,6 +537,7 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -507,6 +549,7 @@ class Foo {
         {
           column: 14,
           endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -518,6 +561,7 @@ class Foo {
         {
           column: 25,
           endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -529,12 +573,14 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
         {
           column: 21,
           endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -546,6 +592,7 @@ class Foo {
         {
           column: 14,
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -557,6 +604,7 @@ class Foo {
         {
           column: 14,
           endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -568,6 +616,7 @@ class Foo {
         {
           column: 14,
           endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -579,6 +628,7 @@ class Foo {
         {
           column: 14,
           endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -590,6 +640,7 @@ class Foo {
         {
           column: 14,
           endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'shouldBeLast',
         },
@@ -609,6 +660,7 @@ class Foo {
         {
           column: 5,
           endColumn: 25,
+          endLine: 5,
           line: 5,
           messageId: 'shouldBeLast',
         },
@@ -628,6 +680,7 @@ class Foo {
         {
           column: 5,
           endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'shouldBeLast',
         },
@@ -646,6 +699,7 @@ class Foo {
         {
           column: 5,
           endColumn: 22,
+          endLine: 4,
           line: 4,
           messageId: 'shouldBeLast',
         },
@@ -664,6 +718,7 @@ class Foo {
         {
           column: 5,
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'shouldBeLast',
         },
@@ -679,6 +734,7 @@ class Foo {
         {
           column: 15,
           endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'shouldBeLast',
         },
@@ -694,6 +750,7 @@ class Foo {
         {
           column: 15,
           endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'shouldBeLast',
         },

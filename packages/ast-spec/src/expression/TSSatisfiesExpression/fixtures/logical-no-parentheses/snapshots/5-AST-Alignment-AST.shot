@@ -1,5 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`AST Fixtures > expression > TSSatisfiesExpression > logical-no-parentheses > AST Alignment - AST`]
-Snapshot Diff:
-Compared values have no visual difference.

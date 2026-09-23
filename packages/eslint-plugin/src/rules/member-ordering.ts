@@ -8,15 +8,17 @@ import naturalCompare from 'natural-compare';
 
 import {
   createRule,
+  forEachChildESTree,
   getNameFromIndexSignature,
   getNameFromMember,
+  getStaticStringValue,
   MemberNameType,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 export type MessageIds =
-  | 'incorrectGroupOrder'
-  | 'incorrectOrder'
-  | 'incorrectRequiredMembersOrder';
+  'incorrectGroupOrder' | 'incorrectOrder' | 'incorrectRequiredMembersOrder';
 
 type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
@@ -493,6 +495,87 @@ function isMemberOptional(node: Member): boolean {
   return false;
 }
 
+function getMemberInitializer(node: Member) {
+  switch (node.type) {
+    case AST_NODE_TYPES.AccessorProperty:
+    case AST_NODE_TYPES.PropertyDefinition:
+      return node.value;
+  }
+  return undefined;
+}
+
+function getThisPropertyName(node: TSESTree.MemberExpression) {
+  return node.computed
+    ? getStaticStringValue(node.property)
+    : node.property.name;
+}
+
+function isEvaluatedLater(
+  node: TSESTree.Node,
+  initializer: TSESTree.Expression,
+) {
+  for (
+    let current = node;
+    current !== initializer.parent;
+    current = nullThrows(current.parent, NullThrowsReasons.MissingParent)
+  ) {
+    if (
+      current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+      current.type === AST_NODE_TYPES.ClassBody ||
+      current.type === AST_NODE_TYPES.FunctionExpression
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function collectImmediateThisPropertyNames(initializer: TSESTree.Expression) {
+  const names = new Set<string>();
+
+  forEachChildESTree(initializer, node => {
+    if (
+      node.type === AST_NODE_TYPES.MemberExpression &&
+      node.object.type === AST_NODE_TYPES.ThisExpression &&
+      !isEvaluatedLater(node, initializer)
+    ) {
+      const name = getThisPropertyName(node);
+      if (name != null) {
+        names.add(name);
+      }
+    }
+
+    return null;
+  });
+
+  return names;
+}
+
+function isBlockedByEarlierMemberReferences(
+  member: Member,
+  members: Member[],
+  fromIndex: number,
+  toIndex: number,
+  sourceCode: TSESLint.SourceCode,
+) {
+  const initializer = getMemberInitializer(member);
+  if (!initializer) {
+    return false;
+  }
+
+  const referencedNames = collectImmediateThisPropertyNames(initializer);
+
+  return members.slice(fromIndex, toIndex).some(other => {
+    const otherName = getMemberName(other, sourceCode);
+    return (
+      otherName != null &&
+      getMemberInitializer(other) != null &&
+      referencedNames.has(otherName)
+    );
+  });
+}
+
 /**
  * Gets the calculated rank using the provided method definition.
  * The algorithm is as follows:
@@ -886,15 +969,28 @@ export default createRule<Options, MessageIds>({
       order: AlphabeticalOrder,
     ): boolean {
       let previousName = '';
+      let previousIndex = 0;
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
-      members.forEach(member => {
+      members.forEach((member, index) => {
         const name = getMemberName(member, context.sourceCode);
 
         // Note: Not all members have names
         if (name) {
           if (naturalOutOfOrder(name, previousName, order)) {
+            if (
+              isBlockedByEarlierMemberReferences(
+                member,
+                members,
+                previousIndex,
+                index,
+                context.sourceCode,
+              )
+            ) {
+              return;
+            }
+
             context.report({
               node: member,
               messageId: 'incorrectOrder',
@@ -908,6 +1004,7 @@ export default createRule<Options, MessageIds>({
           }
 
           previousName = name;
+          previousIndex = index;
         }
       });
 

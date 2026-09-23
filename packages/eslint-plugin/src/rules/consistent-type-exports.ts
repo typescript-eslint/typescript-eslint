@@ -35,9 +35,7 @@ interface ReportValueExport {
 }
 
 export type MessageIds =
-  | 'multipleExportsAreTypes'
-  | 'singleExportIsType'
-  | 'typeOverValue';
+  'multipleExportsAreTypes' | 'singleExportIsType' | 'typeOverValue';
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-type-exports',

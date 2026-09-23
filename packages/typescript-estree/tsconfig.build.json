@@ -1,6 +1,5 @@
 {
   "extends": "../../tsconfig.build.json",
-  "compilerOptions": {},
   "references": [
     {
       "path": "../project-service/tsconfig.build.json"

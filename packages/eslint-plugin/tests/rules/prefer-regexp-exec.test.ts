@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-regexp-exec', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "'something'.match();",
     "'something'.match(/thing/g);",
@@ -107,6 +110,8 @@ text.match(returnsRegexp());
       errors: [
         {
           column: 13,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -118,6 +123,8 @@ text.match(returnsRegexp());
       errors: [
         {
           column: 13,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -133,6 +140,8 @@ text.match(search);
       errors: [
         {
           column: 6,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -152,6 +161,8 @@ text.match(search);
       errors: [
         {
           column: 6,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -171,6 +182,8 @@ function f(s: 'a' | 'b') {
       errors: [
         {
           column: 5,
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -191,6 +204,8 @@ function f(s: SafeString) {
       errors: [
         {
           column: 5,
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -211,6 +226,8 @@ function f<T extends 'a' | 'b'>(s: T) {
       errors: [
         {
           column: 5,
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -230,6 +247,8 @@ text.match(search);
       errors: [
         {
           column: 6,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -249,6 +268,8 @@ function test(pattern: string) {
       errors: [
         {
           column: 11,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -269,6 +290,8 @@ function test(pattern: string) {
       errors: [
         {
           column: 11,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -289,6 +312,8 @@ function test(pattern: string) {
       errors: [
         {
           column: 11,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'regExpExecOverStringMatch',
         },
@@ -310,11 +335,15 @@ function temp(text: string): void {
       errors: [
         {
           column: 8,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'regExpExecOverStringMatch',
         },
         {
           column: 8,
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'regExpExecOverStringMatch',
         },

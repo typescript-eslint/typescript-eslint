@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-extra-non-null-assertion';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-extra-non-null-assertion', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: `
@@ -52,6 +55,7 @@ const bar = foo!!.bar;
         {
           column: 13,
           endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'noExtraNonNullAssertion',
         },
@@ -71,6 +75,7 @@ function foo(bar: number | undefined) {
         {
           column: 23,
           endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'noExtraNonNullAssertion',
         },
@@ -91,6 +96,7 @@ function foo(bar?: { n: number }) {
         {
           column: 10,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noExtraNonNullAssertion',
         },
@@ -111,6 +117,7 @@ function foo(bar?: { n: number }) {
         {
           column: 10,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noExtraNonNullAssertion',
         },
@@ -131,6 +138,7 @@ const bar = (foo!)!.bar;
         {
           column: 14,
           endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'noExtraNonNullAssertion',
         },
@@ -150,6 +158,7 @@ function foo(bar?: { n: number }) {
         {
           column: 11,
           endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noExtraNonNullAssertion',
         },
@@ -170,6 +179,7 @@ function foo(bar?: { n: number }) {
         {
           column: 10,
           endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'noExtraNonNullAssertion',
         },
@@ -190,6 +200,7 @@ function foo(bar?: { n: number }) {
         {
           column: 11,
           endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noExtraNonNullAssertion',
         },

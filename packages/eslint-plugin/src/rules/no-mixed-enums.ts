@@ -6,7 +6,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import {
+  createRule,
+  getParserServices,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 enum AllowedType {
   Number,
@@ -38,6 +43,50 @@ export default createRule({
       previousSibling: TSESTree.TSEnumDeclaration | undefined;
     }
 
+    function getModuleName(id: TSESTree.TSModuleDeclaration['id']): string {
+      if (id.type === AST_NODE_TYPES.Literal) {
+        return JSON.stringify(id.value);
+      }
+
+      let qualifiers = '';
+      let current: TSESTree.EntityName = id;
+      while (current.type === AST_NODE_TYPES.TSQualifiedName) {
+        qualifiers = `.${current.right.name}${qualifiers}`;
+        current = current.left;
+      }
+
+      return context.sourceCode.getText(current) + qualifiers;
+    }
+
+    function getMergedScopes(scope: Scope): Scope[] {
+      const { block } = scope;
+      if (block.type !== AST_NODE_TYPES.TSModuleDeclaration) {
+        return [scope];
+      }
+
+      const name = getModuleName(block.id);
+      return getEnclosingScopes(block).flatMap(enclosing =>
+        enclosing.childScopes.filter(
+          childScope =>
+            childScope.block.type === AST_NODE_TYPES.TSModuleDeclaration &&
+            getModuleName(childScope.block.id) === name,
+        ),
+      );
+    }
+
+    function getEnclosingScopes(
+      node: TSESTree.TSEnumDeclaration | TSESTree.TSModuleDeclaration,
+    ): Scope[] {
+      const enclosing = nullThrows(
+        context.sourceCode.getScope(node).upper,
+        NullThrowsReasons.MissingParent,
+      );
+
+      return node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration
+        ? getMergedScopes(enclosing)
+        : [enclosing];
+    }
+
     function collectNodeDefinitions(
       node: TSESTree.TSEnumDeclaration,
     ): CollectedDefinitions {
@@ -46,9 +95,10 @@ export default createRule({
         imports: [],
         previousSibling: undefined,
       };
-      let scope: Scope | null = context.sourceCode.getScope(node);
 
-      for (const definition of scope.upper?.set.get(name)?.defs ?? []) {
+      for (const definition of getEnclosingScopes(node).flatMap(
+        enclosing => enclosing.set.get(name)?.defs ?? [],
+      )) {
         if (
           definition.node.type === AST_NODE_TYPES.TSEnumDeclaration &&
           definition.node.range[0] < node.range[0] &&
@@ -59,6 +109,7 @@ export default createRule({
         }
       }
 
+      let scope: Scope | null = context.sourceCode.getScope(node);
       while (scope) {
         scope.set.get(name)?.defs.forEach(definition => {
           if (definition.type === DefinitionType.ImportBinding) {
@@ -146,40 +197,16 @@ export default createRule({
       // Case: Multiple enum declarations in the same file
       // enum MyEnum { A }
       // enum MyEnum { B }
-      if (previousSibling) {
-        return getMemberType(previousSibling.body.members[0]);
-      }
-
-      // Case: Namespace declaration merging
+      //
+      // ...including ones merged across namespace declarations
       // namespace MyNamespace {
       //   export enum MyEnum { A }
       // }
       // namespace MyNamespace {
       //   export enum MyEnum { B }
       // }
-      if (
-        node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration &&
-        node.parent.parent.type === AST_NODE_TYPES.TSModuleBlock
-      ) {
-        // https://github.com/typescript-eslint/typescript-eslint/issues/8352
-        // TODO: We don't need to dip into the TypeScript type checker here!
-        // Merged namespaces must all exist in the same file.
-        // We could instead compare this file's nodes to find the merges.
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node.id);
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const declarations = typeChecker
-          .getSymbolAtLocation(tsNode)!
-          .getDeclarations()!;
-
-        const [{ initializer }] = (declarations[0] as ts.EnumDeclaration)
-          .members;
-        return initializer &&
-          tsutils.isTypeFlagSet(
-            typeChecker.getTypeAtLocation(initializer),
-            ts.TypeFlags.StringLike,
-          )
-          ? AllowedType.String
-          : AllowedType.Number;
+      if (previousSibling) {
+        return getMemberType(previousSibling.body.members[0]);
       }
 
       // Finally, we default to the type of the first enum member

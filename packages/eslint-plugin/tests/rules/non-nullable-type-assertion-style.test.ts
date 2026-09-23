@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('non-nullable-type-assertion-style', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare const original: number | string;
@@ -63,6 +66,8 @@ const bar = maybe as string;
       errors: [
         {
           column: 13,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'preferNonNullAssertion',
         },
@@ -80,6 +85,8 @@ const bar = maybe as string;
       errors: [
         {
           column: 13,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'preferNonNullAssertion',
         },
@@ -97,6 +104,8 @@ const bar = maybe as string;
       errors: [
         {
           column: 13,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'preferNonNullAssertion',
         },
@@ -115,6 +124,8 @@ const bar = maybe as Type;
       errors: [
         {
           column: 13,
+          endColumn: 26,
+          endLine: 4,
           line: 4,
           messageId: 'preferNonNullAssertion',
         },
@@ -136,6 +147,8 @@ const bar = maybe as Interface;
       errors: [
         {
           column: 13,
+          endColumn: 31,
+          endLine: 6,
           line: 6,
           messageId: 'preferNonNullAssertion',
         },
@@ -158,6 +171,8 @@ const y = x as NonNullable<T>;
       errors: [
         {
           column: 11,
+          endColumn: 30,
+          endLine: 5,
           line: 5,
           messageId: 'preferNonNullAssertion',
         },
@@ -179,6 +194,8 @@ const y = x as NonNullable<T>;
       errors: [
         {
           column: 11,
+          endColumn: 30,
+          endLine: 5,
           line: 5,
           messageId: 'preferNonNullAssertion',
         },
@@ -201,6 +218,8 @@ async function fn(): Promise<string> {
       errors: [
         {
           column: 10,
+          endColumn: 45,
+          endLine: 5,
           line: 5,
           messageId: 'preferNonNullAssertion',
         },
@@ -222,6 +241,8 @@ const b = (a || undefined) as string;
       errors: [
         {
           column: 11,
+          endColumn: 37,
+          endLine: 4,
           line: 4,
           messageId: 'preferNonNullAssertion',
         },
@@ -284,6 +305,8 @@ function first<T extends string | number>(array: ArrayLike<T>): T | null {
         errors: [
           {
             column: 30,
+            endColumn: 43,
+            endLine: 3,
             line: 3,
             messageId: 'preferNonNullAssertion',
           },

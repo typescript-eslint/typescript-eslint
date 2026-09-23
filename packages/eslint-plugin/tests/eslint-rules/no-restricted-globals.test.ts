@@ -7,54 +7,6 @@ const rule = getESLintCoreRule('no-restricted-globals');
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-restricted-globals', rule, {
-  invalid: [
-    {
-      code: `
-function onClick() {
-  console.log(event);
-}
-
-fdescribe('foo', function () {});
-      `,
-      errors: [
-        {
-          data: {
-            name: 'event',
-          },
-          messageId: 'defaultMessage',
-        },
-      ],
-      options: ['event'],
-    },
-    {
-      code: `
-confirm('TEST');
-      `,
-      errors: [
-        {
-          data: {
-            name: 'confirm',
-          },
-          messageId: 'defaultMessage',
-        },
-      ],
-      options: ['confirm'],
-    },
-    {
-      code: `
-var a = confirm('TEST')?.a;
-      `,
-      errors: [
-        {
-          data: {
-            name: 'confirm',
-          },
-          messageId: 'defaultMessage',
-        },
-      ],
-      options: ['confirm'],
-    },
-  ],
   valid: [
     // https://github.com/eslint/typescript-eslint-parser/issues/487
     {
@@ -76,23 +28,83 @@ type Handler = (event: string) => any;
     },
     {
       code: `
-        const a = foo?.bar?.name;
+const a = foo?.bar?.name;
       `,
     },
     {
       code: `
-        const a = foo?.bar?.name ?? 'foobar';
+const a = foo?.bar?.name ?? 'foobar';
       `,
     },
     {
       code: `
-        const a = foo()?.bar;
+const a = foo()?.bar;
       `,
     },
     {
       code: `
-        const a = foo()?.bar ?? true;
+const a = foo()?.bar ?? true;
       `,
+    },
+  ],
+  invalid: [
+    {
+      code: `
+function onClick() {
+  console.log(event);
+}
+
+fdescribe('foo', function () {});
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            name: 'event',
+          },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'defaultMessage',
+        },
+      ],
+      options: ['event'],
+    },
+    {
+      code: `
+confirm('TEST');
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            name: 'confirm',
+          },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'defaultMessage',
+        },
+      ],
+      options: ['confirm'],
+    },
+    {
+      code: `
+var a = confirm('TEST')?.a;
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            name: 'confirm',
+          },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+          messageId: 'defaultMessage',
+        },
+      ],
+      options: ['confirm'],
     },
   ],
 });

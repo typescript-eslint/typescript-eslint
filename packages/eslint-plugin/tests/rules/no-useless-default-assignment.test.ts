@@ -7,150 +7,153 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-useless-default-assignment', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
-      function Bar({ foo = '' }: { foo?: string }) {
-        return foo;
-      }
+function Bar({ foo = '' }: { foo?: string }) {
+  return foo;
+}
     `,
     `
-      const { foo } = { foo: 'bar' };
+const { foo } = { foo: 'bar' };
     `,
     `
-      [1, 2, 3, undefined].map((a = 42) => a + 1);
+[1, 2, 3, undefined].map((a = 42) => a + 1);
     `,
     `
-      function test(a?: number) {
-        return a;
-      }
+function test(a?: number) {
+  return a;
+}
     `,
     `
-      const obj: { a?: string } = {};
-      const { a = 'default' } = obj;
+const obj: { a?: string } = {};
+const { a = 'default' } = obj;
     `,
     `
-      function test(a: string | undefined = 'default') {
-        return a;
-      }
+function test(a: string | undefined = 'default') {
+  return a;
+}
     `,
     `
-      (a: string = 'default') => a;
+(a: string = 'default') => a;
     `,
     `
-      function test(a: string = 'default') {
-        return a;
-      }
+function test(a: string = 'default') {
+  return a;
+}
     `,
     `
-      class C {
-        public test(a: string = 'default') {
-          return a;
-        }
-      }
+class C {
+  public test(a: string = 'default') {
+    return a;
+  }
+}
     `,
     `
-      const obj: { a: string | undefined } = { a: undefined };
-      const { a = 'default' } = obj;
+const obj: { a: string | undefined } = { a: undefined };
+const { a = 'default' } = obj;
     `,
     `
-      function test(arr: number[] | undefined = []) {
-        return arr;
-      }
+function test(arr: number[] | undefined = []) {
+  return arr;
+}
     `,
     `
-      function Bar({ nested: { foo = '' } = {} }: { nested?: { foo?: string } }) {
-        return foo;
-      }
+function Bar({ nested: { foo = '' } = {} }: { nested?: { foo?: string } }) {
+  return foo;
+}
     `,
     `
-      function test(a: any = 'default') {
-        return a;
-      }
+function test(a: any = 'default') {
+  return a;
+}
     `,
     `
-      function test(a: unknown = 'default') {
-        return a;
-      }
+function test(a: unknown = 'default') {
+  return a;
+}
     `,
     `
-      function test(a = 5) {
-        return a;
-      }
+function test(a = 5) {
+  return a;
+}
     `,
     `
-      function createValidator(): () => void {
-        return (param = 5) => {};
-      }
+function createValidator(): () => void {
+  return (param = 5) => {};
+}
     `,
     `
-      function Bar({ foo = '' }: { foo: any }) {
-        return foo;
-      }
+function Bar({ foo = '' }: { foo: any }) {
+  return foo;
+}
     `,
     `
-      function Bar({ foo = '' }: { foo: unknown }) {
-        return foo;
-      }
+function Bar({ foo = '' }: { foo: unknown }) {
+  return foo;
+}
     `,
     `
-      function getValue(): undefined;
-      function getValue(box: { value: string }): string;
-      function getValue({ value = '' }: { value?: string } = {}): string | undefined {
-        return value;
-      }
+function getValue(): undefined;
+function getValue(box: { value: string }): string;
+function getValue({ value = '' }: { value?: string } = {}): string | undefined {
+  return value;
+}
     `,
     `
-      function getValueObject({ value = '' }: Partial<{ value: string }>) {
-        return value;
-      }
+function getValueObject({ value = '' }: Partial<{ value: string }>) {
+  return value;
+}
     `,
     `
-      const { value = 'default' } = someUnknownFunction();
+const { value = 'default' } = someUnknownFunction();
     `,
     `
-      const [value = 'default'] = someUnknownFunction();
+const [value = 'default'] = someUnknownFunction();
     `,
     `
-      for (const { value = 'default' } of []) {
-      }
+for (const { value = 'default' } of []) {
+}
     `,
     `
-      for (const [value = 'default'] of []) {
-      }
+for (const [value = 'default'] of []) {
+}
     `,
     `
-      declare const x: [[number | undefined]];
-      const [[a = 1]] = x;
+declare const x: [[number | undefined]];
+const [[a = 1]] = x;
     `,
     `
-      function foo(x: string = '') {}
+function foo(x: string = '') {}
     `,
     `
-      class C {
-        method(x: string = '') {}
-      }
+class C {
+  method(x: string = '') {}
+}
     `,
     `
-      const foo = (x: string = '') => {};
+const foo = (x: string = '') => {};
     `,
     `
-      const obj = { ab: { x: 1 } };
-      const {
-        ['a' + 'b']: { x = 1 },
-      } = obj;
+const obj = { ab: { x: 1 } };
+const {
+  ['a' + 'b']: { x = 1 },
+} = obj;
     `,
     `
-      const obj = { ab: 1 };
-      const { ['a' + 'b']: x = 1 } = obj;
+const obj = { ab: 1 };
+const { ['a' + 'b']: x = 1 } = obj;
     `,
     `
-      for ([[a = 1]] of []) {
-      }
+for ([[a = 1]] of []) {
+}
     `,
     {
       code: `
-        declare const g: Array<string>;
-        const [foo = ''] = g;
+declare const g: Array<string>;
+const [foo = ''] = g;
       `,
       languageOptions: {
         parserOptions: {
@@ -162,8 +165,8 @@ ruleTester.run('no-useless-default-assignment', rule, {
     },
     {
       code: `
-        declare const g: Record<string, string>;
-        const { foo = '' } = g;
+declare const g: Record<string, string>;
+const { foo = '' } = g;
       `,
       languageOptions: {
         parserOptions: {
@@ -175,8 +178,8 @@ ruleTester.run('no-useless-default-assignment', rule, {
     },
     {
       code: `
-        declare const h: { [key: string]: string };
-        const { bar = '' } = h;
+declare const h: { [key: string]: string };
+const { bar = '' } = h;
       `,
       languageOptions: {
         parserOptions: {
@@ -187,488 +190,670 @@ ruleTester.run('no-useless-default-assignment', rule, {
       },
     },
     `
-      declare const g: Array<string>;
-      const [foo = ''] = g;
+declare const g: Array<string>;
+const [foo = ''] = g;
     `,
     `
-      declare const g: Record<string, string>;
-      const { foo = '' } = g;
+declare const g: Record<string, string>;
+const { foo = '' } = g;
     `,
     `
-      declare const h: { [key: string]: string };
-      const { bar = '' } = h;
+declare const h: { [key: string]: string };
+const { bar = '' } = h;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11849
     `
-      type Merge = boolean | ((incoming: string[]) => void);
+type Merge = boolean | ((incoming: string[]) => void);
 
-      const policy: { merge: Merge } = {
-        merge: (incoming: string[] = []) => {
-          incoming;
-        },
-      };
+const policy: { merge: Merge } = {
+  merge: (incoming: string[] = []) => {
+    incoming;
+  },
+};
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11846
     `
-      const [a, b = ''] = 'somestr'.split('.');
+const [a, b = ''] = 'somestr'.split('.');
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11846
     `
-      declare const params: string[];
-      const [c = '123'] = params;
+declare const params: string[];
+const [c = '123'] = params;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11846
     `
-      declare function useCallback<T>(callback: T);
-      useCallback((value: number[] = []) => {});
+declare function useCallback<T>(callback: T);
+useCallback((value: number[] = []) => {});
     `,
     `
-      declare const tuple: [string];
-      const [a, b = 'default'] = tuple;
+declare const tuple: [string];
+const [a, b = 'default'] = tuple;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12767
+    `
+declare const commands: [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+declare const commands: readonly [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+function run([cmd, arg = 'run']: [string, ...string[]]) {}
+    `,
+    `
+declare const mixed: [boolean, ...number[], string];
+const [a, b, c = 0] = mixed;
+    `,
+    `
+declare const items: [...string[], string | undefined];
+const [first = 'fallback'] = items;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11911
     `
-      const run = (cb: (...args: unknown[]) => void) => cb();
-      const cb = (p: boolean = true) => null;
-      run(cb);
-      run((p: boolean = true) => null);
+const run = (cb: (...args: unknown[]) => void) => cb();
+const cb = (p: boolean = true) => null;
+run(cb);
+run((p: boolean = true) => null);
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11850
     `
-      const { a = 'default' } = Math.random() > 0.5 ? { a: 'Hello' } : {};
+const { a = 'default' } = Math.random() > 0.5 ? { a: 'Hello' } : {};
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11850
     `
-      const { a = 'default' } =
-        Math.random() > 0.5 ? (Math.random() > 0.5 ? { a: 'Hello' } : {}) : {};
+const { a = 'default' } =
+  Math.random() > 0.5 ? (Math.random() > 0.5 ? { a: 'Hello' } : {}) : {};
     `,
     // Optional parameter with meaningful default value
     `
-      function findPosts({
-        category,
-        maxResults = 100,
-      }: {
-        category: string;
-        maxResults?: number;
-      }): Promise<string[]> {
-        return Promise.resolve([category, String(maxResults)]);
-      }
+function findPosts({
+  category,
+  maxResults = 100,
+}: {
+  category: string;
+  maxResults?: number;
+}): Promise<string[]> {
+  return Promise.resolve([category, String(maxResults)]);
+}
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11980
     `
-      const { a = 'baz' } = cond ? {} : { a: 'bar' };
+const { a = 'baz' } = cond ? {} : { a: 'bar' };
     `,
     `
-      const { a = 'baz' } = cond ? foo : { a: 'bar' };
+const { a = 'baz' } = cond ? foo : { a: 'bar' };
     `,
     `
-      const { a = 'baz' } = foo && { a: 'bar' };
+const { a = 'baz' } = foo && { a: 'bar' };
     `,
     `
-      const { a = 'baz' } = cond ? { a: 'foo', ...extra } : { a: 'bar' };
+const { a = 'baz' } = cond ? { a: 'foo', ...extra } : { a: 'bar' };
     `,
     `
-      const { a = 'baz' } = cond ? { ...foo } : { a: 'bar' };
+const { a = 'baz' } = cond ? { ...foo } : { a: 'bar' };
     `,
     `
-      const key = Math.random() > 0.5 ? 'a' : 'b';
-      const { a = 'baz' } = cond ? { [key]: 'foo' } : { [key]: 'bar' };
+const key = Math.random() > 0.5 ? 'a' : 'b';
+const { a = 'baz' } = cond ? { [key]: 'foo' } : { [key]: 'bar' };
     `,
     `
-      const { a = 'baz' } = cond ? foo && { a: 'bar' } : { a: 'baz' };
+const { a = 'baz' } = cond ? foo && { a: 'bar' } : { a: 'baz' };
     `,
     `
-      const obj: unknown = { a: 'bar' };
-      const { a = 'baz' } = cond ? obj : { a: 'bar' };
+const obj: unknown = { a: 'bar' };
+const { a = 'baz' } = cond ? obj : { a: 'bar' };
     `,
     `
-      const sym = Symbol('a');
-      const { a = 'baz' } = cond ? { [sym]: 'foo' } : { [sym]: 'bar' };
+const sym = Symbol('a');
+const { a = 'baz' } = cond ? { [sym]: 'foo' } : { [sym]: 'bar' };
     `,
     `
-      const { a = 'baz' } = cond ? { [\`a\${1}\`]: 'foo' } : { a: 'bar' };
+const { a = 'baz' } = cond ? { [\`a\${1}\`]: 'foo' } : { a: 'bar' };
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11948
     `
-      class AbstractEntity {
-        public a: string | undefined;
-        public static fromJson<T extends { a: string }>(
-          this: new () => T,
-          { inner = { a: 'test' } }: { inner?: { a: string } },
-        ): T {
-          const entity = new this();
-          entity.a = inner?.a;
-          return entity;
-        }
-      }
+class AbstractEntity {
+  public a: string | undefined;
+  public static fromJson<T extends { a: string }>(
+    this: new () => T,
+    { inner = { a: 'test' } }: { inner?: { a: string } },
+  ): T {
+    const entity = new this();
+    entity.a = inner?.a;
+    return entity;
+  }
+}
     `,
     `
-      type FetchFn<TParams> =
-        Partial<TParams> extends TParams
-          ? (params?: TParams) => void
-          : (params: TParams) => void;
+type FetchFn<TParams> =
+  Partial<TParams> extends TParams
+    ? (params?: TParams) => void
+    : (params: TParams) => void;
 
-      function createFetcher<TParams>() {
-        type Params = TParams;
+function createFetcher<TParams>() {
+  type Params = TParams;
 
-        const fn: FetchFn<TParams> = (
-          params: Partial<Params> = {} as Partial<Params>,
-        ) => {
-          console.log(params);
-        };
+  const fn: FetchFn<TParams> = (
+    params: Partial<Params> = {} as Partial<Params>,
+  ) => {
+    console.log(params);
+  };
 
-        return fn;
-      }
+  return fn;
+}
     `,
     `
-      interface Foos {
-        bar?: number;
-      }
-      const foos: Foos[] = [];
-      foos.flatMap(({ bar = 42 }) => bar);
+interface Foos {
+  bar?: number;
+}
+const foos: Foos[] = [];
+foos.flatMap(({ bar = 42 }) => bar);
     `,
     `
-      function f(this: void, { bar = 42 }: { bar?: number }) {
-        return bar;
-      }
+function f(this: void, { bar = 42 }: { bar?: number }) {
+  return bar;
+}
+    `,
+    `
+interface Fn {
+  (value: string): void;
+  (): void;
+}
+const fn: Fn = (value = 'default') => {
+  return value;
+};
+    `,
+    `
+interface Fn {
+  (value: string): void;
+  (value?: string): void;
+}
+const fn: Fn = (value = 'default') => {
+  return value;
+};
     `,
   ],
   invalid: [
     {
       code: `
-        function Bar({ foo = '' }: { foo: string }) {
-          return foo;
-        }
+declare const mixed: [boolean, ...number[], string];
+const [a, b = 0] = mixed;
       `,
       errors: [
         {
-          column: 30,
+          column: 15,
           data: { type: 'property' },
-          endColumn: 32,
-          line: 2,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        function Bar({ foo }: { foo: string }) {
-          return foo;
-        }
-      `,
-    },
-    {
-      code: `
-        class C {
-          public method({ foo = '' }: { foo: string }) {
-            return foo;
-          }
-        }
-      `,
-      errors: [
-        {
-          column: 33,
-          data: { type: 'property' },
-          endColumn: 35,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const mixed: [boolean, ...number[], string];
+const [a, b] = mixed;
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        class C {
-          public method({ foo }: { foo: string }) {
-            return foo;
-          }
-        }
-      `,
+      output: null,
     },
     {
       code: `
-        const { 'literal-key': literalKey = 'default' } = { 'literal-key': 'value' };
+function Bar({ foo = '' }: { foo: string }) {
+  return foo;
+}
       `,
       errors: [
         {
-          column: 45,
+          column: 22,
           data: { type: 'property' },
-          endColumn: 54,
+          endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function Bar({ foo }: { foo: string }) {
+  return foo;
+}
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        const { 'literal-key': literalKey } = { 'literal-key': 'value' };
-      `,
+      output: null,
     },
     {
       code: `
-        [1, 2, 3].map((a = 42) => a + 1);
+class C {
+  public method({ foo = '' }: { foo: string }) {
+    return foo;
+  }
+}
       `,
       errors: [
         {
-          column: 28,
-          data: { type: 'parameter' },
-          endColumn: 30,
-          line: 2,
+          column: 25,
+          data: { type: 'property' },
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+class C {
+  public method({ foo }: { foo: string }) {
+    return foo;
+  }
+}
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        [1, 2, 3].map((a) => a + 1);
-      `,
+      output: null,
     },
     {
       code: `
-        function getValue(): undefined;
-        function getValue(box: { value: string }): string;
-        function getValue({ value = '' }: { value: string } = {}): string | undefined {
-          return value;
-        }
+const { 'literal-key': literalKey = 'default' } = { 'literal-key': 'value' };
       `,
       errors: [
         {
           column: 37,
           data: { type: 'property' },
-          endColumn: 39,
-          line: 4,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        function getValue(): undefined;
-        function getValue(box: { value: string }): string;
-        function getValue({ value }: { value: string } = {}): string | undefined {
-          return value;
-        }
-      `,
-    },
-    {
-      code: `
-        function getValue([value = '']: [string]) {
-          return value;
-        }
-      `,
-      errors: [
-        {
-          column: 36,
-          data: { type: 'property' },
-          endColumn: 38,
+          endColumn: 46,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const { 'literal-key': literalKey } = { 'literal-key': 'value' };
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        function getValue([value]: [string]) {
-          return value;
-        }
-      `,
+      output: null,
     },
     {
       code: `
-        declare const x: { hello: { world: string } };
-
-        const {
-          hello: { world = '' },
-        } = x;
+[1, 2, 3].map((a = 42) => a + 1);
       `,
       errors: [
         {
-          column: 28,
-          data: { type: 'property' },
-          endColumn: 30,
-          line: 5,
+          column: 20,
+          data: { type: 'parameter' },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+[1, 2, 3].map((a) => a + 1);
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        declare const x: { hello: { world: string } };
-
-        const {
-          hello: { world },
-        } = x;
-      `,
+      output: null,
     },
     {
       code: `
-        declare const x: { hello: Array<{ world: string }> };
-
-        const {
-          hello: [{ world = '' }],
-        } = x;
+function getValue(): undefined;
+function getValue(box: { value: string }): string;
+function getValue({ value = '' }: { value: string } = {}): string | undefined {
+  return value;
+}
       `,
       errors: [
         {
           column: 29,
           data: { type: 'property' },
           endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function getValue(): undefined;
+function getValue(box: { value: string }): string;
+function getValue({ value }: { value: string } = {}): string | undefined {
+  return value;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function getValue([value = '']: [string]) {
+  return value;
+}
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { type: 'property' },
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function getValue([value]: [string]) {
+  return value;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const x: { hello: { world: string } };
+
+const {
+  hello: { world = '' },
+} = x;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { type: 'property' },
+          endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const x: { hello: { world: string } };
+
+const {
+  hello: { world },
+} = x;
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        declare const x: { hello: Array<{ world: string }> };
-
-        const {
-          hello: [{ world }],
-        } = x;
-      `,
+      output: null,
     },
     {
       code: `
-        interface B {
-          foo: (b: boolean | string) => void;
-        }
+declare const x: { hello: Array<{ world: string }> };
 
-        const h: B = {
-          foo: (b = false) => {},
-        };
-      `,
-      errors: [
-        {
-          column: 21,
-          data: { type: 'parameter' },
-          endColumn: 26,
-          line: 7,
-          messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
-        interface B {
-          foo: (b: boolean | string) => void;
-        }
-
-        const h: B = {
-          foo: (b) => {},
-        };
-      `,
-    },
-    {
-      code: `
-        function foo(a = undefined) {}
-      `,
-      errors: [
-        {
-          column: 26,
-          data: { type: 'parameter' },
-          endColumn: 35,
-          line: 2,
-          messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
-        function foo(a) {}
-      `,
-    },
-    {
-      code: `
-        const { a = undefined } = {};
+const {
+  hello: [{ world = '' }],
+} = x;
       `,
       errors: [
         {
           column: 21,
           data: { type: 'property' },
-          endColumn: 30,
-          line: 2,
-          messageId: 'uselessUndefined',
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const x: { hello: Array<{ world: string }> };
+
+const {
+  hello: [{ world }],
+} = x;
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        const { a } = {};
-      `,
+      output: null,
     },
     {
       code: `
-        const [a = undefined] = [];
+interface B {
+  foo: (b: boolean | string) => void;
+}
+
+const h: B = {
+  foo: (b = false) => {},
+};
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { type: 'parameter' },
+          endColumn: 18,
+          endLine: 7,
+          line: 7,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+interface B {
+  foo: (b: boolean | string) => void;
+}
+
+const h: B = {
+  foo: (b) => {},
+};
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function foo(a = undefined) {}
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { type: 'parameter' },
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function foo(a) {}
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const { a = undefined } = {};
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { type: 'property' },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const { a } = {};
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+const [a = undefined] = [];
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { type: 'property' },
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
+          messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const [a] = [];
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function foo({ a = undefined }) {}
       `,
       errors: [
         {
           column: 20,
           data: { type: 'property' },
           endColumn: 29,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function foo({ a }) {}
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        const [a] = [];
-      `,
-    },
-    {
-      code: `
-        function foo({ a = undefined }) {}
-      `,
-      errors: [
-        {
-          column: 28,
-          data: { type: 'property' },
-          endColumn: 37,
-          line: 2,
-          messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
-        function foo({ a }) {}
-      `,
+      output: null,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/11847
     {
       code: `
-        function myFunction(p1: string, p2: number | undefined = undefined) {
-          console.log(p1, p2);
-        }
+function myFunction(p1: string, p2: number | undefined = undefined) {
+  console.log(p1, p2);
+}
       `,
       errors: [
         {
-          column: 66,
-          endColumn: 75,
+          column: 58,
+          endColumn: 67,
+          endLine: 2,
           line: 2,
           messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+function myFunction(p1: string, p2?: number | undefined) {
+  console.log(p1, p2);
+}
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        function myFunction(p1: string, p2?: number | undefined) {
-          console.log(p1, p2);
-        }
-      `,
+      output: null,
     },
     {
       code: `
-        type SomeType = number | undefined;
-        function f(
-          /* comment */ x /* comment 2 */ : /* comment 3 */ SomeType /* comment 4 */ = /* comment 5 */ undefined,
-        ) {}
+type SomeType = number | undefined;
+function f(
+  /* comment */ x /* comment 2 */ : /* comment 3 */ SomeType /* comment 4 */ = /* comment 5 */ undefined,
+) {}
       `,
       errors: [
         {
-          column: 104,
-          endColumn: 113,
+          column: 96,
+          endColumn: 105,
+          endLine: 4,
           line: 4,
           messageId: 'preferOptionalSyntax',
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
+type SomeType = number | undefined;
+function f(
+  /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
+) {}
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        type SomeType = number | undefined;
-        function f(
-          /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
-        ) {}
-      `,
+      output: null,
     },
     // noStrictNullCheck tests
     {
       code: `
-        function Bar({ foo = '' }: { foo: string }) {
-          return foo;
-        }
+function Bar({ foo = '' }: { foo: string }) {
+  return foo;
+}
       `,
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
         {
-          column: 30,
+          column: 22,
           data: { type: 'property' },
-          endColumn: 32,
+          endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function Bar({ foo }: { foo: string }) {
+  return foo;
+}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -676,28 +861,35 @@ ruleTester.run('no-useless-default-assignment', rule, {
           tsconfigRootDir: path.join(rootDir, 'unstrict'),
         },
       },
-      output: `
-        function Bar({ foo }: { foo: string }) {
-          return foo;
-        }
-      `,
+      output: null,
     },
     {
       code: `
-        function foo(a = undefined) {}
+function foo(a = undefined) {}
       `,
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
         {
-          column: 26,
+          column: 18,
           data: { type: 'parameter' },
-          endColumn: 35,
+          endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function foo(a) {}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -705,23 +897,32 @@ ruleTester.run('no-useless-default-assignment', rule, {
           tsconfigRootDir: path.join(rootDir, 'unstrict'),
         },
       },
-      output: `
-        function foo(a) {}
-      `,
+      output: null,
     },
     {
       code: `
-        function Bar({ foo = '' }: { foo: string }) {
-          return foo;
-        }
+function Bar({ foo = '' }: { foo: string }) {
+  return foo;
+}
       `,
       errors: [
         {
-          column: 30,
+          column: 22,
           data: { type: 'property' },
-          endColumn: 32,
+          endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function Bar({ foo }: { foo: string }) {
+  return foo;
+}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -730,106 +931,140 @@ ruleTester.run('no-useless-default-assignment', rule, {
         },
       },
       options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
+        { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true },
       ],
-      output: `
-        function Bar({ foo }: { foo: string }) {
-          return foo;
-        }
-      `,
+      output: null,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/11980
     {
       code: `
-        const { a = 'baz' } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
+const { a = 'baz' } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 26,
+          column: 13,
+          data: { type: 'property' },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const { a } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        const { a } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
-      `,
+      output: null,
     },
     {
       code: `
-        const { a = 'baz' } =
-          Math.random() < 0.5
-            ? { a: 'foo' }
-            : Math.random() > 0.2
-              ? { a: 'bar' }
-              : { a: 'qux' };
+const { a = 'baz' } =
+  Math.random() < 0.5
+    ? { a: 'foo' }
+    : Math.random() > 0.2
+      ? { a: 'bar' }
+      : { a: 'qux' };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 26,
+          column: 13,
+          data: { type: 'property' },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const { a } =
+  Math.random() < 0.5
+    ? { a: 'foo' }
+    : Math.random() > 0.2
+      ? { a: 'bar' }
+      : { a: 'qux' };
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        const { a } =
-          Math.random() < 0.5
-            ? { a: 'foo' }
-            : Math.random() > 0.2
-              ? { a: 'bar' }
-              : { a: 'qux' };
-      `,
+      output: null,
     },
     {
       code: `
-        const { a = 'baz' } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
+const { a = 'baz' } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 26,
+          column: 13,
+          data: { type: 'property' },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const { a } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        const { a } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
-      `,
+      output: null,
     },
     {
       code: `
-        const { a = 'baz' } = cond ? { a() {} } : { a: 'bar' };
+const { a = 'baz' } = cond ? { a() {} } : { a: 'bar' };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 26,
+          column: 13,
+          data: { type: 'property' },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const { a } = cond ? { a() {} } : { a: 'bar' };
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        const { a } = cond ? { a() {} } : { a: 'bar' };
-      `,
+      output: null,
     },
     {
       code: `
-        const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
+const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 24,
+          column: 13,
+          data: { type: 'property' },
+          endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+const { a } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
+      `,
+            },
+          ],
         },
       ],
-      output: `
-        const { a } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
-      `,
+      output: null,
     },
   ],
 });

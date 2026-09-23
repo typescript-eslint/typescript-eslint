@@ -19,8 +19,7 @@ TODO - convert this to /utils/ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
 
 export type InfiniteDepthConfigWithExtends =
-  | ConfigWithExtends
-  | InfiniteDepthConfigWithExtends[];
+  ConfigWithExtends | InfiniteDepthConfigWithExtends[];
 
 export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
   /**

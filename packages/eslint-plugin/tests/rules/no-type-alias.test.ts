@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-type-alias';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-type-alias', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: "type A = 'a' & ('b' | 'c');",
@@ -429,13 +432,7 @@ type Foo<T> = {
     {
       code: `
 export type ClassValue =
-  | string
-  | number
-  | ClassDictionary
-  | ClassArray
-  | undefined
-  | null
-  | false;
+  string | number | ClassDictionary | ClassArray | undefined | null | false;
       `,
       options: [
         {
@@ -548,9 +545,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -561,9 +558,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -575,9 +572,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -589,19 +586,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -612,19 +607,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -635,19 +628,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -659,19 +650,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -683,19 +672,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -707,19 +694,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -736,28 +721,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -768,28 +750,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -801,28 +780,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -834,28 +810,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -867,28 +840,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -900,28 +870,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -938,19 +905,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -961,19 +926,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -985,19 +948,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1009,19 +970,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1033,19 +992,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1057,19 +1014,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1086,28 +1041,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1118,28 +1070,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1151,28 +1100,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1184,28 +1130,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1217,28 +1160,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1250,28 +1190,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 24,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1288,28 +1225,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 19,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 25,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1320,28 +1254,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 19,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 25,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1353,28 +1284,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 19,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 25,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1386,28 +1314,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 19,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 25,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1419,19 +1344,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 19,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 25,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1443,19 +1366,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 19,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 25,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1472,10 +1393,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1487,10 +1407,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1507,9 +1426,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -1520,9 +1439,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -1534,9 +1453,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -1548,9 +1467,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -1562,9 +1481,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -1576,19 +1495,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1599,19 +1516,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1623,19 +1538,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1647,19 +1560,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1671,19 +1582,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1695,19 +1604,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1724,28 +1631,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 32,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1756,28 +1660,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 32,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1789,28 +1690,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 32,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1822,28 +1720,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 32,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1855,28 +1750,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 32,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1888,28 +1780,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 21,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 32,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1926,28 +1815,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 22,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 33,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1958,28 +1844,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 22,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 33,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -1991,28 +1874,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 22,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 33,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2024,28 +1904,25 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 22,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 33,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2057,19 +1934,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 22,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 33,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2081,19 +1956,17 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 22,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 33,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2105,10 +1978,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2120,10 +1992,9 @@ type KeyNames = keyof typeof SCALARS;
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2143,9 +2014,9 @@ type Foo = Bar;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noTypeAlias',
         },
@@ -2159,9 +2030,9 @@ type Foo = Bar;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noTypeAlias',
         },
@@ -2176,9 +2047,9 @@ type Foo = Bar;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noTypeAlias',
         },
@@ -2193,9 +2064,9 @@ type Foo = Bar;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noTypeAlias',
         },
@@ -2210,9 +2081,9 @@ type Foo = Bar;
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noTypeAlias',
         },
@@ -2227,19 +2098,17 @@ type Foo = Bar | {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2253,19 +2122,17 @@ type Foo = Bar | {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2280,10 +2147,9 @@ type Foo = Bar | {};
       errors: [
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2298,19 +2164,17 @@ type Foo = Bar | {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2325,10 +2189,9 @@ type Foo = Bar | {};
       errors: [
         {
           column: 18,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2343,19 +2206,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2369,19 +2230,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2396,19 +2255,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2423,10 +2280,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2441,10 +2297,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 18,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noCompositionAlias',
         },
@@ -2456,9 +2311,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'callbacks',
-          },
+          data: { alias: 'callbacks' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2469,9 +2324,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'callbacks',
-          },
+          data: { alias: 'callbacks' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2483,9 +2338,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2496,9 +2351,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2510,9 +2365,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2524,9 +2379,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2538,9 +2393,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2552,9 +2407,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2566,9 +2421,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2580,9 +2435,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2599,9 +2454,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2618,9 +2473,9 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'literals',
-          },
+          data: { alias: 'literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -2637,19 +2492,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 17,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2660,19 +2513,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 17,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2684,19 +2535,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 17,
-          data: {
-            compositionType: 'union',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'union', typeName: 'Literals' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2708,19 +2557,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 17,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2731,19 +2578,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 17,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2755,19 +2600,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 17,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2779,19 +2622,17 @@ type Foo = Bar & {};
       errors: [
         {
           column: 13,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 22,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2803,28 +2644,25 @@ type Foo = Bar & {};
       errors: [
         {
           column: 22,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Literals',
-          },
+          data: { compositionType: 'intersection', typeName: 'Literals' },
+          endColumn: 24,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 28,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 34,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -2845,9 +2683,9 @@ type Foo<T> = {
       errors: [
         {
           column: 15,
-          data: {
-            alias: 'mapped types',
-          },
+          data: { alias: 'mapped types' },
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'noTypeAlias',
         },
@@ -2862,9 +2700,9 @@ type Foo<T> = {
       errors: [
         {
           column: 15,
-          data: {
-            alias: 'mapped types',
-          },
+          data: { alias: 'mapped types' },
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'noTypeAlias',
         },
@@ -2880,9 +2718,9 @@ type Foo<T> = {
       errors: [
         {
           column: 15,
-          data: {
-            alias: 'mapped types',
-          },
+          data: { alias: 'mapped types' },
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'noTypeAlias',
         },
@@ -2898,9 +2736,9 @@ type Foo<T> = {
       errors: [
         {
           column: 15,
-          data: {
-            alias: 'mapped types',
-          },
+          data: { alias: 'mapped types' },
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'noTypeAlias',
         },
@@ -2916,9 +2754,9 @@ type Foo<T> = {
       errors: [
         {
           column: 15,
-          data: {
-            alias: 'mapped types',
-          },
+          data: { alias: 'mapped types' },
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'noTypeAlias',
         },
@@ -2938,19 +2776,17 @@ type Foo<T> =
       errors: [
         {
           column: 5,
-          data: {
-            compositionType: 'union',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'union', typeName: 'Mapped types' },
+          endColumn: 6,
+          endLine: 5,
           line: 3,
           messageId: 'noCompositionAlias',
         },
         {
           column: 5,
-          data: {
-            compositionType: 'union',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'union', typeName: 'Mapped types' },
+          endColumn: 6,
+          endLine: 8,
           line: 6,
           messageId: 'noCompositionAlias',
         },
@@ -2969,19 +2805,17 @@ type Foo<T> =
       errors: [
         {
           column: 5,
-          data: {
-            compositionType: 'union',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'union', typeName: 'Mapped types' },
+          endColumn: 6,
+          endLine: 5,
           line: 3,
           messageId: 'noCompositionAlias',
         },
         {
           column: 5,
-          data: {
-            compositionType: 'union',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'union', typeName: 'Mapped types' },
+          endColumn: 6,
+          endLine: 8,
           line: 6,
           messageId: 'noCompositionAlias',
         },
@@ -3001,19 +2835,17 @@ type Foo<T> =
       errors: [
         {
           column: 5,
-          data: {
-            compositionType: 'union',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'union', typeName: 'Mapped types' },
+          endColumn: 6,
+          endLine: 5,
           line: 3,
           messageId: 'noCompositionAlias',
         },
         {
           column: 5,
-          data: {
-            compositionType: 'union',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'union', typeName: 'Mapped types' },
+          endColumn: 6,
+          endLine: 8,
           line: 6,
           messageId: 'noCompositionAlias',
         },
@@ -3031,19 +2863,17 @@ type Foo<T> = {
       errors: [
         {
           column: 15,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Mapped types' },
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'noCompositionAlias',
         },
         {
           column: 5,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Mapped types' },
+          endColumn: 2,
+          endLine: 6,
           line: 4,
           messageId: 'noCompositionAlias',
         },
@@ -3060,19 +2890,17 @@ type Foo<T> = {
       errors: [
         {
           column: 15,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Mapped types' },
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'noCompositionAlias',
         },
         {
           column: 5,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Mapped types' },
+          endColumn: 2,
+          endLine: 6,
           line: 4,
           messageId: 'noCompositionAlias',
         },
@@ -3090,19 +2918,17 @@ type Foo<T> = {
       errors: [
         {
           column: 15,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Mapped types' },
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'noCompositionAlias',
         },
         {
           column: 5,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Mapped types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Mapped types' },
+          endColumn: 2,
+          endLine: 6,
           line: 4,
           messageId: 'noCompositionAlias',
         },
@@ -3115,9 +2941,9 @@ type Foo<T> = {
       errors: [
         {
           column: 27,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 58,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -3128,19 +2954,17 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'union', typeName: 'Tuple Types' },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 23,
-          data: {
-            compositionType: 'union',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'union', typeName: 'Tuple Types' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -3152,19 +2976,17 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Tuple Types' },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 23,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Tuple Types' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -3176,19 +2998,17 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'union', typeName: 'Tuple Types' },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 23,
-          data: {
-            compositionType: 'union',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'union', typeName: 'Tuple Types' },
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -3199,6 +3019,11 @@ type Foo<T> = {
       code: 'type Foo = [number];',
       errors: [
         {
+          column: 12,
+          data: { alias: 'tuple types' },
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
           messageId: 'noTypeAlias',
         },
       ],
@@ -3208,6 +3033,11 @@ type Foo<T> = {
       code: 'type Foo = [number];',
       errors: [
         {
+          column: 12,
+          data: { alias: 'tuple types' },
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
           messageId: 'noTypeAlias',
         },
       ],
@@ -3217,6 +3047,11 @@ type Foo<T> = {
       code: 'type Foo = [number];',
       errors: [
         {
+          column: 12,
+          data: { alias: 'tuple types' },
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
           messageId: 'noTypeAlias',
         },
       ],
@@ -3227,19 +3062,17 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'union', typeName: 'Tuple Types' },
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 32,
-          data: {
-            compositionType: 'union',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'union', typeName: 'Tuple Types' },
+          endColumn: 54,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -3251,19 +3084,17 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Tuple Types' },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 29,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'intersection', typeName: 'Tuple Types' },
+          endColumn: 45,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -3275,19 +3106,17 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'union', typeName: 'Tuple Types' },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 23,
-          data: {
-            compositionType: 'union',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'union', typeName: 'Tuple Types' },
+          endColumn: 48,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -3298,6 +3127,11 @@ type Foo<T> = {
       code: 'type Foo = readonly [number];',
       errors: [
         {
+          column: 12,
+          data: { alias: 'tuple types' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'noTypeAlias',
         },
       ],
@@ -3307,6 +3141,11 @@ type Foo<T> = {
       code: 'type Foo = keyof [number];',
       errors: [
         {
+          column: 12,
+          data: { alias: 'tuple types' },
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
           messageId: 'noTypeAlias',
         },
       ],
@@ -3316,6 +3155,11 @@ type Foo<T> = {
       code: 'type Foo = readonly [number];',
       errors: [
         {
+          column: 12,
+          data: { alias: 'tuple types' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'noTypeAlias',
         },
       ],
@@ -3326,9 +3170,9 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'constructors',
-          },
+          data: { alias: 'constructors' },
+          endColumn: 46,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -3340,9 +3184,9 @@ type Foo<T> = {
       errors: [
         {
           column: 18,
-          data: {
-            alias: 'conditional types',
-          },
+          data: { alias: 'conditional types' },
+          endColumn: 50,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -3353,9 +3197,9 @@ type Foo<T> = {
       errors: [
         {
           column: 18,
-          data: {
-            alias: 'conditional types',
-          },
+          data: { alias: 'conditional types' },
+          endColumn: 50,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -3368,19 +3212,17 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Tuple Types',
-          },
+          data: { compositionType: 'union', typeName: 'Tuple Types' },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 29,
-          data: {
-            compositionType: 'union',
-            typeName: 'Unhandled',
-          },
+          data: { compositionType: 'union', typeName: 'Unhandled' },
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -3391,9 +3233,9 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'generics',
-          },
+          data: { alias: 'generics' },
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -3404,9 +3246,9 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            alias: 'aliases',
-          },
+          data: { alias: 'aliases' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noTypeAlias',
         },
@@ -3417,19 +3259,17 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 28,
-          data: {
-            compositionType: 'union',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'union', typeName: 'Aliases' },
+          endColumn: 41,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
@@ -3441,19 +3281,17 @@ type Foo<T> = {
       errors: [
         {
           column: 12,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },
         {
           column: 28,
-          data: {
-            compositionType: 'intersection',
-            typeName: 'Aliases',
-          },
+          data: { compositionType: 'intersection', typeName: 'Aliases' },
+          endColumn: 41,
+          endLine: 1,
           line: 1,
           messageId: 'noCompositionAlias',
         },

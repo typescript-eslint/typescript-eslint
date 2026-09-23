@@ -10,8 +10,7 @@ Snapshot Diff:
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: TSTypeAliasDeclaration {
           type: 'TSTypeAliasDeclaration',
           declare: false,
@@ -76,9 +75,11 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
-    range: [73, 114],
+-   range: [73, 114],
++   range: [0, 114],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

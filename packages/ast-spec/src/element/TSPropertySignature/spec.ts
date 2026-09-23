@@ -30,5 +30,4 @@ export interface TSPropertySignatureNonComputedName extends TSPropertySignatureB
 }
 
 export type TSPropertySignature =
-  | TSPropertySignatureComputedName
-  | TSPropertySignatureNonComputedName;
+  TSPropertySignatureComputedName | TSPropertySignatureNonComputedName;

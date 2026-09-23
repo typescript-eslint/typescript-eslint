@@ -6,6 +6,9 @@ import rule from '../../src/rules/no-wrapper-object-types';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-wrapper-object-types', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'let value: NumberLike;',
     'let value: Other;',
@@ -49,16 +52,16 @@ ruleTester.run('no-wrapper-object-types', rule, {
     'type Void = {};',
     'class MyClass extends Number {}',
     `
-      type Number = 0 | 1;
-      let value: Number;
+type Number = 0 | 1;
+let value: Number;
     `,
     `
-      type Bigint = 0 | 1;
-      let value: Bigint;
+type Bigint = 0 | 1;
+let value: Bigint;
     `,
     `
-      type T<Symbol> = Symbol;
-      type U<UU> = UU extends T<infer Function> ? Function : never;
+type T<Symbol> = Symbol;
+type U<UU> = UU extends T<infer Function> ? Function : never;
     `,
   ],
   invalid: [
@@ -68,6 +71,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'bigint', typeName: 'BigInt' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -80,6 +85,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'boolean', typeName: 'Boolean' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -92,6 +99,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -104,6 +113,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'object', typeName: 'Object' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -116,6 +127,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'string', typeName: 'String' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -128,6 +141,8 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'symbol', typeName: 'Symbol' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -140,12 +155,16 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 12,
           data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
         {
           column: 21,
           data: { preferred: 'symbol', typeName: 'Symbol' },
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -157,6 +176,9 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 24,
+          data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -168,6 +190,9 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 6,
+          data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -179,6 +204,9 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 15,
+          data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -190,6 +218,9 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 16,
+          data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -201,6 +232,9 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 26,
+          data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -212,6 +246,9 @@ ruleTester.run('no-wrapper-object-types', rule, {
       errors: [
         {
           column: 31,
+          data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
@@ -224,12 +261,16 @@ ruleTester.run('no-wrapper-object-types', rule, {
         {
           column: 15,
           data: { preferred: 'number', typeName: 'Number' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },
         {
           column: 24,
           data: { preferred: 'string', typeName: 'String' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'bannedClassType',
         },

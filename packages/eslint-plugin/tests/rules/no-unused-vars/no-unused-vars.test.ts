@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/no-unused-vars';
@@ -36,2027 +35,9 @@ ruleTester.defineRule('collect-unused-vars', {
 });
 
 ruleTester.run('no-unused-vars', rule, {
-  invalid: [
-    {
-      code: `
-import { ClassDecoratorFactory } from 'decorators';
-export class Foo {}
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'ClassDecoratorFactory',
-          },
-          endColumn: 31,
-          endLine: 2,
-          line: 2,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'ClassDecoratorFactory',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-export class Foo {}
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Foo, Bar } from 'foo';
-function baz<Foo>(): Foo {}
-baz<Bar>();
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Foo',
-              },
-              messageId: 'removeUnusedVar',
-              output: `
-import {  Bar } from 'foo';
-function baz<Foo>(): Foo {}
-baz<Bar>();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-const a: string = 'hello';
-console.log(a);
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Nullable',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Nullable',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-const a: string = 'hello';
-console.log(a);
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-import { SomeOther } from 'other';
-const a: Nullable<string> = 'hello';
-console.log(a);
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'SomeOther',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'SomeOther',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import { Nullable } from 'nullable';
-const a: Nullable<string> = 'hello';
-console.log(a);
-      `,
-            },
-          ],
-        },
-      ],
-    },
-
-    {
-      code: `
-import { Nullable } from 'nullable';
-import { Another } from 'some';
-class A {
-  do = (a: Nullable) => {
-    console.log(a);
-  };
-}
-new A();
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Another',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import { Nullable } from 'nullable';
-class A {
-  do = (a: Nullable) => {
-    console.log(a);
-  };
-}
-new A();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-import { Another } from 'some';
-class A {
-  do(a: Nullable) {
-    console.log(a);
-  }
-}
-new A();
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Another',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import { Nullable } from 'nullable';
-class A {
-  do(a: Nullable) {
-    console.log(a);
-  }
-}
-new A();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-import { Another } from 'some';
-class A {
-  do(): Nullable {
-    return null;
-  }
-}
-new A();
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Another',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import { Nullable } from 'nullable';
-class A {
-  do(): Nullable {
-    return null;
-  }
-}
-new A();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-import { Another } from 'some';
-export interface A {
-  do(a: Nullable);
-}
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Another',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import { Nullable } from 'nullable';
-export interface A {
-  do(a: Nullable);
-}
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-import { Another } from 'some';
-export interface A {
-  other: Nullable;
-}
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Another',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import { Nullable } from 'nullable';
-export interface A {
-  other: Nullable;
-}
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-function foo(a: string) {
-  console.log(a);
-}
-foo();
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Nullable',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Nullable',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-function foo(a: string) {
-  console.log(a);
-}
-foo();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-function foo(): string | null {
-  return null;
-}
-foo();
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Nullable',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Nullable',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-function foo(): string | null {
-  return null;
-}
-foo();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-import { SomeOther } from 'some';
-import { Another } from 'some';
-class A extends Nullable {
-  other: Nullable<Another>;
-}
-new A();
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'SomeOther',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'SomeOther',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import { Nullable } from 'nullable';
-import { Another } from 'some';
-class A extends Nullable {
-  other: Nullable<Another>;
-}
-new A();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import { Nullable } from 'nullable';
-import { SomeOther } from 'some';
-import { Another } from 'some';
-abstract class A extends Nullable {
-  other: Nullable<Another>;
-}
-new A();
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'SomeOther',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'SomeOther',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import { Nullable } from 'nullable';
-import { Another } from 'some';
-abstract class A extends Nullable {
-  other: Nullable<Another>;
-}
-new A();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-enum FormFieldIds {
-  PHONE = 'phone',
-  EMAIL = 'email',
-}
-      `,
-      errors: [
-        {
-          column: 6,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'FormFieldIds',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-import test from 'test';
-import baz from 'baz';
-export interface Bar extends baz.test {}
-      `,
-      errors: [
-        {
-          column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'test',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'test',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import baz from 'baz';
-export interface Bar extends baz.test {}
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-import test from 'test';
-import baz from 'baz';
-export class Bar implements baz.test {}
-      `,
-      errors: [
-        {
-          column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'test',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'test',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import baz from 'baz';
-export class Bar implements baz.test {}
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-namespace Foo {}
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-namespace Foo {
-  export const Foo = 1;
-}
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-namespace Foo {
-  const Foo = 1;
-  console.log(Foo);
-}
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-namespace Foo {
-  export const Bar = 1;
-  console.log(Foo.Bar);
-}
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-namespace Foo {
-  namespace Foo {
-    export const Bar = 1;
-    console.log(Foo.Bar);
-  }
-}
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-        {
-          column: 13,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    // self-referencing types
-    {
-      code: `
-interface Foo {
-  bar: string;
-  baz: Foo['bar'];
-}
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-type Foo = Array<Foo>;
-      `,
-      errors: [
-        {
-          column: 6,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2455
-    {
-      code: `
-import React from 'react';
-import { Fragment } from 'react';
-
-export const ComponentFoo = () => {
-  return <div>Foo Foo</div>;
-};
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Fragment',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'Fragment',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import React from 'react';
-
-export const ComponentFoo = () => {
-  return <div>Foo Foo</div>;
-};
-      `,
-            },
-          ],
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-    },
-    {
-      code: `
-import React from 'react';
-import { h } from 'some-other-jsx-lib';
-
-export const ComponentFoo = () => {
-  return <div>Foo Foo</div>;
-};
-      `,
-      errors: [
-        {
-          column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'React',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'React',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-import { h } from 'some-other-jsx-lib';
-
-export const ComponentFoo = () => {
-  return <div>Foo Foo</div>;
-};
-      `,
-            },
-          ],
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-          jsxPragma: 'h',
-        },
-      },
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/3303
-    {
-      code: `
-import React from 'react';
-
-export const ComponentFoo = () => {
-  return <div>Foo Foo</div>;
-};
-      `,
-      errors: [
-        {
-          column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'React',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'React',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-
-export const ComponentFoo = () => {
-  return <div>Foo Foo</div>;
-};
-      `,
-            },
-          ],
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-          jsxPragma: null,
-        },
-      },
-    },
-    {
-      code: `
-declare module 'foo' {
-  type Test = any;
-  const x = 1;
-  export = x;
-}
-      `,
-      errors: [
-        {
-          column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Test',
-          },
-          endColumn: 12,
-          endLine: 3,
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-// not declared
-export namespace Foo {
-  namespace Bar {
-    namespace Baz {
-      namespace Bam {
-        const x = 1;
-      }
-    }
-  }
-}
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bar',
-          },
-          line: 4,
-          messageId: 'unusedVar',
-        },
-        {
-          column: 15,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Baz',
-          },
-          line: 5,
-          messageId: 'unusedVar',
-        },
-        {
-          column: 17,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bam',
-          },
-          line: 6,
-          messageId: 'unusedVar',
-        },
-        {
-          column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'x',
-          },
-          line: 7,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  a: string;
-}
-interface Foo {
-  b: Foo;
-}
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-let x = null;
-x = foo(x);
-      `,
-      errors: [
-        {
-          column: 1,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'x',
-          },
-          endColumn: 2,
-          endLine: 3,
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  bar: string;
-}
-const Foo = 'bar';
-      `,
-      errors: [
-        {
-          column: 7,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 5,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-let foo = 1;
-foo += 1;
-      `,
-      errors: [
-        {
-          column: 1,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  bar: string;
-}
-type Bar = 1;
-export = Bar;
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  bar: string;
-}
-type Bar = 1;
-export = Foo;
-      `,
-      errors: [
-        {
-          column: 6,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bar',
-          },
-          line: 5,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-namespace Foo {
-  export const foo = 1;
-}
-export namespace Bar {
-  import TheFoo = Foo;
-}
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'TheFoo',
-          },
-          line: 6,
-          messageId: 'unusedVar',
-          suggestions: [
-            {
-              data: {
-                varName: 'TheFoo',
-              },
-              messageId: 'removeUnusedImportDeclaration',
-              output: `
-namespace Foo {
-  export const foo = 1;
-}
-export namespace Bar {
-}
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-const foo: number = 1;
-      `,
-      errors: [
-        {
-          column: 7,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
-          endColumn: 10,
-          endLine: 2,
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-enum Foo {
-  A = 1,
-  B = Foo.A,
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-
-    // reportUsedIgnorePattern
-    {
-      code: `
-type _Foo = 1;
-export const x: _Foo = 1;
-      `,
-      errors: [
-        {
-          data: {
-            additional: '. Used vars must not match /^_/u',
-            varName: '_Foo',
-          },
-          line: 2,
-          messageId: 'usedIgnoredVar',
-        },
-      ],
-      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-interface _Foo {}
-export const x: _Foo = 1;
-      `,
-      errors: [
-        {
-          data: {
-            additional: '. Used vars must not match /^_/u',
-            varName: '_Foo',
-          },
-          line: 2,
-          messageId: 'usedIgnoredVar',
-        },
-      ],
-      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-enum _Foo {
-  A = 1,
-}
-export const x = _Foo.A;
-      `,
-      errors: [
-        {
-          data: {
-            additional: '. Used vars must not match /^_/u',
-            varName: '_Foo',
-          },
-          line: 2,
-          messageId: 'usedIgnoredVar',
-        },
-      ],
-      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-namespace _Foo {}
-export const x = _Foo;
-      `,
-      errors: [
-        {
-          data: {
-            additional: '. Used vars must not match /^_/u',
-            varName: '_Foo',
-          },
-          line: 2,
-          messageId: 'usedIgnoredVar',
-        },
-      ],
-      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
-    },
-    {
-      code: `
-        const foo: number = 1;
-
-        export type Foo = typeof foo;
-      `,
-      errors: [
-        {
-          column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
-          endColumn: 18,
-          endLine: 2,
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
-        declare const foo: number;
-
-        export type Foo = typeof foo;
-      `,
-      errors: [
-        {
-          column: 23,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          endColumn: 26,
-          endLine: 2,
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo: number = 1;
-
-        export type Foo = typeof foo | string;
-      `,
-      errors: [
-        {
-          column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
-          endColumn: 18,
-          endLine: 2,
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo: number = 1;
-
-        export type Foo = (typeof foo | string) & { __brand: 'foo' };
-      `,
-      errors: [
-        {
-          column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
-          endColumn: 18,
-          endLine: 2,
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo = {
-          bar: {
-            baz: 123,
-          },
-        };
-
-        export type Bar = typeof foo.bar;
-      `,
-      errors: [
-        {
-          column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
-          endColumn: 18,
-          endLine: 2,
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo = {
-          bar: {
-            baz: 123,
-          },
-        };
-
-        export type Bar = (typeof foo)['bar'];
-      `,
-      errors: [
-        {
-          column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
-          endColumn: 18,
-          endLine: 2,
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
-const command = (): ParameterDecorator => {
-  return () => {};
-};
-
-export class Foo {
-  bar(@command() command: string) {}
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'command',
-          },
-          line: 7,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-declare const deco: () => ParameterDecorator;
-
-export class Foo {
-  bar(@deco() deco, @deco() param) {}
-}
-      `,
-      errors: [
-        {
-          column: 15,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'deco',
-          },
-          line: 5,
-          messageId: 'unusedVar',
-        },
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'param',
-          },
-          line: 5,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-export namespace Foo {
-  const foo: 1234;
-  export {};
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-const foo: 1234;
-export {};
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-declare module 'foo' {
-  const foo: 1234;
-  export {};
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-export namespace Foo {
-  const foo: 1234;
-  const bar: 4567;
-
-  export { bar };
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-const foo: 1234;
-const bar: 4567;
-
-export { bar };
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-declare module 'foo' {
-  const foo: 1234;
-  const bar: 4567;
-
-  export { bar };
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-export namespace Foo {
-  const foo: 1234;
-  const bar: 4567;
-  export const bazz: 4567;
-
-  export { bar };
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-const foo: 1234;
-const bar: 4567;
-export const bazz: 4567;
-
-export { bar };
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-declare module 'foo' {
-  const foo: 1234;
-  const bar: 4567;
-  export const bazz: 4567;
-
-  export { bar };
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-export namespace Foo {
-  const foo: string;
-  const bar: number;
-
-  export default bar;
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-const foo: string;
-const bar: number;
-
-export default bar;
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-declare module 'foo' {
-  const foo: string;
-  const bar: number;
-
-  export default bar;
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-export namespace Foo {
-  const foo: string;
-  const bar: number;
-  export const bazz: number;
-
-  export default bar;
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-const foo: string;
-const bar: number;
-export const bazz: number;
-
-export default bar;
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-declare module 'foo' {
-  const foo: string;
-  const bar: number;
-  export const bazz: number;
-
-  export default bar;
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-export namespace Foo {
-  const foo: string;
-  export const bar: number;
-
-  export * from '...';
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-const foo: string;
-export const bar: number;
-
-export * from '...';
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-declare module 'foo' {
-  const foo: string;
-  export const bar: number;
-
-  export * from '...';
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-namespace Foo {
-  type Foo = 1;
-  type Bar = 1;
-
-  export = Bar;
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-type Foo = 1;
-type Bar = 1;
-
-export = Bar;
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-declare module 'foo' {
-  type Foo = 1;
-  type Bar = 1;
-
-  export = Bar;
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-declare module 'foo' {
-  type Test = 1;
-  export {};
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Test',
-          },
-          line: 3,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-export declare namespace Foo {
-  namespace Bar {
-    namespace Baz {
-      namespace Bam {
-        const x = 1;
-      }
-
-      export {};
-    }
-  }
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bam',
-          },
-          line: 5,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-declare module 'foo' {
-  namespace Bar {
-    namespace Baz {
-      namespace Bam {
-        const x = 1;
-      }
-
-      export {};
-    }
-  }
-}
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bam',
-          },
-          line: 5,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-declare enum Foo {}
-export {};
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-    },
-    {
-      code: `
-declare class Bar {}
-
-export {};
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bar',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-class Foo {}
-
-export {};
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      filename: 'foo.d.ts',
-    },
-    {
-      code: `
-using resource = getResource();
-      `,
-      errors: [
-        {
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'resource',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaVersion: 2026,
-        },
-      },
-    },
-    {
-      code: `
-await using resource = getResource();
-      `,
-      errors: [
-        {
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'resource',
-          },
-          line: 2,
-          messageId: 'unusedVar',
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          ecmaVersion: 2026,
-        },
-      },
-    },
-    {
-      code: `
-export const myTypeGuard2 = (data2: unknown): typeof data2 => {
-  return true;
-};
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'data2',
-          },
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-    {
-      code: `
-export const myTypeGuard = (data: unknown): data is string => {
-  return true;
-};
-      `,
-      errors: [
-        {
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'data',
-          },
-          line: 2,
-          messageId: 'usedOnlyAsType',
-        },
-      ],
-    },
-  ],
-
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 import { ClassDecoratorFactory } from 'decorators';
@@ -2902,11 +883,11 @@ export type Test<U> = U extends (arg: {
     // https://github.com/typescript-eslint/typescript-eslint/issues/2455
     {
       code: `
-        import React from 'react';
+import React from 'react';
 
-        export const ComponentFoo: React.FC = () => {
-          return <div>Foo Foo</div>;
-        };
+export const ComponentFoo: React.FC = () => {
+  return <div>Foo Foo</div>;
+};
       `,
       languageOptions: {
         parserOptions: {
@@ -2918,11 +899,11 @@ export type Test<U> = U extends (arg: {
     },
     {
       code: `
-        import { h } from 'some-other-jsx-lib';
+import { h } from 'some-other-jsx-lib';
 
-        export const ComponentFoo: h.FC = () => {
-          return <div>Foo Foo</div>;
-        };
+export const ComponentFoo: h.FC = () => {
+  return <div>Foo Foo</div>;
+};
       `,
       languageOptions: {
         parserOptions: {
@@ -2935,11 +916,11 @@ export type Test<U> = U extends (arg: {
     },
     {
       code: `
-        import { Fragment } from 'react';
+import { Fragment } from 'react';
 
-        export const ComponentFoo: Fragment = () => {
-          return <>Foo Foo</>;
-        };
+export const ComponentFoo: Fragment = () => {
+  return <>Foo Foo</>;
+};
       `,
       languageOptions: {
         parserOptions: {
@@ -3390,6 +1371,2215 @@ await using resource = getResource();
         },
       },
       options: [{ ignoreUsingDeclarations: true }],
+    },
+  ],
+
+  invalid: [
+    {
+      code: `
+import { ClassDecoratorFactory } from 'decorators';
+export class Foo {}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'ClassDecoratorFactory',
+          },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'ClassDecoratorFactory',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+export class Foo {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Foo, Bar } from 'foo';
+function baz<Foo>(): Foo {}
+baz<Bar>();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Foo',
+              },
+              messageId: 'removeUnusedVar',
+              output: `
+import {  Bar } from 'foo';
+function baz<Foo>(): Foo {}
+baz<Bar>();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+const a: string = 'hello';
+console.log(a);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Nullable',
+          },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Nullable',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+const a: string = 'hello';
+console.log(a);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+import { SomeOther } from 'other';
+const a: Nullable<string> = 'hello';
+console.log(a);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'SomeOther',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'SomeOther',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+const a: Nullable<string> = 'hello';
+console.log(a);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+import { Nullable } from 'nullable';
+import { Another } from 'some';
+class A {
+  do = (a: Nullable) => {
+    console.log(a);
+  };
+}
+new A();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Another',
+          },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+class A {
+  do = (a: Nullable) => {
+    console.log(a);
+  };
+}
+new A();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+import { Another } from 'some';
+class A {
+  do(a: Nullable) {
+    console.log(a);
+  }
+}
+new A();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Another',
+          },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+class A {
+  do(a: Nullable) {
+    console.log(a);
+  }
+}
+new A();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+import { Another } from 'some';
+class A {
+  do(): Nullable {
+    return null;
+  }
+}
+new A();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Another',
+          },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+class A {
+  do(): Nullable {
+    return null;
+  }
+}
+new A();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+import { Another } from 'some';
+export interface A {
+  do(a: Nullable);
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Another',
+          },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+export interface A {
+  do(a: Nullable);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+import { Another } from 'some';
+export interface A {
+  other: Nullable;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Another',
+          },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Another',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+export interface A {
+  other: Nullable;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+function foo(a: string) {
+  console.log(a);
+}
+foo();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Nullable',
+          },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Nullable',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+function foo(a: string) {
+  console.log(a);
+}
+foo();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+function foo(): string | null {
+  return null;
+}
+foo();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Nullable',
+          },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Nullable',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+function foo(): string | null {
+  return null;
+}
+foo();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+import { SomeOther } from 'some';
+import { Another } from 'some';
+class A extends Nullable {
+  other: Nullable<Another>;
+}
+new A();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'SomeOther',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'SomeOther',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+import { Another } from 'some';
+class A extends Nullable {
+  other: Nullable<Another>;
+}
+new A();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import { Nullable } from 'nullable';
+import { SomeOther } from 'some';
+import { Another } from 'some';
+abstract class A extends Nullable {
+  other: Nullable<Another>;
+}
+new A();
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'SomeOther',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'SomeOther',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { Nullable } from 'nullable';
+import { Another } from 'some';
+abstract class A extends Nullable {
+  other: Nullable<Another>;
+}
+new A();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum FormFieldIds {
+  PHONE = 'phone',
+  EMAIL = 'email',
+}
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'FormFieldIds',
+          },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+import test from 'test';
+import baz from 'baz';
+export interface Bar extends baz.test {}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'test',
+          },
+          endColumn: 12,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'test',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import baz from 'baz';
+export interface Bar extends baz.test {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+import test from 'test';
+import baz from 'baz';
+export class Bar implements baz.test {}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'test',
+          },
+          endColumn: 12,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'test',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import baz from 'baz';
+export class Bar implements baz.test {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  export const Foo = 1;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  const Foo = 1;
+  console.log(Foo);
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  export const Bar = 1;
+  console.log(Foo.Bar);
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  namespace Foo {
+    export const Bar = 1;
+    console.log(Foo.Bar);
+  }
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 13,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    // self-referencing types
+    {
+      code: `
+interface Foo {
+  bar: string;
+  baz: Foo['bar'];
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = Array<Foo>;
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2455
+    {
+      code: `
+import React from 'react';
+import { Fragment } from 'react';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Fragment',
+          },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'Fragment',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import React from 'react';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+import React from 'react';
+import { h } from 'some-other-jsx-lib';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'React',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'React',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+import { h } from 'some-other-jsx-lib';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: 'h',
+        },
+      },
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3303
+    {
+      code: `
+import React from 'react';
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'React',
+          },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'React',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+
+export const ComponentFoo = () => {
+  return <div>Foo Foo</div>;
+};
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: null,
+        },
+      },
+    },
+    {
+      code: `
+declare module 'foo' {
+  type Test = any;
+  const x = 1;
+  export = x;
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Test',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+// not declared
+export namespace Foo {
+  namespace Bar {
+    namespace Baz {
+      namespace Bam {
+        const x = 1;
+      }
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Bar',
+          },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 15,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Baz',
+          },
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 17,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Bam',
+          },
+          endColumn: 20,
+          endLine: 6,
+          line: 6,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 15,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'x',
+          },
+          endColumn: 16,
+          endLine: 7,
+          line: 7,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  a: string;
+}
+interface Foo {
+  b: Foo;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+let x = null;
+x = foo(x);
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'x',
+          },
+          endColumn: 2,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+const Foo = 'bar';
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+let foo = 1;
+foo += 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+type Bar = 1;
+export = Bar;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+type Bar = 1;
+export = Foo;
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Bar',
+          },
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+  import TheFoo = Foo;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'TheFoo',
+          },
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: {
+                varName: 'TheFoo',
+              },
+              messageId: 'removeUnusedImportDeclaration',
+              output: `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const foo: number = 1;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  B = Foo.A,
+}
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+
+    // reportUsedIgnorePattern
+    {
+      code: `
+type _Foo = 1;
+export const x: _Foo = 1;
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+interface _Foo {}
+export const x: _Foo = 1;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Foo',
+          },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+enum _Foo {
+  A = 1,
+}
+export const x = _Foo.A;
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+namespace _Foo {}
+export const x = _Foo;
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            additional: '. Used vars must not match /^_/u',
+            varName: '_Foo',
+          },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedIgnoredVar',
+        },
+      ],
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '^_' }],
+    },
+    {
+      code: `
+const foo: number = 1;
+
+export type Foo = typeof foo;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: number;
+
+export type Foo = typeof foo;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const foo: number = 1;
+
+export type Foo = typeof foo | string;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const foo: number = 1;
+
+export type Foo = (typeof foo | string) & { __brand: 'foo' };
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  bar: {
+    baz: 123,
+  },
+};
+
+export type Bar = typeof foo.bar;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  bar: {
+    baz: 123,
+  },
+};
+
+export type Bar = (typeof foo)['bar'];
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const command = (): ParameterDecorator => {
+  return () => {};
+};
+
+export class Foo {
+  bar(@command() command: string) {}
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'command',
+          },
+          endColumn: 25,
+          endLine: 7,
+          line: 7,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+declare const deco: () => ParameterDecorator;
+
+export class Foo {
+  bar(@deco() deco, @deco() param) {}
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'deco',
+          },
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 29,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'param',
+          },
+          endColumn: 34,
+          endLine: 5,
+          line: 5,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export namespace Foo {
+  const foo: 1234;
+  export {};
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: 1234;
+export {};
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  const foo: 1234;
+  export {};
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  const foo: 1234;
+  const bar: 4567;
+
+  export { bar };
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: 1234;
+const bar: 4567;
+
+export { bar };
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  const foo: 1234;
+  const bar: 4567;
+
+  export { bar };
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  const foo: 1234;
+  const bar: 4567;
+  export const bazz: 4567;
+
+  export { bar };
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: 1234;
+const bar: 4567;
+export const bazz: 4567;
+
+export { bar };
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  const foo: 1234;
+  const bar: 4567;
+  export const bazz: 4567;
+
+  export { bar };
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  const foo: string;
+  const bar: number;
+
+  export default bar;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: string;
+const bar: number;
+
+export default bar;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  const foo: string;
+  const bar: number;
+
+  export default bar;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  const foo: string;
+  const bar: number;
+  export const bazz: number;
+
+  export default bar;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: string;
+const bar: number;
+export const bazz: number;
+
+export default bar;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  const foo: string;
+  const bar: number;
+  export const bazz: number;
+
+  export default bar;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  const foo: string;
+  export const bar: number;
+
+  export * from '...';
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: string;
+export const bar: number;
+
+export * from '...';
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  const foo: string;
+  export const bar: number;
+
+  export * from '...';
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+namespace Foo {
+  type Foo = 1;
+  type Bar = 1;
+
+  export = Bar;
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+type Foo = 1;
+type Bar = 1;
+
+export = Bar;
+      `,
+      errors: [
+        {
+          column: 6,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  type Foo = 1;
+  type Bar = 1;
+
+  export = Bar;
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  type Test = 1;
+  export {};
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Test',
+          },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export declare namespace Foo {
+  namespace Bar {
+    namespace Baz {
+      namespace Bam {
+        const x = 1;
+      }
+
+      export {};
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Bam',
+          },
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+declare module 'foo' {
+  namespace Bar {
+    namespace Baz {
+      namespace Bam {
+        const x = 1;
+      }
+
+      export {};
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Bam',
+          },
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+declare enum Foo {}
+export {};
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+declare class Bar {}
+
+export {};
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Bar',
+          },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+class Foo {}
+
+export {};
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+using resource = getResource();
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'resource',
+          },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+    },
+    {
+      code: `
+await using resource = getResource();
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'resource',
+          },
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2026,
+        },
+      },
+    },
+    {
+      code: `
+export const myTypeGuard2 = (data2: unknown): typeof data2 => {
+  return true;
+};
+      `,
+      errors: [
+        {
+          column: 30,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'data2',
+          },
+          endColumn: 35,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+export const myTypeGuard = (data: unknown): data is string => {
+  return true;
+};
+      `,
+      errors: [
+        {
+          column: 29,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'data',
+          },
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
     },
   ],
 });

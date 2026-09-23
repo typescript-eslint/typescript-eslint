@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-misused-new';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-misused-new', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare abstract class C {
@@ -84,11 +87,15 @@ interface I {
       errors: [
         {
           column: 3,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'errorMessageInterface',
         },
         {
           column: 3,
+          endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'errorMessageInterface',
         },
@@ -104,6 +111,8 @@ interface G {
       errors: [
         {
           column: 3,
+          endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'errorMessageInterface',
         },
@@ -119,6 +128,8 @@ type T = {
       errors: [
         {
           column: 3,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'errorMessageInterface',
         },
@@ -133,6 +144,8 @@ class C {
       errors: [
         {
           column: 3,
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'errorMessageClass',
         },
@@ -147,6 +160,8 @@ declare abstract class C {
       errors: [
         {
           column: 3,
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'errorMessageClass',
         },
@@ -161,6 +176,8 @@ interface I {
       errors: [
         {
           column: 3,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'errorMessageInterface',
         },

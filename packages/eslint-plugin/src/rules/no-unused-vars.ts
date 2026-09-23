@@ -264,7 +264,7 @@ export default createRule<Options, MessageIds>({
               ignoreRestSiblings: {
                 type: 'boolean',
                 description:
-                  'Whether to ignore sibling properties in `...` destructurings.',
+                  'Whether to ignore sibling properties in `...` destructuring.',
               },
               ignoreUsingDeclarations: {
                 type: 'boolean',

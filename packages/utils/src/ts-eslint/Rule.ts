@@ -30,6 +30,15 @@ export interface RuleMetaDataDocs {
    * Mark this rule as feature-frozen.
    */
   frozen?: boolean;
+
+  /**
+   * The dialects of the languages that the rule is intended to lint.
+   * @example
+   * ["JavaScript", "TypeScript"]
+   *
+   * since ESLint 10.2.0
+   */
+  dialects?: string[] | undefined;
 }
 
 export interface ExternalSpecifier {
@@ -112,8 +121,17 @@ export interface RuleMetaData<
    */
   hasSuggestions?: boolean;
   /**
+   * Languages supported by this rule in the format `"plugin/language"`.
+   * Use `"*"` for any language or `"plugin/*"` for any language from a specific plugin.
+   * @example
+   * ["js/js", "markdown/gfm", "json/jsonc", "css/css"]
+   *
+   * since ESLint 10.2.0
+   */
+  languages?: string[] | undefined;
+  /**
    * A map of messages which the rule can report.
-   * The key is the messageId, and the string is the parameterised error string.
+   * The key is the messageId, and the string is the parameterized error string.
    * See: https://eslint.org/docs/developer-guide/working-with-rules#messageids
    */
   messages: Record<MessageIds, string>;
@@ -234,8 +252,7 @@ interface ReportDescriptorNodeOptionalLoc {
    * An override of the location of the report
    */
   readonly loc?:
-    | Readonly<TSESTree.Position>
-    | Readonly<TSESTree.SourceLocation>;
+    Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation>;
   /**
    * The Node or AST Token which the report is being attached to
    */
@@ -249,8 +266,7 @@ interface ReportDescriptorLocOnly {
 }
 
 export type ReportDescriptor<MessageIds extends string> = (
-  | ReportDescriptorLocOnly
-  | ReportDescriptorNodeOptionalLoc
+  ReportDescriptorLocOnly | ReportDescriptorNodeOptionalLoc
 ) &
   ReportDescriptorWithSuggestion<MessageIds>;
 
@@ -667,7 +683,9 @@ interface RuleListenerBaseSelectors {
   YieldExpression?: RuleFunction<TSESTree.YieldExpression>;
 }
 type RuleListenerExitSelectors = {
-  [K in keyof RuleListenerBaseSelectors as `${K}:exit`]: RuleListenerBaseSelectors[K];
+  [
+    K in keyof RuleListenerBaseSelectors as `${K}:exit`
+  ]: RuleListenerBaseSelectors[K];
 };
 type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors

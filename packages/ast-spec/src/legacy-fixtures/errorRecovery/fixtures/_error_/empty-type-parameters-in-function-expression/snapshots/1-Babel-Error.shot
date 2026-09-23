@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ empty-type-parameters-in-function-expression Babel - Error 1`] = `[SyntaxError: Type parameter list cannot be empty. (3:20)]`;

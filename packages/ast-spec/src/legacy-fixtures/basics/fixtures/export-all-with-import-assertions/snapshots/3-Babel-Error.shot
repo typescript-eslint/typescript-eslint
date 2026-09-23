@@ -1,0 +1,4 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > legacy-fixtures > basics > export-all-with-import-assertions > Babel - Error`]
+SyntaxError: Missing semicolon. (3:19)

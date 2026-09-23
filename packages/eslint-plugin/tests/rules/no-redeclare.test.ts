@@ -12,6 +12,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-redeclare', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 var a = 3;
@@ -150,9 +153,13 @@ var a = 10;
       `,
       errors: [
         {
+          column: 5,
           data: {
             id: 'a',
           },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -169,9 +176,13 @@ switch (foo) {
       `,
       errors: [
         {
+          column: 9,
           data: {
             id: 'b',
           },
+          endColumn: 10,
+          endLine: 6,
+          line: 6,
           messageId: 'redeclared',
         },
       ],
@@ -183,9 +194,13 @@ var a = 10;
       `,
       errors: [
         {
+          column: 5,
           data: {
             id: 'a',
           },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -197,9 +212,13 @@ var a = [];
       `,
       errors: [
         {
+          column: 5,
           data: {
             id: 'a',
           },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -211,9 +230,13 @@ function a() {}
       `,
       errors: [
         {
+          column: 10,
           data: {
             id: 'a',
           },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -225,9 +248,13 @@ function a() {}
       `,
       errors: [
         {
+          column: 10,
           data: {
             id: 'a',
           },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -239,9 +266,13 @@ var a = function () {};
       `,
       errors: [
         {
+          column: 5,
           data: {
             id: 'a',
           },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -253,9 +284,13 @@ var a = new Date();
       `,
       errors: [
         {
+          column: 5,
           data: {
             id: 'a',
           },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -268,15 +303,23 @@ var a = 15;
       `,
       errors: [
         {
+          column: 5,
           data: {
             id: 'a',
           },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
         {
+          column: 5,
           data: {
             id: 'a',
           },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
           messageId: 'redeclared',
         },
       ],
@@ -288,9 +331,13 @@ var a;
       `,
       errors: [
         {
+          column: 5,
           data: {
             id: 'a',
           },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -303,9 +350,13 @@ var a;
       `,
       errors: [
         {
+          column: 5,
           data: {
             id: 'a',
           },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -315,9 +366,13 @@ var a;
       code: 'var Object = 0;',
       errors: [
         {
+          column: 5,
           data: {
             id: 'Object',
           },
+          endColumn: 11,
+          endLine: 1,
+          line: 1,
           messageId: 'redeclaredAsBuiltin',
         },
       ],
@@ -327,9 +382,13 @@ var a;
       code: 'var top = 0;',
       errors: [
         {
+          column: 5,
           data: {
             id: 'top',
           },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
           messageId: 'redeclaredAsBuiltin',
         },
       ],
@@ -345,15 +404,23 @@ var { a = 0, b: Object = 0 } = {};
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'a',
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
         {
+          column: 17,
           data: {
             id: 'Object',
           },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclaredAsBuiltin',
         },
       ],
@@ -367,9 +434,13 @@ var { a = 0, b: Object = 0 } = {};
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'a',
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -385,9 +456,13 @@ var { a = 0, b: Object = 0 } = {};
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'a',
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -403,9 +478,13 @@ var { a = 0, b: Object = 0 } = {};
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'a',
           },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'redeclared',
         },
       ],
@@ -418,9 +497,13 @@ var { a = 0, b: Object = 0 } = {};
       code: '/*global b:false*/ var b = 1;',
       errors: [
         {
+          column: 24,
           data: {
             id: 'b',
           },
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
           messageId: 'redeclaredBySyntax',
         },
       ],
@@ -434,9 +517,12 @@ type T = 2;
       `,
       errors: [
         {
+          column: 6,
           data: {
             id: 'T',
           },
+          endColumn: 7,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
@@ -448,9 +534,13 @@ type NodeListOf = 1;
       `,
       errors: [
         {
+          column: 6,
           data: {
             id: 'NodeListOf',
           },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'redeclaredAsBuiltin',
         },
       ],
@@ -469,9 +559,12 @@ interface A {}
       `,
       errors: [
         {
+          column: 11,
           data: {
             id: 'A',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
@@ -485,9 +578,12 @@ class A {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'A',
           },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
@@ -501,9 +597,12 @@ namespace A {}
       `,
       errors: [
         {
+          column: 11,
           data: {
             id: 'A',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
@@ -518,16 +617,22 @@ namespace A {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'A',
           },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
         {
+          column: 11,
           data: {
             id: 'A',
           },
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'redeclared',
         },
@@ -542,9 +647,12 @@ namespace A {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'A',
           },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
@@ -558,9 +666,12 @@ namespace A {}
       `,
       errors: [
         {
+          column: 11,
           data: {
             id: 'A',
           },
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
@@ -575,9 +686,12 @@ namespace A {}
       `,
       errors: [
         {
+          column: 10,
           data: {
             id: 'A',
           },
+          endColumn: 11,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
@@ -591,9 +705,12 @@ class A {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'A',
           },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
@@ -608,9 +725,12 @@ enum A {}
       `,
       errors: [
         {
+          column: 6,
           data: {
             id: 'A',
           },
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'redeclared',
         },
@@ -625,16 +745,22 @@ namespace A {}
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'A',
           },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },
         {
+          column: 11,
           data: {
             id: 'A',
           },
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'redeclared',
         },
@@ -648,9 +774,12 @@ const something = 2;
       `,
       errors: [
         {
+          column: 7,
           data: {
             id: 'something',
           },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'redeclared',
         },

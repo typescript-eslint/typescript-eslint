@@ -87,8 +87,7 @@ export enum MetaSelectors {
 }
 export type MetaSelectorsString = keyof typeof MetaSelectors;
 export type IndividualAndMetaSelectorsString =
-  | MetaSelectorsString
-  | SelectorsString;
+  MetaSelectorsString | SelectorsString;
 
 export enum Modifiers {
   // const variable

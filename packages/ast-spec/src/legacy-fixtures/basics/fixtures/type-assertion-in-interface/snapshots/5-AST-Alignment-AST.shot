@@ -30,8 +30,7 @@ Snapshot Diff:
               },
               kind: 'method',
               optional: false,
--             params: Array [
-+             parameters: Array [
+              params: Array [
                 Identifier {
                   type: 'Identifier',
                   decorators: Array [],
@@ -64,9 +63,7 @@ Snapshot Diff:
                 },
               ],
               readonly: false,
--             returnType: TSTypeAnnotation {
-+             static: false,
-+             typeAnnotation: TSTypeAnnotation {
+              returnType: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypePredicate {
                   type: 'TSTypePredicate',
@@ -98,7 +95,7 @@ Snapshot Diff:
                   end: { column: 35, line: 4 },
                 },
               },
--             static: false,
+              static: false,
 
               range: [97, 131],
               loc: {
@@ -138,9 +135,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 134],
+-   range: [73, 134],
++   range: [0, 134],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

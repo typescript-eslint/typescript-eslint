@@ -84,6 +84,20 @@ const SUPPORTED_GLOBAL_TYPES = [
   'JSON',
 ];
 
+/**
+ * Methods on instances of built-in classes that are defined by the ECMAScript
+ * spec as *bound* to their instance (i.e. they are safe to call without their
+ * receiver), but whose TypeScript declarations don't model that binding - they
+ * are declared as plain methods that would require a `this` value.
+ *
+ * For example, `Intl.Collator.prototype.compare` is defined as a bound getter
+ * function per the ECMA-402 spec:
+ * https://tc39.es/ecma402/#sec-intl.collator.prototype.compare
+ * ...but `lib.es5.d.ts` declares it as a regular method, so this rule would
+ * otherwise incorrectly flag usages such as `array.sort(collator.compare)`.
+ */
+const nativelyBoundInstanceMethods = new Set<string>(['Collator.compare']);
+
 const isNotImported = (
   symbol: ts.Symbol,
   currentSourceFile: ts.SourceFile | undefined,
@@ -99,6 +113,26 @@ const isNotImported = (
     currentSourceFile !== valueDeclaration.getSourceFile()
   );
 };
+
+/**
+ * Returns `true` if `propertyName` is a member of a built-in class instance
+ * that is defined by the spec as bound to that instance (see
+ * `nativelyBoundInstanceMethods` above).
+ */
+function isSpecBoundBuiltinMethod(
+  program: ts.Program,
+  objectType: ts.Type,
+  propertyName: string,
+): boolean {
+  const symbol = objectType.getSymbol();
+  if (!symbol || !isSymbolFromDefaultLibrary(program, symbol)) {
+    return false;
+  }
+
+  return nativelyBoundInstanceMethods.has(
+    `${symbol.getName()}.${propertyName}`,
+  );
+}
 
 const BASE_MESSAGE = [
   `A method that is not declared with \`this: void\` may cause unintentional scoping of \`this\` when separated from its object.`,
@@ -167,6 +201,43 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function checkUnionConstituentsAndReport(
+      reportNode: TSESTree.Node,
+      propertyName: string,
+      type: ts.Type,
+    ): boolean {
+      for (const intersectionPart of tsutils
+        .unionConstituents(type)
+        .flatMap(unionPart => tsutils.intersectionConstituents(unionPart))) {
+        const reported = checkIfMethodAndReport(
+          reportNode,
+          intersectionPart.getProperty(propertyName),
+        );
+        if (reported) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function getAccessedPropertyNames(
+      node: TSESTree.MemberExpression,
+    ): string[] {
+      if (!node.computed) {
+        return node.property.type === AST_NODE_TYPES.Identifier
+          ? [node.property.name]
+          : [];
+      }
+
+      return tsutils
+        .unionConstituents(services.getTypeAtLocation(node.property))
+        .flatMap(part => {
+          return part.isStringLiteral() || part.isNumberLiteral()
+            ? [part.value.toString()]
+            : [];
+        });
+    }
+
     function isNativelyBound(
       object: TSESTree.Node,
       property: TSESTree.Node,
@@ -195,6 +266,15 @@ export default createRule<Options, MessageIds>({
         }
       }
 
+      if (property.type === AST_NODE_TYPES.Identifier) {
+        const objectType = services.getTypeAtLocation(object);
+        if (
+          isSpecBoundBuiltinMethod(services.program, objectType, property.name)
+        ) {
+          return true;
+        }
+      }
+
       // if `${object.name}.${property.name}` doesn't match any of
       // the nativelyBoundMembers, then we fallback to type-level checks
       return (
@@ -216,7 +296,17 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkIfMethodAndReport(node, services.getSymbolAtLocation(node));
+        const propertyNames = getAccessedPropertyNames(node);
+        if (propertyNames.length === 0) {
+          return;
+        }
+
+        const objectType = services.getTypeAtLocation(node.object);
+        for (const propertyName of propertyNames) {
+          if (checkUnionConstituentsAndReport(node, propertyName, objectType)) {
+            break;
+          }
+        }
       },
       ObjectPattern(node): void {
         if (isNodeInsideTypeDeclaration(node)) {
@@ -260,19 +350,11 @@ export default createRule<Options, MessageIds>({
             }
           }
 
-          for (const intersectionPart of tsutils
-            .unionConstituents(services.getTypeAtLocation(node))
-            .flatMap(unionPart =>
-              tsutils.intersectionConstituents(unionPart),
-            )) {
-            const reported = checkIfMethodAndReport(
-              property.key,
-              intersectionPart.getProperty(property.key.name),
-            );
-            if (reported) {
-              break;
-            }
-          }
+          checkUnionConstituentsAndReport(
+            property.key,
+            property.key.name,
+            services.getTypeAtLocation(node),
+          );
         }
       },
     };
@@ -313,20 +395,14 @@ function checkIfMethod(
   }
 
   switch (valueDeclaration.kind) {
-    case ts.SyntaxKind.PropertyDeclaration:
-      return {
-        dangerous:
-          (valueDeclaration as ts.PropertyDeclaration).initializer?.kind ===
-          ts.SyntaxKind.FunctionExpression,
-      };
-    case ts.SyntaxKind.PropertyAssignment: {
-      const assignee = (valueDeclaration as ts.PropertyAssignment).initializer;
-      if (assignee.kind !== ts.SyntaxKind.FunctionExpression) {
-        return {
-          dangerous: false,
-        };
+    case ts.SyntaxKind.PropertyAssignment:
+    case ts.SyntaxKind.PropertyDeclaration: {
+      const { initializer } = valueDeclaration as
+        ts.PropertyAssignment | ts.PropertyDeclaration;
+      if (!initializer || !ts.isFunctionExpression(initializer)) {
+        return { dangerous: false };
       }
-      return checkMethod(assignee as ts.FunctionExpression, ignoreStatic);
+      return checkMethod(initializer, ignoreStatic);
     }
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature: {
@@ -342,9 +418,7 @@ function checkIfMethod(
 
 function checkMethod(
   valueDeclaration:
-    | ts.FunctionExpression
-    | ts.MethodDeclaration
-    | ts.MethodSignature,
+    ts.FunctionExpression | ts.MethodDeclaration | ts.MethodSignature,
   ignoreStatic: boolean,
 ): CheckMethodResult {
   const firstParam = valueDeclaration.parameters.at(0);

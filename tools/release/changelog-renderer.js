@@ -5,6 +5,15 @@ const {
   default: DefaultChangelogRenderer,
 } = require('nx/release/changelog-renderer');
 
+const EXCLUDED_AUTHORS = [
+  'Amp',
+  'chatgpt',
+  'Claude',
+  'Codex',
+  'Copilot',
+  'Cursor',
+].map(name => new RegExp(`^${name}\\b`));
+
 module.exports = class CustomChangelogRenderer extends (
   DefaultChangelogRenderer
 ) {
@@ -20,5 +29,18 @@ module.exports = class CustomChangelogRenderer extends (
       `${githubLink}\n\n` +
       `You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.`
     );
+  }
+
+  async renderAuthors() {
+    const defaultAuthors = await super.renderAuthors();
+
+    const filteredAuthors = defaultAuthors.filter(author => {
+      // Authors are returned with a leading dash (i.e. `- User Name @handle`).
+      const normalizedAuthor = author.replace(/^-/, '').trim();
+
+      return !EXCLUDED_AUTHORS.some(pattern => pattern.test(normalizedAuthor));
+    });
+
+    return filteredAuthors;
   }
 };

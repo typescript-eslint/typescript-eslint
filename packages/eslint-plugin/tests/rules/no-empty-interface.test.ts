@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-empty-interface';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-interface', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 interface Foo {
@@ -52,6 +55,8 @@ class Bar {}
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noEmpty',
         },
@@ -71,6 +76,8 @@ class Baz {}
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 6,
           line: 6,
           messageId: 'noEmptyWithSuper',
         },
@@ -99,6 +106,8 @@ class Bar {}
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 6,
           line: 6,
           messageId: 'noEmptyWithSuper',
         },
@@ -119,6 +128,8 @@ const bar = class Bar {};
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 6,
           line: 6,
           messageId: 'noEmptyWithSuper',
         },
@@ -145,6 +156,8 @@ interface Bar extends Foo {}
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 6,
           line: 6,
           messageId: 'noEmptyWithSuper',
         },
@@ -163,6 +176,8 @@ type Bar = Foo
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noEmptyWithSuper',
         },
@@ -174,6 +189,8 @@ type Bar = Foo
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'noEmptyWithSuper',
         },
@@ -190,6 +207,8 @@ interface Foo extends Array<Bar> {}
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 5,
           line: 5,
           messageId: 'noEmptyWithSuper',
         },
@@ -209,6 +228,8 @@ interface Foo extends R {}
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noEmptyWithSuper',
         },
@@ -225,6 +246,8 @@ interface Foo<T> extends Bar<T> {}
       errors: [
         {
           column: 11,
+          endColumn: 14,
+          endLine: 2,
           line: 2,
           messageId: 'noEmptyWithSuper',
         },

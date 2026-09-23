@@ -14,6 +14,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-member-access', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function foo(x: { a: number }, y: any) {
@@ -110,10 +113,9 @@ function foo(x: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '.a',
-          },
+          data: { property: '.a' },
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeMemberExpression',
         },
@@ -128,10 +130,9 @@ function foo(x: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '.a',
-          },
+          data: { property: '.a' },
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeMemberExpression',
         },
@@ -146,10 +147,9 @@ function foo(x: { a: any }) {
       errors: [
         {
           column: 7,
-          data: {
-            property: '.b',
-          },
+          data: { property: '.b' },
           endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeMemberExpression',
         },
@@ -164,10 +164,9 @@ function foo(x: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: "['a']",
-          },
+          data: { property: "['a']" },
           endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeMemberExpression',
         },
@@ -182,10 +181,9 @@ function foo(x: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: "['a']",
-          },
+          data: { property: "['a']" },
           endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeMemberExpression',
         },
@@ -200,10 +198,9 @@ value.property;
       errors: [
         {
           column: 7,
-          data: {
-            property: '.property',
-          },
+          data: { property: '.property' },
           endColumn: 15,
+          endLine: 4,
           line: 4,
           messageId: 'errorMemberExpression',
         },
@@ -218,10 +215,9 @@ function foo(x: { a: number }, y: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeComputedMemberAccess',
         },
@@ -236,10 +232,9 @@ function foo(x?: { a: number }, y: any) {
       errors: [
         {
           column: 7,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeComputedMemberAccess',
         },
@@ -254,10 +249,9 @@ function foo(x: { a: number }, y: any) {
       errors: [
         {
           column: 6,
-          data: {
-            property: '[y += 1]',
-          },
+          data: { property: '[y += 1]' },
           endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeComputedMemberAccess',
         },
@@ -272,10 +266,9 @@ function foo(x: { a: number }, y: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[1 as any]',
-          },
+          data: { property: '[1 as any]' },
           endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeComputedMemberAccess',
         },
@@ -290,10 +283,9 @@ function foo(x: { a: number }, y: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y()]',
-          },
+          data: { property: '[y()]' },
           endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeComputedMemberAccess',
         },
@@ -308,10 +300,9 @@ function foo(x: string[], y: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeComputedMemberAccess',
         },
@@ -326,10 +317,9 @@ function foo(x: { a: number }, y: NotKnown) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'errorComputedMemberAccess',
         },
@@ -357,19 +347,25 @@ const methods = {
       errors: [
         {
           column: 17,
+          data: { property: '.methodB' },
           endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeThisMemberExpression',
         },
         {
           column: 17,
+          data: { property: '[getProperty()]' },
           endColumn: 30,
+          endLine: 8,
           line: 8,
           messageId: 'unsafeThisMemberExpression',
         },
         {
           column: 19,
+          data: { property: '.methodA' },
           endColumn: 26,
+          endLine: 14,
           line: 14,
           messageId: 'unsafeThisMemberExpression',
         },
@@ -389,13 +385,17 @@ class C {
       errors: [
         {
           column: 18,
+          data: { property: '.pipe' },
           endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'unsafeMemberExpression',
         },
         {
           column: 25,
+          data: { property: '.subscribe' },
           endColumn: 34,
+          endLine: 5,
           line: 5,
           messageId: 'unsafeMemberExpression',
         },
@@ -410,10 +410,9 @@ value?.middle.inner;
       errors: [
         {
           column: 15,
-          data: {
-            property: '.inner',
-          },
+          data: { property: '.inner' },
           endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeMemberExpression',
         },
@@ -429,10 +428,9 @@ value?.outer.middle.inner;
       errors: [
         {
           column: 14,
-          data: {
-            property: '.middle',
-          },
+          data: { property: '.middle' },
           endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeMemberExpression',
         },
@@ -448,19 +446,17 @@ value.outer?.middle.inner;
       errors: [
         {
           column: 7,
-          data: {
-            property: '.outer',
-          },
+          data: { property: '.outer' },
           endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeMemberExpression',
         },
         {
           column: 21,
-          data: {
-            property: '.inner',
-          },
+          data: { property: '.inner' },
           endColumn: 26,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeMemberExpression',
         },
@@ -476,10 +472,9 @@ value.outer.middle?.inner;
       errors: [
         {
           column: 7,
-          data: {
-            property: '.outer',
-          },
+          data: { property: '.outer' },
           endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeMemberExpression',
         },
@@ -495,10 +490,9 @@ function foo(x: { a: number }, y: NotKnown) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'errorComputedMemberAccess',
         },

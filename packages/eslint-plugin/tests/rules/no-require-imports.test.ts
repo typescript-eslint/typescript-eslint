@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-require-imports';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-require-imports', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "import { l } from 'lib';",
     "var lib3 = load('not_an_import');",
@@ -115,6 +118,8 @@ require('remark-preset-prettier');
       errors: [
         {
           column: 11,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -125,6 +130,8 @@ require('remark-preset-prettier');
       errors: [
         {
           column: 12,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -138,11 +145,15 @@ var lib5 = require('lib5'),
       errors: [
         {
           column: 12,
+          endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'noRequireImports',
         },
         {
           column: 10,
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'noRequireImports',
         },
@@ -153,6 +164,8 @@ var lib5 = require('lib5'),
       errors: [
         {
           column: 15,
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -163,6 +176,8 @@ var lib5 = require('lib5'),
       errors: [
         {
           column: 11,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -173,6 +188,8 @@ var lib5 = require('lib5'),
       errors: [
         {
           column: 12,
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -186,11 +203,15 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 12,
+          endColumn: 29,
+          endLine: 2,
           line: 2,
           messageId: 'noRequireImports',
         },
         {
           column: 10,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'noRequireImports',
         },
@@ -201,6 +222,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 13,
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -211,6 +234,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 13,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -222,6 +247,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 13,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -233,6 +260,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 14,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -243,6 +272,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 14,
+          endColumn: 40,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -254,6 +285,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 14,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -265,6 +298,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 11,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -276,6 +311,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 17,
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -287,6 +324,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 7,
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -298,6 +337,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 13,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -309,6 +350,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 18,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -320,6 +363,8 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           column: 18,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -334,11 +379,15 @@ configValidator.addSchema(require('./a.json'));
       errors: [
         {
           column: 39,
+          endColumn: 58,
+          endLine: 2,
           line: 2,
           messageId: 'noRequireImports',
         },
         {
           column: 27,
+          endColumn: 46,
+          endLine: 3,
           line: 3,
           messageId: 'noRequireImports',
         },
@@ -350,6 +399,8 @@ configValidator.addSchema(require('./a.json'));
       errors: [
         {
           column: 1,
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },
@@ -361,6 +412,8 @@ configValidator.addSchema(require('./a.json'));
       errors: [
         {
           column: 1,
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'noRequireImports',
         },

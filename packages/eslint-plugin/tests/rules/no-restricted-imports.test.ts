@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-restricted-imports';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-restricted-imports', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "import foo from 'foo';",
     "import foo = require('foo');",
@@ -391,6 +394,11 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1';",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import1' },
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -400,6 +408,11 @@ import type { foo } from 'import2/private/bar';
       code: "import foo = require('import1');",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import1' },
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -409,6 +422,11 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1';",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import1' },
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -418,6 +436,11 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1';",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import1' },
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -427,6 +450,11 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1';",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import1' },
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -436,6 +464,11 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1/private/foo';",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import1/private/foo' },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'patterns',
         },
       ],
@@ -450,6 +483,11 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1/private/foo';",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import1/private/foo' },
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'patterns',
         },
       ],
@@ -464,6 +502,14 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import-foo';",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'Please use import-bar instead.',
+            importSource: 'import-foo',
+          },
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'pathWithCustomMessage',
         },
       ],
@@ -486,6 +532,14 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import-foo';",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'Please use import-bar instead.',
+            importSource: 'import-foo',
+          },
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
           messageId: 'pathWithCustomMessage',
         },
       ],
@@ -508,6 +562,15 @@ import type { foo } from 'import2/private/bar';
       code: "import { Bar } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          data: {
+            customMessage: 'Please use Bar from /import-bar/baz/ instead.',
+            importName: 'Bar',
+            importSource: 'import-foo',
+          },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -527,6 +590,15 @@ import type { foo } from 'import2/private/bar';
       code: "export { Bar } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          data: {
+            customMessage: 'Please use Bar from /import-bar/baz/ instead.',
+            importName: 'Bar',
+            importSource: 'import-foo',
+          },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -546,6 +618,14 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1/private/foo';",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'usage of import1 private modules not allowed.',
+            importSource: 'import1/private/foo',
+          },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -569,6 +649,14 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1/private/foo';",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'usage of import1 private modules not allowed.',
+            importSource: 'import1/private/foo',
+          },
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -592,41 +680,42 @@ import type { foo } from 'import2/private/bar';
       code: "import 'import-foo';",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import-foo' },
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
-      options: [
-        {
-          paths: [
-            {
-              name: 'import-foo',
-            },
-          ],
-        },
-      ],
+      options: [{ paths: [{ name: 'import-foo' }] }],
     },
     {
       code: "import 'import-foo';",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import-foo' },
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
-      options: [
-        {
-          paths: [
-            {
-              allowTypeImports: true,
-              name: 'import-foo',
-            },
-          ],
-        },
-      ],
+      options: [{ paths: [{ allowTypeImports: true, name: 'import-foo' }] }],
     },
     {
       code: "import foo from 'import-foo';",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'Please use import-bar instead.',
+            importSource: 'import-foo',
+          },
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'pathWithCustomMessage',
         },
       ],
@@ -646,6 +735,14 @@ import type { foo } from 'import2/private/bar';
       code: "import foo = require('import-foo');",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'Please use import-bar instead.',
+            importSource: 'import-foo',
+          },
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
           messageId: 'pathWithCustomMessage',
         },
       ],
@@ -665,6 +762,15 @@ import type { foo } from 'import2/private/bar';
       code: "import { Bar } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          data: {
+            customMessage: 'Please use Bar from /import-bar/baz/ instead.',
+            importName: 'Bar',
+            importSource: 'import-foo',
+          },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -685,6 +791,15 @@ import type { foo } from 'import2/private/bar';
       code: "export { Bar } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          data: {
+            customMessage: 'Please use Bar from /import-bar/baz/ instead.',
+            importName: 'Bar',
+            importSource: 'import-foo',
+          },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -705,6 +820,14 @@ import type { foo } from 'import2/private/bar';
       code: "import foo from 'import1/private/bar';",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'usage of import1 private modules not allowed.',
+            importSource: 'import1/private/bar',
+          },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -724,6 +847,14 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1/private/bar';",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'usage of import1 private modules not allowed.',
+            importSource: 'import1/private/bar',
+          },
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -743,6 +874,14 @@ import type { foo } from 'import2/private/bar';
       code: "export { foo } from 'import1/private/bar';",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'usage of import1 private modules not allowed.',
+            importSource: 'import1/private/bar',
+          },
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -762,6 +901,14 @@ import type { foo } from 'import2/private/bar';
       code: "import { foo } from 'import1/private-package';",
       errors: [
         {
+          column: 1,
+          data: {
+            customMessage: 'usage of import1 private modules not allowed.',
+            importSource: 'import1/private-package',
+          },
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
           messageId: 'patternWithCustomMessage',
         },
       ],
@@ -782,6 +929,11 @@ import type { foo } from 'import2/private/bar';
       code: "export * from 'import1';",
       errors: [
         {
+          column: 1,
+          data: { importSource: 'import1' },
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
           messageId: 'path',
         },
       ],
@@ -791,6 +943,11 @@ import type { foo } from 'import2/private/bar';
       code: "import type { InvalidTestCase } from '@typescript-eslint/utils/dist/ts-eslint';",
       errors: [
         {
+          column: 1,
+          data: { importSource: '@typescript-eslint/utils/dist/ts-eslint' },
+          endColumn: 80,
+          endLine: 1,
+          line: 1,
           messageId: 'patterns',
         },
       ],
@@ -804,6 +961,16 @@ import type { foo } from 'import2/private/bar';
       code: "import { Bar, type Baz } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          data: {
+            customMessage:
+              'Please use Bar and Baz from /import-bar/baz/ instead.',
+            importName: 'Bar',
+            importSource: 'import-foo',
+          },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -824,9 +991,29 @@ import type { foo } from 'import2/private/bar';
       code: "import { Bar, type Baz } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          data: {
+            customMessage:
+              'Please use Bar and Baz from /import-bar/baz/ instead.',
+            importName: 'Bar',
+            importSource: 'import-foo',
+          },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
         {
+          column: 15,
+          data: {
+            customMessage:
+              'Please use Bar and Baz from /import-bar/baz/ instead.',
+            importName: 'Baz',
+            importSource: 'import-foo',
+          },
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -847,6 +1034,16 @@ import type { foo } from 'import2/private/bar';
       code: "export { Bar, type Baz } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          data: {
+            customMessage:
+              'Please use Bar and Baz from /import-bar/baz/ instead.',
+            importName: 'Bar',
+            importSource: 'import-foo',
+          },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],
@@ -867,9 +1064,29 @@ import type { foo } from 'import2/private/bar';
       code: "export { Bar, type Baz } from 'import-foo';",
       errors: [
         {
+          column: 10,
+          data: {
+            customMessage:
+              'Please use Bar and Baz from /import-bar/baz/ instead.',
+            importName: 'Bar',
+            importSource: 'import-foo',
+          },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
         {
+          column: 15,
+          data: {
+            customMessage:
+              'Please use Bar and Baz from /import-bar/baz/ instead.',
+            importName: 'Baz',
+            importSource: 'import-foo',
+          },
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'importNameWithCustomMessage',
         },
       ],

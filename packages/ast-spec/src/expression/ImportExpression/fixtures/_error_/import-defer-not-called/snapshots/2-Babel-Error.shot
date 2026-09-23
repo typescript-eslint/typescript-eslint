@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ImportExpression > _error_ > import-defer-not-called > Babel - Error`]
+BabelError
+  1 | import.defer;
+> 2 |
+    | ^ Unexpected token (2:0)
+  

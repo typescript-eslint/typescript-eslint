@@ -4,6 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  getFixOrSuggest,
   getStaticMemberAccessValue,
   isAssignee,
   isFunction,
@@ -180,25 +181,39 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          const getterBody = node.value.body;
+
           context.report({
             node: node.key,
             messageId: 'preferFieldStyle',
-            suggest: [
-              {
+            ...getFixOrSuggest({
+              fixOrSuggest: node.decorators.length === 0 ? 'suggest' : 'none',
+              suggestion: {
                 messageId: 'preferFieldStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
                   const name = context.sourceCode.getText(node.key);
+
+                  const closingParen = nullThrows(
+                    context.sourceCode.getTokenBefore(
+                      node.value.returnType ?? getterBody,
+                    ),
+                    'Getter should have a closing parenthesis.',
+                  );
+                  const betweenParensAndBody = context.sourceCode
+                    .getText()
+                    .slice(closingParen.range[1], getterBody.range[0]);
 
                   let text = '';
 
                   text += printNodeModifiers(node, 'readonly');
                   text += node.computed ? `[${name}]` : name;
-                  text += ` = ${context.sourceCode.getText(argument)};`;
+                  text += betweenParensAndBody;
+                  text += `= ${context.sourceCode.getText(argument)};`;
 
                   return fixer.replaceText(node, text);
                 },
               },
-            ],
+            }),
           });
         },
       }),

@@ -162,17 +162,3 @@ function nestDescribe(
 }
 
 fixtures.forEach(f => nestDescribe(f));
-
-describe.runIf(ONLY === '')(
-  'ast snapshots should have an associated test',
-  () => {
-    const snapshots = glob.sync(`${FIXTURES_DIR}/**/*.shot`).map(absolute => {
-      const relative = path.relative(FIXTURES_DIR, absolute);
-      const { dir, name } = path.parse(relative);
-      return [relative, path.join(FIXTURES_DIR, dir, name)] as const;
-    });
-    it.for(snapshots)('%s', async ([, fixturePath], { expect }) => {
-      expect((await fs.lstat(fixturePath)).isFile()).toBe(true);
-    });
-  },
-);

@@ -14,74 +14,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-relative-paths-to-internal-packages', rule, {
-  invalid: [
-    {
-      code: "import { parse } from '../../../typescript-estree';",
-      errors: [
-        {
-          line: 1,
-          messageId: 'noRelativePathsToInternalPackages',
-        },
-      ],
-      filename: path.resolve(
-        PACKAGES_DIR,
-        'eslint-plugin/src/rules/my-awesome-rule.ts',
-      ),
-      output: `import { parse } from '@typescript-eslint/typescript-estree';`,
-    },
-    {
-      code: "import { parse } from '../../../typescript-estree/inner-module';",
-      errors: [
-        {
-          line: 1,
-          messageId: 'noRelativePathsToInternalPackages',
-        },
-      ],
-      filename: path.resolve(
-        PACKAGES_DIR,
-        'eslint-plugin/src/rules/my-awesome-rule.ts',
-      ),
-      output: `import { parse } from '@typescript-eslint/typescript-estree/inner-module';`,
-    },
-    {
-      code: "import type { ValueOf } from '../../../../utils';",
-      errors: [
-        {
-          line: 1,
-          messageId: 'noRelativePathsToInternalPackages',
-        },
-      ],
-      filename: path.resolve(
-        PACKAGES_DIR,
-        'ast-spec/src/expression/AssignmentExpression/spec.ts',
-      ),
-      output: "import type { ValueOf } from '@typescript-eslint/utils';",
-    },
-    {
-      code: `
-import type {
-  MemberExpressionComputedName,
-  MemberExpressionNonComputedName,
-} from '../../../types/src/generated/ast-spec';
-      `,
-      errors: [
-        {
-          line: 5,
-          messageId: 'noRelativePathsToInternalPackages',
-        },
-      ],
-      filename: path.resolve(
-        PACKAGES_DIR,
-        'eslint-plugin/src/rules/prefer-find.ts',
-      ),
-      output: `
-import type {
-  MemberExpressionComputedName,
-  MemberExpressionNonComputedName,
-} from '@typescript-eslint/types/src/generated/ast-spec';
-      `,
-    },
-  ],
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "import { parse } from '@typescript-eslint/typescript-estree';",
     "import { something } from 'not/a/relative/path';",
@@ -116,6 +51,86 @@ import type {
     {
       code: "import packageJson from '../../package.json' with { type: 'json' };",
       filename: path.resolve(PACKAGES_DIR, 'ast-spec/vitest.config.mts'),
+    },
+  ],
+  invalid: [
+    {
+      code: "import { parse } from '../../../typescript-estree';",
+      errors: [
+        {
+          column: 23,
+          endColumn: 51,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRelativePathsToInternalPackages',
+        },
+      ],
+      filename: path.resolve(
+        PACKAGES_DIR,
+        'eslint-plugin/src/rules/my-awesome-rule.ts',
+      ),
+      output: `import { parse } from '@typescript-eslint/typescript-estree';`,
+    },
+    {
+      code: "import { parse } from '../../../typescript-estree/inner-module';",
+      errors: [
+        {
+          column: 23,
+          endColumn: 64,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRelativePathsToInternalPackages',
+        },
+      ],
+      filename: path.resolve(
+        PACKAGES_DIR,
+        'eslint-plugin/src/rules/my-awesome-rule.ts',
+      ),
+      output: `import { parse } from '@typescript-eslint/typescript-estree/inner-module';`,
+    },
+    {
+      code: "import type { ValueOf } from '../../../../utils';",
+      errors: [
+        {
+          column: 30,
+          endColumn: 49,
+          endLine: 1,
+          line: 1,
+          messageId: 'noRelativePathsToInternalPackages',
+        },
+      ],
+      filename: path.resolve(
+        PACKAGES_DIR,
+        'ast-spec/src/expression/AssignmentExpression/spec.ts',
+      ),
+      output: "import type { ValueOf } from '@typescript-eslint/utils';",
+    },
+    {
+      code: `
+import type {
+  MemberExpressionComputedName,
+  MemberExpressionNonComputedName,
+} from '../../../types/src/generated/ast-spec';
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 47,
+          endLine: 5,
+          line: 5,
+          messageId: 'noRelativePathsToInternalPackages',
+        },
+      ],
+      filename: path.resolve(
+        PACKAGES_DIR,
+        'eslint-plugin/src/rules/prefer-find.ts',
+      ),
+      output: `
+import type {
+  MemberExpressionComputedName,
+  MemberExpressionNonComputedName,
+} from '@typescript-eslint/types/src/generated/ast-spec';
+      `,
     },
   ],
 });

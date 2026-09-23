@@ -1,7 +1,7 @@
 Incorrect
 
-function x(x: number): void;
-function x(x: string): void;
+function x(y: number): void;
+function x(y: string): void;
            ~~~~~~~~~ These overloads can be combined into one signature taking `number | string`.
 
 Incorrect
@@ -12,7 +12,7 @@ function y(...x: number[]): void;
 
 Correct
 
-function x(x: number | string): void;
+function x(y: number | string): void;
 
 Correct
 
@@ -70,3 +70,23 @@ declare function f(x: number): void;
  * @deprecate
  */
 declare function f(x: null): void;
+
+
+
+interface A {
+  a: string;
+}
+
+interface B {
+  b: string;
+}
+
+declare function separate(x: A): void;
+declare function separate(x: B): void;
+                          ~~~~ These overloads can be combined into one signature taking `A | B`.
+//                        ~~~~ These overloads can be combined into one signature taking `A | B`.
+
+declare function merged(x: A | B): void;
+
+separate({ a: '', b: '' }); // Error: No overload matches this call.
+merged({ a: '', b: '' }); // No error

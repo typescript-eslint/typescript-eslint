@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures element AccessorProperty _error_ modifier-override-with-no-extends Error Alignment 1`] = `"Babel errored but TSESTree didn't"`;

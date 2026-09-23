@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-var-requires';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-var-requires', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "import foo = require('foo');",
     "require('foo');",
@@ -45,6 +48,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 11,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -55,6 +60,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 13,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -65,6 +72,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 11,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -75,6 +84,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 17,
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -85,6 +96,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 11,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -95,6 +108,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 13,
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -105,6 +120,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 11,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -115,6 +132,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 17,
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -125,6 +144,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 19,
+          endColumn: 33,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -135,6 +156,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 13,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -145,6 +168,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 18,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -155,6 +180,8 @@ const json = require('./some.json');
       errors: [
         {
           column: 18,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -169,11 +196,15 @@ configValidator.addSchema(require('./a.json'));
       errors: [
         {
           column: 39,
+          endColumn: 58,
+          endLine: 2,
           line: 2,
           messageId: 'noVarReqs',
         },
         {
           column: 27,
+          endColumn: 46,
+          endLine: 3,
           line: 3,
           messageId: 'noVarReqs',
         },
@@ -184,6 +215,8 @@ configValidator.addSchema(require('./a.json'));
       errors: [
         {
           column: 13,
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -194,6 +227,8 @@ configValidator.addSchema(require('./a.json'));
       errors: [
         {
           column: 13,
+          endColumn: 39,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -205,6 +240,8 @@ configValidator.addSchema(require('./a.json'));
       errors: [
         {
           column: 13,
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },
@@ -216,6 +253,8 @@ configValidator.addSchema(require('./a.json'));
       errors: [
         {
           column: 13,
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'noVarReqs',
         },

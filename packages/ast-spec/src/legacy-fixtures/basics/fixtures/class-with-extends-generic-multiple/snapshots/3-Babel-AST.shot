@@ -41,7 +41,7 @@ Program {
           end: { column: 34, line: 3 },
         },
       },
-      superTypeParameters: TSTypeParameterInstantiation {
+      superTypeArguments: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
         params: [
           TSTypeReference {
@@ -122,7 +122,18 @@ Program {
               },
             },
             in: false,
-            name: "A",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "A",
+              optional: false,
+
+              range: [83, 84],
+              loc: {
+                start: { column: 10, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
             out: false,
 
             range: [83, 94],
@@ -149,9 +160,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 117],
+  range: [0, 117],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

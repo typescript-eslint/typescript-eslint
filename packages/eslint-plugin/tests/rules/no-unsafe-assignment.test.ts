@@ -8,6 +8,9 @@ const ruleTester = createRuleTesterWithTypes({
 });
 
 ruleTester.run('no-unsafe-assignment', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'const x = 1;',
     'const x: number = 1;',
@@ -65,13 +68,7 @@ type Props = { a: string };
 declare function Foo(props: Props): never;
 <Foo a={'foo'} />;
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
 
     {
@@ -79,26 +76,14 @@ declare function Foo(props: Props): never;
 declare function Foo(props: { a: string }): never;
 <Foo a="foo" />;
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     {
       code: `
 declare function Foo(props: { a: string }): never;
 <Foo a={} />;
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     'const x: unknown = y as any;',
     'const x: unknown[] = y as any[];',
@@ -114,18 +99,45 @@ const foo: Foo = { bar };
   invalid: [
     {
       code: 'const x = 1 as any;',
-      errors: [{ messageId: 'anyAssignment' }],
+      errors: [
+        {
+          column: 7,
+          data: { sender: '`any`' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'anyAssignment',
+        },
+      ],
     },
     {
       code: `
 const x = 1 as any,
   y = 1;
       `,
-      errors: [{ messageId: 'anyAssignment' }],
+      errors: [
+        {
+          column: 7,
+          data: { sender: '`any`' },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
+          messageId: 'anyAssignment',
+        },
+      ],
     },
     {
       code: 'function foo(a = 1 as any) {}',
-      errors: [{ messageId: 'anyAssignment' }],
+      errors: [
+        {
+          column: 14,
+          data: { sender: '`any`' },
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
+          messageId: 'anyAssignment',
+        },
+      ],
     },
     {
       code: `
@@ -133,7 +145,16 @@ class Foo {
   constructor(private a = 1 as any) {}
 }
       `,
-      errors: [{ messageId: 'anyAssignment' }],
+      errors: [
+        {
+          column: 23,
+          data: { sender: '`any`' },
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'anyAssignment',
+        },
+      ],
     },
     {
       code: `
@@ -141,7 +162,16 @@ class Foo {
   private a = 1 as any;
 }
       `,
-      errors: [{ messageId: 'anyAssignment' }],
+      errors: [
+        {
+          column: 3,
+          data: { sender: '`any`' },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'anyAssignment',
+        },
+      ],
     },
     {
       code: `
@@ -149,7 +179,16 @@ class Foo {
   accessor a = 1 as any;
 }
       `,
-      errors: [{ messageId: 'anyAssignment' }],
+      errors: [
+        {
+          column: 3,
+          data: { sender: '`any`' },
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'anyAssignment',
+        },
+      ],
     },
     {
       code: `
@@ -157,7 +196,11 @@ const [x] = spooky;
       `,
       errors: [
         {
+          column: 7,
           data: { receiver: 'error typed', sender: 'error typed' },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'anyAssignment',
         },
       ],
@@ -168,7 +211,11 @@ const [[[x]]] = [spooky];
       `,
       errors: [
         {
+          column: 8,
           data: { receiver: 'error typed', sender: 'error typed' },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
           messageId: 'unsafeArrayPatternFromTuple',
         },
       ],
@@ -181,11 +228,19 @@ const {
       `,
       errors: [
         {
+          column: 6,
           data: { receiver: 'error typed', sender: 'error typed' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'unsafeObjectPattern',
         },
         {
+          column: 7,
           data: { receiver: 'error typed', sender: 'error typed' },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
           messageId: 'anyAssignment',
         },
       ],
@@ -198,9 +253,11 @@ value = spooky;
       `,
       errors: [
         {
-          data: {
-            sender: 'error typed',
-          },
+          column: 1,
+          data: { sender: 'error typed' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'anyAssignment',
         },
       ],
@@ -209,23 +266,42 @@ value = spooky;
       code: `
 const [x] = 1 as any;
       `,
-      errors: [{ messageId: 'anyAssignment' }],
+      errors: [
+        {
+          column: 7,
+          data: { sender: '`any`' },
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
+          messageId: 'anyAssignment',
+        },
+      ],
     },
     {
       code: `
 const [x] = [] as any[];
       `,
-      errors: [{ messageId: 'unsafeArrayPattern' }],
+      errors: [
+        {
+          column: 7,
+          data: { sender: '`any`' },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'unsafeArrayPattern',
+        },
+      ],
     },
 
     {
       code: 'const x: Set<string> = new Set<any>();',
       errors: [
         {
-          data: {
-            receiver: '`Set<string>`',
-            sender: '`Set<any>`',
-          },
+          column: 7,
+          data: { receiver: '`Set<string>`', sender: '`Set<any>`' },
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
           messageId: 'unsafeAssignment',
         },
       ],
@@ -234,10 +310,14 @@ const [x] = [] as any[];
       code: 'const x: Map<string, string> = new Map<string, any>();',
       errors: [
         {
+          column: 7,
           data: {
             receiver: '`Map<string, string>`',
             sender: '`Map<string, any>`',
           },
+          endColumn: 54,
+          endLine: 1,
+          line: 1,
           messageId: 'unsafeAssignment',
         },
       ],
@@ -246,10 +326,11 @@ const [x] = [] as any[];
       code: 'const x: Set<string[]> = new Set<any[]>();',
       errors: [
         {
-          data: {
-            receiver: '`Set<string[]>`',
-            sender: '`Set<any[]>`',
-          },
+          column: 7,
+          data: { receiver: '`Set<string[]>`', sender: '`Set<any[]>`' },
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
           messageId: 'unsafeAssignment',
         },
       ],
@@ -258,10 +339,14 @@ const [x] = [] as any[];
       code: 'const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();',
       errors: [
         {
+          column: 7,
           data: {
             receiver: '`Set<Set<Set<string>>>`',
             sender: '`Set<Set<Set<any>>>`',
           },
+          endColumn: 58,
+          endLine: 1,
+          line: 1,
           messageId: 'unsafeAssignment',
         },
       ],
@@ -272,7 +357,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 8,
+          data: { sender: '`any`' },
           endColumn: 9,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -283,7 +370,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 15,
+          data: { sender: '`any`' },
           endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -294,7 +383,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 2,
+          data: { sender: '`any`' },
           endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -305,7 +396,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 11,
+          data: { sender: '`any`' },
           endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -316,7 +409,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 18,
+          data: { sender: '`any`' },
           endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -327,7 +422,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 5,
+          data: { sender: '`any`' },
           endColumn: 6,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -338,7 +435,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 8,
+          data: { sender: '`any`' },
           endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -349,7 +448,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 15,
+          data: { sender: '`any`' },
           endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -360,7 +461,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 10,
+          data: { sender: '`any`' },
           endColumn: 11,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -371,7 +474,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 17,
+          data: { sender: '`any`' },
           endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -382,7 +487,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 4,
+          data: { sender: '`any`' },
           endColumn: 5,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -393,7 +500,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 17,
+          data: { sender: '`any`' },
           endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -404,7 +513,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 24,
+          data: { sender: '`any`' },
           endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -415,7 +526,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 11,
+          data: { sender: '`any`' },
           endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -426,7 +539,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 17,
+          data: { sender: '`any`' },
           endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -437,7 +552,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 24,
+          data: { sender: '`any`' },
           endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -448,7 +565,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 11,
+          data: { sender: '`any`' },
           endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -460,7 +579,9 @@ const [x] = [] as any[];
       errors: [
         {
           column: 1,
+          data: { receiver: '`[[[[any]]]]`', sender: '`[any]`' },
           endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeAssignment',
         },
@@ -471,13 +592,31 @@ const [x] = [] as any[];
       code: `
 const x = [...(1 as any)];
       `,
-      errors: [{ messageId: 'unsafeArraySpread' }],
+      errors: [
+        {
+          column: 12,
+          data: { sender: '`any`' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'unsafeArraySpread',
+        },
+      ],
     },
     {
       code: `
 const x = [...([] as any[])];
       `,
-      errors: [{ messageId: 'unsafeArraySpread' }],
+      errors: [
+        {
+          column: 12,
+          data: { sender: '`any`' },
+          endColumn: 28,
+          endLine: 2,
+          line: 2,
+          messageId: 'unsafeArraySpread',
+        },
+      ],
     },
 
     {
@@ -485,7 +624,9 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 9,
+          data: { sender: '`any`' },
           endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -496,7 +637,9 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 16,
+          data: { sender: '`any`' },
           endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -507,7 +650,9 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 4,
+          data: { sender: '`any`' },
           endColumn: 5,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -518,7 +663,9 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 12,
+          data: { sender: '`any`' },
           endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -529,7 +676,9 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 19,
+          data: { sender: '`any`' },
           endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -540,7 +689,9 @@ const x = [...([] as any[])];
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -555,7 +706,9 @@ const {
       errors: [
         {
           column: 8,
+          data: { sender: '`any`' },
           endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeObjectPattern',
         },
@@ -566,7 +719,9 @@ const {
       errors: [
         {
           column: 21,
+          data: { sender: '`any`' },
           endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeObjectPattern',
         },
@@ -581,7 +736,9 @@ const {
       errors: [
         {
           column: 8,
+          data: { sender: '`any`' },
           endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeObjectPattern',
         },
@@ -596,7 +753,9 @@ const {
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -607,7 +766,9 @@ const {
       errors: [
         {
           column: 20,
+          data: { sender: '`any`' },
           endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -622,7 +783,9 @@ const {
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeArrayPatternFromTuple',
         },
@@ -634,7 +797,10 @@ const {
       errors: [
         {
           column: 13,
+          data: { sender: '`any`' },
           endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'anyAssignment',
         },
       ],
@@ -644,7 +810,10 @@ const {
       errors: [
         {
           column: 18,
+          data: { sender: '`any`' },
           endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'anyAssignment',
         },
       ],
@@ -659,6 +828,8 @@ const {
             sender: '`Set<Set<Set<any>>>`',
           },
           endColumn: 70,
+          endLine: 1,
+          line: 1,
           messageId: 'unsafeAssignment',
         },
       ],
@@ -669,7 +840,10 @@ const {
         {
           // spreading an any widens the object type to any
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 28,
+          endLine: 1,
+          line: 1,
           messageId: 'anyAssignment',
         },
       ],
@@ -684,18 +858,14 @@ declare function Foo(props: Props): never;
       errors: [
         {
           column: 9,
+          data: { sender: '`any`' },
           endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'anyAssignment',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     {
       code: `
@@ -706,7 +876,9 @@ function foo() {
       errors: [
         {
           column: 9,
+          data: { sender: '`any`' },
           endColumn: 19,
+          endLine: 3,
           line: 3,
           messageId: 'anyAssignmentThis',
         },
@@ -720,7 +892,9 @@ const test: T = ['string', []] as any;
       errors: [
         {
           column: 7,
+          data: { sender: '`any`' },
           endColumn: 38,
+          endLine: 3,
           line: 3,
           messageId: 'anyAssignment',
         },
@@ -735,7 +909,9 @@ const foo: Foo = { bar };
       errors: [
         {
           column: 20,
+          data: { sender: '`any`' },
           endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'anyAssignment',
         },

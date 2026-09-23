@@ -1,12 +1,15 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
-import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('switch-exhaustiveness-check', switchExhaustivenessCheck, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // All branches matched
     `
@@ -1006,6 +1009,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"literal"' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1037,6 +1043,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"literal"' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1070,6 +1079,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '1' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1105,6 +1117,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"2"' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1140,6 +1155,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"2"' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1158,6 +1176,9 @@ switch (value) {
         },
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1193,6 +1214,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1226,6 +1250,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"1" | 1 | null | undefined' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1234,10 +1261,10 @@ switch (value) {
               output: `
 declare const value: (string & { foo: 'bar' }) | '1' | 1 | null | undefined;
 switch (value) {
-case undefined: { throw new Error('Not implemented yet: undefined case') }
-case null: { throw new Error('Not implemented yet: null case') }
 case "1": { throw new Error('Not implemented yet: "1" case') }
 case 1: { throw new Error('Not implemented yet: 1 case') }
+case null: { throw new Error('Not implemented yet: null case') }
+case undefined: { throw new Error('Not implemented yet: undefined case') }
 }
       `,
             },
@@ -1245,6 +1272,9 @@ case 1: { throw new Error('Not implemented yet: 1 case') }
         },
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1278,6 +1308,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1314,6 +1347,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1350,6 +1386,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1386,6 +1425,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1424,6 +1466,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'typeof a | typeof b' },
+          endColumn: 14,
+          endLine: 5,
           line: 5,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1463,6 +1508,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1497,6 +1545,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'false | true' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1531,6 +1582,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '1 | true' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1541,8 +1595,8 @@ declare const value: boolean | 1;
 switch (value) {
   case false:
     break;
-  case true: { throw new Error('Not implemented yet: true case') }
   case 1: { throw new Error('Not implemented yet: 1 case') }
+  case true: { throw new Error('Not implemented yet: true case') }
 }
       `,
             },
@@ -1567,6 +1621,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'false | true' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1586,6 +1643,9 @@ switch (value) {
         },
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1621,6 +1681,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1662,6 +1725,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'Aaa.Bar' },
+          endColumn: 14,
+          endLine: 7,
           line: 7,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1686,6 +1752,9 @@ switch (value) {
         },
         {
           column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 7,
           line: 7,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1743,8 +1812,10 @@ switch (day) {
           column: 9,
           data: {
             missingBranches:
-              '"Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
+              '"Friday" | "Saturday" | "Sunday" | "Thursday" | "Tuesday" | "Wednesday"',
           },
+          endColumn: 12,
+          endLine: 14,
           line: 14,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1768,12 +1839,12 @@ switch (day) {
     result = 1;
     break;
   }
-  case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
-  case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
-  case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
   case "Friday": { throw new Error('Not implemented yet: "Friday" case') }
   case "Saturday": { throw new Error('Not implemented yet: "Saturday" case') }
   case "Sunday": { throw new Error('Not implemented yet: "Sunday" case') }
+  case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
+  case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
+  case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
 }
       `,
             },
@@ -1799,9 +1870,9 @@ function test(value: Enum): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: 'Enum.B',
-          },
+          data: { missingBranches: 'Enum.B' },
+          endColumn: 16,
+          endLine: 8,
           line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1843,9 +1914,9 @@ function test(value: Union): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: '"b" | "c"',
-          },
+          data: { missingBranches: '"b" | "c"' },
+          endColumn: 16,
+          endLine: 8,
           line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1889,9 +1960,9 @@ function test(value: Union): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: 'true | 1',
-          },
+          data: { missingBranches: '1 | true' },
+          endColumn: 16,
+          endLine: 9,
           line: 9,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1908,8 +1979,8 @@ function test(value: Union): number {
   switch (value) {
     case 'a':
       return 1;
-    case true: { throw new Error('Not implemented yet: true case') }
     case 1: { throw new Error('Not implemented yet: 1 case') }
+    case true: { throw new Error('Not implemented yet: true case') }
   }
 }
       `,
@@ -1932,9 +2003,9 @@ function test(value: DiscriminatedUnion): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: '"B"',
-          },
+          data: { missingBranches: '"B"' },
+          endColumn: 21,
+          endLine: 5,
           line: 5,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1978,8 +2049,10 @@ switch (day) {
           column: 9,
           data: {
             missingBranches:
-              '"Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
+              '"Friday" | "Monday" | "Saturday" | "Sunday" | "Thursday" | "Tuesday" | "Wednesday"',
           },
+          endColumn: 12,
+          endLine: 13,
           line: 13,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -1998,13 +2071,13 @@ type Day =
 const day = 'Monday' as Day;
 
 switch (day) {
-case "Monday": { throw new Error('Not implemented yet: "Monday" case') }
-case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
-case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
-case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
 case "Friday": { throw new Error('Not implemented yet: "Friday" case') }
+case "Monday": { throw new Error('Not implemented yet: "Monday" case') }
 case "Saturday": { throw new Error('Not implemented yet: "Saturday" case') }
 case "Sunday": { throw new Error('Not implemented yet: "Sunday" case') }
+case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
+case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
+case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
 }
       `,
             },
@@ -2030,9 +2103,9 @@ function test(value: T): number {
       errors: [
         {
           column: 11,
-          data: {
-            missingBranches: 'typeof b | typeof c',
-          },
+          data: { missingBranches: 'typeof b | typeof c' },
+          endColumn: 16,
+          endLine: 9,
           line: 9,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2074,6 +2147,11 @@ function test(value: T): number {
       `,
       errors: [
         {
+          column: 11,
+          data: { missingBranches: '2' },
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2106,6 +2184,11 @@ function test(value: T): number {
       `,
       errors: [
         {
+          column: 11,
+          data: { missingBranches: '1 | 2' },
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2130,7 +2213,7 @@ function test(value: T): number {
       code: `
 export enum Enum {
   'test-test' = 'test-test',
-  'test' = 'test',
+  test = 'test',
 }
 
 function test(arg: Enum): string {
@@ -2140,6 +2223,11 @@ function test(arg: Enum): string {
       `,
       errors: [
         {
+          column: 11,
+          data: { missingBranches: '(typeof Enum)["test-test"] | Enum.test' },
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2147,7 +2235,7 @@ function test(arg: Enum): string {
               output: `
 export enum Enum {
   'test-test' = 'test-test',
-  'test' = 'test',
+  test = 'test',
 }
 
 function test(arg: Enum): string {
@@ -2167,7 +2255,7 @@ function test(arg: Enum): string {
       code: `
 export enum Enum {
   '' = 'test-test',
-  'test' = 'test',
+  test = 'test',
 }
 
 function test(arg: Enum): string {
@@ -2177,6 +2265,11 @@ function test(arg: Enum): string {
       `,
       errors: [
         {
+          column: 11,
+          data: { missingBranches: '(typeof Enum)[""] | Enum.test' },
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2184,7 +2277,7 @@ function test(arg: Enum): string {
               output: `
 export enum Enum {
   '' = 'test-test',
-  'test' = 'test',
+  test = 'test',
 }
 
 function test(arg: Enum): string {
@@ -2204,7 +2297,7 @@ function test(arg: Enum): string {
       code: `
 export enum Enum {
   '9test' = 'test-test',
-  'test' = 'test',
+  test = 'test',
 }
 
 function test(arg: Enum): string {
@@ -2214,6 +2307,11 @@ function test(arg: Enum): string {
       `,
       errors: [
         {
+          column: 11,
+          data: { missingBranches: '(typeof Enum)["9test"] | Enum.test' },
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2221,7 +2319,7 @@ function test(arg: Enum): string {
               output: `
 export enum Enum {
   '9test' = 'test-test',
-  'test' = 'test',
+  test = 'test',
 }
 
 function test(arg: Enum): string {
@@ -2248,6 +2346,11 @@ switch (value) {
       `,
       errors: [
         {
+          column: 9,
+          data: { missingBranches: 'default' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2286,6 +2389,13 @@ switch (value) {
       `,
       errors: [
         {
+          column: 17,
+          data: {
+            missingBranches: '(typeof Enum)["\'a\' `b` \\"c\\""] | Enum.a',
+          },
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
@@ -2299,8 +2409,8 @@ switch (value) {
         declare const a: Enum;
 
         switch (a) {
-        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
         case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\\\'a\\\\\\' \`b\` "c"\\'] case') }
+        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
         }
       `,
             },
@@ -2328,6 +2438,10 @@ switch (myUnion) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 14,
+          line: 12,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2362,6 +2476,10 @@ switch (myEnum) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 18,
+          line: 16,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2396,6 +2514,10 @@ switch (myEnum) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 18,
+          line: 16,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2423,6 +2545,10 @@ switch (myBoolean) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 11,
+          line: 9,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2450,6 +2576,10 @@ switch (myValue) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 11,
+          line: 9,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2477,6 +2607,10 @@ switch (myValue) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 11,
+          line: 9,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2508,6 +2642,10 @@ switch (myValue) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 15,
+          line: 13,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2532,6 +2670,9 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b"' },
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2570,6 +2711,9 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b"' },
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2602,6 +2746,9 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b"' },
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2641,6 +2788,9 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b" | "c"' },
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2689,6 +2839,9 @@ switch (myEnum) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'MyEnum.Bar | MyEnum.Baz' },
+          endColumn: 15,
+          endLine: 10,
           line: 10,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2735,6 +2888,9 @@ switch (value) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: 'false | true' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2772,6 +2928,9 @@ function foo(x: string[]) {
       errors: [
         {
           column: 11,
+          data: { missingBranches: 'undefined' },
+          endColumn: 15,
+          endLine: 3,
           line: 3,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2811,6 +2970,10 @@ switch (myValue) {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 16,
+          endLine: 8,
+          line: 8,
           messageId: 'dangerousDefaultCase',
         },
       ],
@@ -2833,6 +2996,9 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b" | "c"' },
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2872,6 +3038,9 @@ switch (literal) {
       errors: [
         {
           column: 9,
+          data: { missingBranches: '"b" | "c"' },
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
@@ -2901,44 +3070,44 @@ switch (literal) {
     },
     {
       code: `
-        export namespace A {
-          export enum B {
-            C,
-            D,
-          }
-        }
-        declare const foo: A.B;
-        switch (foo) {
-          case A.B.C: {
-            break;
-          }
-        }
+export namespace A {
+  export enum B {
+    C,
+    D,
+  }
+}
+declare const foo: A.B;
+switch (foo) {
+  case A.B.C: {
+    break;
+  }
+}
       `,
       errors: [
         {
-          column: 17,
-          data: {
-            missingBranches: 'A.B.D',
-          },
+          column: 9,
+          data: { missingBranches: 'A.B.D' },
+          endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
               output: `
-        export namespace A {
-          export enum B {
-            C,
-            D,
-          }
-        }
-        declare const foo: A.B;
-        switch (foo) {
-          case A.B.C: {
-            break;
-          }
-          case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
-        }
+export namespace A {
+  export enum B {
+    C,
+    D,
+  }
+}
+declare const foo: A.B;
+switch (foo) {
+  case A.B.C: {
+    break;
+  }
+  case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
+}
       `,
             },
           ],
@@ -2947,34 +3116,336 @@ switch (literal) {
     },
     {
       code: `
-        import { A } from './switch-exhaustiveness-check';
-        declare const foo: A.B;
-        switch (foo) {
-          case A.B.C: {
-            break;
-          }
-        }
+import { A } from './switch-exhaustiveness-check';
+declare const foo: A.B;
+switch (foo) {
+  case A.B.C: {
+    break;
+  }
+}
       `,
       errors: [
         {
-          column: 17,
-          data: {
-            missingBranches: 'A.B.D',
-          },
+          column: 9,
+          data: { missingBranches: 'A.B.D' },
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
               output: `
-        import { A } from './switch-exhaustiveness-check';
-        declare const foo: A.B;
-        switch (foo) {
-          case A.B.C: {
-            break;
-          }
-          case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
-        }
+import { A } from './switch-exhaustiveness-check';
+declare const foo: A.B;
+switch (foo) {
+  case A.B.C: {
+    break;
+  }
+  case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 10 | 2 | 1 | 20 | 100;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: '1 | 10 | 100 | 2 | 20' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 10 | 2 | 1 | 20 | 100;
+switch (value) {
+case 1: { throw new Error('Not implemented yet: 1 case') }
+case 10: { throw new Error('Not implemented yet: 10 case') }
+case 100: { throw new Error('Not implemented yet: 100 case') }
+case 2: { throw new Error('Not implemented yet: 2 case') }
+case 20: { throw new Error('Not implemented yet: 20 case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 10n | -2n | 1n;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: '-2n | 10n | 1n' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 10n | -2n | 1n;
+switch (value) {
+case -2n: { throw new Error('Not implemented yet: -2n case') }
+case 10n: { throw new Error('Not implemented yet: 10n case') }
+case 1n: { throw new Error('Not implemented yet: 1n case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'c' | 'a' | 'B' | null | undefined;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: '"a" | "B" | "c" | null | undefined' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 'c' | 'a' | 'B' | null | undefined;
+switch (value) {
+case "a": { throw new Error('Not implemented yet: "a" case') }
+case "B": { throw new Error('Not implemented yet: "B" case') }
+case "c": { throw new Error('Not implemented yet: "c" case') }
+case null: { throw new Error('Not implemented yet: null case') }
+case undefined: { throw new Error('Not implemented yet: undefined case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  zebra = 'z',
+  apple = 'a',
+}
+declare const value: Enum;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: 'Enum.apple | Enum.zebra' },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Enum {
+  zebra = 'z',
+  apple = 'a',
+}
+declare const value: Enum;
+switch (value) {
+case Enum.apple: { throw new Error('Not implemented yet: Enum.apple case') }
+case Enum.zebra: { throw new Error('Not implemented yet: Enum.zebra case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  b = 'b',
+  a = 'a',
+}
+declare const value: 'x' | 10 | 2n | true | Enum | null | undefined;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            missingBranches:
+              '"x" | 10 | 2n | Enum.a | Enum.b | null | true | undefined',
+          },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Enum {
+  b = 'b',
+  a = 'a',
+}
+declare const value: 'x' | 10 | 2n | true | Enum | null | undefined;
+switch (value) {
+case "x": { throw new Error('Not implemented yet: "x" case') }
+case 10: { throw new Error('Not implemented yet: 10 case') }
+case 2n: { throw new Error('Not implemented yet: 2n case') }
+case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
+case Enum.b: { throw new Error('Not implemented yet: Enum.b case') }
+case null: { throw new Error('Not implemented yet: null case') }
+case true: { throw new Error('Not implemented yet: true case') }
+case undefined: { throw new Error('Not implemented yet: undefined case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Zebra {
+  same = 'zebra',
+  zLast = 'zLast',
+}
+enum Apple {
+  same = 'apple',
+  aLast = 'aLast',
+}
+declare const value: Zebra | Apple;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            missingBranches:
+              'Apple.aLast | Apple.same | Zebra.same | Zebra.zLast',
+          },
+          endColumn: 14,
+          endLine: 11,
+          line: 11,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Zebra {
+  same = 'zebra',
+  zLast = 'zLast',
+}
+enum Apple {
+  same = 'apple',
+  aLast = 'aLast',
+}
+declare const value: Zebra | Apple;
+switch (value) {
+case Apple.aLast: { throw new Error('Not implemented yet: Apple.aLast case') }
+case Apple.same: { throw new Error('Not implemented yet: Apple.same case') }
+case Zebra.same: { throw new Error('Not implemented yet: Zebra.same case') }
+case Zebra.zLast: { throw new Error('Not implemented yet: Zebra.zLast case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const zebra = Symbol('zebra');
+const apple = Symbol('apple');
+declare const value: typeof zebra | typeof apple;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { missingBranches: 'typeof zebra | typeof apple' },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+const zebra = Symbol('zebra');
+const apple = Symbol('apple');
+declare const value: typeof zebra | typeof apple;
+switch (value) {
+case zebra: { throw new Error('Not implemented yet: zebra case') }
+case apple: { throw new Error('Not implemented yet: apple case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Status {
+  Pending = 2,
+  Active = 0,
+  Done = 1,
+}
+declare const value: Status;
+switch (value) {
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            missingBranches: 'Status.Active | Status.Done | Status.Pending',
+          },
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Status {
+  Pending = 2,
+  Active = 0,
+  Done = 1,
+}
+declare const value: Status;
+switch (value) {
+case Status.Active: { throw new Error('Not implemented yet: Status.Active case') }
+case Status.Done: { throw new Error('Not implemented yet: Status.Done case') }
+case Status.Pending: { throw new Error('Not implemented yet: Status.Pending case') }
+}
       `,
             },
           ],

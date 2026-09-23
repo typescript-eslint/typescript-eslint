@@ -8,6 +8,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('strict-boolean-expressions', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // boolean in boolean context
     "true ? 'a' : 'b';",
@@ -16,7 +19,7 @@ if (false) {
 }
     `,
     'while (true) {}',
-    'for (; false; ) {}',
+    'for (; false;) {}',
     '!true;',
     'false || 123;',
     "true && 'foo';",
@@ -44,7 +47,7 @@ if ('') {
 }
     `,
     "while ('x') {}",
-    "for (; ''; ) {}",
+    "for (; '';) {}",
     "('' && '1') || x;",
     `
 declare const x: string;
@@ -60,7 +63,7 @@ if (0) {
 }
     `,
     'while (1n) {}',
-    'for (; Infinity; ) {}',
+    'for (; Infinity;) {}',
     '(0 / 0 && 1 + 2) || x;',
     `
 declare const x: number;
@@ -82,28 +85,28 @@ if (x) {
     // nullable boolean in boolean context
     {
       code: `
-        declare const x: boolean | null;
-        if (x) {
-        }
+declare const x: boolean | null;
+if (x) {
+}
       `,
       options: [{ allowNullableBoolean: true }],
     },
     {
       code: `
-        (x?: boolean) => !x;
+(x?: boolean) => !x;
       `,
       options: [{ allowNullableBoolean: true }],
     },
     {
       code: `
-        <T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
+<T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
       `,
       options: [{ allowNullableBoolean: true }],
     },
     {
       code: `
-        const a: (undefined | boolean | null)[] = [true, undefined, null];
-        a.some(x => x);
+const a: (undefined | boolean | null)[] = [true, undefined, null];
+a.some(x => x);
       `,
       options: [{ allowNullableBoolean: true }],
     },
@@ -111,21 +114,21 @@ if (x) {
     // nullable string in boolean context
     {
       code: `
-        declare const x: string | null;
-        if (x) {
-        }
+declare const x: string | null;
+if (x) {
+}
       `,
       options: [{ allowNullableString: true }],
     },
     {
       code: `
-        (x?: string) => !x;
+(x?: string) => !x;
       `,
       options: [{ allowNullableString: true }],
     },
     {
       code: `
-        <T extends string | null | undefined>(x: T) => (x ? 1 : 0);
+<T extends string | null | undefined>(x: T) => (x ? 1 : 0);
       `,
       options: [{ allowNullableString: true }],
     },
@@ -133,28 +136,28 @@ if (x) {
     // nullable number in boolean context
     {
       code: `
-        declare const x: number | null;
-        if (x) {
-        }
+declare const x: number | null;
+if (x) {
+}
       `,
       options: [{ allowNullableNumber: true }],
     },
     {
       code: `
-        (x?: number) => !x;
+(x?: number) => !x;
       `,
       options: [{ allowNullableNumber: true }],
     },
     {
       code: `
-        <T extends number | null | undefined>(x: T) => (x ? 1 : 0);
+<T extends number | null | undefined>(x: T) => (x ? 1 : 0);
       `,
       options: [{ allowNullableNumber: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: (null | unknown[])[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array?.length);
+declare const arrayOfArrays: (null | unknown[])[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array?.length);
       `,
       options: [{ allowNullableNumber: true }],
     },
@@ -162,28 +165,28 @@ if (x) {
     // any in boolean context
     {
       code: `
-        declare const x: any;
-        if (x) {
-        }
+declare const x: any;
+if (x) {
+}
       `,
       options: [{ allowAny: true }],
     },
     {
       code: `
-        x => !x;
+x => !x;
       `,
       options: [{ allowAny: true }],
     },
     {
       code: `
-        <T extends any>(x: T) => (x ? 1 : 0);
+<T extends any>(x: T) => (x ? 1 : 0);
       `,
       options: [{ allowAny: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: any[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+declare const arrayOfArrays: any[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowAny: true }],
     },
@@ -191,58 +194,58 @@ if (x) {
     // logical operator
     {
       code: `
-        1 && true && 'x' && {};
+1 && true && 'x' && {};
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        let x = 0 || false || '' || null;
+let x = 0 || false || '' || null;
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        if (1 && true && 'x') void 0;
+if (1 && true && 'x') void 0;
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        if (0 || false || '') void 0;
+if (0 || false || '') void 0;
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        1 && true && 'x' ? {} : null;
+1 && true && 'x' ? {} : null;
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        0 || false || '' ? null : {};
+0 || false || '' ? null : {};
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: string[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+declare const arrayOfArrays: string[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowString: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: number[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+declare const arrayOfArrays: number[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowNumber: true }],
     },
     {
       code: `
-        declare const arrayOfArrays: (null | object)[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+declare const arrayOfArrays: (null | object)[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowNullableObject: true }],
     },
@@ -250,65 +253,65 @@ if (x) {
     // nullable enum in boolean context
     {
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (theEnum) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const rand = Math.random();
+let theEnum: ExampleEnum | null = null;
+if (rand < 0.3) {
+  theEnum = ExampleEnum.This;
+}
+if (theEnum) {
+}
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const rand = Math.random();
+let theEnum: ExampleEnum | null = null;
+if (rand < 0.3) {
+  theEnum = ExampleEnum.This;
+}
+if (!theEnum) {
+}
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 1,
-          That = 2,
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 1,
+  That = 2,
+}
+const rand = Math.random();
+let theEnum: ExampleEnum | null = null;
+if (rand < 0.3) {
+  theEnum = ExampleEnum.This;
+}
+if (!theEnum) {
+}
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 'one',
-          That = 'two',
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 'one',
+  That = 'two',
+}
+const rand = Math.random();
+let theEnum: ExampleEnum | null = null;
+if (rand < 0.3) {
+  theEnum = ExampleEnum.This;
+}
+if (!theEnum) {
+}
       `,
       options: [{ allowNullableEnum: true }],
     },
@@ -317,55 +320,55 @@ if (x) {
     {
       // falsy number and truthy string
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 'one',
-        }
-        (value?: ExampleEnum) => (value ? 1 : 0);
+enum ExampleEnum {
+  This = 0,
+  That = 'one',
+}
+(value?: ExampleEnum) => (value ? 1 : 0);
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       // falsy string and truthy number
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 1,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       // truthy string and truthy number
       code: `
-        enum ExampleEnum {
-          This = 'this',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = 'this',
+  That = 1,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       // falsy string and falsy number
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       options: [{ allowNullableEnum: true }],
     },
     {
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        declare const arrayOfArrays: (ExampleEnum | null)[];
-        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+declare const arrayOfArrays: (ExampleEnum | null)[];
+const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowNullableEnum: true }],
     },
@@ -382,9 +385,7 @@ if (x) {
         },
       },
       options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
+        { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true },
       ],
     },
 
@@ -407,11 +408,7 @@ if (x) {
 if (y) {
 }
       `,
-      options: [
-        {
-          allowNumber: true,
-        },
-      ],
+      options: [{ allowNumber: true }],
     },
     `
 function f(arg: 1 | null) {
@@ -446,11 +443,7 @@ if (x) {
 if (y) {
 }
       `,
-      options: [
-        {
-          allowString: true,
-        },
-      ],
+      options: [{ allowString: true }],
     },
     `
 declare const foo: boolean & { __BRAND: 'Foo' };
@@ -555,9 +548,9 @@ assert(nullableString);
     // Coverage for absent "test expression".
     // Ensure that no crash or false positive occurs
     `
-      for (let x = 0; ; x++) {
-        break;
-      }
+for (let x = 0; ; x++) {
+  break;
+}
     `,
     `
 [true, false].some(function (x) {
@@ -640,6 +633,8 @@ if (true && 1 + 1) {
         {
           column: 13,
           data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -668,11 +663,7 @@ if (true && (Boolean((1 + 1)))) {
         },
       ],
       options: [
-        {
-          allowNullableObject: false,
-          allowNumber: false,
-          allowString: false,
-        },
+        { allowNullableObject: false, allowNumber: false, allowString: false },
       ],
     },
     {
@@ -680,6 +671,9 @@ if (true && (Boolean((1 + 1)))) {
       errors: [
         {
           column: 17,
+          data: { context: 'conditional' },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -699,11 +693,7 @@ if (true && (Boolean((1 + 1)))) {
         },
       ],
       options: [
-        {
-          allowNullableObject: false,
-          allowNumber: false,
-          allowString: false,
-        },
+        { allowNullableObject: false, allowNumber: false, allowString: false },
       ],
     },
     {
@@ -712,16 +702,14 @@ if (true && (Boolean((1 + 1)))) {
         {
           column: 34,
           data: { context: 'conditional' },
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
       ],
       options: [
-        {
-          allowNullableObject: false,
-          allowNumber: false,
-          allowString: false,
-        },
+        { allowNullableObject: false, allowNumber: false, allowString: false },
       ],
     },
 
@@ -731,6 +719,9 @@ if (true && (Boolean((1 + 1)))) {
       errors: [
         {
           column: 6,
+          data: { context: 'conditional' },
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -750,17 +741,17 @@ if (true && (Boolean((1 + 1)))) {
         },
         {
           column: 12,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
         {
           column: 20,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -778,7 +769,13 @@ if (true && (Boolean((1 + 1)))) {
             },
           ],
         },
-        { column: 25, line: 1, messageId: 'conditionErrorNullish' },
+        {
+          column: 25,
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'conditionErrorNullish',
+        },
       ],
       options: [
         { allowNullableObject: false, allowNumber: false, allowString: false },
@@ -787,42 +784,44 @@ if (true && (Boolean((1 + 1)))) {
     },
     {
       code: `
-        declare const array: string[];
-        array.some(x => x);
+declare const array: string[];
+array.some(x => x);
       `,
       errors: [
         {
-          data: {
-            context: 'array predicate return type',
-          },
+          column: 12,
+          data: { context: 'array predicate return type' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
           messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
               output: `
-        declare const array: string[];
-        array.some(x => x.length > 0);
+declare const array: string[];
+array.some(x => x.length > 0);
       `,
             },
             {
               messageId: 'conditionFixCompareEmptyString',
               output: `
-        declare const array: string[];
-        array.some(x => x !== "");
+declare const array: string[];
+array.some(x => x !== "");
       `,
             },
             {
               messageId: 'conditionFixCastBoolean',
               output: `
-        declare const array: string[];
-        array.some(x => Boolean(x));
+declare const array: string[];
+array.some(x => Boolean(x));
       `,
             },
             {
               messageId: 'explicitBooleanReturnType',
               output: `
-        declare const array: string[];
-        array.some((x): boolean => x);
+declare const array: string[];
+array.some((x): boolean => x);
       `,
             },
           ],
@@ -838,9 +837,9 @@ if (('' && foo) || (0 && void 0)) { }
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -869,9 +868,9 @@ if (((Boolean('')) && foo) || (0 && void 0)) { }
         },
         {
           column: 21,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -898,7 +897,13 @@ if (('' && foo) || ((Boolean(0)) && void 0)) { }
             },
           ],
         },
-        { column: 26, line: 3, messageId: 'conditionErrorNullish' },
+        {
+          column: 26,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullish',
+        },
       ],
       options: [
         { allowNullableObject: false, allowNumber: false, allowString: false },
@@ -913,9 +918,9 @@ if (('' && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -944,17 +949,17 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 12,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorObject',
         },
         {
           column: 27,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 33,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullish',
         },
@@ -971,9 +976,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 1,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -993,9 +998,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 10,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1015,9 +1020,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1030,9 +1035,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 1,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1052,9 +1057,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 10,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1074,9 +1079,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1089,9 +1094,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 10,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 11,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1112,9 +1117,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 15,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1135,14 +1140,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 22,
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
         {
           column: 31,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1163,9 +1170,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 36,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1193,9 +1200,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 9,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1216,9 +1223,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 14,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1239,14 +1246,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 21,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1267,9 +1276,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 35,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 37,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1297,9 +1306,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 14,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 15,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1319,17 +1328,17 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 19,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
         {
           column: 27,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1358,9 +1367,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1380,17 +1389,17 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 11,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
         {
           column: 19,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1410,9 +1419,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 26,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1425,14 +1434,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 9,
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1455,9 +1466,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 22,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1480,9 +1491,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 29,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1495,14 +1506,16 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 10,
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1522,9 +1535,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 23,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1544,9 +1557,9 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         },
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 32,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1561,6 +1574,8 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 1,
+          endColumn: 5,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1571,6 +1586,8 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
       errors: [
         {
           column: 1,
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1585,6 +1602,8 @@ if (x) {
       errors: [
         {
           column: 5,
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullish',
         },
@@ -1595,6 +1614,8 @@ if (x) {
       errors: [
         {
           column: 20,
+          endColumn: 21,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1605,6 +1626,8 @@ if (x) {
       errors: [
         {
           column: 40,
+          endColumn: 41,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1615,6 +1638,8 @@ if (x) {
       errors: [
         {
           column: 28,
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1625,6 +1650,8 @@ if (x) {
       errors: [
         {
           column: 33,
+          endColumn: 34,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullish',
         },
@@ -1637,9 +1664,9 @@ if (x) {
       errors: [
         {
           column: 1,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1650,9 +1677,9 @@ if (x) {
       errors: [
         {
           column: 2,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 4,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1667,9 +1694,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorObject',
         },
@@ -1680,9 +1707,9 @@ if (x) {
       errors: [
         {
           column: 21,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1693,9 +1720,9 @@ if (x) {
       errors: [
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1706,9 +1733,9 @@ if (x) {
       errors: [
         {
           column: 41,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 42,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1719,9 +1746,9 @@ if (x) {
       errors: [
         {
           column: 37,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 38,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1732,9 +1759,9 @@ if (x) {
       errors: [
         {
           column: 34,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 35,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorObject',
         },
@@ -1747,9 +1774,9 @@ if (x) {
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1768,43 +1795,35 @@ if (x) {
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
     {
-      code: "for (; 'foo'; ) {}",
+      code: "for (; 'foo';) {}",
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
-              output: "for (; 'foo'.length > 0; ) {}",
+              output: "for (; 'foo'.length > 0;) {}",
             },
             {
               messageId: 'conditionFixCompareEmptyString',
-              output: `for (; 'foo' !== ""; ) {}`,
+              output: `for (; 'foo' !== "";) {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: "for (; Boolean('foo'); ) {}",
+              output: "for (; Boolean('foo');) {}",
             },
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
     {
       code: `
@@ -1815,9 +1834,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1848,20 +1867,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
     {
       code: '(x: string) => !x;',
       errors: [
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1880,20 +1895,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
     {
       code: '<T extends string>(x: T) => (x ? 1 : 0);',
       errors: [
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorString',
           suggestions: [
@@ -1912,11 +1923,7 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowString: false,
-        },
-      ],
+      options: [{ allowString: false }],
     },
 
     // number in boolean context
@@ -1925,9 +1932,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -1948,43 +1955,35 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
-      code: 'for (; 123; ) {}',
+      code: 'for (; 123;) {}',
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 11,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: 'for (; 123 !== 0; ) {}',
+              output: 'for (; 123 !== 0;) {}',
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output: 'for (; !Number.isNaN(123); ) {}',
+              output: 'for (; !Number.isNaN(123);) {}',
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: 'for (; Boolean(123); ) {}',
+              output: 'for (; Boolean(123);) {}',
             },
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: `
@@ -1995,9 +1994,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2028,20 +2027,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: '(x: bigint) => !x;',
       errors: [
         {
           column: 17,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2062,20 +2057,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: '<T extends number>(x: T) => (x ? 1 : 0);',
       errors: [
         {
           column: 30,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2095,20 +2086,16 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: "![]['length']; // doesn't count as array.length when computed",
       errors: [
         {
           column: 2,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 14,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2130,11 +2117,7 @@ if (Boolean(x)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: `
@@ -2146,6 +2129,8 @@ if (a.notLength) {
         {
           column: 5,
           data: { context: 'conditional' },
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2176,11 +2161,7 @@ if (Boolean(a.notLength)) {
           ],
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
 
     // number (array.length) in boolean context
@@ -2193,9 +2174,9 @@ if (![].length) {
       errors: [
         {
           column: 6,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 15,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2218,9 +2199,9 @@ if ([].length === 0) {
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2243,9 +2224,9 @@ if ([].length === 0) {
       errors: [
         {
           column: 35,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 43,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorNumber',
           suggestions: [
@@ -2272,6 +2253,8 @@ if (x) {
       errors: [
         {
           column: 5,
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorOther',
         },
@@ -2283,6 +2266,8 @@ if (x) {
       errors: [
         {
           column: 26,
+          endColumn: 27,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorOther',
         },
@@ -2294,6 +2279,8 @@ if (x) {
       errors: [
         {
           column: 48,
+          endColumn: 49,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorOther',
         },
@@ -2311,9 +2298,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableBoolean',
           suggestions: [
@@ -2343,9 +2330,9 @@ if (x === true) {
       errors: [
         {
           column: 19,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableBoolean',
           suggestions: [
@@ -2367,9 +2354,9 @@ if (x === true) {
       errors: [
         {
           column: 50,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 51,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableBoolean',
           suggestions: [
@@ -2399,6 +2386,9 @@ if (x) {
       errors: [
         {
           column: 5,
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -2420,6 +2410,9 @@ if (x != null) {
       errors: [
         {
           column: 25,
+          data: { context: 'conditional' },
+          endColumn: 26,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -2437,6 +2430,9 @@ if (x != null) {
       errors: [
         {
           column: 45,
+          data: { context: 'conditional' },
+          endColumn: 46,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -2461,9 +2457,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -2500,9 +2496,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -2528,6 +2524,8 @@ if (Boolean(x)) {
         {
           column: 49,
           data: { context: 'conditional' },
+          endColumn: 50,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -2561,6 +2559,8 @@ function foo(x: '' | 'bar' | null) {
         {
           column: 8,
           data: { context: 'conditional' },
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -2606,9 +2606,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableNumber',
           suggestions: [
@@ -2645,9 +2645,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 19,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableNumber',
           suggestions: [
@@ -2672,9 +2672,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 49,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 50,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorNullableNumber',
           suggestions: [
@@ -2707,9 +2707,9 @@ function foo(x: 0 | 1 | null) {
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 9,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableNumber',
           suggestions: [
@@ -2748,21 +2748,19 @@ function foo(x: 0 | 1 | null) {
     // nullable enum in boolean context
     {
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum) {
+}
       `,
       errors: [
         {
-          column: 13,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 20,
+          column: 5,
+          data: { context: 'conditional' },
+          endColumn: 12,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2770,13 +2768,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum != null) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum != null) {
+}
       `,
             },
           ],
@@ -2786,21 +2784,19 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 21,
+          column: 6,
+          data: { context: 'conditional' },
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2808,13 +2804,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2824,21 +2820,19 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This,
-          That,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This,
+  That,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 21,
+          column: 6,
+          data: { context: 'conditional' },
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2846,13 +2840,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This,
-          That,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This,
+  That,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2862,21 +2856,19 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 'a',
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = '',
+  That = 'a',
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 21,
+          column: 6,
+          data: { context: 'conditional' },
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2884,13 +2876,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = '',
-          That = 'a',
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = '',
+  That = 'a',
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2900,21 +2892,19 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 21,
+          column: 6,
+          data: { context: 'conditional' },
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2922,13 +2912,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2938,21 +2928,19 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 'one',
-          That = 'two',
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 'one',
+  That = 'two',
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 21,
+          column: 6,
+          data: { context: 'conditional' },
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2960,13 +2948,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 'one',
-          That = 'two',
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = 'one',
+  That = 'two',
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -2976,21 +2964,19 @@ function foo(x: 0 | 1 | null) {
     },
     {
       code: `
-        enum ExampleEnum {
-          This = 1,
-          That = 2,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (!theEnum) {
-        }
+enum ExampleEnum {
+  This = 1,
+  That = 2,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (!theEnum) {
+}
       `,
       errors: [
         {
-          column: 14,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 21,
+          column: 6,
+          data: { context: 'conditional' },
+          endColumn: 13,
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
@@ -2998,13 +2984,13 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 1,
-          That = 2,
-        }
-        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
-        if (theEnum == null) {
-        }
+enum ExampleEnum {
+  This = 1,
+  That = 2,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+if (theEnum == null) {
+}
       `,
             },
           ],
@@ -3017,19 +3003,17 @@ function foo(x: 0 | 1 | null) {
     {
       // falsy number and truthy string
       code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 'one',
-        }
-        (value?: ExampleEnum) => (value ? 1 : 0);
+enum ExampleEnum {
+  This = 0,
+  That = 'one',
+}
+(value?: ExampleEnum) => (value ? 1 : 0);
       `,
       errors: [
         {
-          column: 35,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 40,
+          column: 27,
+          data: { context: 'conditional' },
+          endColumn: 32,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
@@ -3037,11 +3021,11 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 0,
-          That = 'one',
-        }
-        (value?: ExampleEnum) => ((value != null) ? 1 : 0);
+enum ExampleEnum {
+  This = 0,
+  That = 'one',
+}
+(value?: ExampleEnum) => ((value != null) ? 1 : 0);
       `,
             },
           ],
@@ -3052,19 +3036,17 @@ function foo(x: 0 | 1 | null) {
     {
       // falsy string and truthy number
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 1,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       errors: [
         {
-          column: 36,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 41,
+          column: 28,
+          data: { context: 'conditional' },
+          endColumn: 33,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
@@ -3072,11 +3054,11 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = '',
-          That = 1,
-        }
-        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 1,
+}
+(value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
             },
           ],
@@ -3087,19 +3069,17 @@ function foo(x: 0 | 1 | null) {
     {
       // truthy string and truthy number
       code: `
-        enum ExampleEnum {
-          This = 'this',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = 'this',
+  That = 1,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       errors: [
         {
-          column: 36,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 41,
+          column: 28,
+          data: { context: 'conditional' },
+          endColumn: 33,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
@@ -3107,11 +3087,11 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = 'this',
-          That = 1,
-        }
-        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+enum ExampleEnum {
+  This = 'this',
+  That = 1,
+}
+(value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
             },
           ],
@@ -3122,19 +3102,17 @@ function foo(x: 0 | 1 | null) {
     {
       // falsy string and falsy number
       code: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+(value?: ExampleEnum) => (!value ? 1 : 0);
       `,
       errors: [
         {
-          column: 36,
-          data: {
-            context: 'conditional',
-          },
-          endColumn: 41,
+          column: 28,
+          data: { context: 'conditional' },
+          endColumn: 33,
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
@@ -3142,11 +3120,11 @@ function foo(x: 0 | 1 | null) {
             {
               messageId: 'conditionFixCompareNullish',
               output: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+enum ExampleEnum {
+  This = '',
+  That = 0,
+}
+(value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
             },
           ],
@@ -3164,9 +3142,9 @@ if (x) {
       errors: [
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 2,
           line: 2,
           messageId: 'conditionErrorAny',
           suggestions: [
@@ -3186,9 +3164,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 7,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorAny',
           suggestions: [
@@ -3205,9 +3183,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 27,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 28,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorAny',
           suggestions: [
@@ -3224,9 +3202,9 @@ if (Boolean(x)) {
       errors: [
         {
           column: 16,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 17,
+          endLine: 1,
           line: 1,
           messageId: 'conditionErrorAny',
           suggestions: [
@@ -3249,14 +3227,16 @@ if (x) {
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
         {
           column: 5,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorObject',
         },
@@ -3281,6 +3261,9 @@ if (x) {
       errors: [
         {
           column: 10,
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -3298,6 +3281,9 @@ if (x) {
         },
         {
           column: 10,
+          data: { context: 'conditional' },
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -3315,6 +3301,9 @@ if (x) {
         },
         {
           column: 9,
+          data: { context: 'conditional' },
+          endColumn: 12,
+          endLine: 5,
           line: 5,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -3332,6 +3321,9 @@ if (x) {
         },
         {
           column: 9,
+          data: { context: 'conditional' },
+          endColumn: 12,
+          endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableObject',
           suggestions: [
@@ -3360,9 +3352,9 @@ assert(nullableString);
       errors: [
         {
           column: 8,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3404,9 +3396,9 @@ assert(foo, nullableString);
       errors: [
         {
           column: 13,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 27,
+          endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3449,9 +3441,9 @@ assert(foo, nullableString);
       errors: [
         {
           column: 13,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 27,
+          endLine: 5,
           line: 5,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3496,9 +3488,9 @@ assert(foo, nullableString);
       errors: [
         {
           column: 13,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 27,
+          endLine: 4,
           line: 4,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3551,9 +3543,11 @@ someAssert(maybeString);
       `,
       errors: [
         {
-          data: {
-            context: 'conditional',
-          },
+          column: 12,
+          data: { context: 'conditional' },
+          endColumn: 23,
+          endLine: 10,
+          line: 10,
           messageId: 'conditionErrorNullableString',
           suggestions: [
             {
@@ -3627,9 +3621,9 @@ assert(3 as any, nullableString);
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 32,
+          endLine: 18,
           line: 18,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3729,9 +3723,9 @@ assert(3 as any, nullableString, 'more', 'args', 'afterwards');
       errors: [
         {
           column: 18,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
+          endColumn: 32,
+          endLine: 19,
           line: 19,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3819,9 +3813,10 @@ assert(boo, nullableString);
       `,
       errors: [
         {
-          data: {
-            context: 'conditional',
-          },
+          column: 13,
+          data: { context: 'conditional' },
+          endColumn: 27,
+          endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3874,9 +3869,10 @@ assert(nullableString);
       `,
       errors: [
         {
-          data: {
-            context: 'conditional',
-          },
+          column: 8,
+          data: { context: 'conditional' },
+          endColumn: 22,
+          endLine: 8,
           line: 8,
           messageId: 'conditionErrorNullableString',
           suggestions: [
@@ -3929,6 +3925,7 @@ assert(Boolean(nullableString));
       errors: [
         {
           column: 25,
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 4,
           line: 2,
@@ -4010,6 +4007,7 @@ assert(Boolean(nullableString));
       errors: [
         {
           column: 25,
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 6,
           line: 2,
@@ -4042,6 +4040,7 @@ const predicate = (x: string) => {
       errors: [
         {
           column: 25,
+          data: { context: 'array predicate return type' },
           endColumn: 34,
           endLine: 8,
           line: 8,
@@ -4059,9 +4058,7 @@ const predicate = (x: string) => {
       errors: [
         {
           column: 17,
-          data: {
-            type: 'Promise<boolean>',
-          },
+          data: { type: 'Promise<boolean>' },
           endColumn: 2,
           endLine: 4,
           line: 2,
@@ -4080,6 +4077,7 @@ const predicate = async x => {
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 26,
           endLine: 6,
           line: 6,
@@ -4112,6 +4110,7 @@ const predicate = async x => {
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 4,
           line: 2,
@@ -4253,6 +4252,7 @@ declare function foo<T>(x: number): T;
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 20,
           endLine: 3,
           line: 3,
@@ -4268,17 +4268,14 @@ function foo<T extends number>(x: number): T {}
       errors: [
         {
           column: 17,
+          data: { context: 'array predicate return type' },
           endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'conditionErrorNumber',
         },
       ],
-      options: [
-        {
-          allowNumber: false,
-        },
-      ],
+      options: [{ allowNumber: false }],
     },
     {
       code: `
@@ -4288,9 +4285,7 @@ declare const nullOrString: string | null;
       errors: [
         {
           column: 22,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 39,
           endLine: 3,
           line: 3,
@@ -4336,9 +4331,7 @@ declare const nullOrString: string | null;
       errors: [
         {
           column: 28,
-          data: {
-            context: 'conditional',
-          },
+          data: { context: 'conditional' },
           endColumn: 40,
           endLine: 3,
           line: 3,
@@ -4377,9 +4370,7 @@ declare const anyValue: any;
       errors: [
         {
           column: 22,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -4411,9 +4402,7 @@ declare const nullOrBoolean: boolean | null;
       errors: [
         {
           column: 21,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 39,
           endLine: 3,
           line: 3,
@@ -4456,9 +4445,7 @@ const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
       errors: [
         {
           column: 15,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 27,
           endLine: 7,
           line: 7,
@@ -4498,9 +4485,7 @@ declare const nullOrNumber: number | null;
       errors: [
         {
           column: 18,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -4546,9 +4531,7 @@ const objectValue: object = {};
       errors: [
         {
           column: 23,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 39,
           endLine: 3,
           line: 3,
@@ -4575,9 +4558,7 @@ const objectValue: object = {};
       errors: [
         {
           column: 23,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 2,
           endLine: 5,
           line: 3,
@@ -4604,9 +4585,7 @@ declare const nullOrObject: object | null;
       errors: [
         {
           column: 25,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 42,
           endLine: 3,
           line: 3,
@@ -4639,9 +4618,7 @@ const numbers: number[] = [1];
       errors: [
         {
           column: 15,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 34,
           endLine: 3,
           line: 3,
@@ -4674,9 +4651,7 @@ const numberValue: number = 1;
       errors: [
         {
           column: 15,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 31,
           endLine: 3,
           line: 3,
@@ -4723,9 +4698,7 @@ const stringValue: string = 'hoge';
       errors: [
         {
           column: 24,
-          data: {
-            context: 'array predicate return type',
-          },
+          data: { context: 'array predicate return type' },
           endColumn: 40,
           endLine: 3,
           line: 3,

@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSInterfaceDeclaration _error_ missing-id Babel - Error 1`] = `[SyntaxError: 'interface' declarations must be followed by an identifier. (1:10)]`;

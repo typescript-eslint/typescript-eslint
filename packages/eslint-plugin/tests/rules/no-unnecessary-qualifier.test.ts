@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-qualifier', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 namespace X {
@@ -81,6 +84,11 @@ namespace A {
       `,
       errors: [
         {
+          column: 12,
+          data: { name: 'B' },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -100,6 +108,11 @@ namespace A {
       `,
       errors: [
         {
+          column: 20,
+          data: { name: 'x' },
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -121,6 +134,11 @@ namespace A {
       `,
       errors: [
         {
+          column: 14,
+          data: { name: 'T' },
+          endColumn: 15,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -144,6 +162,11 @@ namespace A {
       `,
       errors: [
         {
+          column: 14,
+          data: { name: 'T' },
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -167,6 +190,11 @@ namespace A {
       `,
       errors: [
         {
+          column: 14,
+          data: { name: 'D' },
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -190,6 +218,11 @@ namespace A {
       `,
       errors: [
         {
+          column: 15,
+          data: { name: 'x' },
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -211,6 +244,11 @@ enum A {
       `,
       errors: [
         {
+          column: 7,
+          data: { name: 'B' },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -232,6 +270,11 @@ namespace Foo {
       `,
       errors: [
         {
+          column: 9,
+          data: { name: 'B' },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'unnecessaryQualifier',
         },
       ],
@@ -253,6 +296,11 @@ declare module './foo' {
       `,
       errors: [
         {
+          column: 12,
+          data: { name: 'T' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'unnecessaryQualifier',
         },
       ],

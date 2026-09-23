@@ -29,6 +29,16 @@ export interface ImportDeclaration extends BaseNode {
    */
   importKind: ImportKind;
   /**
+   * The phase of the import.
+   * `'defer'` when the import defers evaluation of the module until it is
+   * first used:
+   * ```ts
+   * import defer * as mod from 'mod';
+   * ```
+   * Otherwise `null`.
+   */
+  phase: 'defer' | null;
+  /**
    * The source module being imported from.
    */
   source: StringLiteral;

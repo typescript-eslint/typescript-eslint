@@ -15,11 +15,25 @@ const baseRule = getESLintCoreRule('no-loop-func');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const CONSTANT_BINDINGS = new Set(['await using', 'const', 'using']);
+
 export default createRule<Options, MessageIds>({
   name: 'no-loop-func',
   meta: {
     type: 'suggestion',
     // defaultOptions, -- base rule does not use defaultOptions
+    deprecated: {
+      deprecatedSince: '8.64.0',
+      replacedBy: [
+        {
+          rule: {
+            name: 'no-loop-func',
+            url: 'https://eslint.org/docs/latest/rules/no-loop-func',
+          },
+        },
+      ],
+      url: 'https://github.com/typescript-eslint/typescript-eslint/issues/12496',
+    },
     docs: {
       description:
         'Disallow function declarations that contain unsafe references inside loop statements',
@@ -141,8 +155,9 @@ export default createRule<Options, MessageIds>({
         return true;
       }
 
-      // Variables which are declared by `const` is safe.
-      if (kind === 'const') {
+      // Variables which are declared by `const`, `using`, or `await using` are
+      // safe. They can't be reassigned, so each iteration captures a fresh one.
+      if (CONSTANT_BINDINGS.has(kind)) {
         return true;
       }
 

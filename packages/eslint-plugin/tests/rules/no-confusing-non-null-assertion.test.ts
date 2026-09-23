@@ -8,6 +8,9 @@ import rule from '../../src/rules/no-confusing-non-null-assertion';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-confusing-non-null-assertion', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     //
     'a == b!;',
@@ -25,6 +28,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
@@ -41,6 +46,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 9,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
@@ -57,10 +64,13 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
             {
+              data: { operator: '==' },
               messageId: 'wrapUpLeft',
               output: '(a + b!) == c;',
             },
@@ -73,6 +83,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 47,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
@@ -89,6 +101,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 12,
+          endLine: 1,
           line: 1,
           messageId: 'confusingEqual',
           suggestions: [
@@ -105,6 +119,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'confusingAssign',
           suggestions: [
@@ -121,6 +137,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 46,
+          endLine: 1,
           line: 1,
           messageId: 'confusingAssign',
           suggestions: [
@@ -137,6 +155,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 10,
+          endLine: 1,
           line: 1,
           messageId: 'confusingAssign',
           suggestions: [
@@ -154,14 +174,18 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
         {
           column: 1,
           data: { operator: 'in' },
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'confusingOperator',
           suggestions: [
             {
+              data: { operator: 'in' },
               messageId: 'notNeedInOperator',
               output: 'a in b;',
             },
             {
+              data: { operator: 'in' },
               messageId: 'wrapUpLeft',
               output: '(a!) in b;',
             },
@@ -177,16 +201,20 @@ a !in b;
         {
           column: 1,
           data: { operator: 'in' },
+          endColumn: 8,
+          endLine: 2,
           line: 2,
           messageId: 'confusingOperator',
           suggestions: [
             {
+              data: { operator: 'in' },
               messageId: 'notNeedInOperator',
               output: `
 a in b;
       `,
             },
             {
+              data: { operator: 'in' },
               messageId: 'wrapUpLeft',
               output: `
 (a !)in b;
@@ -202,14 +230,18 @@ a in b;
         {
           column: 1,
           data: { operator: 'instanceof' },
+          endColumn: 16,
+          endLine: 1,
           line: 1,
           messageId: 'confusingOperator',
           suggestions: [
             {
+              data: { operator: 'instanceof' },
               messageId: 'notNeedInOperator',
               output: 'a instanceof b;',
             },
             {
+              data: { operator: 'instanceof' },
               messageId: 'wrapUpLeft',
               output: '(a!) instanceof b;',
             },

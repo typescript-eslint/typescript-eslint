@@ -7,12 +7,10 @@ import * as ts from 'typescript';
 import { createRule, forEachReturnStatement, getParserServices } from '../util';
 
 type ClassLikeDeclaration =
-  | TSESTree.ClassDeclaration
-  | TSESTree.ClassExpression;
+  TSESTree.ClassDeclaration | TSESTree.ClassExpression;
 
 type FunctionLike =
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.MethodDefinition['value'];
+  TSESTree.ArrowFunctionExpression | TSESTree.MethodDefinition['value'];
 
 export default createRule({
   name: 'prefer-return-this-type',
@@ -160,12 +158,10 @@ export default createRule({
     function checkProperty(
       node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
     ): void {
-      if (
-        !(
-          node.value?.type === AST_NODE_TYPES.FunctionExpression ||
-          node.value?.type === AST_NODE_TYPES.ArrowFunctionExpression
-        )
-      ) {
+      if (!(
+        node.value?.type === AST_NODE_TYPES.FunctionExpression ||
+        node.value?.type === AST_NODE_TYPES.ArrowFunctionExpression
+      )) {
         return;
       }
 

@@ -11,8 +11,7 @@ type RuleListenerSelectors = NonNullable<
 >;
 
 type AllSelectors =
-  | `${TSESTree.AST_NODE_TYPES}:exit`
-  | `${TSESTree.AST_NODE_TYPES}`;
+  `${TSESTree.AST_NODE_TYPES}:exit` | `${TSESTree.AST_NODE_TYPES}`;
 
 type SelectorsWithWrongNodeType = {
   [K in TSESTree.AST_NODE_TYPES]: Parameters<

@@ -13,8 +13,6 @@ export default {
     unresolved: 'off',
   },
 
-  vite: false,
-
   vitest: {
     config: ['vitest.config.mts'],
     entry: ['tests/**/*.{bench,test,test-d}.?(c|m)ts?(x)'],
@@ -27,7 +25,7 @@ export default {
       ignoreDependencies: [
         '@nx/workspace',
         '@eslint/config-helpers',
-        '@typescript/native-preview',
+        '@typescript/native',
       ],
 
       project: ['tools/scripts/**/*.mts', '!typings/*.d.ts'],

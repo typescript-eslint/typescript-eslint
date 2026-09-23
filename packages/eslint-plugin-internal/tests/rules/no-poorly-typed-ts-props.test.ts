@@ -15,6 +15,23 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-poorly-typed-ts-props', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
+  valid: [
+    `
+declare const foo: { declarations: string[] };
+foo.declarations.map(decl => console.log(decl));
+    `,
+    `
+declare const bar: Symbol;
+bar.declarations.map(decl => console.log(decl));
+    `,
+    `
+declare const baz: Type;
+baz.symbol.name;
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -24,11 +41,14 @@ thing.declarations.map(decl => {});
       `,
       errors: [
         {
+          column: 1,
           data: {
             fixWith: 'getDeclarations()',
             property: 'declarations',
             type: 'Symbol',
           },
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'doNotUseWithFixer',
           suggestions: [
@@ -56,11 +76,14 @@ thing.symbol;
       `,
       errors: [
         {
+          column: 1,
           data: {
             fixWith: 'getSymbol()',
             property: 'symbol',
             type: 'Type',
           },
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'doNotUseWithFixer',
           suggestions: [
@@ -88,11 +111,14 @@ thing?.symbol;
       `,
       errors: [
         {
+          column: 1,
           data: {
             fixWith: 'getSymbol()',
             property: 'symbol',
             type: 'Type',
           },
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'doNotUseWithFixer',
           suggestions: [
@@ -112,19 +138,5 @@ thing?.getSymbol();
         },
       ],
     },
-  ],
-  valid: [
-    `
-declare const foo: { declarations: string[] };
-foo.declarations.map(decl => console.log(decl));
-    `,
-    `
-declare const bar: Symbol;
-bar.declarations.map(decl => console.log(decl));
-    `,
-    `
-declare const baz: Type;
-baz.symbol.name;
-    `,
   ],
 });

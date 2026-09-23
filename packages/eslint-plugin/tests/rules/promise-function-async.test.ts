@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('promise-function-async', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 const nonAsyncNonPromiseArrowFunction = (n: number) => n;
@@ -78,19 +81,19 @@ const invalidAsyncModifiers = {
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/227
     `
-      export function valid(n: number) {
-        return n;
-      }
+export function valid(n: number) {
+  return n;
+}
     `,
     `
-      export default function invalid(n: number) {
-        return n;
-      }
+export default function invalid(n: number) {
+  return n;
+}
     `,
     `
-      class Foo {
-        constructor() {}
-      }
+class Foo {
+  constructor() {}
+}
     `,
     `
 class Foo {
@@ -243,14 +246,14 @@ function returnsAny(): any {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAsync',
         },
       ],
-      options: [
-        {
-          allowAny: false,
-        },
-      ],
+      options: [{ allowAny: false }],
       output: null,
     },
     {
@@ -261,14 +264,14 @@ function returnsUnknown(): unknown {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAsync',
         },
       ],
-      options: [
-        {
-          allowAny: false,
-        },
-      ],
+      options: [{ allowAny: false }],
       output: null,
     },
     {
@@ -279,6 +282,10 @@ const nonAsyncPromiseFunctionExpressionA = function (p: Promise<void>) {
       `,
       errors: [
         {
+          column: 44,
+          endColumn: 53,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAsync',
         },
       ],
@@ -296,6 +303,10 @@ const nonAsyncPromiseFunctionExpressionB = function () {
       `,
       errors: [
         {
+          column: 44,
+          endColumn: 53,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAsync',
         },
       ],
@@ -313,6 +324,10 @@ function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAsync',
         },
       ],
@@ -330,6 +345,10 @@ function nonAsyncPromiseFunctionDeclarationB() {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAsync',
         },
       ],
@@ -345,6 +364,10 @@ const nonAsyncPromiseArrowFunctionA = (p: Promise<void>) => p;
       `,
       errors: [
         {
+          column: 58,
+          endColumn: 60,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAsync',
         },
       ],
@@ -358,6 +381,10 @@ const nonAsyncPromiseArrowFunctionB = () => new Promise<void>();
       `,
       errors: [
         {
+          column: 42,
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAsync',
         },
       ],
@@ -375,6 +402,9 @@ const functions = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'missingAsync',
         },
@@ -401,10 +431,16 @@ class Test {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 32,
+          endLine: 3,
           line: 3,
           messageId: 'missingAsync',
         },
         {
+          column: 3,
+          endColumn: 39,
+          endLine: 7,
           line: 7,
           messageId: 'missingAsync',
         },
@@ -441,23 +477,28 @@ class Test {
       `,
       errors: [
         {
+          column: 43,
+          endColumn: 52,
+          endLine: 2,
           line: 2,
           messageId: 'missingAsync',
         },
         {
+          column: 1,
+          endColumn: 44,
+          endLine: 6,
           line: 6,
           messageId: 'missingAsync',
         },
         {
+          column: 3,
+          endColumn: 31,
+          endLine: 13,
           line: 13,
           messageId: 'missingAsync',
         },
       ],
-      options: [
-        {
-          checkArrowFunctions: false,
-        },
-      ],
+      options: [{ checkArrowFunctions: false }],
       output: `
 const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
   return p;
@@ -496,23 +537,28 @@ class Test {
       `,
       errors: [
         {
+          column: 43,
+          endColumn: 52,
+          endLine: 2,
           line: 2,
           messageId: 'missingAsync',
         },
         {
+          column: 57,
+          endColumn: 59,
+          endLine: 10,
           line: 10,
           messageId: 'missingAsync',
         },
         {
+          column: 3,
+          endColumn: 31,
+          endLine: 13,
           line: 13,
           messageId: 'missingAsync',
         },
       ],
-      options: [
-        {
-          checkFunctionDeclarations: false,
-        },
-      ],
+      options: [{ checkFunctionDeclarations: false }],
       output: `
 const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
   return p;
@@ -551,23 +597,28 @@ class Test {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 44,
+          endLine: 6,
           line: 6,
           messageId: 'missingAsync',
         },
         {
+          column: 57,
+          endColumn: 59,
+          endLine: 10,
           line: 10,
           messageId: 'missingAsync',
         },
         {
+          column: 3,
+          endColumn: 31,
+          endLine: 13,
           line: 13,
           messageId: 'missingAsync',
         },
       ],
-      options: [
-        {
-          checkFunctionExpressions: false,
-        },
-      ],
+      options: [{ checkFunctionExpressions: false }],
       output: `
 const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
   return p;
@@ -606,23 +657,28 @@ class Test {
       `,
       errors: [
         {
+          column: 43,
+          endColumn: 52,
+          endLine: 2,
           line: 2,
           messageId: 'missingAsync',
         },
         {
+          column: 1,
+          endColumn: 44,
+          endLine: 6,
           line: 6,
           messageId: 'missingAsync',
         },
         {
+          column: 57,
+          endColumn: 59,
+          endLine: 10,
           line: 10,
           messageId: 'missingAsync',
         },
       ],
-      options: [
-        {
-          checkMethodDeclarations: false,
-        },
-      ],
+      options: [{ checkMethodDeclarations: false }],
       output: `
 const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
   return p;
@@ -649,15 +705,14 @@ const returnAllowedType = () => new PromiseType();
       `,
       errors: [
         {
+          column: 30,
+          endColumn: 32,
+          endLine: 4,
           line: 4,
           messageId: 'missingAsync',
         },
       ],
-      options: [
-        {
-          allowedPromiseNames: ['PromiseType'],
-        },
-      ],
+      options: [{ allowedPromiseNames: ['PromiseType'] }],
       output: `
 class PromiseType {}
 
@@ -675,6 +730,9 @@ function foo(): Promise<string> | SPromise<boolean> {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'missingAsync',
         },
@@ -702,7 +760,15 @@ class Test {
   }
 }
       `,
-      errors: [{ column: 3, line: 4, messageId: 'missingAsync' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAsync',
+        },
+      ],
       output: `
 class Test {
   @decorator
@@ -728,9 +794,27 @@ class Test {
 }
       `,
       errors: [
-        { column: 3, line: 4, messageId: 'missingAsync' },
-        { column: 3, line: 7, messageId: 'missingAsync' },
-        { column: 3, line: 10, messageId: 'missingAsync' },
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAsync',
+        },
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'missingAsync',
+        },
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 10,
+          line: 10,
+          messageId: 'missingAsync',
+        },
       ],
       output: `
 class Test {
@@ -768,16 +852,22 @@ class Foo {
       errors: [
         {
           column: 3,
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'missingAsync',
         },
         {
           column: 3,
+          endColumn: 17,
+          endLine: 7,
           line: 7,
           messageId: 'missingAsync',
         },
         {
           column: 3,
+          endColumn: 18,
+          endLine: 12,
           line: 12,
           messageId: 'missingAsync',
         },
@@ -810,6 +900,8 @@ const foo = {
       errors: [
         {
           column: 3,
+          endColumn: 8,
+          endLine: 3,
           line: 3,
           messageId: 'missingAsync',
         },
@@ -830,6 +922,10 @@ function promiseInUnionWithoutExplicitReturnType(p: boolean) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 49,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAsyncHybridReturn',
         },
       ],
@@ -853,6 +949,10 @@ function test1(a?: number) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'missingAsyncHybridReturn',
         },
       ],
@@ -880,14 +980,14 @@ function promiseInUnionWithoutExplicitReturnType(p: boolean) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 49,
+          endLine: 6,
+          line: 6,
           messageId: 'missingAsyncHybridReturn',
         },
       ],
-      options: [
-        {
-          allowedPromiseNames: ['PromiseType'],
-        },
-      ],
+      options: [{ allowedPromiseNames: ['PromiseType'] }],
       output: `
 class PromiseType {
   s?: string;
@@ -910,6 +1010,10 @@ function overloadingThatCanReturnPromise(
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 41,
+          endLine: 4,
+          line: 4,
           messageId: 'missingAsync',
         },
       ],
@@ -933,6 +1037,10 @@ function overloadingThatIncludeAny(a?: boolean): any | number {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
           messageId: 'missingAsync',
         },
       ],
@@ -948,6 +1056,10 @@ function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 39,
+          endLine: 4,
+          line: 4,
           messageId: 'missingAsync',
         },
       ],
@@ -970,6 +1082,9 @@ class Derived extends Base {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 15,
+          endLine: 9,
           line: 9,
           messageId: 'missingAsync',
         },
@@ -998,6 +1113,9 @@ class Test {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'missingAsync',
         },

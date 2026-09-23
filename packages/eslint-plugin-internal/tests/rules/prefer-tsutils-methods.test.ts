@@ -5,15 +5,32 @@ import rule from '../../src/rules/prefer-tsutils-methods.js';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-tsutils-methods', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
+  valid: [
+    'tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined);',
+    'tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember);',
+    'tsutils.isObjectFlagSet(type, ts.ObjectFlags.Interface);',
+    'a & b;',
+    'flags & OTHER_FLAGS;',
+    'type.flags & CUSTOM_FLAGS;',
+    'ts.TypeFlags.Undefined;',
+    'type.flags;',
+  ],
   invalid: [
     {
       code: 'type.flags & ts.TypeFlags.Undefined;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'TypeFlags',
             method: 'isTypeFlagSet',
           },
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -23,10 +40,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: '(type.flags & ts.TypeFlags.Null) !== 0;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'TypeFlags',
             method: 'isTypeFlagSet',
           },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -36,10 +57,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: '(type.flags & ts.TypeFlags.String) === 0;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'TypeFlags',
             method: 'isTypeFlagSet',
           },
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -49,10 +74,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: 'symbol.flags & ts.SymbolFlags.EnumMember;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'SymbolFlags',
             method: 'isSymbolFlagSet',
           },
+          endColumn: 41,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -62,10 +91,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: '(symbol.flags & ts.SymbolFlags.Method) !== 0;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'SymbolFlags',
             method: 'isSymbolFlagSet',
           },
+          endColumn: 45,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -75,10 +108,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: 'type.objectFlags & ts.ObjectFlags.Interface;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'ObjectFlags',
             method: 'isObjectFlagSet',
           },
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -88,10 +125,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: '(type.objectFlags & ts.ObjectFlags.Class) === 0;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'ObjectFlags',
             method: 'isObjectFlagSet',
           },
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -101,10 +142,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: 'type.flags & (ts.TypeFlags.Undefined | ts.TypeFlags.Null);',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'TypeFlags',
             method: 'isTypeFlagSet',
           },
+          endColumn: 58,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -115,10 +160,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: 'info.keyType.flags & ts.TypeFlags.StringLike;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'TypeFlags',
             method: 'isTypeFlagSet',
           },
+          endColumn: 45,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -128,10 +177,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: 'paramSymbol.flags & ts.SymbolFlags.Optional;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'SymbolFlags',
             method: 'isSymbolFlagSet',
           },
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -141,10 +194,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: 'ts.TypeFlags.Undefined & type.flags;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'TypeFlags',
             method: 'isTypeFlagSet',
           },
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -154,10 +211,14 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: 'ts.SymbolFlags.Method & symbol.flags;',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'SymbolFlags',
             method: 'isSymbolFlagSet',
           },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
@@ -167,25 +228,19 @@ ruleTester.run('prefer-tsutils-methods', rule, {
       code: 'type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Void);',
       errors: [
         {
+          column: 1,
           data: {
             flagType: 'TypeFlags',
             method: 'isTypeFlagSet',
           },
+          endColumn: 78,
+          endLine: 1,
+          line: 1,
           messageId: 'preferMethod',
         },
       ],
       output:
         'tsutils.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.Void);',
     },
-  ],
-  valid: [
-    'tsutils.isTypeFlagSet(type, ts.TypeFlags.Undefined);',
-    'tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember);',
-    'tsutils.isObjectFlagSet(type, ts.ObjectFlags.Interface);',
-    'a & b;',
-    'flags & OTHER_FLAGS;',
-    'type.flags & CUSTOM_FLAGS;',
-    'ts.TypeFlags.Undefined;',
-    'type.flags;',
   ],
 });

@@ -14,11 +14,8 @@ Snapshot Diff:
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
--           TSAbstractPropertyDefinition {
--             type: 'TSAbstractPropertyDefinition',
-+           PropertyDefinition {
-+             type: 'PropertyDefinition',
-+             abstract: true,
+            TSAbstractPropertyDefinition {
+              type: 'TSAbstractPropertyDefinition',
               computed: false,
               declare: false,
               decorators: Array [],
@@ -47,11 +44,8 @@ Snapshot Diff:
                 end: { column: 15, line: 4 },
               },
             },
--           TSAbstractPropertyDefinition {
--             type: 'TSAbstractPropertyDefinition',
-+           PropertyDefinition {
-+             type: 'PropertyDefinition',
-+             abstract: true,
+            TSAbstractPropertyDefinition {
+              type: 'TSAbstractPropertyDefinition',
               computed: false,
               declare: false,
               decorators: Array [],
@@ -132,9 +126,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 136],
+-   range: [73, 136],
++   range: [0, 136],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 7 },
     },
   }

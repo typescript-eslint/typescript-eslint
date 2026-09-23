@@ -6,9 +6,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, getNameLocationInGlobalDirectiveComment } from '../util';
 
 export type MessageIds =
-  | 'redeclared'
-  | 'redeclaredAsBuiltin'
-  | 'redeclaredBySyntax';
+  'redeclared' | 'redeclaredAsBuiltin' | 'redeclaredBySyntax';
 export type Options = [
   {
     builtinGlobals?: boolean;

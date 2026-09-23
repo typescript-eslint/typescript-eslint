@@ -13,5 +13,4 @@ export interface MethodDefinitionNonComputedName extends ClassMethodDefinitionNo
 }
 
 export type MethodDefinition =
-  | MethodDefinitionComputedName
-  | MethodDefinitionNonComputedName;
+  MethodDefinitionComputedName | MethodDefinitionNonComputedName;

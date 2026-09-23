@@ -15,9 +15,7 @@ import {
 
 export type Options = [('method' | 'property')?];
 export type MessageIds =
-  | 'convertToMethodSignature'
-  | 'errorMethod'
-  | 'errorProperty';
+  'convertToMethodSignature' | 'errorMethod' | 'errorProperty';
 
 export default createRule<Options, MessageIds>({
   name: 'method-signature-style',

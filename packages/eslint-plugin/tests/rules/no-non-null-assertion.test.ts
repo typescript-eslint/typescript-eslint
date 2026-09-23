@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-non-null-assertion';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-non-null-assertion', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     //
     'x;',
@@ -20,6 +23,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: undefined,
@@ -31,6 +36,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -47,6 +54,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 5,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: undefined,
@@ -58,6 +67,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 2,
+          endColumn: 4,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -74,6 +85,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -90,6 +103,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -106,6 +121,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -122,6 +139,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -138,6 +157,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -156,6 +177,7 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           column: 1,
           endColumn: 5,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: undefined,
@@ -163,6 +185,7 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           column: 1,
           endColumn: 4,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: undefined,
@@ -170,6 +193,7 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           column: 1,
           endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: undefined,
@@ -182,6 +206,7 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           column: 1,
           endColumn: 4,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -194,6 +219,7 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           column: 1,
           endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: undefined,
@@ -206,6 +232,7 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           column: 1,
           endColumn: 6,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: undefined,
@@ -213,6 +240,7 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           column: 1,
           endColumn: 5,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: undefined,
@@ -225,6 +253,7 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           column: 1,
           endColumn: 8,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -237,6 +266,7 @@ ruleTester.run('no-non-null-assertion', rule, {
         {
           column: 1,
           endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: undefined,
@@ -248,6 +278,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -264,6 +296,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -280,6 +314,8 @@ ruleTester.run('no-non-null-assertion', rule, {
       errors: [
         {
           column: 1,
+          endColumn: 7,
+          endLine: 1,
           line: 1,
           messageId: 'noNonNull',
           suggestions: [
@@ -299,6 +335,8 @@ x!
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 2,
           line: 2,
           messageId: 'noNonNull',
           suggestions: [
@@ -322,6 +360,8 @@ x!
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 2,
           line: 2,
           messageId: 'noNonNull',
           suggestions: [
@@ -347,6 +387,8 @@ x!
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 2,
           line: 2,
           messageId: 'noNonNull',
           suggestions: [
@@ -372,6 +414,8 @@ x!
       errors: [
         {
           column: 1,
+          endColumn: 3,
+          endLine: 2,
           line: 2,
           messageId: 'noNonNull',
           suggestions: [
@@ -395,6 +439,7 @@ document.querySelector('input')!.files = new FileList();
         {
           column: 1,
           endColumn: 33,
+          endLine: 2,
           line: 2,
           messageId: 'noNonNull',
         },
@@ -408,6 +453,7 @@ hoge.files = document.querySelector('input')!.files;
         {
           column: 14,
           endColumn: 46,
+          endLine: 2,
           line: 2,
           messageId: 'noNonNull',
           suggestions: [

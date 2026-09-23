@@ -26,7 +26,7 @@
         "type": "boolean"
       },
       "ignoreOnInitialization": {
-        "description": "Whether to ignore the variable initializers when the shadowed variable is presumably still unitialized.",
+        "description": "Whether to ignore the variable initializers when the shadowed variable is presumably still uninitialized.",
         "type": "boolean"
       },
       "ignoreTypeValueShadow": {
@@ -57,7 +57,7 @@ type Options = [
       | 'all';
     /** Whether to ignore function parameters named the same as a variable. */
     ignoreFunctionTypeParameterNameValueShadow?: boolean;
-    /** Whether to ignore the variable initializers when the shadowed variable is presumably still unitialized. */
+    /** Whether to ignore the variable initializers when the shadowed variable is presumably still uninitialized. */
     ignoreOnInitialization?: boolean;
     /** Whether to ignore types named the same as a variable. */
     ignoreTypeValueShadow?: boolean;

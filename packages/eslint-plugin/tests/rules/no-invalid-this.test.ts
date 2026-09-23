@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-invalid-this';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-invalid-this', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 describe('foo', () => {
@@ -15,12 +18,12 @@ describe('foo', () => {
 });
     `,
     `
-      interface SomeType {
-        prop: string;
-      }
-      function foo(this: SomeType) {
-        this.prop;
-      }
+interface SomeType {
+  prop: string;
+}
+function foo(this: SomeType) {
+  this.prop;
+}
     `,
     `
 function foo(this: prop) {
@@ -433,7 +436,15 @@ function foo() {
   this.prop;
 }
       `,
-      errors: [{ messageId: 'unexpectedThis' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
+          messageId: 'unexpectedThis',
+        },
+      ],
     },
     // Global.
     {
@@ -443,9 +454,17 @@ z(x => console.log(x, this));
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
           messageId: 'unexpectedThis',
         },
         {
+          column: 23,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -457,9 +476,17 @@ z(x => console.log(x, this));
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
           messageId: 'unexpectedThis',
         },
         {
+          column: 23,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
       ],
@@ -480,9 +507,17 @@ z(x => console.log(x, this));
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -498,9 +533,17 @@ function foo() {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -514,9 +557,17 @@ function foo() {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -531,9 +582,17 @@ function Foo() {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -549,9 +608,17 @@ function foo() {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -566,9 +633,17 @@ function Foo() {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -583,9 +658,17 @@ return function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -604,9 +687,17 @@ var foo = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -627,9 +718,17 @@ var obj = {
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
         {
+          column: 29,
+          endColumn: 33,
+          endLine: 6,
+          line: 6,
           messageId: 'unexpectedThis',
         },
       ],
@@ -648,9 +747,17 @@ var obj = {
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
         {
+          column: 29,
+          endColumn: 33,
+          endLine: 6,
+          line: 6,
           messageId: 'unexpectedThis',
         },
       ],
@@ -668,9 +775,17 @@ var obj = {
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
         {
+          column: 29,
+          endColumn: 33,
+          endLine: 6,
+          line: 6,
           messageId: 'unexpectedThis',
         },
       ],
@@ -689,9 +804,17 @@ var obj = {
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 23,
+          endLine: 6,
+          line: 6,
           messageId: 'unexpectedThis',
         },
         {
+          column: 29,
+          endColumn: 33,
+          endLine: 7,
+          line: 7,
           messageId: 'unexpectedThis',
         },
       ],
@@ -707,9 +830,17 @@ obj.foo = function () {
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
         {
+          column: 27,
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -726,9 +857,17 @@ obj.foo = function () {
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
         {
+          column: 27,
+          endColumn: 31,
+          endLine: 6,
+          line: 6,
           messageId: 'unexpectedThis',
         },
       ],
@@ -749,9 +888,17 @@ class A {
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
         {
+          column: 29,
+          endColumn: 33,
+          endLine: 6,
+          line: 6,
           messageId: 'unexpectedThis',
         },
       ],
@@ -770,9 +917,17 @@ class A {
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
         {
+          column: 27,
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -791,9 +946,17 @@ class A {
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
         {
+          column: 29,
+          endColumn: 33,
+          endLine: 6,
+          line: 6,
           messageId: 'unexpectedThis',
         },
       ],
@@ -812,9 +975,17 @@ obj.foo = (function () {
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
         {
+          column: 27,
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -828,9 +999,17 @@ obj.foo = (() => () => {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -846,9 +1025,17 @@ var foo = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -863,9 +1050,17 @@ var foo = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -880,9 +1075,17 @@ var foo = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -898,9 +1101,17 @@ Array.from([], function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -914,9 +1125,17 @@ foo.every(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -930,9 +1149,17 @@ foo.filter(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -946,9 +1173,17 @@ foo.find(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -962,9 +1197,17 @@ foo.findIndex(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -978,9 +1221,17 @@ foo.forEach(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -994,9 +1245,17 @@ foo.map(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1010,9 +1269,17 @@ foo.some(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1027,9 +1294,17 @@ foo.forEach(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1046,9 +1321,17 @@ foo.forEach(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1062,9 +1345,17 @@ foo.forEach(function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1079,9 +1370,17 @@ var Ctor = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1096,9 +1395,17 @@ var func = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1112,9 +1419,17 @@ var func = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1130,9 +1445,17 @@ Ctor = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1147,9 +1470,17 @@ func = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1163,9 +1494,17 @@ func = function () {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'unexpectedThis',
         },
         {
+          column: 25,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1183,9 +1522,17 @@ function foo(
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
         {
+          column: 27,
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],
@@ -1202,9 +1549,17 @@ function foo(
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
           messageId: 'unexpectedThis',
         },
         {
+          column: 27,
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
           messageId: 'unexpectedThis',
         },
       ],

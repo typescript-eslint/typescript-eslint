@@ -277,9 +277,7 @@ export class RuleTester extends TestFramework {
   ): InvalidTestCase<MessageIds, Options>;
   static only<MessageIds extends string, Options extends readonly unknown[]>(
     item:
-      | string
-      | InvalidTestCase<MessageIds, Options>
-      | ValidTestCase<Options>,
+      string | InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
   ): InvalidTestCase<MessageIds, Options> | ValidTestCase<Options> {
     if (typeof item === 'string') {
       return { code: item, only: true };
@@ -1390,7 +1388,7 @@ export class RuleTester extends TestFramework {
       if (item.output == null) {
         if (result.outputs.length) {
           assert.strictEqual(
-            result.outputs[0],
+            result.outputs.at(-1),
             item.code,
             'Expected no autofixes to be suggested.',
           );
@@ -1398,7 +1396,7 @@ export class RuleTester extends TestFramework {
       } else if (typeof item.output === 'string') {
         assert(result.outputs.length > 0, 'Expected autofix to be suggested.');
         assert.strictEqual(
-          result.outputs[0],
+          result.outputs.at(-1),
           item.output,
           'Output is incorrect.',
         );
@@ -1419,7 +1417,7 @@ export class RuleTester extends TestFramework {
       }
     } else if (result.outputs.length) {
       assert.strictEqual(
-        result.outputs[0],
+        result.outputs.at(-1),
         item.code,
         "The rule fixed the code. Please add 'output' property.",
       );

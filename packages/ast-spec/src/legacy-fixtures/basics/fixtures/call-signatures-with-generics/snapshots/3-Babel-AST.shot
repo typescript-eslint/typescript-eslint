@@ -21,7 +21,7 @@ Program {
         members: [
           TSCallSignatureDeclaration {
             type: "TSCallSignatureDeclaration",
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -53,7 +53,7 @@ Program {
                 },
               },
             ],
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
@@ -78,7 +78,18 @@ Program {
                   type: "TSTypeParameter",
                   const: false,
                   in: false,
-                  name: "T",
+                  name: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "T",
+                    optional: false,
+
+                    range: [89, 90],
+                    loc: {
+                      start: { column: 3, line: 4 },
+                      end: { column: 4, line: 4 },
+                    },
+                  },
                   out: false,
 
                   range: [89, 90],
@@ -104,7 +115,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -136,7 +147,7 @@ Program {
                 },
               },
             ],
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
@@ -161,7 +172,18 @@ Program {
                   type: "TSTypeParameter",
                   const: false,
                   in: false,
-                  name: "T",
+                  name: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "T",
+                    optional: false,
+
+                    range: [119, 120],
+                    loc: {
+                      start: { column: 7, line: 5 },
+                      end: { column: 8, line: 5 },
+                    },
+                  },
                   out: false,
 
                   range: [119, 120],
@@ -203,9 +225,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 145],
+  range: [0, 145],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 7 },
   },
 }

@@ -1,4 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > var-id-definite-no-init > Babel - Error`]
-NO ERROR
+BabelError
+> 1 | var foo!;
+    |     ^ Declarations with definite assignment assertions must also have type annotations. (1:4)
+  2 |
+  
