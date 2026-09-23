@@ -65,7 +65,6 @@ jobs:
               per_page: 100,
             });
 
-            // Post only one force push comment per PR.
             if (comments.some(comment => comment.body?.includes(marker))) {
               return;
             }
