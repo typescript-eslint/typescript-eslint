@@ -1,14 +1,11 @@
 import type { context, getOctokit } from '@actions/github';
 
-interface ScriptArgs {
+interface Args {
   context: typeof context;
   github: ReturnType<typeof getOctokit>;
 }
 
-export async function forcePushBot({
-  context,
-  github,
-}: ScriptArgs): Promise<void> {
+export async function forcePushBot({ context, github }: Args): Promise<void> {
   const { data: reviews } = await github.rest.pulls.listReviews({
     owner: context.repo.owner,
     per_page: 1,
