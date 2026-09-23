@@ -5,8 +5,6 @@ interface ScriptArgs {
   github: ReturnType<typeof getOctokit>;
 }
 
-// Comments on reviewed PRs when the author force-pushes.
-// Runs via `actions/github-script` from the force-push-bot workflow.
 export async function forcePushBot({
   context,
   github,
