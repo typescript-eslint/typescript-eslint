@@ -55,6 +55,7 @@
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "devDependencies": {
+    "@actions/github": "^9.1.1",
     "@arethetypeswrong/cli": "0.18.3",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.8.0",
     "@eslint/compat": "^2.0.2",
