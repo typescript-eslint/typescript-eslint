@@ -1333,7 +1333,7 @@ if (Promise.resolve()) {
     {
       code: `
 if (Promise.resolve()) {
-} else if (Promise.resolve()) {
+} else if (foo) {
 } else {
 }
       `,
@@ -1345,11 +1345,23 @@ if (Promise.resolve()) {
           line: 2,
           messageId: 'conditional',
         },
+      ],
+    },
+    {
+      code: `
+declare const foo: boolean;
+
+if (foo) {
+} else if (Promise.resolve()) {
+} else {
+}
+      `,
+      errors: [
         {
           column: 12,
           endColumn: 29,
-          endLine: 3,
-          line: 3,
+          endLine: 5,
+          line: 5,
           messageId: 'conditional',
         },
       ],
@@ -1682,8 +1694,6 @@ f = async () => {
 const f: () => void = async () => {
   return 0;
 };
-const g = async () => 1,
-  h: () => void = async () => {};
       `,
       errors: [
         {
@@ -1693,11 +1703,19 @@ const g = async () => 1,
           line: 2,
           messageId: 'voidReturnVariable',
         },
+      ],
+    },
+    {
+      code: `
+const g = async () => 1,
+  h: () => void = async () => {};
+      `,
+      errors: [
         {
           column: 19,
           endColumn: 33,
-          endLine: 6,
-          line: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'voidReturnVariable',
         },
       ],
@@ -1795,15 +1813,12 @@ const obj: O = {
     },
     {
       code: `
-type O = { f: () => void; g: () => void; h: () => void };
+type O = { f: () => void };
 function f(): O {
-  const h = async () => 0;
   return {
     async f() {
       return 123;
     },
-    g: async () => 0,
-    h,
   };
 }
       `,
@@ -1811,22 +1826,47 @@ function f(): O {
         {
           column: 5,
           endColumn: 12,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'voidReturnProperty',
         },
+      ],
+    },
+    {
+      code: `
+type O = { g: () => void };
+function f(): O {
+  return {
+    g: async () => 0,
+  };
+}
+      `,
+      errors: [
         {
           column: 5,
           endColumn: 14,
-          endLine: 9,
-          line: 9,
+          endLine: 5,
+          line: 5,
           messageId: 'voidReturnProperty',
         },
+      ],
+    },
+    {
+      code: `
+type O = { h: () => void };
+function f(): O {
+  const h = async () => 0;
+  return {
+    h,
+  };
+}
+      `,
+      errors: [
         {
           column: 5,
           endColumn: 6,
-          endLine: 10,
-          line: 10,
+          endLine: 6,
+          line: 6,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -2028,9 +2068,6 @@ console.log({
 declare const condition: boolean;
 
 console.log({ ...(condition && Promise.resolve({ key: 42 })) });
-console.log({ ...(condition || Promise.resolve({ key: 42 })) });
-console.log({ ...(condition ? {} : Promise.resolve({ key: 42 })) });
-console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
       `,
       errors: [
         {
@@ -2040,25 +2077,52 @@ console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
           line: 4,
           messageId: 'spread',
         },
+      ],
+    },
+    {
+      code: `
+declare const condition: boolean;
+
+console.log({ ...(condition || Promise.resolve({ key: 42 })) });
+      `,
+      errors: [
         {
           column: 19,
           endColumn: 60,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'spread',
         },
+      ],
+    },
+    {
+      code: `
+declare const condition: boolean;
+
+console.log({ ...(condition ? {} : Promise.resolve({ key: 42 })) });
+      `,
+      errors: [
         {
           column: 19,
           endColumn: 64,
-          endLine: 6,
-          line: 6,
+          endLine: 4,
+          line: 4,
           messageId: 'spread',
         },
+      ],
+    },
+    {
+      code: `
+declare const condition: boolean;
+
+console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
+      `,
+      errors: [
         {
           column: 19,
           endColumn: 64,
-          endLine: 7,
-          line: 7,
+          endLine: 4,
+          line: 4,
           messageId: 'spread',
         },
       ],
@@ -2070,9 +2134,7 @@ function restPromises(first: Boolean, ...callbacks: Array<() => void>): void {}
 restPromises(
   true,
   () => Promise.resolve(true),
-  () => Promise.resolve(null),
   () => true,
-  () => Promise.resolve('Hello'),
 );
       `,
       errors: [
@@ -2083,18 +2145,44 @@ restPromises(
           line: 6,
           messageId: 'voidReturnArgument',
         },
+      ],
+    },
+    {
+      code: `
+function restPromises(first: Boolean, ...callbacks: Array<() => void>): void {}
+
+restPromises(
+  true,
+  () => Promise.resolve(null),
+  () => true,
+);
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 30,
-          endLine: 7,
-          line: 7,
+          endLine: 6,
+          line: 6,
           messageId: 'voidReturnArgument',
         },
+      ],
+    },
+    {
+      code: `
+function restPromises(first: Boolean, ...callbacks: Array<() => void>): void {}
+
+restPromises(
+  true,
+  () => Promise.resolve('Hello'),
+  () => true,
+);
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 33,
-          endLine: 9,
-          line: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'voidReturnArgument',
         },
       ],
@@ -2162,7 +2250,6 @@ restTupleFour(
   () => Promise.resolve(true),
   false,
   () => {},
-  () => Promise.resolve(1),
 );
       `,
       errors: [
@@ -2173,11 +2260,28 @@ restTupleFour(
           line: 9,
           messageId: 'voidReturnArgument',
         },
+      ],
+    },
+    {
+      code: `
+function restTupleFour(
+  first: number,
+  ...callbacks: [() => void, boolean, () => void, () => void]
+): void;
+
+restTupleFour(
+  1,
+  () => Promise.resolve(1),
+  false,
+  () => {},
+);
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 27,
-          endLine: 12,
-          line: 12,
+          endLine: 9,
+          line: 9,
           messageId: 'voidReturnArgument',
         },
       ],
@@ -2886,7 +2990,6 @@ interface MyConstruct {
 interface MyMethods {
   doSyncThing(): void;
   doOtherSyncThing(): void;
-  syncMethodProperty: () => void;
 }
 interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
   (): void;
@@ -2897,7 +3000,6 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
   [key: number]: () => void;
   doSyncThing(): Promise<void>;
   doAsyncThing(): Promise<void>;
-  syncMethodProperty: () => Promise<void>;
 }
       `,
       errors: [
@@ -2905,16 +3007,51 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
           column: 3,
           data: { heritageTypeName: 'MyMethods' },
           endColumn: 32,
-          endLine: 29,
-          line: 29,
+          endLine: 28,
+          line: 28,
           messageId: 'voidReturnInheritedMethod',
         },
+      ],
+    },
+    {
+      code: `
+interface MyCall {
+  (): void;
+  (arg: string): void;
+}
+
+interface MyIndex {
+  [key: string]: () => void;
+  [key: number]: () => void;
+}
+
+interface MyConstruct {
+  new (): void;
+  new (arg: string): void;
+}
+
+interface MyMethods {
+  doOtherSyncThing(): void;
+  syncMethodProperty: () => void;
+}
+interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
+  (): void;
+  (arg: string): Promise<void>;
+  new (): void;
+  new (arg: string): void;
+  [key: string]: () => Promise<void>;
+  [key: number]: () => void;
+  doAsyncThing(): Promise<void>;
+  syncMethodProperty: () => Promise<void>;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: { heritageTypeName: 'MyMethods' },
           endColumn: 43,
-          endLine: 31,
-          line: 31,
+          endLine: 29,
+          line: 29,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -3045,7 +3182,7 @@ declare function tupleFn<T extends (...args: unknown[]) => unknown>(
 tupleFn<() => void>(
   async () => {},
   'foo',
-  async () => {},
+  () => {},
 );
       `,
       errors: [
@@ -3056,6 +3193,20 @@ tupleFn<() => void>(
           line: 6,
           messageId: 'voidReturnArgument',
         },
+      ],
+    },
+    {
+      code: `
+declare function tupleFn<T extends (...args: unknown[]) => unknown>(
+  ...fns: [T, string, T]
+): void;
+tupleFn<() => void>(
+  () => {},
+  'foo',
+  async () => {},
+);
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 17,
@@ -3073,7 +3224,7 @@ declare function arrayFn<T extends (...args: unknown[]) => unknown>(
 arrayFn<() => void>(
   async () => {},
   'foo',
-  async () => {},
+  () => {},
 );
       `,
       errors: [
@@ -3084,6 +3235,20 @@ arrayFn<() => void>(
           line: 6,
           messageId: 'voidReturnArgument',
         },
+      ],
+    },
+    {
+      code: `
+declare function arrayFn<T extends (...args: unknown[]) => unknown>(
+  ...fns: (T | string)[]
+): void;
+arrayFn<() => void>(
+  () => {},
+  'foo',
+  async () => {},
+);
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 17,

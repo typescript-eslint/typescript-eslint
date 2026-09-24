@@ -4,16 +4,6 @@
       "count": 77
     }
   },
-  "packages/eslint-plugin/tests/rules/no-misused-promises.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 13
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-mixed-enums.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-namespace.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 7
