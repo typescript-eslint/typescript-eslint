@@ -1,4 +1,7 @@
-import type { Program as NativeProgram } from '@typescript/native/unstable/sync';
+import type {
+  Diagnostic as NativeDiagnostic,
+  Program as NativeProgram,
+} from '@typescript/native/unstable/sync';
 import type * as ts from 'typescript';
 
 import type { ParseAndGenerateServicesResult } from '../parser';
@@ -29,9 +32,23 @@ const adaptersByProgram = new WeakMap<NativeProgram, NativeAdapters>();
 function getAdapters(context: NativeProjectContext): NativeAdapters {
   let adapters = adaptersByProgram.get(context.program);
   if (!adapters) {
-    const nodeAdapter = createNativeNodeAdapter(fileName =>
-      context.program.getSyntacticDiagnostics(fileName),
-    );
+    // One request for the whole program, rather than one per file linted.
+    let diagnosticsByFile: Map<string, NativeDiagnostic[]> | undefined;
+    const nodeAdapter = createNativeNodeAdapter(fileName => {
+      if (!diagnosticsByFile) {
+        diagnosticsByFile = new Map();
+        for (const diagnostic of context.program.getSyntacticDiagnostics()) {
+          const key = diagnostic.fileName ?? '';
+          const existing = diagnosticsByFile.get(key);
+          if (existing) {
+            existing.push(diagnostic);
+          } else {
+            diagnosticsByFile.set(key, [diagnostic]);
+          }
+        }
+      }
+      return diagnosticsByFile.get(fileName) ?? [];
+    });
     adapters = {
       nodeAdapter,
       program: createNativeProgram({ context, nodeAdapter }),

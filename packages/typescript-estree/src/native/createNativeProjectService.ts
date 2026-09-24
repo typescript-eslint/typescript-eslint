@@ -4,6 +4,7 @@ import type {
   Snapshot,
 } from '@typescript/native/unstable/sync';
 
+import { createFileSystemLayer } from '@typescript/native/unstable/fs';
 import { API } from '@typescript/native/unstable/sync';
 import path from 'node:path';
 import * as ts from 'typescript';
@@ -49,7 +50,8 @@ function verifySupportedConfig(project: Project): void {
 export function createNativeProjectService(
   cwd = process.cwd(),
 ): NativeProjectService {
-  const overlays = new Map<string, string>();
+  /** What the server last saw for each file, so only real changes are sent. */
+  const contents = new Map<string, string>();
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
   const openProjects = new Set<string>();
@@ -58,15 +60,7 @@ export function createNativeProjectService(
   let api: API;
 
   try {
-    api = new API({
-      cwd,
-      fs: {
-        fileExists: fileName =>
-          overlays.has(toCacheKey(toCompilerPath(fileName))) ? true : undefined,
-        readFile: fileName =>
-          overlays.get(toCacheKey(toCompilerPath(fileName))),
-      },
-    });
+    api = new API({ cwd });
   } catch (error) {
     throw startupError(error);
   }
@@ -146,7 +140,7 @@ export function createNativeProjectService(
       fileContexts.clear();
       fileProjects.clear();
       openProjects.clear();
-      overlays.clear();
+      contents.clear();
 
       if (failure) {
         throw failure;
@@ -157,13 +151,18 @@ export function createNativeProjectService(
       assertOpen();
       const compilerPath = toCompilerPath(filePath);
       const cacheKey = toCacheKey(compilerPath);
-      const previous = overlays.get(cacheKey);
+      const previous = contents.get(cacheKey);
       const cachedContext = fileContexts.get(cacheKey);
       if (previous === code && cachedContext) {
         return cachedContext;
       }
       const unchanged = (previous ?? ts.sys.readFile(compilerPath)) === code;
-      overlays.set(cacheKey, code);
+      contents.set(cacheKey, code);
+      // Code that differs from disk rides along with the snapshot, rather than
+      // the server calling back for every file it looks up.
+      const fileSystem = unchanged
+        ? undefined
+        : createFileSystemLayer([[compilerPath, code]]);
       let knownConfigFileName = fileProjects.get(cacheKey);
 
       if (!knownConfigFileName && snapshot && openProjects.size) {
@@ -186,6 +185,7 @@ export function createNativeProjectService(
             : replaceSnapshot({
                 ensurePrograms: true,
                 fileNotifications: { changed: [compilerPath] },
+                fileSystem,
               }),
           knownConfigFileName,
           compilerPath,
@@ -193,6 +193,7 @@ export function createNativeProjectService(
       }
 
       const discoverySnapshot = replaceSnapshot({
+        fileSystem,
         openFiles: [compilerPath],
       });
       let configFileName: string;
