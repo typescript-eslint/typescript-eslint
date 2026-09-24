@@ -7,6 +7,7 @@ ruleTester.run('prefer-optional-chain-or-eqeq-null', rule, {
   assertionOptions: {
     requireData: true,
   },
+  valid: [],
   invalid: [
     {
       code: `
@@ -780,5 +781,4 @@ foo.bar?.()?.baz == null;
       `,
     },
   ],
-  valid: [],
 });
