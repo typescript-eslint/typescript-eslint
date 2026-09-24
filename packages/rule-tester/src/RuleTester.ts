@@ -6,6 +6,7 @@ import type { TSESTree, TSUtils } from '@typescript-eslint/utils';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
+  Linter,
   ParserOptions,
   RuleListener,
   RuleModule,
@@ -13,13 +14,12 @@ import type {
 
 import * as parser from '@typescript-eslint/parser';
 import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
-import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import assert from 'node:assert';
 import path from 'node:path';
 import util from 'node:util';
 // we intentionally import from eslint here because we need to use the same class
 // that ESLint uses, not our custom override typed version
-import { SourceCode } from 'eslint';
+import { Linter as ESLintLinter, SourceCode } from 'eslint';
 import stringify from 'json-stable-stringify-without-jsonify';
 import merge from 'lodash.merge';
 
@@ -221,7 +221,7 @@ export class RuleTester extends TestFramework {
 
     let linterForBasePath = this.#lintersByBasePath.get(basePath);
     if (!linterForBasePath) {
-      linterForBasePath = new Linter({
+      linterForBasePath = new ESLintLinter({
         configType: 'flat',
         cwd: basePath,
       });
