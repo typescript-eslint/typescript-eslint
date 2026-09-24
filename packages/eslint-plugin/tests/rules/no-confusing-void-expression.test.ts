@@ -1159,9 +1159,7 @@ function foo(): void {
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-(): unknown => { console.log('foo'); };
-      `,
+      output: null,
     },
     {
       code: `
@@ -1220,10 +1218,7 @@ type Foo = unknown;
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-type Foo = unknown;
-(): Foo => { console.log(); };
-      `,
+      output: null,
     },
     {
       code: `
@@ -1263,11 +1258,7 @@ function test(): unknown {
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-function test(): unknown {
-  console.log();
-}
-      `,
+      output: null,
     },
     {
       code: `
