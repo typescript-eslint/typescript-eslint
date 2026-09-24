@@ -196,6 +196,11 @@ export function createNativeTypeAdapter({
     return { name, text: text ? [{ kind: 'text', text }] : undefined };
   }
 
+  const propertiesByName = new WeakMap<
+    ts.Type,
+    Map<string, ts.Symbol | undefined>
+  >();
+
   /** Classic methods, shared by every wrapper; each reads its object off `this`. */
   const typeMethods = {
     getApparentProperties(this: ts.Type) {
@@ -229,7 +234,17 @@ export function createNativeTypeAdapter({
       return unwrapType(this).getProperties().map(toSymbol);
     },
     getProperty(this: ts.Type, name: string) {
-      return wrapSymbol(unwrapType(this).getProperty(name));
+      let properties = propertiesByName.get(this);
+      if (!properties) {
+        properties = new Map();
+        propertiesByName.set(this, properties);
+      }
+      if (properties.has(name)) {
+        return properties.get(name);
+      }
+      const property = wrapSymbol(unwrapType(this).getProperty(name));
+      properties.set(name, property);
+      return property;
     },
     getStringIndexType(this: ts.Type) {
       return wrapType(unwrapType(this).getStringIndexType());

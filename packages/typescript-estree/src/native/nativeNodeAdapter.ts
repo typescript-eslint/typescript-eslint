@@ -1,6 +1,7 @@
 import type {
   Node as NativeNode,
   NodeArray as NativeNodeArray,
+  SourceFile as NativeSourceFile,
 } from '@typescript/native/unstable/ast';
 import type { Diagnostic as NativeDiagnostic } from '@typescript/native/unstable/sync';
 
@@ -110,7 +111,7 @@ function isNativeNodeArray(
 }
 
 export function createNativeNodeAdapter(
-  getSyntacticDiagnostics: () => readonly NativeDiagnostic[],
+  getSyntacticDiagnostics: (fileName: string) => readonly NativeDiagnostic[],
 ): NativeNodeAdapter {
   const nativeToAdapter = new WeakMap<NativeNode, ts.Node>();
   const adapterToNative = new WeakMap<ts.Node, NativeNode>();
@@ -332,7 +333,9 @@ export function createNativeNodeAdapter(
           );
         case 'parseDiagnostics':
           return target.kind === NativeSyntaxKind.SourceFile
-            ? getSyntacticDiagnostics().map(diagnostic =>
+            ? getSyntacticDiagnostics(
+                (target as NativeSourceFile).fileName,
+              ).map(diagnostic =>
                 toClassicDiagnostic(diagnostic, receiver as ts.SourceFile),
               )
             : undefined;

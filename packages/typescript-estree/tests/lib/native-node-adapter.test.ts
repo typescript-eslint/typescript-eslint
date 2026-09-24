@@ -51,8 +51,8 @@ function withNativeSourceFile<T>(
 describe('native node adapter', () => {
   it('caches adapted node arrays and their structural children', () => {
     withNativeSourceFile(fixture, fixturePath, ({ program, sourceFile }) => {
-      const adapter = createNativeNodeAdapter(() =>
-        program.getSyntacticDiagnostics(fixturePath),
+      const adapter = createNativeNodeAdapter(fileName =>
+        program.getSyntacticDiagnostics(fileName),
       );
       const adaptedSourceFile = adapter.wrapNode(sourceFile) as ts.SourceFile;
       const statements = adaptedSourceFile.statements;
@@ -74,8 +74,8 @@ describe('native node adapter', () => {
     }
 
     withNativeSourceFile(invalid, fixturePath, ({ program, sourceFile }) => {
-      const adapter = createNativeNodeAdapter(() =>
-        program.getSyntacticDiagnostics(fixturePath),
+      const adapter = createNativeNodeAdapter(fileName =>
+        program.getSyntacticDiagnostics(fileName),
       );
       expect(() =>
         astConverter(

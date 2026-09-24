@@ -270,6 +270,66 @@ export function createNativeChecker({
   return throwOnUnsupportedMembers(
     'TypeChecker',
     UNSUPPORTED_CHECKER_MEMBERS,
-    nativeChecker,
+    memoizeChecker(nativeChecker),
   ) as unknown as ts.TypeChecker;
+}
+
+type CheckerMethod = (...args: unknown[]) => unknown;
+
+/**
+ * A checker's answers are fixed for its snapshot, and rules ask it the same
+ * questions many times over, so each answer is remembered instead of being
+ * asked again across the process boundary. Arguments are keyed by identity,
+ * which the adapters keep stable for the snapshot's lifetime.
+ */
+function memoizeChecker<Checker extends object>(checker: Checker): Checker {
+  const results = new Map<string, unknown>();
+  const ids = new WeakMap<object, number>();
+  let nextId = 0;
+
+  function keyOf(value: unknown): string {
+    switch (typeof value) {
+      case 'function':
+      case 'object': {
+        if (value == null) {
+          return 'null';
+        }
+        let id = ids.get(value);
+        if (id == null) {
+          id = nextId++;
+          ids.set(value, id);
+        }
+        return `#${id}`;
+      }
+      case 'string':
+        return JSON.stringify(value);
+      default:
+        return String(value);
+    }
+  }
+
+  function memoize(name: string, method: CheckerMethod): CheckerMethod {
+    return function (...args) {
+      let key = name;
+      for (const arg of args) {
+        key += `,${keyOf(arg)}`;
+      }
+      const cached = results.get(key);
+      if (cached != null || results.has(key)) {
+        return cached;
+      }
+      const result = method(...args);
+      results.set(key, result);
+      return result;
+    };
+  }
+
+  const memoized: Record<string, unknown> = {};
+  for (const [name, member] of Object.entries(checker)) {
+    memoized[name] =
+      typeof member === 'function'
+        ? memoize(name, member as CheckerMethod)
+        : member;
+  }
+  return memoized as Checker;
 }

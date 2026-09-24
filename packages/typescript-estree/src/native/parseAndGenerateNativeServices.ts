@@ -1,8 +1,11 @@
+import type { Program as NativeProgram } from '@typescript/native/unstable/sync';
 import type * as ts from 'typescript';
 
 import type { ParseAndGenerateServicesResult } from '../parser';
 import type { TSESTreeOptions } from '../parser-options';
 import type { ParseSettings } from '../parseSettings';
+import type { NativeNodeAdapter } from './nativeNodeAdapter';
+import type { NativeProjectContext } from './types';
 
 import { astConverter } from '../ast-converter';
 import { convertError } from '../convert';
@@ -12,18 +15,41 @@ import { getNativeProjectService } from './createNativeProjectService';
 import { createNativeNodeAdapter } from './nativeNodeAdapter';
 import { createNativeProgram } from './nativeProgramAdapter';
 
+interface NativeAdapters {
+  nodeAdapter: NativeNodeAdapter;
+  program: ts.Program;
+}
+
+/**
+ * One set of adapters per native program, which lives as long as its snapshot,
+ * so every file linted against it shares the wrappers and what they remember.
+ */
+const adaptersByProgram = new WeakMap<NativeProgram, NativeAdapters>();
+
+function getAdapters(context: NativeProjectContext): NativeAdapters {
+  let adapters = adaptersByProgram.get(context.program);
+  if (!adapters) {
+    const nodeAdapter = createNativeNodeAdapter(fileName =>
+      context.program.getSyntacticDiagnostics(fileName),
+    );
+    adapters = {
+      nodeAdapter,
+      program: createNativeProgram({ context, nodeAdapter }),
+    };
+    adaptersByProgram.set(context.program, adapters);
+  }
+  return adapters;
+}
+
 export function parseAndGenerateNativeServices<
   T extends TSESTreeOptions = TSESTreeOptions,
 >(parseSettings: ParseSettings): ParseAndGenerateServicesResult<T> {
   const context = getNativeProjectService(
     parseSettings.tsconfigRootDir,
   ).openFile(parseSettings.filePath, parseSettings.codeFullText);
-  const getSyntacticDiagnostics = () =>
-    context.program.getSyntacticDiagnostics(context.sourceFile.fileName);
-  const nodeAdapter = createNativeNodeAdapter(getSyntacticDiagnostics);
+  const { nodeAdapter, program } = getAdapters(context);
   const sourceFile = nodeAdapter.wrapNode(context.sourceFile) as ts.SourceFile;
   const { astMaps, estree } = astConverter(sourceFile, parseSettings, true);
-  const program = createNativeProgram({ context, nodeAdapter });
 
   if (parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues) {
     const error = getFirstSemanticOrSyntacticError(program, sourceFile);
