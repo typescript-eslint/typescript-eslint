@@ -371,8 +371,8 @@ importers:
         specifier: ^9.1.7
         version: 9.1.7
       knip:
-        specifier: 6.35.0
-        version: 6.35.0
+        specifier: 6.36.0
+        version: 6.36.0
       lint-staged:
         specifier: ^15.5.2
         version: 15.5.2(supports-color@8.1.1)
@@ -7483,8 +7483,8 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
-  knip@6.35.0:
-    resolution: {integrity: sha512-eER1hSyi47lJTO9MTnEoJspEscPaVuFtFkHsGbuCmhjDlphzvg2xxcweNg1NCeylo9ERSkb/NzAo7sAcT9gLmA==}
+  knip@6.36.0:
+    resolution: {integrity: sha512-DWETufDYX4UdaLeCK9gI5rfROanxVxbrsyEPzHFIrrn1H+W04f3XdQ6HPWMnA7O2u2VOKOLWt+EV23K/kb5jlA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -18062,7 +18062,7 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  knip@6.35.0:
+  knip@6.36.0:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.7)
       formatly: 0.7.0
