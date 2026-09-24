@@ -267,11 +267,32 @@ export function createNativeChecker({
     },
   } satisfies Partial<ts.TypeChecker> & Record<string, unknown>;
 
-  return throwOnUnsupportedMembers(
+  const { memoized, seed } = memoizeChecker(nativeChecker);
+  const classicChecker = throwOnUnsupportedMembers(
     'TypeChecker',
     UNSUPPORTED_CHECKER_MEMBERS,
-    memoizeChecker(nativeChecker),
+    memoized,
   ) as unknown as ts.TypeChecker;
+  prefetchers.set(classicChecker, nodes => {
+    const types = checker.getTypeAtLocation(nodes.map(unwrapNode));
+    nodes.forEach((node, index) => {
+      seed('getTypeAtLocation', [node], wrapType(types[index]));
+    });
+  });
+  return classicChecker;
+}
+
+const prefetchers = new WeakMap<
+  ts.TypeChecker,
+  (nodes: readonly ts.Node[]) => void
+>();
+
+/** Answers many nodes' types in one round trip, ahead of rules asking one at a time. */
+export function prefetchTypesAtLocation(
+  checker: ts.TypeChecker,
+  nodes: readonly ts.Node[],
+): void {
+  prefetchers.get(checker)?.(nodes);
 }
 
 type CheckerMethod = (...args: unknown[]) => unknown;
@@ -282,7 +303,12 @@ type CheckerMethod = (...args: unknown[]) => unknown;
  * asked again across the process boundary. Arguments are keyed by identity,
  * which the adapters keep stable for the snapshot's lifetime.
  */
-function memoizeChecker<Checker extends object>(checker: Checker): Checker {
+function memoizeChecker<Checker extends object>(
+  checker: Checker,
+): {
+  memoized: Checker;
+  seed: (name: string, args: readonly unknown[], result: unknown) => void;
+} {
   const results = new Map<string, unknown>();
   const ids = new WeakMap<object, number>();
   let nextId = 0;
@@ -308,12 +334,17 @@ function memoizeChecker<Checker extends object>(checker: Checker): Checker {
     }
   }
 
+  function keyOfCall(name: string, args: readonly unknown[]): string {
+    let key = name;
+    for (const arg of args) {
+      key += `,${keyOf(arg)}`;
+    }
+    return key;
+  }
+
   function memoize(name: string, method: CheckerMethod): CheckerMethod {
     return function (...args) {
-      let key = name;
-      for (const arg of args) {
-        key += `,${keyOf(arg)}`;
-      }
+      const key = keyOfCall(name, args);
       const cached = results.get(key);
       if (cached != null || results.has(key)) {
         return cached;
@@ -331,5 +362,10 @@ function memoizeChecker<Checker extends object>(checker: Checker): Checker {
         ? memoize(name, member as CheckerMethod)
         : member;
   }
-  return memoized as Checker;
+  return {
+    memoized: memoized as Checker,
+    seed: (name, args, result) => {
+      results.set(keyOfCall(name, args), result);
+    },
+  };
 }
