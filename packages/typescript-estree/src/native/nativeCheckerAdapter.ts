@@ -1,6 +1,5 @@
 import type {
   Checker as NativeChecker,
-  Signature as NativeSignature,
   SymbolFlags,
 } from '@typescript/native/unstable/sync';
 import type * as ts from 'typescript';
@@ -10,7 +9,7 @@ import type { NativeTypeAdapter } from './nativeTypeAdapter';
 
 import { throwOnUnsupportedMembers } from './throwOnUnsupportedMembers';
 
-export interface NativeCheckerAdapterContext {
+interface NativeCheckerAdapterContext {
   checker: NativeChecker;
   nodeAdapter: NativeNodeAdapter;
   typeAdapter: NativeTypeAdapter;
@@ -46,7 +45,6 @@ const UNSUPPORTED_CHECKER_MEMBERS = new Set([
   'symbolToParameterDeclaration',
   'symbolToString',
   'symbolToTypeParameterDeclarations',
-  'tryGetMemberInModuleExports',
   'typeParameterToDeclaration',
   'typePredicateToString',
 ] satisfies readonly (keyof ts.TypeChecker)[]);
@@ -70,11 +68,6 @@ export function createNativeChecker({
     wrapTypePredicate,
   } = typeAdapter;
   const { unwrapNode } = nodeAdapter;
-
-  function resolvedSignatureOf(node: ts.Node): NativeSignature | undefined {
-    const signature = checker.getResolvedSignature(unwrapNode(node));
-    return checker.isUnknownSignature(signature) ? undefined : signature;
-  }
 
   const nativeChecker = {
     getAliasedSymbol: symbol =>
@@ -150,7 +143,8 @@ export function createNativeChecker({
       checker.getPropertiesOfType(unwrapType(type)).map(toSymbol),
     getPropertyOfType: (type, name) =>
       wrapSymbol(checker.getPropertyOfType(unwrapType(type), name)),
-    getResolvedSignature: node => wrapSignature(resolvedSignatureOf(node)),
+    getResolvedSignature: node =>
+      wrapSignature(checker.getResolvedSignature(unwrapNode(node))),
     getReturnTypeOfSignature: signature =>
       wrapType(checker.getReturnTypeOfSignature(unwrapSignature(signature))),
     getShorthandAssignmentValueSymbol: node =>
@@ -236,13 +230,26 @@ export function createNativeChecker({
       kind,
       enclosingDeclaration,
       flags,
-    ) =>
-      checker.signatureToSignatureDeclaration(
+    ) => {
+      // Every signature declaration kind native has shares its classic number.
+      const declaration = checker.signatureToSignatureDeclaration(
         unwrapSignature(signature),
         kind as never,
         enclosingDeclaration && unwrapNode(enclosingDeclaration),
         flags,
-      ) as ts.SignatureDeclaration | undefined,
+      );
+      return (
+        declaration &&
+        (nodeAdapter.wrapNode(declaration) as ts.SignatureDeclaration)
+      );
+    },
+    tryGetMemberInModuleExports: (memberName, moduleSymbol) =>
+      wrapSymbol(
+        checker.getMemberInModuleExports(
+          unwrapSymbol(moduleSymbol),
+          memberName,
+        ),
+      ),
     typeToString: (type, enclosingDeclaration, flags) =>
       checker.typeToString(
         unwrapType(type),

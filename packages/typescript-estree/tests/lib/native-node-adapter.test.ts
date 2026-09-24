@@ -54,7 +54,7 @@ describe('native node adapter', () => {
       const adapter = createNativeNodeAdapter(() =>
         program.getSyntacticDiagnostics(fixturePath),
       );
-      const adaptedSourceFile = adapter.adaptSourceFile(sourceFile);
+      const adaptedSourceFile = adapter.wrapNode(sourceFile) as ts.SourceFile;
       const statements = adaptedSourceFile.statements;
 
       expect(adaptedSourceFile.statements).toBe(statements);
@@ -79,7 +79,7 @@ describe('native node adapter', () => {
       );
       expect(() =>
         astConverter(
-          adapter.adaptSourceFile(sourceFile),
+          adapter.wrapNode(sourceFile) as ts.SourceFile,
           createParseSettings(invalid, {
             ...baseOptions,
             filePath: fixturePath,

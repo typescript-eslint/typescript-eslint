@@ -1,3 +1,5 @@
+import type * as ts from 'typescript';
+
 import type { ParseAndGenerateServicesResult } from '../parser';
 import type { TSESTreeOptions } from '../parser-options';
 import type { ParseSettings } from '../parseSettings';
@@ -19,7 +21,7 @@ export function parseAndGenerateNativeServices<
   const getSyntacticDiagnostics = () =>
     context.program.getSyntacticDiagnostics(context.sourceFile.fileName);
   const nodeAdapter = createNativeNodeAdapter(getSyntacticDiagnostics);
-  const sourceFile = nodeAdapter.adaptSourceFile(context.sourceFile);
+  const sourceFile = nodeAdapter.wrapNode(context.sourceFile) as ts.SourceFile;
   const { astMaps, estree } = astConverter(sourceFile, parseSettings, true);
   const program = createNativeProgram({ context, nodeAdapter });
 

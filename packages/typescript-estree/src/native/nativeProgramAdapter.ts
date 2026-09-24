@@ -1,35 +1,23 @@
-import type {
-  CompilerOptions as NativeCompilerOptions,
-  Diagnostic as NativeDiagnostic,
-} from '@typescript/native/unstable/sync';
-
-import path from 'node:path';
-import * as ts from 'typescript';
+import type { Diagnostic as NativeDiagnostic } from '@typescript/native/unstable/sync';
+import type * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 import type { NativeProjectContext } from './types';
 
 import { createNativeChecker } from './nativeCheckerAdapter';
+import { toClassicDiagnostic } from './nativeNodeAdapter';
 import { createNativeTypeAdapter } from './nativeTypeAdapter';
 import { throwOnUnsupportedMembers } from './throwOnUnsupportedMembers';
 
-export interface NativeProgramAdapterContext {
+interface NativeProgramAdapterContext {
   context: NativeProjectContext;
   nodeAdapter: NativeNodeAdapter;
 }
-
-/** Native numbers `ReactNative` 2 and `React` 3; classic has them swapped. */
-const NATIVE_TO_CLASSIC_JSX_EMIT = new Map<number, number>([
-  [2, ts.JsxEmit.ReactNative],
-  [3, ts.JsxEmit.React],
-]);
 
 const UNSUPPORTED_PROGRAM_MEMBERS = new Set([
   'emit',
   'getIdentifierCount',
   'getInstantiationCount',
-  'getModeForResolutionAtIndex',
-  'getModeForUsageLocation',
   'getNodeCount',
   'getOptionsDiagnostics',
   'getProjectReferences',
@@ -51,7 +39,6 @@ export function createNativeProgram({
     project,
   });
 
-  let compilerOptions: ts.CompilerOptions | undefined;
   let typeChecker: ts.TypeChecker | undefined;
 
   function getSourceFile(fileName: string): ts.SourceFile | undefined {
@@ -63,17 +50,12 @@ export function createNativeProgram({
     diagnostic: NativeDiagnostic,
     requestedFile?: ts.SourceFile,
   ): ts.Diagnostic {
-    return {
-      category: diagnostic.category,
-      code: diagnostic.code,
-      file:
-        diagnostic.fileName == null
-          ? requestedFile
-          : (getSourceFile(diagnostic.fileName) ?? requestedFile),
-      length: diagnostic.end - diagnostic.pos,
-      messageText: diagnostic.text,
-      start: diagnostic.pos,
-    };
+    return toClassicDiagnostic(
+      diagnostic,
+      (diagnostic.fileName == null
+        ? undefined
+        : getSourceFile(diagnostic.fileName)) ?? requestedFile,
+    );
   }
 
   function diagnosticsFor(
@@ -98,14 +80,12 @@ export function createNativeProgram({
 
   const nativeProgram = {
     getCompilerOptions: () =>
-      (compilerOptions ??= translateCompilerOptions(
-        program.getCompilerOptions(),
-      )),
+      program.getCompilerOptions() as ts.CompilerOptions,
     getConfigFileParsingDiagnostics: () =>
       program
         .getConfigFileParsingDiagnostics()
         .map(diagnostic => wrapDiagnostic(diagnostic)),
-    getCurrentDirectory: () => path.dirname(project.configFileName),
+    getCurrentDirectory: () => program.getCurrentDirectory(),
     getDeclarationDiagnostics: file =>
       locatedDiagnosticsFor(
         fileName => program.getDeclarationDiagnostics(fileName),
@@ -115,6 +95,14 @@ export function createNativeProgram({
       program
         .getGlobalDiagnostics()
         .map(diagnostic => wrapDiagnostic(diagnostic)),
+    getModeForResolutionAtIndex: (file, index) =>
+      program.getModeForResolutionAtIndex(file.fileName, index) as
+        ts.ResolutionMode | undefined,
+    getModeForUsageLocation: (file, usage) =>
+      program.getModeForUsageLocation(
+        file.fileName,
+        nodeAdapter.unwrapNode(usage) as never,
+      ) as ts.ResolutionMode | undefined,
     getRootFileNames: () => project.parsedCommandLine.fileNames,
 
     getSemanticDiagnostics: file =>
@@ -127,9 +115,8 @@ export function createNativeProgram({
     getSourceFiles: () =>
       program
         .getSourceFileNames()
-        .map(fileName => program.getSourceFile(fileName))
-        .filter(sourceFile => sourceFile != null)
-        .map(sourceFile => nodeAdapter.wrapNode(sourceFile) as ts.SourceFile),
+        .map(getSourceFile)
+        .filter(sourceFile => sourceFile != null),
     getSyntacticDiagnostics: file =>
       locatedDiagnosticsFor(
         fileName => program.getSyntacticDiagnostics(fileName),
@@ -171,14 +158,4 @@ function packageNameFromPath(filePath: string): string | undefined {
   return name.startsWith('@') && index + 2 < segments.length
     ? `${name}/${segments[index + 2]}`
     : name;
-}
-
-function translateCompilerOptions(
-  options: NativeCompilerOptions,
-): ts.CompilerOptions {
-  const translated = { ...options } as ts.CompilerOptions;
-  if (options.jsx != null) {
-    translated.jsx = NATIVE_TO_CLASSIC_JSX_EMIT.get(options.jsx) ?? options.jsx;
-  }
-  return translated;
 }

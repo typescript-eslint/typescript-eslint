@@ -1,8 +1,8 @@
 import type {
   Node as NativeNode,
   NodeArray as NativeNodeArray,
-  SourceFile as NativeSourceFile,
 } from '@typescript/native/unstable/ast';
+import type { Diagnostic as NativeDiagnostic } from '@typescript/native/unstable/sync';
 
 import {
   NodeFlags as NativeNodeFlags,
@@ -10,20 +10,29 @@ import {
 } from '@typescript/native/unstable/ast';
 import * as ts from 'typescript';
 
+import type { NativeMethod } from './createMethodForwarder';
+
+import { createMethodForwarder } from './createMethodForwarder';
 import { createFlagTranslations, translateFlags } from './translateFlags';
 
 export interface NativeNodeAdapter {
-  adaptSourceFile(sourceFile: NativeSourceFile): ts.SourceFile;
   unwrapNode(node: ts.Node): NativeNode;
   wrapNode(node: NativeNode): ts.Node;
 }
 
-interface NativeSyntacticDiagnostic {
-  category: number;
-  code: number;
-  end: number;
-  pos: number;
-  text: string;
+/** Classic's `file` is the adapted source file, which native only names. */
+export function toClassicDiagnostic(
+  diagnostic: NativeDiagnostic,
+  file: ts.SourceFile | undefined,
+): ts.Diagnostic {
+  return {
+    category: diagnostic.category,
+    code: diagnostic.code,
+    file,
+    length: diagnostic.end - diagnostic.pos,
+    messageText: diagnostic.text,
+    start: diagnostic.pos,
+  };
 }
 
 const nativeToClassicKind = new Map<NativeSyntaxKind, ts.SyntaxKind>();
@@ -69,18 +78,8 @@ function translateNodeFlags(node: NativeNode): ts.NodeFlags {
     : flags;
 }
 
-const CLASSIC_TO_NATIVE_PROPERTY = new Map<string, string>([
-  ['default', 'defaultType'],
-]);
-
-/**
- * A fallback rather than a rename: nodes that do have a native property of the
- * classic name — a parameter's `?`, a mapped type's `?` — keep using it.
- */
-const POSTFIX_TOKEN_KINDS = new Map<string, NativeSyntaxKind>([
-  ['exclamationToken', NativeSyntaxKind.ExclamationToken],
-  ['questionToken', NativeSyntaxKind.QuestionToken],
-]);
+/** Native stores these as bare kinds, which need translating like any other. */
+const KIND_PROPERTIES = new Set(['keywordToken', 'operator', 'token']);
 
 function isHeritageTypeReference(node: NativeNode): boolean {
   return (
@@ -111,7 +110,7 @@ function isNativeNodeArray(
 }
 
 export function createNativeNodeAdapter(
-  getSyntacticDiagnostics: () => readonly NativeSyntacticDiagnostic[],
+  getSyntacticDiagnostics: () => readonly NativeDiagnostic[],
 ): NativeNodeAdapter {
   const nativeToAdapter = new WeakMap<NativeNode, ts.Node>();
   const adapterToNative = new WeakMap<ts.Node, NativeNode>();
@@ -168,6 +167,7 @@ export function createNativeNodeAdapter(
     return token;
   }
 
+  /** Classic splits a JSX closing tag's `</` into `<` and `/`; native keeps it whole. */
   function getChildren(node: NativeNode): readonly ts.Node[] {
     const cached = nativeToChildren.get(node);
     if (cached) {
@@ -175,94 +175,191 @@ export function createNativeNodeAdapter(
     }
 
     const parent = wrapNode(node);
-    const children: NativeNode[] = [];
-    node.forEachChild(
-      child => {
-        children.push(child);
-      },
-      childArray => {
-        children.push(...childArray);
-      },
-    );
-    children.sort(
-      (left, right) => left.pos - right.pos || right.end - left.end,
-    );
-
-    const sourceFile = node.getSourceFile();
-    const childStarts = children.map(child => child.getStart(sourceFile));
-    const scanner = ts.createScanner(
-      ts.ScriptTarget.Latest,
-      true,
-      sourceFile.languageVariant,
-      sourceFile.text,
-    );
-    // Only the deprecated position API can resume after a structural child.
-    /* eslint-disable @typescript-eslint/no-deprecated */
-    scanner.setTextPos(Math.max(0, node.pos));
-    const result: ts.Node[] = [];
-    let childIndex = 0;
-    while (scanner.getTextPos() < node.end) {
-      const fullStart = scanner.getTextPos();
-      const kind = scanner.scan();
-      const tokenStart = scanner.getTokenPos();
-      const tokenEnd = scanner.getTextPos();
-      while (
-        childIndex < children.length &&
-        children[childIndex].end <= tokenStart
-      ) {
-        result.push(wrapNode(children[childIndex++]));
-      }
-      const child = children[childIndex];
-      if (
-        childIndex < children.length &&
-        tokenStart >= childStarts[childIndex] &&
-        tokenStart < child.end
-      ) {
-        scanner.setTextPos(child.end);
-        result.push(wrapNode(child));
-        childIndex += 1;
-      } else if (kind === ts.SyntaxKind.EndOfFileToken || tokenEnd > node.end) {
-        break;
-      } else if (kind === ts.SyntaxKind.LessThanSlashToken) {
-        result.push(
-          createToken(
-            ts.SyntaxKind.LessThanToken,
-            fullStart,
-            tokenStart + 1,
-            parent,
-          ),
-          createToken(
-            ts.SyntaxKind.SlashToken,
-            tokenStart + 1,
-            tokenEnd,
-            parent,
-          ),
-        );
-      } else if (
-        kind !== ts.SyntaxKind.WhitespaceTrivia &&
-        kind !== ts.SyntaxKind.NewLineTrivia
-      ) {
-        result.push(createToken(kind, fullStart, tokenEnd, parent));
-      }
-    }
-    /* eslint-enable @typescript-eslint/no-deprecated */
-    while (childIndex < children.length) {
-      result.push(wrapNode(children[childIndex++]));
-    }
-    nativeToChildren.set(node, result);
-    return result;
+    const children = node
+      .getChildren()
+      .flatMap(child =>
+        child.kind === NativeSyntaxKind.LessThanSlashToken
+          ? [
+              createToken(
+                ts.SyntaxKind.LessThanToken,
+                child.pos,
+                child.end - 1,
+                parent,
+              ),
+              createToken(
+                ts.SyntaxKind.SlashToken,
+                child.end - 1,
+                child.end,
+                parent,
+              ),
+            ]
+          : [wrapNode(child)],
+      );
+    nativeToChildren.set(node, children);
+    return children;
   }
 
-  function getEdgeToken(node: NativeNode, first: boolean): ts.Node | undefined {
-    const children = getChildren(node);
-    const child = first ? children[0] : children.at(-1);
-    if (!child) {
-      return undefined;
+  /** A `</` is only ever a first token, where classic answers its `<`. */
+  function wrapToken(token: NativeNode | undefined): ts.Node | undefined {
+    if (token?.kind !== NativeSyntaxKind.LessThanSlashToken) {
+      return token && wrapNode(token);
     }
-    return child.kind < ts.SyntaxKind.FirstNode
-      ? child
-      : getEdgeToken(unwrap(child), first);
+    return getChildren(token.parent).find(child => child.pos === token.pos);
   }
+
+  function readNative(target: NativeNode, property: string | symbol): unknown {
+    const value: unknown = Reflect.get(target, property, target);
+    if (typeof value === 'number' && KIND_PROPERTIES.has(property as string)) {
+      return translateKind(value);
+    }
+    if (isNativeNode(value)) {
+      return wrapNode(value);
+    }
+    if (isNativeNodeArray(value)) {
+      return adaptArray(value);
+    }
+    return typeof value === 'function' ? forward(value as NativeMethod) : value;
+  }
+
+  /**
+   * A fallback rather than a rename: nodes that do have a native property of
+   * the classic name — a parameter's `?`, a mapped type's `?` — keep using it.
+   */
+  function readPostfixToken(
+    target: NativeNode,
+    property: string,
+    kind: NativeSyntaxKind,
+  ): unknown {
+    const own = readNative(target, property);
+    if (own != null) {
+      return own;
+    }
+    const postfix: unknown = Reflect.get(target, 'postfixToken', target);
+    return isNativeNode(postfix) && postfix.kind === kind
+      ? wrapNode(postfix)
+      : undefined;
+  }
+
+  /**
+   * Classic methods, shared by every node; each reads its node off `this`.
+   * Native's source file is always the node's own, so that argument is dropped.
+   */
+  const nodeMethods = {
+    forEachChild<T>(
+      this: ts.Node,
+      visitor: (child: ts.Node) => T,
+      visitArray?: (children: ts.NodeArray<ts.Node>) => T,
+    ): T | undefined {
+      return unwrap(this).forEachChild(
+        child => visitor(wrapNode(child)),
+        visitArray && (children => visitArray(adaptArray(children))),
+      );
+    },
+    getChildAt(this: ts.Node, index: number) {
+      return getChildren(unwrap(this))[index];
+    },
+    getChildCount(this: ts.Node) {
+      return getChildren(unwrap(this)).length;
+    },
+    getChildren(this: ts.Node) {
+      return getChildren(unwrap(this));
+    },
+    getFirstToken(this: ts.Node) {
+      return wrapToken(unwrap(this).getFirstToken());
+    },
+    getFullText(this: ts.Node) {
+      return unwrap(this).getFullText();
+    },
+    getLastToken(this: ts.Node) {
+      return wrapToken(unwrap(this).getLastToken());
+    },
+    getLeadingTriviaWidth(this: ts.Node) {
+      return unwrap(this).getLeadingTriviaWidth();
+    },
+    getSourceFile(this: ts.Node) {
+      return wrapNode(unwrap(this).getSourceFile());
+    },
+    getStart(
+      this: ts.Node,
+      _sourceFile?: ts.SourceFile,
+      includeJsDocComment?: boolean,
+    ) {
+      return unwrap(this).getStart(undefined, includeJsDocComment);
+    },
+    getText(this: ts.Node) {
+      return unwrap(this).getText();
+    },
+    getWidth(this: ts.Node) {
+      return unwrap(this).getWidth();
+    },
+  };
+
+  const handler: ProxyHandler<NativeNode> = {
+    get(target, property, receiver) {
+      switch (property) {
+        case 'default':
+          return readNative(target, 'defaultType');
+        // Native keeps only the unescaped `text` of an identifier.
+        case 'escapedText':
+          return target.kind === NativeSyntaxKind.Identifier ||
+            target.kind === NativeSyntaxKind.PrivateIdentifier
+            ? ts.escapeLeadingUnderscores(
+                (target as NativeNode & { text: string }).text,
+              )
+            : readNative(target, property);
+        case 'exclamationToken':
+          return readPostfixToken(
+            target,
+            property,
+            NativeSyntaxKind.ExclamationToken,
+          );
+        // Classic always spells a heritage element as an expression.
+        case 'expression':
+          return isHeritageTypeReference(target)
+            ? wrapNode((target as unknown as { typeName: NativeNode }).typeName)
+            : readNative(target, property);
+        case 'flags':
+          return translateNodeFlags(target);
+        case 'kind':
+          return isHeritageTypeReference(target)
+            ? ts.SyntaxKind.ExpressionWithTypeArguments
+            : translateKind(target.kind);
+        case 'modifierFlagsCache':
+          return (
+            ((target as NativeNode & { modifierFlags?: number })
+              .modifierFlags ?? ts.ModifierFlags.None) |
+            ts.ModifierFlags.HasComputedFlags
+          );
+        case 'parseDiagnostics':
+          return target.kind === NativeSyntaxKind.SourceFile
+            ? getSyntacticDiagnostics().map(diagnostic =>
+                toClassicDiagnostic(diagnostic, receiver as ts.SourceFile),
+              )
+            : undefined;
+        case 'questionToken':
+          return readPostfixToken(
+            target,
+            property,
+            NativeSyntaxKind.QuestionToken,
+          );
+        case 'forEachChild':
+        case 'getChildAt':
+        case 'getChildCount':
+        case 'getChildren':
+        case 'getFirstToken':
+        case 'getFullText':
+        case 'getLastToken':
+        case 'getLeadingTriviaWidth':
+        case 'getSourceFile':
+        case 'getStart':
+        case 'getText':
+        case 'getWidth':
+          return nodeMethods[property];
+        default:
+          return readNative(target, property);
+      }
+    },
+  };
 
   function unwrap(node: ts.Node): NativeNode {
     const native = adapterToNative.get(node);
@@ -272,152 +369,18 @@ export function createNativeNodeAdapter(
     return native;
   }
 
+  const forward = createMethodForwarder(unwrap);
+
   function wrapNode(node: NativeNode): ts.Node {
     const cached = nativeToAdapter.get(node);
     if (cached) {
       return cached;
     }
-
-    const proxy = new Proxy(node, {
-      get(target, property) {
-        if (property === 'kind') {
-          return isHeritageTypeReference(target)
-            ? ts.SyntaxKind.ExpressionWithTypeArguments
-            : translateKind(target.kind);
-        }
-        // Classic always spells a heritage element as an expression.
-        if (property === 'expression' && isHeritageTypeReference(target)) {
-          return wrapNode(
-            (target as unknown as { typeName: NativeNode }).typeName,
-          );
-        }
-        if (property === 'flags') {
-          return translateNodeFlags(target);
-        }
-        if (property === 'transformFlags') {
-          return 0;
-        }
-        if (property === 'modifierFlagsCache') {
-          return (
-            ((target as NativeNode & { modifierFlags?: number })
-              .modifierFlags ?? ts.ModifierFlags.None) |
-            ts.ModifierFlags.HasComputedFlags
-          );
-        }
-        if (
-          property === 'parseDiagnostics' &&
-          target.kind === NativeSyntaxKind.SourceFile
-        ) {
-          return getSyntacticDiagnostics().map(diagnostic => ({
-            category: diagnostic.category,
-            code: diagnostic.code,
-            file: proxy,
-            length: diagnostic.end - diagnostic.pos,
-            messageText: diagnostic.text,
-            start: diagnostic.pos,
-          }));
-        }
-        if (property === 'getChildren') {
-          return () => getChildren(target);
-        }
-        if (property === 'getChildCount') {
-          return () => getChildren(target).length;
-        }
-        if (property === 'getChildAt') {
-          return (index: number) => getChildren(target)[index];
-        }
-        if (property === 'getFirstToken' || property === 'getLastToken') {
-          return () => getEdgeToken(target, property === 'getFirstToken');
-        }
-        if (property === 'getEnd') {
-          return () => target.end;
-        }
-        if (property === 'getFullStart') {
-          return () => target.pos;
-        }
-        if (property === 'getLeadingTriviaWidth') {
-          return () => target.getStart() - target.pos;
-        }
-        if (property === 'forEachChild') {
-          return <T>(
-            visitor: (child: ts.Node) => T,
-            visitArray?: (children: ts.NodeArray<ts.Node>) => T,
-          ): T | undefined =>
-            target.forEachChild(
-              child => visitor(wrapNode(child)),
-              visitArray && (children => visitArray(adaptArray(children))),
-            );
-        }
-        if (property === 'getSourceFile') {
-          return () => wrapNode(target.getSourceFile());
-        }
-        if (
-          property === 'getStart' ||
-          property === 'getWidth' ||
-          property === 'getText' ||
-          property === 'getFullText'
-        ) {
-          return (
-            sourceFile?: ts.SourceFile,
-            includeJsDocComment?: boolean,
-          ) => {
-            const nativeSourceFile = sourceFile
-              ? (adapterToNative.get(sourceFile) as NativeSourceFile)
-              : undefined;
-            return property === 'getStart'
-              ? target.getStart(nativeSourceFile, includeJsDocComment)
-              : target[property](nativeSourceFile);
-          };
-        }
-        let value: unknown = Reflect.get(
-          target,
-          (typeof property === 'string' &&
-            CLASSIC_TO_NATIVE_PROPERTY.get(property)) ||
-            property,
-          target,
-        );
-        if (value == null && typeof property === 'string') {
-          const postfixKind = POSTFIX_TOKEN_KINDS.get(property);
-          if (postfixKind != null) {
-            const postfix: unknown = Reflect.get(
-              target,
-              'postfixToken',
-              target,
-            );
-            value =
-              isNativeNode(postfix) && postfix.kind === postfixKind
-                ? postfix
-                : undefined;
-          }
-        }
-        if (
-          typeof value === 'number' &&
-          (property === 'operator' ||
-            property === 'token' ||
-            property === 'keywordToken')
-        ) {
-          return translateKind(value);
-        }
-        if (isNativeNode(value)) {
-          return wrapNode(value);
-        }
-        if (isNativeNodeArray(value)) {
-          return adaptArray(value);
-        }
-        if (typeof value === 'function') {
-          return (value as (...args: never[]) => unknown).bind(target);
-        }
-        return value;
-      },
-    }) as unknown as ts.Node;
+    const proxy = new Proxy(node, handler) as unknown as ts.Node;
     nativeToAdapter.set(node, proxy);
     adapterToNative.set(proxy, node);
     return proxy;
   }
 
-  return {
-    adaptSourceFile: sourceFile => wrapNode(sourceFile) as ts.SourceFile,
-    unwrapNode: unwrap,
-    wrapNode,
-  };
+  return { unwrapNode: unwrap, wrapNode };
 }

@@ -7,7 +7,6 @@ export {
   createNativeProjectService,
   getNativeProjectService,
 } from './createNativeProjectService';
-export { parseAndGenerateNativeServices } from './parseAndGenerateNativeServices';
 export type * from './types';
 
 registerNativeBackend({

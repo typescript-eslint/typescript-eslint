@@ -1,12 +1,10 @@
-import type {
-  Declaration as NativeDeclaration,
-  Node as NativeNode,
-} from '@typescript/native/unstable/ast';
+import type { Declaration as NativeDeclaration } from '@typescript/native/unstable/ast';
 import type {
   Checker as NativeChecker,
+  FreshableType as NativeFreshableType,
   IndexInfo as NativeIndexInfo,
-  JSDocTagInfo as NativeJSDocTagInfo,
   NodeHandle as NativeNodeHandle,
+  ObjectType as NativeObjectType,
   Project as NativeProject,
   Signature as NativeSignature,
   Symbol as NativeSymbol,
@@ -18,18 +16,23 @@ import {
   getJSDocTags,
   getTextOfJSDocComment,
 } from '@typescript/native/unstable/ast';
-import { ObjectFlags, TypeFlags } from '@typescript/native/unstable/sync';
+import {
+  ElementFlags,
+  ObjectFlags,
+  TypeFlags,
+} from '@typescript/native/unstable/sync';
 import * as ts from 'typescript';
 
+import type { NativeMethod } from './createMethodForwarder';
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 
+import { createMethodForwarder } from './createMethodForwarder';
 import { createFlagTranslations, translateFlags } from './translateFlags';
 
 /**
- * Native exposes relationships as lazy methods over handle ids where classic
- * exposes plain properties. A zero handle means "no such relationship", and
- * several native getters throw rather than return `undefined` for one, so every
- * wrapper checks the raw handle — or the flags implying it — before reading.
+ * Native exposes relationships as lazy methods where classic exposes plain
+ * properties, and a getter only answers for its own kind of type — so every
+ * wrapper checks the kind before reading.
  */
 export interface NativeTypeAdapter {
   toSignature: (signature: NativeSignature) => ts.Signature;
@@ -56,42 +59,10 @@ export interface NativeTypeAdapter {
   ) => ts.TypePredicate | undefined;
 }
 
-export interface NativeTypeAdapterContext {
+interface NativeTypeAdapterContext {
   checker: NativeChecker;
   nodeAdapter: NativeNodeAdapter;
   project: NativeProject;
-}
-
-interface NativeTypeInternals {
-  aliasSymbol: number;
-  baseType: number;
-  checkType: number;
-  extendsType: number;
-  getBaseType: () => NativeType;
-  getCheckType: () => NativeType;
-  getConstraint: () => NativeType | undefined;
-  getDefault: () => NativeType | undefined;
-  getExtendsType: () => NativeType;
-  getFalseType: () => NativeType;
-  getFreshType: () => NativeType | undefined;
-  getIndexType: () => NativeType;
-  getLocalTypeParameters: () => readonly NativeType[];
-  getObjectType: () => NativeType;
-  getOuterTypeParameters: () => readonly NativeType[];
-  getRegularType: () => NativeType | undefined;
-  getTarget: () => NativeType;
-  getThisType: () => NativeType | undefined;
-  getTrueType: () => NativeType;
-  getTypeParameters: () => readonly NativeType[];
-  indexType: number;
-  objectFlags: ObjectFlags;
-  objectType: number;
-  intrinsicName: string;
-  substConstraint: number;
-  symbol: number;
-  value: unknown;
-  target: number;
-  thisType: number;
 }
 
 /**
@@ -103,45 +74,6 @@ const OBJECT_FLAG_TRANSLATIONS = createFlagTranslations(
   ts.ObjectFlags,
 );
 
-const TYPE_GETTER_PROPERTIES = new Map<string, string>([
-  ['getAliasSymbol', 'aliasSymbol'],
-  ['getBaseType', 'baseType'],
-  ['getCheckType', 'checkType'],
-  ['getConstraint', 'constraint'],
-  ['getDefault', 'default'],
-  ['getExtendsType', 'extendsType'],
-  ['getFalseType', 'resolvedFalseType'],
-  ['getFlags', 'flags'],
-  ['getFreshType', 'freshType'],
-  ['getIndexType', 'indexType'],
-  ['getLocalTypeParameters', 'localTypeParameters'],
-  ['getObjectType', 'objectType'],
-  ['getOuterTypeParameters', 'outerTypeParameters'],
-  ['getRegularType', 'regularType'],
-  ['getSymbol', 'symbol'],
-  ['getTarget', 'target'],
-  ['getTrueType', 'resolvedTrueType'],
-  ['getTypeParameters', 'typeParameters'],
-  ['getTypes', 'types'],
-]);
-
-/** `type` is `IndexType`'s spelling of the `target` handle. */
-const TYPE_HANDLE_PROPERTIES = new Map<
-  string,
-  readonly [
-    handle: keyof NativeTypeInternals,
-    get: (native: NativeTypeInternals) => NativeType,
-  ]
->([
-  ['baseType', ['baseType', native => native.getBaseType()]],
-  ['checkType', ['checkType', native => native.getCheckType()]],
-  ['extendsType', ['extendsType', native => native.getExtendsType()]],
-  ['indexType', ['indexType', native => native.getIndexType()]],
-  ['objectType', ['objectType', native => native.getObjectType()]],
-  ['target', ['target', native => native.getTarget()]],
-  ['type', ['target', native => native.getTarget()]],
-]);
-
 function toPseudoBigInt(value: bigint): ts.PseudoBigInt {
   return {
     base10Value: (value < 0n ? -value : value).toString(),
@@ -149,45 +81,91 @@ function toPseudoBigInt(value: bigint): ts.PseudoBigInt {
   };
 }
 
-const SYMBOL_GETTER_PROPERTIES = new Map<string, string>([
-  ['getDeclarations', 'declarations'],
-  ['getEscapedName', 'escapedName'],
-  ['getExports', 'exports'],
-  ['getFlags', 'flags'],
-  ['getMembers', 'members'],
-  ['getName', 'name'],
-  ['getParent', 'parent'],
-]);
+/** Marks a property classic doesn't define, which the native object answers. */
+const NATIVE = Symbol('native');
 
-const SIGNATURE_GETTER_PROPERTIES = new Map<string, string>([
-  ['getDeclaration', 'declaration'],
-  ['getParameters', 'parameters'],
-  ['getReturnType', 'resolvedReturnType'],
-  ['getTarget', 'target'],
-  ['getThisParameter', 'thisParameter'],
-  ['getTypeParameters', 'typeParameters'],
-]);
-
-/** Remembers the first value, `undefined` included, to avoid a round trip. */
-function createMemo(): (property: string, compute: () => unknown) => unknown {
-  const values = new Map<string, unknown>();
-  return (property, compute) => {
-    if (!values.has(property)) {
-      values.set(property, compute());
-    }
-    return values.get(property);
+interface Wrapper<Native, Classic> {
+  unwrap: (classic: Classic) => Native;
+  wrap: {
+    (native: Native): Classic;
+    (native: Native | undefined): Classic | undefined;
   };
 }
 
-function getterFor(
-  wrapped: object,
-  getters: ReadonlyMap<string, string>,
-  property: string | symbol,
-): (() => unknown) | undefined {
-  const source = typeof property === 'string' && getters.get(property);
-  return source
-    ? () => (wrapped as Record<string, unknown>)[source]
-    : undefined;
+/**
+ * Presents a native object through its classic members, falling back to the
+ * native object itself. Members are computed once, so identity holds and each
+ * relationship costs at most one round trip; `in` agrees with `get`, since
+ * classic code probes for some properties rather than reading them. Methods on
+ * either side find their object through `this`, so none is created per access.
+ */
+function createWrapper<Native extends object, Classic extends object>(
+  readClassic: (native: Native, property: string) => unknown,
+): Wrapper<Native, Classic> {
+  const nativeToClassic = new WeakMap<Native, Classic>();
+  const classicToNative = new WeakMap<Classic, Native>();
+  const values = new WeakMap<Native, Map<string, unknown>>();
+
+  function unwrap(classic: Classic): Native {
+    const native = classicToNative.get(classic);
+    if (!native) {
+      throw new Error(UNWRAP_ERROR);
+    }
+    return native;
+  }
+
+  const forward = createMethodForwarder(unwrap);
+
+  function read(native: Native, property: string | symbol): unknown {
+    if (typeof property !== 'string') {
+      return NATIVE;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- every proxied object has its values
+    const known = values.get(native)!;
+    const cached = known.get(property);
+    if (cached != null || known.has(property)) {
+      return cached;
+    }
+    const value = readClassic(native, property);
+    known.set(property, value);
+    return value;
+  }
+
+  const handler: ProxyHandler<Native> = {
+    get(target, property) {
+      const value = read(target, property);
+      if (value !== NATIVE) {
+        return value;
+      }
+      const nativeValue: unknown = Reflect.get(target, property, target);
+      return typeof nativeValue === 'function'
+        ? forward(nativeValue as NativeMethod)
+        : nativeValue;
+    },
+    has(target, property) {
+      const value = read(target, property);
+      return value === NATIVE ? Reflect.has(target, property) : value != null;
+    },
+  };
+
+  function wrap(native: Native): Classic;
+  function wrap(native: Native | undefined): Classic | undefined;
+  function wrap(native: Native | undefined): Classic | undefined {
+    if (!native) {
+      return undefined;
+    }
+    const cached = nativeToClassic.get(native);
+    if (cached) {
+      return cached;
+    }
+    const classic = new Proxy(native, handler) as unknown as Classic;
+    nativeToClassic.set(native, classic);
+    classicToNative.set(classic, native);
+    values.set(native, new Map());
+    return classic;
+  }
+
+  return { unwrap, wrap };
 }
 
 const UNWRAP_ERROR =
@@ -198,13 +176,6 @@ export function createNativeTypeAdapter({
   nodeAdapter,
   project,
 }: NativeTypeAdapterContext): NativeTypeAdapter {
-  const nativeToWrappedType = new WeakMap<NativeType, ts.Type>();
-  const wrappedToNativeType = new WeakMap<ts.Type, NativeType>();
-  const nativeToWrappedSymbol = new WeakMap<NativeSymbol, ts.Symbol>();
-  const wrappedToNativeSymbol = new WeakMap<ts.Symbol, NativeSymbol>();
-  const nativeToWrappedSignature = new WeakMap<NativeSignature, ts.Signature>();
-  const wrappedToNativeSignature = new WeakMap<ts.Signature, NativeSignature>();
-
   const toSignature = (signature: NativeSignature): ts.Signature =>
     wrapSignature(signature);
   const toSymbol = (symbol: NativeSymbol): ts.Symbol => wrapSymbol(symbol);
@@ -213,287 +184,380 @@ export function createNativeTypeAdapter({
   function resolveDeclaration(
     handle: NativeNodeHandle<NativeDeclaration> | undefined,
   ): ts.Declaration | undefined {
-    const resolved = resolveNativeDeclaration(handle);
+    const resolved = handle?.resolve(project);
     return resolved && (nodeAdapter.wrapNode(resolved) as ts.Declaration);
-  }
-
-  function resolveNativeDeclaration(
-    handle: NativeNodeHandle<NativeDeclaration> | undefined,
-  ): NativeNode | undefined {
-    return handle?.resolve(project);
-  }
-
-  /** A signature carries no symbol, and a symbol lookup would merge overloads. */
-  function jsDocTagsOfDeclaration(
-    handle: NativeNodeHandle<NativeDeclaration> | undefined,
-  ): ts.JSDocTagInfo[] {
-    const declaration = resolveNativeDeclaration(handle);
-    if (!declaration) {
-      return [];
-    }
-    return getJSDocTags(declaration).map(tag => {
-      const text = getTextOfJSDocComment(tag.comment);
-      return {
-        name: tag.tagName.text,
-        text: text ? [{ kind: 'text', text }] : undefined,
-      };
-    });
   }
 
   function wrapTypeList(types: readonly NativeType[]): ts.Type[] | undefined {
     return types.length ? types.map(toType) : undefined;
   }
 
-  function wrapType(type: NativeType): ts.Type;
-  function wrapType(type: NativeType | undefined): ts.Type | undefined;
-  function wrapType(type: NativeType | undefined): ts.Type | undefined {
-    if (!type) {
-      return undefined;
-    }
-
-    const cached = nativeToWrappedType.get(type);
-    if (cached) {
-      return cached;
-    }
-
-    const wrapped = new Proxy(type, {
-      get(target, property) {
-        const native = target as NativeType & NativeTypeInternals;
-        const getter = getterFor(wrapped, TYPE_GETTER_PROPERTIES, property);
-        if (getter) {
-          return getter;
-        }
-        const handleProperty =
-          typeof property === 'string' && TYPE_HANDLE_PROPERTIES.get(property);
-        if (handleProperty) {
-          const [handle, get] = handleProperty;
-          return native[handle] ? wrapType(get(native)) : undefined;
-        }
-        switch (property) {
-          case 'symbol':
-            return native.symbol ? wrapSymbol(target.getSymbol()) : undefined;
-          // `UniqueESSymbolType` spells its name the way the checker does for
-          // the symbol's own property, which native only exposes piecewise.
-          case 'escapedName': {
-            const symbol = native.symbol ? target.getSymbol() : undefined;
-            return symbol && `__@${symbol.name}@${symbol.id}`;
-          }
-          case 'aliasSymbol':
-            return native.aliasSymbol
-              ? wrapSymbol(target.getAliasSymbol())
-              : undefined;
-          case 'aliasTypeArguments':
-            return wrapTypeList(target.getAliasTypeArguments());
-          case 'objectFlags':
-            return translateFlags(OBJECT_FLAG_TRANSLATIONS, native.objectFlags);
-          // An implementation detail of `typescript`, with no native equivalent.
-          case 'checker':
-            return undefined;
-
-          case 'types':
-            return (
-              target as { getTypes?: () => readonly NativeType[] | undefined }
-            )
-              .getTypes?.()
-              ?.map(toType);
-
-          case 'typeArguments':
-            return target.isTypeReference()
-              ? checker.getTypeArguments(target).map(toType)
-              : undefined;
-
-          case 'thisType':
-            return wrapType(native.getThisType());
-
-          case 'typeParameters':
-            return target.isClassOrInterface()
-              ? wrapTypeList(native.getTypeParameters())
-              : undefined;
-          case 'outerTypeParameters':
-            return target.isClassOrInterface()
-              ? wrapTypeList(native.getOuterTypeParameters())
-              : undefined;
-          case 'localTypeParameters':
-            return target.isClassOrInterface()
-              ? wrapTypeList(native.getLocalTypeParameters())
-              : undefined;
-
-          case 'resolvedTrueType':
-            return target.isConditionalType()
-              ? wrapType(native.getTrueType())
-              : undefined;
-          case 'resolvedFalseType':
-            return target.isConditionalType()
-              ? wrapType(native.getFalseType())
-              : undefined;
-
-          case 'constraint':
-            return getConstraint(target);
-          case 'default':
-            return target.isTypeParameter()
-              ? wrapType(native.getDefault())
-              : undefined;
-
-          // Classic carries a bigint literal as a `PseudoBigInt`.
-          case 'value':
-            return target.flags & TypeFlags.BigIntLiteral
-              ? toPseudoBigInt(native.value as bigint)
-              : native.value;
-
-          // Native spells a boolean literal's name as a `value` instead.
-          case 'intrinsicName':
-            return target.flags & TypeFlags.BooleanLiteral
-              ? String(native.value)
-              : native.intrinsicName;
-
-          case 'freshType':
-            return target.flags & TypeFlags.Freshable
-              ? wrapType(native.getFreshType())
-              : undefined;
-          case 'regularType':
-            return target.flags & TypeFlags.Freshable
-              ? wrapType(native.getRegularType())
-              : undefined;
-
-          case 'getProperties':
-            return () => target.getProperties().map(toSymbol);
-          case 'getProperty':
-            return (name: string) => wrapSymbol(target.getProperty(name));
-          case 'getApparentProperties':
-            return () => target.getApparentProperties().map(toSymbol);
-          case 'getApparentType':
-            return () => wrapType(target.getApparentType());
-          case 'getReducedType':
-            return () => wrapType(target.getReducedType());
-          case 'getCallSignatures':
-            return () => target.getCallSignatures().map(toSignature);
-          case 'getConstructSignatures':
-            return () => target.getConstructSignatures().map(toSignature);
-          case 'getNonNullableType':
-            return () => wrapType(target.getNonNullableType());
-          case 'getStringIndexType':
-            return () => wrapType(target.getStringIndexType());
-          case 'getNumberIndexType':
-            return () => wrapType(target.getNumberIndexType());
-          case 'getIndexInfos':
-            return () => target.getIndexInfos().map(wrapIndexInfo);
-          case 'getAliasTypeArguments':
-            return () => target.getAliasTypeArguments().map(toType);
-          case 'getBaseTypes':
-            return () => target.getBaseTypes()?.map(toType);
-
-          case 'isUnion':
-            return () => target.isUnionType();
-          case 'isIntersection':
-            return () => target.isIntersectionType();
-          case 'isUnionOrIntersection':
-            return () => (target.flags & TypeFlags.UnionOrIntersection) !== 0;
-          case 'isLiteral':
-            // Classic `isLiteral()` covers only string and number literals;
-            // native `isLiteralType()` also covers bigint and boolean.
-            return () =>
-              (target.flags &
-                (TypeFlags.StringLiteral | TypeFlags.NumberLiteral)) !==
-              0;
-          case 'isStringLiteral':
-            return () => target.isStringLiteralType();
-          case 'isNumberLiteral':
-            return () => target.isNumberLiteralType();
-          case 'isClass':
-            return () => (native.objectFlags & ObjectFlags.Class) !== 0;
-          case 'isIndexType':
-            return () => (target.flags & TypeFlags.Index) !== 0;
-
-          default:
-            return bindNativeMethod(
-              Reflect.get(target, property, target),
-              target,
-            );
-        }
-      },
-    }) as unknown as ts.Type;
-
-    nativeToWrappedType.set(type, wrapped);
-    wrappedToNativeType.set(wrapped, type);
-    return wrapped;
+  function toJSDocTagInfo(name: string, text: string | undefined) {
+    return { name, text: text ? [{ kind: 'text', text }] : undefined };
   }
 
-  function getConstraint(type: NativeType): ts.Type | undefined {
-    const native = type as NativeType & NativeTypeInternals;
-    if (type.isTypeParameter()) {
-      return wrapType(native.getConstraint());
+  /** Classic methods, shared by every wrapper; each reads its object off `this`. */
+  const typeMethods = {
+    getApparentProperties(this: ts.Type) {
+      return unwrapType(this).getApparentProperties().map(toSymbol);
+    },
+    getBaseTypes(this: ts.Type) {
+      return unwrapType(this).getBaseTypes()?.map(toType);
+    },
+    getCallSignatures(this: ts.Type) {
+      return unwrapType(this).getCallSignatures().map(toSignature);
+    },
+    getConstraint(this: ts.Type) {
+      return (this as { constraint?: ts.Type }).constraint;
+    },
+    getConstructSignatures(this: ts.Type) {
+      return unwrapType(this).getConstructSignatures().map(toSignature);
+    },
+    getDefault(this: ts.Type) {
+      return (this as { default?: ts.Type }).default;
+    },
+    getFlags(this: ts.Type) {
+      return this.flags;
+    },
+    getNonNullableType(this: ts.Type) {
+      return wrapType(unwrapType(this).getNonNullableType());
+    },
+    getNumberIndexType(this: ts.Type) {
+      return wrapType(unwrapType(this).getNumberIndexType());
+    },
+    getProperties(this: ts.Type) {
+      return unwrapType(this).getProperties().map(toSymbol);
+    },
+    getProperty(this: ts.Type, name: string) {
+      return wrapSymbol(unwrapType(this).getProperty(name));
+    },
+    getStringIndexType(this: ts.Type) {
+      return wrapType(unwrapType(this).getStringIndexType());
+    },
+    getSymbol(this: ts.Type) {
+      return (this as { symbol?: ts.Symbol }).symbol;
+    },
+    isClass(this: ts.Type) {
+      const type = unwrapType(this);
+      return (
+        type.isObjectType() && (type.objectFlags & ObjectFlags.Class) !== 0
+      );
+    },
+    isIntersection(this: ts.Type) {
+      return unwrapType(this).isIntersectionType();
+    },
+    // Native `isLiteralType()` also covers boolean literals.
+    isLiteral(this: ts.Type) {
+      const type = unwrapType(this);
+      return type.isLiteralType() && !type.isBooleanLiteralType();
+    },
+    isNumberLiteral(this: ts.Type) {
+      return unwrapType(this).isNumberLiteralType();
+    },
+    isStringLiteral(this: ts.Type) {
+      return unwrapType(this).isStringLiteralType();
+    },
+    isUnion(this: ts.Type) {
+      return unwrapType(this).isUnionType();
+    },
+    isUnionOrIntersection(this: ts.Type) {
+      const type = unwrapType(this);
+      return type.isUnionType() || type.isIntersectionType();
+    },
+  };
+
+  const symbolMethods = {
+    getDeclarations(this: ts.Symbol) {
+      return (this as { declarations?: ts.Declaration[] }).declarations;
+    },
+    getDocumentationComment(this: ts.Symbol): ts.SymbolDisplayPart[] {
+      const comment = unwrapSymbol(this).getDocumentationComment(checker);
+      return comment ? [{ kind: 'text', text: comment }] : [];
+    },
+    getEscapedName(this: ts.Symbol) {
+      return this.escapedName;
+    },
+    getFlags(this: ts.Symbol) {
+      return this.flags;
+    },
+    getJsDocTags(this: ts.Symbol): ts.JSDocTagInfo[] {
+      return unwrapSymbol(this)
+        .getJsDocTags(checker)
+        .map(tag => toJSDocTagInfo(tag.name, tag.text));
+    },
+    getName(this: ts.Symbol) {
+      return this.name;
+    },
+  };
+
+  const signatureMethods = {
+    getDeclaration(this: ts.Signature) {
+      return this.declaration;
+    },
+    // Native has no signature documentation to read.
+    getDocumentationComment(): ts.SymbolDisplayPart[] {
+      return [];
+    },
+    // A signature carries no symbol, and a symbol lookup would merge overloads.
+    getJsDocTags(this: ts.Signature): ts.JSDocTagInfo[] {
+      const declaration = unwrapSignature(this).declaration?.resolve(project);
+      return declaration
+        ? getJSDocTags(declaration).map(tag =>
+            toJSDocTagInfo(
+              tag.tagName.text,
+              getTextOfJSDocComment(tag.comment),
+            ),
+          )
+        : [];
+    },
+    getParameters(this: ts.Signature) {
+      return this.parameters;
+    },
+    getReturnType(this: ts.Signature) {
+      return (this as { resolvedReturnType?: ts.Type }).resolvedReturnType;
+    },
+    getTypeParameterAtPosition(this: ts.Signature, position: number) {
+      return wrapType(
+        unwrapSignature(this).getTypeParameterAtPosition(position),
+      );
+    },
+    getTypeParameters(this: ts.Signature) {
+      return this.typeParameters;
+    },
+  };
+
+  function readClassicType(type: NativeType, property: string): unknown {
+    switch (property) {
+      case 'aliasSymbol':
+        return wrapSymbol(type.getAliasSymbol());
+      case 'aliasTypeArguments':
+        return wrapTypeList(type.getAliasTypeArguments());
+      case 'baseType':
+        return type.isSubstitutionType()
+          ? wrapType(type.getBaseType())
+          : undefined;
+      // An implementation detail of `typescript`, with no native equivalent.
+      case 'checker':
+        return undefined;
+      case 'checkType':
+        return type.isConditionalType()
+          ? wrapType(type.getCheckType())
+          : undefined;
+      case 'combinedFlags':
+        return type.isTupleTypeTarget()
+          ? type.elementFlags.reduce((combined, flags) => combined | flags, 0)
+          : undefined;
+      case 'constraint':
+        return type.isTypeParameter() || type.isSubstitutionType()
+          ? wrapType(type.getConstraint())
+          : undefined;
+      case 'constraintType':
+        return type.isMappedType()
+          ? wrapType(type.getConstraintType())
+          : undefined;
+      case 'default':
+        return type.isTypeParameter() ? wrapType(type.getDefault()) : undefined;
+      // `UniqueESSymbolType` spells its name the way the checker does for the
+      // symbol's own property, which native only exposes piecewise.
+      case 'escapedName': {
+        const symbol =
+          type.flags & TypeFlags.UniqueESSymbol ? type.getSymbol() : undefined;
+        return symbol && `__@${symbol.name}@${symbol.id}`;
+      }
+      case 'extendsType':
+        return type.isConditionalType()
+          ? wrapType(type.getExtendsType())
+          : undefined;
+      case 'freshType':
+        return type.flags & TypeFlags.Freshable
+          ? wrapType((type as NativeFreshableType).getFreshType())
+          : undefined;
+      case 'indexType':
+        return type.isIndexedAccessType()
+          ? wrapType(type.getIndexType())
+          : undefined;
+      // Native spells a boolean literal's name as a `value` instead.
+      case 'intrinsicName':
+        return type.isBooleanLiteralType()
+          ? String(type.value)
+          : type.isIntrinsicType()
+            ? type.intrinsicName
+            : undefined;
+      case 'localTypeParameters':
+        return type.isClassOrInterface()
+          ? wrapTypeList(type.getLocalTypeParameters())
+          : undefined;
+      // Classic counts the elements a tuple needs, which native leaves out.
+      case 'minLength':
+        return type.isTupleTypeTarget()
+          ? type.elementFlags.filter(
+              flags => flags & (ElementFlags.Required | ElementFlags.Variadic),
+            ).length
+          : undefined;
+      case 'nameType':
+        return type.isMappedType() ? wrapType(type.getNameType()) : undefined;
+      case 'objectFlags':
+        return translateFlags(
+          OBJECT_FLAG_TRANSLATIONS,
+          (type as Partial<NativeObjectType>).objectFlags ?? 0,
+        );
+      case 'objectType':
+        return type.isIndexedAccessType()
+          ? wrapType(type.getObjectType())
+          : undefined;
+      case 'outerTypeParameters':
+        return type.isClassOrInterface()
+          ? wrapTypeList(type.getOuterTypeParameters())
+          : undefined;
+      case 'regularType':
+        return type.flags & TypeFlags.Freshable
+          ? wrapType((type as NativeFreshableType).getRegularType())
+          : undefined;
+      case 'resolvedFalseType':
+        return type.isConditionalType()
+          ? wrapType(type.getFalseType())
+          : undefined;
+      case 'resolvedTrueType':
+        return type.isConditionalType()
+          ? wrapType(type.getTrueType())
+          : undefined;
+      case 'symbol':
+        return wrapSymbol(type.getSymbol());
+      case 'target':
+        return type.isTypeReference() ? wrapType(type.getTarget()) : undefined;
+      case 'templateType':
+        return type.isMappedType()
+          ? wrapType(type.getTemplateType())
+          : undefined;
+      case 'thisType':
+        return type.isClassOrInterface()
+          ? wrapType(type.getThisType())
+          : undefined;
+      // `IndexType` and `StringMappingType` both spell their operand `type`.
+      case 'type':
+        return type.isIndexType() || type.isStringMappingType()
+          ? wrapType(type.getTarget())
+          : undefined;
+      case 'typeArguments':
+        return type.isTypeReference()
+          ? checker.getTypeArguments(type).map(toType)
+          : undefined;
+      case 'typeParameter':
+        return type.isMappedType()
+          ? wrapType(type.getTypeParameter())
+          : undefined;
+      case 'typeParameters':
+        return type.isClassOrInterface()
+          ? wrapTypeList(type.getTypeParameters())
+          : undefined;
+      case 'types':
+        return type.isUnionType() ||
+          type.isIntersectionType() ||
+          type.isTemplateLiteralType()
+          ? type.getTypes().map(toType)
+          : undefined;
+      // Classic carries a bigint literal as a `PseudoBigInt`.
+      case 'value':
+        return type.isBigIntLiteralType()
+          ? toPseudoBigInt(type.value)
+          : type.isLiteralType()
+            ? type.value
+            : undefined;
+      case 'getApparentProperties':
+      case 'getBaseTypes':
+      case 'getCallSignatures':
+      case 'getConstraint':
+      case 'getConstructSignatures':
+      case 'getDefault':
+      case 'getFlags':
+      case 'getNonNullableType':
+      case 'getNumberIndexType':
+      case 'getProperties':
+      case 'getProperty':
+      case 'getStringIndexType':
+      case 'getSymbol':
+      case 'isClass':
+      case 'isIntersection':
+      case 'isLiteral':
+      case 'isNumberLiteral':
+      case 'isStringLiteral':
+      case 'isUnion':
+      case 'isUnionOrIntersection':
+        return typeMethods[property];
+      default:
+        return NATIVE;
     }
-    if (type.flags & TypeFlags.Substitution) {
-      return native.substConstraint
-        ? wrapType(native.getConstraint())
-        : undefined;
-    }
-    return undefined;
   }
 
-  function wrapSymbol(symbol: NativeSymbol): ts.Symbol;
-  function wrapSymbol(symbol: NativeSymbol | undefined): ts.Symbol | undefined;
-  function wrapSymbol(symbol: NativeSymbol | undefined): ts.Symbol | undefined {
-    if (!symbol) {
-      return undefined;
+  function readClassicSymbol(symbol: NativeSymbol, property: string): unknown {
+    switch (property) {
+      case 'declarations':
+        // eslint-disable-next-line @typescript-eslint/internal/no-poorly-typed-ts-props -- reading the native symbol, to implement the classic property
+        return symbol.declarations
+          .map(resolveDeclaration)
+          .filter(declaration => declaration != null);
+      case 'exports':
+        return wrapSymbolTable(symbol.getExports());
+      case 'members':
+        return wrapSymbolTable(symbol.getMembers());
+      case 'parent':
+        return wrapSymbol(symbol.getParent());
+      case 'valueDeclaration':
+        return resolveDeclaration(symbol.valueDeclaration);
+      case 'getDeclarations':
+      case 'getDocumentationComment':
+      case 'getEscapedName':
+      case 'getFlags':
+      case 'getJsDocTags':
+      case 'getName':
+        return symbolMethods[property];
+      default:
+        return NATIVE;
     }
-
-    const cached = nativeToWrappedSymbol.get(symbol);
-    if (cached) {
-      return cached;
-    }
-
-    const memo = createMemo();
-
-    const wrapped = new Proxy(symbol, {
-      get(target, property) {
-        const getter = getterFor(wrapped, SYMBOL_GETTER_PROPERTIES, property);
-        if (getter) {
-          return getter;
-        }
-        switch (property) {
-          case 'declarations':
-            return memo(property, () =>
-              // eslint-disable-next-line @typescript-eslint/internal/no-poorly-typed-ts-props -- reading the native symbol, to implement the classic property
-              target.declarations
-                .map(resolveDeclaration)
-                .filter(declaration => declaration != null),
-            );
-          case 'valueDeclaration':
-            return memo(property, () =>
-              resolveDeclaration(target.valueDeclaration),
-            );
-          case 'parent':
-            return memo(property, () => wrapSymbol(target.getParent()));
-          case 'members':
-            return memo(property, () => wrapSymbolTable(target.getMembers()));
-          case 'exports':
-            return memo(property, () => wrapSymbolTable(target.getExports()));
-
-          case 'getExportSymbol':
-            return () => wrapSymbol(target.getExportSymbol());
-          case 'getJsDocTags':
-            return (): ts.JSDocTagInfo[] =>
-              wrapJSDocTags(target.getJsDocTags(checker));
-          case 'getDocumentationComment':
-            return (): ts.SymbolDisplayPart[] => {
-              const comment = target.getDocumentationComment(checker);
-              return comment ? [{ kind: 'text', text: comment }] : [];
-            };
-
-          default:
-            return bindNativeMethod(
-              Reflect.get(target, property, target),
-              target,
-            );
-        }
-      },
-    }) as unknown as ts.Symbol;
-
-    nativeToWrappedSymbol.set(symbol, wrapped);
-    wrappedToNativeSymbol.set(wrapped, symbol);
-    return wrapped;
   }
+
+  function readClassicSignature(
+    signature: NativeSignature,
+    property: string,
+  ): unknown {
+    switch (property) {
+      case 'declaration':
+        return resolveDeclaration(signature.declaration);
+      case 'parameters':
+        return signature.getParameters().map(toSymbol);
+      case 'resolvedReturnType':
+        return wrapType(signature.getReturnType());
+      case 'target':
+        return wrapSignature(signature.getTarget());
+      case 'thisParameter':
+        return wrapSymbol(signature.getThisParameter());
+      case 'typeParameters':
+        return wrapTypeList(signature.getTypeParameters());
+      case 'getDeclaration':
+      case 'getDocumentationComment':
+      case 'getJsDocTags':
+      case 'getParameters':
+      case 'getReturnType':
+      case 'getTypeParameterAtPosition':
+      case 'getTypeParameters':
+        return signatureMethods[property];
+      default:
+        return NATIVE;
+    }
+  }
+
+  const { unwrap: unwrapType, wrap: wrapType } = createWrapper<
+    NativeType,
+    ts.Type
+  >(readClassicType);
+  const { unwrap: unwrapSymbol, wrap: wrapSymbol } = createWrapper<
+    NativeSymbol,
+    ts.Symbol
+  >(readClassicSymbol);
+  const { unwrap: unwrapSignature, wrap: wrapSignature } = createWrapper<
+    NativeSignature,
+    ts.Signature
+  >(readClassicSignature);
 
   function wrapSymbolTable(
     table: ReadonlyMap<string, NativeSymbol>,
@@ -505,69 +569,6 @@ export function createNativeTypeAdapter({
     return wrappedTable as unknown as ts.SymbolTable;
   }
 
-  function wrapSignature(signature: NativeSignature): ts.Signature;
-  function wrapSignature(
-    signature: NativeSignature | undefined,
-  ): ts.Signature | undefined;
-  function wrapSignature(
-    signature: NativeSignature | undefined,
-  ): ts.Signature | undefined {
-    if (!signature) {
-      return undefined;
-    }
-
-    const cached = nativeToWrappedSignature.get(signature);
-    if (cached) {
-      return cached;
-    }
-
-    const wrapped = new Proxy(signature, {
-      get(target, property) {
-        const getter = getterFor(
-          wrapped,
-          SIGNATURE_GETTER_PROPERTIES,
-          property,
-        );
-        if (getter) {
-          return getter;
-        }
-        switch (property) {
-          case 'declaration':
-            return resolveDeclaration(target.declaration);
-          case 'parameters':
-            return target.getParameters().map(toSymbol);
-          case 'typeParameters':
-            return wrapTypeList(target.getTypeParameters());
-          case 'thisParameter':
-            return wrapSymbol(target.getThisParameter());
-          case 'target':
-            return wrapSignature(target.getTarget());
-          case 'resolvedReturnType':
-            return wrapType(target.getReturnType());
-
-          case 'getTypeParameterAtPosition':
-            return (position: number) =>
-              wrapType(target.getTypeParameterAtPosition(position));
-          case 'getDocumentationComment':
-            return (): ts.SymbolDisplayPart[] => [];
-          case 'getJsDocTags':
-            return (): ts.JSDocTagInfo[] =>
-              jsDocTagsOfDeclaration(target.declaration);
-
-          default:
-            return bindNativeMethod(
-              Reflect.get(target, property, target),
-              target,
-            );
-        }
-      },
-    }) as unknown as ts.Signature;
-
-    nativeToWrappedSignature.set(signature, wrapped);
-    wrappedToNativeSignature.set(wrapped, signature);
-    return wrapped;
-  }
-
   function wrapIndexInfo(info: NativeIndexInfo): ts.IndexInfo {
     return {
       type: wrapType(info.valueType),
@@ -577,15 +578,6 @@ export function createNativeTypeAdapter({
       isReadonly: info.isReadonly,
       keyType: wrapType(info.keyType),
     };
-  }
-
-  function wrapJSDocTags(
-    tags: readonly NativeJSDocTagInfo[],
-  ): ts.JSDocTagInfo[] {
-    return tags.map(tag => ({
-      name: tag.name,
-      text: tag.text == null ? undefined : [{ kind: 'text', text: tag.text }],
-    }));
   }
 
   function wrapTypePredicate(
@@ -600,29 +592,17 @@ export function createNativeTypeAdapter({
     );
   }
 
-  function bindNativeMethod(value: unknown, target: object): unknown {
-    return typeof value === 'function' ? value.bind(target) : value;
-  }
-
   return {
     toSignature,
     toSymbol,
     toType,
-    unwrapSignature: signature =>
-      unwrap(wrappedToNativeSignature.get(signature)),
-    unwrapSymbol: symbol => unwrap(wrappedToNativeSymbol.get(symbol)),
-    unwrapType: type => unwrap(wrappedToNativeType.get(type)),
+    unwrapSignature,
+    unwrapSymbol,
+    unwrapType,
     wrapIndexInfo,
     wrapSignature,
     wrapSymbol,
     wrapType,
     wrapTypePredicate,
   };
-}
-
-function unwrap<T>(native: T | undefined): T {
-  if (!native) {
-    throw new Error(UNWRAP_ERROR);
-  }
-  return native;
 }

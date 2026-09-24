@@ -37,19 +37,11 @@ function toCacheKey(compilerPath: string): string {
 }
 
 function verifySupportedConfig(project: Project): void {
-  if (project.parsedCommandLine.projectReferences?.length) {
+  const { options, projectReferences } = project.parsedCommandLine;
+  if (projectReferences?.length) {
     throw new Error('TypeScript native project references are not supported.');
   }
-  // Native carries no `plugins`, nor a `raw` showing one an extended config set.
-  const parsed = ts.getParsedCommandLineOfConfigFile(
-    project.configFileName,
-    {},
-    {
-      ...ts.sys,
-      onUnRecoverableConfigFileDiagnostic: () => undefined,
-    },
-  );
-  if (Array.isArray(parsed?.options.plugins) && parsed.options.plugins.length) {
+  if (options.plugins?.length) {
     throw new Error('TypeScript native TSConfig plugins are not supported.');
   }
 }
@@ -58,8 +50,6 @@ export function createNativeProjectService(
   cwd = process.cwd(),
 ): NativeProjectService {
   const overlays = new Map<string, string>();
-  const syncedFiles = new Map<string, string>();
-  const verifiedConfigs = new Set<string>();
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
   const openProjects = new Set<string>();
@@ -157,7 +147,6 @@ export function createNativeProjectService(
       fileProjects.clear();
       openProjects.clear();
       overlays.clear();
-      syncedFiles.clear();
 
       if (failure) {
         throw failure;
@@ -168,20 +157,13 @@ export function createNativeProjectService(
       assertOpen();
       const compilerPath = toCompilerPath(filePath);
       const cacheKey = toCacheKey(compilerPath);
+      const previous = overlays.get(cacheKey);
       const cachedContext = fileContexts.get(cacheKey);
-      if (syncedFiles.get(cacheKey) === code && cachedContext) {
+      if (previous === code && cachedContext) {
         return cachedContext;
       }
-      const previousSynced = syncedFiles.get(cacheKey);
-
-      // Once an overlay exists the server has read it, so a matching disk file
-      // would leave that overlay stale — hence the `has` check.
-      const servedFromDisk =
-        !overlays.has(cacheKey) && ts.sys.readFile(compilerPath) === code;
-      if (!servedFromDisk) {
-        overlays.set(cacheKey, code);
-      }
-      syncedFiles.set(cacheKey, code);
+      const unchanged = (previous ?? ts.sys.readFile(compilerPath)) === code;
+      overlays.set(cacheKey, code);
       let knownConfigFileName = fileProjects.get(cacheKey);
 
       if (!knownConfigFileName && snapshot && openProjects.size) {
@@ -198,7 +180,6 @@ export function createNativeProjectService(
         }
       }
       if (knownConfigFileName) {
-        const unchanged = servedFromDisk || previousSynced === code;
         return contextFor(
           unchanged && snapshot
             ? snapshot
@@ -230,9 +211,8 @@ export function createNativeProjectService(
             `No TypeScript native configured project was located for '${compilerPath}'.`,
           );
         }
-        if (!verifiedConfigs.has(configFileName)) {
+        if (!openProjects.has(configFileName)) {
           verifySupportedConfig(discoveredProject);
-          verifiedConfigs.add(configFileName);
         }
         nextSnapshot = replaceSnapshot({
           closeFiles: [compilerPath],
