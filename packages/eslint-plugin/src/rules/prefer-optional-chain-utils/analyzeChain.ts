@@ -158,8 +158,7 @@ const analyzeAndChainOperand: OperandAnalyzer = (
         return [operand, nextOperand];
       }
       if (
-        nextOperand &&
-        !includesType(
+        includesType(
           parserServices,
           operand.comparedName,
           ts.TypeFlags.Undefined,
@@ -168,9 +167,9 @@ const analyzeAndChainOperand: OperandAnalyzer = (
         // we know the next operand is not an `undefined` check and that this
         // operand includes `undefined` - which means that making this an
         // optional chain would change the runtime behavior of the expression
-        return [operand];
+        return null;
       }
-      return null;
+      return [operand];
     }
 
     case NullishComparisonType.NotStrictEqualUndefined: {
@@ -264,6 +263,38 @@ const analyzeOrChainOperand: OperandAnalyzer = (
       return null;
   }
 };
+
+/**
+ * Whether a chain ending in the given operand can be converted.
+ *
+ * When the logical chain finds a nullish sub-expression and short-circuits, the
+ * converted optional chain expression would instead evaluate to `undefined`
+ * (not `null`). Check that the last operand on `undefined` would give the same
+ * result as the original short-circuit: falsy for `&&` chains, truthy for `||`
+ * chains.
+ */
+function canValidOperandEndChain(
+  operator: '&&' | '||',
+  operand: ValidOperand,
+): boolean {
+  switch (operand.comparisonType) {
+    // `undefined`, `undefined != null`, `undefined === null`,
+    // `undefined !== undefined` are all falsy
+    case NullishComparisonType.Boolean:
+    case NullishComparisonType.NotEqualNullOrUndefined:
+    case NullishComparisonType.StrictEqualNull:
+    case NullishComparisonType.NotStrictEqualUndefined:
+      return operator === '&&';
+
+    // `!undefined`, `undefined == null`, `undefined !== null`,
+    // `undefined === undefined` are all truthy
+    case NullishComparisonType.NotBoolean:
+    case NullishComparisonType.EqualNullOrUndefined:
+    case NullishComparisonType.NotStrictEqualNull:
+    case NullishComparisonType.StrictEqualUndefined:
+      return operator === '||';
+  }
+}
 
 const resolveOperandSubset = (
   previousOperand: ValidOperand,
@@ -715,13 +746,37 @@ export function analyzeChain(
 
   // Things like x !== null && x !== undefined have two nodes, but they are
   // one logical unit here, so we'll allow them to be grouped.
-  let subChain: (readonly ValidOperand[] | ValidOperand)[] = [];
+  let subChain: (readonly ValidOperand[])[] = [];
   let lastChain: LastChainOperandForReport | ValidOperand | undefined =
     undefined;
 
   const maybeReportThenReset = (
     newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
+    if (!lastChain) {
+      // If the last operand can't end the optional chain, the operands before
+      // it may still form a valid chain, e.g.
+      //     foo && foo.bar && foo.bar.baz !== null
+      //     ^^^^^^^^^^^^^^ becomes foo?.bar
+      // A pair like `x !== undefined && x !== null` can't end the chain as a
+      // unit, since only one comparison is kept at the end, but its first
+      // operand might:
+      //     foo && foo.bar !== undefined && foo.bar !== null
+      //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ becomes foo?.bar !== undefined
+      let lastGroup;
+      while (
+        (lastGroup = subChain.at(-1)) &&
+        !(
+          lastGroup.length === 1 &&
+          canValidOperandEndChain(operator, lastGroup[0])
+        )
+      ) {
+        subChain.pop();
+        if (lastGroup.length > 1) {
+          subChain.push([lastGroup[0]]);
+        }
+      }
+    }
     if (subChain.length + (lastChain ? 1 : 0) > 1) {
       const subChainFlat = subChain.flat();
       const maybeNullishNodes = lastChain
@@ -780,14 +835,11 @@ export function analyzeChain(
           lastOperand.comparedName,
           operand.comparedName,
         );
-        switch (operand.comparisonType) {
-          case NullishComparisonType.StrictEqualUndefined:
-          case NullishComparisonType.NotStrictEqualUndefined: {
-            if (comparisonResult === NodeComparisonResult.Subset) {
-              lastChain = operand;
-            }
-            break;
-          }
+        if (
+          comparisonResult === NodeComparisonResult.Subset &&
+          canValidOperandEndChain(operator, operand)
+        ) {
+          lastChain = operand;
         }
       }
       maybeReportThenReset();
@@ -796,7 +848,6 @@ export function analyzeChain(
     // in case multiple operands were consumed - make sure to correctly increment the index
     i += validatedOperands.length - 1;
 
-    const currentOperand = validatedOperands[0];
     if (lastOperand) {
       const comparisonResult = compareNodes(
         lastOperand.comparedName,
@@ -807,7 +858,7 @@ export function analyzeChain(
       );
       if (comparisonResult === NodeComparisonResult.Subset) {
         // the operands are comparable, so we can continue searching
-        subChain.push(currentOperand);
+        subChain.push(validatedOperands);
       } else if (comparisonResult === NodeComparisonResult.Invalid) {
         maybeReportThenReset(validatedOperands);
       } else {
@@ -816,7 +867,7 @@ export function analyzeChain(
         // foo && foo
       }
     } else {
-      subChain.push(currentOperand);
+      subChain.push(validatedOperands);
     }
   }
   const lastOperand = subChain.flat().at(-1);
