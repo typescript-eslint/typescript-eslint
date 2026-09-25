@@ -693,6 +693,115 @@ Promise.all([
 ]);
       `,
     },
+
+    {
+      code: `
+declare const x: Array<number | Promise<number>>;
+Promise.all(x);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Array<Promise<number> | null>;
+Promise.all(x);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: ReadonlyArray<number | Promise<string>>;
+Promise.allSettled(x);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: [Promise<number>, number];
+Promise.race(x);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: [number | Promise<number>];
+Promise.any(x);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Iterable<number | Promise<number>>;
+Promise.all(x);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Iterable<Promise<string>> | [string, Promise<unknown>];
+Promise.all(x);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+function* x() {
+  yield 1;
+  yield Promise.resolve(2);
+}
+
+Promise.all(x());
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([1, 2, Promise.resolve(3)]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Array<Promise<number>>;
+
+Promise.all([1, ...x]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const _unknown_: unknown;
+
+Promise.all([1, _unknown_]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([,]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Array<Promise<number>>;
+Promise.all(x);
+      `,
+      options: [{ allowMixedPromiseArrays: false }],
+    },
+    {
+      code: `
+declare const x: [];
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: [];
+Promise.all(x);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
   ],
 
   invalid: [
@@ -1776,6 +1885,179 @@ Promise.all([...[1, 2, 3]]);
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
+    },
+    {
+      code: `
+declare const x: Array<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Array<number> | Array<Promise<number>>;
+Promise.race(x);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Array<number | Promise<number>>;
+Promise.any(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: false }],
+    },
+    {
+      code: `
+declare const x: [number, string];
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Iterable<number>;
+Promise.allSettled(x);
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Iterable<string> | Array<Promise<unknown>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Generator<number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([1, 2]);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+        {
+          column: 17,
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([...[1, 2, 3]]);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const x: Array<number>;
+
+Promise.all([1, ...x]);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+        {
+          column: 17,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
     },
   ],
 });
