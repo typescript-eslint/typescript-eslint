@@ -13,7 +13,7 @@ isolateNativeBackend();
 function parse(code: string) {
   const { ast, services } = parseAndGenerateServices(code, {
     filePath,
-    projectService: { backend: 'native' },
+    projectService: { EXPERIMENTAL_backend: 'native' },
   });
   assert.isNotNull(services.program);
   return { ast, services };
@@ -26,7 +26,7 @@ describe('native parser services', () => {
       {
         comment: true,
         filePath,
-        projectService: { backend: 'native' },
+        projectService: { EXPERIMENTAL_backend: 'native' },
         tokens: true,
       },
     );
@@ -152,7 +152,7 @@ describe('native parser services', () => {
       parseAndGenerateServices(code, {
         errorOnTypeScriptSyntacticAndSemanticIssues: true,
         filePath,
-        projectService: { backend: 'native' },
+        projectService: { EXPERIMENTAL_backend: 'native' },
       }),
     ).toThrow(message);
   });

@@ -27,7 +27,7 @@ interface QueryContext {
 function parse(code: string, native: boolean, filePath = nativeFilePath) {
   const { ast, services } = parseAndGenerateServices(code, {
     filePath,
-    projectService: native ? { backend: 'native' } : true,
+    projectService: native ? { EXPERIMENTAL_backend: 'native' } : true,
   });
   assert.isNotNull(services.program);
   return {

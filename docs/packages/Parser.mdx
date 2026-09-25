@@ -359,7 +359,7 @@ It requires Node.js 22 or newer and a side-by-side installation of classic TypeS
 pnpm add --save-dev typescript@^6 @typescript/native@npm:typescript@7.1.0-dev.20260822.1
 ```
 
-Select the native backend by specifying it as `projectService.backend`:
+Select the native backend by specifying it as `projectService.EXPERIMENTAL_backend`:
 
 ```js
 import parser from '@typescript-eslint/parser';
@@ -371,7 +371,7 @@ export default [
       parser,
       parserOptions: {
         projectService: {
-          backend: 'native',
+          EXPERIMENTAL_backend: 'native',
         },
       },
     },
@@ -420,7 +420,7 @@ There are several restrictions on this option to prevent it from being overused:
 - `**` is not allowed in globs passed to it
 - Files that match `allowDefaultProject` may not also be included in their nearest `tsconfig.json`
 
-##### `backend`
+##### `EXPERIMENTAL_backend`
 
 > Default: `undefined` _(the classic TypeScript backend)_
 

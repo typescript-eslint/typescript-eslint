@@ -19,7 +19,7 @@ function convert(code: string, native: boolean, tsx = false): unknown {
     range: true,
     tokens: true,
     ...(native
-      ? { projectService: { backend: 'native' as const } }
+      ? { projectService: { EXPERIMENTAL_backend: 'native' as const } }
       : { project: false }),
   });
   return structuredClone(ast);

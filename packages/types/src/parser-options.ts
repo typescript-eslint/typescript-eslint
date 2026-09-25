@@ -52,7 +52,7 @@ export interface ProjectServiceOptions {
    * @experimental This is not part of the public API. It may change or be
    * removed in any release, including a patch.
    */
-  backend?: 'native';
+  EXPERIMENTAL_backend?: 'native';
 
   /**
    * Globs of files to allow running with the default project compiler options

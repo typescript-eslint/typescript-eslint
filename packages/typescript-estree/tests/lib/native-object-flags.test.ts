@@ -22,7 +22,7 @@ function objectFlagsOfInstantiation(native: boolean) {
       filePath,
       tsconfigRootDir: nativeFixtures,
       ...(native
-        ? { projectService: { backend: 'native' as const } }
+        ? { projectService: { EXPERIMENTAL_backend: 'native' as const } }
         : { projectService: true }),
     },
   );

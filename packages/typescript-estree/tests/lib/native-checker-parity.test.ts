@@ -11,7 +11,7 @@ isolateNativeBackend();
 function parse(code: string) {
   return parseAndGenerateServices(code, {
     filePath,
-    projectService: { backend: 'native' },
+    projectService: { EXPERIMENTAL_backend: 'native' },
   });
 }
 
@@ -38,7 +38,9 @@ function onBothBackends(
   const run = (native: boolean): string | undefined => {
     const { ast, services } = parseAndGenerateServices(code, {
       filePath,
-      projectService: native ? { backend: 'native' as const } : true,
+      projectService: native
+        ? { EXPERIMENTAL_backend: 'native' as const }
+        : true,
     });
     assert.isNotNull(services.program);
     const declaration = ast.body.at(-1) as never as {

@@ -106,8 +106,8 @@ describe(createParseSettings, () => {
       [
         {
           projectService: {
-            backend: 'native' as const,
             defaultProject: 'tsconfig.eslint.json',
+            EXPERIMENTAL_backend: 'native' as const,
           },
         },
         'defaultProject',
@@ -116,7 +116,7 @@ describe(createParseSettings, () => {
       expect(() =>
         createParseSettings('', {
           filePath: '/project/file.ts',
-          projectService: { backend: 'native' },
+          projectService: { EXPERIMENTAL_backend: 'native' },
           ...options,
         }),
       ).toThrow(identifyingTerm);
@@ -124,7 +124,7 @@ describe(createParseSettings, () => {
     });
 
     it('stores valid native options without creating the classic service', () => {
-      const options = { backend: 'native' as const };
+      const options = { EXPERIMENTAL_backend: 'native' as const };
 
       const parseSettings = createParseSettings('', {
         filePath: '/project/file.ts',
@@ -145,7 +145,7 @@ describe(createParseSettings, () => {
       expect(() =>
         createParseSettings('', {
           filePath: '/project/file.ts',
-          projectService: { backend: 'native' },
+          projectService: { EXPERIMENTAL_backend: 'native' },
         }),
       ).toThrow(
         'The experimental native project service requires Node.js 22 or newer.',

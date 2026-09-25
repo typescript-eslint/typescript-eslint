@@ -299,7 +299,7 @@ function validateNativeProjectServiceOptions(
 ): ProjectServiceOptions | undefined {
   const requested =
     typeof tsestreeOptions.projectService === 'object' &&
-    tsestreeOptions.projectService.backend === 'native'
+    tsestreeOptions.projectService.EXPERIMENTAL_backend === 'native'
       ? tsestreeOptions.projectService
       : undefined;
 
@@ -313,7 +313,8 @@ function validateNativeProjectServiceOptions(
     (tsestreeOptions.projectService != null || tsestreeOptions.project != null);
 
   const projectServiceOptions =
-    requested ?? (viaEnvironment ? { backend: 'native' as const } : undefined);
+    requested ??
+    (viaEnvironment ? { EXPERIMENTAL_backend: 'native' as const } : undefined);
   if (!projectServiceOptions) {
     return undefined;
   }
