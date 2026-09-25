@@ -53,6 +53,8 @@ function createMockProjectService() {
   return {
     openClientFile,
     reloadProjects,
+    // The mock service is a plain object, not a real ProjectService.
+    // eslint-disable-next-line @typescript-eslint/no-object-literal-class-instances
     service: service as typeof service & TypeScriptProjectService,
   };
 }
@@ -241,6 +243,8 @@ describe(useProgramFromProjectService, () => {
     vi.spyOn(ts.sys, 'realpath').mockImplementation(filePath =>
       filePath === symlinkedDirectory ? realDirectory : filePath,
     );
+    // The mock project is a plain object, not a real ConfiguredProject.
+    // eslint-disable-next-line @typescript-eslint/no-object-literal-class-instances
     service.configuredProjects.set('tsconfig.json', {
       getFileNames: () => [symlinkedFilePath],
     } as ts.server.ConfiguredProject);
