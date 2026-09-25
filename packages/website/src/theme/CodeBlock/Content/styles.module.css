@@ -1,0 +1,101 @@
+.codeBlock {
+  --ifm-pre-background: var(--prism-background-color);
+
+  margin: 0;
+  padding: 0;
+}
+
+.codeBlockLines {
+  float: left;
+  min-width: 100%;
+  padding: var(--ifm-pre-padding);
+  font: inherit;
+}
+
+.codeBlockLinesWithNumbering {
+  display: table;
+  padding: var(--ifm-pre-padding) 0;
+}
+
+.diagnostic {
+  --diagnostic-color: #c62828;
+
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+}
+
+.diagnostic::after,
+.diagnosticUnderline {
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  background-color: var(--diagnostic-color);
+  mask-image: url('./diagnosticSquiggle.svg');
+  mask-position: bottom left;
+  mask-repeat: repeat-x;
+  mask-size: 6px 3px;
+  pointer-events: none;
+}
+
+.diagnostic::after {
+  right: 0;
+  left: 0;
+  content: '';
+}
+
+.diagnosticWrapped::after {
+  display: none;
+}
+
+.diagnostic:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--diagnostic-color);
+  outline-offset: 2px;
+}
+
+.diagnosticTooltipPositioner {
+  z-index: calc(var(--ifm-z-index-fixed) + 1);
+}
+
+.diagnosticTooltip {
+  width: max-content;
+  max-width: min(20rem, calc(100vw - 24px));
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #ef9a9a;
+  border-radius: var(--ifm-global-radius);
+  background-color: #fff5f5;
+  box-shadow: var(--ifm-global-shadow-md);
+  color: #731515;
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  pointer-events: none;
+  white-space: normal;
+}
+
+.diagnosticTooltipItem + .diagnosticTooltipItem {
+  margin-top: 0.25rem;
+}
+
+:global(html[data-theme='dark']) .diagnostic {
+  --diagnostic-color: #ff8a80;
+}
+
+:global(html[data-theme='dark']) .diagnosticTooltip {
+  border-color: #a63d3d;
+  background: #351a1a;
+  color: #ffd7d4;
+}
+
+@media print {
+  .codeBlockLines {
+    white-space: pre-wrap;
+  }
+}
