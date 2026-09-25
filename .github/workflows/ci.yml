@@ -481,33 +481,33 @@ jobs:
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
           PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
 
-      - name: Run unit tests with native backend coverage
+      - name: Run unit tests
         if: matrix.backend == 'native'
-        run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage --coverage.allowExternal "--coverage.include=**/typescript-estree/dist/**" "--coverage.include=**/src/**" --coverage.reporter=lcov
+        run: pnpm exec nx run-many -t test --projects="$PROJECTS" --exclude=eslint-plugin --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_NATIVE_BACKEND: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
-          PROJECTS: ${{ format('{0},eslint-plugin', join(fromJson(needs.build.outputs.project_service_packages), ',')) }}
+          PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
+
+      - name: Run eslint-plugin unit tests with native backend coverage
+        if: matrix.backend == 'native'
+        run: pnpm exec nx test eslint-plugin --coverage --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
+        env:
+          CI: true
+          TYPESCRIPT_ESLINT_NATIVE_BACKEND: true
+          TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
       - name: Make native backend coverage paths repository-relative
-        id: native-coverage
         if: matrix.backend == 'native'
-        run: |
-          reports=()
-          for report in packages/*/coverage/lcov.info; do
-            package="$(dirname "$(dirname "$report")")"
-            sed -i -E "s#^SF:\.\./#SF:packages/#; s#^SF:src/#SF:${package}/src/#" "$report"
-            reports+=("$report")
-          done
-          echo "files=$(IFS=,; echo "${reports[*]}")" >> "$GITHUB_OUTPUT"
+        run: sed -i 's#^SF:\.\./#SF:packages/#' packages/eslint-plugin/coverage/lcov.info
 
       - name: Upload native backend coverage to Codecov
         if: matrix.backend == 'native'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ${{ steps.native-coverage.outputs.files }}
+          files: packages/eslint-plugin/coverage/lcov.info
           flags: native-backend
           name: native-backend
 
