@@ -474,12 +474,44 @@ jobs:
         with:
           node-version: 22
       - name: Run unit tests
+        if: matrix.backend == 'classic'
         run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
-          TYPESCRIPT_ESLINT_NATIVE_BACKEND: ${{ matrix.backend == 'native' }}
-          PROJECTS: ${{ matrix.backend == 'native' && format('{0},eslint-plugin', join(fromJson(needs.build.outputs.project_service_packages), ',')) || join(fromJson(needs.build.outputs.project_service_packages), ',') }}
+          PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
+
+      # The native backend is only reached through typescript-estree's built
+      # output, so its coverage is collected from dist and mapped back to src.
+      - name: Run unit tests with native backend coverage
+        if: matrix.backend == 'native'
+        run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage --coverage.allowExternal "--coverage.include=**/typescript-estree/dist/**" "--coverage.include=**/src/**" --coverage.reporter=lcov
+        env:
+          CI: true
+          TYPESCRIPT_ESLINT_NATIVE_BACKEND: true
+          TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
+          PROJECTS: ${{ format('{0},eslint-plugin', join(fromJson(needs.build.outputs.project_service_packages), ',')) }}
+
+      - name: Make native backend coverage paths repository-relative
+        id: native-coverage
+        if: matrix.backend == 'native'
+        run: |
+          reports=()
+          for report in packages/*/coverage/lcov.info; do
+            package="$(dirname "$(dirname "$report")")"
+            sed -i -E "s#^SF:\.\./#SF:packages/#; s#^SF:src/#SF:${package}/src/#" "$report"
+            reports+=("$report")
+          done
+          echo "files=$(IFS=,; echo "${reports[*]}")" >> "$GITHUB_OUTPUT"
+
+      - name: Upload native backend coverage to Codecov
+        if: matrix.backend == 'native'
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ${{ steps.native-coverage.outputs.files }}
+          flags: native-backend
+          name: native-backend
 
   # Some test jobs are created dynamically and conditionally skipped (see the affected projects step in the build job),
   # so they can't be marked in the branch ruleset as required.
