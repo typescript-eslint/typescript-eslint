@@ -304,7 +304,6 @@ const prefetchers = new WeakMap<
   (nodes: readonly ts.Node[]) => void
 >();
 
-/** Answers many nodes' types in one round trip, ahead of rules asking one at a time. */
 export function prefetchTypesAtLocation(
   checker: ts.TypeChecker,
   nodes: readonly ts.Node[],
@@ -314,12 +313,6 @@ export function prefetchTypesAtLocation(
 
 type CheckerMethod = (...args: unknown[]) => unknown;
 
-/**
- * A checker's answers are fixed for its snapshot, and rules ask it the same
- * questions many times over, so each answer is remembered instead of being
- * asked again across the process boundary. Arguments are keyed by identity,
- * which the adapters keep stable for the snapshot's lifetime.
- */
 function memoizeChecker<Checker extends object>(
   checker: Checker,
 ): {

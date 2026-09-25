@@ -3,7 +3,6 @@ import path from 'node:path';
 import '../../src/native/index.js';
 import { clearCaches } from '../../src/index.js';
 
-/** Matches how the compiler spells paths back, so Windows comparisons line up. */
 export function nativePath(...segments: string[]): string {
   return path
     .join(...segments)

@@ -481,8 +481,6 @@ jobs:
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
           PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
 
-      # The native backend is only reached through typescript-estree's built
-      # output, so its coverage is collected from dist and mapped back to src.
       - name: Run unit tests with native backend coverage
         if: matrix.backend == 'native'
         run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage --coverage.allowExternal "--coverage.include=**/typescript-estree/dist/**" "--coverage.include=**/src/**" --coverage.reporter=lcov

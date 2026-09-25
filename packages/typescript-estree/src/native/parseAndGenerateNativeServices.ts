@@ -25,10 +25,6 @@ import { prefetchTypesAtLocation } from './nativeCheckerAdapter';
 import { createNativeNodeAdapter } from './nativeNodeAdapter';
 import { createNativeProgram } from './nativeProgramAdapter';
 
-/**
- * Rules ask for these nodes' types one at a time; asking for all of a file's at
- * once costs one round trip instead of one per node.
- */
 const PREFETCH_KINDS = new Set(
   Object.entries(NativeSyntaxKind)
     .filter(
@@ -41,7 +37,6 @@ const PREFETCH_KINDS = new Set(
     .map(([, value]) => value as NativeSyntaxKind),
 );
 
-/** A new snapshot brings new source files, so each version is prefetched once. */
 const prefetchedSourceFiles = new WeakSet<NativeSourceFile>();
 
 function collectPrefetchNodes(sourceFile: NativeSourceFile): NativeNode[] {
@@ -61,16 +56,11 @@ interface NativeAdapters {
   program: ts.Program;
 }
 
-/**
- * One set of adapters per native program, which lives as long as its snapshot,
- * so every file linted against it shares the wrappers and what they remember.
- */
 const adaptersByProgram = new WeakMap<NativeProgram, NativeAdapters>();
 
 function getAdapters(context: NativeProjectContext): NativeAdapters {
   let adapters = adaptersByProgram.get(context.program);
   if (!adapters) {
-    // One request for the whole program, rather than one per file linted.
     let diagnosticsByFile: Map<string, NativeDiagnostic[]> | undefined;
     const nodeAdapter = createNativeNodeAdapter(fileName => {
       if (!diagnosticsByFile) {

@@ -29,11 +29,6 @@ import type { NativeNodeAdapter } from './nativeNodeAdapter';
 import { createMethodForwarder } from './createMethodForwarder';
 import { createFlagTranslations, translateFlags } from './translateFlags';
 
-/**
- * Native exposes relationships as lazy methods where classic exposes plain
- * properties, and a getter only answers for its own kind of type — so every
- * wrapper checks the kind before reading.
- */
 export interface NativeTypeAdapter {
   toSignature: (signature: NativeSignature) => ts.Signature;
   toSymbol: (symbol: NativeSymbol) => ts.Symbol;
@@ -81,7 +76,6 @@ function toPseudoBigInt(value: bigint): ts.PseudoBigInt {
   };
 }
 
-/** Marks a property classic doesn't define, which the native object answers. */
 const NATIVE = Symbol('native');
 
 interface Wrapper<Native, Classic> {
@@ -92,13 +86,6 @@ interface Wrapper<Native, Classic> {
   };
 }
 
-/**
- * Presents a native object through its classic members, falling back to the
- * native object itself. Members are computed once, so identity holds and each
- * relationship costs at most one round trip; `in` agrees with `get`, since
- * classic code probes for some properties rather than reading them. Methods on
- * either side find their object through `this`, so none is created per access.
- */
 function createWrapper<Native extends object, Classic extends object>(
   readClassic: (native: Native, property: string) => unknown,
 ): Wrapper<Native, Classic> {
@@ -201,7 +188,6 @@ export function createNativeTypeAdapter({
     Map<string, ts.Symbol | undefined>
   >();
 
-  /** Classic methods, shared by every wrapper; each reads its object off `this`. */
   const typeMethods = {
     getApparentProperties(this: ts.Type) {
       return unwrapType(this).getApparentProperties().map(toSymbol);
@@ -351,7 +337,6 @@ export function createNativeTypeAdapter({
         return type.isSubstitutionType()
           ? wrapType(type.getBaseType())
           : undefined;
-      // An implementation detail of `typescript`, with no native equivalent.
       case 'checker':
         return undefined;
       case 'checkType':
@@ -391,7 +376,6 @@ export function createNativeTypeAdapter({
         return type.isIndexedAccessType()
           ? wrapType(type.getIndexType())
           : undefined;
-      // Native spells a boolean literal's name as a `value` instead.
       case 'intrinsicName':
         return type.isBooleanLiteralType()
           ? String(type.value)
@@ -402,7 +386,6 @@ export function createNativeTypeAdapter({
         return type.isClassOrInterface()
           ? wrapTypeList(type.getLocalTypeParameters())
           : undefined;
-      // Classic counts the elements a tuple needs, which native leaves out.
       case 'minLength':
         return type.isTupleTypeTarget()
           ? type.elementFlags.filter(
@@ -448,7 +431,6 @@ export function createNativeTypeAdapter({
         return type.isClassOrInterface()
           ? wrapType(type.getThisType())
           : undefined;
-      // `IndexType` and `StringMappingType` both spell their operand `type`.
       case 'type':
         return type.isIndexType() || type.isStringMappingType()
           ? wrapType(type.getTarget())
@@ -471,7 +453,6 @@ export function createNativeTypeAdapter({
           type.isTemplateLiteralType()
           ? type.getTypes().map(toType)
           : undefined;
-      // Classic carries a bigint literal as a `PseudoBigInt`.
       case 'value':
         return type.isBigIntLiteralType()
           ? toPseudoBigInt(type.value)

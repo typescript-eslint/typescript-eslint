@@ -1,6 +1,5 @@
 type FlagTranslations = readonly (readonly [number, number])[];
 
-/** Pairs bits up by name; composite masks are built from the single bits. */
 export function createFlagTranslations(
   nativeFlags: object,
   classicFlags: object,

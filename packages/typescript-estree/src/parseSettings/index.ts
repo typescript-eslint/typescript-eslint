@@ -118,9 +118,6 @@ export interface MutableParseSettings {
    */
   projects: ReadonlyMap<CanonicalPath, string>;
 
-  /**
-   * Validated options for the native project service.
-   */
   nativeProjectService: ProjectServiceOptions | undefined;
 
   /**

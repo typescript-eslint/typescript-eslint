@@ -67,7 +67,6 @@ export function createNativeProgram({
     );
   }
 
-  /** A diagnostic with no file belongs to the global accessors, not these. */
   function locatedDiagnosticsFor(
     get: (fileName?: string) => readonly NativeDiagnostic[],
     file: ts.SourceFile | undefined,

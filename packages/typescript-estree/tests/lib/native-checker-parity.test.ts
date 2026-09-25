@@ -30,7 +30,6 @@ function typeOfDeclaration(code: string) {
   };
 }
 
-/** Runs a checker query on both backends so their answers can be compared. */
 function onBothBackends(
   code: string,
   query: (checker: ts.TypeChecker, type: ts.Type) => string | undefined,

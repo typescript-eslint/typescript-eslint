@@ -21,7 +21,6 @@ export interface NativeNodeAdapter {
   wrapNode(node: NativeNode): ts.Node;
 }
 
-/** Classic's `file` is the adapted source file, which native only names. */
 export function toClassicDiagnostic(
   diagnostic: NativeDiagnostic,
   file: ts.SourceFile | undefined,
@@ -79,7 +78,6 @@ function translateNodeFlags(node: NativeNode): ts.NodeFlags {
     : flags;
 }
 
-/** Native stores these as bare kinds, which need translating like any other. */
 const KIND_PROPERTIES = new Set(['keywordToken', 'operator', 'token']);
 
 function isHeritageTypeReference(node: NativeNode): boolean {
@@ -241,10 +239,6 @@ export function createNativeNodeAdapter(
       : undefined;
   }
 
-  /**
-   * Classic methods, shared by every node; each reads its node off `this`.
-   * Native's source file is always the node's own, so that argument is dropped.
-   */
   const nodeMethods = {
     forEachChild<T>(
       this: ts.Node,
@@ -300,7 +294,6 @@ export function createNativeNodeAdapter(
       switch (property) {
         case 'default':
           return readNative(target, 'defaultType');
-        // Native keeps only the unescaped `text` of an identifier.
         case 'escapedText':
           return target.kind === NativeSyntaxKind.Identifier ||
             target.kind === NativeSyntaxKind.PrivateIdentifier

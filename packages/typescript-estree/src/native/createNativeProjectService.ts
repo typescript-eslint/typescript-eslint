@@ -50,7 +50,6 @@ function verifySupportedConfig(project: Project): void {
 export function createNativeProjectService(
   cwd = process.cwd(),
 ): NativeProjectService {
-  /** What the server last saw for each file, so only real changes are sent. */
   const contents = new Map<string, string>();
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
@@ -158,8 +157,6 @@ export function createNativeProjectService(
       }
       const unchanged = (previous ?? ts.sys.readFile(compilerPath)) === code;
       contents.set(cacheKey, code);
-      // Code that differs from disk rides along with the snapshot, rather than
-      // the server calling back for every file it looks up.
       const fileSystem = unchanged
         ? undefined
         : createFileSystemLayer([[compilerPath, code]]);
@@ -223,7 +220,6 @@ export function createNativeProjectService(
             : [configFileName],
         });
       } catch (error) {
-        // Leave no half-open file behind, without masking the real failure.
         try {
           replaceSnapshot({ closeFiles: [compilerPath] });
         } catch {
