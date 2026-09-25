@@ -1,8 +1,10 @@
 import type {
   Checker as NativeChecker,
   SymbolFlags,
+  Symbol as NativeSymbol,
 } from '@typescript/native/unstable/sync';
-import type * as ts from 'typescript';
+
+import * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 import type { NativeTypeAdapter } from './nativeTypeAdapter';
@@ -68,6 +70,7 @@ export function createNativeChecker({
     wrapTypePredicate,
   } = typeAdapter;
   const { unwrapNode } = nodeAdapter;
+  const typesOfSymbolsElsewhere = new Map<NativeSymbol, ts.Type>();
 
   const nativeChecker = {
     getAliasedSymbol: symbol =>
@@ -191,13 +194,27 @@ export function createNativeChecker({
       wrapType(checker.getTypeOfPropertyOfType(unwrapType(type), name)),
     getTypeOfSymbol: symbol =>
       wrapType(checker.getTypeOfSymbol(unwrapSymbol(symbol))),
-    getTypeOfSymbolAtLocation: (symbol, node) =>
-      wrapType(
-        checker.getTypeOfSymbolAtLocation(
-          unwrapSymbol(symbol),
-          unwrapNode(node),
-        ),
-      ),
+    // The checker only consults an identifier location, for narrowing.
+    // Anywhere else the answer is the symbol's own, so one serves them all.
+    getTypeOfSymbolAtLocation: (symbol, node) => {
+      const nativeSymbol = unwrapSymbol(symbol);
+      if (
+        node.kind === ts.SyntaxKind.Identifier ||
+        node.kind === ts.SyntaxKind.PrivateIdentifier
+      ) {
+        return wrapType(
+          checker.getTypeOfSymbolAtLocation(nativeSymbol, unwrapNode(node)),
+        );
+      }
+      let type = typesOfSymbolsElsewhere.get(nativeSymbol);
+      if (!type) {
+        type = wrapType(
+          checker.getTypeOfSymbolAtLocation(nativeSymbol, unwrapNode(node)),
+        );
+        typesOfSymbolsElsewhere.set(nativeSymbol, type);
+      }
+      return type;
+    },
     getTypePredicateOfSignature: signature =>
       wrapTypePredicate(
         checker.getTypePredicateOfSignature(unwrapSignature(signature)),
