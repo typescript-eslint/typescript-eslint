@@ -1163,6 +1163,40 @@ function foo(): void {
     },
     {
       code: `
+async (): Promise<unknown> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 49,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      options: [{ ignoreVoidReturningFunctions: true }],
+      output: null,
+    },
+    {
+      code: `
+async (): Promise<void> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 46,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      options: [{ ignoreVoidReturningFunctions: true }],
+      output: `
+async (): Promise<void> => { console.log('foo'); };
+      `,
+    },
+    {
+      code: `
 function test(): void {
   () => () => console.log();
 }
