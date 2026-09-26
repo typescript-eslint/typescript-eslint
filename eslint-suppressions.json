@@ -4,36 +4,6 @@
       "count": 77
     }
   },
-  "packages/eslint-plugin/tests/rules/no-namespace.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 7
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-redeclare.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-require-imports.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-shadow/no-shadow-eslint.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-this-alias.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 8
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-type-alias.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 6
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-unnecessary-condition.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 56
