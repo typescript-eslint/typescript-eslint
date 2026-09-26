@@ -1649,11 +1649,10 @@ type obj = {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/64
     {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/64
       code: `
 function test<T extends Partial<any>>() {}
-const test = <T extends Partial<any>>() => {};
       `,
       errors: [
         {
@@ -1667,36 +1666,39 @@ const test = <T extends Partial<any>>() => {};
               messageId: 'suggestUnknown',
               output: `
 function test<T extends Partial<unknown>>() {}
-const test = <T extends Partial<any>>() => {};
       `,
             },
             {
               messageId: 'suggestNever',
               output: `
 function test<T extends Partial<never>>() {}
-const test = <T extends Partial<any>>() => {};
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+const test = <T extends Partial<any>>() => {};
+      `,
+      errors: [
         {
           column: 33,
           endColumn: 36,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'unexpectedAny',
           suggestions: [
             {
               messageId: 'suggestUnknown',
               output: `
-function test<T extends Partial<any>>() {}
 const test = <T extends Partial<unknown>>() => {};
       `,
             },
             {
               messageId: 'suggestNever',
               output: `
-function test<T extends Partial<any>>() {}
 const test = <T extends Partial<never>>() => {};
       `,
             },

@@ -578,6 +578,8 @@ enum Foo {
         },
       ],
     },
+    // Verify for multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum Foo {
@@ -607,6 +609,7 @@ enum Foo {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum Foo {

@@ -385,6 +385,8 @@ enum E {
         },
       ],
     },
+    // Verify multiple duplicates
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum E {
@@ -413,6 +415,7 @@ enum E {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 enum E {
