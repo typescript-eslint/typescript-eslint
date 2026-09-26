@@ -1159,8 +1159,40 @@ function foo(): void {
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
+      output: null,
+    },
+    {
+      code: `
+async (): Promise<unknown> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 31,
+          endColumn: 49,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      options: [{ ignoreVoidReturningFunctions: true }],
+      output: null,
+    },
+    {
+      code: `
+async (): Promise<void> => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 46,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      options: [{ ignoreVoidReturningFunctions: true }],
       output: `
-(): unknown => { console.log('foo'); };
+async (): Promise<void> => { console.log('foo'); };
       `,
     },
     {
@@ -1220,10 +1252,7 @@ type Foo = unknown;
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-type Foo = unknown;
-(): Foo => { console.log(); };
-      `,
+      output: null,
     },
     {
       code: `
@@ -1263,11 +1292,7 @@ function test(): unknown {
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-function test(): unknown {
-  console.log();
-}
-      `,
+      output: null,
     },
     {
       code: `

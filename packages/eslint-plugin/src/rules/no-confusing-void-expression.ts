@@ -14,6 +14,7 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -407,7 +408,33 @@ export default createRule<Options, MessageId>({
           : node.body;
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+      if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+        return false;
+      }
+
+      const functionNode =
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression
+          ? node
+          : getParentFunctionNode(node);
+
+      if (!functionNode) {
+        return false;
+      }
+
+      if (!functionNode.returnType) {
+        return true;
+      }
+
+      const declaredReturnType = services.getTypeFromTypeNode(
+        functionNode.returnType.typeAnnotation,
+      );
+
+      const checker = services.program.getTypeChecker();
+      const resolvedReturnType = functionNode.async
+        ? (checker.getAwaitedType(declaredReturnType) ?? declaredReturnType)
+        : declaredReturnType;
+
+      return !isTypeUnknownType(resolvedReturnType);
     }
 
     function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
