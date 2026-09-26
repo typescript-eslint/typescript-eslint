@@ -451,11 +451,15 @@ jobs:
           name: ${{ join(matrix.projects, '-') }}
 
   unit_tests_project_service:
-    name: Run Unit Tests with Project Service
+    name: Run Unit Tests with Project Service (${{ matrix.backend }})
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     if: ${{ needs.build.outputs.project_service_packages != '[]' && needs.build.outputs.project_service_packages != '' }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        backend: [classic, native]
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
       COLLECT_COVERAGE: false,
@@ -468,13 +472,44 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-          node-version: 18
+          node-version: 22
       - name: Run unit tests
+        if: matrix.backend == 'classic'
         run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
           PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
+
+      - name: Run unit tests
+        if: matrix.backend == 'native'
+        run: pnpm exec nx run-many -t test --projects="$PROJECTS" --exclude=eslint-plugin --coverage=false
+        env:
+          CI: true
+          TYPESCRIPT_ESLINT_NATIVE_BACKEND: true
+          TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
+          PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
+
+      - name: Run eslint-plugin unit tests with native backend coverage
+        if: matrix.backend == 'native'
+        run: pnpm exec nx test eslint-plugin --coverage --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
+        env:
+          CI: true
+          TYPESCRIPT_ESLINT_NATIVE_BACKEND: true
+          TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
+
+      - name: Make native backend coverage paths repository-relative
+        if: matrix.backend == 'native'
+        run: sed -i 's#^SF:\.\./#SF:packages/#' packages/eslint-plugin/coverage/lcov.info
+
+      - name: Upload native backend coverage to Codecov
+        if: matrix.backend == 'native'
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/eslint-plugin/coverage/lcov.info
+          flags: native-backend
+          name: native-backend
 
   # Some test jobs are created dynamically and conditionally skipped (see the affected projects step in the build job),
   # so they can't be marked in the branch ruleset as required.

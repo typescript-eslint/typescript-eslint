@@ -46,6 +46,13 @@ function hasSymbol(node: ts.Node): node is { symbol: ts.Symbol } & ts.Node {
   return Object.hasOwn(node, 'symbol');
 }
 
+function isMethodDeclaration(declaration: ts.Node) {
+  // Nodes from the native TypeScript backend don't carry a binder symbol.
+  return hasSymbol(declaration)
+    ? tsutils.isSymbolFlagSet(declaration.symbol, ts.SymbolFlags.Method)
+    : ts.isMethodDeclaration(declaration) || ts.isMethodSignature(declaration);
+}
+
 function isTypeReadonlyArrayOrTuple(
   program: ts.Program,
   type: ts.Type,
@@ -137,11 +144,7 @@ function isTypeReadonlyObject(
       if (options.treatMethodsAsReadonly) {
         if (
           property.valueDeclaration != null &&
-          hasSymbol(property.valueDeclaration) &&
-          tsutils.isSymbolFlagSet(
-            property.valueDeclaration.symbol,
-            ts.SymbolFlags.Method,
-          )
+          isMethodDeclaration(property.valueDeclaration)
         ) {
           continue;
         }
@@ -151,11 +154,7 @@ function isTypeReadonlyObject(
           declarations != null && declarations.length > 0
             ? declarations[declarations.length - 1]
             : undefined;
-        if (
-          lastDeclaration != null &&
-          hasSymbol(lastDeclaration) &&
-          tsutils.isSymbolFlagSet(lastDeclaration.symbol, ts.SymbolFlags.Method)
-        ) {
+        if (lastDeclaration != null && isMethodDeclaration(lastDeclaration)) {
           continue;
         }
       }

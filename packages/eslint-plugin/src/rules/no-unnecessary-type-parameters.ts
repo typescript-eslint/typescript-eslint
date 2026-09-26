@@ -469,6 +469,17 @@ function collectTypeParameterUsageCounts(
           // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
           // They have properties, so we need to avoid double-counting.
           visitType(type.templateType ?? type.constraintType, false);
+
+          // An instantiated mapped type's constraint isn't reachable through
+          // its type parameter's declaration, which holds the original one.
+          if (
+            type.templateType &&
+            type.constraintType &&
+            type.constraintType !==
+              getDeclaredConstraintType(type.typeParameter)
+          ) {
+            visitType(type.constraintType, false);
+          }
         }
 
         // TS doesn't count mapped types key remapping (`{[K in 'a' as T]: K}`)
@@ -496,6 +507,14 @@ function collectTypeParameterUsageCounts(
     else if (isOperatorType(type)) {
       visitType(type.type, assumeMultipleUses);
     }
+  }
+
+  function getDeclaredConstraintType(typeParameter: ts.Type) {
+    const declaration = typeParameter.getSymbol()?.getDeclarations()?.[0] as
+      ts.TypeParameterDeclaration | undefined;
+    return declaration?.constraint
+      ? checker.getTypeAtLocation(declaration.constraint)
+      : undefined;
   }
 
   function incrementIdentifierCount(
