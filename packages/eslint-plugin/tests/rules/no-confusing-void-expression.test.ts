@@ -1129,6 +1129,21 @@ function foo(): void {
     },
     {
       code: `
+(): unknown => console.log('foo');
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 34,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
 (): any => console.log('foo');
       `,
       errors: [
@@ -1159,9 +1174,7 @@ function foo(): void {
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-(): unknown => { console.log('foo'); };
-      `,
+      output: null,
     },
     {
       code: `
@@ -1220,10 +1233,7 @@ type Foo = unknown;
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-type Foo = unknown;
-(): Foo => { console.log(); };
-      `,
+      output: null,
     },
     {
       code: `
@@ -1263,11 +1273,7 @@ function test(): unknown {
         },
       ],
       options: [{ ignoreVoidReturningFunctions: true }],
-      output: `
-function test(): unknown {
-  console.log();
-}
-      `,
+      output: null,
     },
     {
       code: `

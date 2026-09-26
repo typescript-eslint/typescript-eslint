@@ -407,7 +407,31 @@ export default createRule<Options, MessageId>({
           : node.body;
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+      if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+        return false;
+      }
+
+      const functionNode =
+        node.type === AST_NODE_TYPES.ReturnStatement
+          ? getParentFunctionNode(node)
+          : node;
+
+      if (functionNode?.returnType) {
+        const returnType = services.getTypeFromTypeNode(
+          functionNode.returnType.typeAnnotation,
+        );
+
+        return tsutils
+          .unionConstituents(returnType)
+          .every(type =>
+            tsutils.isTypeFlagSet(
+              type,
+              ts.TypeFlags.Any | ts.TypeFlags.Undefined | ts.TypeFlags.Void,
+            ),
+          );
+      }
+
+      return true;
     }
 
     function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
