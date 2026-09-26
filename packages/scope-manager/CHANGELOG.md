@@ -1,3 +1,17 @@
+## 8.70.1 (2026-09-21)
+
+### 🩹 Fixes
+
+- **scope-manager:** merge implicit global definitions ([#12809](https://github.com/typescript-eslint/typescript-eslint/pull/12809))
+
+### ❤️ Thank You
+
+- stoicism @stoicism02
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.70.0 (2026-09-07)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.

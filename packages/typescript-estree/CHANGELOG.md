@@ -1,3 +1,21 @@
+## 8.70.1 (2026-09-21)
+
+### 🩹 Fixes
+
+- **typescript-estree:** require string literal import attribute values ([#12894](https://github.com/typescript-eslint/typescript-eslint/pull/12894))
+- **typescript-estree:** add missing `<` token opening type arguments ([#12821](https://github.com/typescript-eslint/typescript-eslint/pull/12821))
+- **typescript-estree:** resolve symlinked paths when matching files to projects ([#12725](https://github.com/typescript-eslint/typescript-eslint/pull/12725))
+
+### ❤️ Thank You
+
+- Cameron
+- Josh Goldberg ✨
+- overlookmotel
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.70.0 (2026-09-07)
 
 ### 🚀 Features
