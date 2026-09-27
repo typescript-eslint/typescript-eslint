@@ -90,7 +90,16 @@
         "command": "eslint"
       },
       "typecheck:tsgo": {},
-      "attw-check": {}
+      "attw-check": {},
+      "test": {
+        "configurations": {
+          "project-service": {
+            "env": {
+              "TYPESCRIPT_ESLINT_PROJECT_SERVICE": "true"
+            }
+          }
+        }
+      }
     }
   }
 }

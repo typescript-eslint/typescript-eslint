@@ -1,0 +1,46 @@
+# Nx Cloud CI configuration, read by every Nx Cloud command.
+# Agents are provisioned by `nx-cloud start-nx-agents` in the `main` job of
+# .github/workflows/ci.yml; launch templates live in .nx/workflows/agents.yaml.
+
+lifecycle:
+  # List every distributed target plus the coordinator-local generate-configs
+  # check so the run does not complete before all work is done.
+  stop-after:
+    - build
+    - copy-ast-spec
+    - typecheck
+    - typecheck:tsgo
+    - lint
+    - test
+    - attw-check
+    - generate-configs
+  # Never end the run early on a task failure: the legacy pipeline ran all
+  # jobs with fail-fast disabled so every failure is reported in one pass.
+  # Failing tasks still fail the nx command (and therefore the CI job).
+  fail-after: 0
+  heartbeat: true
+
+dte:
+  # Distribution is opt-in via the `nx-agents-main` override below. This keeps
+  # local development and every non-coordinator CI job (Windows matrices,
+  # snapshot checks) from ever attempting distributed execution, since they
+  # also read this file.
+  enabled-by-default: false
+  distribute-on: 13 linux-medium-js, 4 linux-medium-node18-js
+
+  # The Nx Cloud API requires this to be a file path, not inline rules. See
+  # the routing and cache-safety notes inside the referenced file.
+  assignment-rules: .nx/assignment-rules.yaml
+
+nx-agents:
+  # NX_-prefixed variables are forwarded automatically; CI is a declared input
+  # of the vitest test targets so it must reach the agents explicitly.
+  with-env-vars:
+    - CI
+
+overrides:
+  # The Nx Agents coordinator job (see NX_CI_EXECUTION_ENV in ci.yml) is the
+  # only environment that distributes tasks.
+  nx-agents-main:
+    dte:
+      enabled-by-default: true

@@ -130,7 +130,9 @@
       "lint": {
         "command": "eslint",
         "dependsOn": [
-          "build"
+          "build",
+          "typescript-eslint:build",
+          "eslint-plugin-internal:build"
         ]
       },
       "start": {

@@ -67,12 +67,31 @@
         ],
         "options": {
           "cwd": "{projectRoot}"
-        }
+        },
+        "inputs": [
+          "...",
+          {
+            "dependentTasksOutputFiles": "**/*",
+            "transitive": true
+          },
+          "{workspaceRoot}/tsconfig.json"
+        ]
       },
       "lint": {
         "command": "eslint"
       },
-      "typecheck:tsgo": {}
+      "typecheck:tsgo": {
+        "inputs": [
+          "...",
+          "{workspaceRoot}/packages/website/typings/esquery.d.ts"
+        ]
+      },
+      "typecheck": {
+        "inputs": [
+          "...",
+          "{workspaceRoot}/packages/website/typings/esquery.d.ts"
+        ]
+      }
     }
   }
 }

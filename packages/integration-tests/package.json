@@ -36,13 +36,29 @@
               "tag:npm:public"
             ],
             "target": "build"
-          }
+          },
+          "repo:typecheck-spec-config"
         ]
       },
       "lint": {
         "command": "eslint"
       },
       "typecheck:tsgo": {}
-    }
+    },
+    "implicitDependencies": [
+      "eslint-plugin",
+      "parser",
+      "project-service",
+      "rule-schema-to-typescript-types",
+      "rule-tester",
+      "scope-manager",
+      "tsconfig-utils",
+      "type-utils",
+      "types",
+      "typescript-eslint",
+      "typescript-estree",
+      "utils",
+      "visitor-keys"
+    ]
   }
 }
