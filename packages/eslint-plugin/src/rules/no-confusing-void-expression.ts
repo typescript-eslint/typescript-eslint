@@ -417,7 +417,7 @@ export default createRule<Options, MessageId>({
           ? node
           : getParentFunctionNode(node);
 
-      /* v8 ignore next -- this shouldn't happen in correct code, but the parser won't error on bad code */
+      /* v8 ignore next 3 -- this shouldn't happen in correct code, but the parser won't error on bad code */
       if (!functionNode) {
         return false;
       }
@@ -431,7 +431,7 @@ export default createRule<Options, MessageId>({
       );
 
       const checker = services.program.getTypeChecker();
-      /* v8 ignore next -- getAwaitedType only returns undefined for non-promise-like types, which isn't reachable when functionNode.async is true */
+      /* v8 ignore next 3 -- getAwaitedType only returns undefined for non-promise-like types, which isn't reachable when functionNode.async is true */
       const resolvedReturnType = functionNode.async
         ? (checker.getAwaitedType(declaredReturnType) ?? declaredReturnType)
         : declaredReturnType;
