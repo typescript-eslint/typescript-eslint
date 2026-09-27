@@ -1,6 +1,5 @@
 import type {
   CreateSnapshotParams,
-  Project,
   Snapshot,
 } from '@typescript/native/unstable/sync';
 
@@ -11,6 +10,8 @@ import * as ts from 'typescript';
 
 import type { NativeProjectContext, NativeProjectService } from './types';
 
+import { getCanonicalFileName } from '../create-program/shared';
+
 const CLOSED_ERROR = 'The TypeScript native project service is closed.';
 
 function startupError(error: unknown): Error {
@@ -20,31 +21,11 @@ function startupError(error: unknown): Error {
   );
 }
 
-/**
- * The compiler echoes this back as `SourceFile#fileName`, and normalizes both
- * the separators and a Windows drive letter on the way.
- */
-function toCompilerPath(filePath: string): string {
+export function toCompilerPath(filePath: string): string {
   return path
     .resolve(filePath)
     .replaceAll('\\', '/')
     .replace(/^[A-Z]:\//, drive => drive.toLowerCase());
-}
-
-function toCacheKey(compilerPath: string): string {
-  return process.platform === 'win32'
-    ? compilerPath.toLowerCase()
-    : compilerPath;
-}
-
-function verifySupportedConfig(project: Project): void {
-  const { options, projectReferences } = project.parsedCommandLine;
-  if (projectReferences?.length) {
-    throw new Error('TypeScript native project references are not supported.');
-  }
-  if (options.plugins?.length) {
-    throw new Error('TypeScript native TSConfig plugins are not supported.');
-  }
 }
 
 export function createNativeProjectService(
@@ -107,7 +88,7 @@ export function createNativeProjectService(
       project,
       sourceFile,
     };
-    fileContexts.set(toCacheKey(compilerPath), context);
+    fileContexts.set(getCanonicalFileName(compilerPath), context);
     return context;
   }
 
@@ -149,7 +130,7 @@ export function createNativeProjectService(
     openFile(filePath, code): NativeProjectContext {
       assertOpen();
       const compilerPath = toCompilerPath(filePath);
-      const cacheKey = toCacheKey(compilerPath);
+      const cacheKey = getCanonicalFileName(compilerPath);
       const previous = contents.get(cacheKey);
       const cachedContext = fileContexts.get(cacheKey);
       if (previous === code && cachedContext) {
@@ -167,7 +148,9 @@ export function createNativeProjectService(
           if (
             snapshot
               .getConfiguredProject(candidate)
-              ?.program.getSourceFile(compilerPath)
+              ?.parsedCommandLine.fileNames.some(
+                fileName => getCanonicalFileName(fileName) === cacheKey,
+              )
           ) {
             knownConfigFileName = candidate;
             fileProjects.set(cacheKey, candidate);
@@ -209,9 +192,6 @@ export function createNativeProjectService(
             `No TypeScript native configured project was located for '${compilerPath}'.`,
           );
         }
-        if (!openProjects.has(configFileName)) {
-          verifySupportedConfig(discoveredProject);
-        }
         nextSnapshot = replaceSnapshot({
           closeFiles: [compilerPath],
           ensurePrograms: true,
@@ -243,7 +223,6 @@ export function clearNativeProjectService(): void {
   service?.close();
 }
 
-/** One process is shared, so only the first `cwd` passed takes effect. */
 export function getNativeProjectService(cwd?: string): NativeProjectService {
   return (nativeProjectService ??= createNativeProjectService(cwd));
 }

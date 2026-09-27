@@ -14,13 +14,11 @@ export interface NativeBackend {
 let backend: NativeBackend | undefined;
 let loaded = false;
 
-/** Keeps `./native`, and so the optional `@typescript/native`, off every other import path. */
 export function registerNativeBackend(registered: NativeBackend): void {
   backend = registered;
   loaded = true;
 }
 
-/** `undefined` for a missing `@typescript/native`, and when run from source. */
 export function getNativeParser(): ParseAndGenerateNativeServices | undefined {
   if (!loaded) {
     loaded = true;

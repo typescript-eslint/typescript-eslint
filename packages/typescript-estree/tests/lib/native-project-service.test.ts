@@ -68,20 +68,53 @@ describe('native project service lifecycle', () => {
     });
   });
 
-  it.each([
-    ['unconfigured/file.ts', 'No TypeScript native configured project'],
-    ['references/file.ts', 'project references'],
-    ['plugins/file.ts', 'TSConfig plugins'],
-  ])('rejects unsupported %s and stays usable', (relativePath, message) => {
+  it('rejects an unconfigured file and stays usable', () => {
     withService(service => {
-      const absolutePath = nativePath(nativeFixtures, relativePath);
+      const absolutePath = nativePath(nativeFixtures, 'unconfigured/file.ts');
       expect(() =>
         service.openFile(absolutePath, 'export const value = 1;'),
-      ).toThrow(message);
+      ).toThrow('No TypeScript native configured project');
 
       expect(
         service.openFile(filePath, readFixture()).sourceFile.fileName,
       ).toBe(filePath);
+    });
+  });
+
+  it('resolves project references from source', () => {
+    withService(service => {
+      const referencesPath = nativePath(nativeFixtures, 'references/file.ts');
+      const secondPath = nativePath(nativeFixtures, 'second/file.ts');
+      const references = service.openFile(
+        referencesPath,
+        readFixture(referencesPath),
+      );
+
+      expect(references.program.getSourceFile(secondPath)).toBeDefined();
+    });
+  });
+
+  it('opens a referenced file in its own project after its referencer', () => {
+    withService(service => {
+      const referencesPath = nativePath(nativeFixtures, 'references/file.ts');
+      const secondPath = nativePath(nativeFixtures, 'second/file.ts');
+      service.openFile(referencesPath, readFixture(referencesPath));
+      const second = service.openFile(secondPath, readFixture(secondPath));
+
+      expect(second.project.configFileName).toBe(
+        nativePath(nativeFixtures, 'second/tsconfig.json'),
+      );
+    });
+  });
+
+  it('ignores TSConfig plugins', () => {
+    withService(service => {
+      const pluginsPath = nativePath(nativeFixtures, 'plugins/file.ts');
+
+      expect(
+        service.openFile(pluginsPath, readFixture(pluginsPath)).project
+          .configFileName,
+      ).toBe(nativePath(nativeFixtures, 'plugins/tsconfig.json'));
     });
   });
 

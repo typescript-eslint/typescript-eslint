@@ -1,8 +1,3 @@
-/**
- * Names the missing API rather than failing as a `TypeError` inside a rule.
- * Only listed members throw: every absent property would also catch the names
- * JS and host tooling probe for, such as `then` and `toJSON`.
- */
 export function throwOnUnsupportedMembers<T extends object>(
   label: string,
   unsupported: ReadonlySet<string>,

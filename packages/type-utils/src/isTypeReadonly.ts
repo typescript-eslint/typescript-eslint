@@ -42,15 +42,10 @@ export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
 };
 
-function hasSymbol(node: ts.Node): node is { symbol: ts.Symbol } & ts.Node {
-  return Object.hasOwn(node, 'symbol');
-}
-
 function isMethodDeclaration(declaration: ts.Node) {
-  // Nodes from the native TypeScript backend don't carry a binder symbol.
-  return hasSymbol(declaration)
-    ? tsutils.isSymbolFlagSet(declaration.symbol, ts.SymbolFlags.Method)
-    : ts.isMethodDeclaration(declaration) || ts.isMethodSignature(declaration);
+  return (
+    ts.isMethodDeclaration(declaration) || ts.isMethodSignature(declaration)
+  );
 }
 
 function isTypeReadonlyArrayOrTuple(

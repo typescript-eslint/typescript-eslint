@@ -118,6 +118,9 @@ export interface MutableParseSettings {
    */
   projects: ReadonlyMap<CanonicalPath, string>;
 
+  /**
+   * Experimental TypeScript 7.X backend to power types.
+   */
   nativeProjectService: ProjectServiceOptions | undefined;
 
   /**

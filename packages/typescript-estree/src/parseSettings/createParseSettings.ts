@@ -303,8 +303,6 @@ function validateNativeProjectServiceOptions(
       ? tsestreeOptions.projectService
       : undefined;
 
-  // Being a blanket switch rather than a per-config choice, a configuration the
-  // native backend cannot serve falls back to classic instead of failing.
   const viaEnvironment =
     !requested &&
     process.env.TYPESCRIPT_ESLINT_NATIVE_BACKEND === 'true' &&

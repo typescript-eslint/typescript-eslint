@@ -1,1 +1,3 @@
-export const referenced = true;
+import { second } from '../second/file';
+
+export const referenced = second;
