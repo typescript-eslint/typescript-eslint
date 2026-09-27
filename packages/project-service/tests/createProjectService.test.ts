@@ -311,4 +311,58 @@ describe(createProjectService, () => {
 
     expect(service.host.readFile).toEqual(readFile);
   });
+
+  describe('opened file cleanup', () => {
+    interface ProjectServiceInternals {
+      cleanupProjectsAndScriptInfos(): void;
+      openClientFileWithNormalizedPath(): void;
+    }
+
+    const mockCleanup = vi.fn();
+    const prototype =
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      (require('typescript/lib/tsserverlibrary') as typeof ts).server
+        .ProjectService.prototype as unknown as ProjectServiceInternals;
+    const { cleanupProjectsAndScriptInfos, openClientFileWithNormalizedPath } =
+      prototype;
+
+    beforeEach(() => {
+      vi.useFakeTimers({ toFake: ['performance'] });
+      prototype.cleanupProjectsAndScriptInfos = mockCleanup;
+      prototype.openClientFileWithNormalizedPath = function (
+        this: ProjectServiceInternals,
+      ) {
+        this.cleanupProjectsAndScriptInfos();
+      };
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+      prototype.cleanupProjectsAndScriptInfos = cleanupProjectsAndScriptInfos;
+      prototype.openClientFileWithNormalizedPath =
+        openClientFileWithNormalizedPath;
+    });
+
+    it('throttles cleanups while opening files', () => {
+      const service = createProjectService()
+        .service as unknown as ProjectServiceInternals;
+
+      service.openClientFileWithNormalizedPath();
+      service.openClientFileWithNormalizedPath();
+      expect(mockCleanup).toHaveBeenCalledOnce();
+
+      vi.advanceTimersByTime(250);
+      service.openClientFileWithNormalizedPath();
+      expect(mockCleanup).toHaveBeenCalledTimes(2);
+    });
+
+    it('does not throttle cleanups outside of opening files', () => {
+      const service = createProjectService()
+        .service as unknown as ProjectServiceInternals;
+
+      service.openClientFileWithNormalizedPath();
+      service.cleanupProjectsAndScriptInfos();
+      expect(mockCleanup).toHaveBeenCalledTimes(2);
+    });
+  });
 });
