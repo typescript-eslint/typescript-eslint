@@ -219,6 +219,7 @@ describe('native adapter parity', () => {
           .getSourceFiles()
           .some(file => file.fileName.endsWith('dependency.ts')),
         library: program.isSourceFileDefaultLibrary(sourceFile),
+        options: program.getOptionsDiagnostics().length,
         roots: program
           .getRootFileNames()
           .map(fileName => path.basename(fileName))
@@ -226,11 +227,56 @@ describe('native adapter parity', () => {
         semantic: program
           .getSemanticDiagnostics(sourceFile)
           .map(diagnostic => diagnostic.code),
+        sourceFileByPath:
+          program.getSourceFileByPath(
+            (sourceFile as ts.SourceFile & { path: ts.Path }).path,
+          )?.fileName === sourceFile.fileName,
         syntactic: program.getSyntacticDiagnostics(sourceFile).length,
       }),
     );
 
     expect(native.semantic).toEqual([2322]);
+    expect(native.sourceFileByPath).toBe(true);
+    expect(native).toEqual(classic);
+  });
+
+  it('answers diagnostic message chains and related information', () => {
+    const { classic, native } = onBothBackends(
+      [
+        'export const value: { a: string } = {} as { a: number };',
+        'function takesOne(first: string) {}',
+        'takesOne();',
+      ].join('\n'),
+      ({ program, sourceFile }) =>
+        program.getSemanticDiagnostics(sourceFile).map(diagnostic => ({
+          code: diagnostic.code,
+          message: ts.flattenDiagnosticMessageText(
+            diagnostic.messageText,
+            '\n',
+          ),
+          related: diagnostic.relatedInformation?.map(related => ({
+            code: related.code,
+            fileName: related.file?.fileName,
+            start: related.start,
+          })),
+        })),
+    );
+
+    expect(native.map(diagnostic => diagnostic.code)).toEqual([2322, 2554]);
+    expect(native).toEqual(classic);
+  });
+
+  it('answers project references', () => {
+    const { classic, native } = onBothBackends(
+      "import { second } from '../second/file';",
+      ({ program }) =>
+        program
+          .getProjectReferences()
+          ?.map(reference => path.relative(nativeFixtures, reference.path)),
+      nativePath(nativeFixtures, 'references/file.ts'),
+    );
+
+    expect(native).toEqual(['second']);
     expect(native).toEqual(classic);
   });
 
@@ -258,6 +304,7 @@ describe('native adapter parity', () => {
         'class Box {}',
         'declare const box: Box;',
         "declare const literal: 'text';",
+        'function constrained<T extends U, U extends string>() {}',
       ].join('\n'),
       ({ ast, checker, tsNode }) => {
         const typeParameter = checker.getTypeAtLocation(
@@ -267,10 +314,18 @@ describe('native adapter parity', () => {
           ),
         );
 
+        const constrained = checker.getTypeAtLocation(
+          tsNode(
+            (ast.body[4] as TSESTree.FunctionDeclaration).typeParameters!
+              .params[0],
+          ),
+        );
+
         return {
           apparentProperties: checker
             .getTypeAtLocation(tsNode(declarationOf(ast, 3).id))
             .getApparentProperties().length,
+          constraint: checker.typeToString(constrained.getConstraint()!),
           default: checker.typeToString(typeParameter.getDefault()!),
           isClass: checker
             .getTypeAtLocation(tsNode(declarationOf(ast, 2).id))

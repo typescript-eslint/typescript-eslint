@@ -199,7 +199,7 @@ export function createNativeTypeAdapter({
       return unwrapType(this).getCallSignatures().map(toSignature);
     },
     getConstraint(this: ts.Type) {
-      return (this as { constraint?: ts.Type }).constraint;
+      return wrapType(checker.getBaseConstraintOfType(unwrapType(this)));
     },
     getConstructSignatures(this: ts.Type) {
       return unwrapType(this).getConstructSignatures().map(toSignature);

@@ -23,15 +23,34 @@ export interface NativeNodeAdapter {
 
 export function toClassicDiagnostic(
   diagnostic: NativeDiagnostic,
-  file: ts.SourceFile | undefined,
+  getFile: (fileName: string | undefined) => ts.SourceFile | undefined,
 ): ts.Diagnostic {
   return {
     category: diagnostic.category,
     code: diagnostic.code,
-    file,
+    file: getFile(diagnostic.fileName),
     length: diagnostic.end - diagnostic.pos,
-    messageText: diagnostic.text,
+    messageText: diagnostic.messageChain?.length
+      ? toMessageChain(diagnostic)
+      : diagnostic.text,
+    relatedInformation: diagnostic.relatedInformation?.map(related =>
+      toClassicDiagnostic(related, getFile),
+    ),
+    reportsDeprecated: diagnostic.reportsDeprecated,
+    reportsUnnecessary: diagnostic.reportsUnnecessary,
+    source: diagnostic.source,
     start: diagnostic.pos,
+  };
+}
+
+function toMessageChain(
+  diagnostic: NativeDiagnostic,
+): ts.DiagnosticMessageChain {
+  return {
+    category: diagnostic.category,
+    code: diagnostic.code,
+    messageText: diagnostic.text,
+    next: diagnostic.messageChain?.map(toMessageChain),
   };
 }
 
@@ -329,7 +348,10 @@ export function createNativeNodeAdapter(
             ? getSyntacticDiagnostics(
                 (target as NativeSourceFile).fileName,
               ).map(diagnostic =>
-                toClassicDiagnostic(diagnostic, receiver as ts.SourceFile),
+                toClassicDiagnostic(
+                  diagnostic,
+                  () => receiver as ts.SourceFile,
+                ),
               )
             : undefined;
         case 'questionToken':

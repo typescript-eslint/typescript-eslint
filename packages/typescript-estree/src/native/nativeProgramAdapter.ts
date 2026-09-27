@@ -19,11 +19,8 @@ const UNSUPPORTED_PROGRAM_MEMBERS = new Set([
   'getIdentifierCount',
   'getInstantiationCount',
   'getNodeCount',
-  'getOptionsDiagnostics',
-  'getProjectReferences',
   'getRelationCacheSizes',
   'getResolvedProjectReferences',
-  'getSourceFileByPath',
   'getSymbolCount',
   'getTypeCount',
 ] satisfies readonly (keyof ts.Program)[]);
@@ -52,9 +49,9 @@ export function createNativeProgram({
   ): ts.Diagnostic {
     return toClassicDiagnostic(
       diagnostic,
-      (diagnostic.fileName == null
-        ? undefined
-        : getSourceFile(diagnostic.fileName)) ?? requestedFile,
+      fileName =>
+        (fileName == null ? undefined : getSourceFile(fileName)) ??
+        requestedFile,
     );
   }
 
@@ -102,6 +99,11 @@ export function createNativeProgram({
         file.fileName,
         nodeAdapter.unwrapNode(usage) as never,
       ) as ts.ResolutionMode | undefined,
+    getOptionsDiagnostics: () =>
+      program
+        .getProgramDiagnostics()
+        .map(diagnostic => wrapDiagnostic(diagnostic)),
+    getProjectReferences: () => project.parsedCommandLine.projectReferences,
     getRootFileNames: () => project.parsedCommandLine.fileNames,
 
     getSemanticDiagnostics: file =>
@@ -110,6 +112,7 @@ export function createNativeProgram({
         file,
       ),
     getSourceFile,
+    getSourceFileByPath: getSourceFile,
 
     getSourceFiles: () =>
       program
