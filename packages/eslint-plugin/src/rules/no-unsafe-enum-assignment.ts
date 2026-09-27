@@ -515,7 +515,7 @@ function hasDeepEnumAssignmentMismatch(
   checker: ts.TypeChecker,
   senderType: ts.Type,
   receiverType: ts.Type,
-  visited = new WekMap<ts.Type, WeakSet<ts.Type>>(),
+  visited = new WeakMap<ts.Type, WeakSet<ts.Type>>(),
 ): boolean {
   const constrainedSenderType = getConstraintType(checker, senderType);
   const constrainedReceiverType = getConstraintType(checker, receiverType);
@@ -523,7 +523,7 @@ function hasDeepEnumAssignmentMismatch(
   // Recursive types would otherwise be visited endlessly.
   let visitedReceiverTypes = visited.get(constrainedSenderType);
   if (visitedReceiverTypes == null) {
-    visitedReceiverTypes = new Set();
+    visitedReceiverTypes = new WeakSet();
     visited.set(constrainedSenderType, visitedReceiverTypes);
   } else if (visitedReceiverTypes.has(constrainedReceiverType)) {
     return false;
