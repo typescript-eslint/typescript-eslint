@@ -4,26 +4,6 @@
       "count": 77
     }
   },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-condition.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 56
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-parameter-property-assignment.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-template-expression.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unnecessary-type-parameters.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-unsafe-assignment.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 1
