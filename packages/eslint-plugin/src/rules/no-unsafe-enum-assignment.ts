@@ -515,7 +515,7 @@ function hasDeepEnumAssignmentMismatch(
   checker: ts.TypeChecker,
   senderType: ts.Type,
   receiverType: ts.Type,
-  visited = new Map<ts.Type, Set<ts.Type>>(),
+  visited = new WekMap<ts.Type, WeakSet<ts.Type>>(),
 ): boolean {
   const constrainedSenderType = getConstraintType(checker, senderType);
   const constrainedReceiverType = getConstraintType(checker, receiverType);
