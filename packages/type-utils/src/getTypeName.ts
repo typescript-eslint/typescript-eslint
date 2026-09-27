@@ -37,6 +37,16 @@ export function getTypeName(
     }
   }
 
+  // A conditional type that is still deferred is not string like on its own,
+  // even when every branch is. Its base constraint is the union of the
+  // branches, so `T extends 0 ? string : string` resolves to `string`.
+  if (tsutils.isTypeFlagSet(type, ts.TypeFlags.Conditional)) {
+    const constraint = typeChecker.getBaseConstraintOfType(type);
+    if (constraint != null && constraint !== type) {
+      return getTypeName(typeChecker, constraint);
+    }
+  }
+
   // If the type is a union and all types in the union are string like,
   // return `string`. For example:
   // - `"a" | "b"` is string.
