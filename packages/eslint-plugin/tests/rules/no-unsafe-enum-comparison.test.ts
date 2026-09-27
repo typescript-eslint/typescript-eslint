@@ -719,156 +719,134 @@ vegetable === Vegetable2.Asparagus2;
 enum Str {
   A = 'a',
 }
+
+declare const str: Str;
+
+str === 'a';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 8,
+          line: 8,
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+enum Str {
+  A = 'a',
+}
+
+declare const str: Str;
+
+str === Str.A;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 enum Num {
   B = 1,
 }
+
+declare const num: Num;
+
+num === 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 8,
+          line: 8,
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+enum Num {
+  B = 1,
+}
+
+declare const num: Num;
+
+num === Num.B;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 enum Mixed {
   A = 'a',
   B = 1,
 }
 
-declare const str: Str;
-declare const num: Num;
 declare const mixed: Mixed;
 
-// following are all errors because the value might be an enum value
-str === 'a';
-num === 1;
 mixed === 'a';
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 9,
+          line: 9,
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+enum Mixed {
+  A = 'a',
+  B = 1,
+}
+
+declare const mixed: Mixed;
+
+mixed === Mixed.A;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Mixed {
+  A = 'a',
+  B = 1,
+}
+
+declare const mixed: Mixed;
+
 mixed === 1;
       `,
       errors: [
         {
           column: 1,
           endColumn: 12,
-          endLine: 18,
-          line: 18,
+          endLine: 9,
+          line: 9,
           messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
               output: `
-enum Str {
-  A = 'a',
-}
-enum Num {
-  B = 1,
-}
 enum Mixed {
   A = 'a',
   B = 1,
 }
 
-declare const str: Str;
-declare const num: Num;
 declare const mixed: Mixed;
 
-// following are all errors because the value might be an enum value
-str === Str.A;
-num === 1;
-mixed === 'a';
-mixed === 1;
-      `,
-            },
-          ],
-        },
-        {
-          column: 1,
-          endColumn: 10,
-          endLine: 19,
-          line: 19,
-          messageId: 'mismatchedCondition',
-          suggestions: [
-            {
-              messageId: 'replaceValueWithEnum',
-              output: `
-enum Str {
-  A = 'a',
-}
-enum Num {
-  B = 1,
-}
-enum Mixed {
-  A = 'a',
-  B = 1,
-}
-
-declare const str: Str;
-declare const num: Num;
-declare const mixed: Mixed;
-
-// following are all errors because the value might be an enum value
-str === 'a';
-num === Num.B;
-mixed === 'a';
-mixed === 1;
-      `,
-            },
-          ],
-        },
-        {
-          column: 1,
-          endColumn: 14,
-          endLine: 20,
-          line: 20,
-          messageId: 'mismatchedCondition',
-          suggestions: [
-            {
-              messageId: 'replaceValueWithEnum',
-              output: `
-enum Str {
-  A = 'a',
-}
-enum Num {
-  B = 1,
-}
-enum Mixed {
-  A = 'a',
-  B = 1,
-}
-
-declare const str: Str;
-declare const num: Num;
-declare const mixed: Mixed;
-
-// following are all errors because the value might be an enum value
-str === 'a';
-num === 1;
-mixed === Mixed.A;
-mixed === 1;
-      `,
-            },
-          ],
-        },
-        {
-          column: 1,
-          endColumn: 12,
-          endLine: 21,
-          line: 21,
-          messageId: 'mismatchedCondition',
-          suggestions: [
-            {
-              messageId: 'replaceValueWithEnum',
-              output: `
-enum Str {
-  A = 'a',
-}
-enum Num {
-  B = 1,
-}
-enum Mixed {
-  A = 'a',
-  B = 1,
-}
-
-declare const str: Str;
-declare const num: Num;
-declare const mixed: Mixed;
-
-// following are all errors because the value might be an enum value
-str === 'a';
-num === 1;
-mixed === 'a';
 mixed === Mixed.B;
       `,
             },
@@ -1466,7 +1444,7 @@ declare const numberUnion: NumberUnion;
 
 switch (numberUnion) {
   case NUMBER_ENUM.First:
-  case NUMBER_ENUM.Second:
+  case 1:
     break;
 }
       `,
@@ -1478,6 +1456,26 @@ switch (numberUnion) {
           line: 12,
           messageId: 'mismatchedCase',
         },
+      ],
+    },
+    {
+      code: `
+enum NUMBER_ENUM {
+  First = 0,
+  Second = 1,
+}
+
+type NumberUnion = 0 | 1;
+
+declare const numberUnion: NumberUnion;
+
+switch (numberUnion) {
+  case 0:
+  case NUMBER_ENUM.Second:
+    break;
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 11,
@@ -1500,7 +1498,7 @@ declare const stringUnion: StringUnion;
 
 switch (stringUnion) {
   case STRING_ENUM.First:
-  case STRING_ENUM.Second:
+  case 'two':
     break;
 }
       `,
@@ -1512,6 +1510,26 @@ switch (stringUnion) {
           line: 12,
           messageId: 'mismatchedCase',
         },
+      ],
+    },
+    {
+      code: `
+enum STRING_ENUM {
+  First = 'one',
+  Second = 'two',
+}
+
+type StringUnion = 'one' | 'two';
+
+declare const stringUnion: StringUnion;
+
+switch (stringUnion) {
+  case 'one':
+  case STRING_ENUM.Second:
+    break;
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 11,

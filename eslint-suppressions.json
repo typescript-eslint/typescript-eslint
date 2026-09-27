@@ -4,36 +4,6 @@
       "count": 77
     }
   },
-  "packages/eslint-plugin/tests/rules/no-unsafe-assignment.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-call.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-declaration-merging.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-enum-comparison.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 5
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-member-access.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unsafe-return.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 3
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-unused-private-class-members.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 3

@@ -193,9 +193,7 @@ function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any`',
-          },
+          data: { type: '`any`' },
           endColumn: 19,
           endLine: 3,
           line: 3,
@@ -212,9 +210,7 @@ function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any`',
-          },
+          data: { type: '`any`' },
           endColumn: 30,
           endLine: 3,
           line: 3,
@@ -231,9 +227,7 @@ const foo = () => {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any`',
-          },
+          data: { type: '`any`' },
           endColumn: 19,
           endLine: 3,
           line: 3,
@@ -246,9 +240,7 @@ const foo = () => {
       errors: [
         {
           column: 19,
-          data: {
-            type: '`any`',
-          },
+          data: { type: '`any`' },
           endColumn: 38,
           endLine: 1,
           line: 1,
@@ -265,9 +257,7 @@ function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any[]`',
-          },
+          data: { type: '`any[]`' },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -284,9 +274,7 @@ function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any[]`',
-          },
+          data: { type: '`any[]`' },
           endColumn: 27,
           endLine: 3,
           line: 3,
@@ -303,9 +291,7 @@ function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any[]`',
-          },
+          data: { type: '`any[]`' },
           endColumn: 31,
           endLine: 3,
           line: 3,
@@ -322,9 +308,7 @@ function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any[]`',
-          },
+          data: { type: '`any[]`' },
           endColumn: 32,
           endLine: 3,
           line: 3,
@@ -341,9 +325,7 @@ const foo = () => {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any[]`',
-          },
+          data: { type: '`any[]`' },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -356,9 +338,7 @@ const foo = () => {
       errors: [
         {
           column: 19,
-          data: {
-            type: '`any[]`',
-          },
+          data: { type: '`any[]`' },
           endColumn: 30,
           endLine: 1,
           line: 1,
@@ -375,10 +355,7 @@ function foo(): Set<string> {
       errors: [
         {
           column: 3,
-          data: {
-            receiver: 'Set<string>',
-            sender: 'Set<any>',
-          },
+          data: { receiver: 'Set<string>', sender: 'Set<any>' },
           endColumn: 25,
           endLine: 3,
           line: 3,
@@ -395,10 +372,7 @@ function foo(): Map<string, string> {
       errors: [
         {
           column: 3,
-          data: {
-            receiver: 'Map<string, string>',
-            sender: 'Map<string, any>',
-          },
+          data: { receiver: 'Map<string, string>', sender: 'Map<string, any>' },
           endColumn: 33,
           endLine: 3,
           line: 3,
@@ -415,10 +389,7 @@ function foo(): Set<string[]> {
       errors: [
         {
           column: 3,
-          data: {
-            receiver: 'Set<string[]>',
-            sender: 'Set<any[]>',
-          },
+          data: { receiver: 'Set<string[]>', sender: 'Set<any[]>' },
           endColumn: 27,
           endLine: 3,
           line: 3,
@@ -451,31 +422,32 @@ function foo(): Set<Set<Set<string>>> {
       code: `
 type Fn = () => Set<string>;
 const foo1: Fn = () => new Set<any>();
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { receiver: 'Set<string>', sender: 'Set<any>' },
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeReturnAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+type Fn = () => Set<string>;
 const foo2: Fn = function test() {
   return new Set<any>();
 };
       `,
       errors: [
         {
-          column: 24,
-          data: {
-            receiver: 'Set<string>',
-            sender: 'Set<any>',
-          },
-          endColumn: 38,
-          endLine: 3,
-          line: 3,
-          messageId: 'unsafeReturnAssignment',
-        },
-        {
           column: 3,
-          data: {
-            receiver: 'Set<string>',
-            sender: 'Set<any>',
-          },
+          data: { receiver: 'Set<string>', sender: 'Set<any>' },
           endColumn: 25,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'unsafeReturnAssignment',
         },
       ],
@@ -485,31 +457,33 @@ const foo2: Fn = function test() {
 type Fn = () => Set<string>;
 function receiver(arg: Fn) {}
 receiver(() => new Set<any>());
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { receiver: 'Set<string>', sender: 'Set<any>' },
+          endColumn: 30,
+          endLine: 4,
+          line: 4,
+          messageId: 'unsafeReturnAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+type Fn = () => Set<string>;
+function receiver(arg: Fn) {}
 receiver(function test() {
   return new Set<any>();
 });
       `,
       errors: [
         {
-          column: 16,
-          data: {
-            receiver: 'Set<string>',
-            sender: 'Set<any>',
-          },
-          endColumn: 30,
-          endLine: 4,
-          line: 4,
-          messageId: 'unsafeReturnAssignment',
-        },
-        {
           column: 3,
-          data: {
-            receiver: 'Set<string>',
-            sender: 'Set<any>',
-          },
+          data: { receiver: 'Set<string>', sender: 'Set<any>' },
           endColumn: 25,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'unsafeReturnAssignment',
         },
       ],
@@ -519,30 +493,31 @@ receiver(function test() {
 function foo() {
   return this;
 }
-
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { type: '`any`' },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeReturnThis',
+        },
+      ],
+    },
+    {
+      code: `
 function bar() {
   return () => this;
 }
       `,
       errors: [
         {
-          column: 3,
-          data: {
-            type: '`any`',
-          },
-          endColumn: 15,
+          column: 16,
+          data: { type: '`any`' },
+          endColumn: 20,
           endLine: 3,
           line: 3,
-          messageId: 'unsafeReturnThis',
-        },
-        {
-          column: 16,
-          data: {
-            type: '`any`',
-          },
-          endColumn: 20,
-          endLine: 7,
-          line: 7,
           messageId: 'unsafeReturnThis',
         },
       ],
@@ -555,9 +530,7 @@ foo(() => 'foo' as any);
       errors: [
         {
           column: 11,
-          data: {
-            type: '`any`',
-          },
+          data: { type: '`any`' },
           endColumn: 23,
           endLine: 3,
           line: 3,
@@ -576,9 +549,7 @@ function example() {
       errors: [
         {
           column: 3,
-          data: {
-            type: 'error',
-          },
+          data: { type: 'error' },
           endColumn: 16,
           endLine: 5,
           line: 5,
@@ -596,9 +567,7 @@ async function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any`',
-          },
+          data: { type: '`any`' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -616,9 +585,7 @@ async function foo(): Promise<number> {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -635,9 +602,7 @@ async function foo(arg: number) {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 30,
           endLine: 3,
           line: 3,
@@ -654,9 +619,7 @@ function foo(): Promise<any> {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any`',
-          },
+          data: { type: '`any`' },
           endColumn: 20,
           endLine: 3,
           line: 3,
@@ -673,9 +636,7 @@ function foo(): Promise<object> {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`any`',
-          },
+          data: { type: '`any`' },
           endColumn: 20,
           endLine: 3,
           line: 3,
@@ -692,9 +653,7 @@ async function foo(): Promise<object> {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 35,
           endLine: 3,
           line: 3,
@@ -711,9 +670,7 @@ async function foo(): Promise<object> {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 69,
           endLine: 3,
           line: 3,
@@ -730,9 +687,7 @@ async function foo(): Promise<object> {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 56,
           endLine: 3,
           line: 3,
@@ -749,9 +704,7 @@ async function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 56,
           endLine: 3,
           line: 3,
@@ -768,9 +721,7 @@ async function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 47,
           endLine: 3,
           line: 3,
@@ -787,9 +738,7 @@ async function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 38,
           endLine: 3,
           line: 3,
@@ -806,9 +755,7 @@ async function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 50,
           endLine: 3,
           line: 3,
@@ -830,9 +777,7 @@ async function foo() {
       errors: [
         {
           column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
+          data: { type: '`Promise<any>`' },
           endColumn: 16,
           endLine: 8,
           line: 8,
