@@ -106,8 +106,7 @@
       "test": {
         "dependsOn": [
           "^build",
-          "typecheck",
-          "repo:typecheck-spec-config"
+          "typecheck"
         ]
       },
       "attw-check": {}

@@ -67,12 +67,7 @@
       "clean"
     ],
     "targets": {
-      "typecheck:tsgo": {
-        "outputs": [
-          "{projectRoot}/dist",
-          "{workspaceRoot}/dist/packages/tsconfig-utils"
-        ]
-      },
+      "typecheck:tsgo": {},
       "attw-check": {}
     }
   }

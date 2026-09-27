@@ -97,4 +97,3 @@ tsconfig*.vitest-temp.json
 
 .nx/migrate-runs
 .claude/settings.local.json
-.nx/migrate-runs

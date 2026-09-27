@@ -32,29 +32,14 @@ defaults:
 # 2) Run the build to populate the Nx Cloud remote cache
 #    - In parallel we also any steps that don't need the build (like prettier)
 # 3) Run the steps that depend on the build
-# 1) The `main` job starts an Nx Cloud CI run and distributes all Linux Nx
-#    task execution onto Nx Agents (see .nx/ci-config.yaml and
-#    .nx/workflows/agents.yaml) in two waves: first a single multi-target
-#    command (build, typecheck, typecheck:tsgo, lint, attw-check) whose task
-#    graph Nx schedules with maximum parallelism, then all test invocations
-#    (eslint-plugin Node 24 coverage shards + Node 18 shards, the
-#    project-service test variants, integration tests and the affected unit
-#    tests) as concurrent Nx clients feeding the same run group. Assignment
-#    rules route the node18-configuration variants to a Node 18 agent tier.
-#    Non-Nx checks (prettier, cspell, markdownlint, stylelint, dedupe, knip)
-#    run on the coordinator, recorded via `nx-cloud record`. generate-configs
-#    runs coordinator-local because its check inspects the local working tree
-#    via git.
-# 2) Windows matrices and the snapshot-cleanliness checks (which mutate +
-#    inspect the local working tree) remain as regular GitHub-hosted jobs.
 #
 
 permissions:
   contents: read # to fetch code (actions/checkout)
 
 jobs:
-  affected-for-github-hosted-tests:
-    name: Determine Affected Projects for GitHub-hosted Tests
+  install:
+    name: Checkout and Install
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     runs-on: ubuntu-latest
     env:
@@ -78,7 +63,6 @@ jobs:
       actions: read # to find the last successful run of this workflow (nrwl/nx-set-shas)
       contents: read # to fetch code (actions/checkout)
       pull-requests: read # to resolve the base of a merge group (nrwl/nx-set-shas)
-    runs-on: ubuntu-slim
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     outputs:
@@ -86,8 +70,6 @@ jobs:
       unit_tests_matrix: ${{ steps.filter.outputs.unit_tests_matrix }}
       snapshot_packages: ${{ steps.filter.outputs.snapshot_packages }}
       project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
-      unit_tests_packages: ${{ steps.filter.outputs.unit_tests_packages }}
-      windows_unit_tests_packages: ${{ steps.filter.outputs.windows_unit_tests_packages }}
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -131,53 +113,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
-        with:
-          script: |
-            const affected = ${{ steps.affected.outputs.affected }};
-
-            // `eslint-plugin` runs in its own sharded job; gate it with a boolean.
-            const isPluginAffected = affected.includes('eslint-plugin');
-
-            // Packages that have their own tests CI job.
-            const EXCLUDED_PACKAGES = ['eslint-plugin', 'integration-tests'];
-
-            const affectedUnitTests = affected.filter((pkg) => !EXCLUDED_PACKAGES.includes(pkg));
-
-            // Packages that have no (or we don't care about their) platform-specific,
-            // runtime behavior, so skipping them on Windows to have fewer jobs to run.
-            const windowsSkippedPackages = [
-              'ast-spec',
-              'eslint-plugin-internal',
-              'rule-schema-to-typescript-types',
-              'scope-manager',
-              'utils',
-              'visitor-keys',
-            ];
-            const affectedWindowsUnitTests = affectedUnitTests.filter((pkg) => !windowsSkippedPackages.includes(pkg));
-
-            core.setOutput('is_plugin_affected', isPluginAffected);
-            core.setOutput('unit_tests_packages', JSON.stringify(affectedUnitTests));
-            core.setOutput('windows_unit_tests_packages', JSON.stringify(affectedWindowsUnitTests));
-
-  main:
-    name: Nx Agents Main Job
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    runs-on: ubuntu-latest
-    env:
-      # This value keys the `overrides` section of .nx/ci-config.yaml — it is
-      # what enables distributed execution for this job and nothing else.
-      NX_CI_EXECUTION_ENV: 'nx-agents-main'
-      # Continuous assignment is disabled while Nx Cloud investigates an
-      # orchestrator race: 3 of 4 runs on 2026-08-20 had a command stall with
-      # zero task assignments until the 3600s client bailout (executions
-      # miZ0PWM8kp and alkcb8POn6, plus stuck parser/utils:typecheck earlier).
-      NX_CLOUD_CONTINUOUS_ASSIGNMENT: false
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
-          fetch-depth: 2
           persist-credentials: false
       - name: Install
         uses: ./.github/actions/prepare-install
@@ -268,103 +207,8 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-      - name: Derive SHAs for nx affected commands
-        run: |
-          # Fetch base ref history so NX can determine affected projects
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --depth=1 origin "$BASE_REF"
-            echo "NX_BASE=origin/$BASE_REF" >> "$GITHUB_ENV"
-          else
-            echo "NX_BASE=HEAD~1" >> "$GITHUB_ENV"
-          fi
-          echo "NX_HEAD=HEAD" >> "$GITHUB_ENV"
-        env:
-          BASE_REF: ${{ github.base_ref }}
-
-      # All distribution, lifecycle and env-var forwarding configuration lives
-      # in .nx/ci-config.yaml.
-      - name: Start Nx Agents
-        run: pnpm exec nx-cloud start-nx-agents
-
-      # Non-Nx checks run locally on this job and are recorded to Nx Cloud.
-      # None of these need the build. They run as background steps so they
-      # overlap with the distributed wave below — the coordinator is mostly
-      # idle while orchestrating DTE, so this parallelism is free.
-      - name: Run Spell Check
-        id: spell_check
-        background: true
-        run: pnpm exec nx-cloud record -- pnpm run check-spelling
-
-      - name: Run Format Check
-        id: format_check
-        background: true
-        run: pnpm exec nx-cloud record -- pnpm run check-format
-
-      - name: Run Markdown Lint
-        id: markdown_lint
-        background: true
-        run: pnpm exec nx-cloud record -- pnpm run lint-markdown
-
-      - name: Run Stylelint
-        id: stylelint
-        background: true
-        run: pnpm exec nx-cloud record -- pnpm --dir packages/website run stylelint
-
-      - name: Run Dedupe Check
-        id: dedupe_check
-        background: true
-        run: pnpm exec nx-cloud record -- pnpm run deduplicate
-
-      # One command, one task graph: Nx computes the dependencies between all
-      # of these targets (builds before typechecks/lints/attw etc.) and the
-      # agents schedule them with maximum parallelism. attw-check needs no
-      # exclusions here because only the 13 publishable packages declare the
-      # target. Note that per-task CLI overrides (like `-- --coverage`) cannot
-      # be used on a multi-target command, which is why the test invocations
-      # below remain separate clients.
-      - name: Build, typecheck, lint, attw
-        run: pnpm exec nx run-many -t build typecheck typecheck:tsgo lint attw-check
-
-      - name: Wait for static checks
-        wait:
-          [spell_check, format_check, markdown_lint, stylelint, dedupe_check]
-
-      # knip analyzes build outputs, so it runs after the distributed build
-      # (task outputs are copied back to this job as they complete).
-      - name: Run Knip
-        run: pnpm exec nx-cloud record -- pnpm knip
-
-      # Each invocation below needs different runtime overrides (shard args,
-      # coverage directories, --configuration variants), so they cannot join a
-      # single run-many. Instead they all launch concurrently as parallel Nx
-      # clients feeding the same run group; every dependency task is already a
-      # cache hit from the command above, so agents go straight to the tests.
-      # Assignment rules route the node18-configuration shards to the Node 18
-      # agent tier. Coverage is written to a per-shard directory so that the
-      # shards' output directories do not clobber each other when copied back
-      # to this job.
-      - name: Run all unit and integration tests
-        run: |
-          pids=()
-          for shard in 1 2 3 4; do
-            pnpm exec nx test eslint-plugin -- --shard="$shard/4" --coverage --coverage.reportsDirectory="coverage/shard-$shard" &
-            pids+=($!)
-            pnpm exec nx test eslint-plugin --configuration=node18 -- --shard="$shard/4" &
-            pids+=($!)
-          done
-          pnpm exec nx run-many -t test --configuration=project-service --projects=eslint-plugin-internal,typescript-estree --coverage=false &
-          pids+=($!)
-          pnpm run test-integration &
-          pids+=($!)
-          pnpm exec nx affected -t test --exclude eslint-plugin integration-tests -- --coverage &
-          pids+=($!)
-          status=0
-          for pid in "${pids[@]}"; do
-            wait "$pid" || status=1
-          done
-          exit "$status"
-        env:
-          CI: true
+      - name: Run Check
+        run: pnpm attw-check
 
   # Note -- intentionally use the same name as lint_with_build just so everything looks uniform in the checks section
   lint_with_build_eslint:
@@ -420,25 +264,21 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - run: pnpm lint --projects=${{ join(matrix.projects, ',') }} ${{ matrix.args }}
-      # generate-configs mutates the working tree and its check inspects the
-      # local git status, so it must run on this machine, not on an agent.
-      # It runs after all distributed commands so that any tree mutation it
-      # makes cannot skew the hashes of subsequently issued tasks. The
-      # step-level NX_CI_EXECUTION_ENV opts it out of distribution via the
-      # overrides in .nx/ci-config.yaml (it is listed in lifecycle.stop-after,
-      # so the CI run stays open until it completes).
-      - name: Generate configs
-        id: generate_configs
-        run: pnpm exec nx run generate-configs
-        env:
-          NX_CI_EXECUTION_ENV: 'ubuntu-latest'
-          NX_CLOUD_DISTRIBUTED_EXECUTION: 'false'
-      - run: git status --porcelain
-      - if: failure() && steps.generate_configs.outcome == 'failure'
-        run: echo "Outdated result detected from pnpm run generate-configs. Please check in any file changes."
 
-      - name: Store coverage for uploading
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+  integration_tests:
+    name: Run integration tests on primary Node.js version
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build]
+    runs-on: ubuntu-latest
+    env:
+      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
@@ -446,19 +286,12 @@ jobs:
         run: pnpm run test-integration
         env:
           CI: true
-          name: distributed-coverage
-          path: packages/*/coverage/**/lcov.info
-          if-no-files-found: ignore
-          # Sadly 1 day is the minimum
-          retention-days: 1
 
   snapshots_clean:
     name: Verify snapshots are clean
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     if: ${{ needs.build.outputs.snapshot_packages != '[]' && needs.build.outputs.snapshot_packages != '' }}
-    needs: [affected-for-github-hosted-tests]
-    if: ${{ contains(fromJson(needs['affected-for-github-hosted-tests'].outputs.unit_tests_packages), 'ast-spec') }}
     runs-on: ubuntu-latest
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
@@ -493,26 +326,6 @@ jobs:
             exit 1
           fi
 
-  scope_manager_snapshots_clean:
-    name: Verify scope-manager snapshots are clean
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [affected-for-github-hosted-tests]
-    if: ${{ contains(fromJson(needs['affected-for-github-hosted-tests'].outputs.unit_tests_packages), 'scope-manager') }}
-    runs-on: ubuntu-latest
-    env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        with:
-          persist-credentials: false
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
-
       - name: Delete all scope-manager fixture snapshots
         id: scope_manager_clean
         if: ${{ !cancelled() && contains(fromJson(needs.build.outputs.snapshot_packages), 'scope-manager') }}
@@ -534,12 +347,9 @@ jobs:
             exit 1
           fi
 
-  # The Linux legs of the eslint-plugin shards (Node 24 with coverage, and
-  # Node 18 via `test --configuration=node18`) run distributed on Nx Agents in
-  # the `main` job; this job only covers the Windows-specific runs.
   plugin_unit_tests:
-    # Note -- intentionally use the same name shape as unit_tests just so everything looks uniform in the checks section
-    name: Run Unit Tests on Windows (Node ${{ matrix.node-version }}, eslint-plugin)
+    # Note -- intentionally use the same name as unit_tests just so everything looks uniform in the checks section
+    name: Run Unit Tests
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     if: ${{ needs.build.outputs.is_plugin_affected == 'true' }}
@@ -558,17 +368,6 @@ jobs:
             { name: 'eslint-plugin', params: '--shard=4/4' },
           ]
         # Windows CI skips the rules tests, so eslint-plugin runs with other packages in the grouped unit tests job.
-    needs: [affected-for-github-hosted-tests]
-    if: ${{ needs['affected-for-github-hosted-tests'].outputs.is_plugin_affected == 'true' }}
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # just run on the latest supported version on Windows; the Nx Agents
-        # runs cover the oldest supported version on Linux
-        node-version: [24]
-    env:
-      NX_CI_EXECUTION_ENV: 'windows-latest - Node ${{ matrix.node-version }}'
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -580,10 +379,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Windows CI skips the rules tests so there isn't enough left to be worth sharding.
-      # We don't collect coverage on Windows so that the runs are faster.
-      - name: Run unit tests for eslint-plugin
-        run: pnpm exec nx test eslint-plugin
+      # collect coverage on just the primary node version and on linux
+      # we don't collect coverage on the old node versions or other OSs so that they run faster
+      - name: Run unit tests with coverage for ${{ matrix.package.name }}
+        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
+        run: pnpm exec nx test ${{ matrix.package.name }} -- ${{ matrix.package.params }} --coverage
         env:
           CI: true
       - name: Run unit tests for ${{ matrix.package.name }}
@@ -601,19 +401,12 @@ jobs:
           flags: ${{ matrix.package.name }}
           name: ${{ matrix.package.name }}-${{ strategy.job-index }}
 
-  # Linux (with coverage) unit tests run distributed on Nx Agents in the `main`
-  # job; this job only covers the Windows-specific runs.
   unit_tests:
     name: Run Unit Tests (${{ matrix.os }}, ${{ matrix.name }})
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     if: ${{ needs.build.outputs.unit_tests_matrix != '[]' && needs.build.outputs.unit_tests_matrix != '' }}
     runs-on: ${{ matrix.os }}
-    name: Run Unit Tests on Windows (Node ${{ matrix.node-version }}, ${{ matrix.package }})
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    needs: [affected-for-github-hosted-tests]
-    if: ${{ needs['affected-for-github-hosted-tests'].outputs.windows_unit_tests_packages != '[]' && needs['affected-for-github-hosted-tests'].outputs.windows_unit_tests_packages != '' }}
-    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
@@ -621,10 +414,6 @@ jobs:
         include: ${{ fromJson(needs.build.outputs.unit_tests_matrix) }}
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - ${{ matrix.name }}'
-        node-version: [24]
-        package: ${{ fromJson(needs['affected-for-github-hosted-tests'].outputs.windows_unit_tests_packages) }}
-    env:
-      NX_CI_EXECUTION_ENV: 'windows-latest - Node ${{ matrix.node-version }}'
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
@@ -648,9 +437,6 @@ jobs:
       - name: Run unit tests
         if: matrix.os != 'ubuntu-latest'
         run: pnpm exec nx run-many -t test --projects="$PROJECTS"
-      # we don't collect coverage on Windows so that the runs are faster
-      - name: Run unit tests for ${{ matrix.package }}
-        run: pnpm exec nx test "$PACKAGE"
         env:
           CI: true
           PROJECTS: ${{ join(matrix.projects, ',') }}
@@ -691,7 +477,6 @@ jobs:
           PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
 
   # Some test jobs are created dynamically and conditionally skipped (see the affected projects step in the build job),
-  # Some test jobs are created dynamically and conditionally skipped (see affected-for-github-hosted-tests),
   # so they can't be marked in the branch ruleset as required.
   # This static job aggregates all other jobs and is the single check we require in the branch ruleset.
   required_checks:
@@ -711,45 +496,7 @@ jobs:
       - unit_tests
       - unit_tests_project_service
     runs-on: ubuntu-latest
-      - affected-for-github-hosted-tests
-      # Runs all distributed Nx tasks (build, typecheck, lint, attw-check,
-      # unit + integration tests including the Node 18 and project-service
-      # variants), recorded non-Nx checks (prettier, cspell, markdownlint,
-      # stylelint, dedupe, knip) and the coordinator-local generate-configs
-      # check via Nx Agents.
-      - main
-      - ast_spec_snapshots_clean
-      - scope_manager_snapshots_clean
-      - plugin_unit_tests
-      - unit_tests
-    runs-on: ubuntu-slim
     steps:
       - name: Fail if any dependency failed or was cancelled
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
         run: exit 1
-
-  upload_coverage:
-    name: Upload Codecov Coverage
-    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
-    # All coverage (including the eslint-plugin per-shard reports) is produced
-    # by the distributed unit tests in the `main` job.
-    needs: [main]
-    runs-on: ubuntu-slim
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        with:
-          persist-credentials: false
-
-      - name: Download coverage reports
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          path: coverage
-
-      - name: Publish code coverage report
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/**/lcov.info
-          flags: unittest
-          name: codecov

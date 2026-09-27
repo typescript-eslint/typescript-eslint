@@ -66,11 +66,6 @@
     "@nx/vitest": "23.2.0",
     "@nx/workspace": "23.2.0",
     "@swc/core": "^1.16.1",
-    "@nx/devkit": "23.1.1",
-    "@nx/js": "23.1.1",
-    "@nx/vitest": "23.1.1",
-    "@nx/workspace": "23.1.1",
-    "@swc/core": "^1.15.8",
     "@types/debug": "^4.1.12",
     "@types/natural-compare": "catalog:",
     "@types/node": "catalog:",
@@ -106,7 +101,6 @@
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.49.0",
     "nx": "23.2.0",
-    "nx": "23.1.1",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "semver": "7.8.0",
@@ -179,20 +173,6 @@
         "options": {
           "config": "tools/vitest.config.mts"
         }
-      "typecheck-spec-config": {
-        "command": "tsc --build tsconfig.spec.json",
-        "cache": true,
-        "inputs": [
-          "sharedGlobals",
-          "{workspaceRoot}/vitest.config.mts",
-          "{workspaceRoot}/vitest.config.base.mts",
-          "{workspaceRoot}/package.json"
-        ],
-        "outputs": [
-          "{workspaceRoot}/dist/vitest.config.d.mts",
-          "{workspaceRoot}/dist/vitest.config.base.d.mts",
-          "{workspaceRoot}/dist/tsconfig.spec.tsbuildinfo"
-        ]
       }
     }
   }

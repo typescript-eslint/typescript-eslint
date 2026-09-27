@@ -74,36 +74,17 @@
         ]
       },
       "copy-ast-spec": {
-        "cache": true,
+        "cache": false,
         "command": "tsx tools/copy-ast-spec.mts",
         "dependsOn": [
           "ast-spec:build"
         ],
-        "inputs": [
-          "default",
-          "{workspaceRoot}/.npmrc",
-          "{workspaceRoot}/.prettierignore",
-          "{workspaceRoot}/pnpm-lock.yaml",
-          {
-            "dependentTasksOutputFiles": "**/*"
-          }
-        ],
-        "options": {
-          "cwd": "{projectRoot}"
-        },
         "outputs": [
           "{projectRoot}/src/generated"
         ],
         "options": {
           "cwd": "{projectRoot}"
         }
-      },
-      "test": {
-        "dependsOn": [
-          "copy-ast-spec",
-          "^build",
-          "repo:typecheck-spec-config"
-        ]
       },
       "lint": {
         "command": "eslint",
