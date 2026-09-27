@@ -417,6 +417,7 @@ export default createRule<Options, MessageId>({
           ? node
           : getParentFunctionNode(node);
 
+      /* istanbul ignore next -- this shouldn't happen in correct code, but the parser won't error on bad code */
       if (!functionNode) {
         return false;
       }
@@ -430,6 +431,7 @@ export default createRule<Options, MessageId>({
       );
 
       const checker = services.program.getTypeChecker();
+      /* istanbul ignore next -- getAwaitedType only returns undefined for non-promise-like types, which isn't reachable when functionNode.async is true */
       const resolvedReturnType = functionNode.async
         ? (checker.getAwaitedType(declaredReturnType) ?? declaredReturnType)
         : declaredReturnType;
