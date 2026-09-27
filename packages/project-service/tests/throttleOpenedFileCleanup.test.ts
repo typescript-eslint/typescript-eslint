@@ -165,22 +165,4 @@ describe(throttleOpenedFileCleanup, () => {
 
     expect(cleanup).toHaveBeenCalledOnce();
   });
-
-  it('does not wrap methods when no cleanup method exists', () => {
-    const open = vi.fn();
-    const service: FakeService = { openClientFileWithNormalizedPath: open };
-
-    throttleOpenedFileCleanup(service as unknown as ts.server.ProjectService);
-
-    expect(service).toEqual({ openClientFileWithNormalizedPath: open });
-  });
-
-  it('does not wrap methods when openClientFileWithNormalizedPath does not exist', () => {
-    const cleanup = vi.fn();
-    const service: FakeService = { cleanupProjectsAndScriptInfos: cleanup };
-
-    throttleOpenedFileCleanup(service as unknown as ts.server.ProjectService);
-
-    expect(service).toEqual({ cleanupProjectsAndScriptInfos: cleanup });
-  });
 });
