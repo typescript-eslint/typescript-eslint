@@ -185,7 +185,14 @@ export const setup = async (project: TestProject): Promise<void> => {
             ...fixturePackageJson,
             devDependencies: {
               ...BASE_DEPENDENCIES,
-              ...fixturePackageJson.devDependencies,
+              ...Object.fromEntries(
+                Object.entries(fixturePackageJson.devDependencies).map(
+                  ([name, version]) => [
+                    name,
+                    version === 'catalog:' ? PNPM_CATALOG[name] : version,
+                  ],
+                ),
+              ),
             },
 
             packageManager: rootPackageJson.packageManager,

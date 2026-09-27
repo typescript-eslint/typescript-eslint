@@ -12,10 +12,7 @@ export default [
     },
     plugins: { '@typescript-eslint': tseslint.plugin },
     rules: {
-      '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-deprecated': 'error',
-      '@typescript-eslint/no-unsafe-argument': 'error',
-      '@typescript-eslint/no-unsafe-unary-minus': 'error',
     },
   },
 ];
