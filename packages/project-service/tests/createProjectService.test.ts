@@ -11,14 +11,6 @@ vi.mock('../src/getParsedConfigFileFromTSServer.js', () => ({
   },
 }));
 
-const mockThrottleOpenedFileCleanup = vi.fn();
-
-vi.mock('../src/throttleOpenedFileCleanup.js', () => ({
-  get throttleOpenedFileCleanup() {
-    return mockThrottleOpenedFileCleanup;
-  },
-}));
-
 const mockSetCompilerOptionsForInferredProjects = vi.fn();
 const mockSetHostConfiguration = vi.fn();
 
@@ -318,13 +310,5 @@ describe(createProjectService, () => {
     });
 
     expect(service.host.readFile).toEqual(readFile);
-  });
-
-  it('throttles opened file cleanup on the created service', () => {
-    const { service } = createProjectService();
-
-    expect(mockThrottleOpenedFileCleanup).toHaveBeenCalledExactlyOnceWith(
-      service,
-    );
   });
 });
