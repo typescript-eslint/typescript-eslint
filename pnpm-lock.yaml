@@ -107,6 +107,9 @@ settings:
 
 catalogs:
   default:
+    '@base-ui/react':
+      specifier: ^1.7.0
+      version: 1.7.0
     '@eslint/js':
       specifier: ^10.0.1
       version: 10.0.1
@@ -164,6 +167,12 @@ catalogs:
     prettier:
       specifier: 3.9.5
       version: 3.9.5
+    react:
+      specifier: ^18.3.1
+      version: 18.3.1
+    react-dom:
+      specifier: ^18.3.1
+      version: 18.3.1
     rimraf:
       specifier: ^5.0.10
       version: 5.0.10
@@ -986,7 +995,7 @@ importers:
         specifier: ^7.28.4
         version: 7.29.7
       '@base-ui/react':
-        specifier: ^1.7.0
+        specifier: 'catalog:'
         version: 1.7.0(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@docusaurus/core':
         specifier: ~3.10.2
@@ -1061,10 +1070,10 @@ importers:
         specifier: 2.4.1
         version: 2.4.1(react@18.3.1)
       react:
-        specifier: ^18.3.1
+        specifier: 'catalog:'
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: 'catalog:'
         version: 18.3.1(react@18.3.1)
       react-markdown:
         specifier: ^10.1.0

@@ -19,6 +19,7 @@ trustPolicyExclude:
   - '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1'
 
 catalog:
+  '@base-ui/react': ^1.7.0
   '@eslint/js': ^10.0.1
   '@types/babel__code-frame': ^7.0.6
   '@types/mdast': ^4.0.4
@@ -38,6 +39,8 @@ catalog:
   mdast-util-from-markdown: ^2.0.2
   mdast-util-mdx: ^3.0.0
   prettier: 3.9.5
+  react: ^18.3.1
+  react-dom: ^18.3.1
   rimraf: ^5.0.10
   tsx: ^4.7.2
   typescript: '>=4.8.4 <6.1.0'
