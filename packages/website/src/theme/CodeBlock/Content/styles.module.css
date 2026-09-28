@@ -123,9 +123,3 @@
   background: #351a1a;
   color: #ffd7d4;
 }
-
-@media print {
-  .codeBlockLines {
-    white-space: pre-wrap;
-  }
-}
