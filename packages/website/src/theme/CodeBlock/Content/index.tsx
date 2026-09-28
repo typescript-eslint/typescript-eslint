@@ -37,6 +37,7 @@ function Code(props: ComponentProps<'code'>) {
       )}
       style={{
         ...props.style,
+        // Use the same logic to preserve Docusaurus's line-numbering behavior.
         counterReset:
           metadata.lineNumbersStart == null
             ? undefined
