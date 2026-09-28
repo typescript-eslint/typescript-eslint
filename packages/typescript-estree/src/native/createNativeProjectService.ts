@@ -5,6 +5,7 @@ import type {
 
 import { createFileSystemLayer } from '@typescript/native/unstable/fs';
 import { API } from '@typescript/native/unstable/sync';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import * as ts from 'typescript';
 
@@ -28,10 +29,19 @@ export function toCompilerPath(filePath: string): string {
     .replace(/^[A-Z]:\//, drive => drive.toLowerCase());
 }
 
+function hashText(text: string): string {
+  return createHash('sha1').update(text).digest('hex');
+}
+
+function hashFileOnDisk(compilerPath: string): string | undefined {
+  const text = ts.sys.readFile(compilerPath);
+  return text == null ? undefined : hashText(text);
+}
+
 export function createNativeProjectService(
   cwd = process.cwd(),
 ): NativeProjectService {
-  const contents = new Map<string, string>();
+  const contentHashes = new Map<string, string>();
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
   const openProjects = new Set<string>();
@@ -120,7 +130,7 @@ export function createNativeProjectService(
       fileContexts.clear();
       fileProjects.clear();
       openProjects.clear();
-      contents.clear();
+      contentHashes.clear();
 
       if (failure) {
         throw failure;
@@ -131,13 +141,14 @@ export function createNativeProjectService(
       assertOpen();
       const compilerPath = toCompilerPath(filePath);
       const cacheKey = getCanonicalFileName(compilerPath);
-      const previous = contents.get(cacheKey);
+      const hash = hashText(code);
+      const previous = contentHashes.get(cacheKey);
       const cachedContext = fileContexts.get(cacheKey);
-      if (previous === code && cachedContext) {
+      if (previous === hash && cachedContext) {
         return cachedContext;
       }
-      const unchanged = (previous ?? ts.sys.readFile(compilerPath)) === code;
-      contents.set(cacheKey, code);
+      const unchanged = (previous ?? hashFileOnDisk(compilerPath)) === hash;
+      contentHashes.set(cacheKey, hash);
       const fileSystem = unchanged
         ? undefined
         : createFileSystemLayer([[compilerPath, code]]);
