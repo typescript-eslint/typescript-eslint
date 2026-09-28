@@ -25,7 +25,10 @@ import {
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
 import { createParserServices } from './createParserServices';
-import { getNativeParser } from './nativeParserRegistry';
+import {
+  getNativeBackendLoadError,
+  getNativeParser,
+} from './nativeParserRegistry';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { useProgramFromProjectService } from './useProgramFromProjectService';
@@ -178,8 +181,12 @@ export function parseAndGenerateServices<
   if (parseSettings.nativeProjectService) {
     const nativeParser = getNativeParser();
     if (!nativeParser) {
+      const cause = getNativeBackendLoadError();
       throw new Error(
-        'The experimental native project service could not be loaded. Install @typescript/native.',
+        `The experimental native project service could not be loaded${
+          cause instanceof Error ? `: ${cause.message}` : ''
+        }. Install @typescript/native.`,
+        { cause },
       );
     }
     return nativeParser<T>(parseSettings);
