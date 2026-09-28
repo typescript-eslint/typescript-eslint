@@ -353,10 +353,11 @@ See [FAQs > Typed Linting > Project Service Issues](../troubleshooting/typed-lin
 #### Experimental TypeScript 7 native backend
 
 The parser includes an experimental native backend for TypeScript >=7.1.
-It requires Node.js 22 or newer and a side-by-side installation of classic TypeScript 6 and `@typescript/native`.
+It requires Node.js 22 or newer and a side-by-side installation of classic TypeScript 6 and a TypeScript 7.1 nightly aliased as `@typescript/native`.
+The nightly must be at least `7.1.0-dev.20260923.1`:
 
 ```shell
-pnpm add --save-dev typescript@^6 @typescript/native@npm:typescript@7.1.0-dev.20260822.1
+pnpm add --save-dev typescript@^6 @typescript/native@npm:typescript@7.1.0-dev.20260923.1
 ```
 
 Select the native backend by specifying it as `projectService.EXPERIMENTAL_backend`:
@@ -384,6 +385,7 @@ See [#12803 feat: prototype TypeScript 7.1 native parser support](https://github
 
 The native backend does not support the legacy `parserOptions.project` and `parserOptions.programs` configuration options.
 Use `projectService` instead.
+It also does not yet support `parserOptions.extraFileExtensions` or the `allowDefaultProject`, `defaultProject`, `loadTypeScriptPlugins`, and `maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING` project service options.
 
 #### `ProjectServiceOptions`
 
