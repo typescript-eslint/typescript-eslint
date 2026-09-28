@@ -31,6 +31,7 @@ export function toClassicDiagnostic(
   getFile: (fileName: string | undefined) => ts.SourceFile | undefined,
 ): ts.Diagnostic {
   return {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
     category: diagnostic.category,
     code: diagnostic.code,
     file: getFile(diagnostic.fileName),
@@ -52,6 +53,7 @@ function toMessageChain(
   diagnostic: NativeDiagnostic,
 ): ts.DiagnosticMessageChain {
   return {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
     category: diagnostic.category,
     code: diagnostic.code,
     messageText: diagnostic.text,
@@ -97,6 +99,7 @@ function getModuleDeclarationFlags(node: NativeNode): ts.NodeFlags {
 
 function translateNodeFlags(node: NativeNode): ts.NodeFlags {
   const flags = translateFlags(NODE_FLAG_TRANSLATIONS, node.flags);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- translated member by member above
   return node.kind === NativeSyntaxKind.ModuleDeclaration
     ? flags | getModuleDeclarationFlags(node)
     : flags;
@@ -295,6 +298,7 @@ export function createNativeNodeAdapter({
   function readNative(target: NativeNode, property: string | symbol): unknown {
     const value: unknown = Reflect.get(target, property, target);
     if (typeof value === 'number' && KIND_PROPERTIES.has(property as string)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- a kind read from a native node
       return translateKind(value);
     }
     if (isNativeNode(value)) {

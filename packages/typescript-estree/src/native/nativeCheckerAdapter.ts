@@ -145,12 +145,14 @@ export function createNativeChecker({
     getImmediateAliasedSymbol: symbol =>
       wrapSymbol(checker.getImmediateAliasedSymbol(unwrapSymbol(symbol))),
     getIndexInfoOfType: (type, kind) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       const info = checker.getIndexInfoOfType(unwrapType(type), kind);
       return info && wrapIndexInfo(info);
     },
     getIndexInfosOfType: type =>
       checker.getIndexInfosOfType(unwrapType(type)).map(wrapIndexInfo),
     getIndexTypeOfType: (type, kind) =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       wrapType(checker.getIndexTypeOfType(unwrapType(type), kind)),
     getNeverType: () => wrapType(checker.getNeverType()),
     getNonNullableType: type =>
@@ -175,6 +177,7 @@ export function createNativeChecker({
         checker.getSignatureFromDeclaration(unwrapNode(declaration)),
       ),
     getSignaturesOfType: (type, kind) =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       checker.getSignaturesOfType(unwrapType(type), kind).map(toSignature),
     getStringType: () => wrapType(checker.getStringType()),
     getSymbolAtLocation: node =>
@@ -268,6 +271,7 @@ export function createNativeChecker({
         unwrapSignature(signature),
         kind as never,
         enclosingDeclaration && unwrapNode(enclosingDeclaration),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
         flags,
       );
       return (

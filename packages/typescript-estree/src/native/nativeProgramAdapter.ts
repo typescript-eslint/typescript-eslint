@@ -76,6 +76,7 @@ export function createNativeProgram({
 
   const nativeProgram = {
     getCompilerOptions: () =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       program.getCompilerOptions() as ts.CompilerOptions,
     getConfigFileParsingDiagnostics: () =>
       program
@@ -92,9 +93,11 @@ export function createNativeProgram({
         .getGlobalDiagnostics()
         .map(diagnostic => wrapDiagnostic(diagnostic)),
     getModeForResolutionAtIndex: (file, index) =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       program.getModeForResolutionAtIndex(file.fileName, index) as
         ts.ResolutionMode | undefined,
     getModeForUsageLocation: (file, usage) =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       program.getModeForUsageLocation(
         file.fileName,
         nodeAdapter.unwrapNode(usage) as never,

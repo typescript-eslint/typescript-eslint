@@ -582,6 +582,7 @@ export function createNativeTypeAdapter({
     return (
       predicate &&
       ({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
         ...predicate,
         type: wrapType(predicate.type),
       } as ts.TypePredicate)
