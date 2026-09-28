@@ -79,7 +79,7 @@ export function addCodeDiagnostics(page: RuleDocsPage): void {
     const encodedDiagnostics = Buffer.from(
       JSON.stringify(diagnostics),
     ).toString('base64url');
-    node.meta = [node.meta, `eslintDiagnostics="${encodedDiagnostics}"`]
+    node.meta = [node.meta, `eslintDiagnostics='${encodedDiagnostics}'`]
       .filter(Boolean)
       .join(' ');
   }

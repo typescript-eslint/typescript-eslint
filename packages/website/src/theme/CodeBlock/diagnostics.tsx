@@ -16,7 +16,7 @@ export function useCodeBlockDiagnostics(): readonly CodeDiagnostic[] {
 export function parseCodeBlockDiagnostics(
   metastring: string | undefined,
 ): readonly CodeDiagnostic[] {
-  const encoded = metastring?.match(/eslintDiagnostics="(?<diagnostics>.*?)"/)
+  const encoded = metastring?.match(/eslintDiagnostics='(?<diagnostics>.*?)'/)
     ?.groups?.diagnostics;
   if (!encoded) {
     return [];
