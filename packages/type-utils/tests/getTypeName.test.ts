@@ -49,6 +49,7 @@ describe(getTypeName, () => {
       ['type Test<T = number> = T & boolean;', 'Test<T>'],
       ['type Test = string | number;', 'Test'],
       ['type Test = string | string[];', 'Test'],
+      ['type Test<T> = T extends T ? T : never;', 'Test<T>'],
     ] as const)(
       'when code is %s, returns %s',
       ([code, expected], { expect }) => {
