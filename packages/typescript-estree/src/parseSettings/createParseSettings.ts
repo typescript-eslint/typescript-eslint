@@ -308,7 +308,7 @@ function validateNativeProjectServiceOptions(
     process.env.TYPESCRIPT_ESLINT_NATIVE_BACKEND === 'true' &&
     getNativeParser() != null &&
     tsestreeOptions.projectService !== false &&
-    (tsestreeOptions.projectService != null || tsestreeOptions.project != null);
+    (tsestreeOptions.projectService != null || !!tsestreeOptions.project);
 
   const projectServiceOptions =
     requested ??
@@ -319,7 +319,9 @@ function validateNativeProjectServiceOptions(
 
   const unsupportedOption = findUnsupportedNativeOption(
     tsestreeOptions,
-    projectServiceOptions,
+    typeof tsestreeOptions.projectService === 'object'
+      ? tsestreeOptions.projectService
+      : projectServiceOptions,
     viaEnvironment,
   );
   const unsupportedNodeVersion = Number.parseInt(nodeVersion, 10) < 22;

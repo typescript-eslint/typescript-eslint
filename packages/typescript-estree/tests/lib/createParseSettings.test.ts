@@ -1,5 +1,7 @@
 import type { CreateProjectServiceSettings } from '@typescript-eslint/project-service';
 
+import path from 'node:path';
+
 import {
   addCandidateTSConfigRootDir,
   clearCandidateTSConfigRootDirs,
@@ -8,6 +10,7 @@ import {
   clearTSServerProjectService,
   createParseSettings,
 } from '../../src/parseSettings/createParseSettings';
+import '../../src/native/index.js';
 
 const { createProjectService, projectService } = vi.hoisted(() => {
   const projectService = { service: true };
@@ -134,6 +137,72 @@ describe(createParseSettings, () => {
       expect(parseSettings.nativeProjectService).toBe(options);
       expect(parseSettings.projectService).toBeUndefined();
       expect(createProjectService).not.toHaveBeenCalled();
+    });
+
+    describe('TYPESCRIPT_ESLINT_NATIVE_BACKEND', () => {
+      beforeEach(() => {
+        vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'true');
+        vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'true');
+      });
+
+      it.each([
+        ['project', { project: './tsconfig.json' }],
+        ['projectService', { projectService: true }],
+      ])('selects the native service for %s', (_name, options) => {
+        const parseSettings = createParseSettings('', {
+          filePath: '/project/file.ts',
+          ...options,
+        });
+
+        expect(parseSettings.nativeProjectService).toEqual({
+          EXPERIMENTAL_backend: 'native',
+        });
+        expect(parseSettings.projectService).toBeUndefined();
+        expect(createProjectService).not.toHaveBeenCalled();
+      });
+
+      it('falls back to the classic service for an unsupported option', () => {
+        const parseSettings = createParseSettings('', {
+          filePath: '/project/file.ts',
+          projectService: { allowDefaultProject: ['file.ts'] },
+        });
+
+        expect(parseSettings.nativeProjectService).toBeUndefined();
+        expect(parseSettings.projectService).toBe(projectService);
+      });
+
+      it.each([
+        ['project is false', { project: false }],
+        ['no type information is requested', {}],
+      ])('selects neither service when %s', (_name, options) => {
+        const parseSettings = createParseSettings('', {
+          filePath: '/project/file.ts',
+          ...options,
+        });
+
+        expect(parseSettings.nativeProjectService).toBeUndefined();
+        expect(parseSettings.projectService).toBeUndefined();
+        expect(createProjectService).not.toHaveBeenCalled();
+      });
+
+      it('keeps classic programs when projectService is false', () => {
+        const tsconfigRootDir = path.join(
+          __dirname,
+          '../fixtures/nativeProject',
+        );
+
+        const parseSettings = createParseSettings('', {
+          filePath: path.join(tsconfigRootDir, 'file.ts'),
+          project: './tsconfig.json',
+          projectService: false,
+          tsconfigRootDir,
+        });
+
+        expect(parseSettings.nativeProjectService).toBeUndefined();
+        expect(parseSettings.projectService).toBeUndefined();
+        expect(parseSettings.projects.size).toBe(1);
+        expect(createProjectService).not.toHaveBeenCalled();
+      });
     });
 
     it('requires Node.js 22 for the native service', () => {
