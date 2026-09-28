@@ -451,17 +451,21 @@ jobs:
           name: ${{ join(matrix.projects, '-') }}
 
   unit_tests_project_service:
-    name: Run Unit Tests with Project Service (${{ matrix.backend }})
+    name: Run Unit Tests with Project Service (${{ matrix.backend }}, ${{ matrix.os }})
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     if: ${{ needs.build.outputs.project_service_packages != '[]' && needs.build.outputs.project_service_packages != '' }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         backend: [classic, native]
+        os: [ubuntu-latest]
+        include:
+          - backend: native
+            os: windows-latest
     env:
-      NX_CI_EXECUTION_ENV: 'ubuntu-latest'
+      NX_CI_EXECUTION_ENV: '${{ matrix.os }} - ${{ matrix.backend }}'
       COLLECT_COVERAGE: false,
     steps:
       - name: Checkout
@@ -490,8 +494,9 @@ jobs:
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
           PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
 
+      # collect coverage on just linux
       - name: Run eslint-plugin unit tests with native backend coverage
-        if: matrix.backend == 'native'
+        if: matrix.backend == 'native' && matrix.os == 'ubuntu-latest'
         run: pnpm exec nx test eslint-plugin --coverage --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
         env:
           CI: true
@@ -499,11 +504,11 @@ jobs:
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
       - name: Make native backend coverage paths repository-relative
-        if: matrix.backend == 'native'
+        if: matrix.backend == 'native' && matrix.os == 'ubuntu-latest'
         run: sed -i 's#^SF:\.\./#SF:packages/#' packages/eslint-plugin/coverage/lcov.info
 
       - name: Upload native backend coverage to Codecov
-        if: matrix.backend == 'native'
+        if: matrix.backend == 'native' && matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
