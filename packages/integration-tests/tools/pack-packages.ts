@@ -22,7 +22,7 @@ import rootPackageJson from '../../../package.json';
 export const execFile = promisify(child_process.execFile);
 
 interface PackageJSON {
-  devDependencies: Record<string, string>;
+  devDependencies?: Record<string, string>;
   name: string;
   private?: boolean;
 }
@@ -116,7 +116,7 @@ export const setup = async (project: TestProject): Promise<void> => {
     overrides: tseslintPackages,
   });
 
-  const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
+  const BASE_DEPENDENCIES: Record<string, string> = {
     ...tseslintPackages,
     eslint: PNPM_CATALOG.eslint,
     typescript: PNPM_CATALOG.typescript,
@@ -186,7 +186,7 @@ export const setup = async (project: TestProject): Promise<void> => {
             devDependencies: {
               ...BASE_DEPENDENCIES,
               ...Object.fromEntries(
-                Object.entries(fixturePackageJson.devDependencies).map(
+                Object.entries(fixturePackageJson.devDependencies ?? {}).map(
                   ([name, version]) => [
                     name,
                     version === 'catalog:' ? PNPM_CATALOG[name] : version,
