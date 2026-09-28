@@ -69,12 +69,11 @@ export function addCodeDiagnostics(page: RuleDocsPage): void {
       ruleName: page.file.stem,
       tsconfigRootDir,
     });
-    const diagnostics = lintMessagesToDiagnostics(messages);
-
-    if (diagnostics.length === 0) {
+    if (messages.length === 0) {
       return;
     }
 
+    const diagnostics = lintMessagesToDiagnostics(messages);
     // Code block meta only supports strings, so encode the JSON diagnostics as one safe attribute value.
     const encodedDiagnostics = Buffer.from(
       JSON.stringify(diagnostics),
