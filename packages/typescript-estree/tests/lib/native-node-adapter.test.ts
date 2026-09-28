@@ -6,9 +6,14 @@ import { astConverter } from '../../src/ast-converter';
 import { createNativeProjectService } from '../../src/native';
 import { createNativeNodeAdapter } from '../../src/native/nativeNodeAdapter';
 import { createParseSettings } from '../../src/parseSettings/createParseSettings';
-import { nativeFilePath as fixturePath } from './nativeTestUtils';
+import {
+  nativeFilePath as fixturePath,
+  nativeFixtures,
+  nativePath,
+} from './nativeTestUtils';
 
 const fixture = fs.readFileSync(fixturePath, 'utf8');
+const tsxFixturePath = nativePath(nativeFixtures, 'component.tsx');
 const baseOptions = {
   comment: true,
   loc: true,
@@ -31,14 +36,14 @@ function convertClassic(code: string) {
   return astConverter(sourceFile, settings, true);
 }
 
+type NativeContext = ReturnType<
+  ReturnType<typeof createNativeProjectService>['openFile']
+>;
+
 function withNativeSourceFile<T>(
   code: string,
   filePath: string,
-  callback: (
-    context: ReturnType<
-      ReturnType<typeof createNativeProjectService>['openFile']
-    >,
-  ) => T,
+  callback: (context: NativeContext) => T,
 ): T {
   const service = createNativeProjectService();
   try {
@@ -48,12 +53,37 @@ function withNativeSourceFile<T>(
   }
 }
 
+function createAdapter(program: NativeContext['program']) {
+  return createNativeNodeAdapter({
+    getSourceFile: fileName => program.getSourceFile(fileName),
+    getSyntacticDiagnostics: fileName =>
+      program.getSyntacticDiagnostics(fileName),
+  });
+}
+
+function findNode(root: ts.Node, kind: ts.SyntaxKind): ts.Node {
+  let found: ts.Node | undefined;
+  const visit = (node: ts.Node): void => {
+    if (found) {
+      return;
+    }
+    if (node.kind === kind) {
+      found = node;
+      return;
+    }
+    node.forEachChild(visit);
+  };
+  visit(root);
+  if (!found) {
+    throw new Error(`Expected a ${ts.SyntaxKind[kind]} node.`);
+  }
+  return found;
+}
+
 describe('native node adapter', () => {
   it('caches adapted node arrays and their structural children', () => {
     withNativeSourceFile(fixture, fixturePath, ({ program, sourceFile }) => {
-      const adapter = createNativeNodeAdapter(fileName =>
-        program.getSyntacticDiagnostics(fileName),
-      );
+      const adapter = createAdapter(program);
       const adaptedSourceFile = adapter.wrapNode(sourceFile) as ts.SourceFile;
       const statements = adaptedSourceFile.statements;
 
@@ -61,6 +91,51 @@ describe('native node adapter', () => {
       expect(adapter.wrapNode(adapter.unwrapNode(statements[0]))).toBe(
         statements[0],
       );
+    });
+  });
+
+  it('presents classic property names to in checks and key enumeration', () => {
+    const code = 'declare function f<T extends object = {}>(value?: T): void;';
+    withNativeSourceFile(code, fixturePath, ({ program, sourceFile }) => {
+      const adapter = createAdapter(program);
+      const adapted = adapter.wrapNode(sourceFile) as ts.SourceFile;
+      const typeParameter = findNode(
+        adapted,
+        ts.SyntaxKind.TypeParameter,
+      ) as ts.TypeParameterDeclaration;
+      const parameter = findNode(
+        adapted,
+        ts.SyntaxKind.Parameter,
+      ) as ts.ParameterDeclaration;
+
+      expect('default' in typeParameter).toBe(true);
+      expect('defaultType' in typeParameter).toBe(false);
+      expect('questionToken' in parameter).toBe(true);
+      expect('escapedText' in typeParameter.name).toBe(true);
+      expect(Object.keys(typeParameter)).toEqual(
+        expect.arrayContaining(['constraint', 'default', 'kind', 'name']),
+      );
+      expect(Object.keys(typeParameter)).not.toContain('defaultType');
+      expect(Object.entries(typeParameter)).toContainEqual([
+        'default',
+        typeParameter.default,
+      ]);
+    });
+  });
+
+  it('answers checker queries for the split JSX closing tag tokens', () => {
+    const code = 'const element = <div></div>;';
+    withNativeSourceFile(code, tsxFixturePath, ({ program, sourceFile }) => {
+      const adapter = createAdapter(program);
+      const closing = findNode(
+        adapter.wrapNode(sourceFile),
+        ts.SyntaxKind.JsxClosingElement,
+      );
+      const [lessThan, slash] = closing.getChildren();
+
+      expect(lessThan.kind).toBe(ts.SyntaxKind.LessThanToken);
+      expect(slash.kind).toBe(ts.SyntaxKind.SlashToken);
+      expect(adapter.unwrapNode(lessThan)).toBe(adapter.unwrapNode(slash));
     });
   });
 
@@ -74,9 +149,7 @@ describe('native node adapter', () => {
     }
 
     withNativeSourceFile(invalid, fixturePath, ({ program, sourceFile }) => {
-      const adapter = createNativeNodeAdapter(fileName =>
-        program.getSyntacticDiagnostics(fileName),
-      );
+      const adapter = createAdapter(program);
       expect(() =>
         astConverter(
           adapter.wrapNode(sourceFile) as ts.SourceFile,

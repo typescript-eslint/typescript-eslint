@@ -62,20 +62,23 @@ function getAdapters(context: NativeProjectContext): NativeAdapters {
   let adapters = adaptersByProgram.get(context.program);
   if (!adapters) {
     let diagnosticsByFile: Map<string, NativeDiagnostic[]> | undefined;
-    const nodeAdapter = createNativeNodeAdapter(fileName => {
-      if (!diagnosticsByFile) {
-        diagnosticsByFile = new Map();
-        for (const diagnostic of context.program.getSyntacticDiagnostics()) {
-          const key = diagnostic.fileName ?? '';
-          const existing = diagnosticsByFile.get(key);
-          if (existing) {
-            existing.push(diagnostic);
-          } else {
-            diagnosticsByFile.set(key, [diagnostic]);
+    const nodeAdapter = createNativeNodeAdapter({
+      getSourceFile: fileName => context.program.getSourceFile(fileName),
+      getSyntacticDiagnostics: fileName => {
+        if (!diagnosticsByFile) {
+          diagnosticsByFile = new Map();
+          for (const diagnostic of context.program.getSyntacticDiagnostics()) {
+            const key = diagnostic.fileName ?? '';
+            const existing = diagnosticsByFile.get(key);
+            if (existing) {
+              existing.push(diagnostic);
+            } else {
+              diagnosticsByFile.set(key, [diagnostic]);
+            }
           }
         }
-      }
-      return diagnosticsByFile.get(fileName) ?? [];
+        return diagnosticsByFile.get(fileName) ?? [];
+      },
     });
     adapters = {
       nodeAdapter,

@@ -21,6 +21,11 @@ export interface NativeNodeAdapter {
   wrapNode(node: NativeNode): ts.Node;
 }
 
+export interface NativeNodeAdapterOptions {
+  getSourceFile: (fileName: string) => NativeSourceFile | undefined;
+  getSyntacticDiagnostics: (fileName: string) => readonly NativeDiagnostic[];
+}
+
 export function toClassicDiagnostic(
   diagnostic: NativeDiagnostic,
   getFile: (fileName: string | undefined) => ts.SourceFile | undefined,
@@ -99,6 +104,57 @@ function translateNodeFlags(node: NativeNode): ts.NodeFlags {
 
 const KIND_PROPERTIES = new Set(['keywordToken', 'operator', 'token']);
 
+/** Native hoists JSDoc types into JS ASTs; classic leaves them in comments. */
+function isReparsed(node: NativeNode): boolean {
+  return (node.flags & NativeNodeFlags.Reparsed) !== 0;
+}
+
+const NATIVE_ONLY_KEYS = new Set([
+  '_byteIndex',
+  '_sourceFile',
+  'childMask',
+  'data',
+  'dataType',
+  'defaultType',
+  'id',
+  'index',
+  'keyword',
+  'modifierFlags',
+  'next',
+  'parentIndex',
+  'postfixToken',
+  'sourceFile',
+  'view',
+]);
+
+const CLASSIC_ONLY_KEYS = ['default', 'escapedText'];
+
+const getterNamesByPrototype = new WeakMap<object, readonly string[]>();
+
+function getGetterNames(node: NativeNode): readonly string[] {
+  const prototype = Object.getPrototypeOf(node) as object;
+  let names = getterNamesByPrototype.get(prototype);
+  if (!names) {
+    const collected = new Set<string>();
+    for (
+      let current: object | null = prototype;
+      current && current !== Object.prototype;
+      current = Object.getPrototypeOf(current) as object | null
+    ) {
+      for (const [name, descriptor] of Object.entries(
+        Object.getOwnPropertyDescriptors(current),
+      )) {
+        if (descriptor.get && !NATIVE_ONLY_KEYS.has(name)) {
+          collected.add(name);
+        }
+      }
+    }
+    names = [...collected];
+    getterNamesByPrototype.set(prototype, names);
+  }
+  return names;
+}
+
 function isHeritageTypeReference(node: NativeNode): boolean {
   return (
     node.kind === NativeSyntaxKind.TypeReference &&
@@ -127,9 +183,10 @@ function isNativeNodeArray(
   );
 }
 
-export function createNativeNodeAdapter(
-  getSyntacticDiagnostics: (fileName: string) => readonly NativeDiagnostic[],
-): NativeNodeAdapter {
+export function createNativeNodeAdapter({
+  getSourceFile,
+  getSyntacticDiagnostics,
+}: NativeNodeAdapterOptions): NativeNodeAdapter {
   const nativeToAdapter = new WeakMap<NativeNode, ts.Node>();
   const adapterToNative = new WeakMap<ts.Node, NativeNode>();
   const nativeArrayToAdapter = new WeakMap<
@@ -165,11 +222,16 @@ export function createNativeNodeAdapter(
       pos: { value: nodes.pos },
       transformFlags: { value: nodes.transformFlags },
     });
-    adapted.push(...nodes.map(wrapNode));
+    for (const node of nodes) {
+      if (!isReparsed(node)) {
+        adapted.push(wrapNode(node));
+      }
+    }
     return adaptedNodeArray;
   }
 
   function createToken(
+    native: NativeNode,
     kind: ts.SyntaxKind,
     pos: number,
     end: number,
@@ -182,6 +244,7 @@ export function createNativeNodeAdapter(
       parent: { value: parent },
       pos: { value: pos },
     });
+    adapterToNative.set(token, native);
     return token;
   }
 
@@ -193,26 +256,30 @@ export function createNativeNodeAdapter(
     }
 
     const parent = wrapNode(node);
-    const children = node
-      .getChildren()
-      .flatMap(child =>
-        child.kind === NativeSyntaxKind.LessThanSlashToken
-          ? [
-              createToken(
-                ts.SyntaxKind.LessThanToken,
-                child.pos,
-                child.end - 1,
-                parent,
-              ),
-              createToken(
-                ts.SyntaxKind.SlashToken,
-                child.end - 1,
-                child.end,
-                parent,
-              ),
-            ]
-          : [wrapNode(child)],
-      );
+    const children = node.getChildren().flatMap(child => {
+      if (isReparsed(child)) {
+        return [];
+      }
+      if (child.kind !== NativeSyntaxKind.LessThanSlashToken) {
+        return [wrapNode(child)];
+      }
+      return [
+        createToken(
+          child,
+          ts.SyntaxKind.LessThanToken,
+          child.pos,
+          child.end - 1,
+          parent,
+        ),
+        createToken(
+          child,
+          ts.SyntaxKind.SlashToken,
+          child.end - 1,
+          child.end,
+          parent,
+        ),
+      ];
+    });
     nativeToChildren.set(node, children);
     return children;
   }
@@ -231,12 +298,32 @@ export function createNativeNodeAdapter(
       return translateKind(value);
     }
     if (isNativeNode(value)) {
-      return wrapNode(value);
+      return isReparsed(value) ? undefined : wrapNode(value);
     }
     if (isNativeNodeArray(value)) {
-      return adaptArray(value);
+      const adapted = adaptArray(value);
+      return adapted.length === 0 &&
+        property !== 'statements' &&
+        hasReparsedNode(value)
+        ? undefined
+        : adapted;
     }
     return typeof value === 'function' ? forward(value as NativeMethod) : value;
+  }
+
+  /** Classic has no array at all where native only synthesized nodes, such as a nested namespace's `export`. */
+  function hasReparsedNode(nodes: NativeNodeArray<NativeNode>): boolean {
+    for (const node of nodes) {
+      if (isReparsed(node)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function wrapSourceFile(fileName: string): ts.SourceFile | undefined {
+    const sourceFile = getSourceFile(fileName);
+    return sourceFile && (wrapNode(sourceFile) as ts.SourceFile);
   }
 
   /**
@@ -265,7 +352,7 @@ export function createNativeNodeAdapter(
       visitArray?: (children: ts.NodeArray<ts.Node>) => T,
     ): T | undefined {
       return unwrap(this).forEachChild(
-        child => visitor(wrapNode(child)),
+        child => (isReparsed(child) ? undefined : visitor(wrapNode(child))),
         visitArray && (children => visitArray(adaptArray(children))),
       );
     },
@@ -308,76 +395,114 @@ export function createNativeNodeAdapter(
     },
   };
 
-  const handler: ProxyHandler<NativeNode> = {
-    get(target, property, receiver) {
-      switch (property) {
-        case 'default':
-          return readNative(target, 'defaultType');
-        case 'escapedText':
-          return target.kind === NativeSyntaxKind.Identifier ||
-            target.kind === NativeSyntaxKind.PrivateIdentifier
-            ? ts.escapeLeadingUnderscores(
-                (target as NativeNode & { text: string }).text,
-              )
-            : readNative(target, property);
-        case 'exclamationToken':
-          return readPostfixToken(
-            target,
-            property,
-            NativeSyntaxKind.ExclamationToken,
-          );
-        // Classic always spells a heritage element as an expression.
-        case 'expression':
-          return isHeritageTypeReference(target)
-            ? wrapNode((target as unknown as { typeName: NativeNode }).typeName)
-            : readNative(target, property);
-        case 'flags':
-          return translateNodeFlags(target);
-        case 'kind':
-          return isHeritageTypeReference(target)
-            ? ts.SyntaxKind.ExpressionWithTypeArguments
-            : translateKind(target.kind);
-        case 'modifierFlagsCache':
-          return (
-            ((target as NativeNode & { modifierFlags?: number })
-              .modifierFlags ?? ts.ModifierFlags.None) |
-            ts.ModifierFlags.HasComputedFlags
-          );
-        case 'parseDiagnostics':
-          return target.kind === NativeSyntaxKind.SourceFile
-            ? getSyntacticDiagnostics(
-                (target as NativeSourceFile).fileName,
-              ).map(diagnostic =>
-                toClassicDiagnostic(
-                  diagnostic,
-                  () => receiver as ts.SourceFile,
-                ),
-              )
-            : undefined;
-        case 'questionToken':
-          return readPostfixToken(
-            target,
-            property,
-            NativeSyntaxKind.QuestionToken,
-          );
-        case 'forEachChild':
-        case 'getChildAt':
-        case 'getChildCount':
-        case 'getChildren':
-        case 'getFirstToken':
-        case 'getFullText':
-        case 'getLastToken':
-        case 'getLeadingTriviaWidth':
-        case 'getSourceFile':
-        case 'getStart':
-        case 'getText':
-        case 'getWidth':
-          return nodeMethods[property];
-        default:
-          return readNative(target, property);
+  function readClassic(
+    target: NativeNode,
+    property: string | symbol,
+    receiver: unknown,
+  ): unknown {
+    switch (property) {
+      case 'default':
+        return readNative(target, 'defaultType');
+      case 'escapedText':
+        return target.kind === NativeSyntaxKind.Identifier ||
+          target.kind === NativeSyntaxKind.PrivateIdentifier
+          ? ts.escapeLeadingUnderscores(
+              (target as NativeNode & { text: string }).text,
+            )
+          : readNative(target, property);
+      case 'exclamationToken':
+        return readPostfixToken(
+          target,
+          property,
+          NativeSyntaxKind.ExclamationToken,
+        );
+      // Classic always spells a heritage element as an expression.
+      case 'expression':
+        return isHeritageTypeReference(target)
+          ? wrapNode((target as unknown as { typeName: NativeNode }).typeName)
+          : readNative(target, property);
+      case 'flags':
+        return translateNodeFlags(target);
+      case 'kind':
+        return isHeritageTypeReference(target)
+          ? ts.SyntaxKind.ExpressionWithTypeArguments
+          : translateKind(target.kind);
+      case 'modifierFlagsCache':
+        return (
+          ((target as NativeNode & { modifierFlags?: number }).modifierFlags ??
+            ts.ModifierFlags.None) | ts.ModifierFlags.HasComputedFlags
+        );
+      case 'parseDiagnostics': {
+        if (target.kind !== NativeSyntaxKind.SourceFile) {
+          return undefined;
+        }
+        const { fileName } = target as NativeSourceFile;
+        return getSyntacticDiagnostics(fileName).map(diagnostic =>
+          toClassicDiagnostic(diagnostic, diagnosticFileName =>
+            diagnosticFileName == null || diagnosticFileName === fileName
+              ? (receiver as ts.SourceFile)
+              : wrapSourceFile(diagnosticFileName),
+          ),
+        );
       }
+      case 'questionToken':
+        return readPostfixToken(
+          target,
+          property,
+          NativeSyntaxKind.QuestionToken,
+        );
+      case 'forEachChild':
+      case 'getChildAt':
+      case 'getChildCount':
+      case 'getChildren':
+      case 'getFirstToken':
+      case 'getFullText':
+      case 'getLastToken':
+      case 'getLeadingTriviaWidth':
+      case 'getSourceFile':
+      case 'getStart':
+      case 'getText':
+      case 'getWidth':
+        return nodeMethods[property];
+      default:
+        return readNative(target, property);
+    }
+  }
+
+  const handler: ProxyHandler<NativeNode> = {
+    get: readClassic,
+    getOwnPropertyDescriptor(target, property) {
+      const value = readClassicKey(target, property);
+      return value == null
+        ? undefined
+        : { configurable: true, enumerable: true, value, writable: false };
+    },
+    has(target, property) {
+      return readClassicKey(target, property) != null;
+    },
+    ownKeys(target) {
+      const keys = new Set<string>();
+      for (const key of [
+        ...Object.keys(target),
+        ...getGetterNames(target),
+        ...CLASSIC_ONLY_KEYS,
+      ]) {
+        if (readClassicKey(target, key) != null) {
+          keys.add(key);
+        }
+      }
+      return [...keys];
     },
   };
+
+  function readClassicKey(
+    target: NativeNode,
+    property: string | symbol,
+  ): unknown {
+    return typeof property === 'string' && NATIVE_ONLY_KEYS.has(property)
+      ? undefined
+      : readClassic(target, property, nativeToAdapter.get(target));
+  }
 
   function unwrap(node: ts.Node): NativeNode {
     const native = adapterToNative.get(node);

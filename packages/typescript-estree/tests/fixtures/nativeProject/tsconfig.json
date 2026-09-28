@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "jsx": "preserve",
+    "noEmit": true,
     "strict": true
   },
-  "include": ["*.ts", "*.tsx"]
+  "include": ["*.js", "*.ts", "*.tsx"]
 }

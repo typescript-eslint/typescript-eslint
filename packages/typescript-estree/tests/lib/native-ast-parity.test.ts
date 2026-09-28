@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+
 import { parseAndGenerateServices } from '../../src/index.js';
 import {
   isolateNativeBackend,
@@ -7,14 +9,19 @@ import {
 } from './nativeTestUtils';
 
 const tsxFilePath = nativePath(nativeFixtures, 'component.tsx');
+const jsFilePath = nativePath(nativeFixtures, 'jsdoc.js');
 
 isolateNativeBackend();
 
-function convert(code: string, native: boolean, tsx = false): unknown {
+function convert(
+  code: string,
+  native: boolean,
+  convertedFilePath = filePath,
+): unknown {
   const { ast } = parseAndGenerateServices(code, {
     comment: true,
-    filePath: tsx ? tsxFilePath : filePath,
-    jsx: tsx,
+    filePath: convertedFilePath,
+    jsx: convertedFilePath.endsWith('.tsx'),
     loc: true,
     range: true,
     tokens: true,
@@ -29,6 +36,10 @@ describe.for([
   [
     'module declarations',
     'declare namespace N { const a: number; }\ndeclare module "m" { const a: number; }\ndeclare global { const a: number; }',
+  ],
+  [
+    'nested namespaces',
+    'namespace A.B.C { export type Z = 1; }\nnamespace A.B { export const b = 1; }',
   ],
   [
     'type parameter defaults',
@@ -84,6 +95,18 @@ describe('TSX', () => {
     const code =
       'declare const Component: (props: { a: number }) => null;\nconst element = <Component a={1} />;\nconst fragment = <><Component a={2} /></>;';
 
-    expect(convert(code, true, true)).toStrictEqual(convert(code, false, true));
+    expect(convert(code, true, tsxFilePath)).toStrictEqual(
+      convert(code, false, tsxFilePath),
+    );
+  });
+});
+
+describe('JavaScript with JSDoc types', () => {
+  it('converts identically on both backends', () => {
+    const code = fs.readFileSync(jsFilePath, 'utf8');
+
+    expect(convert(code, true, jsFilePath)).toStrictEqual(
+      convert(code, false, jsFilePath),
+    );
   });
 });
