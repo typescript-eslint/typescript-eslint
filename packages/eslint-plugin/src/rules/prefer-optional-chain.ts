@@ -13,12 +13,18 @@ import {
   createRule,
   getOperatorPrecedence,
   getParserServices,
+  isParenthesized,
   OperatorPrecedence,
 } from '../util';
 import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
 import { checkNullishAndReport } from './prefer-optional-chain-utils/checkNullishAndReport';
 import {
+  compareNodes,
+  NodeComparisonResult,
+} from './prefer-optional-chain-utils/compareNodes';
+import {
   gatherLogicalOperands,
+  isValidFalseBooleanCheckType,
   OperandValidity,
 } from './prefer-optional-chain-utils/gatherLogicalOperands';
 
@@ -109,6 +115,111 @@ export default createRule<
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
     return {
+      IfStatement(node: TSESTree.IfStatement): void {
+        if (node.alternate) {
+          return;
+        }
+
+        const statement =
+          node.consequent.type === AST_NODE_TYPES.BlockStatement
+            ? node.consequent.body.length === 1
+              ? node.consequent.body[0]
+              : undefined
+            : node.consequent;
+        if (
+          statement?.type !== AST_NODE_TYPES.ExpressionStatement ||
+          statement.expression.type !== AST_NODE_TYPES.CallExpression ||
+          (node.test.type !== AST_NODE_TYPES.Identifier &&
+            node.test.type !== AST_NODE_TYPES.MemberExpression) ||
+          !isValidFalseBooleanCheckType(
+            node.test,
+            true,
+            parserServices,
+            options,
+          )
+        ) {
+          return;
+        }
+
+        const call = statement.expression;
+        let target: TSESTree.Expression = call;
+        while (
+          target.type === AST_NODE_TYPES.CallExpression ||
+          target.type === AST_NODE_TYPES.MemberExpression
+        ) {
+          // Parentheses can end an optional chain before the final call.
+          if (target !== call && isParenthesized(target, context.sourceCode)) {
+            return;
+          }
+          const receiver: TSESTree.Expression | TSESTree.Super =
+            target.type === AST_NODE_TYPES.CallExpression
+              ? target.callee
+              : target.object;
+          if (
+            compareNodes(node.test, receiver) === NodeComparisonResult.Equal
+          ) {
+            break;
+          }
+          if (receiver.type === AST_NODE_TYPES.Super) {
+            return;
+          }
+          target = receiver;
+        }
+        if (
+          (target.type !== AST_NODE_TYPES.CallExpression &&
+            target.type !== AST_NODE_TYPES.MemberExpression) ||
+          target.optional
+        ) {
+          return;
+        }
+
+        // Do not discard comments in the condition or around the statement.
+        if (
+          context.sourceCode
+            .getCommentsInside(node)
+            .some(
+              comment =>
+                comment.range[0] < call.range[0] ||
+                comment.range[1] > call.range[1],
+            )
+        ) {
+          return;
+        }
+
+        const receiver =
+          target.type === AST_NODE_TYPES.CallExpression
+            ? target.callee
+            : target.object;
+        const token = context.sourceCode.getTokenAfter(receiver, {
+          filter: token => token.value !== ')',
+        });
+        if (!token) {
+          return;
+        }
+        const insertion = token.range[0] - call.range[0];
+        const text = context.sourceCode.getText(call);
+        const replacement =
+          text.slice(0, insertion) +
+          (token.value === '.' ? '?' : '?.') +
+          text.slice(insertion);
+
+        checkNullishAndReport(context, parserServices, options, [node.test], {
+          node,
+          messageId: 'preferOptionalChain',
+          suggest: [
+            {
+              messageId: 'optionalChainSuggest',
+              fix: fixer =>
+                fixer.replaceText(
+                  node,
+                  replacement.startsWith('(')
+                    ? `{ ${replacement}; }`
+                    : `${replacement};`,
+                ),
+            },
+          ],
+        });
+      },
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {

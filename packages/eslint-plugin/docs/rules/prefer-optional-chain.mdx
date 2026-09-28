@@ -58,6 +58,27 @@ foo?.a != null;
 </TabItem>
 </Tabs>
 
+## Conditional calls
+
+The rule also suggests optional chaining for an `if` statement that checks a value before calling it or one of its methods:
+
+```ts
+// Before
+if (callback) {
+  callback();
+}
+if (list) {
+  list.push(item);
+}
+
+// After
+callback?.();
+list?.push(item);
+```
+
+Only a single call without an `else` branch is supported. Statements with comments outside the call are left unchanged to preserve those comments.
+These replacements are suggestions rather than automatic fixes: optional chaining only skips nullish values, whereas an `if` condition skips all falsy values.
+
 ## Options
 
 In the context of the descriptions below a "loose boolean" operand is any operand that implicitly coerces the value to a boolean.

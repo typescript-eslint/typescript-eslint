@@ -82,7 +82,7 @@ export interface InvalidOperand {
 type Operand = InvalidOperand | LastChainOperand | ValidOperand;
 
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
-function isValidFalseBooleanCheckType(
+export function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
   disallowFalseyLiteral: boolean,
   parserServices: ParserServicesWithTypeInformation,
