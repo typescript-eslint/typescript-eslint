@@ -33,6 +33,7 @@ import {
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
 
 function isNullishType(type: ts.Type): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
   return tsutils.isTypeFlagSet(type, nullishFlag);
 }
 

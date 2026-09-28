@@ -320,8 +320,8 @@ importers:
         specifier: 1.6.16
         version: 1.6.16(@typescript-eslint/eslint-plugin@packages+eslint-plugin)(@typescript/typescript6@6.0.2)(eslint@10.11.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(vitest@4.1.10)
       console-fail-test:
-        specifier: ^0.6.1
-        version: 0.6.1
+        specifier: ^0.9.0
+        version: 0.9.0
       cspell:
         specifier: ^10.3.0
         version: 10.3.0
@@ -5551,8 +5551,8 @@ packages:
     resolution: {integrity: sha512-5IKcdX0nnYavi6G7TtOhwkYzyjfJlatbjMjuLSfE2kYT5pMDOilZ4OvMhi637CcDICTmz3wARPoyhqyX1Y+XvA==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
-  console-fail-test@0.6.1:
-    resolution: {integrity: sha512-KxgTskG1eCVCKB6f3XuM3lkzuM+0ASGCPVLIJU8r6Lv6lzCCk4FEoYkHJubEnUKzqHAQNVl1lw5UOyufTTILjg==}
+  console-fail-test@0.9.0:
+    resolution: {integrity: sha512-gfU573adULCDbMQHMpqq5BcbJzR9htXF9n82ZglwIUqDVkJh+6yz6JErlu++5n3G7afZy5qi5FCr3HWwBb5i7Q==}
     engines: {node: '>=20.19.0'}
 
   content-disposition@0.5.2:
@@ -15829,7 +15829,7 @@ snapshots:
 
   consola@3.4.2: {}
 
-  console-fail-test@0.6.1: {}
+  console-fail-test@0.9.0: {}
 
   content-disposition@0.5.2: {}
 

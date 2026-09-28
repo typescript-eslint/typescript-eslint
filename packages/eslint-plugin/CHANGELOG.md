@@ -1,3 +1,28 @@
+## 8.71.0 (2026-09-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-enum-assignment] add rule ([#12732](https://github.com/typescript-eslint/typescript-eslint/pull/12732))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-misused-promises] handle a return outside of any function ([#12912](https://github.com/typescript-eslint/typescript-eslint/pull/12912))
+- **eslint-plugin:** [no-unnecessary-type-assertion] specialize generic assertion report message ([#12832](https://github.com/typescript-eslint/typescript-eslint/pull/12832))
+- **eslint-plugin:** [unbound-method] respect `this: void` on class properties ([7fce9127d](https://github.com/typescript-eslint/typescript-eslint/commit/7fce9127d))
+- **eslint-plugin:** [switch-exhaustiveness-check] always sort literal cases in stable order ([#12885](https://github.com/typescript-eslint/typescript-eslint/pull/12885))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Fatih Çakır @wfatih
+- Josh Goldberg
+- Josh Goldberg ✨
+- Zamiell @Zamiell
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.70.1 (2026-09-21)
 
 ### 🩹 Fixes
