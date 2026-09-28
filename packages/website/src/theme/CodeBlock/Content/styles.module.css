@@ -17,6 +17,36 @@
   padding: var(--ifm-pre-padding) 0;
 }
 
+.diagnosticLineWithNumbers {
+  display: table-row;
+  counter-increment: line-count;
+}
+
+.diagnosticLineNumber {
+  display: table-cell;
+  position: sticky;
+  left: 0;
+  width: 1%;
+  padding: 0 var(--ifm-pre-padding);
+  background: var(--ifm-pre-background);
+  text-align: right;
+  overflow-wrap: normal;
+}
+
+.diagnosticLineNumber::before {
+  content: counter(line-count);
+  opacity: 0.4;
+}
+
+:global(.theme-code-block-highlighted-line) .diagnosticLineNumber::before {
+  opacity: 0.8;
+}
+
+.diagnosticLineContent {
+  display: table-cell;
+  padding-right: var(--ifm-pre-padding);
+}
+
 .diagnostic {
   --diagnostic-color: #c62828;
 

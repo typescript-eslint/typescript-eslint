@@ -90,6 +90,7 @@ export default function CodeBlockContent({
                   getTokenProps={getTokenProps}
                   line={line}
                   ranges={ranges}
+                  showLineNumbers={lineNumbersStart != null}
                 />
               );
             })}

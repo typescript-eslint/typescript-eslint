@@ -6,6 +6,7 @@ import React from 'react';
 import type { LineDiagnosticRange } from '../diagnosticRanges';
 
 import { DiagnosticMarker } from './DiagnosticMarker';
+import styles from './styles.module.css';
 
 interface DiagnosticLineProps {
   classNames?: string[] | undefined;
@@ -13,6 +14,7 @@ interface DiagnosticLineProps {
   getTokenProps: RenderProps['getTokenProps'];
   line: Token[];
   ranges: readonly LineDiagnosticRange[];
+  showLineNumbers: boolean;
 }
 
 interface LinePart {
@@ -115,53 +117,68 @@ export function DiagnosticLine({
   getTokenProps,
   line,
   ranges,
+  showLineNumbers,
 }: DiagnosticLineProps): React.JSX.Element {
-  const lineProps = getLineProps({ className: clsx(classNames), line });
+  const lineProps = getLineProps({
+    className: clsx(
+      classNames,
+      showLineNumbers && styles.diagnosticLineWithNumbers,
+    ),
+    line,
+  });
   const focusableDiagnostics = new Set<number>();
   const groups = groupLineParts(getLineParts(line, ranges));
+  const renderedGroups = groups.map(group => {
+    if (group.kind === 'plain') {
+      const tokenProps = getTokenProps({
+        token: { ...group.part.token, content: group.part.content },
+      });
 
-  return (
-    <div {...lineProps}>
-      {groups.map(group => {
-        if (group.kind === 'plain') {
+      return (
+        <span key={group.part.key} {...tokenProps}>
+          {tokenProps.children}
+        </span>
+      );
+    }
+
+    const focusable = group.ranges.some(
+      range => !focusableDiagnostics.has(range.diagnosticIndex),
+    );
+    for (const range of group.ranges) {
+      focusableDiagnostics.add(range.diagnosticIndex);
+    }
+
+    return (
+      <DiagnosticMarker
+        key={group.parts[0].key}
+        focusable={focusable}
+        diagnostics={getUniqueDiagnostics(group.ranges)}
+      >
+        {group.parts.map(part => {
           const tokenProps = getTokenProps({
-            token: { ...group.part.token, content: group.part.content },
+            token: { ...part.token, content: part.content },
           });
 
           return (
-            <span key={group.part.key} {...tokenProps}>
+            <span key={part.key} {...tokenProps}>
               {tokenProps.children}
             </span>
           );
-        }
+        })}
+      </DiagnosticMarker>
+    );
+  });
 
-        const focusable = group.ranges.some(
-          range => !focusableDiagnostics.has(range.diagnosticIndex),
-        );
-        for (const range of group.ranges) {
-          focusableDiagnostics.add(range.diagnosticIndex);
-        }
-
-        return (
-          <DiagnosticMarker
-            key={group.parts[0].key}
-            focusable={focusable}
-            diagnostics={getUniqueDiagnostics(group.ranges)}
-          >
-            {group.parts.map(part => {
-              const tokenProps = getTokenProps({
-                token: { ...part.token, content: part.content },
-              });
-
-              return (
-                <span key={part.key} {...tokenProps}>
-                  {tokenProps.children}
-                </span>
-              );
-            })}
-          </DiagnosticMarker>
-        );
-      })}
+  return (
+    <div {...lineProps}>
+      {showLineNumbers ? (
+        <>
+          <span className={styles.diagnosticLineNumber} />
+          <span className={styles.diagnosticLineContent}>{renderedGroups}</span>
+        </>
+      ) : (
+        renderedGroups
+      )}
       <br />
     </div>
   );
