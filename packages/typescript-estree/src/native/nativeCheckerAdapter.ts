@@ -21,7 +21,6 @@ const UNSUPPORTED_CHECKER_MEMBERS = new Set([
   'getAmbientModules',
   'getAugmentedPropertiesOfType',
   'getBigIntLiteralType',
-  'getFalseType',
   'getIndexInfosOfIndexSymbol',
   'getJsxIntrinsicTagNamesAt',
   'getMergedSymbol',
@@ -33,7 +32,6 @@ const UNSUPPORTED_CHECKER_MEMBERS = new Set([
   'getStringLiteralType',
   'getSymbolOfExpando',
   'getSymbolsOfParameterPropertyDeclaration',
-  'getTrueType',
   'getTypeArgumentsForResolvedSignature',
   'getTypeOfAssignmentPattern',
   'indexInfoToIndexSignatureDeclaration',
@@ -71,6 +69,23 @@ export function createNativeChecker({
   } = typeAdapter;
   const { unwrapNode } = nodeAdapter;
   const typesOfSymbolsElsewhere = new Map<NativeSymbol, ts.Type>();
+
+  // Classic's intrinsic `true` and `false` are the regular constituents of `boolean`.
+  function getBooleanLiteralType(value: boolean): ts.Type {
+    const boolean = checker.getBooleanType();
+    const type = boolean.isUnionType()
+      ? boolean
+          .getTypes()
+          .find(
+            constituent =>
+              constituent.isBooleanLiteralType() && constituent.value === value,
+          )
+      : undefined;
+    if (!type) {
+      throw new Error(`The native boolean type has no ${value} constituent.`);
+    }
+    return wrapType(type);
+  }
 
   const nativeChecker = {
     getAliasedSymbol: symbol =>
@@ -124,6 +139,7 @@ export function createNativeChecker({
       wrapSymbol(checker.getExportSpecifierLocalTargetSymbol(unwrapNode(node))),
     getExportSymbolOfSymbol: symbol =>
       wrapSymbol(checker.getExportSymbolOfSymbol(unwrapSymbol(symbol))),
+    getFalseType: () => getBooleanLiteralType(false),
     getFullyQualifiedName: symbol =>
       checker.getFullyQualifiedName(unwrapSymbol(symbol)),
     getImmediateAliasedSymbol: symbol =>
@@ -170,6 +186,7 @@ export function createNativeChecker({
           meaning as unknown as SymbolFlags,
         )
         .map(toSymbol),
+    getTrueType: () => getBooleanLiteralType(true),
     getTypeArguments: type =>
       checker
         .getTypeArguments(
@@ -208,9 +225,7 @@ export function createNativeChecker({
       }
       let type = typesOfSymbolsElsewhere.get(nativeSymbol);
       if (!type) {
-        type = wrapType(
-          checker.getTypeOfSymbolAtLocation(nativeSymbol, unwrapNode(node)),
-        );
+        type = wrapType(checker.getNonMissingTypeOfSymbol(nativeSymbol));
         typesOfSymbolsElsewhere.set(nativeSymbol, type);
       }
       return type;

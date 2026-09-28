@@ -63,14 +63,51 @@ describe('native adapter parity', () => {
         checker.getBigIntType(),
         checker.getBooleanType(),
         checker.getESSymbolType(),
+        checker.getFalseType(),
         checker.getNeverType(),
         checker.getNullType(),
+        checker.getTrueType(),
         checker.getUndefinedType(),
         checker.getUnknownType(),
         checker.getVoidType(),
       ].map(type => checker.typeToString(type)),
     );
 
+    expect(native).toEqual(classic);
+  });
+
+  it('answers the type of a symbol away from an identifier', () => {
+    const { classic, native } = onBothBackends(
+      [
+        'declare const maybe: string | undefined;',
+        'if (maybe) {',
+        '  maybe;',
+        '}',
+      ].join('\n'),
+      ({ ast, checker, tsNode }) => {
+        const declaration = declarationOf(ast, 0);
+        const symbol = checker.getSymbolAtLocation(tsNode(declaration.id))!;
+        const ifStatement = ast.body[1] as TSESTree.IfStatement;
+        const narrowed = (
+          (ifStatement.consequent as TSESTree.BlockStatement)
+            .body[0] as TSESTree.ExpressionStatement
+        ).expression;
+
+        return {
+          atDeclaration: checker.typeToString(
+            checker.getTypeOfSymbolAtLocation(symbol, tsNode(declaration)),
+          ),
+          atIdentifier: checker.typeToString(
+            checker.getTypeOfSymbolAtLocation(symbol, tsNode(narrowed)),
+          ),
+        };
+      },
+    );
+
+    expect(native).toEqual({
+      atDeclaration: 'string | undefined',
+      atIdentifier: 'string',
+    });
     expect(native).toEqual(classic);
   });
 
