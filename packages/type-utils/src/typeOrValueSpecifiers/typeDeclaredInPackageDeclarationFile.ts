@@ -1,3 +1,4 @@
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 function findParentModuleDeclaration(
@@ -26,6 +27,37 @@ function typeDeclaredInDeclareModule(
     declaration =>
       findParentModuleDeclaration(declaration)?.name.text === packageName,
   );
+}
+
+function typeExportedFromDeclareModule(
+  packageName: string,
+  symbol: ts.Symbol | undefined,
+  program: ts.Program,
+): boolean {
+  if (symbol == null) {
+    return false;
+  }
+
+  const checker = program.getTypeChecker();
+
+  const moduleSymbol = checker
+    .getAmbientModules()
+    .find(ambientModule => ambientModule.name === `"${packageName}"`);
+
+  if (moduleSymbol == null) {
+    return false;
+  }
+
+  return checker.getExportsOfModule(moduleSymbol).some(exportedSymbol => {
+    const resolvedSymbol = tsutils.isSymbolFlagSet(
+      exportedSymbol,
+      ts.SymbolFlags.Alias,
+    )
+      ? checker.getAliasedSymbol(exportedSymbol)
+      : exportedSymbol;
+
+    return resolvedSymbol === symbol;
+  });
 }
 
 /**
@@ -68,12 +100,14 @@ function typeDeclaredInDeclarationFile(
 
 export function typeDeclaredInPackageDeclarationFile(
   packageName: string,
+  symbol: ts.Symbol | undefined,
   declarations: ts.Node[],
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
   return (
     typeDeclaredInDeclareModule(packageName, declarations) ||
-    typeDeclaredInDeclarationFile(packageName, declarationFiles, program)
+    typeDeclaredInDeclarationFile(packageName, declarationFiles, program) ||
+    typeExportedFromDeclareModule(packageName, symbol, program)
   );
 }

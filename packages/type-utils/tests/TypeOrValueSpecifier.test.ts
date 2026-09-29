@@ -444,6 +444,33 @@ describe('TypeOrValueSpecifier', () => {
           package: 'assert',
         },
       ],
+      // Re-exported symbols in ambient declarations.
+      [
+        'import { Buffer } from "node:buffer"; declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buffer' },
+      ],
+      [
+        'import { Buffer } from "node:buffer"; declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'buffer' },
+      ],
+      [
+        'import * as nodeBuffer from "node:buffer"; declare const buffer: nodeBuffer.Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buffer' },
+      ],
+      [
+        'declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buffer' },
+      ],
+      [
+        `
+          declare module "re-exporter" {
+            export { Local as Renamed };
+          }
+          interface Local {}
+          type Test = Local;
+        `,
+        { from: 'package', name: 'Local', package: 're-exporter' },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -608,6 +635,23 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import {SemVer} from "semver"; type Test = SemVer;',
         { from: 'package', name: 'SemVer', package: 's.mver' },
+      ],
+      [
+        'declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buff' },
+      ],
+      [
+        `
+          declare module "re-exporter" {
+            export { Other };
+          }
+
+          interface Local {}
+          interface Other {}
+
+          type Test = Local;
+        `,
+        { from: 'package', name: 'Local', package: 're-exporter' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
