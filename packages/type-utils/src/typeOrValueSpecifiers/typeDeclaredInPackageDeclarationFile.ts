@@ -34,7 +34,7 @@ function typeExportedFromDeclareModule(
   symbol: ts.Symbol | undefined,
   program: ts.Program,
 ): boolean {
-  if (symbol == null) {
+  if (!symbol) {
     return false;
   }
 
@@ -44,7 +44,7 @@ function typeExportedFromDeclareModule(
     .getAmbientModules()
     .find(ambientModule => ambientModule.name === `"${packageName}"`);
 
-  if (moduleSymbol == null) {
+  if (!moduleSymbol) {
     return false;
   }
 
