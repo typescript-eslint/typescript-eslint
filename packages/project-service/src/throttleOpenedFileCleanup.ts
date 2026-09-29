@@ -13,7 +13,7 @@ type CleanupKey = 'cleanupAfterOpeningFile' | 'cleanupProjectsAndScriptInfos';
 /**
  * Opening a file scans every open file and script info for cleanup.
  * ESLint opens every linted file and never closes them, making that quadratic.
- * @see https://github.com/typescript-eslint/typescript-eslint/issues/9571
+ * @see https://github.com/typescript-eslint/typescript-eslint/issues/12936
  */
 export function throttleOpenedFileCleanup(
   service: ts.server.ProjectService,
