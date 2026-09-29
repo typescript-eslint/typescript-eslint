@@ -80,6 +80,7 @@ export function DiagnosticMarker({
   focusable,
 }: DiagnosticMarkerProps): React.JSX.Element {
   const { wordWrap } = useCodeBlockContext();
+  const { codeBlockRef, isEnabled } = wordWrap;
   const contentRef = useRef<HTMLSpanElement>(null);
   const [underlineSegments, setUnderlineSegments] = useState<
     UnderlineSegment[]
@@ -87,14 +88,15 @@ export function DiagnosticMarker({
   const diagnosticMessages = diagnostics.map(formatDiagnosticMessage);
 
   useEffect(() => {
-    if (!wordWrap.isEnabled) {
+    if (!isEnabled) {
       setUnderlineSegments(current => (current.length ? [] : current));
       return;
     }
 
     const content = contentRef.current;
     const marker = content?.parentElement;
-    if (!content || !marker) {
+    const codeBlock = codeBlockRef.current;
+    if (!content || !marker || !codeBlock) {
       return;
     }
 
@@ -104,9 +106,9 @@ export function DiagnosticMarker({
     update();
 
     const observer = new ResizeObserver(update);
-    observer.observe(marker);
+    observer.observe(codeBlock);
     return () => observer.disconnect();
-  }, [wordWrap.isEnabled]);
+  }, [codeBlockRef, isEnabled]);
 
   return (
     <Tooltip.Root disableHoverablePopup>
