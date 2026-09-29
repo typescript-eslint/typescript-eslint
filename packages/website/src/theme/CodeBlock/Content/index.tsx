@@ -1,4 +1,5 @@
 import type { Props } from '@theme/CodeBlock/Content';
+import type { Token } from 'prism-react-renderer';
 import type { ComponentProps, ReactNode, Ref } from 'react';
 
 import { usePrismTheme } from '@docusaurus/theme-common';
@@ -8,10 +9,36 @@ import clsx from 'clsx';
 import { Highlight } from 'prism-react-renderer';
 import React from 'react';
 
+import type { CodeDiagnostic } from '../../../../plugins/generated-rule-docs/codeDiagnostics';
+
 import { getLineDiagnosticRanges } from '../diagnosticRanges';
 import { useCodeBlockDiagnostics } from '../diagnostics';
 import { DiagnosticLine } from './DiagnosticLine';
 import styles from './styles.module.css';
+
+function getLinesWithDiagnostics(
+  lines: Token[][],
+  diagnostics: readonly CodeDiagnostic[],
+) {
+  const previouslyVisibleDiagnosticIndices = new Set<number>();
+
+  return lines.map((line, lineIndex) => {
+    const visibleRanges = getLineDiagnosticRanges(
+      diagnostics,
+      lineIndex,
+      line.reduce((length, token) => length + token.content.length, 0),
+    );
+    const firstVisibleDiagnosticIndices = new Set<number>();
+    for (const { diagnosticIndex } of visibleRanges) {
+      if (!previouslyVisibleDiagnosticIndices.has(diagnosticIndex)) {
+        firstVisibleDiagnosticIndices.add(diagnosticIndex);
+      }
+      previouslyVisibleDiagnosticIndices.add(diagnosticIndex);
+    }
+
+    return { firstVisibleDiagnosticIndices, line, ranges: visibleRanges };
+  });
+}
 
 const Pre = React.forwardRef<HTMLPreElement, ComponentProps<'pre'>>(
   (props, ref) => (
@@ -57,47 +84,49 @@ export default function CodeBlockContent({
 
   return (
     <Highlight code={code} language={language} theme={prismTheme}>
-      {({ className, getLineProps, getTokenProps, style, tokens: lines }) => (
-        <Pre
-          ref={wordWrap.codeBlockRef as Ref<HTMLPreElement>}
-          className={clsx(classNameProp, className)}
-          style={style}
-        >
-          <Code>
-            {lines.map((line, index) => {
-              const ranges = getLineDiagnosticRanges(
-                diagnostics,
-                index,
-                line.reduce(
-                  (length, token) => length + token.content.length,
-                  0,
-                ),
-              );
+      {({ className, getLineProps, getTokenProps, style, tokens: lines }) => {
+        const linesWithDiagnostics = getLinesWithDiagnostics(
+          lines,
+          diagnostics,
+        );
 
-              return ranges.length === 0 ? (
-                <Line
-                  key={index}
-                  classNames={lineClassNames[index]}
-                  getLineProps={getLineProps}
-                  getTokenProps={getTokenProps}
-                  line={line}
-                  showLineNumbers={lineNumbersStart != null}
-                />
-              ) : (
-                <DiagnosticLine
-                  key={index}
-                  classNames={lineClassNames[index]}
-                  getLineProps={getLineProps}
-                  getTokenProps={getTokenProps}
-                  line={line}
-                  ranges={ranges}
-                  showLineNumbers={lineNumbersStart != null}
-                />
-              );
-            })}
-          </Code>
-        </Pre>
-      )}
+        return (
+          <Pre
+            ref={wordWrap.codeBlockRef as Ref<HTMLPreElement>}
+            className={clsx(classNameProp, className)}
+            style={style}
+          >
+            <Code>
+              {linesWithDiagnostics.map(
+                ({ firstVisibleDiagnosticIndices, line, ranges }, index) =>
+                  ranges.length === 0 ? (
+                    <Line
+                      key={index}
+                      classNames={lineClassNames[index]}
+                      getLineProps={getLineProps}
+                      getTokenProps={getTokenProps}
+                      line={line}
+                      showLineNumbers={lineNumbersStart != null}
+                    />
+                  ) : (
+                    <DiagnosticLine
+                      key={index}
+                      classNames={lineClassNames[index]}
+                      firstVisibleDiagnosticIndices={
+                        firstVisibleDiagnosticIndices
+                      }
+                      getLineProps={getLineProps}
+                      getTokenProps={getTokenProps}
+                      line={line}
+                      ranges={ranges}
+                      showLineNumbers={lineNumbersStart != null}
+                    />
+                  ),
+              )}
+            </Code>
+          </Pre>
+        );
+      }}
     </Highlight>
   );
 }

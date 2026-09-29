@@ -10,6 +10,7 @@ import styles from './styles.module.css';
 
 interface DiagnosticLineProps {
   classNames?: string[] | undefined;
+  firstVisibleDiagnosticIndices: ReadonlySet<number>;
   getLineProps: RenderProps['getLineProps'];
   getTokenProps: RenderProps['getTokenProps'];
   line: Token[];
@@ -113,6 +114,7 @@ function getUniqueDiagnostics(ranges: readonly LineDiagnosticRange[]) {
 
 export function DiagnosticLine({
   classNames,
+  firstVisibleDiagnosticIndices,
   getLineProps,
   getTokenProps,
   line,
@@ -126,7 +128,6 @@ export function DiagnosticLine({
     ),
     line,
   });
-  const focusableDiagnostics = new Set<number>();
   const groups = groupLineParts(getLineParts(line, ranges));
   const renderedGroups = groups.map(group => {
     if (group.kind === 'plain') {
@@ -141,17 +142,12 @@ export function DiagnosticLine({
       );
     }
 
-    const focusable = group.ranges.some(
-      range => !focusableDiagnostics.has(range.diagnosticIndex),
-    );
-    for (const range of group.ranges) {
-      focusableDiagnostics.add(range.diagnosticIndex);
-    }
-
     return (
       <DiagnosticMarker
         key={group.parts[0].key}
-        focusable={focusable}
+        focusable={group.ranges.some(range =>
+          firstVisibleDiagnosticIndices.has(range.diagnosticIndex),
+        )}
         diagnostics={getUniqueDiagnostics(group.ranges)}
       >
         {group.parts.map(part => {
