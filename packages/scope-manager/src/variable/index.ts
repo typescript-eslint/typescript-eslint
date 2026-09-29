@@ -6,7 +6,6 @@ export {
   ImplicitLibVariable,
   type ImplicitLibVariableOptions,
   type LibDefinition,
-  type LibVariableOptions,
 } from './ImplicitLibVariable';
 export { Variable } from './Variable';
 
