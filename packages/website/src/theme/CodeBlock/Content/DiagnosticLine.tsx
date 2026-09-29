@@ -14,34 +14,42 @@ interface DiagnosticLineProps {
   getLineProps: RenderProps['getLineProps'];
   getTokenProps: RenderProps['getTokenProps'];
   line: Token[];
-  ranges: readonly LineDiagnosticRange[];
+  lineRanges: readonly LineDiagnosticRange[];
   showLineNumbers: boolean;
 }
 
-interface LinePart {
+interface TokenPart {
+  /**
+   * Ranges linking this token part to the locations and messages of its diagnostics.
+   */
   activeRanges: readonly LineDiagnosticRange[];
-  content: string;
+  partContent: Token['content'];
   key: string;
-  token: Token;
+  sourceToken: Token;
 }
 
-type LinePartGroup =
+type RenderGroup =
   | {
       kind: 'diagnostic';
-      parts: LinePart[];
+      tokenParts: TokenPart[];
       ranges: LineDiagnosticRange[];
     }
-  | { kind: 'plain'; part: LinePart };
+  | { kind: 'plain'; tokenPart: TokenPart };
 
-function getTokenBoundaries(
+/**
+ * Returns split points at diagnostic boundaries
+ * so each token part can be marked independently
+ * while preserving its Prism styling.
+ */
+function getTokenSplitBoundaries(
   tokenStart: number,
   tokenEnd: number,
-  ranges: readonly LineDiagnosticRange[],
+  lineRanges: readonly LineDiagnosticRange[],
 ): number[] {
   return [
     tokenStart,
     tokenEnd,
-    ...ranges.flatMap(range => [
+    ...lineRanges.flatMap(range => [
       Math.max(tokenStart, range.start),
       Math.min(tokenEnd, range.end),
     ]),
@@ -51,53 +59,69 @@ function getTokenBoundaries(
     .filter((boundary, index, all) => boundary !== all[index - 1]);
 }
 
-function getLineParts(line: Token[], ranges: readonly LineDiagnosticRange[]) {
-  let tokenStart = 0;
-
-  return line.flatMap((token, tokenIndex) => {
+function splitLineTokens(
+  line: Token[],
+  lineRanges: readonly LineDiagnosticRange[],
+): TokenPart[] {
+  function splitToken(
+    token: Token,
+    tokenIndex: number,
+    tokenStart: number,
+  ): TokenPart[] {
     const tokenEnd = tokenStart + token.content.length;
-    const boundaries = getTokenBoundaries(tokenStart, tokenEnd, ranges);
-    const currentTokenStart = tokenStart;
-    tokenStart = tokenEnd;
+    const boundaries = getTokenSplitBoundaries(
+      tokenStart,
+      tokenEnd,
+      lineRanges,
+    );
 
     return boundaries.slice(0, -1).map((start, partIndex) => {
       const end = boundaries[partIndex + 1];
 
       return {
-        activeRanges: ranges.filter(
+        activeRanges: lineRanges.filter(
           range => range.start < end && range.end > start,
         ),
-        content: token.content.slice(
-          start - currentTokenStart,
-          end - currentTokenStart,
-        ),
         key: `${tokenIndex}:${partIndex}`,
-        token,
+        partContent: token.content.slice(start - tokenStart, end - tokenStart),
+        sourceToken: token,
       };
     });
+  }
+
+  let tokenStart = 0;
+
+  return line.flatMap((token, tokenIndex) => {
+    const tokenParts = splitToken(token, tokenIndex, tokenStart);
+    tokenStart += token.content.length;
+    return tokenParts;
   });
 }
 
-function groupLineParts(parts: readonly LinePart[]) {
-  const groups: LinePartGroup[] = [];
+/**
+ * Group parts into one marker when they form a continuous highlight,
+ * even if they belong to different diagnostics.
+ */
+function groupTokenParts(tokenParts: readonly TokenPart[]) {
+  const groups: RenderGroup[] = [];
 
-  for (const part of parts) {
-    if (part.activeRanges.length === 0) {
-      groups.push({ kind: 'plain', part });
+  for (const tokenPart of tokenParts) {
+    if (tokenPart.activeRanges.length === 0) {
+      groups.push({ kind: 'plain', tokenPart });
       continue;
     }
 
     const previousGroup = groups.at(-1);
     if (previousGroup?.kind === 'diagnostic') {
-      previousGroup.parts.push(part);
-      previousGroup.ranges.push(...part.activeRanges);
+      previousGroup.tokenParts.push(tokenPart);
+      previousGroup.ranges.push(...tokenPart.activeRanges);
       continue;
     }
 
     groups.push({
       kind: 'diagnostic',
-      parts: [part],
-      ranges: [...part.activeRanges],
+      ranges: [...tokenPart.activeRanges],
+      tokenParts: [tokenPart],
     });
   }
 
@@ -112,13 +136,19 @@ function getUniqueDiagnostics(ranges: readonly LineDiagnosticRange[]) {
   ];
 }
 
+/**
+ * Renders diagnostics over Prism-highlighted tokens:
+ * 1. Split tokens at diagnostic boundaries while preserving their token styles.
+ * 2. Group parts that form one continuous highlighted span into a marker.
+ * 3. Render each part with its original Prism token props.
+ */
 export function DiagnosticLine({
   classNames,
   firstVisibleDiagnosticIndices,
   getLineProps,
   getTokenProps,
   line,
-  ranges,
+  lineRanges,
   showLineNumbers,
 }: DiagnosticLineProps): React.JSX.Element {
   const lineProps = getLineProps({
@@ -128,39 +158,34 @@ export function DiagnosticLine({
     ),
     line,
   });
-  const groups = groupLineParts(getLineParts(line, ranges));
+
+  function renderTokenPart(tokenPart: TokenPart) {
+    const tokenProps = getTokenProps({
+      token: { ...tokenPart.sourceToken, content: tokenPart.partContent },
+    });
+
+    return (
+      <span key={tokenPart.key} {...tokenProps}>
+        {tokenProps.children}
+      </span>
+    );
+  }
+
+  const groups = groupTokenParts(splitLineTokens(line, lineRanges));
   const renderedGroups = groups.map(group => {
     if (group.kind === 'plain') {
-      const tokenProps = getTokenProps({
-        token: { ...group.part.token, content: group.part.content },
-      });
-
-      return (
-        <span key={group.part.key} {...tokenProps}>
-          {tokenProps.children}
-        </span>
-      );
+      return renderTokenPart(group.tokenPart);
     }
 
     return (
       <DiagnosticMarker
-        key={group.parts[0].key}
+        key={group.tokenParts[0].key}
         focusable={group.ranges.some(range =>
           firstVisibleDiagnosticIndices.has(range.diagnosticIndex),
         )}
         diagnostics={getUniqueDiagnostics(group.ranges)}
       >
-        {group.parts.map(part => {
-          const tokenProps = getTokenProps({
-            token: { ...part.token, content: part.content },
-          });
-
-          return (
-            <span key={part.key} {...tokenProps}>
-              {tokenProps.children}
-            </span>
-          );
-        })}
+        {group.tokenParts.map(renderTokenPart)}
       </DiagnosticMarker>
     );
   });

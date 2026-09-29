@@ -118,7 +118,7 @@ export default function CodeBlockContent({
                       getLineProps={getLineProps}
                       getTokenProps={getTokenProps}
                       line={line}
-                      ranges={ranges}
+                      lineRanges={ranges}
                       showLineNumbers={lineNumbersStart != null}
                     />
                   ),
