@@ -174,7 +174,8 @@ export class Referencer extends Visitor {
   }
 
   /**
-   * allowing rules to recognize a builtin redeclaration such as `no-redeclare`
+   * Converts a global declaration that collides with a lib global into an `ImplicitLibVariable`,
+   * so rules such as `no-redeclare` can detect builtin redeclarations.
    */
   private upgradeVariableToImplicitLibVariable(
     globalScope: GlobalScope,
