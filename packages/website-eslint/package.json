@@ -4,6 +4,7 @@
   "description": "ESLint which works in browsers.",
   "files": [
     "dist",
+    "!**/*.js.map",
     "!**/*.tsbuildinfo"
   ],
   "repository": {

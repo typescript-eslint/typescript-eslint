@@ -40,10 +40,8 @@ Snapshot Diff:
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSFunctionType {
                   type: 'TSFunctionType',
--                 params: Array [],
--                 returnType: TSTypeAnnotation {
-+                 parameters: Array [],
-+                 typeAnnotation: TSTypeAnnotation {
+                  params: Array [],
+                  returnType: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSBooleanKeyword {
                       type: 'TSBooleanKeyword',
@@ -232,9 +230,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 159],
+-   range: [73, 159],
++   range: [0, 159],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 7 },
     },
   }

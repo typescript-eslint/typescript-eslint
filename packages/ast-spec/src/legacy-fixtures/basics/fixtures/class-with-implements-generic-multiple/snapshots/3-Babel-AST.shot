@@ -29,8 +29,8 @@ Program {
         },
       },
       implements: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSClassImplements {
+          type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
             decorators: [],
@@ -43,7 +43,7 @@ Program {
               end: { column: 24, line: 3 },
             },
           },
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
@@ -115,9 +115,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 107],
+  range: [0, 107],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

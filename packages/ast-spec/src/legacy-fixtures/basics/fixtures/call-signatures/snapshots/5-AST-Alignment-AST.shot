@@ -28,8 +28,7 @@ Snapshot Diff:
           members: Array [
             TSCallSignatureDeclaration {
               type: 'TSCallSignatureDeclaration',
--             params: Array [
-+             parameters: Array [
+              params: Array [
                 Identifier {
                   type: 'Identifier',
                   decorators: Array [],
@@ -61,8 +60,7 @@ Snapshot Diff:
                   },
                 },
               ],
--             returnType: TSTypeAnnotation {
-+             typeAnnotation: TSTypeAnnotation {
+              returnType: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
@@ -89,8 +87,7 @@ Snapshot Diff:
             },
             TSConstructSignatureDeclaration {
               type: 'TSConstructSignatureDeclaration',
--             params: Array [
-+             parameters: Array [
+              params: Array [
                 Identifier {
                   type: 'Identifier',
                   decorators: Array [],
@@ -122,8 +119,7 @@ Snapshot Diff:
                   },
                 },
               ],
--             returnType: TSTypeAnnotation {
-+             typeAnnotation: TSTypeAnnotation {
+              returnType: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
@@ -166,9 +162,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 139],
+-   range: [73, 139],
++   range: [0, 139],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 7 },
     },
   }

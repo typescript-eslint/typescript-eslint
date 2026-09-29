@@ -202,7 +202,7 @@ When reading the options, use the second parameter of the `create` function, not
 
 ## AST Extensions
 
-`@typescript-eslint/estree` creates AST nodes for TypeScript syntax with names that begin with `TS`, such as `TSInterfaceDeclaration` and `TSTypeAnnotation`.
+`@typescript-eslint/typescript-estree` creates AST nodes for TypeScript syntax with names that begin with `TS`, such as `TSInterfaceDeclaration` and `TSTypeAnnotation`.
 These nodes are treated just like any other AST node.
 You can query for them in your rule selectors.
 
@@ -291,8 +291,8 @@ The biggest addition typescript-eslint brings to ESLint rules is the ability to 
 That `services` object contains:
 
 - `program`: A full TypeScript `ts.Program` object if type checking is enabled, or `null` otherwise
-- `esTreeNodeToTSNodeMap`: Map of `@typescript-eslint/estree` `TSESTree.Node` nodes to their TypeScript `ts.Node` equivalents
-- `tsNodeToESTreeNodeMap`: Map of TypeScript `ts.Node` nodes to their `@typescript-eslint/estree` `TSESTree.Node` equivalents
+- `esTreeNodeToTSNodeMap`: Map of `TSESTree.Node` nodes to their TypeScript `ts.Node` equivalents
+- `tsNodeToESTreeNodeMap`: Map of TypeScript `ts.Node` nodes to their `TSESTree.Node` equivalents
 
 If type checking is enabled, that `services` object additionally contains:
 

@@ -25,49 +25,49 @@ Snapshot Diff:
         },
         typeAnnotation: TSMappedType {
           type: 'TSMappedType',
--         constraint: TSTypeOperator {
--           type: 'TSTypeOperator',
--           operator: 'keyof',
--           typeAnnotation: TSTypeReference {
--             type: 'TSTypeReference',
--             typeName: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'T',
--               optional: false,
--
--               range: [104, 105],
--               loc: {
--                 start: { column: 14, line: 4 },
--                 end: { column: 15, line: 4 },
--               },
--             },
--
--             range: [104, 105],
--             loc: {
--               start: { column: 14, line: 4 },
--               end: { column: 15, line: 4 },
--             },
--           },
--
--           range: [98, 105],
--           loc: {
--             start: { column: 8, line: 4 },
--             end: { column: 15, line: 4 },
--           },
--         },
--         key: Identifier {
--           type: 'Identifier',
--           decorators: Array [],
--           name: 'P',
--           optional: false,
--
--           range: [93, 94],
--           loc: {
--             start: { column: 3, line: 4 },
--             end: { column: 4, line: 4 },
--           },
--         },
+          constraint: TSTypeOperator {
+            type: 'TSTypeOperator',
+            operator: 'keyof',
+            typeAnnotation: TSTypeReference {
+              type: 'TSTypeReference',
+              typeName: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'T',
+                optional: false,
+
+                range: [104, 105],
+                loc: {
+                  start: { column: 14, line: 4 },
+                  end: { column: 15, line: 4 },
+                },
+              },
+
+              range: [104, 105],
+              loc: {
+                start: { column: 14, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+
+            range: [98, 105],
+            loc: {
+              start: { column: 8, line: 4 },
+              end: { column: 15, line: 4 },
+            },
+          },
+          key: Identifier {
+            type: 'Identifier',
+            decorators: Array [],
+            name: 'P',
+            optional: false,
+
+            range: [93, 94],
+            loc: {
+              start: { column: 3, line: 4 },
+              end: { column: 4, line: 4 },
+            },
+          },
           nameType: TSLiteralType {
             type: 'TSLiteralType',
             literal: Literal {
@@ -138,50 +138,6 @@ Snapshot Diff:
             loc: {
               start: { column: 25, line: 4 },
               end: { column: 29, line: 4 },
-+           },
-+         },
-+         typeParameter: TSTypeParameter {
-+           type: 'TSTypeParameter',
-+           const: false,
-+           constraint: TSTypeOperator {
-+             type: 'TSTypeOperator',
-+             operator: 'keyof',
-+             typeAnnotation: TSTypeReference {
-+               type: 'TSTypeReference',
-+               typeName: Identifier {
-+                 type: 'Identifier',
-+                 decorators: Array [],
-+                 name: 'T',
-+                 optional: false,
-+
-+                 range: [104, 105],
-+                 loc: {
-+                   start: { column: 14, line: 4 },
-+                   end: { column: 15, line: 4 },
-+                 },
-+               },
-+
-+               range: [104, 105],
-+               loc: {
-+                 start: { column: 14, line: 4 },
-+                 end: { column: 15, line: 4 },
-+               },
-+             },
-+
-+             range: [98, 105],
-+             loc: {
-+               start: { column: 8, line: 4 },
-+               end: { column: 15, line: 4 },
-+             },
-+           },
-+           in: false,
-+           name: 'P',
-+           out: false,
-+
-+           range: [93, 105],
-+           loc: {
-+             start: { column: 3, line: 4 },
-+             end: { column: 15, line: 4 },
             },
           },
 
@@ -198,19 +154,18 @@ Snapshot Diff:
               type: 'TSTypeParameter',
               const: false,
               in: false,
--             name: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'T',
--               optional: false,
--
--               range: [83, 84],
--               loc: {
--                 start: { column: 10, line: 3 },
--                 end: { column: 11, line: 3 },
--               },
--             },
-+             name: 'T',
+              name: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'T',
+                optional: false,
+
+                range: [83, 84],
+                loc: {
+                  start: { column: 10, line: 3 },
+                  end: { column: 11, line: 3 },
+                },
+              },
               out: false,
 
               range: [83, 84],
@@ -237,9 +192,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 124],
+-   range: [73, 124],
++   range: [0, 124],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

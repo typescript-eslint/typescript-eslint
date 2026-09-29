@@ -3,7 +3,7 @@ Program {
   body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         abstract: false,
@@ -75,9 +75,9 @@ Program {
   ],
   sourceType: "module",
 
-  range: [81, 101],
+  range: [0, 101],
   loc: {
-    start: { column: 0, line: 4 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 5 },
   },
 }

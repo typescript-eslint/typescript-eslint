@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-dupe-class-members';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-dupe-class-members', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class A {
@@ -73,11 +76,11 @@ class A {
 }
     `,
     `
-      class Foo {
-        foo(a: string): string;
-        foo(a: number): number;
-        foo(a: any): any {}
-      }
+class Foo {
+  foo(a: string): string;
+  foo(a: number): number;
+  foo(a: any): any {}
+}
     `,
   ],
   invalid: [

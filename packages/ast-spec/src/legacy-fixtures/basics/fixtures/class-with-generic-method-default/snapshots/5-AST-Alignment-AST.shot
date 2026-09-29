@@ -80,19 +80,18 @@ Snapshot Diff:
                         },
                       },
                       in: false,
--                     name: Identifier {
--                       type: 'Identifier',
--                       decorators: Array [],
--                       name: 'T',
--                       optional: false,
--
--                       range: [94, 95],
--                       loc: {
--                         start: { column: 9, line: 4 },
--                         end: { column: 10, line: 4 },
--                       },
--                     },
-+                     name: 'T',
+                      name: Identifier {
+                        type: 'Identifier',
+                        decorators: Array [],
+                        name: 'T',
+                        optional: false,
+
+                        range: [94, 95],
+                        loc: {
+                          start: { column: 9, line: 4 },
+                          end: { column: 10, line: 4 },
+                        },
+                      },
                       out: false,
 
                       range: [94, 101],
@@ -157,9 +156,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 110],
+-   range: [73, 110],
++   range: [0, 110],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

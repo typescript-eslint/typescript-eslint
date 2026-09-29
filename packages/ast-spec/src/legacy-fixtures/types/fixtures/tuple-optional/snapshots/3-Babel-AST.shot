@@ -46,42 +46,33 @@ Program {
                   },
                   TSOptionalType {
                     type: "TSOptionalType",
-                    typeAnnotation: TSParenthesizedType {
-                      type: "TSParenthesizedType",
-                      typeAnnotation: TSUnionType {
-                        type: "TSUnionType",
-                        types: [
-                          TSStringKeyword {
-                            type: "TSStringKeyword",
+                    typeAnnotation: TSUnionType {
+                      type: "TSUnionType",
+                      types: [
+                        TSStringKeyword {
+                          type: "TSStringKeyword",
 
-                            range: [99, 105],
-                            loc: {
-                              start: { column: 26, line: 3 },
-                              end: { column: 32, line: 3 },
-                            },
+                          range: [99, 105],
+                          loc: {
+                            start: { column: 26, line: 3 },
+                            end: { column: 32, line: 3 },
                           },
-                          TSNumberKeyword {
-                            type: "TSNumberKeyword",
-
-                            range: [108, 114],
-                            loc: {
-                              start: { column: 35, line: 3 },
-                              end: { column: 41, line: 3 },
-                            },
-                          },
-                        ],
-
-                        range: [99, 114],
-                        loc: {
-                          start: { column: 26, line: 3 },
-                          end: { column: 41, line: 3 },
                         },
-                      },
+                        TSNumberKeyword {
+                          type: "TSNumberKeyword",
 
-                      range: [98, 115],
+                          range: [108, 114],
+                          loc: {
+                            start: { column: 35, line: 3 },
+                            end: { column: 41, line: 3 },
+                          },
+                        },
+                      ],
+
+                      range: [99, 114],
                       loc: {
-                        start: { column: 25, line: 3 },
-                        end: { column: 42, line: 3 },
+                        start: { column: 26, line: 3 },
+                        end: { column: 41, line: 3 },
                       },
                     },
 
@@ -134,9 +125,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 119],
+  range: [0, 119],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

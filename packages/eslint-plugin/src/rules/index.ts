@@ -42,6 +42,7 @@ import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
+import noGeneratedEmptyObjectType from './no-generated-empty-object-type';
 import noImpliedEval from './no-implied-eval';
 import noImportTypeSideEffects from './no-import-type-side-effects';
 import noInferrableTypes from './no-inferrable-types';
@@ -81,6 +82,7 @@ import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
+import noUnsafeEnumAssignment from './no-unsafe-enum-assignment';
 import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
 import noUnsafeFunctionType from './no-unsafe-function-type';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
@@ -178,6 +180,7 @@ const rules = {
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
+  'no-generated-empty-object-type': noGeneratedEmptyObjectType,
   'no-implied-eval': noImpliedEval,
   'no-import-type-side-effects': noImportTypeSideEffects,
   'no-inferrable-types': noInferrableTypes,
@@ -218,6 +221,7 @@ const rules = {
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
   'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
+  'no-unsafe-enum-assignment': noUnsafeEnumAssignment,
   'no-unsafe-enum-comparison': noUnsafeEnumComparison,
   'no-unsafe-function-type': noUnsafeFunctionType,
   'no-unsafe-member-access': noUnsafeMemberAccess,

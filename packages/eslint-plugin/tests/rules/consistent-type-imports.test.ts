@@ -25,44 +25,47 @@ describe.for(PARSER_OPTION_COMBOS)(
     });
 
     ruleTester.run('consistent-type-imports', rule, {
+      assertionOptions: {
+        requireData: true,
+      },
       valid: [
         `
-          import Foo from 'foo';
-          const foo: Foo = new Foo();
+import Foo from 'foo';
+const foo: Foo = new Foo();
         `,
         `
-          import foo from 'foo';
-          const foo: foo.Foo = foo.fn();
+import foo from 'foo';
+const foo: foo.Foo = foo.fn();
         `,
         `
-          import { A, B } from 'foo';
-          const foo: A = B();
-          const bar = new A();
+import { A, B } from 'foo';
+const foo: A = B();
+const bar = new A();
         `,
         `
-          import Foo from 'foo';
+import Foo from 'foo';
         `,
         `
-          import Foo from 'foo';
-          type T<Foo> = Foo; // shadowing
+import Foo from 'foo';
+type T<Foo> = Foo; // shadowing
         `,
         `
-          import Foo from 'foo';
-          function fn() {
-            type Foo = {}; // shadowing
-            let foo: Foo;
-          }
+import Foo from 'foo';
+function fn() {
+  type Foo = {}; // shadowing
+  let foo: Foo;
+}
         `,
         `
-          import { A, B } from 'foo';
-          const b = B;
+import { A, B } from 'foo';
+const b = B;
         `,
         `
-          import { A, B, C as c } from 'foo';
-          const d = c;
+import { A, B, C as c } from 'foo';
+const d = c;
         `,
         `
-          import {} from 'foo'; // empty
+import {} from 'foo'; // empty
         `,
         {
           code: `
@@ -80,22 +83,22 @@ let foo: Foo;
         },
         // type queries
         `
-          import type Type from 'foo';
+import type Type from 'foo';
 
-          type T = typeof Type;
-          type T = typeof Type.foo;
+type T = typeof Type;
+type T = typeof Type.foo;
         `,
         `
-          import type { Type } from 'foo';
+import type { Type } from 'foo';
 
-          type T = typeof Type;
-          type T = typeof Type.foo;
+type T = typeof Type;
+type T = typeof Type.foo;
         `,
         `
-          import type * as Type from 'foo';
+import type * as Type from 'foo';
 
-          type T = typeof Type;
-          type T = typeof Type.foo;
+type T = typeof Type;
+type T = typeof Type.foo;
         `,
         {
           code: `
@@ -132,24 +135,24 @@ const a: typeof Type = Type;
           options: [{ prefer: 'no-type-imports' }],
         },
         `
-          import { type A } from 'foo';
-          type T = A;
+import { type A } from 'foo';
+type T = A;
         `,
         `
-          import { type A, B } from 'foo';
-          type T = A;
-          const b = B;
+import { type A, B } from 'foo';
+type T = A;
+const b = B;
         `,
         `
-          import { type A, type B } from 'foo';
-          type T = A;
-          type Z = B;
+import { type A, type B } from 'foo';
+type T = A;
+type Z = B;
         `,
         `
-          import { B } from 'foo';
-          import { type A } from 'foo';
-          type T = A;
-          const b = B;
+import { B } from 'foo';
+import { type A } from 'foo';
+type T = A;
+const b = B;
         `,
         {
           code: `
@@ -213,43 +216,43 @@ const b = B;
         },
         // exports
         `
-          import Type from 'foo';
+import Type from 'foo';
 
-          export { Type }; // is a value export
-          export default Type; // is a value export
+export { Type }; // is a value export
+export default Type; // is a value export
         `,
         `
-          import type Type from 'foo';
+import type Type from 'foo';
 
-          export { Type }; // is a type-only export
-          export default Type; // is a type-only export
-          export type { Type }; // is a type-only export
+export { Type }; // is a type-only export
+export default Type; // is a type-only export
+export type { Type }; // is a type-only export
         `,
         `
-          import { Type } from 'foo';
+import { Type } from 'foo';
 
-          export { Type }; // is a value export
-          export default Type; // is a value export
+export { Type }; // is a value export
+export default Type; // is a value export
         `,
         `
-          import type { Type } from 'foo';
+import type { Type } from 'foo';
 
-          export { Type }; // is a type-only export
-          export default Type; // is a type-only export
-          export type { Type }; // is a type-only export
+export { Type }; // is a type-only export
+export default Type; // is a type-only export
+export type { Type }; // is a type-only export
         `,
         `
-          import * as Type from 'foo';
+import * as Type from 'foo';
 
-          export { Type }; // is a value export
-          export default Type; // is a value export
+export { Type }; // is a value export
+export default Type; // is a value export
         `,
         `
-          import type * as Type from 'foo';
+import type * as Type from 'foo';
 
-          export { Type }; // is a type-only export
-          export default Type; // is a type-only export
-          export type { Type }; // is a type-only export
+export { Type }; // is a type-only export
+export default Type; // is a type-only export
+export type { Type }; // is a type-only export
         `,
 
         {
@@ -334,34 +337,34 @@ export const ComponentFoo: Fragment = () => {
           },
         },
         `
-          import Default, * as Rest from 'module';
-          const a: typeof Default = Default;
-          const b: typeof Rest = Rest;
+import Default, * as Rest from 'module';
+const a: typeof Default = Default;
+const b: typeof Rest = Rest;
         `,
 
         // https://github.com/typescript-eslint/typescript-eslint/issues/2989
         `
-          import type * as constants from './constants';
+import type * as constants from './constants';
 
-          export type Y = {
-            [constants.X]: ReadonlyArray<string>;
-          };
+export type Y = {
+  [constants.X]: ReadonlyArray<string>;
+};
         `,
         `
-          import A from 'foo';
-          export = A;
+import A from 'foo';
+export = A;
         `,
         `
-          import type A from 'foo';
-          export = A;
+import type A from 'foo';
+export = A;
         `,
         `
-          import type A from 'foo';
-          export = {} as A;
+import type A from 'foo';
+export = {} as A;
         `,
         `
-          import { type A } from 'foo';
-          export = {} as A;
+import { type A } from 'foo';
+export = {} as A;
         `,
 
         // semantically these are insane but syntactically they are valid
@@ -1399,6 +1402,7 @@ const a: Rest.A = '';
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Rest"' },
               endColumn: 41,
               endLine: 2,
               line: 2,
@@ -1420,6 +1424,7 @@ const a: Default = '';
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Default"' },
               endColumn: 41,
               endLine: 2,
               line: 2,
@@ -1465,6 +1470,7 @@ const a: Default = '';
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Default"' },
               endColumn: 53,
               endLine: 2,
               line: 2,
@@ -1487,6 +1493,7 @@ const a: Default = '';
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Default"' },
               endColumn: 66,
               endLine: 2,
               line: 2,
@@ -1498,31 +1505,6 @@ const a: Default = '';
 import type Default /*comment1*/ from 'module';
 import /*comment2*/ { Data } from 'module';
 const a: Default = '';
-          `,
-        },
-        {
-          code: `
-import Foo from 'foo';
-@deco
-class A {
-  constructor(foo: Foo) {}
-}
-          `,
-          errors: [
-            {
-              column: 1,
-              endColumn: 23,
-              endLine: 2,
-              line: 2,
-              messageId: 'typeOverValue',
-            },
-          ],
-          output: `
-import type Foo from 'foo';
-@deco
-class A {
-  constructor(foo: Foo) {}
-}
           `,
         },
         {
@@ -1607,6 +1589,7 @@ B();
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 28,
               endLine: 2,
               line: 2,
@@ -1632,6 +1615,7 @@ B();
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 28,
               endLine: 2,
               line: 2,
@@ -1723,6 +1707,7 @@ A();
           errors: [
             {
               column: 1,
+              data: { typeImports: '"B" and "C"' },
               endColumn: 31,
               endLine: 2,
               line: 2,
@@ -1801,6 +1786,7 @@ type T = A;
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 42,
               endLine: 2,
               line: 2,
@@ -1823,6 +1809,7 @@ type T = A;
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 42,
               endLine: 2,
               line: 2,
@@ -1849,6 +1836,7 @@ let baz: D;
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A" and "C"' },
               endColumn: 31,
               endLine: 2,
               line: 2,
@@ -1878,6 +1866,7 @@ let baz: D;
           errors: [
             {
               column: 1,
+              data: { typeImports: '"A"' },
               endColumn: 36,
               endLine: 2,
               line: 2,
@@ -1941,233 +1930,233 @@ export = {} as A;
         },
         {
           code: `
-            import Foo from 'foo';
-            @deco
-            class A {
-              constructor(foo: Foo) {}
-            }
+import Foo from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-            import type Foo from 'foo';
-            @deco
-            class A {
-              constructor(foo: Foo) {}
-            }
+import type Foo from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
           `,
         },
         {
           code: `
-            import Foo from 'foo';
-            class A {
-              @deco
-              foo: Foo;
-            }
+import Foo from 'foo';
+class A {
+  @deco
+  foo: Foo;
+}
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-            import type Foo from 'foo';
-            class A {
-              @deco
-              foo: Foo;
-            }
+import type Foo from 'foo';
+class A {
+  @deco
+  foo: Foo;
+}
           `,
         },
         {
           code: `
-            import Foo from 'foo';
-            class A {
-              @deco
-              foo(foo: Foo) {}
-            }
+import Foo from 'foo';
+class A {
+  @deco
+  foo(foo: Foo) {}
+}
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-            import type Foo from 'foo';
-            class A {
-              @deco
-              foo(foo: Foo) {}
-            }
+import type Foo from 'foo';
+class A {
+  @deco
+  foo(foo: Foo) {}
+}
           `,
         },
         {
           code: `
-            import Foo from 'foo';
-            class A {
-              @deco
-              foo(): Foo {}
-            }
+import Foo from 'foo';
+class A {
+  @deco
+  foo(): Foo {}
+}
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-            import type Foo from 'foo';
-            class A {
-              @deco
-              foo(): Foo {}
-            }
+import type Foo from 'foo';
+class A {
+  @deco
+  foo(): Foo {}
+}
           `,
         },
         {
           code: `
-            import Foo from 'foo';
-            class A {
-              foo(@deco foo: Foo) {}
-            }
+import Foo from 'foo';
+class A {
+  foo(@deco foo: Foo) {}
+}
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-            import type Foo from 'foo';
-            class A {
-              foo(@deco foo: Foo) {}
-            }
+import type Foo from 'foo';
+class A {
+  foo(@deco foo: Foo) {}
+}
           `,
         },
         {
           code: `
-            import Foo from 'foo';
-            class A {
-              @deco
-              set foo(value: Foo) {}
-            }
+import Foo from 'foo';
+class A {
+  @deco
+  set foo(value: Foo) {}
+}
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-            import type Foo from 'foo';
-            class A {
-              @deco
-              set foo(value: Foo) {}
-            }
+import type Foo from 'foo';
+class A {
+  @deco
+  set foo(value: Foo) {}
+}
           `,
         },
         {
           code: `
-            import Foo from 'foo';
-            class A {
-              @deco
-              get foo() {}
+import Foo from 'foo';
+class A {
+  @deco
+  get foo() {}
 
-              set foo(value: Foo) {}
-            }
+  set foo(value: Foo) {}
+}
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-            import type Foo from 'foo';
-            class A {
-              @deco
-              get foo() {}
+import type Foo from 'foo';
+class A {
+  @deco
+  get foo() {}
 
-              set foo(value: Foo) {}
-            }
+  set foo(value: Foo) {}
+}
           `,
         },
         {
           code: `
-            import Foo from 'foo';
-            class A {
-              @deco
-              get foo() {}
+import Foo from 'foo';
+class A {
+  @deco
+  get foo() {}
 
-              set ['foo'](value: Foo) {}
-            }
+  set ['foo'](value: Foo) {}
+}
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 35,
+              column: 1,
+              endColumn: 23,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-            import type Foo from 'foo';
-            class A {
-              @deco
-              get foo() {}
+import type Foo from 'foo';
+class A {
+  @deco
+  get foo() {}
 
-              set ['foo'](value: Foo) {}
-            }
+  set ['foo'](value: Foo) {}
+}
           `,
         },
         {
           code: `
-            import * as foo from 'foo';
-            @deco
-            class A {
-              constructor(foo: foo.Foo) {}
-            }
+import * as foo from 'foo';
+@deco
+class A {
+  constructor(foo: foo.Foo) {}
+}
           `,
           errors: [
             {
-              column: 13,
-              endColumn: 40,
+              column: 1,
+              endColumn: 28,
               endLine: 2,
               line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-            import type * as foo from 'foo';
-            @deco
-            class A {
-              constructor(foo: foo.Foo) {}
-            }
+import type * as foo from 'foo';
+@deco
+class A {
+  constructor(foo: foo.Foo) {}
+}
           `,
         },
         // https://github.com/typescript-eslint/typescript-eslint/issues/7209
@@ -2180,6 +2169,7 @@ function test(foo: Foo) {}
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Foo"' },
               endColumn: 32,
               endLine: 3,
               line: 3,
@@ -2202,6 +2192,7 @@ function test(foo: Foo) {}
           errors: [
             {
               column: 1,
+              data: { typeImports: '"Foo"' },
               endColumn: 32,
               endLine: 3,
               line: 3,
@@ -2232,168 +2223,171 @@ describe('experimentalDecorators: true + emitDecoratorMetadata: true', () => {
   });
 
   ruleTester.run('consistent-type-imports', rule, {
+    assertionOptions: {
+      requireData: true,
+    },
     valid: [
       `
-        import Foo from 'foo';
-        @deco
-        class A {
-          constructor(foo: Foo) {}
-        }
+import Foo from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
       `,
 
       `
-        import Foo from 'foo';
-        class A {
-          @deco
-          foo: Foo;
-        }
+import Foo from 'foo';
+class A {
+  @deco
+  foo: Foo;
+}
       `,
 
       `
-        import Foo from 'foo';
-        class A {
-          @deco
-          foo(foo: Foo) {}
-        }
+import Foo from 'foo';
+class A {
+  @deco
+  foo(foo: Foo) {}
+}
       `,
 
       `
-        import Foo from 'foo';
-        class A {
-          @deco
-          foo(): Foo {}
-        }
+import Foo from 'foo';
+class A {
+  @deco
+  foo(): Foo {}
+}
       `,
 
       `
-        import Foo from 'foo';
-        class A {
-          foo(@deco foo: Foo) {}
-        }
+import Foo from 'foo';
+class A {
+  foo(@deco foo: Foo) {}
+}
       `,
 
       `
-        import Foo from 'foo';
-        class A {
-          @deco
-          set foo(value: Foo) {}
-        }
+import Foo from 'foo';
+class A {
+  @deco
+  set foo(value: Foo) {}
+}
       `,
 
       `
-        import Foo from 'foo';
-        class A {
-          @deco
-          get foo() {}
+import Foo from 'foo';
+class A {
+  @deco
+  get foo() {}
 
-          set foo(value: Foo) {}
-        }
+  set foo(value: Foo) {}
+}
       `,
 
       `
-        import Foo from 'foo';
-        class A {
-          @deco
-          get foo() {}
+import Foo from 'foo';
+class A {
+  @deco
+  get foo() {}
 
-          set ['foo'](value: Foo) {}
-        }
+  set ['foo'](value: Foo) {}
+}
       `,
 
       `
-        import type { Foo } from 'foo';
-        const key = 'k';
-        class A {
-          @deco
-          get [key]() {}
+import type { Foo } from 'foo';
+const key = 'k';
+class A {
+  @deco
+  get [key]() {}
 
-          set [key](value: Foo) {}
-        }
+  set [key](value: Foo) {}
+}
       `,
 
       `
-        import * as foo from 'foo';
-        @deco
-        class A {
-          constructor(foo: foo.Foo) {}
-        }
+import * as foo from 'foo';
+@deco
+class A {
+  constructor(foo: foo.Foo) {}
+}
       `,
 
       // https://github.com/typescript-eslint/typescript-eslint/issues/7327
       `
-        import type { ClassA } from './classA';
+import type { ClassA } from './classA';
 
-        export class ClassB {
-          public constructor(node: ClassA) {}
-        }
+export class ClassB {
+  public constructor(node: ClassA) {}
+}
       `,
 
       `
-        import type Foo from 'foo';
-        @deco
-        class A {
-          constructor(foo: Foo) {}
-        }
+import type Foo from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
       `,
       `
-        import type { Foo } from 'foo';
-        @deco
-        class A {
-          constructor(foo: Foo) {}
-        }
+import type { Foo } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
       `,
       `
-        import type { Type } from 'foo';
-        import { Foo, Bar } from 'foo';
-        @deco
-        class A {
-          constructor(foo: Foo) {}
-        }
-        type T = Bar;
+import type { Type } from 'foo';
+import { Foo, Bar } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
+type T = Bar;
       `,
       `
-        import { V } from 'foo';
-        import type { Foo, Bar, T } from 'foo';
-        @deco
-        class A {
-          constructor(foo: Foo) {}
-          foo(@deco bar: Bar) {}
-        }
+import { V } from 'foo';
+import type { Foo, Bar, T } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+  foo(@deco bar: Bar) {}
+}
       `,
       `
-        import type { Foo, T } from 'foo';
-        import { V } from 'foo';
-        @deco
-        class A {
-          constructor(foo: Foo) {}
-        }
+import type { Foo, T } from 'foo';
+import { V } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
       `,
       `
-        import type * as Type from 'foo';
-        @deco
-        class A {
-          constructor(foo: Type.Foo) {}
-        }
+import type * as Type from 'foo';
+@deco
+class A {
+  constructor(foo: Type.Foo) {}
+}
       `,
     ],
     invalid: [
       {
         code: `
-          import Foo from 'foo';
-          export type T = Foo;
+import Foo from 'foo';
+export type T = Foo;
         `,
         errors: [
           {
-            column: 11,
-            endColumn: 33,
+            column: 1,
+            endColumn: 23,
             endLine: 2,
             line: 2,
             messageId: 'typeOverValue',
           },
         ],
         output: `
-          import type Foo from 'foo';
-          export type T = Foo;
+import type Foo from 'foo';
+export type T = Foo;
         `,
       },
     ],

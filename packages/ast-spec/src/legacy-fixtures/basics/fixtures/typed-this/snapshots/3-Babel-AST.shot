@@ -23,7 +23,7 @@ Program {
             },
             kind: "method",
             optional: false,
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -33,7 +33,7 @@ Program {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSFunctionType {
                     type: "TSFunctionType",
-                    parameters: [
+                    params: [
                       Identifier {
                         type: "Identifier",
                         decorators: [],
@@ -107,7 +107,7 @@ Program {
                         },
                       },
                     ],
-                    typeAnnotation: TSTypeAnnotation {
+                    returnType: TSTypeAnnotation {
                       type: "TSTypeAnnotation",
                       typeAnnotation: TSVoidKeyword {
                         type: "TSVoidKeyword",
@@ -148,8 +148,7 @@ Program {
               },
             ],
             readonly: false,
-            static: false,
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
                 type: "TSVoidKeyword",
@@ -167,6 +166,7 @@ Program {
                 end: { column: 65, line: 4 },
               },
             },
+            static: false,
 
             range: [97, 161],
             loc: {
@@ -206,9 +206,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 164],
+  range: [0, 164],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 6 },
   },
 }

@@ -32,8 +32,8 @@ Program {
         },
         typeAnnotation: TSFunctionType {
           type: "TSFunctionType",
-          parameters: [],
-          typeAnnotation: TSTypeAnnotation {
+          params: [],
+          returnType: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSNumberKeyword {
               type: "TSNumberKeyword",

@@ -27,10 +27,9 @@ Snapshot Diff:
           type: 'TSTypeQuery',
           exprName: TSImportType {
             type: 'TSImportType',
--           options: null,
--           qualifier: null,
--           source: Literal {
-+           argument: Literal {
+            options: null,
+            qualifier: null,
+            source: Literal {
               type: 'Literal',
               raw: '\'A\'',
               value: 'A',
@@ -41,9 +40,7 @@ Snapshot Diff:
                 end: { column: 26, line: 3 },
               },
             },
--           typeArguments: null,
-+           options: null,
-+           qualifier: null,
+            typeArguments: null,
 
             range: [89, 100],
             loc: {
@@ -82,17 +79,6 @@ Snapshot Diff:
         },
         typeAnnotation: TSImportType {
           type: 'TSImportType',
-+         argument: Literal {
-+           type: 'Literal',
-+           raw: '\'B\'',
-+           value: 'B',
-+
-+           range: [118, 121],
-+           loc: {
-+             start: { column: 16, line: 4 },
-+             end: { column: 19, line: 4 },
-+           },
-+         },
           options: null,
           qualifier: Identifier {
             type: 'Identifier',
@@ -106,19 +92,18 @@ Snapshot Diff:
               end: { column: 22, line: 4 },
             },
           },
--         source: Literal {
--           type: 'Literal',
--           raw: '\'B\'',
--           value: 'B',
--
--           range: [118, 121],
--           loc: {
--             start: { column: 16, line: 4 },
--             end: { column: 19, line: 4 },
--           },
--         },
--         typeArguments: TSTypeParameterInstantiation {
-+         typeParameters: TSTypeParameterInstantiation {
+          source: Literal {
+            type: 'Literal',
+            raw: '\'B\'',
+            value: 'B',
+
+            range: [118, 121],
+            loc: {
+              start: { column: 16, line: 4 },
+              end: { column: 19, line: 4 },
+            },
+          },
+          typeArguments: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSTypeReference {
@@ -167,9 +152,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 129],
+-   range: [73, 129],
++   range: [0, 129],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 5 },
     },
   }

@@ -1,18 +1,12 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
 import rule from '../../../src/rules/prefer-optional-chain';
-import { getFixturesRootDir } from '../../RuleTester';
+import { createRuleTesterWithTypes } from '../../RuleTester';
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      projectService: true,
-      tsconfigRootDir: getFixturesRootDir(),
-    },
-  },
-});
+const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-or-eqeqeq-null', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   // with the `| null | undefined` type - `=== null` doesn't cover the
   // `undefined` case - so optional chaining is not a valid conversion
   valid: [

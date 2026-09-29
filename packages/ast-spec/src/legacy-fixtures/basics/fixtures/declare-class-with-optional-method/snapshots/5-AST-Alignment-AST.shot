@@ -34,12 +34,10 @@ Snapshot Diff:
               optional: true,
               override: false,
               static: false,
--             value: TSEmptyBodyFunctionExpression {
--               type: 'TSEmptyBodyFunctionExpression',
-+             value: FunctionExpression {
-+               type: 'FunctionExpression',
+              value: TSEmptyBodyFunctionExpression {
+                type: 'TSEmptyBodyFunctionExpression',
                 async: false,
--               body: null,
+                body: null,
                 declare: false,
                 expression: false,
                 generator: false,
@@ -111,9 +109,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 110],
+-   range: [73, 110],
++   range: [0, 110],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

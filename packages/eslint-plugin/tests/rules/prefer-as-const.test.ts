@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-as-const';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-as-const', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "let foo = 'baz' as const;",
     'let foo = 1 as const;',
@@ -26,66 +29,66 @@ ruleTester.run('prefer-as-const', rule, {
     'let foo = { bar };',
     "let foo: 'baz' = 'baz' as const;",
     `
-      class foo {
-        bar = 'baz';
-      }
+class foo {
+  bar = 'baz';
+}
     `,
     `
-      class foo {
-        bar: 'baz';
-      }
+class foo {
+  bar: 'baz';
+}
     `,
     `
-      class foo {
-        bar;
-      }
+class foo {
+  bar;
+}
     `,
     `
-      class foo {
-        bar = <baz>'baz';
-      }
+class foo {
+  bar = <baz>'baz';
+}
     `,
     `
-      class foo {
-        bar: string = 'baz';
-      }
+class foo {
+  bar: string = 'baz';
+}
     `,
     `
-      class foo {
-        bar: number = 1;
-      }
+class foo {
+  bar: number = 1;
+}
     `,
     `
-      class foo {
-        bar = 'baz' as const;
-      }
+class foo {
+  bar = 'baz' as const;
+}
     `,
     `
-      class foo {
-        bar = 2 as const;
-      }
+class foo {
+  bar = 2 as const;
+}
     `,
     `
-      class foo {
-        get bar(): 'bar' {}
-        set bar(bar: 'bar') {}
-      }
+class foo {
+  get bar(): 'bar' {}
+  set bar(bar: 'bar') {}
+}
     `,
     `
-      class foo {
-        bar = () => 'bar' as const;
-      }
+class foo {
+  bar = () => 'bar' as const;
+}
     `,
     `
-      type BazFunction = () => 'baz';
-      class foo {
-        bar: BazFunction = () => 'bar';
-      }
+type BazFunction = () => 'baz';
+class foo {
+  bar: BazFunction = () => 'bar';
+}
     `,
     `
-      class foo {
-        bar(): void {}
-      }
+class foo {
+  bar(): void {}
+}
     `,
   ],
   invalid: [

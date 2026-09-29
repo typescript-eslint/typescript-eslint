@@ -10,6 +10,9 @@ import { areOptionsValid } from '../areOptionsValid';
 const ruleTester = new RuleTester();
 
 ruleTester.run('array-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
     {
@@ -415,10 +418,10 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
     },
     {
       code: `
-        declare module '2' {
-          type Array<Y> = Y;
-          const y: Array<2>;
-        }
+declare module '2' {
+  type Array<Y> = Y;
+  const y: Array<2>;
+}
       `,
       options: [{ default: 'generic' }],
     },

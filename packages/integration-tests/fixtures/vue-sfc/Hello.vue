@@ -10,30 +10,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-export default Vue.extend({
-  props: ['name', 'initialEnthusiasm'],
-  data() {
-    return {
-      enthusiasm: this.initialEnthusiasm,
-    };
-  },
-  methods: {
-    increment() {
-      this.enthusiasm++;
-    },
-    decrement() {
-      if (this.enthusiasm > 1) {
-        this.enthusiasm--;
-      }
-    },
-  },
-  computed: {
-    exclamationMarks(): any {
-      // !!!!! expected error !!!!!
-      return Array(this.enthusiasm + 1).join('!');
-    },
-  },
-});
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+
+interface Props {
+  initialEnthusiasm?: number;
+  name?: string;
+}
+
+const { initialEnthusiasm = 1, name = 'World' } = defineProps<Props>();
+
+const enthusiasm = ref(initialEnthusiasm);
+
+// !!!!! expected error !!!!!
+const exclamationMarks = computed((): any => '!'.repeat(enthusiasm.value));
+
+function increment(): void {
+  enthusiasm.value++;
+}
+
+function decrement(): void {
+  if (enthusiasm.value > 1) {
+    enthusiasm.value--;
+  }
+}
 </script>

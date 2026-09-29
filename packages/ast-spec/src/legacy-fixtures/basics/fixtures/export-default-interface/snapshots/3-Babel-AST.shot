@@ -25,10 +25,9 @@ Program {
               },
               kind: "method",
               optional: false,
-              parameters: [],
+              params: [],
               readonly: false,
-              static: false,
-              typeAnnotation: TSTypeAnnotation {
+              returnType: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSVoidKeyword {
                   type: "TSVoidKeyword",
@@ -46,6 +45,7 @@ Program {
                   end: { column: 17, line: 4 },
                 },
               },
+              static: false,
 
               range: [104, 120],
               loc: {
@@ -93,9 +93,9 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 123],
+  range: [0, 123],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 6 },
   },
 }

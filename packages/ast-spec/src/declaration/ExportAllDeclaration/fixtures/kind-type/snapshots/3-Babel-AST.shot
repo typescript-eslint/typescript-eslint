@@ -3,7 +3,7 @@ Program {
   body: [
     ExportAllDeclaration {
       type: "ExportAllDeclaration",
-      assertions: [],
+      attributes: [],
       exported: Identifier {
         type: "Identifier",
         decorators: [],

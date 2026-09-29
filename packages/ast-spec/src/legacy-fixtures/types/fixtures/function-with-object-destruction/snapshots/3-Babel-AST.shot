@@ -18,7 +18,7 @@ Program {
       },
       typeAnnotation: TSFunctionType {
         type: "TSFunctionType",
-        parameters: [
+        params: [
           ObjectPattern {
             type: "ObjectPattern",
             decorators: [],
@@ -89,7 +89,7 @@ Program {
             },
           },
         ],
-        typeAnnotation: TSTypeAnnotation {
+        returnType: TSTypeAnnotation {
           type: "TSTypeAnnotation",
           typeAnnotation: TSAnyKeyword {
             type: "TSAnyKeyword",
@@ -124,9 +124,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 105],
+  range: [0, 105],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

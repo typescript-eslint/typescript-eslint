@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-type-arguments', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'f();',
     'f<string>();',
@@ -174,13 +177,7 @@ function Button<T>() {
 }
 const button = <Button<string>></Button>;
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     {
       code: `
@@ -189,13 +186,7 @@ function Button<T>() {
 }
 const button = <Button<string> />;
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     `
 function f<T = number>() {}
@@ -216,6 +207,9 @@ f<number>();
       errors: [
         {
           column: 3,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -232,6 +226,9 @@ g<string, string>();
       errors: [
         {
           column: 11,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -248,6 +245,9 @@ f<number>\`\${1}\`;
       errors: [
         {
           column: 3,
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -263,6 +263,10 @@ function h(c: C<number>) {}
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -278,6 +282,10 @@ new C<number>();
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -293,6 +301,10 @@ class D extends C<number> {}
       `,
       errors: [
         {
+          column: 19,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -308,6 +320,10 @@ class Impl implements I<number> {}
       `,
       errors: [
         {
+          column: 25,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -323,6 +339,10 @@ const foo = new Foo<number>();
       `,
       errors: [
         {
+          column: 21,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -338,6 +358,10 @@ class Foo<T = number> implements Bar<string> {}
       `,
       errors: [
         {
+          column: 38,
+          endColumn: 44,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -353,6 +377,10 @@ class Foo<T = number> extends Bar<string> {}
       `,
       errors: [
         {
+          column: 35,
+          endColumn: 41,
+          endLine: 3,
+          line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -370,6 +398,8 @@ bar<F<string>>();
       errors: [
         {
           column: 5,
+          endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -393,6 +423,8 @@ declare module 'bar' {
       errors: [
         {
           column: 12,
+          endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -414,6 +446,9 @@ type B = A<Map<string, string>>;
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 31,
+          endLine: 3,
           line: 3,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -431,6 +466,9 @@ type C = B<A>;
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -449,6 +487,9 @@ type C = B<Map<string, string>>;
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 31,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -468,6 +509,9 @@ type D = C<B>;
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 13,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -490,6 +534,9 @@ type F = E<D>;
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 13,
+          endLine: 7,
           line: 7,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -513,6 +560,9 @@ class Bar extends Foo<string> {}
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 29,
+          endLine: 6,
           line: 6,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -535,6 +585,9 @@ class Bar extends Foo<string> {}
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 29,
+          endLine: 6,
           line: 6,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -555,6 +608,9 @@ class Bar implements Foo<string> {}
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 32,
+          endLine: 4,
           line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -575,6 +631,9 @@ class Bar extends Foo<string> {}
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 29,
+          endLine: 6,
           line: 6,
           messageId: 'unnecessaryTypeParameter',
         },
@@ -596,17 +655,14 @@ const button = <Button<string>></Button>;
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 30,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       output: `
 function Button<T = string>() {
   return <div></div>;
@@ -623,17 +679,14 @@ const button = <Button<string> />;
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 30,
+          endLine: 5,
           line: 5,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       output: `
 function Button<T = string>() {
   return <div></div>;

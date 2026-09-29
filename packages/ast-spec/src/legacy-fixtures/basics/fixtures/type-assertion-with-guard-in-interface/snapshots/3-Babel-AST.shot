@@ -23,7 +23,7 @@ Program {
             },
             kind: "method",
             optional: false,
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -56,8 +56,7 @@ Program {
               },
             ],
             readonly: false,
-            static: false,
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypePredicate {
                 type: "TSTypePredicate",
@@ -106,6 +105,7 @@ Program {
                 end: { column: 45, line: 4 },
               },
             },
+            static: false,
 
             range: [97, 141],
             loc: {
@@ -145,9 +145,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 144],
+  range: [0, 144],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 6 },
   },
 }

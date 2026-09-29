@@ -15,8 +15,8 @@ Program {
       },
       declare: false,
       extends: [
-        TSExpressionWithTypeArguments {
-          type: "TSExpressionWithTypeArguments",
+        TSInterfaceHeritage {
+          type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
             decorators: [],

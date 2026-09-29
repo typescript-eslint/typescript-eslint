@@ -10,8 +10,7 @@ Snapshot Diff:
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
           abstract: false,
@@ -48,19 +47,18 @@ Snapshot Diff:
                 type: 'TSTypeParameter',
                 const: false,
                 in: false,
--               name: Identifier {
--                 type: 'Identifier',
--                 decorators: Array [],
--                 name: 'T',
--                 optional: false,
--
--                 range: [90, 91],
--                 loc: {
--                   start: { column: 17, line: 3 },
--                   end: { column: 18, line: 3 },
--                 },
--               },
-+               name: 'T',
+                name: Identifier {
+                  type: 'Identifier',
+                  decorators: Array [],
+                  name: 'T',
+                  optional: false,
+
+                  range: [90, 91],
+                  loc: {
+                    start: { column: 17, line: 3 },
+                    end: { column: 18, line: 3 },
+                  },
+                },
                 out: false,
 
                 range: [90, 91],
@@ -97,9 +95,11 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
-    range: [73, 96],
+-   range: [73, 96],
++   range: [0, 96],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

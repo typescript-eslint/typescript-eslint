@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-invalid-this';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-invalid-this', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 describe('foo', () => {
@@ -15,12 +18,12 @@ describe('foo', () => {
 });
     `,
     `
-      interface SomeType {
-        prop: string;
-      }
-      function foo(this: SomeType) {
-        this.prop;
-      }
+interface SomeType {
+  prop: string;
+}
+function foo(this: SomeType) {
+  this.prop;
+}
     `,
     `
 function foo(this: prop) {

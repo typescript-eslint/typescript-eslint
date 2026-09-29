@@ -3,7 +3,7 @@ Program {
   body: [
     ExportAllDeclaration {
       type: "ExportAllDeclaration",
-      assertions: [],
+      attributes: [],
       exported: null,
       exportKind: "type",
       source: Literal {

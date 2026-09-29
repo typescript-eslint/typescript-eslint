@@ -3,6 +3,6 @@
 exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-var-id-definite-type-init > Babel - Error`]
 BabelError
 > 1 | declare var foo!: any = 1;
-    |                         ^ Initializers are not allowed in ambient contexts. (1:24)
+    |             ^ Declarations with initializers cannot also have definite assignment assertions. (1:12)
   2 |
   

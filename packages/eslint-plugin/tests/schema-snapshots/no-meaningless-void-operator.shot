@@ -6,7 +6,7 @@
     "additionalProperties": false,
     "properties": {
       "checkNever": {
-        "description": "Whether to suggest removing `void` when the argument has type `never`.",
+        "description": "Whether to suggest removing `void` when a call's return type is `never`.",
         "type": "boolean"
       }
     },
@@ -19,7 +19,7 @@
 
 type Options = [
   {
-    /** Whether to suggest removing `void` when the argument has type `never`. */
+    /** Whether to suggest removing `void` when a call's return type is `never`. */
     checkNever?: boolean;
   },
 ];

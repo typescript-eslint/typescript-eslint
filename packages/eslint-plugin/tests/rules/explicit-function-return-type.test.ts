@@ -5,6 +5,9 @@ import rule from '../../src/rules/explicit-function-return-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('explicit-function-return-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'return;',
     {
@@ -1819,14 +1822,14 @@ const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
     },
     {
       code: `
-        const log = (message: string) => {
-          void console.log(message);
-        };
+const log = (message: string) => {
+  void console.log(message);
+};
       `,
       errors: [
         {
-          column: 39,
-          endColumn: 41,
+          column: 31,
+          endColumn: 33,
           endLine: 2,
           line: 2,
           messageId: 'missingReturnType',

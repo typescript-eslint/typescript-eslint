@@ -8,6 +8,9 @@ const ruleTester = createRuleTesterWithTypes({
 });
 
 ruleTester.run('no-unsafe-call', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function foo(x: () => void) {
@@ -29,23 +32,23 @@ function foo(x: { a?: () => void }) {
     "const x = import('./foo');",
     // https://github.com/typescript-eslint/typescript-eslint/issues/1825
     `
-      let foo: any = 23;
-      String(foo); // ERROR: Unsafe call of an any typed value
+let foo: any = 23;
+String(foo); // ERROR: Unsafe call of an any typed value
     `,
     // TS 3.9 changed this to be safe
     `
-      function foo<T extends any>(x: T) {
-        x();
-      }
+function foo<T extends any>(x: T) {
+  x();
+}
     `,
     `
-      // create a scope since it's illegal to declare a duplicate identifier
-      // 'Function' in the global script scope.
-      {
-        type Function = () => void;
-        const notGlobalFunctionType: Function = (() => {}) as Function;
-        notGlobalFunctionType();
-      }
+// create a scope since it's illegal to declare a duplicate identifier
+// 'Function' in the global script scope.
+{
+  type Function = () => void;
+  const notGlobalFunctionType: Function = (() => {}) as Function;
+  notGlobalFunctionType();
+}
     `,
     `
 interface SurprisinglySafe extends Function {
@@ -78,11 +81,11 @@ safe();
     `,
     // Function has type FunctionConstructor, so it's not within this rule's purview
     `
-      new Function('lol');
+new Function('lol');
     `,
     // Function has type FunctionConstructor, so it's not within this rule's purview
     `
-      Function('lol');
+Function('lol');
     `,
   ],
   invalid: [
@@ -95,10 +98,9 @@ function foo(x: any) {
       errors: [
         {
           column: 3,
-          data: {
-            type: 'an `any`',
-          },
+          data: { type: 'an `any`' },
           endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeCall',
         },
@@ -113,10 +115,9 @@ function foo(x: any) {
       errors: [
         {
           column: 3,
-          data: {
-            type: 'an `any`',
-          },
+          data: { type: 'an `any`' },
           endColumn: 4,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeCall',
         },
@@ -131,10 +132,9 @@ function foo(x: any) {
       errors: [
         {
           column: 3,
-          data: {
-            type: 'an `any`',
-          },
+          data: { type: 'an `any`' },
           endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeCall',
         },
@@ -149,10 +149,9 @@ function foo(x: any) {
       errors: [
         {
           column: 3,
-          data: {
-            type: 'an `any`',
-          },
+          data: { type: 'an `any`' },
           endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeCall',
         },
@@ -167,10 +166,9 @@ function foo(x: { a: any }) {
       errors: [
         {
           column: 3,
-          data: {
-            type: 'an `any`',
-          },
+          data: { type: 'an `any`' },
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeCall',
         },
@@ -185,10 +183,9 @@ function foo(x: { a: any }) {
       errors: [
         {
           column: 3,
-          data: {
-            type: 'an `any`',
-          },
+          data: { type: 'an `any`' },
           endColumn: 7,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeCall',
         },
@@ -203,10 +200,9 @@ function foo(x: { a: any }) {
       errors: [
         {
           column: 3,
-          data: {
-            type: 'an `any`',
-          },
+          data: { type: 'an `any`' },
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeCall',
         },
@@ -218,7 +214,16 @@ function foo(x: any) {
   new x();
 }
       `,
-      errors: [{ messageId: 'unsafeNew' }],
+      errors: [
+        {
+          column: 3,
+          data: { type: 'an `any`' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeNew',
+        },
+      ],
     },
     {
       code: `
@@ -226,7 +231,16 @@ function foo(x: { a: any }) {
   new x.a();
 }
       `,
-      errors: [{ messageId: 'unsafeNew' }],
+      errors: [
+        {
+          column: 3,
+          data: { type: 'an `any`' },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeNew',
+        },
+      ],
     },
     {
       code: `
@@ -234,7 +248,16 @@ function foo(x: any) {
   x\`foo\`;
 }
       `,
-      errors: [{ messageId: 'unsafeTemplateTag' }],
+      errors: [
+        {
+          column: 3,
+          data: { type: 'an `any`' },
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeTemplateTag',
+        },
+      ],
     },
     {
       code: `
@@ -242,7 +265,16 @@ function foo(x: { tag: any }) {
   x.tag\`foo\`;
 }
       `,
-      errors: [{ messageId: 'unsafeTemplateTag' }],
+      errors: [
+        {
+          column: 3,
+          data: { type: 'an `any`' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'unsafeTemplateTag',
+        },
+      ],
     },
 
     {
@@ -262,13 +294,17 @@ const methods = {
       errors: [
         {
           column: 12,
+          data: { type: 'an `any`' },
           endColumn: 24,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeCallThis',
         },
         {
           column: 12,
+          data: { type: 'an `any`' },
           endColumn: 16,
+          endLine: 10,
           line: 10,
           messageId: 'unsafeCallThis',
         },
@@ -281,9 +317,10 @@ t();
       `,
       errors: [
         {
-          data: {
-            type: 'a `Function`',
-          },
+          column: 1,
+          data: { type: 'a `Function`' },
+          endColumn: 2,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeCall',
         },
@@ -296,9 +333,10 @@ f\`oo\`;
       `,
       errors: [
         {
-          data: {
-            type: 'a `Function`',
-          },
+          column: 1,
+          data: { type: 'a `Function`' },
+          endColumn: 2,
+          endLine: 3,
           line: 3,
           messageId: 'unsafeTemplateTag',
         },
@@ -313,9 +351,10 @@ if (typeof maybeFunction === 'function') {
       `,
       errors: [
         {
-          data: {
-            type: 'a `Function`',
-          },
+          column: 3,
+          data: { type: 'a `Function`' },
+          endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeCall',
         },
@@ -329,9 +368,10 @@ unsafe();
       `,
       errors: [
         {
-          data: {
-            type: 'a `Function`',
-          },
+          column: 1,
+          data: { type: 'a `Function`' },
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeCall',
         },
@@ -345,9 +385,10 @@ unsafe\`bad\`;
       `,
       errors: [
         {
-          data: {
-            type: 'a `Function`',
-          },
+          column: 1,
+          data: { type: 'a `Function`' },
+          endColumn: 7,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeTemplateTag',
         },
@@ -361,9 +402,10 @@ new unsafe();
       `,
       errors: [
         {
-          data: {
-            type: 'a `Function`',
-          },
+          column: 1,
+          data: { type: 'a `Function`' },
+          endColumn: 13,
+          endLine: 4,
           line: 4,
           messageId: 'unsafeNew',
         },
@@ -379,9 +421,10 @@ new unsafe();
       `,
       errors: [
         {
-          data: {
-            type: 'a `Function`',
-          },
+          column: 1,
+          data: { type: 'a `Function`' },
+          endColumn: 13,
+          endLine: 6,
           line: 6,
           messageId: 'unsafeNew',
         },
@@ -397,9 +440,10 @@ unsafe();
       `,
       errors: [
         {
-          data: {
-            type: 'a `Function`',
-          },
+          column: 1,
+          data: { type: 'a `Function`' },
+          endColumn: 7,
+          endLine: 6,
           line: 6,
           messageId: 'unsafeCall',
         },
@@ -414,6 +458,7 @@ value();
         {
           column: 1,
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'errorCall',
         },
@@ -429,6 +474,7 @@ value\`\`;
         {
           column: 1,
           endColumn: 6,
+          endLine: 3,
           line: 3,
           messageId: 'errorTemplateTag',
         },
@@ -443,6 +489,7 @@ new value();
         {
           column: 1,
           endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'errorNew',
         },
@@ -459,12 +506,14 @@ function callThis(this: NotKnown) {
         {
           column: 3,
           endColumn: 7,
+          endLine: 3,
           line: 3,
           messageId: 'errorCallThis',
         },
         {
           column: 3,
           endColumn: 14,
+          endLine: 4,
           line: 4,
           messageId: 'errorCallThis',
         },

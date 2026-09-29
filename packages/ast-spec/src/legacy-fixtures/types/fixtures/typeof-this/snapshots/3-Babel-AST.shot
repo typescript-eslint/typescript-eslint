@@ -16,11 +16,8 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeQuery {
                 type: "TSTypeQuery",
-                exprName: Identifier {
-                  type: "Identifier",
-                  decorators: [],
-                  name: "this",
-                  optional: false,
+                exprName: ThisExpression {
+                  type: "ThisExpression",
 
                   range: [90, 94],
                   loc: {
@@ -84,11 +81,8 @@ Program {
                 type: "TSTypeQuery",
                 exprName: TSQualifiedName {
                   type: "TSQualifiedName",
-                  left: Identifier {
-                    type: "Identifier",
-                    decorators: [],
-                    name: "this",
-                    optional: false,
+                  left: ThisExpression {
+                    type: "ThisExpression",
 
                     range: [112, 116],
                     loc: {
@@ -157,9 +151,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 122],
+  range: [0, 122],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 5 },
   },
 }

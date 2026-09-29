@@ -211,7 +211,7 @@ jobs:
         run: npm install -g npm@11.5.2
 
       - name: Build packages
-        uses: ./.github/actions/prepare-build
+        run: pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
 
       - name: Calculate and apply canary version
         run: pnpm exec tsx tools/release/apply-canary-version.mts
@@ -262,7 +262,7 @@ jobs:
         run: npm install -g npm@11.5.2
 
       - name: Build packages
-        uses: ./.github/actions/prepare-build
+        run: pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
 
       - name: Configure git user for automated commits
         run: |

@@ -88,7 +88,7 @@ function callUnsafe(maybeFunction: unknown): string {
 ```
 
 In this sort of situation, beware that there is no way to guarantee with runtime checks that a value is safe to call.
-If you _really_ want to call a value whose type you don't know, your best best is to use a `try`/`catch` and suppress any TypeScript or linter errors that get in your way.
+If you _really_ want to call a value whose type you don't know, your best bet is to use a `try`/`catch` and suppress any TypeScript or linter errors that get in your way.
 
 ```ts
 function callSafe(maybeFunction: unknown): void {

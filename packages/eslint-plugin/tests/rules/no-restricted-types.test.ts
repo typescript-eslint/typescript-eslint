@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-restricted-types';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-restricted-types', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'let f = Object();',
     'let f: { x: number; y: number } = { x: 1, y: 1 };',

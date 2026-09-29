@@ -81,19 +81,7 @@ Program {
             const: false,
             constraint: TSTypeReference {
               type: "TSTypeReference",
-              typeName: Identifier {
-                type: "Identifier",
-                decorators: [],
-                name: "Constructor",
-                optional: false,
-
-                range: [94, 105],
-                loc: {
-                  start: { column: 21, line: 3 },
-                  end: { column: 32, line: 3 },
-                },
-              },
-              typeParameters: TSTypeParameterInstantiation {
+              typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
                 params: [
                   TSTypeReference {
@@ -125,6 +113,18 @@ Program {
                   end: { column: 35, line: 3 },
                 },
               },
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "Constructor",
+                optional: false,
+
+                range: [94, 105],
+                loc: {
+                  start: { column: 21, line: 3 },
+                  end: { column: 32, line: 3 },
+                },
+              },
 
               range: [94, 108],
               loc: {
@@ -133,7 +133,18 @@ Program {
               },
             },
             in: false,
-            name: "T",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [84, 85],
+              loc: {
+                start: { column: 11, line: 3 },
+                end: { column: 12, line: 3 },
+              },
+            },
             out: false,
 
             range: [84, 108],
@@ -160,9 +171,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 122],
+  range: [0, 122],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

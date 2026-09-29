@@ -19,7 +19,7 @@ Program {
               },
             },
             declare: true,
-            global: false,
+            global: true,
             id: Identifier {
               type: "Identifier",
               decorators: [],
@@ -32,7 +32,7 @@ Program {
                 end: { column: 23, line: 4 },
               },
             },
-            kind: "module",
+            kind: "global",
 
             range: [92, 116],
             loc: {
@@ -107,9 +107,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 149],
+  range: [0, 149],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 7 },
   },
 }

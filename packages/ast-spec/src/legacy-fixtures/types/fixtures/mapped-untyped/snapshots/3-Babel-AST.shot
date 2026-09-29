@@ -16,30 +16,29 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSMappedType {
                 type: "TSMappedType",
-                nameType: null,
-                optional: false,
-                typeParameter: TSTypeParameter {
-                  type: "TSTypeParameter",
-                  const: false,
-                  constraint: TSStringKeyword {
-                    type: "TSStringKeyword",
+                constraint: TSStringKeyword {
+                  type: "TSStringKeyword",
 
-                    range: [90, 96],
-                    loc: {
-                      start: { column: 17, line: 3 },
-                      end: { column: 23, line: 3 },
-                    },
-                  },
-                  in: false,
-                  name: "P",
-                  out: false,
-
-                  range: [85, 96],
+                  range: [90, 96],
                   loc: {
-                    start: { column: 12, line: 3 },
+                    start: { column: 17, line: 3 },
                     end: { column: 23, line: 3 },
                   },
                 },
+                key: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "P",
+                  optional: false,
+
+                  range: [85, 86],
+                  loc: {
+                    start: { column: 12, line: 3 },
+                    end: { column: 13, line: 3 },
+                  },
+                },
+                nameType: null,
+                optional: false,
 
                 range: [82, 99],
                 loc: {
@@ -82,9 +81,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 101],
+  range: [0, 101],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

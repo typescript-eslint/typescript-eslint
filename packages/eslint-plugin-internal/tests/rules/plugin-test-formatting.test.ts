@@ -1,3 +1,5 @@
+// The rule needs to be tested for how it handles multiple errors.
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/plugin-test-formatting.js';
@@ -18,6 +20,183 @@ ruleTester.run('plugin-test-formatting', rule, {
     requireData: true,
     requireLocation: true,
   },
+  valid: [
+    // sanity check for valid tests non-object style
+    `
+ruleTester.run({
+  valid: [
+    'const a = 1;',
+    \`
+const a = 1;
+    \`,
+    noFormat\`const x=1;\`,
+  ],
+});
+    `,
+    `
+ruleTester.run({
+  valid: [
+    {
+      code: 'const a = 1;',
+    },
+  ],
+});
+    `,
+
+    `
+ruleTester.run({
+  valid: [
+    {
+      code: \`
+const a = 1;
+      \`,
+    },
+  ],
+});
+    `,
+    // sanity check suggestion validation
+    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+    `
+      ruleTester.run({
+        invalid: [
+          {
+            code: 'const a = 1;',
+            output: 'const a = 1;',
+            errors: [
+              {
+                messageId: 'foo',
+                suggestions: [
+                  {
+                    messageId: 'bar',
+                    output: 'const a = 1;',
+                  },
+                ],
+              }
+            ]
+          },
+          {
+            code: \`
+const a = 1;
+            \`,
+            output: \`
+const a = 1;
+            \`,
+            errors: [
+              {
+                messageId: 'foo',
+                suggestions: [
+                  {
+                    messageId: 'bar',
+                    output: \`
+const a = 1;
+                    \`,
+                  },
+                ],
+              }
+            ]
+          },
+        ],
+      });
+    `,
+
+    // test the only option
+    {
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: 'const x=1;',
+    },
+  ],
+});
+      `,
+      options: [{ formatWithPrettier: false }],
+    },
+
+    // noFormat is necessary when the test code is intentionally indented
+    noFormat`
+ruleTester.run({
+  valid: [
+    {
+      code:
+      noFormat\`
+        async function bar() {}
+        async function foo() {}
+      \`,
+    },
+  ],
+});
+    `,
+
+    // empty lines are valid
+    `
+ruleTester.run({
+  valid: [
+    {
+      code: \`
+const a = 1;
+
+const b = 1;
+      \`,
+    },
+  ],
+});
+    `,
+
+    // random, unannotated variables aren't checked
+    `
+const test1 = {
+  code: 'const badlyFormatted         = "code"',
+};
+const test2 = {
+  valid: [
+    'const badlyFormatted         = "code"',
+    {
+      code: 'const badlyFormatted         = "code"',
+    },
+  ],
+  invalid: [
+    {
+      code: 'const badlyFormatted         = "code"',
+      errors: [],
+    },
+  ],
+};
+    `,
+
+    // TODO - figure out how to handle this pattern
+    `
+import { InvalidTestCase } from '@typescript-eslint/rule-tester';
+
+const test = [
+  {
+    code: 'const badlyFormatted         = "code1"',
+  },
+  {
+    code: 'const badlyFormatted         = "code2"',
+  },
+].map<InvalidTestCase<[]>>(test => ({
+  code: test.code,
+  errors: [],
+}));
+    `,
+    {
+      code: `
+ruleTester.run({
+  valid: [
+    {
+      code: ${
+        // The user types "'\\\\';"
+        // meaning the code they are testing is '\\';
+        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
+        String.raw`"'\\\\';"`
+      },
+    },
+  ],
+});
+      `,
+    },
+  ],
   invalid: [
     // Literal
     {
@@ -424,7 +603,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
+const a = '1';
       \`,
     },
   ],
@@ -530,7 +709,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
+const a = '1';
       \`,
     },
   ],
@@ -576,7 +755,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
+const a = '1';
       \`,
     },
   ],
@@ -584,58 +763,7 @@ ruleTester.run({
       `,
       ],
     },
-    // templateStringRequiresIndent
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-  const a = "1";
-      \`,
-    },
-  ],
-});
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            indent: 8,
-          },
-          endColumn: 8,
-          endLine: 7,
-          line: 5,
-          messageId: 'templateStringRequiresIndent',
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    \`
-    const a = "1";
-    \`,
-  ],
-});
-      `,
-      errors: [
-        {
-          column: 5,
-          data: {
-            indent: 6,
-          },
-          endColumn: 6,
-          endLine: 6,
-          line: 4,
-          messageId: 'templateStringRequiresIndent',
-        },
-      ],
-      output: null,
-    },
-    // templateStringMinimumIndent
+    // indented code is reformatted to have no indent
     {
       code: `
 ruleTester.run({
@@ -652,16 +780,24 @@ ruleTester.run({
       errors: [
         {
           column: 13,
-          data: {
-            indent: 8,
-          },
           endColumn: 8,
           endLine: 8,
           line: 5,
-          messageId: 'templateStringMinimumIndent',
+          messageId: 'invalidFormatting',
         },
       ],
-      output: null,
+      output: `
+ruleTester.run({
+  valid: [
+    {
+      code: \`
+const a = '1';
+const b = '2';
+      \`,
+    },
+  ],
+});
+      `,
     },
     // invalidFormatting
     {
@@ -691,8 +827,8 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = '1';
-        const b = '2';
+const a = '1';
+const b = '2';
       \`,
     },
   ],
@@ -725,7 +861,7 @@ ruleTester.run({
   valid: [
     {
       code: \`
-        const a = \\\`\\\${a}\\\`;
+const a = \\\`\\\${a}\\\`;
       \`,
     },
   ],
@@ -794,43 +930,6 @@ ruleTester.run({
 async function foo() {}
 async function bar() {}
 \`,
-    },
-  ],
-});
-      `,
-    },
-    {
-      code: noFormat`
-ruleTester.run({
-  valid: [
-    {
-      code:
-      noFormat\`
-        async function bar() {}
-        async function foo() {}
-      \`,
-    },
-  ],
-});
-      `,
-      errors: [
-        {
-          column: 7,
-          endColumn: 8,
-          endLine: 9,
-          line: 6,
-          messageId: 'noUnnecessaryNoFormat',
-        },
-      ],
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code:
-      \`
-        async function bar() {}
-        async function foo() {}
-      \`,
     },
   ],
 });
@@ -1049,7 +1148,7 @@ foo;
     },
     {
       code: \`
-      foo
+foo;
       \`,
     },
   ],
@@ -1064,7 +1163,7 @@ foo;
     },
     {
       code: \`
-      foo
+foo;
       \`,
     },
   ],
@@ -1456,202 +1555,6 @@ ${
   String.raw`'\\\\';`
 }
       \`,
-    },
-  ],
-});
-      `,
-    },
-  ],
-  valid: [
-    // sanity check for valid tests non-object style
-    `
-ruleTester.run({
-  valid: [
-    'const a = 1;',
-    \`
-      const a = 1;
-    \`,
-    \`
-const a = 1;
-    \`,
-    noFormat\`const x=1;\`,
-  ],
-});
-    `,
-    `
-ruleTester.run({
-  valid: [
-    {
-      code: 'const a = 1;',
-    },
-  ],
-});
-    `,
-    `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-        const a = 1;
-      \`,
-    },
-  ],
-});
-    `,
-    `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-const a = 1;
-      \`,
-    },
-  ],
-});
-    `,
-    // sanity check suggestion validation
-    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-    `
-      ruleTester.run({
-        invalid: [
-          {
-            code: 'const a = 1;',
-            output: 'const a = 1;',
-            errors: [
-              {
-                messageId: 'foo',
-                suggestions: [
-                  {
-                    messageId: 'bar',
-                    output: 'const a = 1;',
-                  },
-                ],
-              }
-            ]
-          },
-          {
-            code: \`
-              const a = 1;
-            \`,
-            output: \`
-              const a = 1;
-            \`,
-            errors: [
-              {
-                messageId: 'foo',
-                suggestions: [
-                  {
-                    messageId: 'bar',
-                    output: \`
-                      const a = 1;
-                    \`,
-                  },
-                ],
-              }
-            ]
-          },
-          {
-            code: \`
-const a = 1;
-            \`,
-            output: \`
-const a = 1;
-            \`,
-            errors: [
-              {
-                messageId: 'foo',
-                suggestions: [
-                  {
-                    messageId: 'bar',
-                    output: \`
-const a = 1;
-                    \`,
-                  },
-                ],
-              }
-            ]
-          },
-        ],
-      });
-    `,
-
-    // test the only option
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    {
-      code: 'const x=1;',
-    },
-  ],
-});
-      `,
-      options: [{ formatWithPrettier: false }],
-    },
-
-    // empty lines are valid when everything else is indented
-    `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-        const a = 1;
-
-        const b = 1;
-      \`,
-    },
-  ],
-});
-    `,
-
-    // random, unannotated variables aren't checked
-    `
-const test1 = {
-  code: 'const badlyFormatted         = "code"',
-};
-const test2 = {
-  valid: [
-    'const badlyFormatted         = "code"',
-    {
-      code: 'const badlyFormatted         = "code"',
-    },
-  ],
-  invalid: [
-    {
-      code: 'const badlyFormatted         = "code"',
-      errors: [],
-    },
-  ],
-};
-    `,
-
-    // TODO - figure out how to handle this pattern
-    `
-import { InvalidTestCase } from '@typescript-eslint/rule-tester';
-
-const test = [
-  {
-    code: 'const badlyFormatted         = "code1"',
-  },
-  {
-    code: 'const badlyFormatted         = "code2"',
-  },
-].map<InvalidTestCase<[]>>(test => ({
-  code: test.code,
-  errors: [],
-}));
-    `,
-    {
-      code: `
-ruleTester.run({
-  valid: [
-    {
-      code: ${
-        // The user types "'\\\\';"
-        // meaning the code they are testing is '\\';
-        // eslint-disable-next-line @typescript-eslint/internal/no-dynamic-tests
-        String.raw`"'\\\\';"`
-      },
     },
   ],
 });

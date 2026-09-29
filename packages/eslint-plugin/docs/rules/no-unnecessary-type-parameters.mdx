@@ -112,7 +112,7 @@ declare function length(array: ReadonlyArray<unknown>): number;
 ### The return type is only used as an input, so why isn't the rule reporting?
 
 One common reason that this might be the case is when the return type is not specified explicitly.
-The rule uses uses type information to count implicit usages of the type parameter in the function signature, including in the inferred return type.
+The rule uses type information to count implicit usages of the type parameter in the function signature, including in the inferred return type.
 For example, the following function...
 
 ```ts

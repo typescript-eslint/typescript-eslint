@@ -3,7 +3,7 @@ Program {
   body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         abstract: false,

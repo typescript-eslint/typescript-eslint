@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-empty-object-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-object-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 interface Base {
@@ -92,6 +95,7 @@ class Derived {}
               output: `type Base = object`,
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyInterface',
               output: `type Base = unknown`,
             },
@@ -116,6 +120,7 @@ class Derived {}
               output: `type Base = object`,
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyInterface',
               output: `type Base = unknown`,
             },
@@ -207,6 +212,171 @@ type Derived = Base
 
 const derived = class Derived {};
       `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {}
+
+interface Base {
+  name: string;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'noEmptyInterface',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {}
+
+interface Base {}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'noEmptyInterface',
+        },
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'noEmptyInterface',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {}
+
+function foo() {
+  interface Base {
+    name: string;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { option: 'allowInterfaces' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+type Base = object
+
+function foo() {
+  interface Base {
+    name: string;
+  }
+}
+      `,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `
+type Base = unknown
+
+function foo() {
+  interface Base {
+    name: string;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  props: string;
+}
+
+interface Derived extends Base {}
+
+interface Derived {
+  name: string;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'noEmptyInterfaceWithSuper',
+        },
+      ],
+    },
+    {
+      code: 'export default interface Base {}',
+      errors: [
+        {
+          column: 26,
+          data: { option: 'allowInterfaces' },
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
+          messageId: 'noEmptyInterface',
+        },
+      ],
+    },
+    {
+      code: 'export default interface Derived extends Base {}',
+      errors: [
+        {
+          column: 26,
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'noEmptyInterfaceWithSuper',
+        },
+      ],
+    },
+    {
+      code: 'export interface Base {}',
+      errors: [
+        {
+          column: 18,
+          data: { option: 'allowInterfaces' },
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `export type Base = object`,
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyInterface',
+              output: `export type Base = unknown`,
             },
           ],
         },
@@ -560,6 +730,7 @@ let value: unknown;
       errors: [
         {
           column: 13,
+          data: { option: 'allowObjectTypes' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -585,6 +756,7 @@ let value: unknown;
       errors: [
         {
           column: 13,
+          data: { option: 'allowObjectTypes' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -610,6 +782,7 @@ let value: unknown;
       errors: [
         {
           column: 11,
+          data: { option: 'allowInterfaces' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -621,6 +794,7 @@ let value: unknown;
               output: `type Base = object`,
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyInterface',
               output: `type Base = unknown`,
             },

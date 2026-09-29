@@ -34,7 +34,18 @@ Program {
             type: "TSTypeParameter",
             const: false,
             in: false,
-            name: "T",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [12, 13],
+              loc: {
+                start: { column: 12, line: 1 },
+                end: { column: 13, line: 1 },
+              },
+            },
             out: false,
 
             range: [12, 13],
@@ -47,7 +58,18 @@ Program {
             type: "TSTypeParameter",
             const: true,
             in: false,
-            name: "T",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [21, 22],
+              loc: {
+                start: { column: 21, line: 1 },
+                end: { column: 22, line: 1 },
+              },
+            },
             out: false,
 
             range: [15, 22],

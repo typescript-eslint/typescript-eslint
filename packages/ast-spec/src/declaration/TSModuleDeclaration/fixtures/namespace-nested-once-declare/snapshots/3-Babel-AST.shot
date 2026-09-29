@@ -3,21 +3,33 @@ Program {
   body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
-      body: TSModuleDeclaration {
-        type: "TSModuleDeclaration",
-        body: TSModuleBlock {
-          type: "TSModuleBlock",
-          body: [],
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: [],
 
-          range: [26, 28],
+        range: [26, 28],
+        loc: {
+          start: { column: 26, line: 1 },
+          end: { column: 28, line: 1 },
+        },
+      },
+      declare: true,
+      global: false,
+      id: TSQualifiedName {
+        type: "TSQualifiedName",
+        left: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "abd",
+          optional: false,
+
+          range: [18, 21],
           loc: {
-            start: { column: 26, line: 1 },
-            end: { column: 28, line: 1 },
+            start: { column: 18, line: 1 },
+            end: { column: 21, line: 1 },
           },
         },
-        declare: false,
-        global: false,
-        id: Identifier {
+        right: Identifier {
           type: "Identifier",
           decorators: [],
           name: "def",
@@ -30,24 +42,10 @@ Program {
           },
         },
 
-        range: [22, 28],
-        loc: {
-          start: { column: 22, line: 1 },
-          end: { column: 28, line: 1 },
-        },
-      },
-      declare: true,
-      global: false,
-      id: Identifier {
-        type: "Identifier",
-        decorators: [],
-        name: "abd",
-        optional: false,
-
-        range: [18, 21],
+        range: [18, 25],
         loc: {
           start: { column: 18, line: 1 },
-          end: { column: 21, line: 1 },
+          end: { column: 25, line: 1 },
         },
       },
       kind: "namespace",

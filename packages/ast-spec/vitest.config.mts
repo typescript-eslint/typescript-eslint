@@ -5,7 +5,18 @@ import { vitestBaseConfig } from '../../vitest.config.base.mjs';
 import packageJson from './package.json' with { type: 'json' };
 
 const vitestConfig = mergeConfig(
-  vitestBaseConfig,
+  mergeConfig(vitestBaseConfig, {
+    test: {
+      coverage: {
+        // `ast-spec` tests are transitively testing the `typescript-estree`
+        // package, so we include `typescript-estree` in the coverage report.
+        allowExternal: true,
+        include: [
+          path.join(import.meta.dirname, '../typescript-estree/dist/**/*.js'),
+        ],
+      },
+    },
+  }),
 
   defineProject({
     root: import.meta.dirname,

@@ -14,6 +14,9 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-member-access', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function foo(x: { a: number }, y: any) {
@@ -110,9 +113,7 @@ function foo(x: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '.a',
-          },
+          data: { property: '.a' },
           endColumn: 6,
           endLine: 3,
           line: 3,
@@ -129,9 +130,7 @@ function foo(x: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '.a',
-          },
+          data: { property: '.a' },
           endColumn: 6,
           endLine: 3,
           line: 3,
@@ -148,9 +147,7 @@ function foo(x: { a: any }) {
       errors: [
         {
           column: 7,
-          data: {
-            property: '.b',
-          },
+          data: { property: '.b' },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -167,9 +164,7 @@ function foo(x: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: "['a']",
-          },
+          data: { property: "['a']" },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -186,9 +181,7 @@ function foo(x: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: "['a']",
-          },
+          data: { property: "['a']" },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -205,9 +198,7 @@ value.property;
       errors: [
         {
           column: 7,
-          data: {
-            property: '.property',
-          },
+          data: { property: '.property' },
           endColumn: 15,
           endLine: 4,
           line: 4,
@@ -224,9 +215,7 @@ function foo(x: { a: number }, y: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 6,
           endLine: 3,
           line: 3,
@@ -243,9 +232,7 @@ function foo(x?: { a: number }, y: any) {
       errors: [
         {
           column: 7,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -262,9 +249,7 @@ function foo(x: { a: number }, y: any) {
       errors: [
         {
           column: 6,
-          data: {
-            property: '[y += 1]',
-          },
+          data: { property: '[y += 1]' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -281,9 +266,7 @@ function foo(x: { a: number }, y: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[1 as any]',
-          },
+          data: { property: '[1 as any]' },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -300,9 +283,7 @@ function foo(x: { a: number }, y: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y()]',
-          },
+          data: { property: '[y()]' },
           endColumn: 8,
           endLine: 3,
           line: 3,
@@ -319,9 +300,7 @@ function foo(x: string[], y: any) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 6,
           endLine: 3,
           line: 3,
@@ -338,9 +317,7 @@ function foo(x: { a: number }, y: NotKnown) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 6,
           endLine: 3,
           line: 3,
@@ -370,6 +347,7 @@ const methods = {
       errors: [
         {
           column: 17,
+          data: { property: '.methodB' },
           endColumn: 24,
           endLine: 4,
           line: 4,
@@ -377,6 +355,7 @@ const methods = {
         },
         {
           column: 17,
+          data: { property: '[getProperty()]' },
           endColumn: 30,
           endLine: 8,
           line: 8,
@@ -384,6 +363,7 @@ const methods = {
         },
         {
           column: 19,
+          data: { property: '.methodA' },
           endColumn: 26,
           endLine: 14,
           line: 14,
@@ -405,6 +385,7 @@ class C {
       errors: [
         {
           column: 18,
+          data: { property: '.pipe' },
           endColumn: 22,
           endLine: 5,
           line: 5,
@@ -412,6 +393,7 @@ class C {
         },
         {
           column: 25,
+          data: { property: '.subscribe' },
           endColumn: 34,
           endLine: 5,
           line: 5,
@@ -428,9 +410,7 @@ value?.middle.inner;
       errors: [
         {
           column: 15,
-          data: {
-            property: '.inner',
-          },
+          data: { property: '.inner' },
           endColumn: 20,
           endLine: 4,
           line: 4,
@@ -448,9 +428,7 @@ value?.outer.middle.inner;
       errors: [
         {
           column: 14,
-          data: {
-            property: '.middle',
-          },
+          data: { property: '.middle' },
           endColumn: 20,
           endLine: 4,
           line: 4,
@@ -468,9 +446,7 @@ value.outer?.middle.inner;
       errors: [
         {
           column: 7,
-          data: {
-            property: '.outer',
-          },
+          data: { property: '.outer' },
           endColumn: 12,
           endLine: 4,
           line: 4,
@@ -478,9 +454,7 @@ value.outer?.middle.inner;
         },
         {
           column: 21,
-          data: {
-            property: '.inner',
-          },
+          data: { property: '.inner' },
           endColumn: 26,
           endLine: 4,
           line: 4,
@@ -498,9 +472,7 @@ value.outer.middle?.inner;
       errors: [
         {
           column: 7,
-          data: {
-            property: '.outer',
-          },
+          data: { property: '.outer' },
           endColumn: 12,
           endLine: 4,
           line: 4,
@@ -518,9 +490,7 @@ function foo(x: { a: number }, y: NotKnown) {
       errors: [
         {
           column: 5,
-          data: {
-            property: '[y]',
-          },
+          data: { property: '[y]' },
           endColumn: 6,
           endLine: 3,
           line: 3,

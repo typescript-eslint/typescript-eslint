@@ -10,8 +10,7 @@ Snapshot Diff:
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
           abstract: true,
@@ -38,12 +37,10 @@ Snapshot Diff:
                 optional: true,
                 override: false,
                 static: false,
--               value: TSEmptyBodyFunctionExpression {
--                 type: 'TSEmptyBodyFunctionExpression',
-+               value: FunctionExpression {
-+                 type: 'FunctionExpression',
+                value: TSEmptyBodyFunctionExpression {
+                  type: 'TSEmptyBodyFunctionExpression',
                   async: false,
--                 body: null,
+                  body: null,
                   declare: false,
                   expression: false,
                   generator: false,
@@ -53,20 +50,7 @@ Snapshot Diff:
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSTypeReference {
                       type: 'TSTypeReference',
--                     typeArguments: TSTypeParameterInstantiation {
-+                     typeName: Identifier {
-+                       type: 'Identifier',
-+                       decorators: Array [],
-+                       name: 'Promise',
-+                       optional: false,
-+
-+                       range: [131, 138],
-+                       loc: {
-+                         start: { column: 19, line: 4 },
-+                         end: { column: 26, line: 4 },
-+                       },
-+                     },
-+                     typeParameters: TSTypeParameterInstantiation {
+                      typeArguments: TSTypeParameterInstantiation {
                         type: 'TSTypeParameterInstantiation',
                         params: Array [
                           TSStringKeyword {
@@ -84,18 +68,18 @@ Snapshot Diff:
                         loc: {
                           start: { column: 26, line: 4 },
                           end: { column: 34, line: 4 },
--                       },
--                     },
--                     typeName: Identifier {
--                       type: 'Identifier',
--                       decorators: Array [],
--                       name: 'Promise',
--                       optional: false,
--
--                       range: [131, 138],
--                       loc: {
--                         start: { column: 19, line: 4 },
--                         end: { column: 26, line: 4 },
+                        },
+                      },
+                      typeName: Identifier {
+                        type: 'Identifier',
+                        decorators: Array [],
+                        name: 'Promise',
+                        optional: false,
+
+                        range: [131, 138],
+                        loc: {
+                          start: { column: 19, line: 4 },
+                          end: { column: 26, line: 4 },
                         },
                       },
 
@@ -170,9 +154,11 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
-    range: [73, 150],
+-   range: [73, 150],
++   range: [0, 150],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

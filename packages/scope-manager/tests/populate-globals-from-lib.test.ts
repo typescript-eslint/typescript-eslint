@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
-import type { ScopeManager } from '../src';
+import type { LibDefinition, ScopeManager } from '../src';
 
 import { analyze, ImplicitLibVariable } from '../src';
+import { lib as TSLibraries } from '../src/lib';
 import { parse } from './test-utils';
 
 // Test code that heavily relies on lib-provided globals
@@ -277,6 +278,53 @@ describe('populateGlobalsFromLib – deduplication', () => {
         )
         .every(reference => reference.resolved === mapVariable),
     ).toBe(true);
+  });
+
+  it('merges the type and value flags for duplicate globals', () => {
+    const result = analyze(
+      parse('const globals = [Array, Date, Map, Set];', { range: true }),
+      { lib: ['esnext'] },
+    );
+
+    for (const name of ['Array', 'Date', 'Map', 'Set']) {
+      expect(result.globalScope?.set.get(name)).toMatchObject({
+        isTypeVariable: true,
+        isValueVariable: true,
+      });
+    }
+  });
+
+  it('merges type and value flags in either order', () => {
+    const testLib = 'test.merge-flags' as never;
+    const libraries = TSLibraries as Map<string, LibDefinition>;
+    libraries.set(testLib, {
+      libs: [],
+      variables: [
+        ['ValueThenType', { isTypeVariable: false, isValueVariable: true }],
+        ['ValueThenType', { isTypeVariable: true, isValueVariable: false }],
+        ['TypeThenValue', { isTypeVariable: true, isValueVariable: false }],
+        ['TypeThenValue', { isTypeVariable: false, isValueVariable: true }],
+      ],
+    });
+
+    try {
+      const result = analyze(
+        parse(
+          'type ValueThenTypeType = ValueThenType; const valueThenType = ValueThenType; type TypeThenValueType = TypeThenValue; const typeThenValue = TypeThenValue;',
+          { range: true },
+        ),
+        { lib: [testLib] },
+      );
+
+      for (const name of ['ValueThenType', 'TypeThenValue']) {
+        expect(result.globalScope?.set.get(name)).toMatchObject({
+          isTypeVariable: true,
+          isValueVariable: true,
+        });
+      }
+    } finally {
+      libraries.delete(testLib);
+    }
   });
 });
 

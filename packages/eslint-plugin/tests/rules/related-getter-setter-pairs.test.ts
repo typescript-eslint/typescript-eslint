@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('related-getter-setter-pairs', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 interface Example {

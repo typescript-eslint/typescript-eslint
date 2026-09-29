@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-magic-numbers';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-magic-numbers', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'const FOO = 10;',
@@ -34,12 +37,12 @@ ruleTester.run('no-magic-numbers', rule, {
     },
     {
       code: `
-        enum foo {
-          SECOND = 1000,
-          NUM = '0123456789',
-          NEG = -1,
-          POS = +1,
-        }
+enum foo {
+  SECOND = 1000,
+  NUM = '0123456789',
+  NEG = -1,
+  POS = +1,
+}
       `,
       options: [{ ignoreEnums: true }],
     },

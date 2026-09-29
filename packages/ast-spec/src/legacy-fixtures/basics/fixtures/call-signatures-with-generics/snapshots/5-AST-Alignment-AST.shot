@@ -28,8 +28,7 @@ Snapshot Diff:
           members: Array [
             TSCallSignatureDeclaration {
               type: 'TSCallSignatureDeclaration',
--             params: Array [
-+             parameters: Array [
+              params: Array [
                 Identifier {
                   type: 'Identifier',
                   decorators: Array [],
@@ -61,8 +60,7 @@ Snapshot Diff:
                   },
                 },
               ],
--             returnType: TSTypeAnnotation {
-+             typeAnnotation: TSTypeAnnotation {
+              returnType: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
@@ -87,19 +85,18 @@ Snapshot Diff:
                     type: 'TSTypeParameter',
                     const: false,
                     in: false,
--                   name: Identifier {
--                     type: 'Identifier',
--                     decorators: Array [],
--                     name: 'T',
--                     optional: false,
--
--                     range: [89, 90],
--                     loc: {
--                       start: { column: 3, line: 4 },
--                       end: { column: 4, line: 4 },
--                     },
--                   },
-+                   name: 'T',
+                    name: Identifier {
+                      type: 'Identifier',
+                      decorators: Array [],
+                      name: 'T',
+                      optional: false,
+
+                      range: [89, 90],
+                      loc: {
+                        start: { column: 3, line: 4 },
+                        end: { column: 4, line: 4 },
+                      },
+                    },
                     out: false,
 
                     range: [89, 90],
@@ -125,8 +122,7 @@ Snapshot Diff:
             },
             TSConstructSignatureDeclaration {
               type: 'TSConstructSignatureDeclaration',
--             params: Array [
-+             parameters: Array [
+              params: Array [
                 Identifier {
                   type: 'Identifier',
                   decorators: Array [],
@@ -158,8 +154,7 @@ Snapshot Diff:
                   },
                 },
               ],
--             returnType: TSTypeAnnotation {
-+             typeAnnotation: TSTypeAnnotation {
+              returnType: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
                   type: 'TSStringKeyword',
@@ -184,19 +179,18 @@ Snapshot Diff:
                     type: 'TSTypeParameter',
                     const: false,
                     in: false,
--                   name: Identifier {
--                     type: 'Identifier',
--                     decorators: Array [],
--                     name: 'T',
--                     optional: false,
--
--                     range: [119, 120],
--                     loc: {
--                       start: { column: 7, line: 5 },
--                       end: { column: 8, line: 5 },
--                     },
--                   },
-+                   name: 'T',
+                    name: Identifier {
+                      type: 'Identifier',
+                      decorators: Array [],
+                      name: 'T',
+                      optional: false,
+
+                      range: [119, 120],
+                      loc: {
+                        start: { column: 7, line: 5 },
+                        end: { column: 8, line: 5 },
+                      },
+                    },
                     out: false,
 
                     range: [119, 120],
@@ -238,9 +232,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 145],
+-   range: [73, 145],
++   range: [0, 145],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 7 },
     },
   }

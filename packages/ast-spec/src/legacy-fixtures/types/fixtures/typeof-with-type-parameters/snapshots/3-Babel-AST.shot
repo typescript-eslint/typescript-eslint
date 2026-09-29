@@ -49,7 +49,7 @@ Program {
                     end: { column: 17, line: 3 },
                   },
                 },
-                typeParameters: TSTypeParameterInstantiation {
+                typeArguments: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
                   params: [
                     TSTypeReference {
@@ -123,9 +123,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 95],
+  range: [0, 95],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

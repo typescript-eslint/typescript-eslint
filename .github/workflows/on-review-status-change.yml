@@ -1,0 +1,43 @@
+# This workflow runs in unprivileged mode and can't add/remove labels from fork PRs.
+# When it's completed, the `sync-review-labels` workflow will run in privileged mode and handle the label changes.
+name: On Review Status Change
+
+on:
+  # Author re-requested review.
+  pull_request:
+    types:
+      - review_requested
+
+  # Reviewer submitted a review.
+  pull_request_review:
+    types:
+      - submitted
+
+permissions: {}
+
+jobs:
+  record:
+    name: Record Review Intent
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.event.review.state == 'approved' ||
+      github.event.review.state == 'changes_requested'
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record intent
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          # review_requested for the pull_request event, otherwise the submitted review state.
+          INTENT: ${{ github.event_name == 'pull_request' && 'review_requested' || github.event.review.state }}
+        run: |
+          {
+            echo "pr_number=$PR_NUMBER"
+            echo "intent=$INTENT"
+          } > review-intent
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: review-intent
+          path: review-intent
+          retention-days: 1 # Sadly 1 day is the minimum

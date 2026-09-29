@@ -198,6 +198,18 @@ export default createRule<Options, MessageIds>({
       };
     }
 
+    function createUnknownFixer(node: TSESTree.TSAnyKeyword) {
+      return (fixer: TSESLint.RuleFixer) => {
+        return fixer.replaceText(
+          node,
+          node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
+            isNodeRestElementInFunction(node.parent.parent)
+            ? 'unknown[]'
+            : 'unknown',
+        );
+      };
+    }
+
     return {
       TSAnyKeyword(node): void {
         const isKeyofAny = isNodeWithinKeyofAny(node);
@@ -221,7 +233,7 @@ export default createRule<Options, MessageIds>({
             : [
                 {
                   messageId: 'suggestUnknown',
-                  fix: fixer => fixer.replaceText(node, 'unknown'),
+                  fix: createUnknownFixer(node),
                 },
                 {
                   messageId: 'suggestNever',
@@ -233,7 +245,7 @@ export default createRule<Options, MessageIds>({
         if (fixToUnknown) {
           fixOrSuggest.fix = isKeyofAny
             ? createPropertyKeyFixer(node)
-            : fixer => fixer.replaceText(node, 'unknown');
+            : createUnknownFixer(node);
         }
 
         context.report({

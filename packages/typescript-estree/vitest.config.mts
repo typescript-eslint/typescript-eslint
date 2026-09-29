@@ -17,6 +17,7 @@ const vitestConfig = mergeConfig(
         ? [...defaultExclude, 'parse.project-true.test.ts']
         : [...defaultExclude],
 
+      isolate: true,
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
       setupFiles: ['./tests/test-utils/custom-matchers/custom-matchers.ts'],

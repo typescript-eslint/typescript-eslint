@@ -13,6 +13,8 @@ import { version } from '@typescript-eslint/parser/package.json';
 import { blogFooter } from './plugins/blog-footer';
 import { faqData } from './plugins/faq-data';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
+import { parseFrontMatter } from './plugins/og-images/parseFrontMatter';
+import { socialImageAlt } from './plugins/og-images/socialImageAlt';
 import { rulesMeta } from './rulesMeta';
 
 const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
@@ -31,7 +33,7 @@ const presetClassicOptions: PresetClassicOptions = {
     remarkPlugins,
   },
   docs: {
-    beforeDefaultRemarkPlugins: [generatedRuleDocs],
+    beforeDefaultRemarkPlugins: [generatedRuleDocs, socialImageAlt],
     breadcrumbs: false,
     editUrl: `${githubUrl}/edit/main/packages/website/`,
     exclude: ['TEMPLATE.md'],
@@ -50,7 +52,7 @@ const presetClassicOptions: PresetClassicOptions = {
 };
 
 const pluginContentDocsOptions: PluginContentDocsOptions = {
-  beforeDefaultRemarkPlugins: [faqData],
+  beforeDefaultRemarkPlugins: [faqData, socialImageAlt],
   breadcrumbs: false,
   editUrl: `${githubUrl}/edit/main/packages/website/`,
   id: 'base-docs',
@@ -358,7 +360,11 @@ const redirects: PluginRedirectOptions = {
 const config: Config = {
   baseUrl: '/',
   future: {
-    experimental_faster: true,
+    faster: true,
+    v4: {
+      // `faster: true` enables `ssgWorkerThreads`, which requires this flag.
+      removeLegacyPostBuildHeadAttribute: true,
+    },
   },
   tagline: 'Powerful static analysis for JavaScript and TypeScript.',
   title: 'typescript-eslint',
@@ -371,12 +377,18 @@ const config: Config = {
     rules: rulesMeta,
   },
   favicon: 'img/favicon.ico',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'throw',
+    },
+    parseFrontMatter,
+  },
   onBrokenAnchors: 'ignore',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
   organizationName: 'typescript-eslint',
   plugins: [
     './plugins/recent-blog-posts/index.ts',
+    './plugins/og-images/index.ts',
     ...[
       'ast-spec',
       'project-service',

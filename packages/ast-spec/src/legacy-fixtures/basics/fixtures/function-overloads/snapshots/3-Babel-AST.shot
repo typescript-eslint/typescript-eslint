@@ -3,7 +3,7 @@ Program {
   body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: TSDeclareFunction {
         type: "TSDeclareFunction",
         async: false,
@@ -91,7 +91,7 @@ Program {
     },
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: TSDeclareFunction {
         type: "TSDeclareFunction",
         async: false,
@@ -179,7 +179,7 @@ Program {
     },
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: FunctionDeclaration {
         type: "FunctionDeclaration",
         async: false,
@@ -340,9 +340,9 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 220],
+  range: [0, 220],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 8 },
   },
 }

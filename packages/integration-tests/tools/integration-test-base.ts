@@ -3,9 +3,6 @@ import * as path from 'node:path';
 
 import { execFile, FIXTURES_DESTINATION_DIR } from './pack-packages.js';
 
-// make sure that vitest doesn't timeout the test
-vi.setConfig({ testTimeout: 60_000 });
-
 function integrationTest(
   testName: string,
   testFilename: string,
@@ -76,8 +73,7 @@ export function eslintIntegrationTest(
         /"filePath":"([^"]*)"/g,
         (_, testFile: string) =>
           `"filePath": "<root>/${path.relative(testFolder, testFile)}"`,
-      )
-      .replaceAll(/C:\\\\(usr)\\\\(linked)\\\\(tsconfig.json)/g, '/$1/$2/$3');
+      );
     let lintOutput: unknown;
     try {
       lintOutput = JSON.parse(lintOutputRAW);

@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-empty-interface';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-interface', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 interface Foo {

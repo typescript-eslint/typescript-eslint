@@ -23,13 +23,8 @@ Snapshot Diff:
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeQuery {
                   type: 'TSTypeQuery',
--                 exprName: ThisExpression {
--                   type: 'ThisExpression',
-+                 exprName: Identifier {
-+                   type: 'Identifier',
-+                   decorators: Array [],
-+                   name: 'this',
-+                   optional: false,
+                  exprName: ThisExpression {
+                    type: 'ThisExpression',
 
                     range: [90, 94],
                     loc: {
@@ -93,13 +88,8 @@ Snapshot Diff:
                   type: 'TSTypeQuery',
                   exprName: TSQualifiedName {
                     type: 'TSQualifiedName',
--                   left: ThisExpression {
--                     type: 'ThisExpression',
-+                   left: Identifier {
-+                     type: 'Identifier',
-+                     decorators: Array [],
-+                     name: 'this',
-+                     optional: false,
+                    left: ThisExpression {
+                      type: 'ThisExpression',
 
                       range: [112, 116],
                       loc: {
@@ -168,9 +158,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 122],
+-   range: [73, 122],
++   range: [0, 122],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 5 },
     },
   }

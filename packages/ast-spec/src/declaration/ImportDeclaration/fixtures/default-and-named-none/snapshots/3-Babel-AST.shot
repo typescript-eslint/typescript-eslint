@@ -3,7 +3,7 @@ Program {
   body: [
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: [],
+      attributes: [],
       importKind: "value",
       source: Literal {
         type: "Literal",
@@ -49,9 +49,9 @@ Program {
   ],
   sourceType: "module",
 
-  range: [19, 44],
+  range: [0, 44],
   loc: {
-    start: { column: 0, line: 2 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 3 },
   },
 }

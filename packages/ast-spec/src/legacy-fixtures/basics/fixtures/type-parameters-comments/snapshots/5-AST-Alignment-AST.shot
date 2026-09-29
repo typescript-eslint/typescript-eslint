@@ -26,8 +26,7 @@ Snapshot Diff:
             },
           },
           optional: false,
--         typeArguments: TSTypeParameterInstantiation {
-+         typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSTypeReference {
@@ -109,19 +108,18 @@ Snapshot Diff:
               type: 'TSTypeParameter',
               const: false,
               in: false,
--             name: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'A',
--               optional: false,
--
--               range: [138, 139],
--               loc: {
--                 start: { column: 23, line: 4 },
--                 end: { column: 24, line: 4 },
--               },
--             },
-+             name: 'A',
+              name: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'A',
+                optional: false,
+
+                range: [138, 139],
+                loc: {
+                  start: { column: 23, line: 4 },
+                  end: { column: 24, line: 4 },
+                },
+              },
               out: false,
 
               range: [138, 139],
@@ -202,19 +200,18 @@ Snapshot Diff:
                 },
               },
               in: false,
--             name: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'A',
--               optional: false,
--
--               range: [179, 180],
--               loc: {
--                 start: { column: 23, line: 5 },
--                 end: { column: 24, line: 5 },
--               },
--             },
-+             name: 'A',
+              name: Identifier {
+                type: 'Identifier',
+                decorators: Array [],
+                name: 'A',
+                optional: false,
+
+                range: [179, 180],
+                loc: {
+                  start: { column: 23, line: 5 },
+                  end: { column: 24, line: 5 },
+                },
+              },
               out: false,
 
               range: [179, 196],
@@ -241,9 +238,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 203],
+-   range: [73, 203],
++   range: [0, 203],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

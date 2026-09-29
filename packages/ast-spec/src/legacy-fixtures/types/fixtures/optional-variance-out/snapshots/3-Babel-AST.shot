@@ -18,8 +18,8 @@ Program {
       },
       typeAnnotation: TSFunctionType {
         type: "TSFunctionType",
-        parameters: [],
-        typeAnnotation: TSTypeAnnotation {
+        params: [],
+        returnType: TSTypeAnnotation {
           type: "TSTypeAnnotation",
           typeAnnotation: TSTypeReference {
             type: "TSTypeReference",
@@ -63,7 +63,18 @@ Program {
             type: "TSTypeParameter",
             const: false,
             in: false,
-            name: "T",
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [91, 92],
+              loc: {
+                start: { column: 18, line: 3 },
+                end: { column: 19, line: 3 },
+              },
+            },
             out: true,
 
             range: [87, 92],
@@ -90,9 +101,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 105],
+  range: [0, 105],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },
   },
 }

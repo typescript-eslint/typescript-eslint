@@ -162,19 +162,7 @@ Program {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
-              typeName: Identifier {
-                type: "Identifier",
-                decorators: [],
-                name: "ReadonlyArray",
-                optional: false,
-
-                range: [91, 104],
-                loc: {
-                  start: { column: 18, line: 3 },
-                  end: { column: 31, line: 3 },
-                },
-              },
-              typeParameters: TSTypeParameterInstantiation {
+              typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
                 params: [
                   TSStringKeyword {
@@ -192,6 +180,18 @@ Program {
                 loc: {
                   start: { column: 31, line: 3 },
                   end: { column: 39, line: 3 },
+                },
+              },
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "ReadonlyArray",
+                optional: false,
+
+                range: [91, 104],
+                loc: {
+                  start: { column: 18, line: 3 },
+                  end: { column: 31, line: 3 },
                 },
               },
 
@@ -435,9 +435,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 270],
+  range: [0, 270],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 12 },
   },
 }

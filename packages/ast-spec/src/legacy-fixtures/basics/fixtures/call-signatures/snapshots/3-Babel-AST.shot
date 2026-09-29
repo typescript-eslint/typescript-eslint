@@ -21,7 +21,7 @@ Program {
         members: [
           TSCallSignatureDeclaration {
             type: "TSCallSignatureDeclaration",
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -53,7 +53,7 @@ Program {
                 },
               },
             ],
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
@@ -80,7 +80,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            parameters: [
+            params: [
               Identifier {
                 type: "Identifier",
                 decorators: [],
@@ -112,7 +112,7 @@ Program {
                 },
               },
             ],
-            typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
                 type: "TSStringKeyword",
@@ -155,9 +155,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 139],
+  range: [0, 139],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 7 },
   },
 }

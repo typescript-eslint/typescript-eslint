@@ -239,9 +239,10 @@ Program {
             optional: true,
             override: false,
             static: false,
-            value: FunctionExpression {
-              type: "FunctionExpression",
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
               async: false,
+              body: null,
               declare: false,
               expression: false,
               generator: false,
@@ -332,9 +333,10 @@ Program {
             optional: true,
             override: false,
             static: false,
-            value: FunctionExpression {
-              type: "FunctionExpression",
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
               async: false,
+              body: null,
               declare: false,
               expression: false,
               generator: false,
@@ -424,9 +426,10 @@ Program {
             optional: true,
             override: false,
             static: false,
-            value: FunctionExpression {
-              type: "FunctionExpression",
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
               async: false,
+              body: null,
               declare: false,
               expression: false,
               generator: false,
@@ -615,9 +618,10 @@ Program {
             optional: true,
             override: false,
             static: false,
-            value: FunctionExpression {
-              type: "FunctionExpression",
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
               async: false,
+              body: null,
               declare: false,
               expression: false,
               generator: false,
@@ -734,9 +738,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [73, 351],
+  range: [0, 351],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 20 },
   },
 }

@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-require-imports';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-require-imports', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "import { l } from 'lib';",
     "var lib3 = load('not_an_import');",

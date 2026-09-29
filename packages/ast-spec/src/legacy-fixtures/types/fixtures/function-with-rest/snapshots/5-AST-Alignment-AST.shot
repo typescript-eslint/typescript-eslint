@@ -23,8 +23,7 @@ Snapshot Diff:
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSFunctionType {
                   type: 'TSFunctionType',
--                 params: Array [
-+                 parameters: Array [
+                  params: Array [
                     RestElement {
                       type: 'RestElement',
                       argument: Identifier {
@@ -76,8 +75,7 @@ Snapshot Diff:
                       },
                     },
                   ],
--                 returnType: TSTypeAnnotation {
-+                 typeAnnotation: TSTypeAnnotation {
+                  returnType: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSVoidKeyword {
                       type: 'TSVoidKeyword',
@@ -137,9 +135,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 106],
+-   range: [73, 106],
++   range: [0, 106],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

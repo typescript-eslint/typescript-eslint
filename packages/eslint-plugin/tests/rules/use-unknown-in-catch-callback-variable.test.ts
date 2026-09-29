@@ -6,116 +6,119 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
-      Promise.resolve().catch((err: unknown) => {
-        throw err;
-      });
+Promise.resolve().catch((err: unknown) => {
+  throw err;
+});
     `,
     `
-      let x = Math.random() ? 'ca' + 'tch' : 'catch';
-      Promise.resolve()[x]((err: Error) => {});
+let x = Math.random() ? 'ca' + 'tch' : 'catch';
+Promise.resolve()[x]((err: Error) => {});
     `,
     `
-      Promise.resolve().then(
-        () => {},
-        (err: unknown) => {
-          throw err;
-        },
-      );
+Promise.resolve().then(
+  () => {},
+  (err: unknown) => {
+    throw err;
+  },
+);
     `,
     `
-      Promise.resolve().catch(() => {
-        throw new Error();
-      });
+Promise.resolve().catch(() => {
+  throw new Error();
+});
     `,
     `
-      Promise.reject(new Error()).catch("not this rule's problem");
+Promise.reject(new Error()).catch("not this rule's problem");
     `,
     `
-      declare const crappyHandler: (() => void) | 2;
-      Promise.reject(new Error()).catch(crappyHandler);
-    `,
-
-    `
-      Promise.resolve().catch((...args: [unknown]) => {
-        throw args[0];
-      });
-    `,
-    `
-      Promise.resolve().catch((...args: [a: unknown]) => {
-        const err = args[0];
-      });
+declare const crappyHandler: (() => void) | 2;
+Promise.reject(new Error()).catch(crappyHandler);
     `,
 
     `
-      Promise.resolve().catch((...args: readonly unknown[]) => {
-        throw args[0];
-      });
+Promise.resolve().catch((...args: [unknown]) => {
+  throw args[0];
+});
+    `,
+    `
+Promise.resolve().catch((...args: [a: unknown]) => {
+  const err = args[0];
+});
     `,
 
     `
-      declare const notAPromise: { catch: (f: Function) => void };
-      notAPromise.catch((...args: [a: string, string]) => {
-        throw args[0];
-      });
-    `,
-    `
-      declare const catchArgs: [(x: unknown) => void];
-      Promise.reject(new Error()).catch(...catchArgs);
+Promise.resolve().catch((...args: readonly unknown[]) => {
+  throw args[0];
+});
     `,
 
     `
-      declare const catchArgs: [
-        string | (() => never),
-        (shouldntFlag: string) => void,
-        number,
-      ];
-      Promise.reject(new Error()).catch(...catchArgs);
+declare const notAPromise: { catch: (f: Function) => void };
+notAPromise.catch((...args: [a: string, string]) => {
+  throw args[0];
+});
     `,
     `
-      declare const catchArgs: ['not callable'];
-      Promise.reject(new Error()).catch(...catchArgs);
+declare const catchArgs: [(x: unknown) => void];
+Promise.reject(new Error()).catch(...catchArgs);
+    `,
+
+    `
+declare const catchArgs: [
+  string | (() => never),
+  (shouldntFlag: string) => void,
+  number,
+];
+Promise.reject(new Error()).catch(...catchArgs);
     `,
     `
-      declare const emptySpread: [];
-      Promise.reject(new Error()).catch(...emptySpread);
+declare const catchArgs: ['not callable'];
+Promise.reject(new Error()).catch(...catchArgs);
     `,
     `
-      Promise.resolve().catch(
-        (
-          ...err: [unknown, string | ((number | unknown) & { b: () => void }), string]
-        ) => {
-          throw err;
-        },
-      );
+declare const emptySpread: [];
+Promise.reject(new Error()).catch(...emptySpread);
     `,
     `
-      declare const notAMemberExpression: (...args: any[]) => {};
-      notAMemberExpression(
-        'This helps get 100% code cov',
-        "but doesn't test anything useful related to the rule.",
-      );
+Promise.resolve().catch(
+  (
+    ...err: [unknown, string | ((number | unknown) & { b: () => void }), string]
+  ) => {
+    throw err;
+  },
+);
     `,
     `
-      Promise.resolve().catch((...[args]: [unknown]) => {
-        console.log(args);
-      });
+declare const notAMemberExpression: (...args: any[]) => {};
+notAMemberExpression(
+  'This helps get 100% code cov',
+  "but doesn't test anything useful related to the rule.",
+);
     `,
     `
-      Promise.resolve().catch((...{ find }: [unknown]) => {
-        console.log(find);
-      });
+Promise.resolve().catch((...[args]: [unknown]) => {
+  console.log(args);
+});
+    `,
+    `
+Promise.resolve().catch((...{ find }: [unknown]) => {
+  console.log(find);
+});
     `,
     'Promise.resolve.then();',
     'Promise.resolve().then(() => {});',
     `
-      declare const singleTupleArg: [() => void];
-      Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
+declare const singleTupleArg: [() => void];
+Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
     `,
     `
-      declare const arrayArg: (() => void)[];
-      Promise.resolve().then(...arrayArg, error => {});
+declare const arrayArg: (() => void)[];
+Promise.resolve().then(...arrayArg, error => {});
     `,
     `
 declare let iPromiseImAPromise: Promise<any>;
@@ -170,7 +173,6 @@ Promise.resolve().catch(<InvalidHandler>(
 ));
     `,
   ],
-
   invalid: [
     {
       code: `
@@ -180,6 +182,10 @@ Promise.resolve().catch((err: Error) => {
       `,
       errors: [
         {
+          column: 26,
+          data: { append: '', method: 'catch' },
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -198,18 +204,23 @@ Promise.resolve().catch((err: unknown) => {
 
     {
       code: `
-        let method = 'catch';
-        Promise.resolve()[method]((error: Error) => {});
+let method = 'catch';
+Promise.resolve()[method]((error: Error) => {});
       `,
       errors: [
         {
+          column: 28,
+          data: { append: '', method: 'catch' },
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
           messageId: 'useUnknown',
           suggestions: [
             {
               messageId: 'wrongTypeAnnotationSuggestion',
               output: `
-        let method = 'catch';
-        Promise.resolve()[method]((error: unknown) => {});
+let method = 'catch';
+Promise.resolve()[method]((error: unknown) => {});
       `,
             },
           ],
@@ -225,6 +236,10 @@ Promise.resolve().catch((e, ...rest: []) => {
       `,
       errors: [
         {
+          column: 26,
+          data: { append: '', method: 'catch' },
+          endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -251,6 +266,10 @@ Promise.resolve().catch(
       `,
       errors: [
         {
+          column: 4,
+          data: { append: '', method: 'catch' },
+          endColumn: 58,
+          endLine: 3,
           line: 3,
           messageId: 'useUnknown',
           suggestions: [
@@ -285,6 +304,10 @@ Promise.resolve().catch(
       `,
       errors: [
         {
+          column: 5,
+          data: { append: '', method: 'catch' },
+          endColumn: 6,
+          endLine: 8,
           line: 4,
           messageId: 'useUnknown',
           suggestions: [
@@ -313,6 +336,10 @@ Promise.resolve().catch(function (err: string) {
       `,
       errors: [
         {
+          column: 35,
+          data: { append: '', method: 'catch' },
+          endColumn: 46,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -337,6 +364,10 @@ Promise.resolve().catch(function (err /* awkward spot for comment */) {
       `,
       errors: [
         {
+          column: 35,
+          data: { append: '', method: 'catch' },
+          endColumn: 38,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -361,6 +392,10 @@ Promise.resolve().catch(function namedCallback(err: string) {
       `,
       errors: [
         {
+          column: 48,
+          data: { append: '', method: 'catch' },
+          endColumn: 59,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -385,6 +420,10 @@ Promise.resolve().catch(err => {
       `,
       errors: [
         {
+          column: 25,
+          data: { append: '', method: 'catch' },
+          endColumn: 28,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -410,6 +449,11 @@ Promise.resolve().then(
       `,
       errors: [
         {
+          column: 3,
+          data: { append: ' rejection', method: 'then' },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'useUnknown',
           suggestions: [
             {
@@ -434,6 +478,10 @@ Promise.resolve().catch((err?) => {
       `,
       errors: [
         {
+          column: 26,
+          data: { append: '', method: 'catch' },
+          endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -458,6 +506,10 @@ Promise.resolve().catch((err?: string) => {
       `,
       errors: [
         {
+          column: 26,
+          data: { append: '', method: 'catch' },
+          endColumn: 38,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -482,6 +534,10 @@ Promise.resolve().catch(err/* with comment */=> {
       `,
       errors: [
         {
+          column: 25,
+          data: { append: '', method: 'catch' },
+          endColumn: 28,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -506,6 +562,10 @@ Promise.resolve().catch((err = 2) => {
       `,
       errors: [
         {
+          column: 26,
+          data: { append: '', method: 'catch' },
+          endColumn: 33,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -530,6 +590,10 @@ Promise.resolve().catch((err: any /* comment 1 */ = /* comment 2 */ 2) => {
       `,
       errors: [
         {
+          column: 26,
+          data: { append: '', method: 'catch' },
+          endColumn: 70,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -554,6 +618,10 @@ Promise.resolve().catch((...args) => {
       `,
       errors: [
         {
+          column: 26,
+          data: { append: '', method: 'catch' },
+          endColumn: 33,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -578,6 +646,10 @@ Promise.reject(new Error('I will reject!')).catch(([err]: [unknown]) => {
       `,
       errors: [
         {
+          column: 52,
+          data: { append: '', method: 'catch' },
+          endColumn: 68,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknownArrayDestructuringPattern',
           suggestions: null,
@@ -593,6 +665,10 @@ Promise.resolve(' a string ').catch(
       `,
       errors: [
         {
+          column: 4,
+          data: { append: '', method: 'catch' },
+          endColumn: 10,
+          endLine: 3,
           line: 3,
           messageId: 'useUnknown',
           suggestions: [
@@ -615,6 +691,10 @@ Promise.resolve('object destructuring').catch(({}) => {});
       `,
       errors: [
         {
+          column: 48,
+          data: { append: '', method: 'catch' },
+          endColumn: 50,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknownObjectDestructuringPattern',
         },
@@ -629,6 +709,10 @@ Promise.resolve('object destructuring').catch(function ({ gotcha }) {
       `,
       errors: [
         {
+          column: 57,
+          data: { append: '', method: 'catch' },
+          endColumn: 67,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknownObjectDestructuringPattern',
         },
@@ -641,6 +725,10 @@ Promise.resolve()['catch']((x: any) => 'return');
       `,
       errors: [
         {
+          column: 29,
+          data: { append: '', method: 'catch' },
+          endColumn: 35,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -661,6 +749,10 @@ Promise.reject().catch((...x: any) => {});
       `,
       errors: [
         {
+          column: 25,
+          data: { append: '', method: 'catch' },
+          endColumn: 34,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -683,6 +775,10 @@ Promise.resolve().catch((...[args]: [string]) => {
       `,
       errors: [
         {
+          column: 26,
+          data: { append: '', method: 'catch' },
+          endColumn: 45,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -707,6 +803,10 @@ Promise.resolve().catch((...{ find }: [string]) => {
       `,
       errors: [
         {
+          column: 26,
+          data: { append: '', method: 'catch' },
+          endColumn: 47,
+          endLine: 2,
           line: 2,
           messageId: 'useUnknown',
           suggestions: [
@@ -731,12 +831,11 @@ Promise.resolve('foo').then(() => {}, condition ? err => {} : err => {});
       errors: [
         {
           column: 51,
+          data: { append: ' rejection', method: 'then' },
           endColumn: 54,
           endLine: 3,
           line: 3,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',
@@ -749,12 +848,11 @@ Promise.resolve('foo').then(() => {}, condition ? (err: unknown) => {} : err => 
         },
         {
           column: 63,
+          data: { append: ' rejection', method: 'then' },
           endColumn: 66,
           endLine: 3,
           line: 3,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',
@@ -780,12 +878,11 @@ Promise.resolve('foo').catch(
       errors: [
         {
           column: 56,
+          data: { append: '', method: 'catch' },
           endColumn: 59,
           endLine: 6,
           line: 6,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',
@@ -803,12 +900,11 @@ Promise.resolve('foo').catch(
         },
         {
           column: 22,
+          data: { append: '', method: 'catch' },
           endColumn: 25,
           endLine: 7,
           line: 7,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',
@@ -826,12 +922,11 @@ Promise.resolve('foo').catch(
         },
         {
           column: 38,
+          data: { append: '', method: 'catch' },
           endColumn: 41,
           endLine: 7,
           line: 7,
-
           messageId: 'useUnknown',
-
           suggestions: [
             {
               messageId: 'addUnknownTypeAnnotationSuggestion',

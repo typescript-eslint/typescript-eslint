@@ -157,12 +157,6 @@ export default createRule({
       "MethodDefinition[kind='constructor'] > FunctionExpression AssignmentExpression"(
         node: TSESTree.AssignmentExpression,
       ): void {
-        const leftName = getPropertyName(node.left);
-
-        if (!leftName) {
-          return;
-        }
-
         let functionNode = findParentFunction(node);
         if (functionNode && isArrowIIFE(functionNode)) {
           functionNode = findParentFunction(functionNode.parent);
@@ -177,6 +171,21 @@ export default createRule({
             reportInfoStack.at(reportInfoStack.length - 1),
             'The top of stack should exist',
           );
+
+        // A prior write to the parameter binding means a later `this.x = x`
+        // may copy a different value than the parameter property initialized.
+        if (node.left.type === AST_NODE_TYPES.Identifier) {
+          if (isReferenceFromParameter(node.left)) {
+            assignedBeforeUnnecessary.add(node.left.name);
+          }
+          return;
+        }
+
+        const leftName = getPropertyName(node.left);
+
+        if (!leftName) {
+          return;
+        }
 
         if (!UNNECESSARY_OPERATORS.has(node.operator)) {
           assignedBeforeUnnecessary.add(leftName);

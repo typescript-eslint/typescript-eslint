@@ -10,8 +10,7 @@ Snapshot Diff:
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
--       attributes: Array [],
-+       assertions: Array [],
+        attributes: Array [],
         declaration: TSTypeAliasDeclaration {
           type: 'TSTypeAliasDeclaration',
           declare: false,
@@ -29,8 +28,7 @@ Snapshot Diff:
           },
           typeAnnotation: TSFunctionType {
             type: 'TSFunctionType',
--           params: Array [
-+           parameters: Array [
+            params: Array [
               Identifier {
                 type: 'Identifier',
                 decorators: Array [],
@@ -62,8 +60,7 @@ Snapshot Diff:
                 },
               },
             ],
--           returnType: TSTypeAnnotation {
-+           typeAnnotation: TSTypeAnnotation {
+            returnType: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSVoidKeyword {
                 type: 'TSVoidKeyword',
@@ -108,9 +105,11 @@ Snapshot Diff:
     ],
     sourceType: 'module',
 
-    range: [73, 121],
+-   range: [73, 121],
++   range: [0, 121],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }

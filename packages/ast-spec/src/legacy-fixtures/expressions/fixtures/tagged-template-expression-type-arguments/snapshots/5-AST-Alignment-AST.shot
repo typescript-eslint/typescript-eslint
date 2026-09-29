@@ -50,8 +50,7 @@ Snapshot Diff:
               end: { column: 3, line: 3 },
             },
           },
--         typeArguments: TSTypeParameterInstantiation {
-+         typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSTypeReference {
@@ -100,9 +99,11 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
-    range: [73, 88],
+-   range: [73, 88],
++   range: [0, 88],
     loc: {
-      start: { column: 0, line: 3 },
+-     start: { column: 0, line: 3 },
++     start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
   }
