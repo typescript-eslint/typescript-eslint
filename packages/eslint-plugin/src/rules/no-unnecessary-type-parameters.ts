@@ -473,7 +473,7 @@ function collectTypeParameterUsageCounts(
           // `templateType` is a lazily populated checker cache. Once it is
           // populated on an instantiated mapped type, its constraint is
           // reachable only here: the type parameter's declaration holds the
-          // original, uninstantiated constraint.
+          // original constraint from before instantiation.
           if (
             type.templateType &&
             type.constraintType &&
@@ -529,12 +529,11 @@ function collectTypeParameterUsageCounts(
   function getDeclaredConstraintType(
     typeParameter: ts.Type | undefined,
   ): ts.Type | undefined {
-    const declaration = typeParameter?.getSymbol()?.getDeclarations()?.[0];
-    return declaration &&
-      ts.isTypeParameterDeclaration(declaration) &&
-      declaration.constraint
-      ? checker.getTypeAtLocation(declaration.constraint)
-      : undefined;
+    const constraint = typeParameter
+      ?.getSymbol()
+      ?.getDeclarations()
+      ?.find(ts.isTypeParameterDeclaration)?.constraint;
+    return constraint && checker.getTypeAtLocation(constraint);
   }
 
   function visitSignature(signature: ts.Signature | undefined): void {
