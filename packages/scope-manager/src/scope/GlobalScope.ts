@@ -2,6 +2,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
+import type { Definition } from '../definition';
 import type { Reference } from '../referencer/Reference';
 import type { ScopeManager } from '../ScopeManager';
 import type { ImplicitLibVariableOptions, Variable } from '../variable';
@@ -31,14 +32,45 @@ export class GlobalScope extends ScopeBase<
      */
     leftToBeResolved: Reference[];
   };
+  readonly #implicitLibVariables: ReadonlyMap<
+    string,
+    ImplicitLibVariableOptions
+  >;
 
-  constructor(scopeManager: ScopeManager, block: GlobalScope['block']) {
+  constructor(
+    scopeManager: ScopeManager,
+    block: GlobalScope['block'],
+    implicitLibVariables: ReadonlyMap<
+      string,
+      ImplicitLibVariableOptions
+    > = new Map(),
+  ) {
     super(scopeManager, ScopeType.global, null, block, false);
+    this.#implicitLibVariables = implicitLibVariables;
     this.implicit = {
       leftToBeResolved: [],
       set: new Map<string, Variable>(),
       variables: [],
     };
+  }
+
+  public override defineIdentifier(
+    node: TSESTree.Identifier,
+    def: Definition,
+  ): void {
+    const options = this.#implicitLibVariables.get(node.name);
+    if (!options || this.set.has(node.name)) {
+      super.defineIdentifier(node, def);
+      return;
+    }
+
+    this.defineVariable(
+      new ImplicitLibVariable(this, node.name, options),
+      this.set,
+      this.variables,
+      node,
+      def,
+    );
   }
 
   public addVariables(names: string[]): void {

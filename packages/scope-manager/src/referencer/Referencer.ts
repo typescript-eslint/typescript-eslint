@@ -4,11 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
-import type {
-  ImplicitLibVariableOptions,
-  LibDefinition,
-  Variable,
-} from '../variable';
+import type { ImplicitLibVariableOptions, LibDefinition } from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -24,7 +20,6 @@ import {
   VariableDefinition,
 } from '../definition';
 import { lib as TSLibraries } from '../lib';
-import { ImplicitLibVariable } from '../variable';
 import { ClassVisitor } from './ClassVisitor';
 import { ExportVisitor } from './ExportVisitor';
 import { ImportVisitor } from './ImportVisitor';
@@ -75,24 +70,6 @@ export class Referencer extends Visitor {
     return names;
   }
 
-  private defineImplicitGlobal(
-    globalScope: GlobalScope,
-    name: string,
-    options: ImplicitLibVariableOptions,
-  ): void {
-    const existingVariable = globalScope.set.get(name);
-    if (!existingVariable) {
-      globalScope.defineImplicitVariable(name, options);
-      return;
-    }
-
-    this.upgradeVariableToImplicitLibVariable(
-      globalScope,
-      existingVariable,
-      options,
-    );
-  }
-
   private getImplicitVariablesFromLib(): ImplicitVariableMap {
     const cacheKey = JSON.stringify([...new Set(this.#lib)].sort());
     const cached = implicitVariablesByLibSet.get(cacheKey);
@@ -129,20 +106,9 @@ export class Referencer extends Visitor {
   ): void {
     for (const name of this.collectNamesForImplicitGlobals()) {
       const options = implicitVariables.get(name);
-      if (options) {
-        this.defineImplicitGlobal(globalScope, name, options);
+      if (options && !globalScope.set.has(name)) {
+        globalScope.defineImplicitVariable(name, options);
       }
-    }
-  }
-
-  private replaceVariable(
-    variables: Variable[],
-    existingVariable: Variable,
-    implicitVariable: Variable,
-  ): void {
-    const index = variables.indexOf(existingVariable);
-    if (index >= 0) {
-      variables[index] = implicitVariable;
     }
   }
 
@@ -171,53 +137,6 @@ export class Referencer extends Visitor {
     }
 
     return resolvedLibs;
-  }
-
-  /**
-   * Converts a global declaration that collides with a lib global into an `ImplicitLibVariable`,
-   * so rules such as `no-redeclare` can detect builtin redeclarations.
-   */
-  private upgradeVariableToImplicitLibVariable(
-    globalScope: GlobalScope,
-    existingVariable: Variable,
-    options: ImplicitLibVariableOptions,
-  ): void {
-    const implicitVariable = new ImplicitLibVariable(
-      globalScope,
-      existingVariable.name,
-      options,
-    );
-    implicitVariable.defs.push(...existingVariable.defs);
-    implicitVariable.identifiers.push(...existingVariable.identifiers);
-
-    globalScope.set.set(existingVariable.name, implicitVariable);
-    this.replaceVariable(
-      globalScope.variables,
-      existingVariable,
-      implicitVariable,
-    );
-
-    const declaredVariableArrays = new Set<Variable[]>();
-    for (const definition of existingVariable.defs) {
-      const variablesDeclaredByNode = this.scopeManager.declaredVariables.get(
-        definition.node,
-      );
-      if (variablesDeclaredByNode) {
-        declaredVariableArrays.add(variablesDeclaredByNode);
-      }
-
-      if (definition.parent) {
-        const variablesDeclaredByParent =
-          this.scopeManager.declaredVariables.get(definition.parent);
-        if (variablesDeclaredByParent) {
-          declaredVariableArrays.add(variablesDeclaredByParent);
-        }
-      }
-    }
-
-    for (const variables of declaredVariableArrays) {
-      this.replaceVariable(variables, existingVariable, implicitVariable);
-    }
   }
 
   public close(node: TSESTree.Node): void {
@@ -725,7 +644,10 @@ export class Referencer extends Visitor {
 
   protected Program(node: TSESTree.Program): void {
     const implicitVariables = this.getImplicitVariablesFromLib();
-    const globalScope = this.scopeManager.nestGlobalScope(node);
+    const globalScope = this.scopeManager.nestGlobalScope(
+      node,
+      implicitVariables,
+    );
 
     // Special implicit global for const assertions (`{} as const`, `<const>{}`)
     globalScope.defineImplicitVariable('const', {

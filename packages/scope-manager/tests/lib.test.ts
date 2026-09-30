@@ -115,7 +115,7 @@ describe('implicit lib definitions', () => {
   });
 
   it.each(['function Map() {}', 'class Map {}'])(
-    'should update declared variables for a %s collision',
+    'should track a %s declaration in the implicit lib variable',
     code => {
       const { ast, scopeManager } = parseAndAnalyze(code, {
         lib: ['es2015'],
@@ -152,7 +152,7 @@ describe('implicit lib definitions', () => {
     ).toEqual([mapVariable]);
   });
 
-  it('should resolve references after upgrading a global collision', () => {
+  it('should resolve references to a lib variable with a declaration', () => {
     const { scopeManager } = parseAndAnalyze('var Map = 1; Map;', {
       lib: ['es2015'],
     });
@@ -169,7 +169,7 @@ describe('implicit lib definitions', () => {
     ).toBe(true);
   });
 
-  it('should preserve multiple declarations when upgrading a global collision', () => {
+  it('should preserve multiple declarations on a lib variable', () => {
     const { scopeManager } = parseAndAnalyze('var Map = 1; var Map = 2; Map;', {
       lib: ['es2015'],
     });
