@@ -1326,7 +1326,6 @@ export type Foo = typeof foo;
         },
       ],
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/10658
     {
       code: `
 const A = 0;
