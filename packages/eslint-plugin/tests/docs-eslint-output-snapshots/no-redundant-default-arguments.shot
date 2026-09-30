@@ -1,0 +1,53 @@
+Incorrect
+
+function select(value = 0) {
+  return value;
+}
+
+select(0);
+       ~ These trailing arguments match their declared default values.
+
+Incorrect
+
+function configure({ retries = 3 }: { retries?: number }) {
+  return retries;
+}
+
+configure({ retries: 3 });
+            ~~~~~~~~~~ Property 'retries' matches its declared default value.
+
+Incorrect
+
+function Button({ enabled = true }) {
+  return <button disabled={!enabled} />;
+}
+
+<Button enabled />;
+        ~~~~~~~ Property 'enabled' matches its declared default value.
+
+Correct
+
+function select(value = 0) {
+  return value;
+}
+
+select();
+select(1);
+
+Correct
+
+function configure({ retries = 3 }: { retries?: number }) {
+  return retries;
+}
+
+configure({});
+configure({ retries: 5 });
+
+Correct
+
+function Button({ enabled = true }) {
+  return <button disabled={!enabled} />;
+}
+
+<Button />;
+<Button enabled={false} />;
