@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('restrict-template-expressions', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Base case
     `
@@ -472,6 +475,8 @@ const msg = \`arg = \${123}\`;
         {
           column: 22,
           data: { type: '123' },
+          endColumn: 25,
+          endLine: 2,
           line: 2,
           messageId: 'invalidType',
         },
@@ -486,6 +491,8 @@ const msg = \`arg = \${false}\`;
         {
           column: 22,
           data: { type: 'false' },
+          endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'invalidType',
         },
@@ -500,6 +507,8 @@ const msg = \`arg = \${null}\`;
         {
           column: 22,
           data: { type: 'null' },
+          endColumn: 26,
+          endLine: 2,
           line: 2,
           messageId: 'invalidType',
         },
@@ -515,6 +524,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: 'number[]' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -529,6 +540,8 @@ const msg = \`arg = \${[, 2]}\`;
         {
           column: 22,
           data: { type: '(number | undefined)[]' },
+          endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'invalidType',
         },
@@ -537,11 +550,29 @@ const msg = \`arg = \${[, 2]}\`;
     },
     {
       code: 'const msg = `arg = ${Promise.resolve()}`;',
-      errors: [{ messageId: 'invalidType' }],
+      errors: [
+        {
+          column: 22,
+          data: { type: 'Promise<void>' },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidType',
+        },
+      ],
     },
     {
       code: 'const msg = `arg = ${new Error()}`;',
-      errors: [{ messageId: 'invalidType' }],
+      errors: [
+        {
+          column: 22,
+          data: { type: 'Error' },
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'invalidType',
+        },
+      ],
       options: [{ allow: [] }],
     },
     {
@@ -553,6 +584,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: '[number | undefined, string]' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -568,6 +601,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: 'object[]' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -583,6 +618,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: '(string | object)[]' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -598,6 +635,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: 'object[][]' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -613,6 +652,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: '(string | object)[][]' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -628,6 +669,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: 'number' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -643,6 +686,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: 'boolean' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -655,7 +700,14 @@ const arg = {};
 const msg = \`arg = \${arg}\`;
       `,
       errors: [
-        { column: 22, data: { type: '{}' }, line: 3, messageId: 'invalidType' },
+        {
+          column: 22,
+          data: { type: '{}' },
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidType',
+        },
       ],
       options: [{ allowBoolean: true, allowNullish: true, allowNumber: true }],
     },
@@ -668,6 +720,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: '{ a: string; } & { b: string; }' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -680,7 +734,14 @@ function test<T extends {}>(arg: T) {
 }
       `,
       errors: [
-        { column: 19, data: { type: '{}' }, line: 3, messageId: 'invalidType' },
+        {
+          column: 19,
+          data: { type: '{}' },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidType',
+        },
       ],
       options: [{ allowBoolean: true, allowNullish: true, allowNumber: true }],
     },
@@ -694,6 +755,8 @@ function test<TWithNoConstraint>(arg: T) {
         {
           column: 19,
           data: { type: 'T' },
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -717,6 +780,8 @@ function test(arg: any) {
         {
           column: 19,
           data: { type: 'any' },
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -739,6 +804,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: 'RegExp' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -754,6 +821,8 @@ const msg = \`arg = \${arg}\`;
         {
           column: 22,
           data: { type: 'RegExp' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -769,6 +838,8 @@ const stringy = \`\${value}\`;
         {
           column: 20,
           data: { type: 'never' },
+          endColumn: 25,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -786,6 +857,8 @@ function test<T extends any>(arg: T) {
         {
           column: 19,
           data: { type: 'unknown' },
+          endColumn: 22,
+          endLine: 3,
           line: 3,
           messageId: 'invalidType',
         },
@@ -801,7 +874,11 @@ const bar = new Derived();
       `,
       errors: [
         {
+          column: 4,
           data: { type: 'Derived' },
+          endColumn: 7,
+          endLine: 5,
+          line: 5,
           messageId: 'invalidType',
         },
       ],
@@ -820,7 +897,11 @@ declare const obj: Derived;
       `,
       errors: [
         {
+          column: 4,
           data: { type: 'Derived' },
+          endColumn: 7,
+          endLine: 9,
+          line: 9,
           messageId: 'invalidType',
         },
       ],
@@ -842,7 +923,11 @@ declare const obj: Derived;
       `,
       errors: [
         {
+          column: 4,
           data: { type: 'Derived' },
+          endColumn: 7,
+          endLine: 12,
+          line: 12,
           messageId: 'invalidType',
         },
       ],

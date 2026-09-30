@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('require-await', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Non-async function declaration
     `
@@ -255,9 +258,13 @@ async function numberOne(): Promise<number> {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async function 'numberOne'",
           },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -281,9 +288,13 @@ const numberOne = async function (): Promise<number> {
       `,
       errors: [
         {
+          column: 19,
           data: {
             name: "Async function 'numberOne'",
           },
+          endColumn: 34,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -303,9 +314,13 @@ const numberOne = function (): number {
       code: 'const numberOne = async (): Promise<number> => 1;',
       errors: [
         {
+          column: 45,
           data: {
             name: "Async arrow function 'numberOne'",
           },
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -325,9 +340,13 @@ async function values(): Promise<Array<number>> {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async function 'values'",
           },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -353,9 +372,13 @@ async function foo() {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async function 'foo'",
           },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -382,9 +405,13 @@ async function* foo(): void {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -407,9 +434,13 @@ async function* foo() {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -434,9 +465,13 @@ const foo = async function* () {
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -459,9 +494,13 @@ async function* asyncGenerator() {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -484,9 +523,13 @@ async function* asyncGenerator(source: Iterable<any>) {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -514,9 +557,13 @@ async function* asyncGenerator(source: Iterable<any> | AsyncIterable<any>) {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -547,9 +594,13 @@ async function* asyncGenerator() {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -577,9 +628,13 @@ async function* asyncGenerator() {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -602,9 +657,13 @@ const fn = async () => {
       `,
       errors: [
         {
+          column: 21,
           data: {
             name: "Async arrow function 'fn'",
           },
+          endColumn: 23,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -628,9 +687,13 @@ async function* foo(): Promise<number> {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -654,9 +717,13 @@ async function* foo(): AsyncGenerator {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -679,9 +746,13 @@ async function* foo(): AsyncGenerator<number> {
       `,
       errors: [
         {
+          column: 1,
           data: {
             name: "Async generator function 'foo'",
           },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -820,7 +891,11 @@ async function foo() {
       `,
       errors: [
         {
+          column: 1,
           data: { name: "Async function 'foo'" },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -843,7 +918,11 @@ function foo() {
       `,
       errors: [
         {
+          column: 2,
           data: { name: 'Async function' },
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -866,7 +945,11 @@ async () => {
       `,
       errors: [
         {
+          column: 10,
           data: { name: 'Async arrow function' },
+          endColumn: 12,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -885,7 +968,11 @@ async () => {
       code: 'async () => doSomething();',
       errors: [
         {
+          column: 10,
           data: { name: 'Async arrow function' },
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'missingAwait',
           suggestions: [
             { messageId: 'removeAsync', output: '() => doSomething();' },
@@ -903,7 +990,11 @@ async () => {
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'foo'" },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -930,7 +1021,11 @@ class A {
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'foo'" },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -957,7 +1052,11 @@ class A {
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'foo'" },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -984,7 +1083,11 @@ class A {
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'foo'" },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1011,7 +1114,11 @@ class A {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Async method' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1038,7 +1145,11 @@ async function foo() {
       `,
       errors: [
         {
+          column: 1,
           data: { name: "Async function 'foo'" },
+          endColumn: 19,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1065,7 +1176,11 @@ async function foo() {
       `,
       errors: [
         {
+          column: 19,
           data: { name: 'Async arrow function' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1092,7 +1207,11 @@ const obj = {
       `,
       errors: [
         {
+          column: 3,
           data: { name: "Async method 'async'" },
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1119,7 +1238,11 @@ const obj = {
       `,
       errors: [
         {
+          column: 9,
           data: { name: "Async function 'foo'" },
+          endColumn: 41,
+          endLine: 2,
+          line: 2,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1146,7 +1269,11 @@ const obj = {
       `,
       errors: [
         {
+          column: 11,
           data: { name: 'Async method' },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1174,7 +1301,11 @@ const obj = {
       `,
       errors: [
         {
+          column: 18,
           data: { name: 'Async arrow function' },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'missingAwait',
           suggestions: [
             {
@@ -1201,7 +1332,11 @@ class A {
       `,
       errors: [
         {
+          column: 3,
           data: { name: 'Async method' },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'missingAwait',
           suggestions: [
             {

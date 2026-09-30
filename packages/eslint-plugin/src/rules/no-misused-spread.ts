@@ -118,7 +118,7 @@ export default createRule<Options, MessageIds>({
       type: ts.Type,
     ): TSESLint.ReportSuggestionArray<MessageIds> | null {
       const types = tsutils.unionConstituents(type);
-      if (types.some(t => !isMap(services.program, t))) {
+      if (types.some(t => !isIterableMap(services.program, t))) {
         return null;
       }
 
@@ -330,6 +330,11 @@ function isClassDeclaration(type: ts.Type): boolean {
 function isMap(program: ts.Program, type: ts.Type): boolean {
   return isTypeRecurser(type, t =>
     isBuiltinSymbolLike(program, t, ['Map', 'ReadonlyMap', 'WeakMap']),
+  );
+}
+function isIterableMap(program: ts.Program, type: ts.Type): boolean {
+  return isTypeRecurser(type, t =>
+    isBuiltinSymbolLike(program, t, ['Map', 'ReadonlyMap']),
   );
 }
 

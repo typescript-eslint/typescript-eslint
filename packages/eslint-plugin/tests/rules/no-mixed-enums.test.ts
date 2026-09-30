@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-mixed-enums', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 enum Fruit {}
@@ -327,6 +330,7 @@ export enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -343,6 +347,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'mixed',
         },
@@ -360,6 +365,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'mixed',
         },
@@ -377,6 +383,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'mixed',
         },
@@ -393,6 +400,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 4,
           line: 4,
           messageId: 'mixed',
         },
@@ -410,6 +418,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'mixed',
         },
@@ -427,6 +436,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'mixed',
         },
@@ -444,6 +454,7 @@ enum Fruit {
         {
           column: 12,
           endColumn: 13,
+          endLine: 5,
           line: 5,
           messageId: 'mixed',
         },
@@ -464,6 +475,7 @@ enum Second {
         {
           column: 7,
           endColumn: 10,
+          endLine: 8,
           line: 8,
           messageId: 'mixed',
         },
@@ -484,6 +496,7 @@ enum Second {
         {
           column: 7,
           endColumn: 8,
+          endLine: 8,
           line: 8,
           messageId: 'mixed',
         },
@@ -502,6 +515,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -520,6 +534,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -538,6 +553,7 @@ enum Foo {
         {
           column: 3,
           endColumn: 4,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -556,6 +572,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 8,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -577,12 +594,14 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
         {
           column: 7,
           endColumn: 10,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -604,6 +623,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -625,6 +645,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -644,6 +665,7 @@ declare module './mixed-enums-decl' {
         {
           column: 15,
           endColumn: 16,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -662,6 +684,7 @@ enum Foo {
         {
           column: 7,
           endColumn: 10,
+          endLine: 6,
           line: 6,
           messageId: 'mixed',
         },
@@ -684,6 +707,7 @@ namespace Test {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -706,6 +730,7 @@ namespace Test {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -732,6 +757,7 @@ namespace Outer {
         {
           column: 11,
           endColumn: 14,
+          endLine: 12,
           line: 12,
           messageId: 'mixed',
         },
@@ -754,6 +780,7 @@ namespace Test.Inner {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -776,6 +803,7 @@ namespace Test {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -803,6 +831,7 @@ namespace Test {
         {
           column: 9,
           endColumn: 12,
+          endLine: 14,
           line: 14,
           messageId: 'mixed',
         },
@@ -825,6 +854,7 @@ declare module 'other-module' {
         {
           column: 9,
           endColumn: 12,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },
@@ -848,6 +878,7 @@ declare global {
         {
           column: 9,
           endColumn: 12,
+          endLine: 10,
           line: 10,
           messageId: 'mixed',
         },
@@ -869,6 +900,7 @@ enum Bar {
         {
           column: 7,
           endColumn: 10,
+          endLine: 9,
           line: 9,
           messageId: 'mixed',
         },

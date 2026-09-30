@@ -8,6 +8,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare const varAny: any;
@@ -142,6 +145,10 @@ function test(a?: boolean): boolean {
       code: 'true === true;',
       errors: [
         {
+          column: 1,
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'direct',
         },
       ],
@@ -151,6 +158,10 @@ function test(a?: boolean): boolean {
       code: 'false !== true;',
       errors: [
         {
+          column: 1,
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'negated',
         },
       ],
@@ -164,6 +175,10 @@ if (varBoolean !== false) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
           messageId: 'negated',
         },
       ],
@@ -181,6 +196,10 @@ if (varTrue !== true) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'negated',
         },
       ],
@@ -198,6 +217,10 @@ if (varTrueOrUndefined === true) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -216,6 +239,10 @@ if (varFalseOrNull !== true) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
           messageId: 'comparingNullableToTrueNegated',
         },
       ],
@@ -232,6 +259,10 @@ const isTrue = (x: boolean | undefined): boolean => x === true;
       `,
       errors: [
         {
+          column: 53,
+          endColumn: 63,
+          endLine: 2,
+          line: 2,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -248,6 +279,10 @@ function isTrue(x: boolean | undefined): boolean {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -265,6 +300,10 @@ const value: boolean = x === true;
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -283,6 +322,10 @@ acceptsBoolean(x === true);
       `,
       errors: [
         {
+          column: 16,
+          endColumn: 26,
+          endLine: 5,
+          line: 5,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -303,6 +346,10 @@ if (x === true) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -322,6 +369,10 @@ while (x === true) {}
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -340,6 +391,10 @@ do {} while (x === true);
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -358,6 +413,10 @@ for (; x === true;) {}
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -376,6 +435,10 @@ const value = x === true ? 'true' : 'false';
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -395,6 +458,10 @@ const value = condition ? x === true : false;
       `,
       errors: [
         {
+          column: 27,
+          endColumn: 37,
+          endLine: 5,
+          line: 5,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -416,6 +483,10 @@ if (other && x === true) {
       `,
       errors: [
         {
+          column: 14,
+          endColumn: 24,
+          endLine: 5,
+          line: 5,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -437,6 +508,10 @@ const value: boolean = other && x === true;
       `,
       errors: [
         {
+          column: 33,
+          endColumn: 43,
+          endLine: 5,
+          line: 5,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -457,6 +532,10 @@ const value: boolean = (x && other) === true;
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 45,
+          endLine: 5,
+          line: 5,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -477,6 +556,10 @@ const value: boolean = (x && other) === false;
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 46,
+          endLine: 5,
+          line: 5,
           messageId: 'comparingNullableToFalse',
         },
       ],
@@ -496,6 +579,10 @@ const value: boolean = true === x;
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -514,6 +601,10 @@ const value: boolean = x !== true;
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueNegated',
         },
       ],
@@ -532,6 +623,10 @@ const value: boolean = x != true;
       `,
       errors: [
         {
+          column: 24,
+          endColumn: 33,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueNegated',
         },
       ],
@@ -550,6 +645,10 @@ const value: boolean = !(x === true);
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 36,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -568,6 +667,10 @@ const value: boolean = !(x !== true);
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 36,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueNegated',
         },
       ],
@@ -587,6 +690,10 @@ if (varBooleanOrNull === false && otherBoolean) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToFalse',
         },
       ],
@@ -607,6 +714,10 @@ if (!(varBooleanOrNull === false) || otherBoolean) {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 33,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToFalse',
         },
       ],
@@ -627,6 +738,10 @@ if (varTrueOrFalseOrUndefined !== false && !otherBoolean) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 40,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToFalse',
         },
       ],
@@ -646,6 +761,10 @@ if (false !== varBoolean) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
           messageId: 'negated',
         },
       ],
@@ -663,6 +782,10 @@ if (true !== varBoolean) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'negated',
         },
       ],
@@ -680,6 +803,10 @@ if (!varBoolean) {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 43,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -697,6 +824,10 @@ if (!varBoolean) {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 43,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -714,6 +845,10 @@ if (x instanceof Error === false) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -731,6 +866,10 @@ if (!(x instanceof Error)) {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 44,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -748,6 +887,10 @@ if (!(x instanceof Error)) {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 43,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -765,6 +908,10 @@ if (!(x instanceof Error)) {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 43,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -782,6 +929,10 @@ if (!(varBoolean !== false)) {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'negated',
         },
       ],
@@ -799,6 +950,10 @@ if (!(varBoolean === false)) {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -816,6 +971,10 @@ if (!(varBoolean instanceof Event == false)) {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 43,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -833,6 +992,10 @@ if (varBoolean instanceof Event == false) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 41,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -850,6 +1013,10 @@ if (!((varBoolean ?? false) !== false)) {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
           messageId: 'negated',
         },
       ],
@@ -867,6 +1034,10 @@ if (!((varBoolean ?? false) === false)) {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -884,6 +1055,10 @@ if (!((varBoolean ?? true) !== false)) {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
           messageId: 'negated',
         },
       ],
@@ -902,6 +1077,10 @@ const test: <T extends boolean>(someCondition: T) => void = someCondition => {
       `,
       errors: [
         {
+          column: 7,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'direct',
         },
       ],
@@ -921,6 +1100,10 @@ const test: <T extends boolean>(someCondition: T) => void = someCondition => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
           messageId: 'negated',
         },
       ],
@@ -940,6 +1123,10 @@ const test: <T extends boolean>(someCondition: T) => void = someCondition => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
           messageId: 'negated',
         },
       ],
@@ -956,18 +1143,18 @@ function foo(): boolean {}
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 1,
+          endLine: 0,
+          line: 0,
           messageId: 'noStrictNullCheck',
         },
       ],
       languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootDir, 'unstrict'),
-        },
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
       },
       options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-        },
+        { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false },
       ],
     },
     {
@@ -979,6 +1166,10 @@ declare const c: boolean;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
           messageId: 'direct',
         },
       ],
@@ -996,6 +1187,10 @@ x === true;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
@@ -1013,6 +1208,10 @@ declare const y: boolean | undefined;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
           messageId: 'comparingNullableToTrueDirect',
         },
       ],

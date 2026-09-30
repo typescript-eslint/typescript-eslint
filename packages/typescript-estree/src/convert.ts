@@ -217,7 +217,7 @@ export class Converter {
   }
 
   /**
-   * Coverts body Nodes and add a directive field to StringLiterals
+   * Converts body Nodes and add a directive field to StringLiterals
    * @param nodes of ts.Node
    * @param parent parentNode
    * @returns Array of body statements
@@ -2236,6 +2236,7 @@ export class Converter {
       case SyntaxKind.UndefinedKeyword:
       case SyntaxKind.IntrinsicKeyword: {
         return this.createNode<any>(node, {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
           type: AST_NODE_TYPES[`TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES],
         });
       }
@@ -2908,6 +2909,7 @@ export class Converter {
       );
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
     const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
 
     /**

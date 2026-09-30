@@ -7,6 +7,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-floating-promises', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 async function test() {
@@ -914,6 +917,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -942,6 +948,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 43,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -970,6 +979,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 36,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -998,6 +1010,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 38,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1052,6 +1067,9 @@ doSomething();
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 20,
+          endLine: 11,
           line: 11,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1108,6 +1126,9 @@ doSomething();
           ],
         },
         {
+          column: 3,
+          endColumn: 18,
+          endLine: 12,
           line: 12,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1164,6 +1185,9 @@ doSomething();
           ],
         },
         {
+          column: 3,
+          endColumn: 19,
+          endLine: 13,
           line: 13,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1220,6 +1244,9 @@ doSomething();
           ],
         },
         {
+          column: 3,
+          endColumn: 18,
+          endLine: 14,
           line: 14,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1276,6 +1303,9 @@ doSomething();
           ],
         },
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 15,
           line: 15,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1332,6 +1362,9 @@ doSomething();
           ],
         },
         {
+          column: 3,
+          endColumn: 19,
+          endLine: 16,
           line: 16,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1388,6 +1421,9 @@ doSomething();
           ],
         },
         {
+          column: 3,
+          endColumn: 16,
+          endLine: 18,
           line: 18,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1444,6 +1480,9 @@ doSomething();
           ],
         },
         {
+          column: 1,
+          endColumn: 15,
+          endLine: 21,
           line: 21,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1508,6 +1547,9 @@ myTag\`abc\`;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1536,6 +1578,9 @@ myTag\`abc\`.then(() => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1564,6 +1609,9 @@ myTag\`abc\`.finally(() => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 30,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1594,6 +1642,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1629,6 +1680,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 40,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1657,6 +1711,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 55,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1685,6 +1742,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 48,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1713,6 +1773,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 50,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1752,6 +1815,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1778,6 +1844,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 39,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1804,6 +1873,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 32,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1844,6 +1916,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 20,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1876,6 +1951,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 35,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1908,6 +1986,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 28,
+          endLine: 7,
           line: 7,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1940,6 +2021,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 30,
+          endLine: 8,
           line: 8,
           messageId: 'floatingVoid',
           suggestions: [
@@ -1982,6 +2066,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 50,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2006,6 +2093,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 50,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2041,6 +2131,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2067,6 +2160,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 28,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2093,6 +2189,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 33,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2128,6 +2227,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'floating',
           suggestions: [
@@ -2153,6 +2255,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'floating',
           suggestions: [
@@ -2179,6 +2284,9 @@ void returnsPromise();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'floating',
           suggestions: [
@@ -2206,6 +2314,9 @@ void /* ... */ returnsPromise();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 33,
+          endLine: 5,
           line: 5,
           messageId: 'floating',
           suggestions: [
@@ -2232,6 +2343,9 @@ async function returnsPromise() {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'floating',
           suggestions: [
@@ -2258,6 +2372,9 @@ bool ? returnsPromise() : null;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 32,
+          endLine: 5,
           line: 5,
           messageId: 'floating',
           suggestions: [
@@ -2284,6 +2401,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 11,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2317,6 +2437,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 37,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2353,6 +2476,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2385,6 +2511,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 31,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2417,6 +2546,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 24,
+          endLine: 7,
           line: 7,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2449,6 +2581,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 8,
           line: 8,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2492,6 +2627,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 16,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2531,6 +2669,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2561,6 +2702,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 38,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2591,6 +2735,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 31,
+          endLine: 7,
           line: 7,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2636,6 +2783,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 11,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2670,6 +2820,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 7,
           line: 7,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2704,6 +2857,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 19,
+          endLine: 8,
           line: 8,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2738,6 +2894,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 21,
+          endLine: 9,
           line: 9,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2789,6 +2948,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 12,
+          endLine: 10,
           line: 10,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2827,6 +2989,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 27,
+          endLine: 11,
           line: 11,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2892,6 +3057,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 11,
+          endLine: 18,
           line: 18,
           messageId: 'floatingVoid',
           suggestions: [
@@ -2948,6 +3116,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 19,
           line: 19,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3004,6 +3175,9 @@ async function test() {
           ],
         },
         {
+          column: 3,
+          endColumn: 19,
+          endLine: 20,
           line: 20,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3069,6 +3243,9 @@ async function test() {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 6,
+          endLine: 4,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3100,6 +3277,9 @@ await (async () => {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 6,
+          endLine: 4,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3127,6 +3307,9 @@ await (async () => {
       code: '(async function foo() {})();',
       errors: [
         {
+          column: 1,
+          endColumn: 29,
+          endLine: 1,
           line: 1,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3150,6 +3333,9 @@ function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 31,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3184,6 +3370,9 @@ const foo = () =>
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 10,
+          endLine: 6,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3221,6 +3410,9 @@ const foo = () =>
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 6,
+          endLine: 4,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3252,6 +3444,9 @@ await (async function () {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3288,6 +3483,9 @@ declare const promiseIntersection: Promise<number> & number;
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3318,6 +3516,9 @@ declare const promiseIntersection: Promise<number> & number;
           ],
         },
         {
+          column: 3,
+          endColumn: 38,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3348,6 +3549,9 @@ declare const promiseIntersection: Promise<number> & number;
           ],
         },
         {
+          column: 3,
+          endColumn: 31,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3378,6 +3582,9 @@ declare const promiseIntersection: Promise<number> & number;
           ],
         },
         {
+          column: 3,
+          endColumn: 33,
+          endLine: 7,
           line: 7,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3421,6 +3628,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 33,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3461,6 +3671,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 36,
+          endLine: 6,
           line: 6,
           messageId: 'floating',
           suggestions: [
@@ -3491,6 +3704,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 28,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3531,6 +3747,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 28,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3571,6 +3790,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 28,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3610,6 +3832,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 5,
           line: 5,
           messageId: 'floating',
           suggestions: [
@@ -3638,6 +3863,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 5,
           line: 5,
           messageId: 'floating',
           suggestions: [
@@ -3666,6 +3894,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 5,
           line: 5,
           messageId: 'floating',
           suggestions: [
@@ -3695,6 +3926,9 @@ async function foo() {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 41,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -3742,6 +3976,9 @@ Promise.resolve().catch(definitelyCallable);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 45,
+          endLine: 4,
           line: 4,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
@@ -3784,6 +4021,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 40,
+          endLine: 5,
           line: 5,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
@@ -3826,6 +4066,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 37,
+          endLine: 6,
           line: 6,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
@@ -3868,6 +4111,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 49,
+          endLine: 7,
           line: 7,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
@@ -3910,6 +4156,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 36,
+          endLine: 10,
           line: 10,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
@@ -3952,6 +4201,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 31,
+          endLine: 11,
           line: 11,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
@@ -3994,6 +4246,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 28,
+          endLine: 12,
           line: 12,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
@@ -4036,6 +4291,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 40,
+          endLine: 13,
           line: 13,
           messageId: 'floatingUselessRejectionHandlerVoid',
           suggestions: [
@@ -4085,6 +4343,9 @@ Promise.reject() || 3;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 23,
+          endLine: 2,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4110,6 +4371,9 @@ void Promise.resolve().then(() => {}, undefined);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 50,
+          endLine: 2,
           line: 2,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4131,6 +4395,9 @@ Promise.resolve().then(() => {}, maybeCallable);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 49,
+          endLine: 3,
           line: 3,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4164,6 +4431,9 @@ Promise.resolve().catch(definitelyCallable);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 45,
+          endLine: 4,
           line: 4,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4188,6 +4458,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 40,
+          endLine: 5,
           line: 5,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4212,6 +4485,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 37,
+          endLine: 6,
           line: 6,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4236,6 +4512,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 49,
+          endLine: 7,
           line: 7,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4260,6 +4539,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 36,
+          endLine: 10,
           line: 10,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4284,6 +4566,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 31,
+          endLine: 11,
           line: 11,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4308,6 +4593,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 28,
+          endLine: 12,
           line: 12,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4332,6 +4620,9 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
         {
+          column: 1,
+          endColumn: 40,
+          endLine: 13,
           line: 13,
           messageId: 'floatingUselessRejectionHandler',
           suggestions: [
@@ -4364,6 +4655,9 @@ Promise.reject() || 3;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 23,
+          endLine: 2,
           line: 2,
           messageId: 'floating',
           suggestions: [
@@ -4384,6 +4678,9 @@ Promise.reject().finally(() => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 36,
+          endLine: 2,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4411,6 +4708,9 @@ Promise.reject()
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 22,
+          endLine: 4,
           line: 2,
           messageId: 'floating',
           suggestions: [
@@ -4436,6 +4736,9 @@ Promise.reject()
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 22,
+          endLine: 5,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4469,6 +4772,9 @@ Promise.reject()
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 22,
+          endLine: 4,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4499,6 +4805,9 @@ returnsPromise()?.finally(() => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 37,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4527,6 +4836,9 @@ promiseIntersection.finally(() => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 39,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4554,6 +4866,9 @@ await promiseIntersection.finally(() => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 44,
+          endLine: 2,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4579,6 +4894,9 @@ await (Promise.resolve().finally(() => {}), 123);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 32,
+          endLine: 2,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4604,6 +4922,9 @@ Promise.reject(new Error('message')).finally(() => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 56,
+          endLine: 2,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4633,6 +4954,9 @@ function _<T, S extends Array<T | Promise<T>>>(
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 26,
+          endLine: 5,
           line: 5,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4664,21 +4988,45 @@ function _<T, S extends Array<T | Promise<T>>>(
       code: `
 [1, 2, 3].map(() => Promise.reject());
       `,
-      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
 declare const array: unknown[];
 array.map(() => Promise.reject());
       `,
-      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
 declare const promiseArray: Array<Promise<unknown>>;
 void promiseArray;
       `,
-      errors: [{ line: 3, messageId: 'floatingPromiseArray' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'floatingPromiseArray',
+        },
+      ],
       options: [{ ignoreVoid: false }],
     },
     {
@@ -4688,20 +5036,44 @@ async function f() {
   await promiseArray;
 }
       `,
-      errors: [{ line: 4, messageId: 'floatingPromiseArray' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'floatingPromiseArray',
+        },
+      ],
       options: [{ ignoreVoid: false }],
     },
     {
       code: `
 [1, 2, Promise.reject(), 3];
       `,
-      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
 [1, 2, Promise.reject().catch(() => {}), 3];
       `,
-      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
@@ -4710,7 +5082,15 @@ data.map(async () => {
   await new Promise((_res, rej) => setTimeout(rej, 1000));
 });
       `,
-      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
@@ -4720,7 +5100,15 @@ function _<T, S extends Array<T | Array<T | Promise<T>>>>(
   maybePromiseArrayArray?.[0];
 }
       `,
-      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 31,
+          endLine: 5,
+          line: 5,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
@@ -4728,14 +5116,30 @@ function f<T extends Array<Promise<number>>>(a: T): void {
   a;
 }
       `,
-      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
 declare const a: Array<Promise<number>> | undefined;
 a;
       `,
-      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 3,
+          endLine: 3,
+          line: 3,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
@@ -4743,20 +5147,44 @@ function f<T extends Array<Promise<number>>>(a: T | undefined): void {
   a;
 }
       `,
-      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
 [Promise.reject()] as const;
       `,
-      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
 declare function cursed(): [Promise<number>, Promise<string>];
 cursed();
       `,
-      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
@@ -4768,7 +5196,15 @@ cursed();
   'but it still is flagged',
 ] as const;
       `,
-      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 8,
+          line: 2,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
@@ -4776,14 +5212,30 @@ declare const arrayOrPromiseTuple:
   Array<number> | [number, number, Promise<unknown>, string];
 arrayOrPromiseTuple;
       `,
-      errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
 declare const okArrayOrPromiseArray: Array<number> | Array<Promise<unknown>>;
 okArrayOrPromiseArray;
       `,
-      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
     },
     {
       code: `
@@ -4800,6 +5252,9 @@ promise;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 9,
+          endLine: 11,
           line: 11,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4851,6 +5306,9 @@ promise.catch();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 17,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4885,6 +5343,9 @@ promise().finally();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4919,6 +5380,9 @@ let promise: UnsafePromise = Promise.resolve(5);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 25,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4953,6 +5417,9 @@ null ?? promise().catch();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 27,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -4985,7 +5452,15 @@ type Foo<T> = Promise<T> & { hey?: string };
 declare const arrayOrPromiseTuple: Foo<unknown>[];
 arrayOrPromiseTuple;
       `,
-      errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
     },
     // an array containing elements of `Promise` type and a branded Promise type will be treated as just an ordinary `Promise`.
@@ -4997,7 +5472,15 @@ let foo: SafePromise = Promise.resolve(1);
 let bar = [Promise.resolve(2), foo];
 bar;
       `,
-      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 5,
+          endLine: 5,
+          line: 5,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
       ],
@@ -5008,7 +5491,15 @@ type Foo<T> = Promise<T> & { hey?: string };
 declare const arrayOrPromiseTuple: [Foo<unknown>, 5];
 arrayOrPromiseTuple;
       `,
-      errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'floatingPromiseArrayVoid',
+        },
+      ],
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
     },
     {
@@ -5019,6 +5510,9 @@ myTag\`abc\`;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5051,6 +5545,9 @@ unsafe('...', () => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 25,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
 
@@ -5097,6 +5594,9 @@ it('...', () => {}).then(() => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 36,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5142,6 +5642,9 @@ it('...', () => {}).finally(() => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 39,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5186,6 +5689,9 @@ createPromise();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5220,6 +5726,9 @@ createMyThenable();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 20,
+          endLine: 8,
           line: 8,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5259,6 +5768,9 @@ createPromise();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 17,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5288,6 +5800,9 @@ createMyPromise();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 4,
           line: 4,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5321,6 +5836,9 @@ createMyPromise();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
           line: 6,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5358,6 +5876,10 @@ function* generator(): Generator<number, void, Promise<number>> {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -5391,6 +5913,10 @@ function* generator(): Generator<number, void, void> {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -5422,6 +5948,9 @@ value as Promise<number>;
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5449,6 +5978,9 @@ await (value as Promise<number>);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 34,
+          endLine: 2,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5474,6 +6006,9 @@ await (({}) as Promise<number> & number);
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 45,
+          endLine: 2,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5499,6 +6034,9 @@ await (({}) as Promise<number> & { yolo?: string });
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 21,
+          endLine: 2,
           line: 2,
           messageId: 'floatingVoid',
           suggestions: [
@@ -5524,6 +6062,10 @@ Promise.reject('foo').then();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -5548,6 +6090,10 @@ Promise.reject('foo').finally();
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 33,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -5572,6 +6118,10 @@ Promise.reject('foo').finally(...[], () => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 48,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -5596,6 +6146,10 @@ Promise.reject('foo').then(...[], () => {});
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
           messageId: 'floatingVoid',
           suggestions: [
             {
@@ -5644,6 +6198,10 @@ function wrapNode<T>(getNode: () => CustomNode<T>) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 6,
+          endLine: 20,
+          line: 14,
           messageId: 'floatingVoid',
           suggestions: [
             {

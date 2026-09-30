@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-misused-promises', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 if (true) {
@@ -1174,6 +1177,20 @@ if (f()) {
     },
     {
       code: `
+declare const f: () => number | string | Promise<number> | Promise<boolean>;
+if (f()) {
+}
+      `,
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
 declare const f: () => string[] | Promise<number[]>;
 if (f()) {
 }
@@ -1295,6 +1312,13 @@ if (f()) {
         },
       ],
     },
+    // a `return` with no enclosing function: legal in a CommonJS module
+    `
+return console.log('foo');
+    `,
+    `
+return Promise.resolve();
+    `,
   ],
 
   invalid: [
@@ -1305,6 +1329,9 @@ if (Promise.resolve()) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 22,
+          endLine: 2,
           line: 2,
           messageId: 'conditional',
         },
@@ -1319,10 +1346,16 @@ if (Promise.resolve()) {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 22,
+          endLine: 2,
           line: 2,
           messageId: 'conditional',
         },
         {
+          column: 12,
+          endColumn: 29,
+          endLine: 3,
           line: 3,
           messageId: 'conditional',
         },
@@ -1332,6 +1365,9 @@ if (Promise.resolve()) {
       code: 'for (let i; Promise.resolve(); i++) {}',
       errors: [
         {
+          column: 13,
+          endColumn: 30,
+          endLine: 1,
           line: 1,
           messageId: 'conditional',
         },
@@ -1341,6 +1377,9 @@ if (Promise.resolve()) {
       code: 'do {} while (Promise.resolve());',
       errors: [
         {
+          column: 14,
+          endColumn: 31,
+          endLine: 1,
           line: 1,
           messageId: 'conditional',
         },
@@ -1350,6 +1389,9 @@ if (Promise.resolve()) {
       code: 'while (Promise.resolve()) {}',
       errors: [
         {
+          column: 8,
+          endColumn: 25,
+          endLine: 1,
           line: 1,
           messageId: 'conditional',
         },
@@ -1359,6 +1401,9 @@ if (Promise.resolve()) {
       code: 'Promise.resolve() ? 123 : 456;',
       errors: [
         {
+          column: 1,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditional',
         },
@@ -1371,6 +1416,9 @@ if (!Promise.resolve()) {
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 23,
+          endLine: 2,
           line: 2,
           messageId: 'conditional',
         },
@@ -1380,6 +1428,9 @@ if (!Promise.resolve()) {
       code: 'Promise.resolve() || false;',
       errors: [
         {
+          column: 1,
+          endColumn: 18,
+          endLine: 1,
           line: 1,
           messageId: 'conditional',
         },
@@ -1393,6 +1444,9 @@ if (!Promise.resolve()) {
       `,
       errors: [
         {
+          column: 47,
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'voidReturnArgument',
         },
@@ -1407,6 +1461,9 @@ new Promise(async (resolve, reject) => {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 2,
+          endLine: 5,
           line: 2,
           messageId: 'voidReturnArgument',
         },
@@ -1424,6 +1481,9 @@ fnWithCallback('val', async (err, res) => {
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 2,
+          endLine: 8,
           line: 6,
           messageId: 'voidReturnArgument',
         },
@@ -1439,6 +1499,9 @@ fnWithCallback('val', (err, res) => Promise.resolve(res));
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 57,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnArgument',
         },
@@ -1460,6 +1523,9 @@ fnWithCallback('val', (err, res) => {
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 2,
+          endLine: 12,
           line: 6,
           messageId: 'voidReturnArgument',
         },
@@ -1479,6 +1545,9 @@ fnWithCallback?.('val', (err, res) => Promise.resolve(res));
       `,
       errors: [
         {
+          column: 25,
+          endColumn: 59,
+          endLine: 10,
           line: 10,
           messageId: 'voidReturnArgument',
         },
@@ -1504,6 +1573,9 @@ fnWithCallback('val', (err, res) => {
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 2,
+          endLine: 16,
           line: 10,
           messageId: 'voidReturnArgument',
         },
@@ -1518,6 +1590,9 @@ function test(bool: boolean, p: Promise<void>) {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'conditional',
         },
@@ -1532,6 +1607,9 @@ function test(bool: boolean, p: Promise<void>) {
       `,
       errors: [
         {
+          column: 15,
+          endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'conditional',
         },
@@ -1546,6 +1624,9 @@ function test(a: any, p: Promise<void>) {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 13,
+          endLine: 3,
           line: 3,
           messageId: 'conditional',
         },
@@ -1560,6 +1641,9 @@ function test(p: Promise<void> | undefined) {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 28,
+          endLine: 3,
           line: 3,
           messageId: 'conditional',
         },
@@ -1574,6 +1658,9 @@ f = async () => {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 2,
+          endLine: 5,
           line: 3,
           messageId: 'voidReturnVariable',
         },
@@ -1588,6 +1675,9 @@ f = async () => {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 2,
+          endLine: 5,
           line: 3,
           messageId: 'voidReturnVariable',
         },
@@ -1604,10 +1694,16 @@ const g = async () => 1,
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 2,
+          endLine: 4,
           line: 2,
           messageId: 'voidReturnVariable',
         },
         {
+          column: 19,
+          endColumn: 33,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnVariable',
         },
@@ -1624,6 +1720,9 @@ obj.f = async () => {
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 2,
+          endLine: 7,
           line: 5,
           messageId: 'voidReturnVariable',
         },
@@ -1674,6 +1773,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
           line: 5,
           messageId: 'voidReturnProperty',
         },
@@ -1744,6 +1846,9 @@ function f(): () => void {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'voidReturnReturnValue',
         },
@@ -1757,6 +1862,9 @@ function f(): () => void {
       `,
       errors: [
         {
+          column: 10,
+          endColumn: 23,
+          endLine: 3,
           line: 3,
           messageId: 'voidReturnReturnValue',
         },
@@ -1773,17 +1881,14 @@ const Component = (obj: O) => null;
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 32,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnAttribute',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     {
       code: `
@@ -1795,17 +1900,14 @@ const Component = (obj: O) => null;
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 32,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnAttribute',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ checksVoidReturn: { attributes: true } }],
     },
     {
@@ -1819,17 +1921,14 @@ const Component = (obj: O) => null;
       `,
       errors: [
         {
+          column: 17,
+          endColumn: 20,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnAttribute',
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     {
       code: `
@@ -1844,6 +1943,9 @@ it('', async () => {});
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 22,
+          endLine: 9,
           line: 9,
           messageId: 'voidReturnArgument',
         },
@@ -1864,6 +1966,9 @@ it('', async () => {});
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 22,
+          endLine: 11,
           line: 11,
           messageId: 'voidReturnArgument',
         },
@@ -1884,6 +1989,9 @@ it('', async () => {});
       `,
       errors: [
         {
+          column: 8,
+          endColumn: 22,
+          endLine: 11,
           line: 11,
           messageId: 'voidReturnArgument',
         },
@@ -1895,6 +2003,9 @@ console.log({ ...Promise.resolve({ key: 42 }) });
       `,
       errors: [
         {
+          column: 18,
+          endColumn: 46,
+          endLine: 2,
           line: 2,
           messageId: 'spread',
         },
@@ -1911,6 +2022,9 @@ console.log({
       `,
       errors: [
         {
+          column: 6,
+          endColumn: 15,
+          endLine: 6,
           line: 6,
           messageId: 'spread',
         },
@@ -1926,10 +2040,34 @@ console.log({ ...(condition ? {} : Promise.resolve({ key: 42 })) });
 console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
       `,
       errors: [
-        { line: 4, messageId: 'spread' },
-        { line: 5, messageId: 'spread' },
-        { line: 6, messageId: 'spread' },
-        { line: 7, messageId: 'spread' },
+        {
+          column: 19,
+          endColumn: 60,
+          endLine: 4,
+          line: 4,
+          messageId: 'spread',
+        },
+        {
+          column: 19,
+          endColumn: 60,
+          endLine: 5,
+          line: 5,
+          messageId: 'spread',
+        },
+        {
+          column: 19,
+          endColumn: 64,
+          endLine: 6,
+          line: 6,
+          messageId: 'spread',
+        },
+        {
+          column: 19,
+          endColumn: 64,
+          endLine: 7,
+          line: 7,
+          messageId: 'spread',
+        },
       ],
     },
     {
@@ -1945,9 +2083,27 @@ restPromises(
 );
       `,
       errors: [
-        { line: 6, messageId: 'voidReturnArgument' },
-        { line: 7, messageId: 'voidReturnArgument' },
-        { line: 9, messageId: 'voidReturnArgument' },
+        {
+          column: 3,
+          endColumn: 30,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+        {
+          column: 3,
+          endColumn: 30,
+          endLine: 7,
+          line: 7,
+          messageId: 'voidReturnArgument',
+        },
+        {
+          column: 3,
+          endColumn: 33,
+          endLine: 9,
+          line: 9,
+          messageId: 'voidReturnArgument',
+        },
       ],
     },
     {
@@ -1957,14 +2113,30 @@ type MyUnion = (() => void) | boolean;
 function restUnion(first: string, ...callbacks: Array<MyUnion>): void {}
 restUnion('Testing', false, () => Promise.resolve(true));
       `,
-      errors: [{ line: 5, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 29,
+          endColumn: 56,
+          endLine: 5,
+          line: 5,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
 function restTupleOne(first: string, ...callbacks: [() => void]): void {}
 restTupleOne('My string', () => Promise.resolve(1));
       `,
-      errors: [{ line: 3, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 27,
+          endColumn: 51,
+          endLine: 3,
+          line: 3,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
@@ -1975,7 +2147,15 @@ function restTupleTwo(
 
 restTupleTwo(true, undefined, () => Promise.resolve(true), undefined);
       `,
-      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 31,
+          endColumn: 58,
+          endLine: 7,
+          line: 7,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
@@ -1993,8 +2173,20 @@ restTupleFour(
 );
       `,
       errors: [
-        { line: 9, messageId: 'voidReturnArgument' },
-        { line: 12, messageId: 'voidReturnArgument' },
+        {
+          column: 3,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'voidReturnArgument',
+        },
+        {
+          column: 3,
+          endColumn: 27,
+          endLine: 12,
+          line: 12,
+          messageId: 'voidReturnArgument',
+        },
       ],
     },
     {
@@ -2013,7 +2205,15 @@ new TakesVoidCb(
   () => Promise.resolve(true),
 );
       `,
-      errors: [{ line: 11, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 30,
+          endLine: 11,
+          line: 11,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
@@ -2024,7 +2224,15 @@ function restTuple(..._args: any[]): void {}
 restTuple();
 restTuple(true, () => Promise.resolve(1));
       `,
-      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 17,
+          endColumn: 41,
+          endLine: 7,
+          line: 7,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
@@ -2049,7 +2257,15 @@ const test: ReturnsRecord = () => {
 let value: Record<string, () => void>;
 value.asynchronous = async () => {};
       `,
-      errors: [{ line: 3, messageId: 'voidReturnVariable' }],
+      errors: [
+        {
+          column: 22,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'voidReturnVariable',
+        },
+      ],
     },
     {
       code: `
@@ -2061,7 +2277,15 @@ const test: ReturnsRecord = () => {
   return { asynchronous };
 };
       `,
-      errors: [{ line: 7, messageId: 'voidReturnProperty' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'voidReturnProperty',
+        },
+      ],
     },
     {
       code: `
@@ -2069,7 +2293,15 @@ declare function foo(cb: undefined | (() => void));
 declare const bar: undefined | (() => Promise<void>);
 foo(bar);
       `,
-      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
@@ -2077,7 +2309,15 @@ declare function foo(cb: string & (() => void));
 declare const bar: string & (() => Promise<void>);
 foo(bar);
       `,
-      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
@@ -2088,7 +2328,15 @@ let cbs: Array<() => Promise<boolean>> = [
 ];
 consume(...cbs);
       `,
-      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 9,
+          endColumn: 15,
+          endLine: 7,
+          line: 7,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
@@ -2096,7 +2344,15 @@ function consume(..._callbacks: Array<() => void>): void {}
 let cbs = [() => Promise.resolve(true), () => Promise.resolve(true)] as const;
 consume(...cbs);
       `,
-      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 9,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
@@ -2104,7 +2360,15 @@ function consume(..._callbacks: Array<() => void>): void {}
 let cbs = [() => Promise.resolve(true), () => Promise.resolve(true)];
 consume(...cbs);
       `,
-      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+      errors: [
+        {
+          column: 9,
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnArgument',
+        },
+      ],
     },
     {
       code: `
@@ -2122,7 +2386,10 @@ class MySubclassExtendsMyClass extends MyClass {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyClass' },
+          endColumn: 4,
+          endLine: 11,
           line: 9,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2142,7 +2409,10 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyClass' },
+          endColumn: 38,
+          endLine: 9,
           line: 9,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2162,7 +2432,10 @@ interface MyInterfaceExtendsMyClass extends MyClass {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyClass' },
+          endColumn: 29,
+          endLine: 9,
           line: 9,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2182,7 +2455,10 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyAbstractClass' },
+          endColumn: 4,
+          endLine: 9,
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2200,7 +2476,10 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyAbstractClass' },
+          endColumn: 38,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2218,7 +2497,10 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyAbstractClass' },
+          endColumn: 29,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2238,7 +2520,10 @@ class MyInterfaceSubclass implements MyInterface {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyInterface' },
+          endColumn: 4,
+          endLine: 9,
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2256,7 +2541,10 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyInterface' },
+          endColumn: 38,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2278,7 +2566,10 @@ class MySubclassExtendsMyClass extends MyClass {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyClass' },
+          endColumn: 5,
+          endLine: 11,
           line: 9,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2296,7 +2587,10 @@ abstract class MySubclassExtendsMyClass extends MyClass {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyClass' },
+          endColumn: 51,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2314,7 +2608,10 @@ interface MySubInterface extends MyInterface {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyInterface' },
+          endColumn: 29,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2333,7 +2630,10 @@ class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyTypeIntersection' },
+          endColumn: 4,
+          endLine: 8,
           line: 6,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2351,7 +2651,10 @@ interface MyAsyncInterface extends MyGenericType<false> {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: '{ setThing(): void; }' },
+          endColumn: 29,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2373,12 +2676,18 @@ interface MyThirdInterface extends MyInterface, MyOtherInterface {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyInterface' },
+          endColumn: 29,
+          endLine: 11,
           line: 11,
           messageId: 'voidReturnInheritedMethod',
         },
         {
+          column: 3,
           data: { heritageTypeName: 'MyOtherInterface' },
+          endColumn: 29,
+          endLine: 11,
           line: 11,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2404,12 +2713,18 @@ interface MyInterface extends MyClass, MyOtherClass {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyClass' },
+          endColumn: 29,
+          endLine: 15,
           line: 15,
           messageId: 'voidReturnInheritedMethod',
         },
         {
+          column: 3,
           data: { heritageTypeName: 'MyOtherClass' },
+          endColumn: 29,
+          endLine: 15,
           line: 15,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2439,12 +2754,18 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyClass' },
+          endColumn: 4,
+          endLine: 19,
           line: 17,
           messageId: 'voidReturnInheritedMethod',
         },
         {
+          column: 3,
           data: { heritageTypeName: 'MySyncInterface' },
+          endColumn: 4,
+          endLine: 19,
           line: 17,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2464,7 +2785,10 @@ const MyClassExpressionExtendsMyClass = class implements MyInterface {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyInterface' },
+          endColumn: 4,
+          endLine: 9,
           line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2486,7 +2810,10 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyClassExpression' },
+          endColumn: 4,
+          endLine: 11,
           line: 9,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2507,7 +2834,10 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'typeof MyClassExpression' },
+          endColumn: 29,
+          endLine: 10,
           line: 10,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2534,7 +2864,10 @@ interface MyAsyncInterface extends MySyncInterface {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MySyncInterface' },
+          endColumn: 29,
+          endLine: 16,
           line: 16,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2576,12 +2909,18 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
       `,
       errors: [
         {
+          column: 3,
           data: { heritageTypeName: 'MyMethods' },
+          endColumn: 32,
+          endLine: 29,
           line: 29,
           messageId: 'voidReturnInheritedMethod',
         },
         {
+          column: 3,
           data: { heritageTypeName: 'MyMethods' },
+          endColumn: 43,
+          endLine: 31,
           line: 31,
           messageId: 'voidReturnInheritedMethod',
         },
@@ -2594,6 +2933,9 @@ declare function isTruthy(value: unknown): Promise<boolean>;
       `,
       errors: [
         {
+          column: 18,
+          endColumn: 26,
+          endLine: 3,
           line: 3,
           messageId: 'predicate',
         },
@@ -2606,6 +2948,9 @@ array.every(() => Promise.resolve(true));
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 40,
+          endLine: 3,
           line: 3,
           messageId: 'predicate',
         },
@@ -2618,6 +2963,9 @@ array.every(() => Promise.resolve(true));
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 40,
+          endLine: 3,
           line: 3,
           messageId: 'predicate',
         },
@@ -2630,6 +2978,9 @@ tuple.find(() => Promise.resolve(false));
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 40,
+          endLine: 3,
           line: 3,
           messageId: 'predicate',
         },
@@ -2647,6 +2998,9 @@ useCallbackReturningVoid(async () => {});
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 40,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnArgument',
         },
@@ -2662,6 +3016,9 @@ useCallback<ReturnsVoid>(async () => {});
       `,
       errors: [
         {
+          column: 26,
+          endColumn: 40,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnArgument',
         },
@@ -2679,6 +3036,9 @@ foo(async () => {});
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 19,
+          endLine: 8,
           line: 8,
           messageId: 'voidReturnArgument',
         },
@@ -2697,10 +3057,16 @@ tupleFn<() => void>(
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 17,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnArgument',
         },
         {
+          column: 3,
+          endColumn: 17,
+          endLine: 8,
           line: 8,
           messageId: 'voidReturnArgument',
         },
@@ -2719,10 +3085,16 @@ arrayFn<() => void>(
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 17,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnArgument',
         },
         {
+          column: 3,
+          endColumn: 17,
+          endLine: 8,
           line: 8,
           messageId: 'voidReturnArgument',
         },
@@ -2879,6 +3251,10 @@ const b: Disposable = a;
       `,
       errors: [
         {
+          column: 23,
+          endColumn: 24,
+          endLine: 9,
+          line: 9,
           messageId: 'voidReturnVariable',
         },
       ],
@@ -2891,6 +3267,10 @@ using c = {
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
           messageId: 'voidReturnVariable',
         },
       ],
@@ -2904,6 +3284,10 @@ using e = d;
       `,
       errors: [
         {
+          column: 11,
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
           messageId: 'voidReturnVariable',
         },
       ],
@@ -2911,6 +3295,29 @@ using e = d;
     {
       code: `
 declare const f: () => number | Promise<number>;
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: () => number | string | Promise<number> | Promise<string>;
 if (f()) {
 }
       `,

@@ -9,6 +9,9 @@ import rule from '../../src/rules/unified-signatures';
 const ruleTester = new RuleTester();
 
 ruleTester.run('unified-signatures', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function g(): void;
@@ -117,6 +120,22 @@ interface I {
     `
 function f<T extends number>(x: T[]): void;
 function f<T extends string>(x: T): void;
+    `,
+    // Type parameters with the same name but different constraints
+    `
+type A = 1 | 2;
+type B = 3 | 4;
+function f<T extends A>(x: T, y: string): void;
+function f<T extends B>(x: T): void;
+    `,
+    `
+function f<T extends 1 | 2>(x: T, y: string): void;
+function f<T extends 3 | 4>(x: T): void;
+    `,
+    // Type parameters with the same constraint but different names
+    `
+function f<T extends number>(x: T[]): void;
+function f<R extends number>(x: R): void;
     `,
     // Same name, different scopes
     `
@@ -1104,6 +1123,10 @@ declare module 'foo' {
       errors: [
         {
           column: 41,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           endColumn: 53,
           endLine: 4,
           line: 4,
@@ -1119,6 +1142,10 @@ export default function (foo: number, bar?: string): string[];
       errors: [
         {
           column: 39,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           endColumn: 51,
           endLine: 3,
           line: 3,
@@ -1328,6 +1355,11 @@ function f(this: {}, a: boolean | string): void {}
       errors: [
         {
           column: 22,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            types: 'boolean | string',
+          },
           endColumn: 31,
           endLine: 3,
           line: 3,
@@ -1344,6 +1376,10 @@ function f(this: {}, a?: string): void {}
       errors: [
         {
           column: 22,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+          },
           endColumn: 31,
           endLine: 3,
           line: 3,

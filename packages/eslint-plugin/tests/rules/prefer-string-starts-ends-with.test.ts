@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-string-starts-ends-with', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function f(s: string[]) {
@@ -317,7 +320,15 @@ function f(s: string) {
   s[0] === 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith('a');
@@ -330,7 +341,15 @@ function f(s: string) {
   s?.[0] === 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s?.startsWith('a');
@@ -343,7 +362,15 @@ function f(s: string) {
   s[0] !== 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith('a');
@@ -356,7 +383,15 @@ function f(s: string) {
   s?.[0] !== 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s?.startsWith('a');
@@ -369,7 +404,15 @@ function f(s: string) {
   s[0] == 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith('a');
@@ -382,7 +425,15 @@ function f(s: string) {
   s[0] != 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith('a');
@@ -395,7 +446,15 @@ function f(s: string) {
   s[0] === 'あ';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith('あ');
@@ -408,7 +467,15 @@ function f(s: string) {
   s[0] === '👍'; // the length is 2.
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: null,
     },
     {
@@ -417,7 +484,15 @@ function f(s: string, t: string) {
   s[0] === t; // the length of t is unknown.
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: null,
     },
     {
@@ -426,7 +501,15 @@ function f(s: string) {
   s[s.length - 1] === 'a';
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith('a');
@@ -439,7 +522,15 @@ function f(s: string) {
           (s)[0] === ("a")
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
         function f(s: string) {
           (s).startsWith("a")
@@ -454,7 +545,15 @@ function f(s: string) {
   s.charAt(0) === 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith('a');
@@ -467,7 +566,15 @@ function f(s: string) {
   s.charAt(0) !== 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith('a');
@@ -480,7 +587,15 @@ function f(s: string) {
   s.charAt(0) == 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith('a');
@@ -493,7 +608,15 @@ function f(s: string) {
   s.charAt(0) != 'a';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith('a');
@@ -506,7 +629,15 @@ function f(s: string) {
   s.charAt(0) === 'あ';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith('あ');
@@ -519,7 +650,15 @@ function f(s: string) {
   s.charAt(0) === '👍'; // the length is 2.
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: null,
     },
     {
@@ -528,7 +667,15 @@ function f(s: string, t: string) {
   s.charAt(0) === t; // the length of t is unknown.
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: null,
     },
     {
@@ -537,7 +684,15 @@ function f(s: string) {
   s.charAt(s.length - 1) === 'a';
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith('a');
@@ -550,7 +705,15 @@ function f(s: string) {
           (s).charAt(0) === "a";
         }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 11,
+          endColumn: 32,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
         function f(s: string) {
           (s).startsWith("a");
@@ -565,7 +728,15 @@ function f(s: string) {
   s.indexOf(needle) === 0;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith(needle);
@@ -578,7 +749,15 @@ function f(s: string) {
   s?.indexOf(needle) === 0;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s?.startsWith(needle);
@@ -591,7 +770,15 @@ function f(s: string) {
   s.indexOf(needle) !== 0;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith(needle);
@@ -604,7 +791,15 @@ function f(s: string) {
   s.indexOf(needle) == 0;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith(needle);
@@ -617,7 +812,15 @@ function f(s: string) {
   s.indexOf(needle) != 0;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith(needle);
@@ -632,7 +835,15 @@ function f(s: string) {
   s.lastIndexOf('bar') === s.length - 3;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith('bar');
@@ -645,7 +856,15 @@ function f(s: string) {
   s.lastIndexOf('bar') !== s.length - 3;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.endsWith('bar');
@@ -658,7 +877,15 @@ function f(s: string) {
   s.lastIndexOf('bar') == s.length - 3;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith('bar');
@@ -671,7 +898,15 @@ function f(s: string) {
   s.lastIndexOf('bar') != s.length - 3;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.endsWith('bar');
@@ -684,7 +919,15 @@ function f(s: string) {
   s.lastIndexOf('bar') === s.length - 'bar'.length;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 51,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith('bar');
@@ -697,7 +940,15 @@ function f(s: string) {
   s.lastIndexOf(needle) === s.length - needle.length;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 53,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith(needle);
@@ -712,7 +963,15 @@ function f(s: string) {
   s.match(/^bar/) !== null;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith("bar");
@@ -725,7 +984,15 @@ function f(s: string) {
   s?.match(/^bar/) !== null;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s?.startsWith("bar");
@@ -738,7 +1005,15 @@ function f(s: string) {
   s.match(/^bar/) != null;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith("bar");
@@ -751,7 +1026,15 @@ function f(s: string) {
   s.match(/bar$/) !== null;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith("bar");
@@ -764,7 +1047,15 @@ function f(s: string) {
   s.match(/bar$/) != null;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith("bar");
@@ -777,7 +1068,15 @@ function f(s: string) {
   s.match(/^bar/) === null;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith("bar");
@@ -790,7 +1089,15 @@ function f(s: string) {
   s.match(/^bar/) == null;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith("bar");
@@ -803,7 +1110,15 @@ function f(s: string) {
   s.match(/bar$/) === null;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.endsWith("bar");
@@ -816,7 +1131,15 @@ function f(s: string) {
   s.match(/bar$/) == null;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.endsWith("bar");
@@ -830,7 +1153,15 @@ function f(s: string) {
   s.match(pattern) != null;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 const pattern = /^bar/;
 function f(s: string) {
@@ -845,7 +1176,15 @@ function f(s: string) {
   s.match(pattern) != null;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 const pattern = new RegExp('^bar');
 function f(s: string) {
@@ -860,7 +1199,15 @@ function f(s: string) {
   s.match(pattern) != null;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 const pattern = /^"quoted"/;
 function f(s: string) {
@@ -876,7 +1223,15 @@ function f(s: string) {
   s.slice(0, 3) === 'bar';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith('bar');
@@ -889,7 +1244,15 @@ function f(s: string) {
   s?.slice(0, 3) === 'bar';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s?.startsWith('bar');
@@ -902,7 +1265,15 @@ function f(s: string) {
   s.slice(0, 3) !== 'bar';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith('bar');
@@ -915,7 +1286,15 @@ function f(s: string) {
   s.slice(0, 3) == 'bar';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith('bar');
@@ -928,7 +1307,15 @@ function f(s: string) {
   s.slice(0, 3) != 'bar';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.startsWith('bar');
@@ -941,7 +1328,15 @@ function f(s: string) {
   s.slice(0, needle.length) === needle;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith(needle);
@@ -954,7 +1349,15 @@ function f(s: string) {
   s.slice(0, needle.length) == needle; // hating implicit type conversion
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: null,
     },
     {
@@ -963,7 +1366,15 @@ function f(s: string) {
   s.slice(-3) === 'bar';
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith('bar');
@@ -976,7 +1387,15 @@ function f(s: string) {
   s.slice(-3) !== 'bar';
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   !s.endsWith('bar');
@@ -989,7 +1408,15 @@ function f(s: string) {
   s.slice(-needle.length) === needle;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith(needle);
@@ -1002,7 +1429,15 @@ function f(s: string) {
   s.slice(s.length - needle.length) === needle;
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 47,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith(needle);
@@ -1015,7 +1450,15 @@ function f(s: string) {
   s.substring(0, 3) === 'bar';
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith('bar');
@@ -1028,7 +1471,15 @@ function f(s: string) {
   s.substring(-3) === 'bar'; // the code is probably mistake.
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: null,
     },
     {
@@ -1037,7 +1488,15 @@ function f(s: string) {
   s.substring(s.length - 3, s.length) === 'bar';
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 48,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith('bar');
@@ -1052,7 +1511,15 @@ function f(s: string) {
   /^bar/.test(s);
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.startsWith("bar");
@@ -1065,7 +1532,15 @@ function f(s: string) {
   /^bar/?.test(s);
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s?.startsWith("bar");
@@ -1078,7 +1553,15 @@ function f(s: string) {
   /bar$/.test(s);
 }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   s.endsWith("bar");
@@ -1092,7 +1575,15 @@ function f(s: string) {
   pattern.test(s);
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 const pattern = /^bar/;
 function f(s: string) {
@@ -1107,7 +1598,15 @@ function f(s: string) {
   pattern.test(s);
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 const pattern = new RegExp('^bar');
 function f(s: string) {
@@ -1122,7 +1621,15 @@ function f(s: string) {
   pattern.test(s);
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 const pattern = /^"quoted"/;
 function f(s: string) {
@@ -1136,7 +1643,15 @@ function f(s: string) {
   /^bar/.test(a + b);
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: string) {
   (a + b).startsWith("bar");
@@ -1151,7 +1666,15 @@ function f(s: 'a' | 'b') {
   s.indexOf(needle) === 0;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f(s: 'a' | 'b') {
   s.startsWith(needle);
@@ -1164,7 +1687,15 @@ function f<T extends 'a' | 'b'>(s: T) {
   s.indexOf(needle) === 0;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 function f<T extends 'a' | 'b'>(s: T) {
   s.startsWith(needle);
@@ -1178,7 +1709,15 @@ function f(s: SafeString) {
   s.indexOf(needle) === 0;
 }
       `,
-      errors: [{ messageId: 'preferStartsWith' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 26,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStartsWith',
+        },
+      ],
       output: `
 type SafeString = string & { __HTML_ESCAPED__: void };
 function f(s: SafeString) {
@@ -1188,12 +1727,28 @@ function f(s: SafeString) {
     },
     {
       code: "/foo$/.test('string');",
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: '\'string\'.endsWith("foo");',
     },
     {
       code: "/foo\\\\$/.test('string');",
-      errors: [{ messageId: 'preferEndsWith' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'preferEndsWith',
+        },
+      ],
       output: '\'string\'.endsWith("foo\\\\");',
     },
   ],

@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-unnecessary-type-parameters', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class ClassyArray<T> {
@@ -428,7 +431,11 @@ const f = <T,>(
       code: 'const func = <T,>(param: T) => null;',
       errors: [
         {
+          column: 15,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -443,7 +450,11 @@ const f = <T,>(
       code: 'const func = <T,>(param: [T]) => null;',
       errors: [
         {
+          column: 15,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -458,7 +469,11 @@ const f = <T,>(
       code: 'const func = <T,>(param: T[]) => null;',
       errors: [
         {
+          column: 15,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -473,7 +488,11 @@ const f = <T,>(
       code: 'const f1 = <T,>(): T => {};',
       errors: [
         {
+          column: 13,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -492,7 +511,11 @@ interface I {
       `,
       errors: [
         {
+          column: 4,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -515,6 +538,11 @@ interface I {
       `,
       errors: [
         {
+          column: 5,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -539,7 +567,11 @@ class Joiner<T extends string | number> {
       `,
       errors: [
         {
+          column: 14,
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -562,7 +594,11 @@ declare class C<V> {}
       `,
       errors: [
         {
+          column: 17,
           data: { descriptor: 'class', name: 'V', uses: 'never used' },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -583,7 +619,11 @@ declare class C<T, U> {
       `,
       errors: [
         {
+          column: 17,
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -597,7 +637,11 @@ declare class C<U> {
           ],
         },
         {
+          column: 20,
           data: { descriptor: 'class', name: 'U', uses: 'used only once' },
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -620,7 +664,11 @@ declare class C {
       `,
       errors: [
         {
+          column: 10,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -634,7 +682,11 @@ declare class C {
           ],
         },
         {
+          column: 13,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -657,7 +709,11 @@ declare class C {
       `,
       errors: [
         {
+          column: 10,
           data: { descriptor: 'function', name: 'P', uses: 'used only once' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -680,7 +736,11 @@ declare class Foo {
       `,
       errors: [
         {
+          column: 7,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -703,7 +763,11 @@ function third<A, B, C>(a: A, b: B, c: C): C {
       `,
       errors: [
         {
+          column: 16,
           data: { descriptor: 'function', name: 'A', uses: 'used only once' },
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -717,7 +781,11 @@ function third<B, C>(a: unknown, b: B, c: C): C {
           ],
         },
         {
+          column: 19,
           data: { descriptor: 'function', name: 'B', uses: 'used only once' },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -741,7 +809,11 @@ function foo<T>(_: T) {
       `,
       errors: [
         {
+          column: 14,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -766,7 +838,11 @@ function foo<T>(_: T): void {
       `,
       errors: [
         {
+          column: 14,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -792,7 +868,11 @@ function foo<T>(_: T): <T>(input: T) => T {
       `,
       errors: [
         {
+          column: 14,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -822,7 +902,11 @@ function foo<T>(_: T) {
       `,
       errors: [
         {
+          column: 14,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -850,7 +934,11 @@ function parseYAML<T>(input: string): T {
       `,
       errors: [
         {
+          column: 20,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 21,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -873,7 +961,11 @@ function printProperty<T, K extends keyof T>(obj: T, key: K) {
       `,
       errors: [
         {
+          column: 27,
           data: { descriptor: 'function', name: 'K', uses: 'used only once' },
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -897,7 +989,11 @@ function fn<T>(param: string) {
       `,
       errors: [
         {
+          column: 13,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 14,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -928,7 +1024,11 @@ function both<
       `,
       errors: [
         {
+          column: 3,
           data: { descriptor: 'function', name: 'CB1', uses: 'used only once' },
+          endColumn: 38,
+          endLine: 4,
+          line: 4,
           messageId: 'sole',
           suggestions: [
             {
@@ -948,7 +1048,11 @@ function both<
           ],
         },
         {
+          column: 3,
           data: { descriptor: 'function', name: 'CB2', uses: 'used only once' },
+          endColumn: 38,
+          endLine: 5,
+          line: 5,
           messageId: 'sole',
           suggestions: [
             {
@@ -977,7 +1081,11 @@ function getLength<T extends { length: number }>(x: T) {
       `,
       errors: [
         {
+          column: 20,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 48,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1003,7 +1111,11 @@ function getLength<T extends Lengthy>(x: T) {
       `,
       errors: [
         {
+          column: 20,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 5,
+          line: 5,
           messageId: 'sole',
           suggestions: [
             {
@@ -1025,7 +1137,11 @@ function getLength(x: Lengthy) {
       code: 'declare function get<T>(): unknown;',
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1040,7 +1156,11 @@ function getLength(x: Lengthy) {
       code: 'declare function get<T>(): T;',
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1055,7 +1175,11 @@ function getLength(x: Lengthy) {
       code: 'declare function get<T extends object>(): T;',
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1070,7 +1194,11 @@ function getLength(x: Lengthy) {
       code: 'declare function take<T>(param: T): void;',
       errors: [
         {
+          column: 23,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1085,7 +1213,11 @@ function getLength(x: Lengthy) {
       code: 'declare function take<T extends object>(param: T): void;',
       errors: [
         {
+          column: 23,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1100,7 +1232,11 @@ function getLength(x: Lengthy) {
       code: 'declare function take<T, U = T>(param1: T, param2: U): void;',
       errors: [
         {
+          column: 26,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1116,7 +1252,11 @@ function getLength(x: Lengthy) {
       code: 'declare function take<T, U extends T>(param: T): U;',
       errors: [
         {
+          column: 26,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1131,7 +1271,11 @@ function getLength(x: Lengthy) {
       code: 'declare function take<T, U extends T>(param: U): U;',
       errors: [
         {
+          column: 23,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1146,7 +1290,11 @@ function getLength(x: Lengthy) {
       code: 'declare function get<T, U = T>(param: U): U;',
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1161,7 +1309,11 @@ function getLength(x: Lengthy) {
       code: 'declare function get<T, U extends T = T>(param: T): U;',
       errors: [
         {
+          column: 25,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1176,7 +1328,11 @@ function getLength(x: Lengthy) {
       code: 'declare function compare<T, U extends T>(param1: T, param2: U): boolean;',
       errors: [
         {
+          column: 29,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          endColumn: 40,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1192,7 +1348,11 @@ function getLength(x: Lengthy) {
       code: 'declare function get<T>(param: <U, V>(param: U) => V): T;',
       errors: [
         {
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1203,7 +1363,11 @@ function getLength(x: Lengthy) {
           ],
         },
         {
+          column: 33,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1214,7 +1378,11 @@ function getLength(x: Lengthy) {
           ],
         },
         {
+          column: 36,
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1233,6 +1401,7 @@ function getLength(x: Lengthy) {
           column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           endColumn: 23,
+          endLine: 1,
           line: 1,
           messageId: 'sole',
           suggestions: [
@@ -1247,6 +1416,8 @@ function getLength(x: Lengthy) {
           column: 33,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           endColumn: 34,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1260,6 +1431,8 @@ function getLength(x: Lengthy) {
           column: 36,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
           endColumn: 37,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1275,7 +1448,11 @@ function getLength(x: Lengthy) {
       code: 'declare function makeReadonlyArray<T>(): readonly T[];',
       errors: [
         {
+          column: 36,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1291,7 +1468,11 @@ function getLength(x: Lengthy) {
       code: 'declare function makeReadonlyTuple<T>(): readonly [T];',
       errors: [
         {
+          column: 36,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1307,7 +1488,11 @@ function getLength(x: Lengthy) {
       code: 'declare function makeReadonlyTupleNullish<T>(): readonly [T | null];',
       errors: [
         {
+          column: 43,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1323,7 +1508,11 @@ function getLength(x: Lengthy) {
       code: 'declare function takeArray<T>(input: T[]): void;',
       errors: [
         {
+          column: 28,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1338,7 +1527,11 @@ function getLength(x: Lengthy) {
       code: 'declare function takeArrayNullish<T>(input: (T | null)[]): void;',
       errors: [
         {
+          column: 35,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1354,7 +1547,11 @@ function getLength(x: Lengthy) {
       code: 'declare function takeTuple<T>(input: [T]): void;',
       errors: [
         {
+          column: 28,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1369,7 +1566,11 @@ function getLength(x: Lengthy) {
       code: 'declare function takeTupleMultiUnrelated<T>(input: [T, number]): void;',
       errors: [
         {
+          column: 42,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1389,7 +1590,11 @@ declare function takeTupleMultiUnrelatedNullish<T>(
       `,
       errors: [
         {
+          column: 49,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1408,7 +1613,11 @@ declare function takeTupleMultiUnrelatedNullish(
       code: 'type Fn = <T>() => T;',
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1423,7 +1632,11 @@ declare function takeTupleMultiUnrelatedNullish(
       code: 'type Fn = <T>() => [];',
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1441,7 +1654,11 @@ type Fn = <T>() => Other;
       `,
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -1462,7 +1679,11 @@ type Fn = <T>() => Other;
       `,
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -1480,7 +1701,11 @@ type Fn = () => Other;
       code: 'type Fn = <U>(param: U) => void;',
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1495,7 +1720,11 @@ type Fn = () => Other;
       code: 'type Ctr = new <T>() => T;',
       errors: [
         {
+          column: 17,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 18,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1510,7 +1739,11 @@ type Fn = () => Other;
       code: 'type Fn = <T>() => { [K in keyof T]: K };',
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1525,7 +1758,11 @@ type Fn = () => Other;
       code: "type Fn = <T>() => { [K in 'a']: T };",
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1540,7 +1777,11 @@ type Fn = () => Other;
       code: 'type Fn = <T>(value: unknown) => value is T;',
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1555,7 +1796,11 @@ type Fn = () => Other;
       code: 'type Fn = <T extends string>() => `a${T}b`;',
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
           messageId: 'sole',
           suggestions: [
             {
@@ -1575,7 +1820,11 @@ declare function mapObj<K extends string, V>(
       `,
       errors: [
         {
+          column: 43,
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1597,7 +1846,11 @@ declare function setItem<T>(T): T;
       `,
       errors: [
         {
+          column: 26,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1618,7 +1871,11 @@ interface StorageService {
       `,
       errors: [
         {
+          column: 11,
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -1650,7 +1907,11 @@ type Equal<X, Y> =
       `,
       errors: [
         {
+          column: 5,
           data: { descriptor: 'function', name: 'T1', uses: 'used only once' },
+          endColumn: 7,
+          endLine: 4,
+          line: 4,
           messageId: 'sole',
           suggestions: [
             {
@@ -1667,7 +1928,11 @@ type Equal<X, Y> =
           ],
         },
         {
+          column: 7,
           data: { descriptor: 'function', name: 'T2', uses: 'used only once' },
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
           messageId: 'sole',
           suggestions: [
             {
@@ -1694,7 +1959,11 @@ function f<T extends any>(x: T): void {
       `,
       errors: [
         {
+          column: 12,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1720,7 +1989,11 @@ class Joiner {
       `,
       errors: [
         {
+          column: 8,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'sole',
           suggestions: [
             {
@@ -1745,7 +2018,11 @@ function join<T extends string | number>(els: T[]) {
       `,
       errors: [
         {
+          column: 15,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1768,7 +2045,11 @@ function join<T extends string & number>(els: T[]) {
       `,
       errors: [
         {
+          column: 15,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1791,7 +2072,11 @@ function join<T extends (string & number) | boolean>(els: T[]) {
       `,
       errors: [
         {
+          column: 15,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 52,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1814,7 +2099,11 @@ function join<T extends (string | number)>(els: T[]) {
       `,
       errors: [
         {
+          column: 15,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1837,7 +2126,11 @@ function join<T extends { hoge: string } | { hoge: number }>(els: T['hoge'][]) {
       `,
       errors: [
         {
+          column: 15,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 60,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
@@ -1861,7 +2154,11 @@ declare function f<T extends A | B>(): T & C;
       `,
       errors: [
         {
+          column: 20,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 35,
+          endLine: 5,
+          line: 5,
           messageId: 'sole',
           suggestions: [
             {
@@ -1887,7 +2184,11 @@ declare function f<T extends (A extends B ? C : D)>(): T | null;
       `,
       errors: [
         {
+          column: 20,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 51,
+          endLine: 6,
+          line: 6,
           messageId: 'sole',
           suggestions: [
             {
@@ -1899,6 +2200,185 @@ type C = string;
 type D = string;
 declare function f(): (A extends B ? C : D) | null;
       `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends () => number>(arg: T[]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 44,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: (() => number)[]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  a: string;
+  b: number;
+}
+declare function foo<T extends keyof Foo>(arg: T[]): void;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 41,
+          endLine: 6,
+          line: 6,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+interface Foo {
+  a: string;
+  b: number;
+}
+declare function foo(arg: (keyof Foo)[]): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends () => void>(arg: T | string): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: (() => void) | string): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  x: string;
+  shared: string;
+}
+interface B {
+  y: string;
+  shared: string;
+}
+declare function foo<T extends A | B>(k: keyof T): void;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 37,
+          endLine: 10,
+          line: 10,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+interface A {
+  x: string;
+  shared: string;
+}
+interface B {
+  y: string;
+  shared: string;
+}
+declare function foo(k: keyof (A | B)): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+declare function bar<T extends new () => Foo>(arg: T[]): void;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+class Foo {}
+declare function bar(arg: (new () => Foo)[]): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo<T extends () => Promise<string>>(
+  arg: T extends () => Promise<infer R> ? R : never,
+): void;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 53,
+          endLine: 2,
+          line: 2,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare function foo(
+  arg: (() => Promise<string>) extends () => Promise<infer R> ? R : never,
+): void;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends readonly string[]>(x: T[]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 49,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(x: (readonly string[])[]): void;',
             },
           ],
         },

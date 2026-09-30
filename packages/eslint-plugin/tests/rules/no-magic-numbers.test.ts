@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-magic-numbers';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-magic-numbers', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     {
       code: 'const FOO = 10;',

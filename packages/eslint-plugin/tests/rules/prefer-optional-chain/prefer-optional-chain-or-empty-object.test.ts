@@ -6,6 +6,53 @@ import { createRuleTesterWithTypes } from '../../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-optional-chain-or-empty-object', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
+  valid: [
+    'foo || {};',
+    'foo || ({} as any);',
+    '(foo || {})?.bar;',
+    '(foo || { bar: 1 }).bar;',
+    '(undefined && (foo || {})).bar;',
+    'foo ||= bar || {};',
+    'foo ||= bar?.baz || {};',
+    '(foo1 ? foo2 : foo3 || {}).foo4;',
+    '(foo = 2 || {}).bar;',
+    'func(foo || {}).bar;',
+    'foo ?? {};',
+    '(foo ?? {})?.bar;',
+    'foo ||= bar ?? {};',
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+    `
+const a = null;
+const b = 0;
+a === undefined || b === null || b === undefined;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+    `
+const a = 0;
+const b = 0;
+a === undefined || b === undefined || b === null;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+    `
+const a = 0;
+const b = 0;
+b === null || a === undefined || b === undefined;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+    `
+const b = 0;
+b === null || b === undefined;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+    `
+const a = 0;
+const b = 0;
+b != null && a !== null && a !== undefined;
+    `,
+  ],
   invalid: [
     {
       code: '(foo || {}).bar;',
@@ -730,49 +777,5 @@ if (foo?.bar) {
         },
       ],
     },
-  ],
-  valid: [
-    'foo || {};',
-    'foo || ({} as any);',
-    '(foo || {})?.bar;',
-    '(foo || { bar: 1 }).bar;',
-    '(undefined && (foo || {})).bar;',
-    'foo ||= bar || {};',
-    'foo ||= bar?.baz || {};',
-    '(foo1 ? foo2 : foo3 || {}).foo4;',
-    '(foo = 2 || {}).bar;',
-    'func(foo || {}).bar;',
-    'foo ?? {};',
-    '(foo ?? {})?.bar;',
-    'foo ||= bar ?? {};',
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-    `
-const a = null;
-const b = 0;
-a === undefined || b === null || b === undefined;
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-    `
-const a = 0;
-const b = 0;
-a === undefined || b === undefined || b === null;
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-    `
-const a = 0;
-const b = 0;
-b === null || a === undefined || b === undefined;
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-    `
-const b = 0;
-b === null || b === undefined;
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-    `
-const a = 0;
-const b = 0;
-b != null && a !== null && a !== undefined;
-    `,
   ],
 });

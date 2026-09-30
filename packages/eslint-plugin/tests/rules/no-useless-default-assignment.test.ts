@@ -7,6 +7,9 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-useless-default-assignment', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function Bar({ foo = '' }: { foo?: string }) {
@@ -226,6 +229,26 @@ useCallback((value: number[] = []) => {});
 declare const tuple: [string];
 const [a, b = 'default'] = tuple;
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12767
+    `
+declare const commands: [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+declare const commands: readonly [string, ...string[]];
+const [cmd, arg = 'run'] = commands;
+    `,
+    `
+function run([cmd, arg = 'run']: [string, ...string[]]) {}
+    `,
+    `
+declare const mixed: [boolean, ...number[], string];
+const [a, b, c = 0] = mixed;
+    `,
+    `
+declare const items: [...string[], string | undefined];
+const [first = 'fallback'] = items;
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/11911
     `
 const run = (cb: (...args: unknown[]) => void) => cb();
@@ -354,6 +377,32 @@ const fn: Fn = (value = 'default') => {
   invalid: [
     {
       code: `
+declare const mixed: [boolean, ...number[], string];
+const [a, b = 0] = mixed;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { type: 'property' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+declare const mixed: [boolean, ...number[], string];
+const [a, b] = mixed;
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
 function Bar({ foo = '' }: { foo: string }) {
   return foo;
 }
@@ -363,15 +412,22 @@ function Bar({ foo = '' }: { foo: string }) {
           column: 22,
           data: { type: 'property' },
           endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function Bar({ foo }: { foo: string }) {
   return foo;
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -386,17 +442,24 @@ class C {
           column: 25,
           data: { type: 'property' },
           endColumn: 27,
+          endLine: 3,
           line: 3,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 class C {
   public method({ foo }: { foo: string }) {
     return foo;
   }
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -407,13 +470,20 @@ const { 'literal-key': literalKey = 'default' } = { 'literal-key': 'value' };
           column: 37,
           data: { type: 'property' },
           endColumn: 46,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { 'literal-key': literalKey } = { 'literal-key': 'value' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -424,13 +494,20 @@ const { 'literal-key': literalKey } = { 'literal-key': 'value' };
           column: 20,
           data: { type: 'parameter' },
           endColumn: 22,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 [1, 2, 3].map((a) => a + 1);
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -445,17 +522,24 @@ function getValue({ value = '' }: { value: string } = {}): string | undefined {
           column: 29,
           data: { type: 'property' },
           endColumn: 31,
+          endLine: 4,
           line: 4,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function getValue(): undefined;
 function getValue(box: { value: string }): string;
 function getValue({ value }: { value: string } = {}): string | undefined {
   return value;
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -468,15 +552,22 @@ function getValue([value = '']: [string]) {
           column: 28,
           data: { type: 'property' },
           endColumn: 30,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function getValue([value]: [string]) {
   return value;
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -491,17 +582,24 @@ const {
           column: 20,
           data: { type: 'property' },
           endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 declare const x: { hello: { world: string } };
 
 const {
   hello: { world },
 } = x;
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -516,17 +614,24 @@ const {
           column: 21,
           data: { type: 'property' },
           endColumn: 23,
+          endLine: 5,
           line: 5,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 declare const x: { hello: Array<{ world: string }> };
 
 const {
   hello: [{ world }],
 } = x;
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -543,11 +648,13 @@ const h: B = {
           column: 13,
           data: { type: 'parameter' },
           endColumn: 18,
+          endLine: 7,
           line: 7,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 interface B {
   foo: (b: boolean | string) => void;
 }
@@ -556,6 +663,11 @@ const h: B = {
   foo: (b) => {},
 };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -566,13 +678,20 @@ function foo(a = undefined) {}
           column: 18,
           data: { type: 'parameter' },
           endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function foo(a) {}
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -583,13 +702,20 @@ const { a = undefined } = {};
           column: 13,
           data: { type: 'property' },
           endColumn: 22,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = {};
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -600,13 +726,20 @@ const [a = undefined] = [];
           column: 12,
           data: { type: 'property' },
           endColumn: 21,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const [a] = [];
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -617,13 +750,20 @@ function foo({ a = undefined }) {}
           column: 20,
           data: { type: 'property' },
           endColumn: 29,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 function foo({ a }) {}
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/11847
     {
@@ -636,15 +776,22 @@ function myFunction(p1: string, p2: number | undefined = undefined) {
         {
           column: 58,
           endColumn: 67,
+          endLine: 2,
           line: 2,
           messageId: 'preferOptionalSyntax',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
 function myFunction(p1: string, p2?: number | undefined) {
   console.log(p1, p2);
 }
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -657,16 +804,23 @@ function f(
         {
           column: 96,
           endColumn: 105,
+          endLine: 4,
           line: 4,
           messageId: 'preferOptionalSyntax',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'useOptionalSyntax',
+              output: `
 type SomeType = number | undefined;
 function f(
   /* comment */ x? /* comment 2 */ : /* comment 3 */ SomeType,
 ) {}
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     // noStrictNullCheck tests
     {
@@ -678,6 +832,8 @@ function Bar({ foo = '' }: { foo: string }) {
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
@@ -685,8 +841,19 @@ function Bar({ foo = '' }: { foo: string }) {
           column: 22,
           data: { type: 'property' },
           endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function Bar({ foo }: { foo: string }) {
+  return foo;
+}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -694,11 +861,7 @@ function Bar({ foo = '' }: { foo: string }) {
           tsconfigRootDir: path.join(rootDir, 'unstrict'),
         },
       },
-      output: `
-function Bar({ foo }: { foo: string }) {
-  return foo;
-}
-      `,
+      output: null,
     },
     {
       code: `
@@ -707,6 +870,8 @@ function foo(a = undefined) {}
       errors: [
         {
           column: 1,
+          endColumn: 1,
+          endLine: 0,
           line: 0,
           messageId: 'noStrictNullCheck',
         },
@@ -714,8 +879,17 @@ function foo(a = undefined) {}
           column: 18,
           data: { type: 'parameter' },
           endColumn: 27,
+          endLine: 2,
           line: 2,
           messageId: 'uselessUndefined',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function foo(a) {}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -723,9 +897,7 @@ function foo(a = undefined) {}
           tsconfigRootDir: path.join(rootDir, 'unstrict'),
         },
       },
-      output: `
-function foo(a) {}
-      `,
+      output: null,
     },
     {
       code: `
@@ -738,8 +910,19 @@ function Bar({ foo = '' }: { foo: string }) {
           column: 22,
           data: { type: 'property' },
           endColumn: 24,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
+function Bar({ foo }: { foo: string }) {
+  return foo;
+}
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -748,15 +931,9 @@ function Bar({ foo = '' }: { foo: string }) {
         },
       },
       options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
+        { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true },
       ],
-      output: `
-function Bar({ foo }: { foo: string }) {
-  return foo;
-}
-      `,
+      output: null,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/11980
     {
@@ -766,14 +943,22 @@ const { a = 'baz' } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = Math.random() < 0.5 ? { a: 'foo' } : { a: 'bar' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -787,12 +972,15 @@ const { a = 'baz' } =
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } =
   Math.random() < 0.5
     ? { a: 'foo' }
@@ -800,6 +988,11 @@ const { a } =
       ? { a: 'bar' }
       : { a: 'qux' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -808,14 +1001,22 @@ const { a = 'baz' } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = cond ? { ['a']: 'foo' } : { ['a']: 'bar' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -824,14 +1025,22 @@ const { a = 'baz' } = cond ? { a() {} } : { a: 'bar' };
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 18,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = cond ? { a() {} } : { a: 'bar' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -840,14 +1049,22 @@ const { a = 'b' } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
       errors: [
         {
           column: 13,
+          data: { type: 'property' },
           endColumn: 16,
+          endLine: 2,
           line: 2,
           messageId: 'uselessDefaultAssignment',
-        },
-      ],
-      output: `
+          suggestions: [
+            {
+              messageId: 'removeDefaultAssignment',
+              output: `
 const { a } = Math.random() < 0.5 ? { [\`a\`]: 'a' } : { a: 'b' };
       `,
+            },
+          ],
+        },
+      ],
+      output: null,
     },
   ],
 });

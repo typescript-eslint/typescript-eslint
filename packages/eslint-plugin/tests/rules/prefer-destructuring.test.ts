@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-destructuring', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // type annotated
     `
@@ -468,7 +471,11 @@ class C {
       code: 'var foo: string = object.foo;',
       errors: [
         {
+          column: 5,
           data: { type: 'object' },
+          endColumn: 29,
+          endLine: 1,
+          line: 1,
           messageId: 'preferDestructuring',
         },
       ],
@@ -482,7 +489,11 @@ class C {
       code: 'var foo: string = array[0];',
       errors: [
         {
+          column: 5,
           data: { type: 'array' },
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'preferDestructuring',
         },
       ],
@@ -496,7 +507,11 @@ class C {
       code: 'var foo: unknown = object.bar;',
       errors: [
         {
+          column: 5,
           data: { type: 'object' },
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'preferDestructuring',
         },
       ],
@@ -518,7 +533,11 @@ let y = x[0];
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'array' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -531,7 +550,11 @@ y = x[0];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'array' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -544,7 +567,11 @@ let y = x[0];
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'array' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -557,7 +584,11 @@ y = x[0];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'array' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -572,7 +603,11 @@ let y = it()[0];
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'array' },
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
           messageId: 'preferDestructuring',
         },
       ],
@@ -587,7 +622,11 @@ y = it()[0];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'array' },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
           messageId: 'preferDestructuring',
         },
       ],
@@ -600,7 +639,11 @@ let y = x[0];
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'array' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -613,7 +656,11 @@ y = x[0];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'array' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -626,7 +673,11 @@ let y = x[0];
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'array' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -639,7 +690,11 @@ y = x[0];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'array' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -652,7 +707,11 @@ let y = x[0];
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'array' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -665,7 +724,11 @@ y = x[0];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'array' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -678,7 +741,11 @@ let y = x[0];
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'object' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -692,7 +759,11 @@ y = x[0];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -706,7 +777,11 @@ let y = x[0];
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'object' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -726,7 +801,11 @@ y = x[0];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -747,7 +826,11 @@ y = x[i];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -765,7 +848,11 @@ y = x[i];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -783,7 +870,11 @@ y = x[i];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -801,7 +892,11 @@ y = x[i];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -819,7 +914,11 @@ y = x[i];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -837,7 +936,11 @@ y = x[i];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -854,7 +957,11 @@ let y = x[0];
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'object' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -868,7 +975,11 @@ y = x[0];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -884,7 +995,11 @@ const foo = obj.foo;
       `,
       errors: [
         {
+          column: 7,
           data: { type: 'object' },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -901,7 +1016,11 @@ const foo = (x, obj).foo;
       `,
       errors: [
         {
+          column: 7,
           data: { type: 'object' },
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -915,7 +1034,11 @@ const {foo} = (x, obj);
       code: 'const call = (() => null).call;',
       errors: [
         {
+          column: 7,
           data: { type: 'object' },
+          endColumn: 31,
+          endLine: 1,
+          line: 1,
           messageId: 'preferDestructuring',
         },
       ],
@@ -929,7 +1052,11 @@ var foo = (a = obj).foo;
       `,
       errors: [
         {
+          column: 5,
           data: { type: 'object' },
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -946,7 +1073,11 @@ const qwer = obj.asdf.qwer;
       `,
       errors: [
         {
+          column: 7,
           data: { type: 'object' },
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -962,7 +1093,11 @@ const /* comment */ foo = obj.foo;
       `,
       errors: [
         {
+          column: 21,
           data: { type: 'object' },
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -980,7 +1115,11 @@ const x = obj.foo;
       `,
       errors: [
         {
+          column: 7,
           data: { type: 'object' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
           messageId: 'preferDestructuring',
         },
       ],
@@ -995,7 +1134,11 @@ x = obj.foo;
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -1010,7 +1153,11 @@ const x = obj[key];
       `,
       errors: [
         {
+          column: 7,
           data: { type: 'object' },
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
           messageId: 'preferDestructuring',
         },
       ],
@@ -1026,7 +1173,11 @@ x = obj[key];
       `,
       errors: [
         {
+          column: 1,
           data: { type: 'object' },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
           messageId: 'preferDestructuring',
         },
       ],

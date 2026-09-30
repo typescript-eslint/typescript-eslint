@@ -35,6 +35,7 @@ function createMockProjectService() {
   const setHostConfiguration = vi.fn();
   const reloadProjects = vi.fn();
   const service = {
+    configuredProjects: new Map<string, ts.server.ConfiguredProject>(),
     getDefaultProjectForFile: () => ({
       getLanguageService: () => ({
         getProgram: mockGetProgram,
@@ -70,12 +71,16 @@ const createProjectServiceSettings = <
 >(
   settings: T,
 ) => ({
-  lastReloadTimestamp: 0,
+  lastReloadTimestamp: -Infinity,
   maximumDefaultProjectFileMatchCount: 8,
   ...settings,
 });
 
 describe(useProgramFromProjectService, () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('creates a standalone AST with no program when hasFullTypeInformation is false and allowDefaultProject is falsy', () => {
     const { service } = createMockProjectService();
 
@@ -176,7 +181,7 @@ describe(useProgramFromProjectService, () => {
       useProgramFromProjectService(
         createProjectServiceSettings({
           allowDefaultProject: [],
-          lastReloadTimestamp: 0,
+          lastReloadTimestamp: -Infinity,
           service,
         }),
         mockParseSettings,
@@ -199,14 +204,14 @@ describe(useProgramFromProjectService, () => {
       useProgramFromProjectService(
         createProjectServiceSettings({
           allowDefaultProject,
-          lastReloadTimestamp: 0,
+          lastReloadTimestamp: -Infinity,
           service,
         }),
         {
           ...mockParseSettings,
           projectService: {
             allowDefaultProject,
-            lastReloadTimestamp: 0,
+            lastReloadTimestamp: -Infinity,
             maximumDefaultProjectFileMatchCount: 8,
             service,
           },
@@ -223,6 +228,46 @@ describe(useProgramFromProjectService, () => {
     expect(service.reloadProjects).toHaveBeenCalledOnce();
   });
 
+  it('throws when a project no longer includes a file found through a symlinked path', () => {
+    const { service } = createMockProjectService();
+    const realDirectory = path.join(
+      currentDirectory,
+      'path',
+      'PascalCaseDirectory',
+    );
+    const symlinkedDirectory = path.join(currentDirectory, 'symlinked');
+    const symlinkedFilePath = path.join(symlinkedDirectory, mockFileName);
+
+    vi.spyOn(ts.sys, 'realpath').mockImplementation(filePath =>
+      filePath === symlinkedDirectory ? realDirectory : filePath,
+    );
+    service.configuredProjects.set('tsconfig.json', {
+      getFileNames: () => [symlinkedFilePath],
+    } as ts.server.ConfiguredProject);
+    service.openClientFile.mockReturnValue({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [],
+          lastReloadTimestamp: Infinity,
+          service,
+        }),
+        mockParseSettings,
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+    );
+    expect(service.openClientFile).toHaveBeenLastCalledWith(
+      symlinkedFilePath,
+      undefined,
+      undefined,
+      currentDirectory,
+    );
+  });
+
   it('returns a created program after reloading projects when hasFullTypeInformation is enabled, the file is only in the project service after reload, and the last reload was recent', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: vi.fn() };
@@ -237,7 +282,7 @@ describe(useProgramFromProjectService, () => {
     const actual = useProgramFromProjectService(
       createProjectServiceSettings({
         allowDefaultProject: [],
-        lastReloadTimestamp: 0,
+        lastReloadTimestamp: -Infinity,
         service,
       }),
       mockParseSettings,

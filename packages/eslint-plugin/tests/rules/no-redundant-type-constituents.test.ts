@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-redundant-type-constituents', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 type T = any;
@@ -164,10 +167,10 @@ type U = T & string;
       errors: [
         {
           column: 19,
-          data: {
-            container: 'union',
-            typeName: 'any',
-          },
+          data: { container: 'union', typeName: 'any' },
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
           messageId: 'overrides',
         },
       ],
@@ -180,10 +183,10 @@ type T = B | any;
       errors: [
         {
           column: 14,
-          data: {
-            container: 'union',
-            typeName: 'any',
-          },
+          data: { container: 'union', typeName: 'any' },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'overrides',
         },
       ],
@@ -193,10 +196,10 @@ type T = B | any;
       errors: [
         {
           column: 10,
-          data: {
-            container: 'union',
-            typeName: 'any',
-          },
+          data: { container: 'union', typeName: 'any' },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'overrides',
         },
       ],
@@ -209,10 +212,10 @@ type T = B | number;
       errors: [
         {
           column: 10,
-          data: {
-            container: 'union',
-            typeName: 'any',
-          },
+          data: { container: 'union', typeName: 'any' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'overrides',
         },
       ],
@@ -222,10 +225,10 @@ type T = B | number;
       errors: [
         {
           column: 19,
-          data: {
-            container: 'union',
-            typeName: 'never',
-          },
+          data: { container: 'union', typeName: 'never' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'overridden',
         },
       ],
@@ -238,10 +241,10 @@ type T = B | never;
       errors: [
         {
           column: 14,
-          data: {
-            container: 'union',
-            typeName: 'never',
-          },
+          data: { container: 'union', typeName: 'never' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'overridden',
         },
       ],
@@ -254,10 +257,10 @@ type T = B | number;
       errors: [
         {
           column: 10,
-          data: {
-            container: 'union',
-            typeName: 'never',
-          },
+          data: { container: 'union', typeName: 'never' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'overridden',
         },
       ],
@@ -267,10 +270,10 @@ type T = B | number;
       errors: [
         {
           column: 10,
-          data: {
-            container: 'union',
-            typeName: 'never',
-          },
+          data: { container: 'union', typeName: 'never' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'overridden',
         },
       ],
@@ -280,10 +283,10 @@ type T = B | number;
       errors: [
         {
           column: 19,
-          data: {
-            container: 'union',
-            typeName: 'unknown',
-          },
+          data: { container: 'union', typeName: 'unknown' },
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
           messageId: 'overrides',
         },
       ],
@@ -293,10 +296,10 @@ type T = B | number;
       errors: [
         {
           column: 10,
-          data: {
-            container: 'union',
-            typeName: 'unknown',
-          },
+          data: { container: 'union', typeName: 'unknown' },
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
           messageId: 'overrides',
         },
       ],
@@ -306,10 +309,10 @@ type T = B | number;
       errors: [
         {
           column: 19,
-          data: {
-            container: 'union',
-            typeName: 'NotKnown',
-          },
+          data: { container: 'union', typeName: 'NotKnown' },
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'errorTypeOverrides',
         },
       ],
@@ -319,10 +322,10 @@ type T = B | number;
       errors: [
         {
           column: 19,
-          data: {
-            literal: '0',
-            primitive: 'number',
-          },
+          data: { literal: '0', primitive: 'number' },
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -332,10 +335,10 @@ type T = B | number;
       errors: [
         {
           column: 20,
-          data: {
-            literal: '0 | 1',
-            primitive: 'number',
-          },
+          data: { literal: '0 | 1', primitive: 'number' },
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -345,10 +348,10 @@ type T = B | number;
       errors: [
         {
           column: 11,
-          data: {
-            literal: '0 | 0',
-            primitive: 'number',
-          },
+          data: { literal: '0 | 0', primitive: 'number' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -361,10 +364,10 @@ type T = (2 | B) | number;
       errors: [
         {
           column: 11,
-          data: {
-            literal: '2 | 0 | 1',
-            primitive: 'number',
-          },
+          data: { literal: '2 | 0 | 1', primitive: 'number' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
           messageId: 'literalOverridden',
         },
       ],
@@ -374,10 +377,10 @@ type T = (2 | B) | number;
       errors: [
         {
           column: 11,
-          data: {
-            literal: '0 | 1 | 2',
-            primitive: 'number',
-          },
+          data: { literal: '0 | 1 | 2', primitive: 'number' },
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -387,10 +390,10 @@ type T = (2 | B) | number;
       errors: [
         {
           column: 11,
-          data: {
-            literal: '0 | 1',
-            primitive: 'number',
-          },
+          data: { literal: '0 | 1', primitive: 'number' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -400,10 +403,10 @@ type T = (2 | B) | number;
       errors: [
         {
           column: 11,
-          data: {
-            literal: '0 | 0 | 1',
-            primitive: 'number',
-          },
+          data: { literal: '0 | 0 | 1', primitive: 'number' },
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -413,10 +416,10 @@ type T = (2 | B) | number;
       errors: [
         {
           column: 11,
-          data: {
-            literal: '2 | 3',
-            primitive: 'number',
-          },
+          data: { literal: '2 | 3', primitive: 'number' },
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -426,10 +429,10 @@ type T = (2 | B) | number;
       errors: [
         {
           column: 10,
-          data: {
-            literal: '""',
-            primitive: 'string',
-          },
+          data: { literal: '""', primitive: 'string' },
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -442,10 +445,10 @@ type T = B | string;
       errors: [
         {
           column: 10,
-          data: {
-            literal: '"b"',
-            primitive: 'string',
-          },
+          data: { literal: '"b"', primitive: 'string' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'literalOverridden',
         },
       ],
@@ -455,10 +458,10 @@ type T = B | string;
       errors: [
         {
           column: 10,
-          data: {
-            literal: 'template literal type',
-            primitive: 'string',
-          },
+          data: { literal: 'template literal type', primitive: 'string' },
+          endColumn: 23,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -471,10 +474,10 @@ type T = B | string;
       errors: [
         {
           column: 10,
-          data: {
-            literal: 'template literal type',
-            primitive: 'string',
-          },
+          data: { literal: 'template literal type', primitive: 'string' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'literalOverridden',
         },
       ],
@@ -484,10 +487,10 @@ type T = B | string;
       errors: [
         {
           column: 10,
-          data: {
-            literal: 'template literal type',
-            primitive: 'string',
-          },
+          data: { literal: 'template literal type', primitive: 'string' },
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -497,10 +500,10 @@ type T = B | string;
       errors: [
         {
           column: 10,
-          data: {
-            literal: '0n',
-            primitive: 'bigint',
-          },
+          data: { literal: '0n', primitive: 'bigint' },
+          endColumn: 12,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -510,10 +513,10 @@ type T = B | string;
       errors: [
         {
           column: 10,
-          data: {
-            literal: '-1n',
-            primitive: 'bigint',
-          },
+          data: { literal: '-1n', primitive: 'bigint' },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -523,10 +526,10 @@ type T = B | string;
       errors: [
         {
           column: 11,
-          data: {
-            literal: '-1n | 1n',
-            primitive: 'bigint',
-          },
+          data: { literal: '-1n | 1n', primitive: 'bigint' },
+          endColumn: 19,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -539,10 +542,10 @@ type T = B | false;
       errors: [
         {
           column: 14,
-          data: {
-            literal: 'false',
-            primitive: 'boolean',
-          },
+          data: { literal: 'false', primitive: 'boolean' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'literalOverridden',
         },
       ],
@@ -552,10 +555,10 @@ type T = B | false;
       errors: [
         {
           column: 10,
-          data: {
-            literal: 'false',
-            primitive: 'boolean',
-          },
+          data: { literal: 'false', primitive: 'boolean' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -565,10 +568,10 @@ type T = B | false;
       errors: [
         {
           column: 10,
-          data: {
-            literal: 'true',
-            primitive: 'boolean',
-          },
+          data: { literal: 'true', primitive: 'boolean' },
+          endColumn: 14,
+          endLine: 1,
+          line: 1,
           messageId: 'literalOverridden',
         },
       ],
@@ -578,10 +581,10 @@ type T = B | false;
       errors: [
         {
           column: 18,
-          data: {
-            literal: 'false',
-            primitive: 'boolean',
-          },
+          data: { literal: 'false', primitive: 'boolean' },
+          endColumn: 25,
+          endLine: 1,
+          line: 1,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -594,10 +597,10 @@ type T = B & boolean;
       errors: [
         {
           column: 14,
-          data: {
-            literal: 'false',
-            primitive: 'boolean',
-          },
+          data: { literal: 'false', primitive: 'boolean' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -610,10 +613,10 @@ type T = B & boolean;
       errors: [
         {
           column: 14,
-          data: {
-            literal: 'true',
-            primitive: 'boolean',
-          },
+          data: { literal: 'true', primitive: 'boolean' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -623,10 +626,10 @@ type T = B & boolean;
       errors: [
         {
           column: 17,
-          data: {
-            literal: 'true',
-            primitive: 'boolean',
-          },
+          data: { literal: 'true', primitive: 'boolean' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -636,10 +639,10 @@ type T = B & boolean;
       errors: [
         {
           column: 19,
-          data: {
-            container: 'intersection',
-            typeName: 'any',
-          },
+          data: { container: 'intersection', typeName: 'any' },
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
           messageId: 'overrides',
         },
       ],
@@ -649,10 +652,10 @@ type T = B & boolean;
       errors: [
         {
           column: 10,
-          data: {
-            container: 'intersection',
-            typeName: 'any',
-          },
+          data: { container: 'intersection', typeName: 'any' },
+          endColumn: 13,
+          endLine: 1,
+          line: 1,
           messageId: 'overrides',
         },
       ],
@@ -662,10 +665,10 @@ type T = B & boolean;
       errors: [
         {
           column: 19,
-          data: {
-            container: 'intersection',
-            typeName: 'NotKnown',
-          },
+          data: { container: 'intersection', typeName: 'NotKnown' },
+          endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'errorTypeOverrides',
         },
       ],
@@ -675,10 +678,10 @@ type T = B & boolean;
       errors: [
         {
           column: 19,
-          data: {
-            container: 'intersection',
-            typeName: 'never',
-          },
+          data: { container: 'intersection', typeName: 'never' },
+          endColumn: 24,
+          endLine: 1,
+          line: 1,
           messageId: 'overrides',
         },
       ],
@@ -691,10 +694,10 @@ type T = B & number;
       errors: [
         {
           column: 10,
-          data: {
-            container: 'intersection',
-            typeName: 'never',
-          },
+          data: { container: 'intersection', typeName: 'never' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'overrides',
         },
       ],
@@ -704,10 +707,10 @@ type T = B & number;
       errors: [
         {
           column: 10,
-          data: {
-            container: 'intersection',
-            typeName: 'never',
-          },
+          data: { container: 'intersection', typeName: 'never' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
           messageId: 'overrides',
         },
       ],
@@ -717,10 +720,10 @@ type T = B & number;
       errors: [
         {
           column: 19,
-          data: {
-            container: 'intersection',
-            typeName: 'unknown',
-          },
+          data: { container: 'intersection', typeName: 'unknown' },
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
           messageId: 'overridden',
         },
       ],
@@ -730,10 +733,10 @@ type T = B & number;
       errors: [
         {
           column: 10,
-          data: {
-            container: 'intersection',
-            typeName: 'unknown',
-          },
+          data: { container: 'intersection', typeName: 'unknown' },
+          endColumn: 17,
+          endLine: 1,
+          line: 1,
           messageId: 'overridden',
         },
       ],
@@ -743,10 +746,10 @@ type T = B & number;
       errors: [
         {
           column: 10,
-          data: {
-            literal: '0',
-            primitive: 'number',
-          },
+          data: { literal: '0', primitive: 'number' },
+          endColumn: 16,
+          endLine: 1,
+          line: 1,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -756,10 +759,10 @@ type T = B & number;
       errors: [
         {
           column: 15,
-          data: {
-            literal: '""',
-            primitive: 'string',
-          },
+          data: { literal: '""', primitive: 'string' },
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -772,10 +775,10 @@ type T = B & bigint;
       errors: [
         {
           column: 14,
-          data: {
-            literal: '0n',
-            primitive: 'bigint',
-          },
+          data: { literal: '0n', primitive: 'bigint' },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -785,10 +788,10 @@ type T = B & bigint;
       errors: [
         {
           column: 15,
-          data: {
-            literal: '0n',
-            primitive: 'bigint',
-          },
+          data: { literal: '0n', primitive: 'bigint' },
+          endColumn: 21,
+          endLine: 1,
+          line: 1,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -798,10 +801,10 @@ type T = B & bigint;
       errors: [
         {
           column: 16,
-          data: {
-            literal: '-1n',
-            primitive: 'bigint',
-          },
+          data: { literal: '-1n', primitive: 'bigint' },
+          endColumn: 22,
+          endLine: 1,
+          line: 1,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -814,10 +817,10 @@ type U = T & string;
       errors: [
         {
           column: 10,
-          data: {
-            literal: '"a" | "b"',
-            primitive: 'string',
-          },
+          data: { literal: '"a" | "b"', primitive: 'string' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'primitiveOverridden',
         },
       ],
@@ -831,18 +834,18 @@ type U = S & T & string & number;
       errors: [
         {
           column: 10,
-          data: {
-            literal: '1 | 2',
-            primitive: 'number',
-          },
+          data: { literal: '1 | 2', primitive: 'number' },
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
           messageId: 'primitiveOverridden',
         },
         {
           column: 14,
-          data: {
-            literal: '"a" | "b"',
-            primitive: 'string',
-          },
+          data: { literal: '"a" | "b"', primitive: 'string' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'primitiveOverridden',
         },
       ],

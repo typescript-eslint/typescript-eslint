@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-import-type-side-effects';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-import-type-side-effects', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "import T from 'mod';",
     "import * as T from 'mod';",

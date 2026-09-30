@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('require-array-sort-compare', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function f(a: any[]) {
@@ -155,7 +158,15 @@ function f(a: Array<any>) {
   a.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     {
       code: `
@@ -163,7 +174,15 @@ function f(a: number[]) {
   a.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     {
       code: `
@@ -171,7 +190,15 @@ function f(a: number[]) {
   a.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
       options: [{ ignoreStringArrays: false }],
     },
     {
@@ -180,7 +207,15 @@ function f(a: number | number[]) {
   if (Array.isArray(a)) a.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 25,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     {
       code: `
@@ -188,7 +223,15 @@ function f(a: string | string[]) {
   if (Array.isArray(a)) a.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 25,
+          endColumn: 33,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
       options: [{ ignoreStringArrays: false }],
     },
     {
@@ -197,7 +240,15 @@ function f(a: number[] | string[]) {
   a.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     {
       code: `
@@ -205,7 +256,15 @@ function f<T extends number[]>(a: T) {
   a.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     {
       code: `
@@ -213,7 +272,15 @@ function f<T extends string[]>(a: T) {
   a.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
       options: [{ ignoreStringArrays: false }],
     },
     {
@@ -222,7 +289,15 @@ function f<T, U extends T[]>(a: U) {
   a.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     // optional chain
     {
@@ -231,13 +306,29 @@ function f(a: number[]) {
   a?.sort();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     {
       code: `
 [1, 2, 3].sort();
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     {
       code: `
@@ -246,7 +337,15 @@ function getNumber() {
 }
 [getNumber(), getNumber()].sort();
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 34,
+          endLine: 5,
+          line: 5,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     {
       code: `
@@ -255,13 +354,29 @@ const bar = 2;
 const baz = 3;
 [foo, bar, baz].sort();
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'requireCompare',
+        },
+      ],
     },
     {
       code: `
 [2, 'bar', 'baz'].sort();
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'requireCompare',
+        },
+      ],
       options: [{ ignoreStringArrays: true }],
     },
     {
@@ -271,7 +386,15 @@ function getNumber() {
 }
 [2, 3].sort();
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'requireCompare',
+        },
+      ],
       options: [{ ignoreStringArrays: true }],
     },
     {
@@ -281,7 +404,15 @@ const two = 2;
 const three = 3;
 [one, two, three].sort();
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 5,
+          line: 5,
+          messageId: 'requireCompare',
+        },
+      ],
       options: [{ ignoreStringArrays: true }],
     },
     {
@@ -290,7 +421,15 @@ function f(a: number[]) {
   a.toSorted();
 }
       `,
-      errors: [{ messageId: 'requireCompare' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
     },
   ],
 });

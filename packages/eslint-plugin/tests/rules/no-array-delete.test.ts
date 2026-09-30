@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-array-delete', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare const obj: { a: 1; b: 2 };
@@ -61,6 +64,7 @@ delete arr[0];
         {
           column: 1,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -86,6 +90,7 @@ delete arr[key];
         {
           column: 1,
           endColumn: 16,
+          endLine: 4,
           line: 4,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -117,6 +122,7 @@ delete arr[Keys.A];
         {
           column: 1,
           endColumn: 19,
+          endLine: 9,
           line: 9,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -148,6 +154,7 @@ delete arr[(doWork(), 1)];
         {
           column: 1,
           endColumn: 26,
+          endLine: 4,
           line: 4,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -174,6 +181,7 @@ delete arr[0];
         {
           column: 1,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -195,6 +203,7 @@ arr.splice(0, 1);
         {
           column: 1,
           endColumn: 20,
+          endLine: 1,
           line: 1,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -216,6 +225,7 @@ delete arr[Math.random() ? 0 : 1];
         {
           column: 1,
           endColumn: 34,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -240,6 +250,7 @@ delete arr[0];
         {
           column: 1,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -264,6 +275,7 @@ delete arr[0];
         {
           column: 1,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -288,6 +300,7 @@ delete arr[0];
         {
           column: 1,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -312,6 +325,7 @@ delete obj.a.b.c[0];
         {
           column: 1,
           endColumn: 20,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -336,6 +350,7 @@ delete getArray()[0];
         {
           column: 1,
           endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -360,6 +375,7 @@ delete getArray()[0];
         {
           column: 1,
           endColumn: 21,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -385,6 +401,7 @@ function deleteFromArray(a: number[]) {
         {
           column: 3,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -411,6 +428,7 @@ function deleteFromArray<T extends number>(a: T[]) {
         {
           column: 3,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -437,6 +455,7 @@ function deleteFromArray<T extends number[]>(a: T) {
         {
           column: 3,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -462,6 +481,7 @@ delete tuple[0];
         {
           column: 1,
           endColumn: 16,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [
@@ -486,6 +506,10 @@ delete [...a, ...a][b];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
           messageId: 'noArrayDelete',
           suggestions: [
             {
@@ -517,6 +541,10 @@ declare const b: number;
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 30,
+          endLine: 10,
+          line: 6,
           messageId: 'noArrayDelete',
           suggestions: [
             {
@@ -550,6 +578,10 @@ declare const b: number;
       `,
       errors: [
         {
+          column: 9,
+          endColumn: 28,
+          endLine: 5,
+          line: 5,
           messageId: 'noArrayDelete',
           suggestions: [
             {
@@ -575,6 +607,10 @@ delete a[(b + 1) * (b + 2)];
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 28,
+          endLine: 5,
+          line: 5,
           messageId: 'noArrayDelete',
           suggestions: [
             {
@@ -599,6 +635,7 @@ delete arr[0];
         {
           column: 1,
           endColumn: 14,
+          endLine: 3,
           line: 3,
           messageId: 'noArrayDelete',
           suggestions: [

@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-reduce-type-parameter', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 new (class Mine {
@@ -103,6 +106,8 @@ arr.reduce<string | undefined>(acc => acc, arr.shift() as string | undefined);
       errors: [
         {
           column: 44,
+          endColumn: 77,
+          endLine: 3,
           line: 3,
           messageId: 'preferTypeParameter',
         },
@@ -117,6 +122,8 @@ arr.reduce<string | undefined>(acc => acc, arr.shift());
       errors: [
         {
           column: 45,
+          endColumn: 59,
+          endLine: 1,
           line: 1,
           messageId: 'preferTypeParameter',
         },
@@ -128,6 +135,8 @@ arr.reduce<string | undefined>(acc => acc, arr.shift());
       errors: [
         {
           column: 45,
+          endColumn: 57,
+          endLine: 1,
           line: 1,
           messageId: 'preferTypeParameter',
         },
@@ -139,6 +148,8 @@ arr.reduce<string | undefined>(acc => acc, arr.shift());
       errors: [
         {
           column: 46,
+          endColumn: 60,
+          endLine: 1,
           line: 1,
           messageId: 'preferTypeParameter',
         },
@@ -150,6 +161,8 @@ arr.reduce<string | undefined>(acc => acc, arr.shift());
       errors: [
         {
           column: 46,
+          endColumn: 58,
+          endLine: 1,
           line: 1,
           messageId: 'preferTypeParameter',
         },
@@ -171,6 +184,8 @@ names.reduce(
       errors: [
         {
           column: 3,
+          endColumn: 32,
+          endLine: 9,
           line: 9,
           messageId: 'preferTypeParameter',
         },
@@ -200,6 +215,8 @@ names.reduce<Record<string, boolean>>(
       errors: [
         {
           column: 3,
+          endColumn: 30,
+          endLine: 7,
           line: 7,
           messageId: 'preferTypeParameter',
         },
@@ -227,6 +244,8 @@ names.reduce<Record<string, boolean>>(
       errors: [
         {
           column: 3,
+          endColumn: 32,
+          endLine: 7,
           line: 7,
           messageId: 'preferTypeParameter',
         },
@@ -250,6 +269,8 @@ function f<T, U extends T[]>(a: U) {
       errors: [
         {
           column: 29,
+          endColumn: 58,
+          endLine: 3,
           line: 3,
           messageId: 'preferTypeParameter',
         },
@@ -268,6 +289,8 @@ tuple.reduce((a, s) => a.concat(s * 2), [] as number[]);
       errors: [
         {
           column: 41,
+          endColumn: 55,
+          endLine: 3,
           line: 3,
           messageId: 'preferTypeParameter',
         },
@@ -285,6 +308,8 @@ tupleOrArray.reduce((a, s) => a.concat(s * 2), [] as number[]);
       errors: [
         {
           column: 48,
+          endColumn: 62,
+          endLine: 3,
           line: 3,
           messageId: 'preferTypeParameter',
         },
@@ -302,6 +327,8 @@ tuple.reduce((a, s) => a.concat(s * 2), [] as number[]);
       errors: [
         {
           column: 41,
+          endColumn: 55,
+          endLine: 3,
           line: 3,
           messageId: 'preferTypeParameter',
         },
@@ -324,6 +351,8 @@ tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
       errors: [
         {
           column: 3,
+          endColumn: 32,
+          endLine: 7,
           line: 7,
           messageId: 'preferTypeParameter',
         },
@@ -353,6 +382,8 @@ function f<T extends Record<string, boolean>>(t: T) {
       errors: [
         {
           column: 5,
+          endColumn: 42,
+          endLine: 8,
           line: 8,
           messageId: 'preferTypeParameter',
         },

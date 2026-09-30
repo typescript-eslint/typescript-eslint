@@ -32,6 +32,9 @@ const ruleTester = createRuleTesterWithTypes();
  * ```
  */
 ruleTester.run('no-base-to-string', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // template
     "`${''}`;",
@@ -841,18 +844,15 @@ declare const x: unknown;
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'x',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'x' },
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
+      options: [{ checkUnknown: true }],
     },
     {
       code: `
@@ -861,18 +861,15 @@ x.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'x',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'x' },
+          endColumn: 2,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
+      options: [{ checkUnknown: true }],
     },
     {
       code: `
@@ -881,18 +878,15 @@ x.toLocaleString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'x',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'x' },
+          endColumn: 2,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
+      options: [{ checkUnknown: true }],
     },
     {
       code: `
@@ -901,18 +895,15 @@ declare const x: unknown;
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'x',
-          },
+          column: 6,
+          data: { certainty: 'may', name: 'x' },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
+      options: [{ checkUnknown: true }],
     },
     {
       code: `
@@ -921,18 +912,15 @@ String(x);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'x',
-          },
+          column: 8,
+          data: { certainty: 'may', name: 'x' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
+      options: [{ checkUnknown: true }],
     },
     {
       code: `
@@ -941,18 +929,15 @@ declare const x: unknown;
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'x',
-          },
+          column: 7,
+          data: { certainty: 'may', name: 'x' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
+      options: [{ checkUnknown: true }],
     },
     {
       code: `
@@ -962,27 +947,25 @@ function foo<T>(x: T) {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'x',
-          },
+          column: 10,
+          data: { certainty: 'may', name: 'x' },
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
-      options: [
-        {
-          checkUnknown: true,
-        },
-      ],
+      options: [{ checkUnknown: true }],
     },
     {
       code: '`${{}})`;',
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '{}',
-          },
+          column: 4,
+          data: { certainty: 'will', name: '{}' },
+          endColumn: 6,
+          endLine: 1,
+          line: 1,
           messageId: 'baseToString',
         },
       ],
@@ -991,10 +974,11 @@ function foo<T>(x: T) {
       code: '({}).toString();',
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '{}',
-          },
+          column: 2,
+          data: { certainty: 'will', name: '{}' },
+          endColumn: 4,
+          endLine: 1,
+          line: 1,
           messageId: 'baseToString',
         },
       ],
@@ -1003,10 +987,11 @@ function foo<T>(x: T) {
       code: '({}).toLocaleString();',
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '{}',
-          },
+          column: 2,
+          data: { certainty: 'will', name: '{}' },
+          endColumn: 4,
+          endLine: 1,
+          line: 1,
           messageId: 'baseToString',
         },
       ],
@@ -1015,10 +1000,11 @@ function foo<T>(x: T) {
       code: "'' + {};",
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '{}',
-          },
+          column: 6,
+          data: { certainty: 'will', name: '{}' },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
           messageId: 'baseToString',
         },
       ],
@@ -1027,10 +1013,11 @@ function foo<T>(x: T) {
       code: 'String({});',
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '{}',
-          },
+          column: 8,
+          data: { certainty: 'will', name: '{}' },
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
           messageId: 'baseToString',
         },
       ],
@@ -1039,10 +1026,11 @@ function foo<T>(x: T) {
       code: "'' += {};",
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '{}',
-          },
+          column: 7,
+          data: { certainty: 'will', name: '{}' },
+          endColumn: 9,
+          endLine: 1,
+          line: 1,
           messageId: 'baseToString',
         },
       ],
@@ -1054,10 +1042,11 @@ someObjectOrString.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'someObjectOrString',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'someObjectOrString' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -1069,10 +1058,11 @@ someObjectOrString.toLocaleString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'someObjectOrString',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'someObjectOrString' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -1084,10 +1074,11 @@ someObjectOrString + '';
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'someObjectOrString',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'someObjectOrString' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -1099,10 +1090,11 @@ someObjectOrObject.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'someObjectOrObject',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'someObjectOrObject' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -1114,10 +1106,11 @@ someObjectOrObject.toLocaleString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'someObjectOrObject',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'someObjectOrObject' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -1129,10 +1122,11 @@ someObjectOrObject + '';
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'someObjectOrObject',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'someObjectOrObject' },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -1147,10 +1141,11 @@ function test(intersection: A & B): string {
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'intersection',
-          },
+          column: 13,
+          data: { certainty: 'will', name: 'intersection' },
+          endColumn: 25,
+          endLine: 5,
+          line: 5,
           messageId: 'baseToString',
         },
       ],
@@ -1165,10 +1160,11 @@ declare const foo: string | Foo;
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'foo',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'foo' },
+          endColumn: 7,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1186,10 +1182,11 @@ declare const foo: Bar | Foo;
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'foo',
-          },
+          column: 4,
+          data: { certainty: 'will', name: 'foo' },
+          endColumn: 7,
+          endLine: 9,
+          line: 9,
           messageId: 'baseToString',
         },
       ],
@@ -1207,10 +1204,11 @@ declare const foo: Bar & Foo;
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'foo',
-          },
+          column: 4,
+          data: { certainty: 'will', name: 'foo' },
+          endColumn: 7,
+          endLine: 9,
+          line: 9,
           messageId: 'baseToString',
         },
       ],
@@ -1221,10 +1219,11 @@ declare const foo: Bar & Foo;
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '[{}, {}]',
-          },
+          column: 1,
+          data: { certainty: 'will', name: '[{}, {}]' },
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1236,10 +1235,11 @@ array.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'array' },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1253,10 +1253,11 @@ class A {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: "[new A(), 'str']",
-          },
+          column: 1,
+          data: { certainty: 'may', name: "[new A(), 'str']" },
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1271,10 +1272,11 @@ array.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1289,10 +1291,11 @@ array.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1310,10 +1313,11 @@ array.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'array' },
+          endColumn: 6,
+          endLine: 9,
+          line: 9,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1328,10 +1332,11 @@ array.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1346,10 +1351,11 @@ tuple.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1364,10 +1370,11 @@ tuple.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1382,10 +1389,11 @@ tuple.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1400,10 +1408,11 @@ tuple.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1418,10 +1427,11 @@ tuple.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1433,10 +1443,11 @@ array.join('');
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1457,10 +1468,11 @@ function foo<T extends string | Bar>(array: T[]) {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 10,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -1472,10 +1484,11 @@ String([{}, {}]);
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '[{}, {}]',
-          },
+          column: 8,
+          data: { certainty: 'will', name: '[{}, {}]' },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
           messageId: 'baseToString',
         },
       ],
@@ -1487,10 +1500,11 @@ String(array);
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'array',
-          },
+          column: 8,
+          data: { certainty: 'will', name: 'array' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -1504,10 +1518,11 @@ String([new A(), 'str']);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: "[new A(), 'str']",
-          },
+          column: 8,
+          data: { certainty: 'may', name: "[new A(), 'str']" },
+          endColumn: 24,
+          endLine: 5,
+          line: 5,
           messageId: 'baseToString',
         },
       ],
@@ -1522,10 +1537,11 @@ String(array);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 8,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1540,10 +1556,11 @@ String(array);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 8,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1561,10 +1578,11 @@ String(array);
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'array',
-          },
+          column: 8,
+          data: { certainty: 'will', name: 'array' },
+          endColumn: 13,
+          endLine: 9,
+          line: 9,
           messageId: 'baseToString',
         },
       ],
@@ -1579,10 +1597,11 @@ String(array);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 8,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1597,10 +1616,11 @@ String(tuple);
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 8,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1615,10 +1635,11 @@ String(tuple);
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 8,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1633,10 +1654,11 @@ String(tuple);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'tuple',
-          },
+          column: 8,
+          data: { certainty: 'may', name: 'tuple' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1651,10 +1673,11 @@ String(tuple);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'tuple',
-          },
+          column: 8,
+          data: { certainty: 'may', name: 'tuple' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1669,10 +1692,11 @@ String(tuple);
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 8,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1684,10 +1708,11 @@ String(array);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 8,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -1708,10 +1733,11 @@ function foo<T extends string | Bar>(array: T[]) {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 17,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
           messageId: 'baseToString',
         },
       ],
@@ -1730,10 +1756,11 @@ declare const a:
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'a',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'a' },
+          endColumn: 5,
+          endLine: 10,
+          line: 10,
           messageId: 'baseToString',
         },
       ],
@@ -1752,10 +1779,11 @@ declare const a:
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'a',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'a' },
+          endColumn: 5,
+          endLine: 10,
+          line: 10,
           messageId: 'baseToString',
         },
       ],
@@ -1766,10 +1794,11 @@ declare const a:
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '[{}, {}]',
-          },
+          column: 1,
+          data: { certainty: 'will', name: '[{}, {}]' },
+          endColumn: 9,
+          endLine: 2,
+          line: 2,
           messageId: 'baseToString',
         },
       ],
@@ -1781,10 +1810,11 @@ array.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'array' },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -1798,10 +1828,11 @@ class A {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: "[new A(), 'str']",
-          },
+          column: 1,
+          data: { certainty: 'may', name: "[new A(), 'str']" },
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
           messageId: 'baseToString',
         },
       ],
@@ -1816,10 +1847,11 @@ array.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1834,10 +1866,11 @@ array.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1855,10 +1888,11 @@ array.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'array' },
+          endColumn: 6,
+          endLine: 9,
+          line: 9,
           messageId: 'baseToString',
         },
       ],
@@ -1873,10 +1907,11 @@ array.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1891,10 +1926,11 @@ tuple.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1909,10 +1945,11 @@ tuple.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1927,10 +1964,11 @@ tuple.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1945,10 +1983,11 @@ tuple.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1963,10 +2002,11 @@ tuple.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 6,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -1978,10 +2018,11 @@ array.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -2002,10 +2043,11 @@ function foo<T extends string | Bar>(array: T[]) {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 10,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'baseToString',
         },
       ],
@@ -2017,10 +2059,11 @@ function foo<T extends string | Bar>(array: T[]) {
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: '[{}, {}]',
-          },
+          column: 4,
+          data: { certainty: 'will', name: '[{}, {}]' },
+          endColumn: 12,
+          endLine: 2,
+          line: 2,
           messageId: 'baseToString',
         },
       ],
@@ -2032,10 +2075,11 @@ const array = [{}, {}];
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'array',
-          },
+          column: 4,
+          data: { certainty: 'will', name: 'array' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -2049,10 +2093,11 @@ class A {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: "[new A(), 'str']",
-          },
+          column: 4,
+          data: { certainty: 'may', name: "[new A(), 'str']" },
+          endColumn: 20,
+          endLine: 5,
+          line: 5,
           messageId: 'baseToString',
         },
       ],
@@ -2067,10 +2112,11 @@ declare const array: (string | Foo)[];
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -2085,10 +2131,11 @@ declare const array: (string & Foo) | (string | Foo)[];
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -2106,10 +2153,11 @@ declare const array: Foo[] & Bar[];
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'array',
-          },
+          column: 4,
+          data: { certainty: 'will', name: 'array' },
+          endColumn: 9,
+          endLine: 9,
+          line: 9,
           messageId: 'baseToString',
         },
       ],
@@ -2124,10 +2172,11 @@ declare const array: string[] | Foo[];
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -2142,10 +2191,11 @@ declare const tuple: [string, Foo];
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 4,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -2160,10 +2210,11 @@ declare const tuple: [Foo, Foo];
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 4,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -2178,10 +2229,11 @@ declare const tuple: [Foo | string, string];
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'tuple',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'tuple' },
+          endColumn: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -2196,10 +2248,11 @@ declare const tuple: [string, string] | [Foo, Foo];
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'tuple',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'tuple' },
+          endColumn: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -2214,10 +2267,11 @@ declare const tuple: [Foo, string] & [Foo, Foo];
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'tuple',
-          },
+          column: 4,
+          data: { certainty: 'will', name: 'tuple' },
+          endColumn: 9,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -2229,10 +2283,11 @@ const array = ['string', { foo: 'bar' }];
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 4,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'baseToString',
         },
       ],
@@ -2253,10 +2308,11 @@ function foo<T extends string | Bar>(array: T[]) {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array',
-          },
+          column: 13,
+          data: { certainty: 'may', name: 'array' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
           messageId: 'baseToString',
         },
       ],
@@ -2271,10 +2327,11 @@ function foo<T extends string | Bar>(array: T[]) {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'array[0]',
-          },
+          column: 3,
+          data: { certainty: 'may', name: 'array[0]' },
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
           messageId: 'baseToString',
         },
       ],
@@ -2288,10 +2345,11 @@ function foo<T extends string | Bar>(value: T) {
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'value',
-          },
+          column: 3,
+          data: { certainty: 'may', name: 'value' },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'baseToString',
         },
       ],
@@ -2304,10 +2362,11 @@ foo.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'foo',
-          },
+          column: 1,
+          data: { certainty: 'may', name: 'foo' },
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
           messageId: 'baseToString',
         },
       ],
@@ -2322,10 +2381,11 @@ foo([{ foo: 'foo' }]).join();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: "foo([{ foo: 'foo' }])",
-          },
+          column: 1,
+          data: { certainty: 'will', name: "foo([{ foo: 'foo' }])" },
+          endColumn: 22,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -2340,10 +2400,11 @@ foo([{ foo: 'foo' }, 'bar']).join();
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: "foo([{ foo: 'foo' }, 'bar'])",
-          },
+          column: 1,
+          data: { certainty: 'may', name: "foo([{ foo: 'foo' }, 'bar'])" },
+          endColumn: 29,
+          endLine: 6,
+          line: 6,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -2357,10 +2418,11 @@ String(v);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'v',
-          },
+          column: 8,
+          data: { certainty: 'may', name: 'v' },
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
           messageId: 'baseToString',
         },
       ],
@@ -2374,10 +2436,11 @@ String(v);
       `,
       errors: [
         {
-          data: {
-            certainty: 'may',
-            name: 'v',
-          },
+          column: 8,
+          data: { certainty: 'may', name: 'v' },
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
           messageId: 'baseToString',
         },
       ],
@@ -2391,10 +2454,11 @@ String(v);
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'v',
-          },
+          column: 8,
+          data: { certainty: 'will', name: 'v' },
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
           messageId: 'baseToString',
         },
       ],
@@ -2406,10 +2470,11 @@ v.join();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'v',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'v' },
+          endColumn: 2,
+          endLine: 3,
+          line: 3,
           messageId: 'baseArrayJoin',
         },
       ],
@@ -2423,10 +2488,11 @@ labrador.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'labrador',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'labrador' },
+          endColumn: 9,
+          endLine: 5,
+          line: 5,
           messageId: 'baseToString',
         },
       ],
@@ -2441,10 +2507,11 @@ a.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'a',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'a' },
+          endColumn: 2,
+          endLine: 6,
+          line: 6,
           messageId: 'baseToString',
         },
       ],
@@ -2461,10 +2528,11 @@ d.toString();
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'd',
-          },
+          column: 1,
+          data: { certainty: 'will', name: 'd' },
+          endColumn: 2,
+          endLine: 8,
+          line: 8,
           messageId: 'baseToString',
         },
       ],
@@ -2479,10 +2547,11 @@ declare const x: Mapped;
       `,
       errors: [
         {
-          data: {
-            certainty: 'will',
-            name: 'x',
-          },
+          column: 6,
+          data: { certainty: 'will', name: 'x' },
+          endColumn: 7,
+          endLine: 4,
+          line: 4,
           messageId: 'baseToString',
         },
       ],

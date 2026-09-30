@@ -10,7 +10,6 @@ import type { MakeRequired } from '../util';
 import {
   createRule,
   getParserServices,
-  getWrappingFixer,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -109,27 +108,40 @@ export default createRule({
                 for (const reference of smTypeParameterVariable.references) {
                   if (reference.isTypeReference) {
                     const referenceNode = reference.identifier;
-                    const isComplexType =
+                    const isWeakPrecedenceConstraint =
                       constraint?.type === AST_NODE_TYPES.TSUnionType ||
                       constraint?.type === AST_NODE_TYPES.TSIntersectionType ||
-                      constraint?.type === AST_NODE_TYPES.TSConditionalType;
-                    const hasMatchingAncestorType = [
-                      AST_NODE_TYPES.TSArrayType,
-                      AST_NODE_TYPES.TSIndexedAccessType,
-                      AST_NODE_TYPES.TSIntersectionType,
-                      AST_NODE_TYPES.TSUnionType,
-                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    ].some(type => referenceNode.parent.parent!.type === type);
-                    if (isComplexType && hasMatchingAncestorType) {
-                      const fixResult = getWrappingFixer({
-                        node: referenceNode,
-                        innerNode: constraint,
-                        sourceCode: context.sourceCode,
-                        wrap: constraintNode => constraintNode,
-                      })(fixer);
-                      yield fixResult;
+                      constraint?.type === AST_NODE_TYPES.TSConditionalType ||
+                      constraint?.type === AST_NODE_TYPES.TSTypeOperator ||
+                      constraint?.type === AST_NODE_TYPES.TSFunctionType ||
+                      constraint?.type === AST_NODE_TYPES.TSConstructorType;
+
+                    const grandparent = nullThrows(
+                      referenceNode.parent.parent,
+                      NullThrowsReasons.MissingParent,
+                    );
+
+                    const isWeakPrecedenceTypeParent =
+                      grandparent.type === AST_NODE_TYPES.TSArrayType ||
+                      grandparent.type === AST_NODE_TYPES.TSIndexedAccessType ||
+                      grandparent.type === AST_NODE_TYPES.TSIntersectionType ||
+                      grandparent.type === AST_NODE_TYPES.TSUnionType ||
+                      grandparent.type === AST_NODE_TYPES.TSConditionalType ||
+                      grandparent.type === AST_NODE_TYPES.TSTypeOperator;
+
+                    if (
+                      isWeakPrecedenceConstraint &&
+                      isWeakPrecedenceTypeParent
+                    ) {
+                      yield fixer.replaceText(
+                        referenceNode.parent,
+                        `(${constraintText})`,
+                      );
                     } else {
-                      yield fixer.replaceText(referenceNode, constraintText);
+                      yield fixer.replaceText(
+                        referenceNode.parent,
+                        constraintText,
+                      );
                     }
                   }
                 }

@@ -5,6 +5,9 @@ import rule from '../../src/rules/explicit-function-return-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('explicit-function-return-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'return;',
     {

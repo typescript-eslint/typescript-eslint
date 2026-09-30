@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-duplicate-enum-values';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-duplicate-enum-values', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 enum E {

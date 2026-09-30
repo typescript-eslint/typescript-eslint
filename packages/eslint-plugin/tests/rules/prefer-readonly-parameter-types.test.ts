@@ -8,6 +8,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-readonly-parameter-types', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'function foo() {}',
 
@@ -625,6 +628,8 @@ function foo(arg: MyReadonlyType) {}
         {
           column: 14,
           endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -635,6 +640,8 @@ function foo(arg: MyReadonlyType) {}
         {
           column: 14,
           endColumn: 32,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -645,6 +652,8 @@ function foo(arg: MyReadonlyType) {}
         {
           column: 14,
           endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -656,6 +665,8 @@ function foo(arg: MyReadonlyType) {}
         {
           column: 14,
           endColumn: 38,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -666,6 +677,8 @@ function foo(arg: MyReadonlyType) {}
         {
           column: 14,
           endColumn: 39,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -676,6 +689,8 @@ function foo(arg: MyReadonlyType) {}
         {
           column: 14,
           endColumn: 47,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -688,6 +703,8 @@ function foo(arg: MyReadonlyType) {}
         {
           column: 14,
           endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -698,6 +715,8 @@ function foo(arg: MyReadonlyType) {}
         {
           column: 14,
           endColumn: 45,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -708,6 +727,8 @@ function foo(arg: MyReadonlyType) {}
         {
           column: 14,
           endColumn: 34,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -911,6 +932,8 @@ interface Foo {
         {
           column: 4,
           endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -926,6 +949,8 @@ interface Foo {
         {
           column: 8,
           endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -937,6 +962,8 @@ interface Foo {
         {
           column: 17,
           endColumn: 30,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -948,6 +975,8 @@ interface Foo {
         {
           column: 14,
           endColumn: 27,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -959,6 +988,8 @@ interface Foo {
         {
           column: 13,
           endColumn: 26,
+          endLine: 1,
+          line: 1,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -974,6 +1005,8 @@ interface Foo {
         {
           column: 7,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'shouldBeReadonly',
         },
       ],
@@ -992,6 +1025,7 @@ function foo(arg: Foo) {}
         {
           column: 14,
           endColumn: 22,
+          endLine: 5,
           line: 5,
           messageId: 'shouldBeReadonly',
         },
@@ -1008,6 +1042,7 @@ function foo(arg: Readonly<Foo>) {}
         {
           column: 14,
           endColumn: 32,
+          endLine: 5,
           line: 5,
           messageId: 'shouldBeReadonly',
         },
@@ -1028,6 +1063,7 @@ function foo(arg: Foo) {}
         {
           column: 14,
           endColumn: 22,
+          endLine: 8,
           line: 8,
           messageId: 'shouldBeReadonly',
         },
@@ -1047,6 +1083,7 @@ function foo(arg: Readonly<Foo>) {}
         {
           column: 14,
           endColumn: 32,
+          endLine: 8,
           line: 8,
           messageId: 'shouldBeReadonly',
         },
@@ -1066,6 +1103,7 @@ function foo(arg: Foo) {}
         {
           column: 14,
           endColumn: 22,
+          endLine: 8,
           line: 8,
           messageId: 'shouldBeReadonly',
         },
@@ -1083,6 +1121,7 @@ function foo(arg: Test) {}
         {
           column: 14,
           endColumn: 23,
+          endLine: 6,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
@@ -1102,6 +1141,7 @@ const willNot = (foo: WithSymbol) => {};
         {
           column: 18,
           endColumn: 33,
+          endLine: 8,
           line: 8,
           messageId: 'shouldBeReadonly',
         },
@@ -1123,6 +1163,7 @@ acceptsCallback<CallbackOptions>((options: CallbackOptions) => {});
         {
           column: 35,
           endColumn: 59,
+          endLine: 10,
           line: 10,
           messageId: 'shouldBeReadonly',
         },
@@ -1146,6 +1187,7 @@ function foo(arg: MyType) {}
         {
           column: 14,
           endColumn: 25,
+          endLine: 6,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
@@ -1165,14 +1207,30 @@ function method<A extends any[] = string[]>(value: MyType<A>) {
 method(['cat', 'dog']);
 method<'mouse'[]>(['cat', 'mouse']);
       `,
-      errors: [{ line: 6, messageId: 'shouldBeReadonly' }],
+      errors: [
+        {
+          column: 45,
+          endColumn: 61,
+          endLine: 6,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
     },
     {
       code: `
 declare const fooFactory: <T>(x: readonly T[]) => (f: (x: T) => void) => void;
 fooFactory([{ abc: 42 }])(x => {});
       `,
-      errors: [{ line: 3, messageId: 'shouldBeReadonly' }],
+      errors: [
+        {
+          column: 27,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
     },
     // Allowlist
     {
@@ -1183,6 +1241,7 @@ function foo(arg: RegExp) {}
         {
           column: 14,
           endColumn: 25,
+          endLine: 2,
           line: 2,
           messageId: 'shouldBeReadonly',
         },
@@ -1205,6 +1264,7 @@ function foo(arg: Foo) {}
         {
           column: 14,
           endColumn: 22,
+          endLine: 6,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
@@ -1227,6 +1287,7 @@ function foo(arg: Foo) {}
         {
           column: 14,
           endColumn: 22,
+          endLine: 6,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
@@ -1249,6 +1310,7 @@ function foo(arg: Foo) {}
         {
           column: 14,
           endColumn: 22,
+          endLine: 6,
           line: 6,
           messageId: 'shouldBeReadonly',
         },
@@ -1267,6 +1329,7 @@ function foo(arg: RegExp) {}
         {
           column: 14,
           endColumn: 25,
+          endLine: 2,
           line: 2,
           messageId: 'shouldBeReadonly',
         },
@@ -1295,6 +1358,7 @@ function foo(arg: RegExp) {}
         {
           column: 14,
           endColumn: 25,
+          endLine: 2,
           line: 2,
           messageId: 'shouldBeReadonly',
         },
@@ -1314,6 +1378,7 @@ foo<string[]>(arg => {});
         {
           column: 15,
           endColumn: 18,
+          endLine: 3,
           line: 3,
           messageId: 'shouldBeReadonly',
         },

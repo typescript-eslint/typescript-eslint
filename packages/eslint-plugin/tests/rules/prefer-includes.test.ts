@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-includes', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function f(a: string): void {
@@ -95,7 +98,15 @@ function f(a: string): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   a.includes(b);
@@ -108,7 +119,15 @@ function f(a: string): void {
   a.indexOf(b) != -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   a.includes(b);
@@ -121,7 +140,15 @@ function f(a: string): void {
   a.indexOf(b) > -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   a.includes(b);
@@ -134,7 +161,15 @@ function f(a: string): void {
   a.indexOf(b) >= 0;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   a.includes(b);
@@ -149,7 +184,15 @@ function f(a: string): void {
   a.indexOf(b) === -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   !a.includes(b);
@@ -162,7 +205,15 @@ function f(a: string): void {
   a.indexOf(b) == -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   !a.includes(b);
@@ -175,7 +226,15 @@ function f(a: string): void {
   a.indexOf(b) <= -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   !a.includes(b);
@@ -188,7 +247,15 @@ function f(a: string): void {
   a.indexOf(b) < 0;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   !a.includes(b);
@@ -201,7 +268,15 @@ function f(a?: string): void {
   a?.indexOf(b) === -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: null,
     },
     {
@@ -210,7 +285,15 @@ function f(a?: string): void {
   a?.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: null,
     },
 
@@ -221,7 +304,15 @@ function f(a: string): void {
   /bar/.test(a);
 }
       `,
-      errors: [{ messageId: 'preferStringIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   a.includes('bar');
@@ -235,7 +326,15 @@ function f(a: string): void {
   /bar/.test((1 + 1, a));
 }
       `,
-      errors: [{ messageId: 'preferStringIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   (1 + 1, a).includes('bar');
@@ -248,7 +347,15 @@ function f(a: string): void {
   /\\0'\\\\\\n\\r\\v\\t\\f/.test(a);
 }
       `,
-      errors: [{ messageId: 'preferStringIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStringIncludes',
+        },
+      ],
       output: `
 function f(a: string): void {
   a.includes('\\0\\'\\\\\\n\\r\\v\\t\\f');
@@ -262,7 +369,15 @@ function f(a: string): void {
   pattern.test(a);
 }
       `,
-      errors: [{ messageId: 'preferStringIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStringIncludes',
+        },
+      ],
       output: `
 const pattern = new RegExp('bar');
 function f(a: string): void {
@@ -277,7 +392,15 @@ function f(a: string, b: string): void {
   pattern.test(a + b);
 }
       `,
-      errors: [{ messageId: 'preferStringIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferStringIncludes',
+        },
+      ],
       output: `
 const pattern = /bar/;
 function f(a: string, b: string): void {
@@ -293,7 +416,15 @@ function f(a: any[]): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: any[]): void {
   a.includes(b);
@@ -306,7 +437,15 @@ function f(a: ReadonlyArray<any>): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: ReadonlyArray<any>): void {
   a.includes(b);
@@ -319,7 +458,15 @@ function f(a: Int8Array): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: Int8Array): void {
   a.includes(b);
@@ -332,7 +479,15 @@ function f(a: Int16Array): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: Int16Array): void {
   a.includes(b);
@@ -345,7 +500,15 @@ function f(a: Int32Array): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: Int32Array): void {
   a.includes(b);
@@ -358,7 +521,15 @@ function f(a: Uint8Array): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: Uint8Array): void {
   a.includes(b);
@@ -371,7 +542,15 @@ function f(a: Uint16Array): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: Uint16Array): void {
   a.includes(b);
@@ -384,7 +563,15 @@ function f(a: Uint32Array): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: Uint32Array): void {
   a.includes(b);
@@ -397,7 +584,15 @@ function f(a: Float32Array): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: Float32Array): void {
   a.includes(b);
@@ -410,7 +605,15 @@ function f(a: Float64Array): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: Float64Array): void {
   a.includes(b);
@@ -423,7 +626,15 @@ function f<T>(a: T[] | ReadonlyArray<T>): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f<T>(a: T[] | ReadonlyArray<T>): void {
   a.includes(b);
@@ -449,7 +660,15 @@ function f<
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 16,
+          line: 16,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f<
   T,
@@ -479,7 +698,15 @@ function f(a: UserDefined): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 type UserDefined = {
   indexOf(x: any): number;
@@ -496,7 +723,15 @@ function f(a: Readonly<any[]>): void {
   a.indexOf(b) !== -1;
 }
       `,
-      errors: [{ messageId: 'preferIncludes' }],
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferIncludes',
+        },
+      ],
       output: `
 function f(a: Readonly<any[]>): void {
   a.includes(b);
