@@ -4,6 +4,7 @@ import type * as ts from 'typescript/lib/tsserverlibrary';
 import debug from 'debug';
 
 import { getParsedConfigFileFromTSServer } from './getParsedConfigFileFromTSServer.js';
+import { throttleOpenedFileCleanup } from './throttleOpenedFileCleanup.js';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
@@ -191,6 +192,8 @@ export function createProjectService({
     useInferredProjectPerProjectRoot: false,
     useSingleInferredProject: false,
   });
+
+  throttleOpenedFileCleanup(service);
 
   service.setHostConfiguration({
     preferences: {
