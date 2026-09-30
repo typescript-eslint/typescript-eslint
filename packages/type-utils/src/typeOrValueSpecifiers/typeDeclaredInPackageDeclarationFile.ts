@@ -6,8 +6,11 @@ function findParentModuleDeclaration(
 ): ts.ModuleDeclaration | undefined {
   switch (node.kind) {
     case ts.SyntaxKind.ModuleDeclaration:
-      // "namespace x {...}" should be ignored here
-      if (node.flags & ts.NodeFlags.Namespace) {
+      // "namespace x {...}" and "global {...}" should be ignored here
+      if (
+        node.flags &
+        (ts.NodeFlags.Namespace | ts.NodeFlags.GlobalAugmentation)
+      ) {
         break;
       }
       return ts.isStringLiteral((node as ts.ModuleDeclaration).name)

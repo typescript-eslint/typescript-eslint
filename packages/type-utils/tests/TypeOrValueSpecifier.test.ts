@@ -446,6 +446,10 @@ describe('TypeOrValueSpecifier', () => {
       ],
       // Re-exported symbols in ambient declarations.
       [
+        'import { URL } from "node:url"; declare const url: URL; type Test = typeof url;',
+        { from: 'package', name: 'URL', package: 'node:url' },
+      ],
+      [
         'import { Buffer } from "node:buffer"; declare const buffer: Buffer; type Test = typeof buffer;',
         { from: 'package', name: 'Buffer', package: 'node:buffer' },
       ],
@@ -470,6 +474,19 @@ describe('TypeOrValueSpecifier', () => {
           type Test = Local;
         `,
         { from: 'package', name: 'Local', package: 're-exporter' },
+      ],
+      // Globals declared in ambient declarations. Mimics how `URL` is declared.
+      // See https://github.com/typescript-eslint/typescript-eslint/issues/9608
+      [
+        `
+          declare module "global-declarer" {
+            global {
+              interface GlobalType {}
+            }
+          }
+          type Test = GlobalType;
+        `,
+        { from: 'package', name: 'GlobalType', package: 'global-declarer' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
@@ -652,6 +669,17 @@ describe('TypeOrValueSpecifier', () => {
           type Test = Local;
         `,
         { from: 'package', name: 'Local', package: 're-exporter' },
+      ],
+      [
+        `
+          declare module "global-declarer" {
+            global {
+              interface GlobalType {}
+            }
+          }
+          type Test = GlobalType;
+        `,
+        { from: 'package', name: 'GlobalType', package: 'other-module' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
