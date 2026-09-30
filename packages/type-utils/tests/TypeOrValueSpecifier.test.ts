@@ -444,7 +444,7 @@ describe('TypeOrValueSpecifier', () => {
           package: 'assert',
         },
       ],
-      // Test a linked/workspace package.
+      // This has to be a linked workspace package.
       // See https://github.com/typescript-eslint/typescript-eslint/issues/10038
       [
         'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
