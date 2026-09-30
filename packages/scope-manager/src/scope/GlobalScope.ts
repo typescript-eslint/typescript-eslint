@@ -22,6 +22,11 @@ export class GlobalScope extends ScopeBase<
    */
   null
 > {
+  readonly #implicitLibVariables: ReadonlyMap<
+    string,
+    ImplicitLibVariableOptions
+  >;
+
   // note this is accessed in used in the legacy eslint-scope tests, so it can't be true private
   private readonly implicit: {
     readonly set: Map<string, Variable>;
@@ -32,10 +37,6 @@ export class GlobalScope extends ScopeBase<
      */
     leftToBeResolved: Reference[];
   };
-  readonly #implicitLibVariables: ReadonlyMap<
-    string,
-    ImplicitLibVariableOptions
-  >;
 
   constructor(
     scopeManager: ScopeManager,
@@ -52,25 +53,6 @@ export class GlobalScope extends ScopeBase<
       set: new Map<string, Variable>(),
       variables: [],
     };
-  }
-
-  public override defineIdentifier(
-    node: TSESTree.Identifier,
-    def: Definition,
-  ): void {
-    const options = this.#implicitLibVariables.get(node.name);
-    if (!options || this.set.has(node.name)) {
-      super.defineIdentifier(node, def);
-      return;
-    }
-
-    this.defineVariable(
-      new ImplicitLibVariable(this, node.name, options),
-      this.set,
-      this.variables,
-      node,
-      def,
-    );
   }
 
   public addVariables(names: string[]): void {
@@ -130,6 +112,25 @@ export class GlobalScope extends ScopeBase<
     this.implicit.leftToBeResolved = [...this.through];
 
     return null;
+  }
+
+  public override defineIdentifier(
+    node: TSESTree.Identifier,
+    def: Definition,
+  ): void {
+    const options = this.#implicitLibVariables.get(node.name);
+    if (!options || this.set.has(node.name)) {
+      super.defineIdentifier(node, def);
+      return;
+    }
+
+    this.defineVariable(
+      new ImplicitLibVariable(this, node.name, options),
+      this.set,
+      this.variables,
+      node,
+      def,
+    );
   }
 
   public defineImplicitVariable(
