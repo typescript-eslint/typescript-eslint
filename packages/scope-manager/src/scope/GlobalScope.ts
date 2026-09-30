@@ -105,6 +105,8 @@ export class GlobalScope extends ScopeBase<
     options: ImplicitLibVariableOptions,
   ): void {
     this.defineVariable(
+      // ImplicitLibVariable implements Variable structurally rather than extending it.
+      // eslint-disable-next-line @typescript-eslint/no-object-literal-class-instances
       new ImplicitLibVariable(this, name, options),
       this.set,
       this.variables,

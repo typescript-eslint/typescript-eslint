@@ -28,6 +28,7 @@ export = {
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/no-misused-spread': 'off',
     '@typescript-eslint/no-mixed-enums': 'off',
+    '@typescript-eslint/no-object-literal-class-instances': 'off',
     '@typescript-eslint/no-redundant-type-constituents': 'off',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
     '@typescript-eslint/no-unnecessary-condition': 'off',

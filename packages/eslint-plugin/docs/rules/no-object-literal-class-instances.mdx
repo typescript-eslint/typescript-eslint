@@ -1,0 +1,63 @@
+---
+description: 'Disallow object literals where a class instance is expected.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-object-literal-class-instances** for documentation.
+
+In TypeScript, a class name can be used as a type for any value with the same shape.
+That means an object literal, or any plain object, can be used where an instance of a class is expected without ever calling the class's constructor.
+
+This rule reports values that aren't created by a class's constructor but are used where an instance of the class is expected: in variable declarations, assignments, function arguments, return values, `as` assertions, and so on.
+That includes values the class only appears inside of, such as a `Promise` of a plain object assigned to a `Promise<Point>`.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+
+const point: Point = { x: -1, y: -2 };
+
+declare const plain: { x: number; y: number };
+const points: Point[] = [plain];
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+
+const point = new Point(1, 2);
+
+const points: Point[] = [new Point(1, 2)];
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If you use classes as plain shapes, such as data containers whose constructors don't do anything important, you might prefer to declare those shapes as interfaces or type aliases instead.
+If your project relies on that pattern on purpose, this rule may not be for you.
+
+## Related To
+
+- [`no-unsafe-type-assertion`](./no-unsafe-type-assertion.mdx)
