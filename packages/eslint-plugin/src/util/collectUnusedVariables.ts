@@ -429,11 +429,6 @@ function isMergedTypeValueVariable(variable: ScopeVariable): boolean {
   );
 }
 
-/**
- * @param variable the variable to check
- * @param node the node from a some def of variable
- * @returns `true` if variable is type/value duality and declaration is type declaration
- */
 function isMergedTypeDeclaration(
   variable: ScopeVariable,
   node: TSESTree.Node,
