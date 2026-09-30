@@ -71,7 +71,7 @@ const createProjectServiceSettings = <
 >(
   settings: T,
 ) => ({
-  lastReloadTimestamp: 0,
+  lastReloadTimestamp: -Infinity,
   maximumDefaultProjectFileMatchCount: 8,
   ...settings,
 });
@@ -181,7 +181,7 @@ describe(useProgramFromProjectService, () => {
       useProgramFromProjectService(
         createProjectServiceSettings({
           allowDefaultProject: [],
-          lastReloadTimestamp: 0,
+          lastReloadTimestamp: -Infinity,
           service,
         }),
         mockParseSettings,
@@ -204,14 +204,14 @@ describe(useProgramFromProjectService, () => {
       useProgramFromProjectService(
         createProjectServiceSettings({
           allowDefaultProject,
-          lastReloadTimestamp: 0,
+          lastReloadTimestamp: -Infinity,
           service,
         }),
         {
           ...mockParseSettings,
           projectService: {
             allowDefaultProject,
-            lastReloadTimestamp: 0,
+            lastReloadTimestamp: -Infinity,
             maximumDefaultProjectFileMatchCount: 8,
             service,
           },
@@ -282,7 +282,7 @@ describe(useProgramFromProjectService, () => {
     const actual = useProgramFromProjectService(
       createProjectServiceSettings({
         allowDefaultProject: [],
-        lastReloadTimestamp: 0,
+        lastReloadTimestamp: -Infinity,
         service,
       }),
       mockParseSettings,

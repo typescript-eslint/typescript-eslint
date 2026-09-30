@@ -439,7 +439,8 @@ function isMergedTypeDeclaration(
   node: TSESTree.Node,
 ): boolean {
   return (
-    (node.type === AST_NODE_TYPES.TSTypeAliasDeclaration) &&
+    (node.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+      node.type === AST_NODE_TYPES.TSInterfaceDeclaration) &&
     isMergedTypeValueVariable(variable)
   );
 }
@@ -476,49 +477,20 @@ function isMergeableExported(variable: ScopeVariable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: ScopeVariable): boolean {
-  if (!isMergedTypeValueVariable(variable)) {
-    return variable.defs.some(definition => {
-      let node = definition.node;
+  return variable.defs.some(definition => {
+    let node = definition.node;
 
-      if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-        node = node.parent;
-      } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
-        return false;
-      }
-
-      return node.parent.type.startsWith('Export');
-    });
-  }
-
-  let hasExportedValue = false;
-  for (const definition of variable.defs) {
-    if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
-      continue;
+    if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+      node = node.parent;
+    } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
+      return false;
     }
 
-    const node =
-      definition.node.type === AST_NODE_TYPES.VariableDeclarator
-        ? definition.node.parent
-        : definition.node;
-
-    if (
-      node.type === AST_NODE_TYPES.TSEnumDeclaration ||
-      node.type === AST_NODE_TYPES.TSModuleDeclaration ||
-      node.type === AST_NODE_TYPES.ClassDeclaration ||
-      node.type === AST_NODE_TYPES.TSImportEqualsDeclaration
-    ) {
-      return node.parent.type.startsWith('Export');
-    }
-
-    if (
+    return (
       !isMergedTypeDeclaration(variable, node) &&
       node.parent.type.startsWith('Export')
-    ) {
-      hasExportedValue = true;
-    }
-  }
-
-  return hasExportedValue;
+    );
+  });
 }
 
 const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['??=', '&&=', '||=']);

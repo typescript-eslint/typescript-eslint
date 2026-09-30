@@ -17,7 +17,7 @@ permissions: {}
 jobs:
   agentscan:
     name: AgentScan
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       issues: write
@@ -41,11 +41,12 @@ jobs:
           label-community-flagged: spam:community-flagged
           label-mixed: spam:mixed-signals
           scan-issues: true
+          trusted-author-associations: 'collaborator,member,owner'
 
   anti-slop:
     name: Anti Slop
     if: github.event_name == 'pull_request_target'
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       issues: read

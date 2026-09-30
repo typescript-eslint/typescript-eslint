@@ -706,7 +706,10 @@ export default defineConfig(
   },
   {
     name: 'eslint-plugin-rules-test-files',
-    files: ['packages/eslint-plugin/tests/rules/*.test.ts'],
+    files: [
+      'packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
+      'packages/eslint-plugin/tests/{eslint-rules,rules}/**/*.test.ts',
+    ],
     rules: {
       'perfectionist/sort-objects': [
         'error',

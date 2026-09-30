@@ -33,3 +33,23 @@ new Promise((resolve, reject) => {
   }
   return reject(new CustomError());
 });
+
+Options: { "allow": [{ "from": "file", "name": "CustomError" }] }
+
+class CustomError /* does NOT extend Error */ {
+  // ...
+}
+
+Promise.reject(new CustomError());
+
+Options: { "allowThrowingAny": true }
+
+declare const value: any;
+
+Promise.reject(value);
+
+Options: { "allowThrowingUnknown": true }
+
+declare const value: unknown;
+
+Promise.reject(value);

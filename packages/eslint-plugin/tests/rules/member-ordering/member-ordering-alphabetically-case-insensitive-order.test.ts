@@ -8,6 +8,358 @@ ruleTester.run('member-ordering-alphabetically-case-insensitive-order', rule, {
   assertionOptions: {
     requireData: true,
   },
+  valid: [
+    // default option + interface + lower/upper case
+    {
+      code: `
+interface Foo {
+  a: b;
+  B: b;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + type literal + lower/upper case
+    {
+      code: `
+type Foo = {
+  a: b;
+  B: b;
+};
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class + lower/upper case
+    {
+      code: `
+class Foo {
+  public static a: string;
+  public static B: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class expression + lower/upper case
+    {
+      code: `
+const foo = class Foo {
+  public static a: string;
+  public static B: string;
+};
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class + decorators
+    {
+      code: `
+class Foo {
+  public static a: string;
+  @Dec() static B: string;
+  public static c: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    // default option + interface + default order + alphabetically
+    {
+      code: `
+interface Foo {
+  [a: string]: number;
+
+  (): Baz;
+
+  a: x;
+  B: x;
+  c: x;
+
+  new (): Bar;
+
+  a(): void;
+  B(): void;
+  c(): void;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + interface + custom order + alphabetically
+    {
+      code: `
+interface Foo {
+  new (): Bar;
+
+  a(): void;
+  B(): void;
+  c(): void;
+
+  a: x;
+  B: x;
+  c: x;
+
+  [a: string]: number;
+  (): Baz;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'method', 'field'],
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + type literal + default order + alphabetically
+    {
+      code: `
+type Foo = {
+  [a: string]: number;
+
+  (): Baz;
+
+  a: x;
+  B: x;
+  c: x;
+
+  new (): Bar;
+
+  a(): void;
+  B(): void;
+  c(): void;
+};
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + type literal + custom order + alphabetically
+    {
+      code: `
+type Foo = {
+  [a: string]: number;
+
+  new (): Bar;
+
+  a(): void;
+  B(): void;
+  c(): void;
+
+  a: x;
+  B: x;
+  c: x;
+
+  (): Baz;
+};
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'method', 'field'],
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class + default order + alphabetically
+    {
+      code: `
+class Foo {
+  public static a: string;
+  protected static b: string = '';
+  private static c: string = '';
+
+  public d: string = '';
+  protected E: string = '';
+  private f: string = '';
+
+  constructor() {}
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    // default option + class + decorators + default order + alphabetically
+    {
+      code: `
+class Foo {
+  public static a: string;
+  protected static b: string = '';
+  private static c: string = '';
+
+  @Dec() public d: string;
+  @Dec() protected E: string;
+  @Dec() private f: string;
+
+  public g: string = '';
+  protected h: string = '';
+  private i: string = '';
+
+  constructor() {}
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class + custom order + alphabetically
+    {
+      code: `
+class Foo {
+  constructor() {}
+
+  public d: string = '';
+  protected E: string = '';
+  private f: string = '';
+
+  public static a: string;
+  protected static b: string = '';
+  private static c: string = '';
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'instance-field', 'static-field'],
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class expression + default order + alphabetically
+    {
+      code: `
+const foo = class Foo {
+  public static a: string;
+  protected static b: string = '';
+  private static c: string = '';
+
+  public d: string = '';
+  protected E: string = '';
+  private f: string = '';
+
+  constructor() {}
+};
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + class expression + custom order + alphabetically
+    {
+      code: `
+const foo = class Foo {
+  constructor() {}
+
+  public d: string = '';
+  protected E: string = '';
+  private f: string = '';
+
+  public static a: string;
+  protected static b: string = '';
+  private static c: string = '';
+};
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: ['constructor', 'instance-field', 'static-field'],
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+
+    // default option + static blocks; should always be valid
+    {
+      code: `
+class Foo {
+  static {}
+  static {}
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+  ],
   invalid: [
     // default option + interface + wrong order (multiple)
     {
@@ -435,358 +787,6 @@ const foo = class Foo {
         {
           default: {
             memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-  ],
-  valid: [
-    // default option + interface + lower/upper case
-    {
-      code: `
-interface Foo {
-  a: b;
-  B: b;
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + type literal + lower/upper case
-    {
-      code: `
-type Foo = {
-  a: b;
-  B: b;
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class + lower/upper case
-    {
-      code: `
-class Foo {
-  public static a: string;
-  public static B: string;
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class expression + lower/upper case
-    {
-      code: `
-const foo = class Foo {
-  public static a: string;
-  public static B: string;
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class + decorators
-    {
-      code: `
-class Foo {
-  public static a: string;
-  @Dec() static B: string;
-  public static c: string;
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-    // default option + interface + default order + alphabetically
-    {
-      code: `
-interface Foo {
-  [a: string]: number;
-
-  (): Baz;
-
-  a: x;
-  B: x;
-  c: x;
-
-  new (): Bar;
-
-  a(): void;
-  B(): void;
-  c(): void;
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + interface + custom order + alphabetically
-    {
-      code: `
-interface Foo {
-  new (): Bar;
-
-  a(): void;
-  B(): void;
-  c(): void;
-
-  a: x;
-  B: x;
-  c: x;
-
-  [a: string]: number;
-  (): Baz;
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: ['constructor', 'method', 'field'],
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + type literal + default order + alphabetically
-    {
-      code: `
-type Foo = {
-  [a: string]: number;
-
-  (): Baz;
-
-  a: x;
-  B: x;
-  c: x;
-
-  new (): Bar;
-
-  a(): void;
-  B(): void;
-  c(): void;
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + type literal + custom order + alphabetically
-    {
-      code: `
-type Foo = {
-  [a: string]: number;
-
-  new (): Bar;
-
-  a(): void;
-  B(): void;
-  c(): void;
-
-  a: x;
-  B: x;
-  c: x;
-
-  (): Baz;
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: ['constructor', 'method', 'field'],
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class + default order + alphabetically
-    {
-      code: `
-class Foo {
-  public static a: string;
-  protected static b: string = '';
-  private static c: string = '';
-
-  public d: string = '';
-  protected E: string = '';
-  private f: string = '';
-
-  constructor() {}
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-    // default option + class + decorators + default order + alphabetically
-    {
-      code: `
-class Foo {
-  public static a: string;
-  protected static b: string = '';
-  private static c: string = '';
-
-  @Dec() public d: string;
-  @Dec() protected E: string;
-  @Dec() private f: string;
-
-  public g: string = '';
-  protected h: string = '';
-  private i: string = '';
-
-  constructor() {}
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class + custom order + alphabetically
-    {
-      code: `
-class Foo {
-  constructor() {}
-
-  public d: string = '';
-  protected E: string = '';
-  private f: string = '';
-
-  public static a: string;
-  protected static b: string = '';
-  private static c: string = '';
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: ['constructor', 'instance-field', 'static-field'],
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class expression + default order + alphabetically
-    {
-      code: `
-const foo = class Foo {
-  public static a: string;
-  protected static b: string = '';
-  private static c: string = '';
-
-  public d: string = '';
-  protected E: string = '';
-  private f: string = '';
-
-  constructor() {}
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + class expression + custom order + alphabetically
-    {
-      code: `
-const foo = class Foo {
-  constructor() {}
-
-  public d: string = '';
-  protected E: string = '';
-  private f: string = '';
-
-  public static a: string;
-  protected static b: string = '';
-  private static c: string = '';
-};
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: ['constructor', 'instance-field', 'static-field'],
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-    },
-
-    // default option + static blocks; should always be valid
-    {
-      code: `
-class Foo {
-  static {}
-  static {}
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: 'never',
             order: 'alphabetically-case-insensitive',
           },
         },
