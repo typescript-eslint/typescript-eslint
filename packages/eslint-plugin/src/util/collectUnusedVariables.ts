@@ -439,8 +439,7 @@ function isMergedTypeDeclaration(
   node: TSESTree.Node,
 ): boolean {
   return (
-    (node.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
-      node.type === AST_NODE_TYPES.TSInterfaceDeclaration) &&
+    (node.type === AST_NODE_TYPES.TSTypeAliasDeclaration) &&
     isMergedTypeValueVariable(variable)
   );
 }
