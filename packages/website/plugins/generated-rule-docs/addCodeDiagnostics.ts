@@ -75,9 +75,7 @@ export function addCodeDiagnostics(page: RuleDocsPage): void {
 
     const diagnostics = lintMessagesToDiagnostics(messages);
     // Code block meta only supports strings, so encode the JSON diagnostics as one safe attribute value.
-    const encodedDiagnostics = Buffer.from(
-      JSON.stringify(diagnostics),
-    ).toString('base64url');
+    const encodedDiagnostics = btoa(JSON.stringify(diagnostics));
     node.meta = [node.meta, `eslintDiagnostics='${encodedDiagnostics}'`]
       .filter(Boolean)
       .join(' ');

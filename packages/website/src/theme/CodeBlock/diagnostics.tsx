@@ -22,9 +22,5 @@ export function parseCodeBlockDiagnostics(
     return [];
   }
 
-  const base64 = encoded.replaceAll('-', '+').replaceAll('_', '/');
-  const bytes = Uint8Array.from(atob(base64), character =>
-    character.charCodeAt(0),
-  );
-  return JSON.parse(new TextDecoder().decode(bytes)) as CodeDiagnostic[];
+  return JSON.parse(atob(encoded)) as CodeDiagnostic[];
 }
