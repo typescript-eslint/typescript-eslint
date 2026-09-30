@@ -1209,7 +1209,12 @@ export default createRule<Options, MessageIds>({
             const usedOnlyAsType = unusedVar.references.some(
               ref =>
                 referenceContainsTypeQuery(ref.identifier) ||
-                referenceContainsTypePredicate(ref.identifier),
+                referenceContainsTypePredicate(ref.identifier) ||
+                (ref.isTypeReference &&
+                  !ref.isValueReference &&
+                  unusedVar.defs.some(
+                    def => def.type === DefinitionType.Variable,
+                  )),
             );
             const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 

@@ -820,7 +820,13 @@ function isUsedVariable(variable: ScopeVariable): boolean {
       !(
         !isImportedAsType &&
         (referenceContainsTypeQuery(ref.identifier) ||
-          referenceContainsTypePredicate(ref.identifier))
+          referenceContainsTypePredicate(ref.identifier) ||
+          (isMergedTypeValueVariable(variable) &&
+            variable.defs.some(
+              def => def.type === TSESLint.Scope.DefinitionType.Variable,
+            ) &&
+            ref.isTypeReference &&
+            !ref.isValueReference))
       ) &&
       !(isFunctionDefinition && isSelfReference(ref, functionNodes)) &&
       !(isTypeDecl && isInsideOneOf(ref, typeDeclNodes)) &&

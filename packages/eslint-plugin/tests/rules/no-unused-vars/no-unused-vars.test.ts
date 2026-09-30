@@ -1191,14 +1191,9 @@ import { foo } from 'foo';
 export type Bar = typeof foo;
     `,
     `
-const value = 123;
-console.log(value);
-export type Value = typeof value;
-    `,
-    `
-interface LocalName {}
-const LocalName = 0;
-export type UsesLocalName = LocalName;
+const Value = 123;
+console.log(Value);
+export type Value = typeof Value;
     `,
     `
 export const Foo = 1;
@@ -2722,6 +2717,27 @@ export interface A extends B {}
           endColumn: 8,
           endLine: 2,
           line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+interface LocalName {}
+const LocalName = 0;
+export type UsesLocalName = LocalName;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'LocalName',
+          },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
           messageId: 'usedOnlyAsType',
         },
       ],
