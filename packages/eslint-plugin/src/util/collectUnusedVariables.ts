@@ -17,8 +17,10 @@ import {
 } from '@typescript-eslint/utils';
 
 import { isTypeImport } from './isTypeImport';
-import { referenceContainsTypePredicate } from './referenceContainsTypePredicate';
-import { referenceContainsTypeQuery } from './referenceContainsTypeQuery';
+import {
+  isMergedTypeValueVariable,
+  isTypeOnlyReference,
+} from './isTypeOnlyReference';
 
 interface VariableAnalysis {
   readonly unusedVariables: ReadonlySet<ScopeVariable>;
@@ -420,15 +422,6 @@ const MERGEABLE_TYPES = new Set([
   AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
 
-function isMergedTypeValueVariable(variable: ScopeVariable): boolean {
-  return (
-    'isTypeVariable' in variable &&
-    'isValueVariable' in variable &&
-    variable.isTypeVariable &&
-    variable.isValueVariable
-  );
-}
-
 function isMergedTypeDeclaration(
   variable: ScopeVariable,
   node: TSESTree.Node,
@@ -817,17 +810,7 @@ function isUsedVariable(variable: ScopeVariable): boolean {
     return (
       ref.isRead() &&
       !forItself &&
-      !(
-        !isImportedAsType &&
-        (referenceContainsTypeQuery(ref.identifier) ||
-          referenceContainsTypePredicate(ref.identifier) ||
-          (isMergedTypeValueVariable(variable) &&
-            variable.defs.some(
-              def => def.type === TSESLint.Scope.DefinitionType.Variable,
-            ) &&
-            ref.isTypeReference &&
-            !ref.isValueReference))
-      ) &&
+      !(!isImportedAsType && isTypeOnlyReference(variable, ref)) &&
       !(isFunctionDefinition && isSelfReference(ref, functionNodes)) &&
       !(isTypeDecl && isInsideOneOf(ref, typeDeclNodes)) &&
       !(isModuleDecl && isSelfReference(ref, moduleDeclNodes)) &&

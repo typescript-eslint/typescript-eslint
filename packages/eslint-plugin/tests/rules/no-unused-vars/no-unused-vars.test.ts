@@ -2743,6 +2743,29 @@ export type UsesLocalName = LocalName;
       ],
     },
     {
+      // Type-position reference to a merged name (not `typeof`) must still
+      // report the value binding as used-only-as-type.
+      code: `
+const Foo = 1;
+interface Foo {}
+export type UsesFoo = Foo;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'Foo',
+          },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
       code: `
 declare const foo: number;
 
