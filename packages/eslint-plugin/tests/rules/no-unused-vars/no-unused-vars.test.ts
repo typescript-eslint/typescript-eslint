@@ -2743,8 +2743,6 @@ export type UsesLocalName = LocalName;
       ],
     },
     {
-      // Type-position reference to a merged name (not `typeof`) — covered by
-      // the non-type-query branch of `isTypeOnlyReference`.
       code: `
 const Foo = 1;
 interface Foo {}

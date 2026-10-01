@@ -15,7 +15,6 @@ export function isMergedTypeValueVariable(variable: ScopeVariable): boolean {
   );
 }
 
-
 export function isTypeOnlyReference(
   variable: ScopeVariable,
   ref: TSESLint.Scope.Reference,
