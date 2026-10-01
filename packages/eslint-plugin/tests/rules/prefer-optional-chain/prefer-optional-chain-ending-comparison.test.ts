@@ -10,6 +10,52 @@ ruleTester.run('prefer-optional-chain-ending-comparison', rule, {
     requireData: true,
   },
   valid: [
+    `
+declare const foo: { bar?: number } | undefined;
+function f<T>(v: T) {
+  return foo && foo.bar === v;
+}
+    `,
+    `
+declare const foo: { bar?: number } | undefined;
+function f<T>(v: T) {
+  return !foo || foo.bar !== v;
+}
+    `,
+    `
+declare const foo: { bar?: number } | undefined;
+declare const v: void;
+foo && foo.bar === v;
+    `,
+    `
+declare const foo: { bar?: number } | undefined;
+declare const v: void;
+!foo || foo.bar !== v;
+    `,
+    `
+declare const foo: { bar?: number } | undefined;
+function f<T extends number | undefined>(v: T) {
+  return foo && foo.bar === v;
+}
+    `,
+    `
+declare const foo: { bar?: number } | undefined;
+function f<T>(v: T) {
+  return foo && foo.bar == v;
+}
+    `,
+    `
+declare const foo: { bar?: number } | undefined;
+function f<T>(v: T) {
+  return !foo || foo.bar != v;
+}
+    `,
+    `
+declare const foo: { bar?: number } | undefined;
+function f<T extends number | null>(v: T) {
+  return foo && foo.bar == v;
+}
+    `,
     'foo && foo.bar == undeclaredVar;',
     'foo && foo.bar == null;',
     'foo && foo.bar == undefined;',
@@ -620,6 +666,62 @@ declare const array: { b?: string }[];
     `,
   ],
   invalid: [
+    {
+      code: `
+declare const foo: { bar?: number } | undefined;
+function f<T extends number>(v: T) {
+  return foo && foo.bar == v;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: `
+declare const foo: { bar?: number } | undefined;
+function f<T extends number>(v: T) {
+  return foo?.bar == v;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar?: number } | undefined;
+function f<T extends number>(v: T) {
+  return foo && foo.bar === v;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 30,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferOptionalChain',
+          suggestions: [
+            {
+              messageId: 'optionalChainSuggest',
+              output: `
+declare const foo: { bar?: number } | undefined;
+function f<T extends number>(v: T) {
+  return foo?.bar === v;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
     {
       code: 'foo && foo.bar == 0;',
       errors: [
