@@ -15,14 +15,7 @@ export function isMergedTypeValueVariable(variable: ScopeVariable): boolean {
   );
 }
 
-/**
- * Whether a reference is a type-only usage (e.g. `typeof x`, a type predicate,
- * or a type-position reference to a merged type/value name like
- * `interface A` + `const A`).
- *
- * Such references should not keep a value binding from being reported unused /
- * used-only-as-type.
- */
+
 export function isTypeOnlyReference(
   variable: ScopeVariable,
   ref: TSESLint.Scope.Reference,
@@ -35,9 +28,7 @@ export function isTypeOnlyReference(
   }
 
   return (
-    isMergedTypeValueVariable(variable) &&
     variable.defs.some(def => def.type === DefinitionType.Variable) &&
-    ref.isTypeReference &&
     !ref.isValueReference
   );
 }
