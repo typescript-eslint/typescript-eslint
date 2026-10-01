@@ -19,13 +19,13 @@ trustPolicyExclude:
   - '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1'
 
 catalog:
-  '@base-ui/react': ^1.7.0
   '@eslint/js': ^10.0.1
   '@types/babel__code-frame': ^7.0.6
   '@types/mdast': ^4.0.4
   '@types/natural-compare': ^1.4.3
   '@types/node': ^24.1.0
   '@types/react': ^18.3.21
+  '@types/react-dom': ^18.3.7
   '@typescript/native': 'npm:typescript@^7.0.2'
   '@vitest/coverage-v8': ^4.0.18
   '@vitest/pretty-format': ^4.0.18

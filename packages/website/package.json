@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
-    "@base-ui/react": "catalog:",
+    "@base-ui/react": "^1.7.0",
     "@docusaurus/core": "~3.10.2",
     "@docusaurus/faster": "^3.10.2",
     "@docusaurus/plugin-client-redirects": "~3.10.2",
@@ -72,7 +72,7 @@
     "@types/history": "^4.7.11",
     "@types/mdast": "catalog:",
     "@types/react": "catalog:",
-    "@types/react-dom": "^18.3.7",
+    "@types/react-dom": "catalog:",
     "@types/unist": "^3.0.3",
     "@typescript-eslint/eslint-plugin": "workspace:*",
     "@typescript-eslint/rule-schema-to-typescript-types": "workspace:*",

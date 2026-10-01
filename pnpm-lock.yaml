@@ -107,9 +107,6 @@ settings:
 
 catalogs:
   default:
-    '@base-ui/react':
-      specifier: ^1.7.0
-      version: 1.7.0
     '@eslint/js':
       specifier: ^10.0.1
       version: 10.0.1
@@ -128,6 +125,9 @@ catalogs:
     '@types/react':
       specifier: ^18.3.21
       version: 18.3.31
+    '@types/react-dom':
+      specifier: ^18.3.7
+      version: 18.3.7
     '@typescript/native':
       specifier: npm:typescript@^7.0.2
       version: 7.0.2
@@ -995,7 +995,7 @@ importers:
         specifier: ^7.28.4
         version: 7.29.7
       '@base-ui/react':
-        specifier: 'catalog:'
+        specifier: ^1.7.0
         version: 1.7.0(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@docusaurus/core':
         specifier: ~3.10.2
@@ -1122,7 +1122,7 @@ importers:
         specifier: 'catalog:'
         version: 18.3.31
       '@types/react-dom':
-        specifier: ^18.3.7
+        specifier: 'catalog:'
         version: 18.3.7(@types/react@18.3.31)
       '@types/unist':
         specifier: ^3.0.3
