@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 
 import { astConverter } from '../../src/ast-converter';
-import { createNativeProjectService } from '../../src/native';
+import { createNativeProjectService } from '../../src/native/createNativeProjectService';
 import { createNativeNodeAdapter } from '../../src/native/nativeNodeAdapter';
 import { createParseSettings } from '../../src/parseSettings/createParseSettings';
 import {
@@ -55,7 +55,6 @@ function withNativeSourceFile<T>(
 
 function createAdapter(program: NativeContext['program']) {
   return createNativeNodeAdapter({
-    getSourceFile: fileName => program.getSourceFile(fileName),
     getSyntacticDiagnostics: fileName =>
       program.getSyntacticDiagnostics(fileName),
   });

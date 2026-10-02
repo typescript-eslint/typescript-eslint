@@ -63,7 +63,6 @@ function getAdapters(context: NativeProjectContext): NativeAdapters {
   if (!adapters) {
     let diagnosticsByFile: Map<string, NativeDiagnostic[]> | undefined;
     const nodeAdapter = createNativeNodeAdapter({
-      getSourceFile: fileName => context.program.getSourceFile(fileName),
       getSyntacticDiagnostics: fileName => {
         if (!diagnosticsByFile) {
           diagnosticsByFile = new Map();

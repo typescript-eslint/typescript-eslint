@@ -22,7 +22,6 @@ export interface NativeNodeAdapter {
 }
 
 export interface NativeNodeAdapterOptions {
-  getSourceFile: (fileName: string) => NativeSourceFile | undefined;
   getSyntacticDiagnostics: (fileName: string) => readonly NativeDiagnostic[];
 }
 
@@ -187,7 +186,6 @@ function isNativeNodeArray(
 }
 
 export function createNativeNodeAdapter({
-  getSourceFile,
   getSyntacticDiagnostics,
 }: NativeNodeAdapterOptions): NativeNodeAdapter {
   const nativeToAdapter = new WeakMap<NativeNode, ts.Node>();
@@ -325,11 +323,6 @@ export function createNativeNodeAdapter({
     return false;
   }
 
-  function wrapSourceFile(fileName: string): ts.SourceFile | undefined {
-    const sourceFile = getSourceFile(fileName);
-    return sourceFile && (wrapNode(sourceFile) as ts.SourceFile);
-  }
-
   /**
    * A fallback rather than a rename: nodes that do have a native property of
    * the classic name — a parameter's `?`, a mapped type's `?` — keep using it.
@@ -442,11 +435,7 @@ export function createNativeNodeAdapter({
         }
         const { fileName } = target as NativeSourceFile;
         return getSyntacticDiagnostics(fileName).map(diagnostic =>
-          toClassicDiagnostic(diagnostic, diagnosticFileName =>
-            diagnosticFileName == null || diagnosticFileName === fileName
-              ? (receiver as ts.SourceFile)
-              : wrapSourceFile(diagnosticFileName),
-          ),
+          toClassicDiagnostic(diagnostic, () => receiver as ts.SourceFile),
         );
       }
       case 'questionToken':

@@ -1,14 +1,14 @@
 import fs from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import type { NativeProjectService } from '../../src/native';
+import type { NativeProjectService } from '../../src/native/types';
 
 import { clearCaches } from '../../src/clear-caches';
 import {
   clearNativeProjectService,
   createNativeProjectService,
   getNativeProjectService,
-} from '../../src/native';
+} from '../../src/native/createNativeProjectService';
 import {
   nativeFilePath as filePath,
   nativeFixtures,
