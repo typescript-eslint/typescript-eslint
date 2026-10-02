@@ -18,7 +18,7 @@ export const defaultParseSettings: ParseSettings = {
   jsx: true,
   loc: true,
   log: console.log,
-  nativeProjectService: undefined,
+  nativeProjectService: false,
   preserveNodeMaps: true,
   programs: null,
   projects: new Map(),

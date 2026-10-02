@@ -126,15 +126,17 @@ describe(createParseSettings, () => {
       expect(createProjectService).not.toHaveBeenCalled();
     });
 
-    it('stores valid native options without creating the classic service', () => {
-      const options = { EXPERIMENTAL_backend: 'native' as const };
-
+    it.each([
+      ['no other options', {}],
+      ['loadTypeScriptPlugins: false', { loadTypeScriptPlugins: false }],
+      ['an empty allowDefaultProject', { allowDefaultProject: [] }],
+    ])('selects the native service for %s', (_name, options) => {
       const parseSettings = createParseSettings('', {
         filePath: '/project/file.ts',
-        projectService: options,
+        projectService: { EXPERIMENTAL_backend: 'native', ...options },
       });
 
-      expect(parseSettings.nativeProjectService).toBe(options);
+      expect(parseSettings.nativeProjectService).toBe(true);
       expect(parseSettings.projectService).toBeUndefined();
       expect(createProjectService).not.toHaveBeenCalled();
     });
@@ -154,9 +156,7 @@ describe(createParseSettings, () => {
           ...options,
         });
 
-        expect(parseSettings.nativeProjectService).toEqual({
-          EXPERIMENTAL_backend: 'native',
-        });
+        expect(parseSettings.nativeProjectService).toBe(true);
         expect(parseSettings.projectService).toBeUndefined();
         expect(createProjectService).not.toHaveBeenCalled();
       });
@@ -167,7 +167,7 @@ describe(createParseSettings, () => {
           projectService: { allowDefaultProject: ['file.ts'] },
         });
 
-        expect(parseSettings.nativeProjectService).toBeUndefined();
+        expect(parseSettings.nativeProjectService).toBe(false);
         expect(parseSettings.projectService).toBe(projectService);
       });
 
@@ -180,7 +180,7 @@ describe(createParseSettings, () => {
           ...options,
         });
 
-        expect(parseSettings.nativeProjectService).toBeUndefined();
+        expect(parseSettings.nativeProjectService).toBe(false);
         expect(parseSettings.projectService).toBeUndefined();
         expect(createProjectService).not.toHaveBeenCalled();
       });
@@ -198,7 +198,7 @@ describe(createParseSettings, () => {
           tsconfigRootDir,
         });
 
-        expect(parseSettings.nativeProjectService).toBeUndefined();
+        expect(parseSettings.nativeProjectService).toBe(false);
         expect(parseSettings.projectService).toBeUndefined();
         expect(parseSettings.projects.size).toBe(1);
         expect(createProjectService).not.toHaveBeenCalled();

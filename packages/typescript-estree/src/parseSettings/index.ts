@@ -1,5 +1,4 @@
 import type { ProjectServiceAndMetadata } from '@typescript-eslint/project-service';
-import type { ProjectServiceOptions } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
 import type { CanonicalPath } from '../create-program/shared';
@@ -119,9 +118,9 @@ export interface MutableParseSettings {
   projects: ReadonlyMap<CanonicalPath, string>;
 
   /**
-   * Experimental TypeScript 7.X backend to power types.
+   * Whether the experimental TypeScript 7.X backend powers types.
    */
-  nativeProjectService: ProjectServiceOptions | undefined;
+  nativeProjectService: boolean;
 
   /**
    * TypeScript server to power program creation.

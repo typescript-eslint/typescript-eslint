@@ -51,10 +51,7 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
-  const nativeProjectServiceOptions = validateNativeProjectServiceOptions(
-    tsestreeOptions,
-    process.versions.node,
-  );
+  const nativeProjectService = validateNativeProjectService(tsestreeOptions);
 
   const tsconfigRootDir = (() => {
     if (tsestreeOptions.tsconfigRootDir == null) {
@@ -149,14 +146,14 @@ export function createParseSettings(
         : tsestreeOptions.loggerFn === false
           ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
           : console.log, // eslint-disable-line no-console
-    nativeProjectService: nativeProjectServiceOptions,
+    nativeProjectService,
     preserveNodeMaps: tsestreeOptions.preserveNodeMaps !== false,
     programs: Array.isArray(tsestreeOptions.programs)
       ? tsestreeOptions.programs
       : null,
     projects: new Map(),
     projectService:
-      !nativeProjectServiceOptions &&
+      !nativeProjectService &&
       (tsestreeOptions.projectService ||
         (tsestreeOptions.project &&
           tsestreeOptions.projectService !== false &&
@@ -251,7 +248,7 @@ export function createParseSettings(
     parseSettings.projects.size === 0 &&
     parseSettings.programs == null &&
     parseSettings.projectService == null &&
-    parseSettings.nativeProjectService == null
+    !parseSettings.nativeProjectService
   ) {
     parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
   }
@@ -269,7 +266,7 @@ function findUnsupportedNativeOption(
   tsestreeOptions: Partial<TSESTreeOptions>,
   projectServiceOptions: ProjectServiceOptions,
   ignoreProject: boolean,
-): string | undefined {
+) {
   const unsupported: readonly (readonly [string, unknown])[] = [
     [
       'parserOptions.project',
@@ -279,11 +276,11 @@ function findUnsupportedNativeOption(
     ],
     ['parserOptions.programs', tsestreeOptions.programs != null],
     ['extraFileExtensions', tsestreeOptions.extraFileExtensions?.length],
-    ['allowDefaultProject', projectServiceOptions.allowDefaultProject != null],
+    ['allowDefaultProject', projectServiceOptions.allowDefaultProject?.length],
     ['defaultProject', projectServiceOptions.defaultProject != null],
     [
       'loadTypeScriptPlugins',
-      projectServiceOptions.loadTypeScriptPlugins != null,
+      projectServiceOptions.loadTypeScriptPlugins === true,
     ],
     [
       'maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING',
@@ -294,43 +291,35 @@ function findUnsupportedNativeOption(
   return unsupported.find(([, value]) => value)?.[0];
 }
 
-function validateNativeProjectServiceOptions(
+function validateNativeProjectService(
   tsestreeOptions: Partial<TSESTreeOptions>,
-  nodeVersion: string,
-): ProjectServiceOptions | undefined {
+) {
+  const { projectService } = tsestreeOptions;
   const requested =
-    typeof tsestreeOptions.projectService === 'object' &&
-    tsestreeOptions.projectService.EXPERIMENTAL_backend === 'native'
-      ? tsestreeOptions.projectService
-      : undefined;
+    typeof projectService === 'object' &&
+    projectService.EXPERIMENTAL_backend === 'native';
 
   const viaEnvironment =
     !requested &&
     process.env.TYPESCRIPT_ESLINT_NATIVE_BACKEND === 'true' &&
     getNativeParser() != null &&
-    tsestreeOptions.projectService !== false &&
-    (tsestreeOptions.projectService != null || !!tsestreeOptions.project);
+    projectService !== false &&
+    (projectService != null || !!tsestreeOptions.project);
 
-  const projectServiceOptions =
-    requested ??
-    (viaEnvironment ? { EXPERIMENTAL_backend: 'native' as const } : undefined);
-  if (!projectServiceOptions) {
-    return undefined;
+  if (!requested && !viaEnvironment) {
+    return false;
   }
 
   const unsupportedOption = findUnsupportedNativeOption(
     tsestreeOptions,
-    typeof tsestreeOptions.projectService === 'object'
-      ? tsestreeOptions.projectService
-      : projectServiceOptions,
+    typeof projectService === 'object' ? projectService : {},
     viaEnvironment,
   );
-  const unsupportedNodeVersion = Number.parseInt(nodeVersion, 10) < 22;
+  const unsupportedNodeVersion =
+    Number.parseInt(process.versions.node, 10) < 22;
 
   if (viaEnvironment) {
-    return unsupportedOption || unsupportedNodeVersion
-      ? undefined
-      : projectServiceOptions;
+    return !unsupportedOption && !unsupportedNodeVersion;
   }
 
   if (unsupportedNodeVersion) {
@@ -344,7 +333,7 @@ function validateNativeProjectServiceOptions(
     );
   }
 
-  return projectServiceOptions;
+  return true;
 }
 
 export function clearTSConfigMatchCache(): void {
