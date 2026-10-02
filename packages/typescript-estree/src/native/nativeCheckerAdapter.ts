@@ -54,7 +54,13 @@ export function createNativeChecker({
   checker,
   nodeAdapter,
   typeAdapter,
-}: NativeCheckerAdapterContext): ts.TypeChecker {
+}: NativeCheckerAdapterContext): {
+  checker: ts.TypeChecker;
+  prefetch: (
+    nodes: readonly ts.Node[],
+    identifiers: readonly ts.Node[],
+  ) => void;
+} {
   const {
     toSignature,
     toSymbol,
@@ -79,10 +85,13 @@ export function createNativeChecker({
       ? native.parent
       : native;
   }
-  const typesOfSymbolsElsewhere = new Map<NativeSymbol, ts.Type>();
+
+  const getTypeOfSymbolElsewhere = memoize((symbol: NativeSymbol) =>
+    wrapType(checker.getNonMissingTypeOfSymbol(symbol)),
+  );
 
   // Classic's intrinsic `true` and `false` are the regular constituents of `boolean`.
-  function getBooleanLiteralType(value: boolean): ts.Type {
+  function getBooleanLiteralType(value: boolean) {
     const boolean = checker.getBooleanType();
     const type = boolean.isUnionType()
       ? boolean
@@ -197,20 +206,20 @@ export function createNativeChecker({
       const native = unwrapLocation(node);
       const sourceFile = native.getSourceFile();
       const identifiers = pendingIdentifiers.get(sourceFile);
-      if (!identifiers) {
-        return wrapSymbol(checker.getSymbolAtLocation(native));
+      if (identifiers) {
+        pendingIdentifiers.delete(sourceFile);
+        const symbols = checker
+          .getSymbolAtLocation(identifiers.map(unwrapNode))
+          .map(symbol => wrapSymbol(symbol));
+        identifiers.forEach((identifier, index) => {
+          seed(memoRoots.getSymbolAtLocation, identifier, symbols[index]);
+        });
+        const index = identifiers.indexOf(node);
+        if (index !== -1) {
+          return symbols[index];
+        }
       }
-      pendingIdentifiers.delete(sourceFile);
-      const symbols = checker
-        .getSymbolAtLocation(identifiers.map(unwrapNode))
-        .map(symbol => wrapSymbol(symbol));
-      identifiers.forEach((identifier, index) => {
-        seed('getSymbolAtLocation', [identifier], symbols[index]);
-      });
-      const index = identifiers.indexOf(node);
-      return index === -1
-        ? wrapSymbol(checker.getSymbolAtLocation(native))
-        : symbols[index];
+      return wrapSymbol(checker.getSymbolAtLocation(native));
     },
     getSymbolsInScope: (location, meaning) =>
       checker
@@ -248,20 +257,12 @@ export function createNativeChecker({
     // Anywhere else the answer is the symbol's own, so one serves them all.
     getTypeOfSymbolAtLocation: (symbol, node) => {
       const nativeSymbol = unwrapSymbol(symbol);
-      if (
-        node.kind === ts.SyntaxKind.Identifier ||
+      return node.kind === ts.SyntaxKind.Identifier ||
         node.kind === ts.SyntaxKind.PrivateIdentifier
-      ) {
-        return wrapType(
-          checker.getTypeOfSymbolAtLocation(nativeSymbol, unwrapNode(node)),
-        );
-      }
-      let type = typesOfSymbolsElsewhere.get(nativeSymbol);
-      if (!type) {
-        type = wrapType(checker.getNonMissingTypeOfSymbol(nativeSymbol));
-        typesOfSymbolsElsewhere.set(nativeSymbol, type);
-      }
-      return type;
+        ? wrapType(
+            checker.getTypeOfSymbolAtLocation(nativeSymbol, unwrapNode(node)),
+          )
+        : getTypeOfSymbolElsewhere(nativeSymbol);
     },
     getTypePredicateOfSignature: signature =>
       wrapTypePredicate(
@@ -333,38 +334,33 @@ export function createNativeChecker({
     },
   } satisfies Partial<ts.TypeChecker> & Record<string, unknown>;
 
-  const { memoized, seed } = memoizeChecker(nativeChecker);
-  const classicChecker = throwOnUnsupportedMembers(
-    'TypeChecker',
-    UNSUPPORTED_CHECKER_MEMBERS,
-    memoized,
-  ) as unknown as ts.TypeChecker;
-  prefetchers.set(classicChecker, (nodes, identifiers) => {
-    const types = checker.getTypeAtLocation(nodes.map(unwrapNode));
-    nodes.forEach((node, index) => {
-      seed('getTypeAtLocation', [node], wrapType(types[index]));
-    });
-    if (identifiers.length) {
-      pendingIdentifiers.set(
-        unwrapNode(identifiers[0]).getSourceFile(),
-        identifiers,
-      );
-    }
-  });
-  return classicChecker;
-}
+  const memoized: Record<string, unknown> = {};
+  const memoRoots: Record<string, MemoEntry> = {};
+  for (const [name, method] of Object.entries(nativeChecker)) {
+    const root = new MemoEntry();
+    memoRoots[name] = root;
+    memoized[name] = memoize(method as CheckerMethod, root);
+  }
 
-const prefetchers = new WeakMap<
-  ts.TypeChecker,
-  (nodes: readonly ts.Node[], identifiers: readonly ts.Node[]) => void
->();
-
-export function prefetchTypesAtLocation(
-  checker: ts.TypeChecker,
-  nodes: readonly ts.Node[],
-  identifiers: readonly ts.Node[],
-): void {
-  prefetchers.get(checker)?.(nodes, identifiers);
+  return {
+    checker: throwOnUnsupportedMembers(
+      'TypeChecker',
+      UNSUPPORTED_CHECKER_MEMBERS,
+      memoized,
+    ) as unknown as ts.TypeChecker,
+    prefetch(nodes, identifiers) {
+      const types = checker.getTypeAtLocation(nodes.map(unwrapNode));
+      nodes.forEach((node, index) => {
+        seed(memoRoots.getTypeAtLocation, node, wrapType(types[index]));
+      });
+      if (identifiers.length) {
+        pendingIdentifiers.set(
+          unwrapNode(identifiers[0]).getSourceFile(),
+          identifiers,
+        );
+      }
+    },
+  };
 }
 
 type CheckerMethod = (...args: unknown[]) => unknown;
@@ -376,11 +372,20 @@ class MemoEntry {
   result: unknown = undefined;
 }
 
-function getMemoEntry(root: MemoEntry, args: readonly unknown[]): MemoEntry {
+function getMemoEntry(
+  root: MemoEntry,
+  args: readonly unknown[],
+  arity: number,
+) {
+  let length = Math.min(args.length, arity);
+  while (length > 0 && args[length - 1] == null) {
+    length--;
+  }
   let entry = root;
-  for (const arg of args) {
+  for (let index = 0; index < length; index++) {
+    const arg = args[index];
     let next: MemoEntry | undefined;
-    if ((typeof arg === 'object' && arg != null) || typeof arg === 'function') {
+    if (typeof arg === 'object' && arg != null) {
       entry.objects ??= new WeakMap();
       next = entry.objects.get(arg);
       if (!next) {
@@ -400,43 +405,22 @@ function getMemoEntry(root: MemoEntry, args: readonly unknown[]): MemoEntry {
   return entry;
 }
 
-function memoizeChecker<Checker extends object>(
-  checker: Checker,
-): {
-  memoized: Checker;
-  seed: (name: string, args: readonly unknown[], result: unknown) => void;
-} {
-  const roots = new Map<string, MemoEntry>();
-
-  function memoize(name: string, method: CheckerMethod): CheckerMethod {
-    const root = new MemoEntry();
-    roots.set(name, root);
-    return function (...args) {
-      const entry = getMemoEntry(root, args);
-      if (!entry.resolved) {
-        entry.result = method(...args);
-        entry.resolved = true;
-      }
-      return entry.result;
-    };
-  }
-
-  const memoized: Record<string, unknown> = {};
-  for (const [name, member] of Object.entries(checker)) {
-    memoized[name] =
-      typeof member === 'function'
-        ? memoize(name, member as CheckerMethod)
-        : member;
-  }
-  return {
-    memoized: memoized as Checker,
-    seed: (name, args, result) => {
-      const root = roots.get(name);
-      if (root) {
-        const entry = getMemoEntry(root, args);
-        entry.result = result;
-        entry.resolved = true;
-      }
-    },
+function memoize<Args extends unknown[], Result>(
+  method: (...args: Args) => Result,
+  root = new MemoEntry(),
+) {
+  return (...args: Args) => {
+    const entry = getMemoEntry(root, args, method.length);
+    if (!entry.resolved) {
+      entry.result = method(...args);
+      entry.resolved = true;
+    }
+    return entry.result as Result;
   };
+}
+
+function seed(root: MemoEntry, node: ts.Node, result: unknown) {
+  const entry = getMemoEntry(root, [node], 1);
+  entry.result = result;
+  entry.resolved = true;
 }

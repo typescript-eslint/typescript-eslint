@@ -1,17 +1,22 @@
-import type { Diagnostic as NativeDiagnostic } from '@typescript/native/unstable/sync';
+import type {
+  SourceFile as NativeSourceFile,
+  StringLiteralLikeNode as NativeStringLiteralLike,
+} from '@typescript/native/unstable/ast';
+import type {
+  Diagnostic as NativeDiagnostic,
+  Project as NativeProject,
+} from '@typescript/native/unstable/sync';
 import type * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
-import type { NativeProjectContext } from './types';
 
-import { createNativeChecker } from './nativeCheckerAdapter';
 import { toClassicDiagnostic } from './nativeNodeAdapter';
-import { createNativeTypeAdapter } from './nativeTypeAdapter';
 import { throwOnUnsupportedMembers } from './throwOnUnsupportedMembers';
 
 interface NativeProgramAdapterContext {
-  context: NativeProjectContext;
+  checker: ts.TypeChecker;
   nodeAdapter: NativeNodeAdapter;
+  project: NativeProject;
 }
 
 const UNSUPPORTED_PROGRAM_MEMBERS = new Set([
@@ -26,53 +31,33 @@ const UNSUPPORTED_PROGRAM_MEMBERS = new Set([
 ] satisfies readonly (keyof ts.Program)[]);
 
 export function createNativeProgram({
-  context,
+  checker,
   nodeAdapter,
+  project,
 }: NativeProgramAdapterContext): ts.Program {
-  const { project } = context;
-  const { checker, program } = project;
-  const typeAdapter = createNativeTypeAdapter({
-    checker,
-    nodeAdapter,
-    project,
-  });
+  const { program } = project;
 
-  let typeChecker: ts.TypeChecker | undefined;
-
-  function getSourceFile(fileName: string): ts.SourceFile | undefined {
+  function getSourceFile(fileName: string) {
     const sourceFile = program.getSourceFile(fileName);
     return sourceFile && (nodeAdapter.wrapNode(sourceFile) as ts.SourceFile);
   }
 
-  function wrapDiagnostic(
-    diagnostic: NativeDiagnostic,
-    requestedFile?: ts.SourceFile,
-  ): ts.Diagnostic {
-    return toClassicDiagnostic(
-      diagnostic,
-      fileName =>
-        (fileName == null ? undefined : getSourceFile(fileName)) ??
-        requestedFile,
-    );
-  }
-
-  function diagnosticsFor(
-    get: (fileName?: string) => readonly NativeDiagnostic[],
-    file: ts.SourceFile | undefined,
-  ): ts.Diagnostic[] {
-    return get(file?.fileName).map(diagnostic =>
-      wrapDiagnostic(diagnostic, file),
+  function wrapDiagnostic(diagnostic: NativeDiagnostic) {
+    return toClassicDiagnostic(diagnostic, fileName =>
+      fileName == null ? undefined : getSourceFile(fileName),
     );
   }
 
   function locatedDiagnosticsFor(
     get: (fileName?: string) => readonly NativeDiagnostic[],
     file: ts.SourceFile | undefined,
-  ): ts.DiagnosticWithLocation[] {
-    return diagnosticsFor(get, file).filter(
-      (diagnostic): diagnostic is ts.DiagnosticWithLocation =>
-        diagnostic.file != null,
-    );
+  ) {
+    return get(file?.fileName)
+      .map(wrapDiagnostic)
+      .filter(
+        (diagnostic): diagnostic is ts.DiagnosticWithLocation =>
+          diagnostic.file != null,
+      );
   }
 
   const nativeProgram = {
@@ -80,19 +65,12 @@ export function createNativeProgram({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       program.getCompilerOptions() as ts.CompilerOptions,
     getConfigFileParsingDiagnostics: () =>
-      program
-        .getConfigFileParsingDiagnostics()
-        .map(diagnostic => wrapDiagnostic(diagnostic)),
+      program.getConfigFileParsingDiagnostics().map(wrapDiagnostic),
     getCurrentDirectory: () => program.getCurrentDirectory(),
     getDeclarationDiagnostics: file =>
-      locatedDiagnosticsFor(
-        fileName => program.getDeclarationDiagnostics(fileName),
-        file,
-      ),
+      locatedDiagnosticsFor(program.getDeclarationDiagnostics, file),
     getGlobalDiagnostics: () =>
-      program
-        .getGlobalDiagnostics()
-        .map(diagnostic => wrapDiagnostic(diagnostic)),
+      program.getGlobalDiagnostics().map(wrapDiagnostic),
     getModeForResolutionAtIndex: (file, index) =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       program.getModeForResolutionAtIndex(file.fileName, index) as
@@ -101,20 +79,15 @@ export function createNativeProgram({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       program.getModeForUsageLocation(
         file.fileName,
-        nodeAdapter.unwrapNode(usage) as never,
+        nodeAdapter.unwrapNode(usage) as NativeStringLiteralLike,
       ) as ts.ResolutionMode | undefined,
     getOptionsDiagnostics: () =>
-      program
-        .getProgramDiagnostics()
-        .map(diagnostic => wrapDiagnostic(diagnostic)),
+      program.getProgramDiagnostics().map(wrapDiagnostic),
     getProjectReferences: () => project.parsedCommandLine.projectReferences,
     getRootFileNames: () => project.parsedCommandLine.fileNames,
 
     getSemanticDiagnostics: file =>
-      diagnosticsFor(
-        fileName => program.getSemanticDiagnostics(fileName),
-        file,
-      ),
+      program.getSemanticDiagnostics(file?.fileName).map(wrapDiagnostic),
     getSourceFile,
     getSourceFileByPath: getSourceFile,
 
@@ -124,23 +97,15 @@ export function createNativeProgram({
         .map(getSourceFile)
         .filter(sourceFile => sourceFile != null),
     getSyntacticDiagnostics: file =>
-      locatedDiagnosticsFor(
-        fileName => program.getSyntacticDiagnostics(fileName),
-        file,
-      ),
-    getTypeChecker: () =>
-      (typeChecker ??= createNativeChecker({
-        checker,
-        nodeAdapter,
-        typeAdapter,
-      })),
+      locatedDiagnosticsFor(program.getSyntacticDiagnostics, file),
+    getTypeChecker: () => checker,
     isSourceFileDefaultLibrary: sourceFile =>
       program.isSourceFileDefaultLibrary(
-        nodeAdapter.unwrapNode(sourceFile) as never,
+        nodeAdapter.unwrapNode(sourceFile) as NativeSourceFile,
       ),
     isSourceFileFromExternalLibrary: sourceFile =>
       program.isSourceFileFromExternalLibrary(
-        nodeAdapter.unwrapNode(sourceFile) as never,
+        nodeAdapter.unwrapNode(sourceFile) as NativeSourceFile,
       ),
 
     sourceFileToPackageName: { get: packageNameFromPath },
@@ -154,7 +119,7 @@ export function createNativeProgram({
   ) as unknown as ts.Program;
 }
 
-function packageNameFromPath(filePath: string): string | undefined {
+function packageNameFromPath(filePath: string) {
   const segments = filePath.split(/[/\\]/);
   const index = segments.lastIndexOf('node_modules');
   if (index === -1 || index === segments.length - 1) {
