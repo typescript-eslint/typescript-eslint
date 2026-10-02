@@ -87,7 +87,7 @@ const NODE_FLAG_TRANSLATIONS = createFlagTranslations(
 );
 
 /** TypeScript 7 has no such `NodeFlags`; it models both structurally. */
-function getModuleDeclarationFlags(node: NativeNode): ts.NodeFlags {
+function getModuleDeclarationFlags(node: NativeNode) {
   const declaration = node as NativeNode & {
     keyword?: NativeSyntaxKind;
     name?: { kind: NativeSyntaxKind; text?: string };
@@ -108,13 +108,12 @@ function getModuleDeclarationFlags(node: NativeNode): ts.NodeFlags {
 
 const translatedNodeFlags = new Map<number, number>();
 
-function translateNodeFlags(node: NativeNode): ts.NodeFlags {
+function translateNodeFlags(node: NativeNode) {
   let flags = translatedNodeFlags.get(node.flags);
   if (flags == null) {
     flags = translateFlags(NODE_FLAG_TRANSLATIONS, node.flags);
     translatedNodeFlags.set(node.flags, flags);
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- translated member by member above
   return node.kind === NativeSyntaxKind.ModuleDeclaration
     ? flags | getModuleDeclarationFlags(node)
     : flags;
@@ -170,7 +169,7 @@ function getGetterNames(prototype: object) {
 }
 
 /** Native hoists JSDoc types into JS ASTs; classic leaves them in comments. */
-function isReparsed(node: NativeNode): boolean {
+function isReparsed(node: NativeNode) {
   return (node.flags & NativeNodeFlags.Reparsed) !== 0;
 }
 
@@ -188,7 +187,7 @@ const NATIVE_ONLY_KEYS = new Set([
   'sourceFile',
 ]);
 
-function isHeritageTypeReference(node: NativeNode): boolean {
+function isHeritageTypeReference(node: NativeNode) {
   return (
     node.kind === NativeSyntaxKind.TypeReference &&
     node.parent.kind === NativeSyntaxKind.HeritageClause
@@ -196,7 +195,7 @@ function isHeritageTypeReference(node: NativeNode): boolean {
 }
 
 /** Classic spells a heritage element's qualified name as property accesses. */
-function isHeritageQualifiedName(node: NativeNode): boolean {
+function isHeritageQualifiedName(node: NativeNode) {
   if (node.kind !== NativeSyntaxKind.QualifiedName) {
     return false;
   }
@@ -247,9 +246,7 @@ export function createNativeNodeAdapter({
   >();
   const nativeToChildren = new WeakMap<NativeNode, readonly ts.Node[]>();
 
-  function adaptArray(
-    nodes: NativeNodeArray<NativeNode>,
-  ): ts.NodeArray<ts.Node> {
+  function adaptArray(nodes: NativeNodeArray<NativeNode>) {
     const cached = nativeArrayToAdapter.get(nodes);
     if (cached) {
       return cached;
@@ -278,7 +275,7 @@ export function createNativeNodeAdapter({
     pos: number,
     end: number,
     parent: ts.Node,
-  ): ts.Node {
+  ) {
     const token = ts.factory.createIdentifier('');
     Object.defineProperties(token, {
       end: { value: end },
@@ -291,7 +288,7 @@ export function createNativeNodeAdapter({
   }
 
   /** Classic splits a JSX closing tag's `</` into `<` and `/`; native keeps it whole. */
-  function getChildren(node: NativeNode): readonly ts.Node[] {
+  function getChildren(node: NativeNode) {
     const cached = nativeToChildren.get(node);
     if (cached) {
       return cached;
@@ -327,7 +324,7 @@ export function createNativeNodeAdapter({
   }
 
   /** A `</` is only ever a first token, where classic answers its `<`. */
-  function wrapToken(token: NativeNode | undefined): ts.Node | undefined {
+  function wrapToken(token: NativeNode | undefined) {
     if (token?.kind !== NativeSyntaxKind.LessThanSlashToken) {
       return token && wrapNode(token);
     }
@@ -355,7 +352,7 @@ export function createNativeNodeAdapter({
   }
 
   /** Classic has no array at all where native only synthesized nodes, such as a nested namespace's `export`. */
-  function hasReparsedNode(nodes: NativeNodeArray<NativeNode>): boolean {
+  function hasReparsedNode(nodes: NativeNodeArray<NativeNode>) {
     for (const node of nodes) {
       if (isReparsed(node)) {
         return true;
@@ -503,7 +500,7 @@ export function createNativeNodeAdapter({
 
   const viewPrototypes = new WeakMap<object, object>();
 
-  function memoize(view: object, name: string, value: unknown): void {
+  function memoize(view: object, name: string, value: unknown) {
     Object.defineProperty(view, name, {
       configurable: true,
       enumerable: true,
@@ -560,7 +557,7 @@ export function createNativeNodeAdapter({
     return prototype;
   }
 
-  function unwrap(node: ts.Node): NativeNode {
+  function unwrap(node: ts.Node) {
     const native = (node as unknown as Partial<NodeView>)[NATIVE_NODE];
     if (!native) {
       throw new Error('The node was not created by a native node adapter.');
@@ -568,7 +565,7 @@ export function createNativeNodeAdapter({
     return native;
   }
 
-  function wrapNode(node: NativeNode): ts.Node {
+  function wrapNode(node: NativeNode) {
     const cached = (node as NativeNode & { [VIEW]?: ts.Node })[VIEW];
     if (cached) {
       return cached;
