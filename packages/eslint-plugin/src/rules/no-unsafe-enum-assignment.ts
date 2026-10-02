@@ -172,7 +172,7 @@ export default createRule<[], MessageIds>({
       senderType = services.getTypeAtLocation(senderNode),
     ) {
       return (
-        hasDeepEnumAssignmentMismatch(checker, senderType, receiverType) &&
+        hasEnumAssignmentMismatch(checker, senderType, receiverType) &&
         !isSafeEnumBitwiseExpression(senderNode, receiverType)
       );
     }
@@ -230,11 +230,7 @@ export default createRule<[], MessageIds>({
               .flatMap(elementType => {
                 const parameterType = signature.getNextParameterType();
                 return parameterType != null &&
-                  hasDeepEnumAssignmentMismatch(
-                    checker,
-                    elementType,
-                    parameterType,
-                  )
+                  hasEnumAssignmentMismatch(checker, elementType, parameterType)
                   ? [parameterType]
                   : [];
               });
@@ -453,11 +449,8 @@ export default createRule<[], MessageIds>({
         if (
           receiverTypes.every(
             receiverType =>
-              hasDeepEnumAssignmentMismatch(
-                checker,
-                senderType,
-                receiverType,
-              ) || !checker.isTypeAssignableTo(senderType, receiverType),
+              hasEnumAssignmentMismatch(checker, senderType, receiverType) ||
+              !checker.isTypeAssignableTo(senderType, receiverType),
           )
         ) {
           report(node.property, 'unsafeEnumAccess', receiverTypes);
@@ -511,6 +504,26 @@ function getTypeArguments(checker: ts.TypeChecker, type: ts.Type) {
   return tsutils.isTypeReference(type) ? checker.getTypeArguments(type) : [];
 }
 
+const topLevelMismatches = new WeakMap<ts.Type, WeakMap<ts.Type, boolean>>();
+
+function hasEnumAssignmentMismatch(
+  checker: ts.TypeChecker,
+  senderType: ts.Type,
+  receiverType: ts.Type,
+): boolean {
+  let receiverMismatches = topLevelMismatches.get(senderType);
+  if (receiverMismatches == null) {
+    receiverMismatches = new WeakMap();
+    topLevelMismatches.set(senderType, receiverMismatches);
+  }
+  let mismatch = receiverMismatches.get(receiverType);
+  if (mismatch == null) {
+    mismatch = hasDeepEnumAssignmentMismatch(checker, senderType, receiverType);
+    receiverMismatches.set(receiverType, mismatch);
+  }
+  return mismatch;
+}
+
 function hasDeepEnumAssignmentMismatch(
   checker: ts.TypeChecker,
   senderType: ts.Type,
@@ -519,6 +532,9 @@ function hasDeepEnumAssignmentMismatch(
 ): boolean {
   const constrainedSenderType = getConstraintType(checker, senderType);
   const constrainedReceiverType = getConstraintType(checker, receiverType);
+  if (constrainedSenderType === constrainedReceiverType) {
+    return false;
+  }
 
   // Recursive types would otherwise be visited endlessly.
   let visitedReceiverTypes = visited.get(constrainedSenderType);
