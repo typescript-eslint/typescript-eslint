@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/internal/plugin-test-formatting -- Prettier doesn't yet support TS 5.6 string literal module identifiers */
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
@@ -22,7 +21,7 @@ ruleTester.run('naming-convention', rule, {
   valid: [
     {
       code: `
-        const child_process = require('child_process');
+const child_process = require('child_process');
       `,
       languageOptions: { parserOptions },
       options: [
@@ -38,28 +37,28 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        declare const ANY_UPPER_CASE: any;
-        declare const ANY_UPPER_CASE: any | null;
-        declare const ANY_UPPER_CASE: any | null | undefined;
+declare const ANY_UPPER_CASE: any;
+declare const ANY_UPPER_CASE: any | null;
+declare const ANY_UPPER_CASE: any | null | undefined;
 
-        declare const string_camelCase: string;
-        declare const string_camelCase: string | null;
-        declare const string_camelCase: string | null | undefined;
-        declare const string_camelCase: 'a' | null | undefined;
-        declare const string_camelCase: string | 'a' | null | undefined;
+declare const string_camelCase: string;
+declare const string_camelCase: string | null;
+declare const string_camelCase: string | null | undefined;
+declare const string_camelCase: 'a' | null | undefined;
+declare const string_camelCase: string | 'a' | null | undefined;
 
-        declare const number_camelCase: number;
-        declare const number_camelCase: number | null;
-        declare const number_camelCase: number | null | undefined;
-        declare const number_camelCase: 1 | null | undefined;
-        declare const number_camelCase: number | 2 | null | undefined;
+declare const number_camelCase: number;
+declare const number_camelCase: number | null;
+declare const number_camelCase: number | null | undefined;
+declare const number_camelCase: 1 | null | undefined;
+declare const number_camelCase: number | 2 | null | undefined;
 
-        declare const boolean_camelCase: boolean;
-        declare const boolean_camelCase: boolean | null;
-        declare const boolean_camelCase: boolean | null | undefined;
-        declare const boolean_camelCase: true | null | undefined;
-        declare const boolean_camelCase: false | null | undefined;
-        declare const boolean_camelCase: true | false | null | undefined;
+declare const boolean_camelCase: boolean;
+declare const boolean_camelCase: boolean | null;
+declare const boolean_camelCase: boolean | null | undefined;
+declare const boolean_camelCase: true | null | undefined;
+declare const boolean_camelCase: false | null | undefined;
+declare const boolean_camelCase: true | false | null | undefined;
       `,
       languageOptions: { parserOptions },
       options: [
@@ -91,11 +90,11 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        let foo = 'a';
-        const _foo = 1;
-        interface Foo {}
-        class Bar {}
-        function foo_function_bar() {}
+let foo = 'a';
+const _foo = 1;
+interface Foo {}
+class Bar {}
+function foo_function_bar() {}
       `,
       options: [
         {
@@ -128,12 +127,12 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        let foo = 'a';
-        const _foo = 1;
-        interface foo {}
-        class bar {}
-        function fooFunctionBar() {}
-        function _fooFunctionBar() {}
+let foo = 'a';
+const _foo = 1;
+interface foo {}
+class bar {}
+function fooFunctionBar() {}
+function _fooFunctionBar() {}
       `,
       options: [
         {
@@ -149,8 +148,8 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const match = 'test'.match(/test/);
-        const [, key, value] = match;
+const match = 'test'.match(/test/);
+const [, key, value] = match;
       `,
       options: [
         {
@@ -189,7 +188,7 @@ ruleTester.run('naming-convention', rule, {
     // https://github.com/typescript-eslint/typescript-eslint/issues/1478
     {
       code: `
-        const child_process = require('child_process');
+const child_process = require('child_process');
       `,
       options: [
         { format: ['camelCase', 'UPPER_CASE'], selector: 'variable' },
@@ -202,9 +201,9 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const foo = {
-          'Property-Name': 'asdf',
-        };
+const foo = {
+  'Property-Name': 'asdf',
+};
       `,
       options: [
         {
@@ -219,9 +218,9 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const foo = {
-          'Property-Name': 'asdf',
-        };
+const foo = {
+  'Property-Name': 'asdf',
+};
       `,
       options: [
         {
@@ -236,10 +235,10 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        let isFoo = 1;
-        class foo {
-          shouldBoo: number;
-        }
+let isFoo = 1;
+class foo {
+  shouldBoo: number;
+}
       `,
       languageOptions: { parserOptions },
       options: [
@@ -253,9 +252,9 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo {
-          private readonly FooBoo: boolean;
-        }
+class foo {
+  private readonly FooBoo: boolean;
+}
       `,
       languageOptions: { parserOptions },
       options: [
@@ -269,9 +268,9 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo {
-          private fooBoo: number;
-        }
+class foo {
+  private fooBoo: number;
+}
       `,
       options: [
         {
@@ -283,11 +282,11 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const isfooBar = 1;
-        function fun(goodfunFoo: number) {}
-        class foo {
-          private VanFooBar: number;
-        }
+const isfooBar = 1;
+function fun(goodfunFoo: number) {}
+class foo {
+  private VanFooBar: number;
+}
       `,
       languageOptions: { parserOptions },
       options: [
@@ -307,11 +306,11 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class SomeClass {
-          static OtherConstant = 'hello';
-        }
+class SomeClass {
+  static OtherConstant = 'hello';
+}
 
-        export const { OtherConstant: otherConstant } = SomeClass;
+export const { OtherConstant: otherConstant } = SomeClass;
       `,
       options: [
         { format: ['PascalCase'], selector: 'property' },
@@ -321,11 +320,11 @@ ruleTester.run('naming-convention', rule, {
     // treat properties with function expressions as typeMethod
     {
       code: `
-        interface SOME_INTERFACE {
-          SomeMethod: () => void;
+interface SOME_INTERFACE {
+  SomeMethod: () => void;
 
-          some_property: string;
-        }
+  some_property: string;
+}
       `,
       options: [
         {
@@ -344,10 +343,10 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        type Ignored = {
-          ignored_due_to_modifiers: string;
-          readonly FOO: string;
-        };
+type Ignored = {
+  ignored_due_to_modifiers: string;
+  readonly FOO: string;
+};
       `,
       languageOptions: { parserOptions },
       options: [
@@ -360,18 +359,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const camelCaseVar = 1;
-        enum camelCaseEnum {}
-        class camelCaseClass {}
-        function camelCaseFunction() {}
-        interface camelCaseInterface {}
-        type camelCaseType = {};
-        export const PascalCaseVar = 1;
-        export enum PascalCaseEnum {}
-        export class PascalCaseClass {}
-        export function PascalCaseFunction() {}
-        export interface PascalCaseInterface {}
-        export type PascalCaseType = {};
+const camelCaseVar = 1;
+enum camelCaseEnum {}
+class camelCaseClass {}
+function camelCaseFunction() {}
+interface camelCaseInterface {}
+type camelCaseType = {};
+export const PascalCaseVar = 1;
+export enum PascalCaseEnum {}
+export class PascalCaseClass {}
+export function PascalCaseFunction() {}
+export interface PascalCaseInterface {}
+export type PascalCaseType = {};
       `,
       options: [
         { format: ['camelCase'], selector: 'default' },
@@ -409,26 +408,26 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const camelCaseVar = 1;
-        enum camelCaseEnum {}
-        class camelCaseClass {}
-        function camelCaseFunction() {}
-        interface camelCaseInterface {}
-        type camelCaseType = {};
-        const PascalCaseVar = 1;
-        enum PascalCaseEnum {}
-        class PascalCaseClass {}
-        function PascalCaseFunction() {}
-        interface PascalCaseInterface {}
-        type PascalCaseType = {};
-        export {
-          PascalCaseVar,
-          PascalCaseEnum,
-          PascalCaseClass,
-          PascalCaseFunction,
-          PascalCaseInterface,
-          PascalCaseType,
-        };
+const camelCaseVar = 1;
+enum camelCaseEnum {}
+class camelCaseClass {}
+function camelCaseFunction() {}
+interface camelCaseInterface {}
+type camelCaseType = {};
+const PascalCaseVar = 1;
+enum PascalCaseEnum {}
+class PascalCaseClass {}
+function PascalCaseFunction() {}
+interface PascalCaseInterface {}
+type PascalCaseType = {};
+export {
+  PascalCaseVar,
+  PascalCaseEnum,
+  PascalCaseClass,
+  PascalCaseFunction,
+  PascalCaseInterface,
+  PascalCaseType,
+};
       `,
       options: [
         { format: ['camelCase'], selector: 'default' },
@@ -466,14 +465,14 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        {
-          const camelCaseVar = 1;
-          function camelCaseFunction() {}
-          declare function camelCaseDeclaredFunction();
-        }
-        const PascalCaseVar = 1;
-        function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction();
+{
+  const camelCaseVar = 1;
+  function camelCaseFunction() {}
+  declare function camelCaseDeclaredFunction();
+}
+const PascalCaseVar = 1;
+function PascalCaseFunction() {}
+declare function PascalCaseDeclaredFunction();
       `,
       options: [
         { format: ['camelCase'], selector: 'default' },
@@ -491,10 +490,10 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const { some_name1 } = {};
-        const { ignore: IgnoredDueToModifiers1 } = {};
-        const { some_name2 = 2 } = {};
-        const IgnoredDueToModifiers2 = 1;
+const { some_name1 } = {};
+const { ignore: IgnoredDueToModifiers1 } = {};
+const { some_name2 = 2 } = {};
+const IgnoredDueToModifiers2 = 1;
       `,
       options: [
         {
@@ -510,10 +509,10 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const { some_name1 } = {};
-        const { ignore: IgnoredDueToModifiers1 } = {};
-        const { some_name2 = 2 } = {};
-        const IgnoredDueToModifiers2 = 1;
+const { some_name1 } = {};
+const { ignore: IgnoredDueToModifiers1 } = {};
+const { some_name2 = 2 } = {};
+const IgnoredDueToModifiers2 = 1;
       `,
       options: [
         {
@@ -529,13 +528,13 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        export function Foo(
-          { aName },
-          { anotherName = 1 },
-          { ignored: IgnoredDueToModifiers1 },
-          { ignored: IgnoredDueToModifiers1 = 2 },
-          IgnoredDueToModifiers2,
-        ) {}
+export function Foo(
+  { aName },
+  { anotherName = 1 },
+  { ignored: IgnoredDueToModifiers1 },
+  { ignored: IgnoredDueToModifiers1 = 2 },
+  IgnoredDueToModifiers2,
+) {}
       `,
       options: [
         {
@@ -551,10 +550,10 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class Ignored {
-          private static abstract readonly some_name;
-          IgnoredDueToModifiers = 1;
-        }
+class Ignored {
+  private static abstract readonly some_name;
+  IgnoredDueToModifiers = 1;
+}
       `,
       options: [
         {
@@ -570,12 +569,12 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class Ignored {
-          constructor(
-            private readonly some_name,
-            IgnoredDueToModifiers,
-          ) {}
-        }
+class Ignored {
+  constructor(
+    private readonly some_name,
+    IgnoredDueToModifiers,
+  ) {}
+}
       `,
       options: [
         {
@@ -591,10 +590,10 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class Ignored {
-          private static some_name() {}
-          IgnoredDueToModifiers() {}
-        }
+class Ignored {
+  private static some_name() {}
+  IgnoredDueToModifiers() {}
+}
       `,
       options: [
         {
@@ -610,10 +609,10 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class Ignored {
-          private static get some_name() {}
-          get IgnoredDueToModifiers() {}
-        }
+class Ignored {
+  private static get some_name() {}
+  get IgnoredDueToModifiers() {}
+}
       `,
       options: [
         {
@@ -629,8 +628,8 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        abstract class some_name {}
-        class IgnoredDueToModifier {}
+abstract class some_name {}
+class IgnoredDueToModifier {}
       `,
       options: [
         {
@@ -646,31 +645,31 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const UnusedVar = 1;
-        function UnusedFunc(
-          // this line is intentionally broken out
-          UnusedParam: string,
-        ) {}
-        class UnusedClass {}
-        interface UnusedInterface {}
-        type UnusedType<
-          // this line is intentionally broken out
-          UnusedTypeParam,
-        > = {};
+const UnusedVar = 1;
+function UnusedFunc(
+  // this line is intentionally broken out
+  UnusedParam: string,
+) {}
+class UnusedClass {}
+interface UnusedInterface {}
+type UnusedType<
+  // this line is intentionally broken out
+  UnusedTypeParam,
+> = {};
 
-        export const used_var = 1;
-        export function used_func(
-          // this line is intentionally broken out
-          used_param: string,
-        ) {
-          return used_param;
-        }
-        export class used_class {}
-        export interface used_interface {}
-        export type used_type<
-          // this line is intentionally broken out
-          used_typeparam,
-        > = used_typeparam;
+export const used_var = 1;
+export function used_func(
+  // this line is intentionally broken out
+  used_param: string,
+) {
+  return used_param;
+}
+export class used_class {}
+export interface used_interface {}
+export type used_type<
+  // this line is intentionally broken out
+  used_typeparam,
+> = used_typeparam;
       `,
       options: [
         {
@@ -686,33 +685,33 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const ignored1 = {
-          'a a': 1,
-          'b b'() {},
-          get 'c c'() {
-            return 1;
-          },
-          set 'd d'(value: string) {},
-        };
-        class ignored2 {
-          'a a' = 1;
-          'b b'() {}
-          get 'c c'() {
-            return 1;
-          }
-          set 'd d'(value: string) {}
-        }
-        interface ignored3 {
-          'a a': 1;
-          'b b'(): void;
-        }
-        type ignored4 = {
-          'a a': 1;
-          'b b'(): void;
-        };
-        enum ignored5 {
-          'a a',
-        }
+const ignored1 = {
+  'a a': 1,
+  'b b'() {},
+  get 'c c'() {
+    return 1;
+  },
+  set 'd d'(value: string) {},
+};
+class ignored2 {
+  'a a' = 1;
+  'b b'() {}
+  get 'c c'() {
+    return 1;
+  }
+  set 'd d'(value: string) {}
+}
+interface ignored3 {
+  'a a': 1;
+  'b b'(): void;
+}
+type ignored4 = {
+  'a a': 1;
+  'b b'(): void;
+};
+enum ignored5 {
+  'a a',
+}
       `,
       options: [
         {
@@ -728,33 +727,33 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const ignored1 = {
-          'a a': 1,
-          'b b'() {},
-          get 'c c'() {
-            return 1;
-          },
-          set 'd d'(value: string) {},
-        };
-        class ignored2 {
-          'a a' = 1;
-          'b b'() {}
-          get 'c c'() {
-            return 1;
-          }
-          set 'd d'(value: string) {}
-        }
-        interface ignored3 {
-          'a a': 1;
-          'b b'(): void;
-        }
-        type ignored4 = {
-          'a a': 1;
-          'b b'(): void;
-        };
-        enum ignored5 {
-          'a a',
-        }
+const ignored1 = {
+  'a a': 1,
+  'b b'() {},
+  get 'c c'() {
+    return 1;
+  },
+  set 'd d'(value: string) {},
+};
+class ignored2 {
+  'a a' = 1;
+  'b b'() {}
+  get 'c c'() {
+    return 1;
+  }
+  set 'd d'(value: string) {}
+}
+interface ignored3 {
+  'a a': 1;
+  'b b'(): void;
+}
+type ignored4 = {
+  'a a': 1;
+  'b b'(): void;
+};
+enum ignored5 {
+  'a a',
+}
       `,
       options: [
         {
@@ -793,12 +792,12 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const obj = {
-          Foo: 42,
-          Bar() {
-            return 42;
-          },
-        };
+const obj = {
+  Foo: 42,
+  Bar() {
+    return 42;
+  },
+};
       `,
       languageOptions: { parserOptions },
       options: [
@@ -818,30 +817,30 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const obj = {
-          Bar() {
-            return 42;
-          },
-          async async_bar() {
-            return 42;
-          },
-        };
-        class foo {
-          public Bar() {
-            return 42;
-          }
-          public async async_bar() {
-            return 42;
-          }
-        }
-        abstract class foo {
-          public Bar() {
-            return 42;
-          }
-          public async async_bar() {
-            return 42;
-          }
-        }
+const obj = {
+  Bar() {
+    return 42;
+  },
+  async async_bar() {
+    return 42;
+  },
+};
+class foo {
+  public Bar() {
+    return 42;
+  }
+  public async async_bar() {
+    return 42;
+  }
+}
+abstract class foo {
+  public Bar() {
+    return 42;
+  }
+  public async async_bar() {
+    return 42;
+  }
+}
       `,
       languageOptions: { parserOptions },
       options: [
@@ -862,9 +861,9 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const async_bar1 = async () => {};
-        async function async_bar2() {}
-        const async_bar3 = async function async_bar4() {};
+const async_bar1 = async () => {};
+async function async_bar2() {}
+const async_bar3 = async function async_bar4() {};
       `,
       languageOptions: { parserOptions },
       options: [
@@ -885,22 +884,22 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo extends bar {
-          public someAttribute = 1;
-          public override some_attribute_override = 1;
-          public someMethod() {
-            return 42;
-          }
-          public override some_method_override2() {
-            return 42;
-          }
-        }
-        abstract class foo extends bar {
-          public abstract someAttribute: string;
-          public abstract override some_attribute_override: string;
-          public abstract someMethod(): string;
-          public abstract override some_method_override2(): string;
-        }
+class foo extends bar {
+  public someAttribute = 1;
+  public override some_attribute_override = 1;
+  public someMethod() {
+    return 42;
+  }
+  public override some_method_override2() {
+    return 42;
+  }
+}
+abstract class foo extends bar {
+  public abstract someAttribute: string;
+  public abstract override some_attribute_override: string;
+  public abstract someMethod(): string;
+  public abstract override some_method_override2(): string;
+}
       `,
       languageOptions: { parserOptions },
       options: [
@@ -917,13 +916,13 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo {
-          private someAttribute = 1;
-          #some_attribute = 1;
+class foo {
+  private someAttribute = 1;
+  #some_attribute = 1;
 
-          private someMethod() {}
-          #some_method() {}
-        }
+  private someMethod() {}
+  #some_method() {}
+}
       `,
       languageOptions: { parserOptions },
       options: [
@@ -999,7 +998,7 @@ ruleTester.run('naming-convention', rule, {
       ],
     },
     {
-      code: 'import { "🍎" as Foo } from \'foo_bar\';',
+      code: "import { '🍎' as Foo } from 'foo_bar';",
       languageOptions: { parserOptions },
       options: [
         {
@@ -1049,17 +1048,17 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const child_process = require('child_process');
+const child_process = require('child_process');
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'camelCase',
             name: 'child_process',
             type: 'Variable',
           },
-          endColumn: 28,
+          endColumn: 20,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
@@ -1079,270 +1078,270 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        declare const any_camelCase01: any;
-        declare const any_camelCase02: any | null;
-        declare const any_camelCase03: any | null | undefined;
-        declare const string_camelCase01: string;
-        declare const string_camelCase02: string | null;
-        declare const string_camelCase03: string | null | undefined;
-        declare const string_camelCase04: 'a' | null | undefined;
-        declare const string_camelCase05: string | 'a' | null | undefined;
-        declare const number_camelCase06: number;
-        declare const number_camelCase07: number | null;
-        declare const number_camelCase08: number | null | undefined;
-        declare const number_camelCase09: 1 | null | undefined;
-        declare const number_camelCase10: number | 2 | null | undefined;
-        declare const boolean_camelCase11: boolean;
-        declare const boolean_camelCase12: boolean | null;
-        declare const boolean_camelCase13: boolean | null | undefined;
-        declare const boolean_camelCase14: true | null | undefined;
-        declare const boolean_camelCase15: false | null | undefined;
-        declare const boolean_camelCase16: true | false | null | undefined;
+declare const any_camelCase01: any;
+declare const any_camelCase02: any | null;
+declare const any_camelCase03: any | null | undefined;
+declare const string_camelCase01: string;
+declare const string_camelCase02: string | null;
+declare const string_camelCase03: string | null | undefined;
+declare const string_camelCase04: 'a' | null | undefined;
+declare const string_camelCase05: string | 'a' | null | undefined;
+declare const number_camelCase06: number;
+declare const number_camelCase07: number | null;
+declare const number_camelCase08: number | null | undefined;
+declare const number_camelCase09: 1 | null | undefined;
+declare const number_camelCase10: number | 2 | null | undefined;
+declare const boolean_camelCase11: boolean;
+declare const boolean_camelCase12: boolean | null;
+declare const boolean_camelCase13: boolean | null | undefined;
+declare const boolean_camelCase14: true | null | undefined;
+declare const boolean_camelCase15: false | null | undefined;
+declare const boolean_camelCase16: true | false | null | undefined;
       `,
       errors: [
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'UPPER_CASE',
             name: 'any_camelCase01',
             processedName: 'camelCase01',
             type: 'Variable',
           },
-          endColumn: 43,
+          endColumn: 35,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'UPPER_CASE',
             name: 'any_camelCase02',
             processedName: 'camelCase02',
             type: 'Variable',
           },
-          endColumn: 50,
+          endColumn: 42,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'UPPER_CASE',
             name: 'any_camelCase03',
             processedName: 'camelCase03',
             type: 'Variable',
           },
-          endColumn: 62,
+          endColumn: 54,
           endLine: 4,
           line: 4,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'string_camelCase01',
             processedName: 'camelCase01',
             type: 'Variable',
           },
-          endColumn: 49,
+          endColumn: 41,
           endLine: 5,
           line: 5,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'string_camelCase02',
             processedName: 'camelCase02',
             type: 'Variable',
           },
-          endColumn: 56,
+          endColumn: 48,
           endLine: 6,
           line: 6,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'string_camelCase03',
             processedName: 'camelCase03',
             type: 'Variable',
           },
-          endColumn: 68,
+          endColumn: 60,
           endLine: 7,
           line: 7,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'string_camelCase04',
             processedName: 'camelCase04',
             type: 'Variable',
           },
-          endColumn: 65,
+          endColumn: 57,
           endLine: 8,
           line: 8,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'string_camelCase05',
             processedName: 'camelCase05',
             type: 'Variable',
           },
-          endColumn: 74,
+          endColumn: 66,
           endLine: 9,
           line: 9,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'number_camelCase06',
             processedName: 'camelCase06',
             type: 'Variable',
           },
-          endColumn: 49,
+          endColumn: 41,
           endLine: 10,
           line: 10,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'number_camelCase07',
             processedName: 'camelCase07',
             type: 'Variable',
           },
-          endColumn: 56,
+          endColumn: 48,
           endLine: 11,
           line: 11,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'number_camelCase08',
             processedName: 'camelCase08',
             type: 'Variable',
           },
-          endColumn: 68,
+          endColumn: 60,
           endLine: 12,
           line: 12,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'number_camelCase09',
             processedName: 'camelCase09',
             type: 'Variable',
           },
-          endColumn: 63,
+          endColumn: 55,
           endLine: 13,
           line: 13,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'number_camelCase10',
             processedName: 'camelCase10',
             type: 'Variable',
           },
-          endColumn: 72,
+          endColumn: 64,
           endLine: 14,
           line: 14,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'boolean_camelCase11',
             processedName: 'camelCase11',
             type: 'Variable',
           },
-          endColumn: 51,
+          endColumn: 43,
           endLine: 15,
           line: 15,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'boolean_camelCase12',
             processedName: 'camelCase12',
             type: 'Variable',
           },
-          endColumn: 58,
+          endColumn: 50,
           endLine: 16,
           line: 16,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'boolean_camelCase13',
             processedName: 'camelCase13',
             type: 'Variable',
           },
-          endColumn: 70,
+          endColumn: 62,
           endLine: 17,
           line: 17,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'boolean_camelCase14',
             processedName: 'camelCase14',
             type: 'Variable',
           },
-          endColumn: 67,
+          endColumn: 59,
           endLine: 18,
           line: 18,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'boolean_camelCase15',
             processedName: 'camelCase15',
             type: 'Variable',
           },
-          endColumn: 68,
+          endColumn: 60,
           endLine: 19,
           line: 19,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'boolean_camelCase16',
             processedName: 'camelCase16',
             type: 'Variable',
           },
-          endColumn: 75,
+          endColumn: 67,
           endLine: 20,
           line: 20,
           messageId: 'doesNotMatchFormatTrimmed',
@@ -1378,65 +1377,62 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        declare const function_camelCase1: () => void;
-        declare const function_camelCase2: (() => void) | null;
-        declare const function_camelCase3: (() => void) | null | undefined;
-        declare const function_camelCase4:
-          | (() => void)
-          | (() => string)
-          | null
-          | undefined;
+declare const function_camelCase1: () => void;
+declare const function_camelCase2: (() => void) | null;
+declare const function_camelCase3: (() => void) | null | undefined;
+declare const function_camelCase4:
+  (() => void) | (() => string) | null | undefined;
       `,
       errors: [
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'function_camelCase1',
             processedName: 'camelCase1',
             type: 'Variable',
           },
-          endColumn: 54,
+          endColumn: 46,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'function_camelCase2',
             processedName: 'camelCase2',
             type: 'Variable',
           },
-          endColumn: 63,
+          endColumn: 55,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'function_camelCase3',
             processedName: 'camelCase3',
             type: 'Variable',
           },
-          endColumn: 75,
+          endColumn: 67,
           endLine: 4,
           line: 4,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'function_camelCase4',
             processedName: 'camelCase4',
             type: 'Variable',
           },
-          endColumn: 22,
-          endLine: 9,
+          endColumn: 51,
+          endLine: 6,
           line: 5,
           messageId: 'doesNotMatchFormatTrimmed',
         },
@@ -1453,127 +1449,120 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        declare const array_camelCase1: Array<number>;
-        declare const array_camelCase2: ReadonlyArray<number> | null;
-        declare const array_camelCase3: number[] | null | undefined;
-        declare const array_camelCase4: readonly number[] | null | undefined;
-        declare const array_camelCase5:
-          | number[]
-          | (number | string)[]
-          | null
-          | undefined;
-        declare const array_camelCase6: [] | null | undefined;
-        declare const array_camelCase7: [number] | null | undefined;
-        declare const array_camelCase8:
-          | readonly number[]
-          | Array<string>
-          | [boolean]
-          | null
-          | undefined;
+declare const array_camelCase1: Array<number>;
+declare const array_camelCase2: ReadonlyArray<number> | null;
+declare const array_camelCase3: number[] | null | undefined;
+declare const array_camelCase4: readonly number[] | null | undefined;
+declare const array_camelCase5:
+  number[] | (number | string)[] | null | undefined;
+declare const array_camelCase6: [] | null | undefined;
+declare const array_camelCase7: [number] | null | undefined;
+declare const array_camelCase8:
+  readonly number[] | Array<string> | [boolean] | null | undefined;
       `,
       errors: [
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'array_camelCase1',
             processedName: 'camelCase1',
             type: 'Variable',
           },
-          endColumn: 54,
+          endColumn: 46,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'array_camelCase2',
             processedName: 'camelCase2',
             type: 'Variable',
           },
-          endColumn: 69,
+          endColumn: 61,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'array_camelCase3',
             processedName: 'camelCase3',
             type: 'Variable',
           },
-          endColumn: 68,
+          endColumn: 60,
           endLine: 4,
           line: 4,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'array_camelCase4',
             processedName: 'camelCase4',
             type: 'Variable',
           },
-          endColumn: 77,
+          endColumn: 69,
           endLine: 5,
           line: 5,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'array_camelCase5',
             processedName: 'camelCase5',
             type: 'Variable',
           },
-          endColumn: 22,
-          endLine: 10,
+          endColumn: 52,
+          endLine: 7,
           line: 6,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'array_camelCase6',
             processedName: 'camelCase6',
             type: 'Variable',
           },
-          endColumn: 62,
-          endLine: 11,
-          line: 11,
+          endColumn: 54,
+          endLine: 8,
+          line: 8,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'array_camelCase7',
             processedName: 'camelCase7',
             type: 'Variable',
           },
-          endColumn: 68,
-          endLine: 12,
-          line: 12,
+          endColumn: 60,
+          endLine: 9,
+          line: 9,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 23,
+          column: 15,
           data: {
             formats: 'snake_case',
             name: 'array_camelCase8',
             processedName: 'camelCase8',
             type: 'Variable',
           },
-          endColumn: 22,
-          endLine: 18,
-          line: 13,
+          endColumn: 67,
+          endLine: 11,
+          line: 10,
           messageId: 'doesNotMatchFormatTrimmed',
         },
       ],
@@ -1589,18 +1578,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        let unused_foo = 'a';
+let unused_foo = 'a';
       `,
       errors: [
         {
-          column: 13,
+          column: 5,
           data: {
             name: 'unused_foo',
             regex: '/^unused_\\w/u',
             regexMatch: 'not match',
             type: 'Variable',
           },
-          endColumn: 23,
+          endColumn: 15,
           endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
@@ -1620,18 +1609,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const _unused_foo = 1;
+const _unused_foo = 1;
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             name: '_unused_foo',
             regex: '/^unused_\\w/u',
             regexMatch: 'not match',
             type: 'Variable',
           },
-          endColumn: 26,
+          endColumn: 18,
           endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
@@ -1651,18 +1640,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        interface IFoo {}
+interface IFoo {}
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             name: 'IFoo',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
             type: 'Interface',
           },
-          endColumn: 23,
+          endColumn: 15,
           endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
@@ -1681,18 +1670,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class IBar {}
+class IBar {}
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             name: 'IBar',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
             type: 'Class',
           },
-          endColumn: 19,
+          endColumn: 11,
           endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
@@ -1711,18 +1700,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        function fooBar() {}
+function fooBar() {}
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             name: 'fooBar',
             regex: '/function/u',
             regexMatch: 'match',
             type: 'Function',
           },
-          endColumn: 24,
+          endColumn: 16,
           endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
@@ -1742,17 +1731,17 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        let unused_foo = 'a';
+let unused_foo = 'a';
       `,
       errors: [
         {
-          column: 13,
+          column: 5,
           data: {
             formats: 'camelCase',
             name: 'unused_foo',
             type: 'Variable',
           },
-          endColumn: 23,
+          endColumn: 15,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
@@ -1768,18 +1757,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const _unused_foo = 1;
+const _unused_foo = 1;
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'camelCase',
             name: '_unused_foo',
             processedName: 'unused_foo',
             type: 'Variable',
           },
-          endColumn: 26,
+          endColumn: 18,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
@@ -1795,17 +1784,17 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        function foo_bar() {}
+function foo_bar() {}
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             formats: 'camelCase',
             name: 'foo_bar',
             type: 'Function',
           },
-          endColumn: 25,
+          endColumn: 17,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
@@ -1821,18 +1810,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        interface IFoo {}
+interface IFoo {}
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             name: 'IFoo',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
             type: 'Interface',
           },
-          endColumn: 23,
+          endColumn: 15,
           endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
@@ -1851,18 +1840,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class IBar {}
+class IBar {}
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             name: 'IBar',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
             type: 'Class',
           },
-          endColumn: 19,
+          endColumn: 11,
           endLine: 2,
           line: 2,
           messageId: 'satisfyCustom',
@@ -1886,19 +1875,19 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const foo = {
-          'Property Name': 'asdf',
-        };
+const foo = {
+  'Property Name': 'asdf',
+};
       `,
       errors: [
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'strictCamelCase',
             name: 'Property Name',
             type: 'Object Literal Property',
           },
-          endColumn: 26,
+          endColumn: 18,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
@@ -1917,48 +1906,48 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const myfoo_bar = 'abcs';
-        function fun(myfoo: string) {}
-        class foo {
-          Myfoo: string;
-        }
+const myfoo_bar = 'abcs';
+function fun(myfoo: string) {}
+class foo {
+  Myfoo: string;
+}
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'PascalCase',
             name: 'myfoo_bar',
             processedName: 'foo_bar',
             type: 'Variable',
           },
-          endColumn: 24,
+          endColumn: 16,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 22,
+          column: 14,
           data: {
             formats: 'PascalCase',
             name: 'myfoo',
             processedName: 'foo',
             type: 'Parameter',
           },
-          endColumn: 35,
+          endColumn: 27,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'Myfoo',
             processedName: 'foo',
             type: 'Class Property',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 5,
           line: 5,
           messageId: 'doesNotMatchFormatTrimmed',
@@ -1976,19 +1965,19 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo {
-          private readonly fooBar: boolean;
-        }
+class foo {
+  private readonly fooBar: boolean;
+}
       `,
       errors: [
         {
-          column: 28,
+          column: 20,
           data: {
             formats: 'PascalCase',
             name: 'fooBar',
             type: 'Class Property',
           },
-          endColumn: 34,
+          endColumn: 26,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
@@ -2004,18 +1993,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        function my_foo_bar() {}
+function my_foo_bar() {}
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             formats: 'PascalCase',
             name: 'my_foo_bar',
             processedName: '_foo_bar',
             type: 'Function',
           },
-          endColumn: 28,
+          endColumn: 20,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
@@ -2033,21 +2022,21 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class SomeClass {
-          static otherConstant = 'hello';
-        }
+class SomeClass {
+  static otherConstant = 'hello';
+}
 
-        export const { otherConstant } = SomeClass;
+export const { otherConstant } = SomeClass;
       `,
       errors: [
         {
-          column: 18,
+          column: 10,
           data: {
             formats: 'PascalCase',
             name: 'otherConstant',
             type: 'Class Property',
           },
-          endColumn: 31,
+          endColumn: 23,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
@@ -2061,19 +2050,19 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        declare class Foo {
-          Bar(Baz: string): void;
-        }
+declare class Foo {
+  Bar(Baz: string): void;
+}
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'camelCase',
             name: 'Baz',
             type: 'Parameter',
           },
-          endColumn: 26,
+          endColumn: 18,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
@@ -2084,82 +2073,82 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        export const PascalCaseVar = 1;
-        export enum PascalCaseEnum {}
-        export class PascalCaseClass {}
-        export function PascalCaseFunction() {}
-        export interface PascalCaseInterface {}
-        export type PascalCaseType = {};
+export const PascalCaseVar = 1;
+export enum PascalCaseEnum {}
+export class PascalCaseClass {}
+export function PascalCaseFunction() {}
+export interface PascalCaseInterface {}
+export type PascalCaseType = {};
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseVar',
             type: 'Variable',
           },
-          endColumn: 35,
+          endColumn: 27,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 21,
+          column: 13,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseEnum',
             type: 'Enum',
           },
-          endColumn: 35,
+          endColumn: 27,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 22,
+          column: 14,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseClass',
             type: 'Class',
           },
-          endColumn: 37,
+          endColumn: 29,
           endLine: 4,
           line: 4,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 25,
+          column: 17,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseFunction',
             type: 'Function',
           },
-          endColumn: 43,
+          endColumn: 35,
           endLine: 5,
           line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 26,
+          column: 18,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseInterface',
             type: 'Interface',
           },
-          endColumn: 45,
+          endColumn: 37,
           endLine: 6,
           line: 6,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 21,
+          column: 13,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseType',
             type: 'Type Alias',
           },
-          endColumn: 35,
+          endColumn: 27,
           endLine: 7,
           line: 7,
           messageId: 'doesNotMatchFormat',
@@ -2204,90 +2193,90 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const PascalCaseVar = 1;
-        enum PascalCaseEnum {}
-        class PascalCaseClass {}
-        function PascalCaseFunction() {}
-        interface PascalCaseInterface {}
-        type PascalCaseType = {};
-        export {
-          PascalCaseVar,
-          PascalCaseEnum,
-          PascalCaseClass,
-          PascalCaseFunction,
-          PascalCaseInterface,
-          PascalCaseType,
-        };
+const PascalCaseVar = 1;
+enum PascalCaseEnum {}
+class PascalCaseClass {}
+function PascalCaseFunction() {}
+interface PascalCaseInterface {}
+type PascalCaseType = {};
+export {
+  PascalCaseVar,
+  PascalCaseEnum,
+  PascalCaseClass,
+  PascalCaseFunction,
+  PascalCaseInterface,
+  PascalCaseType,
+};
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseVar',
             type: 'Variable',
           },
-          endColumn: 28,
+          endColumn: 20,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 14,
+          column: 6,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseEnum',
             type: 'Enum',
           },
-          endColumn: 28,
+          endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseClass',
             type: 'Class',
           },
-          endColumn: 30,
+          endColumn: 22,
           endLine: 4,
           line: 4,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 18,
+          column: 10,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseFunction',
             type: 'Function',
           },
-          endColumn: 36,
+          endColumn: 28,
           endLine: 5,
           line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 19,
+          column: 11,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseInterface',
             type: 'Interface',
           },
-          endColumn: 38,
+          endColumn: 30,
           endLine: 6,
           line: 6,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 14,
+          column: 6,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseType',
             type: 'Type Alias',
           },
-          endColumn: 28,
+          endColumn: 20,
           endLine: 7,
           line: 7,
           messageId: 'doesNotMatchFormat',
@@ -2329,43 +2318,43 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const PascalCaseVar = 1;
-        function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction();
+const PascalCaseVar = 1;
+function PascalCaseFunction() {}
+declare function PascalCaseDeclaredFunction();
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'camelCase',
             name: 'PascalCaseVar',
             type: 'Variable',
           },
-          endColumn: 28,
+          endColumn: 20,
           endLine: 2,
           line: 2,
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          column: 10,
+          data: {
+            formats: 'camelCase',
+            name: 'PascalCaseFunction',
+            type: 'Function',
+          },
+          endColumn: 28,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
           column: 18,
           data: {
             formats: 'camelCase',
-            name: 'PascalCaseFunction',
-            type: 'Function',
-          },
-          endColumn: 36,
-          endLine: 3,
-          line: 3,
-          messageId: 'doesNotMatchFormat',
-        },
-        {
-          column: 26,
-          data: {
-            formats: 'camelCase',
             name: 'PascalCaseDeclaredFunction',
             type: 'Function',
           },
-          endColumn: 52,
+          endColumn: 44,
           endLine: 4,
           line: 4,
           messageId: 'doesNotMatchFormat',
@@ -2387,33 +2376,33 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const { some_name1 } = {};
-        const { some_name2 = 2 } = {};
-        const { ignored: IgnoredDueToModifiers1 } = {};
-        const { ignored: IgnoredDueToModifiers2 = 3 } = {};
-        const IgnoredDueToModifiers3 = 1;
+const { some_name1 } = {};
+const { some_name2 = 2 } = {};
+const { ignored: IgnoredDueToModifiers1 } = {};
+const { ignored: IgnoredDueToModifiers2 = 3 } = {};
+const IgnoredDueToModifiers3 = 1;
       `,
       errors: [
         {
-          column: 17,
+          column: 9,
           data: {
             formats: 'UPPER_CASE',
             name: 'some_name1',
             type: 'Variable',
           },
-          endColumn: 27,
+          endColumn: 19,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 17,
+          column: 9,
           data: {
             formats: 'UPPER_CASE',
             name: 'some_name2',
             type: 'Variable',
           },
-          endColumn: 27,
+          endColumn: 19,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
@@ -2433,35 +2422,35 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        export function Foo(
-          { aName },
-          { anotherName = 1 },
-          { ignored: IgnoredDueToModifiers1 },
-          { ignored: IgnoredDueToModifiers1 = 2 },
-          IgnoredDueToModifiers2,
-        ) {}
+export function Foo(
+  { aName },
+  { anotherName = 1 },
+  { ignored: IgnoredDueToModifiers1 },
+  { ignored: IgnoredDueToModifiers1 = 2 },
+  IgnoredDueToModifiers2,
+) {}
       `,
       errors: [
         {
-          column: 13,
+          column: 5,
           data: {
             formats: 'UPPER_CASE',
             name: 'aName',
             type: 'Parameter',
           },
-          endColumn: 18,
+          endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 13,
+          column: 5,
           data: {
             formats: 'UPPER_CASE',
             name: 'anotherName',
             type: 'Parameter',
           },
-          endColumn: 24,
+          endColumn: 16,
           endLine: 4,
           line: 4,
           messageId: 'doesNotMatchFormat',
@@ -2481,20 +2470,20 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class Ignored {
-          private static abstract readonly some_name;
-          IgnoredDueToModifiers = 1;
-        }
+class Ignored {
+  private static abstract readonly some_name;
+  IgnoredDueToModifiers = 1;
+}
       `,
       errors: [
         {
-          column: 44,
+          column: 36,
           data: {
             formats: 'UPPER_CASE',
             name: 'some_name',
             type: 'Class Property',
           },
-          endColumn: 53,
+          endColumn: 45,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
@@ -2514,22 +2503,22 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class Ignored {
-          constructor(
-            private readonly some_name,
-            IgnoredDueToModifiers,
-          ) {}
-        }
+class Ignored {
+  constructor(
+    private readonly some_name,
+    IgnoredDueToModifiers,
+  ) {}
+}
       `,
       errors: [
         {
-          column: 30,
+          column: 22,
           data: {
             formats: 'UPPER_CASE',
             name: 'some_name',
             type: 'Parameter Property',
           },
-          endColumn: 39,
+          endColumn: 31,
           endLine: 4,
           line: 4,
           messageId: 'doesNotMatchFormat',
@@ -2549,20 +2538,20 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class Ignored {
-          private static some_name() {}
-          IgnoredDueToModifiers() {}
-        }
+class Ignored {
+  private static some_name() {}
+  IgnoredDueToModifiers() {}
+}
       `,
       errors: [
         {
-          column: 26,
+          column: 18,
           data: {
             formats: 'UPPER_CASE',
             name: 'some_name',
             type: 'Class Method',
           },
-          endColumn: 35,
+          endColumn: 27,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
@@ -2582,20 +2571,20 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class Ignored {
-          private static get some_name() {}
-          get IgnoredDueToModifiers() {}
-        }
+class Ignored {
+  private static get some_name() {}
+  get IgnoredDueToModifiers() {}
+}
       `,
       errors: [
         {
-          column: 30,
+          column: 22,
           data: {
             formats: 'UPPER_CASE',
             name: 'some_name',
             type: 'Classic Accessor',
           },
-          endColumn: 39,
+          endColumn: 31,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
@@ -2615,18 +2604,18 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        abstract class some_name {}
-        class IgnoredDueToModifier {}
+abstract class some_name {}
+class IgnoredDueToModifier {}
       `,
       errors: [
         {
-          column: 24,
+          column: 16,
           data: {
             formats: 'UPPER_CASE',
             name: 'some_name',
             type: 'Class',
           },
-          endColumn: 33,
+          endColumn: 25,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
@@ -2646,99 +2635,99 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const UnusedVar = 1;
-        function UnusedFunc(
-          // this line is intentionally broken out
-          UnusedParam: string,
-        ) {}
-        class UnusedClass {}
-        interface UnusedInterface {}
-        type UnusedType<
-          // this line is intentionally broken out
-          UnusedTypeParam,
-        > = {};
+const UnusedVar = 1;
+function UnusedFunc(
+  // this line is intentionally broken out
+  UnusedParam: string,
+) {}
+class UnusedClass {}
+interface UnusedInterface {}
+type UnusedType<
+  // this line is intentionally broken out
+  UnusedTypeParam,
+> = {};
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'snake_case',
             name: 'UnusedVar',
             type: 'Variable',
           },
-          endColumn: 24,
+          endColumn: 16,
           endLine: 2,
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 18,
+          column: 10,
           data: {
             formats: 'snake_case',
             name: 'UnusedFunc',
             type: 'Function',
           },
-          endColumn: 28,
+          endColumn: 20,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'snake_case',
             name: 'UnusedParam',
             type: 'Parameter',
           },
-          endColumn: 30,
+          endColumn: 22,
           endLine: 5,
           line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'snake_case',
             name: 'UnusedClass',
             type: 'Class',
           },
-          endColumn: 26,
+          endColumn: 18,
           endLine: 7,
           line: 7,
-          messageId: 'doesNotMatchFormat',
-        },
-        {
-          column: 19,
-          data: {
-            formats: 'snake_case',
-            name: 'UnusedInterface',
-            type: 'Interface',
-          },
-          endColumn: 34,
-          endLine: 8,
-          line: 8,
-          messageId: 'doesNotMatchFormat',
-        },
-        {
-          column: 14,
-          data: {
-            formats: 'snake_case',
-            name: 'UnusedType',
-            type: 'Type Alias',
-          },
-          endColumn: 24,
-          endLine: 9,
-          line: 9,
           messageId: 'doesNotMatchFormat',
         },
         {
           column: 11,
           data: {
             formats: 'snake_case',
+            name: 'UnusedInterface',
+            type: 'Interface',
+          },
+          endColumn: 26,
+          endLine: 8,
+          line: 8,
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          column: 6,
+          data: {
+            formats: 'snake_case',
+            name: 'UnusedType',
+            type: 'Type Alias',
+          },
+          endColumn: 16,
+          endLine: 9,
+          line: 9,
+          messageId: 'doesNotMatchFormat',
+        },
+        {
+          column: 3,
+          data: {
+            formats: 'snake_case',
             name: 'UnusedTypeParam',
             type: 'Type Parameter',
           },
-          endColumn: 26,
+          endColumn: 18,
           endLine: 11,
           line: 11,
           messageId: 'doesNotMatchFormat',
@@ -2758,187 +2747,187 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const ignored1 = {
-          'a a': 1,
-          'b b'() {},
-          get 'c c'() {
-            return 1;
-          },
-          set 'd d'(value: string) {},
-        };
-        class ignored2 {
-          'a a' = 1;
-          'b b'() {}
-          get 'c c'() {
-            return 1;
-          }
-          set 'd d'(value: string) {}
-        }
-        interface ignored3 {
-          'a a': 1;
-          'b b'(): void;
-        }
-        type ignored4 = {
-          'a a': 1;
-          'b b'(): void;
-        };
-        enum ignored5 {
-          'a a',
-        }
+const ignored1 = {
+  'a a': 1,
+  'b b'() {},
+  get 'c c'() {
+    return 1;
+  },
+  set 'd d'(value: string) {},
+};
+class ignored2 {
+  'a a' = 1;
+  'b b'() {}
+  get 'c c'() {
+    return 1;
+  }
+  set 'd d'(value: string) {}
+}
+interface ignored3 {
+  'a a': 1;
+  'b b'(): void;
+}
+type ignored4 = {
+  'a a': 1;
+  'b b'(): void;
+};
+enum ignored5 {
+  'a a',
+}
       `,
       errors: [
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'a a',
             type: 'Object Literal Property',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 3,
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'b b',
             type: 'Object Literal Method',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 4,
           line: 4,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'PascalCase',
             name: 'c c',
             type: 'Classic Accessor',
           },
-          endColumn: 20,
+          endColumn: 12,
           endLine: 5,
           line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'PascalCase',
             name: 'd d',
             type: 'Classic Accessor',
           },
-          endColumn: 20,
+          endColumn: 12,
           endLine: 8,
           line: 8,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'a a',
             type: 'Class Property',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 11,
           line: 11,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'b b',
             type: 'Class Method',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 12,
           line: 12,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'PascalCase',
             name: 'c c',
             type: 'Classic Accessor',
           },
-          endColumn: 20,
+          endColumn: 12,
           endLine: 13,
           line: 13,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'PascalCase',
             name: 'd d',
             type: 'Classic Accessor',
           },
-          endColumn: 20,
+          endColumn: 12,
           endLine: 16,
           line: 16,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'a a',
             type: 'Type Property',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 19,
           line: 19,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'b b',
             type: 'Type Method',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 20,
           line: 20,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'a a',
             type: 'Type Property',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 23,
           line: 23,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'b b',
             type: 'Type Method',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 24,
           line: 24,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'PascalCase',
             name: 'a a',
             type: 'Enum Member',
           },
-          endColumn: 16,
+          endColumn: 8,
           endLine: 27,
           line: 27,
           messageId: 'doesNotMatchFormat',
@@ -3049,78 +3038,78 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo {
-          public Bar() {
-            return 42;
-          }
-          public async async_bar() {
-            return 42;
-          }
-          // ❌ error
-          public async asyncBar() {
-            return 42;
-          }
-          // ❌ error
-          public AsyncBar2 = async () => {
-            return 42;
-          };
-          // ❌ error
-          public AsyncBar3 = async function () {
-            return 42;
-          };
-        }
-        abstract class foo {
-          public abstract Bar(): number;
-          public abstract async async_bar(): number;
-          // ❌ error
-          public abstract async ASYNC_BAR(): number;
-        }
+class foo {
+  public Bar() {
+    return 42;
+  }
+  public async async_bar() {
+    return 42;
+  }
+  // ❌ error
+  public async asyncBar() {
+    return 42;
+  }
+  // ❌ error
+  public AsyncBar2 = async () => {
+    return 42;
+  };
+  // ❌ error
+  public AsyncBar3 = async function () {
+    return 42;
+  };
+}
+abstract class foo {
+  public abstract Bar(): number;
+  public abstract async async_bar(): number;
+  // ❌ error
+  public abstract async ASYNC_BAR(): number;
+}
       `,
       errors: [
         {
-          column: 24,
+          column: 16,
           data: {
             formats: 'snake_case',
             name: 'asyncBar',
             type: 'Class Method',
           },
-          endColumn: 32,
+          endColumn: 24,
           endLine: 10,
           line: 10,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 18,
+          column: 10,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar2',
             type: 'Class Method',
           },
-          endColumn: 27,
+          endColumn: 19,
           endLine: 14,
           line: 14,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 18,
+          column: 10,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar3',
             type: 'Class Method',
           },
-          endColumn: 27,
+          endColumn: 19,
           endLine: 18,
           line: 18,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 33,
+          column: 25,
           data: {
             formats: 'snake_case',
             name: 'ASYNC_BAR',
             type: 'Class Method',
           },
-          endColumn: 42,
+          endColumn: 34,
           endLine: 26,
           line: 26,
           messageId: 'doesNotMatchFormat',
@@ -3145,60 +3134,60 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const obj = {
-          Bar() {
-            return 42;
-          },
-          async async_bar() {
-            return 42;
-          },
-          // ❌ error
-          async AsyncBar() {
-            return 42;
-          },
-          // ❌ error
-          AsyncBar2: async () => {
-            return 42;
-          },
-          // ❌ error
-          AsyncBar3: async function () {
-            return 42;
-          },
-        };
+const obj = {
+  Bar() {
+    return 42;
+  },
+  async async_bar() {
+    return 42;
+  },
+  // ❌ error
+  async AsyncBar() {
+    return 42;
+  },
+  // ❌ error
+  AsyncBar2: async () => {
+    return 42;
+  },
+  // ❌ error
+  AsyncBar3: async function () {
+    return 42;
+  },
+};
       `,
       errors: [
         {
-          column: 17,
+          column: 9,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar',
             type: 'Object Literal Method',
           },
-          endColumn: 25,
+          endColumn: 17,
           endLine: 10,
           line: 10,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar2',
             type: 'Object Literal Method',
           },
-          endColumn: 20,
+          endColumn: 12,
           endLine: 14,
           line: 14,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar3',
             type: 'Object Literal Method',
           },
-          endColumn: 20,
+          endColumn: 12,
           endLine: 18,
           line: 18,
           messageId: 'doesNotMatchFormat',
@@ -3223,39 +3212,39 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const syncbar1 = () => {};
-        function syncBar2() {}
-        const syncBar3 = function syncBar4() {};
+const syncbar1 = () => {};
+function syncBar2() {}
+const syncBar3 = function syncBar4() {};
 
-        // ❌ error
-        const AsyncBar1 = async () => {};
-        const async_bar1 = async () => {};
-        const async_bar3 = async function async_bar4() {};
-        async function async_bar2() {}
-        // ❌ error
-        const asyncBar5 = async function async_bar6() {};
+// ❌ error
+const AsyncBar1 = async () => {};
+const async_bar1 = async () => {};
+const async_bar3 = async function async_bar4() {};
+async function async_bar2() {}
+// ❌ error
+const asyncBar5 = async function async_bar6() {};
       `,
       errors: [
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'snake_case',
             name: 'AsyncBar1',
             type: 'Variable',
           },
-          endColumn: 24,
+          endColumn: 16,
           endLine: 7,
           line: 7,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 15,
+          column: 7,
           data: {
             formats: 'snake_case',
             name: 'asyncBar5',
             type: 'Variable',
           },
-          endColumn: 24,
+          endColumn: 16,
           endLine: 12,
           line: 12,
           messageId: 'doesNotMatchFormat',
@@ -3276,39 +3265,39 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        const syncbar1 = () => {};
-        function syncBar2() {}
-        const syncBar3 = function syncBar4() {};
+const syncbar1 = () => {};
+function syncBar2() {}
+const syncBar3 = function syncBar4() {};
 
-        const async_bar1 = async () => {};
-        // ❌ error
-        async function asyncBar2() {}
-        const async_bar3 = async function async_bar4() {};
-        async function async_bar2() {}
-        // ❌ error
-        const async_bar3 = async function ASYNC_BAR4() {};
+const async_bar1 = async () => {};
+// ❌ error
+async function asyncBar2() {}
+const async_bar3 = async function async_bar4() {};
+async function async_bar2() {}
+// ❌ error
+const async_bar3 = async function ASYNC_BAR4() {};
       `,
       errors: [
         {
-          column: 24,
+          column: 16,
           data: {
             formats: 'snake_case',
             name: 'asyncBar2',
             type: 'Function',
           },
-          endColumn: 33,
+          endColumn: 25,
           endLine: 8,
           line: 8,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 43,
+          column: 35,
           data: {
             formats: 'snake_case',
             name: 'ASYNC_BAR4',
             type: 'Function',
           },
-          endColumn: 53,
+          endColumn: 45,
           endLine: 12,
           line: 12,
           messageId: 'doesNotMatchFormat',
@@ -3329,22 +3318,22 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo extends bar {
-          public someAttribute = 1;
-          public override some_attribute_override = 1;
-          // ❌ error
-          public override someAttributeOverride = 1;
-        }
+class foo extends bar {
+  public someAttribute = 1;
+  public override some_attribute_override = 1;
+  // ❌ error
+  public override someAttributeOverride = 1;
+}
       `,
       errors: [
         {
-          column: 27,
+          column: 19,
           data: {
             formats: 'snake_case',
             name: 'someAttributeOverride',
             type: 'Class Property',
           },
-          endColumn: 48,
+          endColumn: 40,
           endLine: 6,
           line: 6,
           messageId: 'doesNotMatchFormat',
@@ -3365,25 +3354,25 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo extends bar {
-          public override some_method_override() {
-            return 42;
-          }
-          // ❌ error
-          public override someMethodOverride() {
-            return 42;
-          }
-        }
+class foo extends bar {
+  public override some_method_override() {
+    return 42;
+  }
+  // ❌ error
+  public override someMethodOverride() {
+    return 42;
+  }
+}
       `,
       errors: [
         {
-          column: 27,
+          column: 19,
           data: {
             formats: 'snake_case',
             name: 'someMethodOverride',
             type: 'Class Method',
           },
-          endColumn: 45,
+          endColumn: 37,
           endLine: 7,
           line: 7,
           messageId: 'doesNotMatchFormat',
@@ -3404,38 +3393,38 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo extends bar {
-          public get someGetter(): string;
-          public override get some_getter_override(): string;
-          // ❌ error
-          public override get someGetterOverride(): string;
-          public set someSetter(val: string);
-          public override set some_setter_override(val: string);
-          // ❌ error
-          public override set someSetterOverride(val: string);
-        }
+class foo extends bar {
+  public get someGetter(): string;
+  public override get some_getter_override(): string;
+  // ❌ error
+  public override get someGetterOverride(): string;
+  public set someSetter(val: string);
+  public override set some_setter_override(val: string);
+  // ❌ error
+  public override set someSetterOverride(val: string);
+}
       `,
       errors: [
         {
-          column: 31,
+          column: 23,
           data: {
             formats: 'snake_case',
             name: 'someGetterOverride',
             type: 'Classic Accessor',
           },
-          endColumn: 49,
+          endColumn: 41,
           endLine: 6,
           line: 6,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 31,
+          column: 23,
           data: {
             formats: 'snake_case',
             name: 'someSetterOverride',
             type: 'Classic Accessor',
           },
-          endColumn: 49,
+          endColumn: 41,
           endLine: 10,
           line: 10,
           messageId: 'doesNotMatchFormat',
@@ -3456,36 +3445,36 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo {
-          private firstPrivateField = 1;
-          // ❌ error
-          private first_private_field = 1;
-          // ❌ error
-          #secondPrivateField = 1;
-          #second_private_field = 1;
-        }
+class foo {
+  private firstPrivateField = 1;
+  // ❌ error
+  private first_private_field = 1;
+  // ❌ error
+  #secondPrivateField = 1;
+  #second_private_field = 1;
+}
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             formats: 'camelCase',
             name: 'first_private_field',
             type: 'Class Property',
           },
-          endColumn: 38,
+          endColumn: 30,
           endLine: 5,
           line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'snake_case',
             name: 'secondPrivateField',
             type: 'Class Property',
           },
-          endColumn: 30,
+          endColumn: 22,
           endLine: 7,
           line: 7,
           messageId: 'doesNotMatchFormat',
@@ -3506,36 +3495,36 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
-        class foo {
-          private firstPrivateMethod() {}
-          // ❌ error
-          private first_private_method() {}
-          // ❌ error
-          #secondPrivateMethod() {}
-          #second_private_method() {}
-        }
+class foo {
+  private firstPrivateMethod() {}
+  // ❌ error
+  private first_private_method() {}
+  // ❌ error
+  #secondPrivateMethod() {}
+  #second_private_method() {}
+}
       `,
       errors: [
         {
-          column: 19,
+          column: 11,
           data: {
             formats: 'camelCase',
             name: 'first_private_method',
             type: 'Class Method',
           },
-          endColumn: 39,
+          endColumn: 31,
           endLine: 5,
           line: 5,
           messageId: 'doesNotMatchFormat',
         },
         {
-          column: 11,
+          column: 3,
           data: {
             formats: 'snake_case',
             name: 'secondPrivateMethod',
             type: 'Class Method',
           },
-          endColumn: 31,
+          endColumn: 23,
           endLine: 7,
           line: 7,
           messageId: 'doesNotMatchFormat',
@@ -3642,7 +3631,7 @@ ruleTester.run('naming-convention', rule, {
       ],
     },
     {
-      code: 'import { "🍎" as foo } from \'foo_bar\';',
+      code: "import { '🍎' as foo } from 'foo_bar';",
       errors: [
         {
           column: 18,
