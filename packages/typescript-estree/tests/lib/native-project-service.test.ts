@@ -107,7 +107,9 @@ describe('native project service lifecycle', () => {
         readFixture(referencesPath),
       );
 
-      expect(references.program.getSourceFile(secondPath)).toBeDefined();
+      expect(
+        references.project.program.getSourceFile(secondPath),
+      ).toBeDefined();
     });
   });
 

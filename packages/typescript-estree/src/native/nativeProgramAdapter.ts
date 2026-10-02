@@ -29,7 +29,8 @@ export function createNativeProgram({
   context,
   nodeAdapter,
 }: NativeProgramAdapterContext): ts.Program {
-  const { checker, program, project } = context;
+  const { project } = context;
+  const { checker, program } = project;
   const typeAdapter = createNativeTypeAdapter({
     checker,
     nodeAdapter,

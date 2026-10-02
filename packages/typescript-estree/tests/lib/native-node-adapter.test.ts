@@ -53,7 +53,7 @@ function withNativeSourceFile<T>(
   }
 }
 
-function createAdapter(program: NativeContext['program']) {
+function createAdapter(program: NativeContext['project']['program']) {
   return createNativeNodeAdapter({
     getSyntacticDiagnostics: fileName =>
       program.getSyntacticDiagnostics(fileName),
@@ -81,64 +81,76 @@ function findNode(root: ts.Node, kind: ts.SyntaxKind): ts.Node {
 
 describe('native node adapter', () => {
   it('caches adapted node arrays and their structural children', () => {
-    withNativeSourceFile(fixture, fixturePath, ({ program, sourceFile }) => {
-      const adapter = createAdapter(program);
-      const adaptedSourceFile = adapter.wrapNode(sourceFile) as ts.SourceFile;
-      const statements = adaptedSourceFile.statements;
+    withNativeSourceFile(
+      fixture,
+      fixturePath,
+      ({ project: { program }, sourceFile }) => {
+        const adapter = createAdapter(program);
+        const adaptedSourceFile = adapter.wrapNode(sourceFile) as ts.SourceFile;
+        const statements = adaptedSourceFile.statements;
 
-      expect(adaptedSourceFile.statements).toBe(statements);
-      expect(adapter.wrapNode(adapter.unwrapNode(statements[0]))).toBe(
-        statements[0],
-      );
-    });
+        expect(adaptedSourceFile.statements).toBe(statements);
+        expect(adapter.wrapNode(adapter.unwrapNode(statements[0]))).toBe(
+          statements[0],
+        );
+      },
+    );
   });
 
   it('presents classic property names to in checks and, once read, key enumeration', () => {
     const code = 'declare function f<T extends object = {}>(value?: T): void;';
-    withNativeSourceFile(code, fixturePath, ({ program, sourceFile }) => {
-      const adapter = createAdapter(program);
-      const adapted = adapter.wrapNode(sourceFile) as ts.SourceFile;
-      const typeParameter = findNode(
-        adapted,
-        ts.SyntaxKind.TypeParameter,
-      ) as ts.TypeParameterDeclaration;
-      const parameter = findNode(
-        adapted,
-        ts.SyntaxKind.Parameter,
-      ) as ts.ParameterDeclaration;
+    withNativeSourceFile(
+      code,
+      fixturePath,
+      ({ project: { program }, sourceFile }) => {
+        const adapter = createAdapter(program);
+        const adapted = adapter.wrapNode(sourceFile) as ts.SourceFile;
+        const typeParameter = findNode(
+          adapted,
+          ts.SyntaxKind.TypeParameter,
+        ) as ts.TypeParameterDeclaration;
+        const parameter = findNode(
+          adapted,
+          ts.SyntaxKind.Parameter,
+        ) as ts.ParameterDeclaration;
 
-      expect('default' in typeParameter).toBe(true);
-      expect('defaultType' in typeParameter).toBe(false);
-      expect('questionToken' in parameter).toBe(true);
-      expect('escapedText' in typeParameter.name).toBe(true);
+        expect('default' in typeParameter).toBe(true);
+        expect('defaultType' in typeParameter).toBe(false);
+        expect('questionToken' in parameter).toBe(true);
+        expect('escapedText' in typeParameter.name).toBe(true);
 
-      const { constraint, default: defaultType, name } = typeParameter;
-      expect([constraint, defaultType, name]).not.toContain(undefined);
-      expect(Object.keys(typeParameter)).toEqual(
-        expect.arrayContaining(['constraint', 'default', 'kind', 'name']),
-      );
-      expect(Object.keys(typeParameter)).not.toContain('defaultType');
-      expect(Object.entries(typeParameter)).toContainEqual([
-        'default',
-        defaultType,
-      ]);
-    });
+        const { constraint, default: defaultType, name } = typeParameter;
+        expect([constraint, defaultType, name]).not.toContain(undefined);
+        expect(Object.keys(typeParameter)).toEqual(
+          expect.arrayContaining(['constraint', 'default', 'kind', 'name']),
+        );
+        expect(Object.keys(typeParameter)).not.toContain('defaultType');
+        expect(Object.entries(typeParameter)).toContainEqual([
+          'default',
+          defaultType,
+        ]);
+      },
+    );
   });
 
   it('answers checker queries for the split JSX closing tag tokens', () => {
     const code = 'const element = <div></div>;';
-    withNativeSourceFile(code, tsxFixturePath, ({ program, sourceFile }) => {
-      const adapter = createAdapter(program);
-      const closing = findNode(
-        adapter.wrapNode(sourceFile),
-        ts.SyntaxKind.JsxClosingElement,
-      );
-      const [lessThan, slash] = closing.getChildren();
+    withNativeSourceFile(
+      code,
+      tsxFixturePath,
+      ({ project: { program }, sourceFile }) => {
+        const adapter = createAdapter(program);
+        const closing = findNode(
+          adapter.wrapNode(sourceFile),
+          ts.SyntaxKind.JsxClosingElement,
+        );
+        const [lessThan, slash] = closing.getChildren();
 
-      expect(lessThan.kind).toBe(ts.SyntaxKind.LessThanToken);
-      expect(slash.kind).toBe(ts.SyntaxKind.SlashToken);
-      expect(adapter.unwrapNode(lessThan)).toBe(adapter.unwrapNode(slash));
-    });
+        expect(lessThan.kind).toBe(ts.SyntaxKind.LessThanToken);
+        expect(slash.kind).toBe(ts.SyntaxKind.SlashToken);
+        expect(adapter.unwrapNode(lessThan)).toBe(adapter.unwrapNode(slash));
+      },
+    );
   });
 
   it('preserves converter behavior for a syntax error', () => {
@@ -150,18 +162,22 @@ describe('native node adapter', () => {
       classicError = error;
     }
 
-    withNativeSourceFile(invalid, fixturePath, ({ program, sourceFile }) => {
-      const adapter = createAdapter(program);
-      expect(() =>
-        astConverter(
-          adapter.wrapNode(sourceFile) as ts.SourceFile,
-          createParseSettings(invalid, {
-            ...baseOptions,
-            filePath: fixturePath,
-          }),
-          true,
-        ),
-      ).toThrow(classicError);
-    });
+    withNativeSourceFile(
+      invalid,
+      fixturePath,
+      ({ project: { program }, sourceFile }) => {
+        const adapter = createAdapter(program);
+        expect(() =>
+          astConverter(
+            adapter.wrapNode(sourceFile) as ts.SourceFile,
+            createParseSettings(invalid, {
+              ...baseOptions,
+              filePath: fixturePath,
+            }),
+            true,
+          ),
+        ).toThrow(classicError);
+      },
+    );
   });
 });

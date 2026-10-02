@@ -93,14 +93,14 @@ interface NativeAdapters {
 const adaptersByProgram = new WeakMap<NativeProgram, NativeAdapters>();
 
 function getAdapters(context: NativeProjectContext): NativeAdapters {
-  let adapters = adaptersByProgram.get(context.program);
+  let adapters = adaptersByProgram.get(context.project.program);
   if (!adapters) {
     let diagnosticsByFile: Map<string, NativeDiagnostic[]> | undefined;
     const nodeAdapter = createNativeNodeAdapter({
       getSyntacticDiagnostics: fileName => {
         if (!diagnosticsByFile) {
           diagnosticsByFile = new Map();
-          for (const diagnostic of context.program.getSyntacticDiagnostics()) {
+          for (const diagnostic of context.project.program.getSyntacticDiagnostics()) {
             const key = diagnostic.fileName ?? '';
             const existing = diagnosticsByFile.get(key);
             if (existing) {
@@ -117,7 +117,7 @@ function getAdapters(context: NativeProjectContext): NativeAdapters {
       nodeAdapter,
       program: createNativeProgram({ context, nodeAdapter }),
     };
-    adaptersByProgram.set(context.program, adapters);
+    adaptersByProgram.set(context.project.program, adapters);
   }
   return adapters;
 }

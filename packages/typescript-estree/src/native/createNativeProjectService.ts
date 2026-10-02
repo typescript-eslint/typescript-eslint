@@ -5,9 +5,7 @@ import type {
 
 import { createFileSystemLayer } from '@typescript/native/unstable/fs';
 import { API } from '@typescript/native/unstable/sync';
-import { createHash } from 'node:crypto';
 import path from 'node:path';
-import * as ts from 'typescript';
 
 import type { NativeProjectContext, NativeProjectService } from './types';
 
@@ -42,26 +40,16 @@ export function toCompilerPath(filePath: string): string {
     .replace(/^[A-Z]:\//, drive => drive.toLowerCase());
 }
 
-function hashText(text: string): string {
-  return createHash('sha1').update(text).digest('hex');
-}
-
-function hashFileOnDisk(compilerPath: string): string | undefined {
-  const text = ts.sys.readFile(compilerPath);
-  return text == null ? undefined : hashText(text);
-}
-
 export function createNativeProjectService(
   cwd = process.cwd(),
 ): NativeProjectService {
-  const contentHashes = new Map<string, string>();
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
   const openProjects = new Set<string>();
   let closed = false;
   let snapshot: Snapshot | undefined;
 
-  function startAPI(): API {
+  function startAPI() {
     try {
       return new API({ cwd });
     } catch (error) {
@@ -71,28 +59,19 @@ export function createNativeProjectService(
 
   let api = startAPI();
 
-  /** A crashed native process would otherwise fail every later file. */
-  function restart(): void {
+  function reset() {
     try {
       api.close();
     } catch {
       // Intentionally ignored.
     }
     snapshot = undefined;
-    contentHashes.clear();
     fileContexts.clear();
     fileProjects.clear();
     openProjects.clear();
-    api = startAPI();
   }
 
-  function assertOpen(): void {
-    if (closed) {
-      throw new Error(CLOSED_ERROR);
-    }
-  }
-
-  function replaceSnapshot(params: CreateSnapshotParams): Snapshot {
+  function replaceSnapshot(params: CreateSnapshotParams) {
     const previousSnapshot = snapshot;
     let nextSnapshot: Snapshot;
     try {
@@ -115,7 +94,7 @@ export function createNativeProjectService(
     nextSnapshot: Snapshot,
     configFileName: string,
     compilerPath: string,
-  ): NativeProjectContext {
+  ) {
     const project = nextSnapshot.getConfiguredProject(configFileName);
     const sourceFile = project?.program.getSourceFile(compilerPath);
     if (!project || !sourceFile) {
@@ -123,62 +102,56 @@ export function createNativeProjectService(
         `The TypeScript native project did not contain '${compilerPath}'.`,
       );
     }
-    const context = {
-      checker: project.checker,
-      program: project.program,
-      project,
-      sourceFile,
-    };
+    const context = { project, sourceFile };
     fileContexts.set(getCanonicalFileName(compilerPath), context);
     return context;
   }
 
-  function openFileInSnapshot(
-    filePath: string,
+  function withCode(
+    context: NativeProjectContext,
+    compilerPath: string,
     code: string,
-  ): NativeProjectContext {
+  ) {
+    return context.sourceFile.text === code
+      ? context
+      : contextFor(
+          replaceSnapshot({
+            ensurePrograms: true,
+            fileSystem: createFileSystemLayer([[compilerPath, code]]),
+          }),
+          context.project.configFileName,
+          compilerPath,
+        );
+  }
+
+  function openFileInSnapshot(filePath: string, code: string) {
     const compilerPath = toCompilerPath(filePath);
     const cacheKey = getCanonicalFileName(compilerPath);
-    const hash = hashText(code);
-    const previous = contentHashes.get(cacheKey);
     const cachedContext = fileContexts.get(cacheKey);
-    if (previous === hash && cachedContext) {
-      return cachedContext;
+    if (cachedContext) {
+      return withCode(cachedContext, compilerPath, code);
     }
-    const unchanged = (previous ?? hashFileOnDisk(compilerPath)) === hash;
-    contentHashes.set(cacheKey, hash);
-    const fileSystem = unchanged
-      ? undefined
-      : createFileSystemLayer([[compilerPath, code]]);
     const knownConfigFileName = fileProjects.get(cacheKey);
-    if (knownConfigFileName) {
-      return contextFor(
-        unchanged && snapshot
-          ? snapshot
-          : replaceSnapshot({
-              ensurePrograms: true,
-              fileNotifications: { changed: [compilerPath] },
-              fileSystem,
-            }),
-        knownConfigFileName,
+    if (knownConfigFileName && snapshot) {
+      return withCode(
+        contextFor(snapshot, knownConfigFileName, compilerPath),
         compilerPath,
+        code,
       );
     }
 
     const discoverySnapshot = replaceSnapshot({
-      fileSystem,
+      fileSystem: createFileSystemLayer([[compilerPath, code]]),
       openFiles: [compilerPath],
     });
-    let configFileName: string;
+    let configFileName: string | undefined;
     let nextSnapshot: Snapshot;
     try {
-      const discoveredProject =
-        discoverySnapshot.getDefaultProjectForFile(compilerPath);
-      if (!discoveredProject) {
-        throw notFoundError(filePath);
-      }
-      configFileName = discoveredProject.configFileName;
-      if (!ts.sys.fileExists(configFileName)) {
+      configFileName =
+        discoverySnapshot.getDefaultProjectForFile(
+          compilerPath,
+        )?.configFileName;
+      if (!configFileName) {
         throw notFoundError(filePath);
       }
       nextSnapshot = replaceSnapshot({
@@ -207,57 +180,36 @@ export function createNativeProjectService(
       }
     }
     fileProjects.set(cacheKey, configFileName);
-    return contextFor(nextSnapshot, configFileName, compilerPath);
+    return withCode(
+      contextFor(nextSnapshot, configFileName, compilerPath),
+      compilerPath,
+      code,
+    );
   }
 
-  const service: NativeProjectService = {
-    close(): void {
-      if (closed) {
-        return;
-      }
-      closed = true;
-
-      let failure: Error | undefined;
-      const attempt = (cleanup: () => void): void => {
-        try {
-          cleanup();
-        } catch (error) {
-          failure ??= error instanceof Error ? error : new Error(String(error));
-        }
-      };
-
-      if (openProjects.size) {
-        attempt(() => {
-          replaceSnapshot({ closeProjects: [...openProjects] });
-        });
-      }
-      attempt(() => snapshot?.dispose());
-      attempt(() => {
-        api.close();
-      });
-      fileContexts.clear();
-      fileProjects.clear();
-      openProjects.clear();
-      contentHashes.clear();
-
-      if (failure) {
-        throw failure;
+  return {
+    close() {
+      if (!closed) {
+        closed = true;
+        reset();
       }
     },
 
-    openFile(filePath, code): NativeProjectContext {
-      assertOpen();
+    openFile(filePath, code) {
+      if (closed) {
+        throw new Error(CLOSED_ERROR);
+      }
       try {
         return openFileInSnapshot(filePath, code);
       } catch (error) {
         if (isNativeProcessFailure(error)) {
-          restart();
+          reset();
+          api = startAPI();
         }
         throw error;
       }
     },
   };
-  return service;
 }
 
 let nativeProjectService: NativeProjectService | undefined;
