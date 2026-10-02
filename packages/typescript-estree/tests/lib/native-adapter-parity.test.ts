@@ -505,7 +505,7 @@ describe('native adapter parity', () => {
       ),
     ).toThrow('cannot be mixed');
     expect(() => native.checker.getTypeAtLocation(classicNode)).toThrow(
-      'not created by this native node adapter',
+      'not created by a native node adapter',
     );
   });
 });

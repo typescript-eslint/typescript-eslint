@@ -1,15 +1,16 @@
 type FlagTranslations = readonly (readonly [number, number])[];
 
 export function createFlagTranslations(
-  nativeFlags: object,
-  classicFlags: object,
+  nativeFlags: Readonly<Record<string, number | string>>,
+  classicFlags: Readonly<Record<string, number | string>>,
 ): FlagTranslations {
-  const classic = classicFlags as Record<string, unknown>;
-  return Object.entries(nativeFlags).flatMap(([name, value]) => {
-    const native: number = typeof value === 'number' ? value : 0;
-    const isSingleBit = native > 0 && (native & (native - 1)) === 0;
-    return isSingleBit && typeof classic[name] === 'number'
-      ? [[native, classic[name]] as const]
+  return Object.entries(nativeFlags).flatMap(([name, native]) => {
+    const classic = classicFlags[name];
+    return typeof native === 'number' &&
+      native > 0 &&
+      (native & (native - 1)) === 0 &&
+      typeof classic === 'number'
+      ? [[native, classic] as const]
       : [];
   });
 }

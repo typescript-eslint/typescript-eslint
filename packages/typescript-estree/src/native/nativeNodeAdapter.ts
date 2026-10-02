@@ -11,9 +11,6 @@ import {
 } from '@typescript/native/unstable/ast';
 import * as ts from 'typescript';
 
-import type { NativeMethod } from './createMethodForwarder';
-
-import { createMethodForwarder } from './createMethodForwarder';
 import { createFlagTranslations, translateFlags } from './translateFlags';
 
 export interface NativeNodeAdapter {
@@ -21,7 +18,7 @@ export interface NativeNodeAdapter {
   wrapNode(node: NativeNode): ts.Node;
 }
 
-export interface NativeNodeAdapterOptions {
+interface NativeNodeAdapterOptions {
   getSyntacticDiagnostics: (fileName: string) => readonly NativeDiagnostic[];
 }
 
@@ -74,6 +71,16 @@ nativeToClassicKind.set(
   ts.SyntaxKind.EndOfFileToken,
 );
 
+function translateKind(kind: NativeSyntaxKind) {
+  const translated = nativeToClassicKind.get(kind);
+  if (translated != null) {
+    return translated;
+  }
+  throw new Error(
+    `Unsupported native SyntaxKind: ${NativeSyntaxKind[kind]} (${kind})`,
+  );
+}
+
 const NODE_FLAG_TRANSLATIONS = createFlagTranslations(
   NativeNodeFlags,
   ts.NodeFlags,
@@ -119,13 +126,21 @@ const NATIVE_NODE = Symbol('nativeNode');
 
 const EAGER_KEYS = new Set(['end', 'flags', 'kind', 'pos']);
 
-const VIEW_ONLY_KEYS = [
-  'exclamationToken',
-  'expression',
+const CLASSIC_ONLY_KEYS = [
+  'default',
+  'escapedText',
   'modifierFlagsCache',
   'parent',
   'parseDiagnostics',
-  'questionToken',
+];
+
+const FORWARDED_METHODS = [
+  'getEnd',
+  'getFullStart',
+  'getFullWidth',
+  'getLineAndCharacterOfPosition',
+  'getLineStarts',
+  'getPositionOfLineAndCharacter',
 ];
 
 interface NodeView {
@@ -136,12 +151,8 @@ interface NodeView {
   pos: number;
 }
 
-function getMemberNames(prototype: object): {
-  getters: string[];
-  methods: string[];
-} {
+function getGetterNames(prototype: object) {
   const getters = new Set<string>();
-  const methods = new Set<string>();
   for (
     let current: object | null = prototype;
     current && current !== Object.prototype;
@@ -150,17 +161,12 @@ function getMemberNames(prototype: object): {
     for (const [name, descriptor] of Object.entries(
       Object.getOwnPropertyDescriptors(current),
     )) {
-      if (name === 'constructor' || NATIVE_ONLY_KEYS.has(name)) {
-        continue;
-      }
-      if (descriptor.get) {
+      if (descriptor.get && !NATIVE_ONLY_KEYS.has(name)) {
         getters.add(name);
-      } else if (typeof descriptor.value === 'function') {
-        methods.add(name);
       }
     }
   }
-  return { getters: [...getters], methods: [...methods] };
+  return getters;
 }
 
 /** Native hoists JSDoc types into JS ASTs; classic leaves them in comments. */
@@ -169,24 +175,18 @@ function isReparsed(node: NativeNode): boolean {
 }
 
 const NATIVE_ONLY_KEYS = new Set([
-  '_byteIndex',
-  '_sourceFile',
   'childMask',
   'data',
   'dataType',
   'defaultType',
   'id',
-  'index',
   'keyword',
   'modifierFlags',
   'next',
   'parentIndex',
   'postfixToken',
   'sourceFile',
-  'view',
 ]);
-
-const CLASSIC_ONLY_KEYS = ['default', 'escapedText'];
 
 function isHeritageTypeReference(node: NativeNode): boolean {
   return (
@@ -205,6 +205,15 @@ function isHeritageQualifiedName(node: NativeNode): boolean {
     typeName = typeName.parent;
   }
   return isHeritageTypeReference(typeName.parent);
+}
+
+function translateNodeKind(node: NativeNode) {
+  if (isHeritageTypeReference(node)) {
+    return ts.SyntaxKind.ExpressionWithTypeArguments;
+  }
+  return isHeritageQualifiedName(node)
+    ? ts.SyntaxKind.PropertyAccessExpression
+    : translateKind(node.kind);
 }
 
 function isNativeNode(value: unknown): value is NativeNode {
@@ -237,16 +246,6 @@ export function createNativeNodeAdapter({
     ts.NodeArray<ts.Node>
   >();
   const nativeToChildren = new WeakMap<NativeNode, readonly ts.Node[]>();
-
-  function translateKind(kind: NativeSyntaxKind): ts.SyntaxKind {
-    const translated = nativeToClassicKind.get(kind);
-    if (translated != null) {
-      return translated;
-    }
-    throw new Error(
-      `Unsupported native SyntaxKind: ${NativeSyntaxKind[kind]} (${kind})`,
-    );
-  }
 
   function adaptArray(
     nodes: NativeNodeArray<NativeNode>,
@@ -335,9 +334,9 @@ export function createNativeNodeAdapter({
     return getChildren(token.parent).find(child => child.pos === token.pos);
   }
 
-  function readNative(target: NativeNode, property: string | symbol): unknown {
-    const value: unknown = Reflect.get(target, property, target);
-    if (typeof value === 'number' && KIND_PROPERTIES.has(property as string)) {
+  function readNative(target: NativeNode, property: string): unknown {
+    const value: unknown = Reflect.get(target, property);
+    if (typeof value === 'number' && KIND_PROPERTIES.has(property)) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- a kind read from a native node
       return translateKind(value);
     }
@@ -352,7 +351,7 @@ export function createNativeNodeAdapter({
         ? undefined
         : adapted;
     }
-    return typeof value === 'function' ? forward(value as NativeMethod) : value;
+    return value;
   }
 
   /** Classic has no array at all where native only synthesized nodes, such as a nested namespace's `export`. */
@@ -378,7 +377,7 @@ export function createNativeNodeAdapter({
     if (own != null) {
       return own;
     }
-    const postfix: unknown = Reflect.get(target, 'postfixToken', target);
+    const postfix: unknown = Reflect.get(target, 'postfixToken');
     return isNativeNode(postfix) && postfix.kind === kind
       ? wrapNode(postfix)
       : undefined;
@@ -436,7 +435,7 @@ export function createNativeNodeAdapter({
 
   function readClassic(
     target: NativeNode,
-    property: string | symbol,
+    property: string,
     receiver: unknown,
   ): unknown {
     switch (property) {
@@ -469,15 +468,6 @@ export function createNativeNodeAdapter({
         return isHeritageQualifiedName(target)
           ? readNative(target, 'left')
           : readNative(target, property);
-      case 'flags':
-        return translateNodeFlags(target);
-      case 'kind':
-        if (isHeritageTypeReference(target)) {
-          return ts.SyntaxKind.ExpressionWithTypeArguments;
-        }
-        return isHeritageQualifiedName(target)
-          ? ts.SyntaxKind.PropertyAccessExpression
-          : translateKind(target.kind);
       // Classic only counts modifiers where they are allowed to appear.
       case 'modifierFlagsCache':
         return (
@@ -506,19 +496,6 @@ export function createNativeNodeAdapter({
           property,
           NativeSyntaxKind.QuestionToken,
         );
-      case 'forEachChild':
-      case 'getChildAt':
-      case 'getChildCount':
-      case 'getChildren':
-      case 'getFirstToken':
-      case 'getFullText':
-      case 'getLastToken':
-      case 'getLeadingTriviaWidth':
-      case 'getSourceFile':
-      case 'getStart':
-      case 'getText':
-      case 'getWidth':
-        return nodeMethods[property];
       default:
         return readNative(target, property);
     }
@@ -535,21 +512,24 @@ export function createNativeNodeAdapter({
     });
   }
 
-  function createViewPrototype(nativePrototype: object): object {
+  function createViewPrototype(nativePrototype: object) {
     const prototype: Record<string, unknown> = {};
-    const { getters, methods } = getMemberNames(nativePrototype);
-    for (const name of methods) {
-      prototype[name] = function (this: NodeView, ...args: unknown[]) {
-        return (this[NATIVE_NODE] as unknown as Record<string, NativeMethod>)[
-          name
-        ].apply(this[NATIVE_NODE], args);
-      };
+    for (const name of FORWARDED_METHODS) {
+      if (name in nativePrototype) {
+        prototype[name] = function (this: NodeView, ...args: unknown[]) {
+          return (
+            this[NATIVE_NODE] as unknown as Record<
+              string,
+              (...args: unknown[]) => unknown
+            >
+          )[name](...args);
+        };
+      }
     }
     Object.assign(prototype, nodeMethods);
     for (const name of new Set([
-      ...getters,
+      ...getGetterNames(nativePrototype),
       ...CLASSIC_ONLY_KEYS,
-      ...VIEW_ONLY_KEYS,
     ])) {
       if (EAGER_KEYS.has(name)) {
         continue;
@@ -570,7 +550,7 @@ export function createNativeNodeAdapter({
     return prototype;
   }
 
-  function getViewPrototype(node: NativeNode): object {
+  function getViewPrototype(node: NativeNode) {
     const nativePrototype = Object.getPrototypeOf(node) as object;
     let prototype = viewPrototypes.get(nativePrototype);
     if (!prototype) {
@@ -583,12 +563,10 @@ export function createNativeNodeAdapter({
   function unwrap(node: ts.Node): NativeNode {
     const native = (node as unknown as Partial<NodeView>)[NATIVE_NODE];
     if (!native) {
-      throw new Error('The node was not created by this native node adapter.');
+      throw new Error('The node was not created by a native node adapter.');
     }
     return native;
   }
-
-  const forward = createMethodForwarder(unwrap);
 
   function wrapNode(node: NativeNode): ts.Node {
     const cached = (node as NativeNode & { [VIEW]?: ts.Node })[VIEW];
@@ -597,7 +575,7 @@ export function createNativeNodeAdapter({
     }
     const view = Object.create(getViewPrototype(node)) as NodeView;
     view[NATIVE_NODE] = node;
-    view.kind = readClassic(node, 'kind', view) as number;
+    view.kind = translateNodeKind(node);
     view.pos = node.pos;
     view.end = node.end;
     view.flags = translateNodeFlags(node);

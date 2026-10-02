@@ -24,10 +24,8 @@ import {
 } from '@typescript/native/unstable/sync';
 import * as ts from 'typescript';
 
-import type { NativeMethod } from './createMethodForwarder';
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 
-import { createMethodForwarder } from './createMethodForwarder';
 import { createFlagTranslations, translateFlags } from './translateFlags';
 
 export interface NativeTypeAdapter {
@@ -62,15 +60,16 @@ interface NativeTypeAdapterContext {
 }
 
 /**
- * Above `Mapped` the numbering diverges: classic's `InstantiationExpressionType`
- * is native's `IsGenericObjectType`, so passing flags through reads the wrong one.
+ * Above `CouldContainTypeVariables` the numbering diverges: classic's
+ * `InstantiationExpressionType` is native's `IsGenericObjectType`, so passing
+ * flags through reads the wrong one.
  */
 const OBJECT_FLAG_TRANSLATIONS = createFlagTranslations(
   ObjectFlags,
   ts.ObjectFlags,
 );
 
-function toPseudoBigInt(value: bigint): ts.PseudoBigInt {
+function toPseudoBigInt(value: bigint) {
   return {
     base10Value: (value < 0n ? -value : value).toString(),
     negative: value < 0n,
@@ -79,32 +78,38 @@ function toPseudoBigInt(value: bigint): ts.PseudoBigInt {
 
 const NATIVE = Symbol('native');
 
-interface Wrapper<Native, Classic> {
-  unwrap: (classic: Classic) => Native;
-  wrap: {
-    (native: Native): Classic;
-    (native: Native | undefined): Classic | undefined;
-  };
-}
+type NativeMethod = (this: unknown, ...args: unknown[]) => unknown;
 
 function createWrapper<Native extends object, Classic extends object>(
   readClassic: (native: Native, property: string) => unknown,
-): Wrapper<Native, Classic> {
+) {
   const nativeToClassic = new WeakMap<Native, Classic>();
   const classicToNative = new WeakMap<Classic, Native>();
   const values = new WeakMap<Native, Map<string, unknown>>();
+  const forwarders = new WeakMap<NativeMethod, NativeMethod>();
 
-  function unwrap(classic: Classic): Native {
+  function unwrap(classic: Classic) {
     const native = classicToNative.get(classic);
     if (!native) {
-      throw new Error(UNWRAP_ERROR);
+      throw new Error(
+        'The value was not created by this native type adapter. Native and classic type objects cannot be mixed.',
+      );
     }
     return native;
   }
 
-  const forward = createMethodForwarder(unwrap);
+  function forward(method: NativeMethod) {
+    let forwarder = forwarders.get(method);
+    if (!forwarder) {
+      forwarder = function (this: unknown, ...args: unknown[]) {
+        return method.apply(unwrap(this as Classic), args);
+      };
+      forwarders.set(method, forwarder);
+    }
+    return forwarder;
+  }
 
-  function read(native: Native, property: string | symbol): unknown {
+  function read(native: Native, property: string | symbol) {
     if (typeof property !== 'string') {
       return NATIVE;
     }
@@ -156,27 +161,23 @@ function createWrapper<Native extends object, Classic extends object>(
   return { unwrap, wrap };
 }
 
-const UNWRAP_ERROR =
-  'The value was not created by this native type adapter. Native and classic type objects cannot be mixed.';
-
 export function createNativeTypeAdapter({
   checker,
   nodeAdapter,
   project,
 }: NativeTypeAdapterContext): NativeTypeAdapter {
-  const toSignature = (signature: NativeSignature): ts.Signature =>
-    wrapSignature(signature);
-  const toSymbol = (symbol: NativeSymbol): ts.Symbol => wrapSymbol(symbol);
-  const toType = (type: NativeType): ts.Type => wrapType(type);
+  const toSignature = (signature: NativeSignature) => wrapSignature(signature);
+  const toSymbol = (symbol: NativeSymbol) => wrapSymbol(symbol);
+  const toType = (type: NativeType) => wrapType(type);
 
   function resolveDeclaration(
     handle: NativeNodeHandle<NativeDeclaration> | undefined,
-  ): ts.Declaration | undefined {
+  ) {
     const resolved = handle?.resolve(project);
     return resolved && (nodeAdapter.wrapNode(resolved) as ts.Declaration);
   }
 
-  function wrapTypeList(types: readonly NativeType[]): ts.Type[] | undefined {
+  function wrapTypeList(types: readonly NativeType[]) {
     return types.length ? types.map(toType) : undefined;
   }
 
@@ -190,7 +191,7 @@ export function createNativeTypeAdapter({
   >();
   const listedPropertiesByName = new WeakMap<ts.Type, Map<string, ts.Symbol>>();
 
-  function listPropertiesByName(type: ts.Type): Map<string, ts.Symbol> {
+  function listPropertiesByName(type: ts.Type) {
     const listed = new Map(
       unwrapType(type)
         .getProperties()
@@ -289,7 +290,7 @@ export function createNativeTypeAdapter({
     getDeclarations(this: ts.Symbol) {
       return (this as { declarations?: ts.Declaration[] }).declarations;
     },
-    getDocumentationComment(this: ts.Symbol): ts.SymbolDisplayPart[] {
+    getDocumentationComment(this: ts.Symbol) {
       const comment = unwrapSymbol(this).getDocumentationComment(checker);
       return comment ? [{ kind: 'text', text: comment }] : [];
     },
@@ -299,7 +300,7 @@ export function createNativeTypeAdapter({
     getFlags(this: ts.Symbol) {
       return this.flags;
     },
-    getJsDocTags(this: ts.Symbol): ts.JSDocTagInfo[] {
+    getJsDocTags(this: ts.Symbol) {
       let tags = jsDocTagsBySymbol.get(this);
       if (!tags) {
         tags = unwrapSymbol(this)
@@ -323,7 +324,7 @@ export function createNativeTypeAdapter({
       return [];
     },
     // A signature carries no symbol, and a symbol lookup would merge overloads.
-    getJsDocTags(this: ts.Signature): ts.JSDocTagInfo[] {
+    getJsDocTags(this: ts.Signature) {
       const declaration = unwrapSignature(this).declaration?.resolve(project);
       return declaration
         ? getJSDocTags(declaration).map(tag =>
@@ -360,8 +361,6 @@ export function createNativeTypeAdapter({
         return type.isSubstitutionType()
           ? wrapType(type.getBaseType())
           : undefined;
-      case 'checker':
-        return undefined;
       case 'checkType':
         return type.isConditionalType()
           ? wrapType(type.getCheckType())
@@ -583,9 +582,7 @@ export function createNativeTypeAdapter({
     ts.Signature
   >(readClassicSignature);
 
-  function wrapSymbolTable(
-    table: ReadonlyMap<string, NativeSymbol>,
-  ): ts.SymbolTable {
+  function wrapSymbolTable(table: ReadonlyMap<string, NativeSymbol>) {
     const wrappedTable = new Map<string, ts.Symbol>();
     for (const [name, member] of table) {
       wrappedTable.set(name, wrapSymbol(member));
@@ -593,7 +590,7 @@ export function createNativeTypeAdapter({
     return wrappedTable as unknown as ts.SymbolTable;
   }
 
-  function wrapIndexInfo(info: NativeIndexInfo): ts.IndexInfo {
+  function wrapIndexInfo(info: NativeIndexInfo) {
     return {
       type: wrapType(info.valueType),
       declaration: resolveDeclaration(
@@ -604,9 +601,7 @@ export function createNativeTypeAdapter({
     };
   }
 
-  function wrapTypePredicate(
-    predicate: NativeTypePredicate | undefined,
-  ): ts.TypePredicate | undefined {
+  function wrapTypePredicate(predicate: NativeTypePredicate | undefined) {
     return (
       predicate &&
       ({
