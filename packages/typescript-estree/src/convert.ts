@@ -1756,6 +1756,7 @@ export class Converter {
           operator,
           // Guaranteed to be true in a valid AST (and asserted above) but
           // technically could be false at runtime with allowInvalidAST: true.
+          // eslint-disable-next-line @typescript-eslint/no-deprecated -- `prefix` is a required property
           prefix: isPrefixUnaryExpression as true,
         });
       }
@@ -1765,6 +1766,7 @@ export class Converter {
           type: AST_NODE_TYPES.UnaryExpression,
           argument: this.convertChild(node.expression),
           operator: 'delete',
+          // eslint-disable-next-line @typescript-eslint/no-deprecated -- `prefix` is a required property
           prefix: true,
         });
 
@@ -1773,6 +1775,7 @@ export class Converter {
           type: AST_NODE_TYPES.UnaryExpression,
           argument: this.convertChild(node.expression),
           operator: 'void',
+          // eslint-disable-next-line @typescript-eslint/no-deprecated -- `prefix` is a required property
           prefix: true,
         });
 
@@ -1781,6 +1784,7 @@ export class Converter {
           type: AST_NODE_TYPES.UnaryExpression,
           argument: this.convertChild(node.expression),
           operator: 'typeof',
+          // eslint-disable-next-line @typescript-eslint/no-deprecated -- `prefix` is a required property
           prefix: true,
         });
 
@@ -2627,6 +2631,7 @@ export class Converter {
               return {
                 body: this.convertChild(node.body) as TSESTree.TSModuleBlock,
                 declare: false,
+                // eslint-disable-next-line @typescript-eslint/no-deprecated -- `global` is a required property
                 global: false,
                 id: this.convertChild(node.name),
                 kind: 'global',
@@ -2641,6 +2646,7 @@ export class Converter {
                 kind: 'module',
                 ...(body != null ? { body } : {}),
                 declare: false,
+                // eslint-disable-next-line @typescript-eslint/no-deprecated -- `global` is a required property
                 global: false,
                 id: this.convertChild(node.name),
               };
@@ -2690,6 +2696,7 @@ export class Converter {
             return {
               body: this.convertChild(node.body),
               declare: false,
+              // eslint-disable-next-line @typescript-eslint/no-deprecated -- `global` is a required property
               global: false,
               id: name,
               kind:

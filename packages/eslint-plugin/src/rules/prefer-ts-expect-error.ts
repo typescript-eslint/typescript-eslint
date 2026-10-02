@@ -31,6 +31,7 @@ export default createRule<[], MessageIds>({
       preferExpectErrorComment:
         'Use "@ts-expect-error" to ensure an error is actually being suppressed.',
     },
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint < 9.21
     replacedBy: ['@typescript-eslint/ban-ts-comment'],
     schema: [],
   },

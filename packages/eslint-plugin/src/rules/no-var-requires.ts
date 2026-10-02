@@ -33,6 +33,7 @@ export default createRule<Options, MessageIds>({
     messages: {
       noVarReqs: 'Require statement not part of import statement.',
     },
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint < 9.21
     replacedBy: ['@typescript-eslint/no-require-imports'],
     schema: [
       {

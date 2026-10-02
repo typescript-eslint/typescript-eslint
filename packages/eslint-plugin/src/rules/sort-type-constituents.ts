@@ -158,6 +158,7 @@ export default createRule<Options, MessageIds>({
       notSortedNamed: '{{type}} type {{name}} constituents must be sorted.',
       suggestFix: 'Sort constituents of type (removes all comments).',
     },
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint < 9.21
     replacedBy: [
       'perfectionist/sort-intersection-types',
       'perfectionist/sort-union-types',
