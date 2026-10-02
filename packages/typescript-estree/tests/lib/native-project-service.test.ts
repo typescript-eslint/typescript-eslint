@@ -73,7 +73,9 @@ describe('native project service lifecycle', () => {
       const absolutePath = nativePath(nativeFixtures, 'unconfigured/file.ts');
       expect(() =>
         service.openFile(absolutePath, 'export const value = 1;'),
-      ).toThrow('No TypeScript native configured project');
+      ).toThrow(
+        `${absolutePath} was not found by the project service. Consider including it in the tsconfig.json.`,
+      );
 
       expect(
         service.openFile(filePath, readFixture()).sourceFile.fileName,

@@ -22,6 +22,12 @@ function startupError(error: unknown): Error {
   );
 }
 
+function notFoundError(filePath: string): Error {
+  return new Error(
+    `${filePath} was not found by the project service. Consider including it in the tsconfig.json.`,
+  );
+}
+
 function isNativeProcessFailure(error: unknown): boolean {
   return (
     error instanceof Error &&
@@ -169,15 +175,11 @@ export function createNativeProjectService(
       const discoveredProject =
         discoverySnapshot.getDefaultProjectForFile(compilerPath);
       if (!discoveredProject) {
-        throw new Error(
-          `No TypeScript native project was located for '${compilerPath}'.`,
-        );
+        throw notFoundError(filePath);
       }
       configFileName = discoveredProject.configFileName;
       if (!ts.sys.fileExists(configFileName)) {
-        throw new Error(
-          `No TypeScript native configured project was located for '${compilerPath}'.`,
-        );
+        throw notFoundError(filePath);
       }
       nextSnapshot = replaceSnapshot({
         closeFiles: [compilerPath],
