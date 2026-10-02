@@ -3,14 +3,14 @@ export function throwOnUnsupportedMembers<T extends object>(
   unsupported: ReadonlySet<string>,
   implementation: T,
 ): T {
-  return new Proxy(implementation, {
-    get(target, property) {
-      if (typeof property === 'string' && unsupported.has(property)) {
+  for (const property of unsupported) {
+    Object.defineProperty(implementation, property, {
+      get() {
         throw new Error(
           `${label}#${property} is not available on the TypeScript native preview API.`,
         );
-      }
-      return Reflect.get(target, property, target);
-    },
-  });
+      },
+    });
+  }
+  return implementation;
 }
