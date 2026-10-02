@@ -37,6 +37,10 @@ describe(createParseSettings, () => {
       vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
     });
 
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
     it('is created when options.projectService is enabled', () => {
       vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'false');
 

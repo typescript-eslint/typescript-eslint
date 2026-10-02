@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { NativeProjectService } from '../../src/native/types';
 
@@ -15,12 +14,7 @@ import {
   nativePath,
 } from './nativeTestUtils';
 
-afterEach(() => {
-  vi.restoreAllMocks();
-  vi.unstubAllEnvs();
-});
-
-function withService<T>(callback: (service: NativeProjectService) => T): T {
+function withService<T>(callback: (service: NativeProjectService) => T) {
   const service = createNativeProjectService();
   try {
     return callback(service);
@@ -29,7 +23,7 @@ function withService<T>(callback: (service: NativeProjectService) => T): T {
   }
 }
 
-function readFixture(fixturePath = filePath): string {
+function readFixture(fixturePath = filePath) {
   return fs.readFileSync(fixturePath, 'utf8');
 }
 
@@ -56,7 +50,7 @@ describe('native project service lifecycle', () => {
     });
   });
 
-  it('discovers different configured projects with one process', () => {
+  it('discovers different configured projects', () => {
     withService(service => {
       const first = service.openFile(filePath, readFixture());
       const secondPath = nativePath(nativeFixtures, 'second/file.ts');
@@ -126,7 +120,7 @@ describe('native project service lifecycle', () => {
     });
   });
 
-  it('ignores TSConfig plugins', () => {
+  it('opens a project whose TSConfig lists plugins', () => {
     withService(service => {
       const pluginsPath = nativePath(nativeFixtures, 'plugins/file.ts');
 

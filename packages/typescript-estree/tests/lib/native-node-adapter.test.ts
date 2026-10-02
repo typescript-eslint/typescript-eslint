@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import * as ts from 'typescript';
-import { describe, expect, it } from 'vitest';
 
 import { astConverter } from '../../src/ast-converter';
 import { createNativeProjectService } from '../../src/native/createNativeProjectService';
@@ -44,7 +43,7 @@ function withNativeSourceFile<T>(
   code: string,
   filePath: string,
   callback: (context: NativeContext) => T,
-): T {
+) {
   const service = createNativeProjectService();
   try {
     return callback(service.openFile(filePath, code));
@@ -60,7 +59,7 @@ function createAdapter(program: NativeContext['project']['program']) {
   });
 }
 
-function findNode(root: ts.Node, kind: ts.SyntaxKind): ts.Node {
+function findNode(root: ts.Node, kind: ts.SyntaxKind) {
   let found: ts.Node | undefined;
   const visit = (node: ts.Node): void => {
     if (found) {
@@ -133,7 +132,7 @@ describe('native node adapter', () => {
     );
   });
 
-  it('answers checker queries for the split JSX closing tag tokens', () => {
+  it('splits a JSX closing tag’s `</` into `<` and `/` tokens', () => {
     const code = 'const element = <div></div>;';
     withNativeSourceFile(
       code,

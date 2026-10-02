@@ -1,59 +1,16 @@
+import type { TSESTree } from '@typescript-eslint/types';
+
 import * as ts from 'typescript';
 
-import { parseAndGenerateServices } from '../../src/index.js';
-import {
-  isolateNativeBackend,
-  nativeFilePath as filePath,
-} from './nativeTestUtils';
+import type { NativeQueryContext } from './nativeTestUtils';
+
+import { isolateNativeBackend, onBothBackends } from './nativeTestUtils';
 
 isolateNativeBackend();
 
-function parse(code: string) {
-  return parseAndGenerateServices(code, {
-    filePath,
-    projectService: { EXPERIMENTAL_backend: 'native' },
-  });
-}
-
-function typeOfDeclaration(code: string) {
-  const { ast, services } = parse(code);
-  assert.isNotNull(services.program);
-  const checker = services.program.getTypeChecker();
-  const declaration = ast.body.at(-1) as never as {
-    declarations: { id: never }[];
-  };
-  return {
-    checker,
-    type: checker.getTypeAtLocation(
-      services.esTreeNodeToTSNodeMap.get(declaration.declarations[0].id),
-    ),
-  };
-}
-
-function onBothBackends(
-  code: string,
-  query: (checker: ts.TypeChecker, type: ts.Type) => string | undefined,
-): { classic: string | undefined; native: string | undefined } {
-  const run = (native: boolean): string | undefined => {
-    const { ast, services } = parseAndGenerateServices(code, {
-      filePath,
-      projectService: native
-        ? { EXPERIMENTAL_backend: 'native' as const }
-        : true,
-    });
-    assert.isNotNull(services.program);
-    const declaration = ast.body.at(-1) as never as {
-      declarations: { id: never }[];
-    };
-    const checker = services.program.getTypeChecker();
-    return query(
-      checker,
-      checker.getTypeAtLocation(
-        services.esTreeNodeToTSNodeMap.get(declaration.declarations[0].id),
-      ),
-    );
-  };
-  return { classic: run(false), native: run(true) };
+function typeOfLastDeclaration({ ast, checker, tsNode }: NativeQueryContext) {
+  const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
+  return checker.getTypeAtLocation(tsNode(declaration.declarations[0].id));
 }
 
 describe('native preview API parity', () => {
@@ -90,68 +47,67 @@ describe('native preview API parity', () => {
       (checker: ts.TypeChecker) =>
         checker.typeToString(checker.getNonPrimitiveType()),
     ],
+    [
+      'a class type’s `this` type',
+      'class C { m() {} }\ndeclare const v: C;',
+      (checker: ts.TypeChecker, type: ts.Type) =>
+        checker.typeToString((type as ts.InterfaceType).thisType!),
+    ],
+    [
+      'a union whose constituents await to different types',
+      'declare const p: Promise<number> | Promise<string>;',
+      (checker: ts.TypeChecker, type: ts.Type) =>
+        checker.typeToString(checker.getAwaitedType(type)!),
+    ],
+    [
+      'a single awaited thenable',
+      'declare const p: Promise<number>;',
+      (checker: ts.TypeChecker, type: ts.Type) =>
+        checker.typeToString(checker.getAwaitedType(type)!),
+    ],
   ])('answers the same as classic for %s', (_name, code, query) => {
-    const { classic, native } = onBothBackends(code, query);
+    const { classic, native } = onBothBackends(code, context =>
+      query(context.checker, typeOfLastDeclaration(context)),
+    );
 
     expect(native).toBe(classic);
     expect(native).toBeDefined();
   });
 
-  it('reads an interface type’s `this` type', () => {
-    const { ast, services } = parse('class C { m() {} }');
-    assert.isNotNull(services.program);
-    const checker = services.program.getTypeChecker();
-    const classType = checker.getTypeAtLocation(
-      services.esTreeNodeToTSNodeMap.get(ast.body[0]),
-    ) as ts.InterfaceType;
-
-    expect(checker.typeToString(classType.thisType!)).toBe('this');
-  });
-
-  it('awaits a union whose constituents await to different types', () => {
-    const { checker, type } = typeOfDeclaration(
-      'declare const p: Promise<number> | Promise<string>;',
-    );
-
-    expect(checker.typeToString(checker.getAwaitedType(type)!)).toBe(
-      'string | number',
-    );
-  });
-
-  it('awaits a single thenable the same way classic does', () => {
-    const { checker, type } = typeOfDeclaration(
-      'declare const p: Promise<number>;',
-    );
-
-    expect(checker.typeToString(checker.getAwaitedType(type)!)).toBe('number');
-  });
-
   it('orders union constituents by name where classic orders them by type id', () => {
-    const { checker, type } = typeOfDeclaration(
+    const results = onBothBackends(
       [
         'interface Zebra { z: number }',
         'interface Apple { a: number }',
         'declare const u: Zebra | Apple;',
       ].join('\n'),
+      context => context.checker.typeToString(typeOfLastDeclaration(context)),
     );
 
-    // Classic reports `Zebra | Apple`.
-    expect(checker.typeToString(type)).toBe('Apple | Zebra');
+    expect(results).toEqual({
+      classic: 'Zebra | Apple',
+      native: 'Apple | Zebra',
+    });
   });
 
   it("answers a meta property's keyword with the meta property", () => {
-    const { ast, services } = parse('const meta = import.meta;\nexport {};');
-    const declaration = ast.body[0] as never as {
-      declarations: { init: { meta: never } }[];
-    };
-    const { meta } = declaration.declarations[0].init;
-    assert.isNotNull(services.program);
-    const checker = services.program.getTypeChecker();
+    const results = onBothBackends(
+      'const meta = import.meta;\nexport {};',
+      ({ ast, checker, services }) => {
+        const declaration = ast.body[0] as TSESTree.VariableDeclaration;
+        const { meta } = declaration.declarations[0]
+          .init as TSESTree.MetaProperty;
 
-    // Classic reports `ImportMetaExpression` and `{ readonly meta: ImportMeta; }`.
-    expect(services.getSymbolAtLocation(meta)?.name).toBe('ImportMeta');
-    expect(checker.typeToString(services.getTypeAtLocation(meta))).toBe(
-      'ImportMeta',
+        return [
+          services.getSymbolAtLocation(meta)?.name,
+          checker.typeToString(services.getTypeAtLocation(meta)),
+        ];
+      },
     );
+
+    expect(results).toEqual({
+      classic: ['ImportMetaExpression', '{ readonly meta: ImportMeta; }'],
+      native: ['ImportMeta', 'ImportMeta'],
+    });
   });
 });

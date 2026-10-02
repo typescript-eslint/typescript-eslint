@@ -13,11 +13,7 @@ const jsFilePath = nativePath(nativeFixtures, 'jsdoc.js');
 
 isolateNativeBackend();
 
-function convert(
-  code: string,
-  native: boolean,
-  convertedFilePath = filePath,
-): unknown {
+function convert(code: string, native: boolean, convertedFilePath = filePath) {
   const { ast } = parseAndGenerateServices(code, {
     comment: true,
     filePath: convertedFilePath,
@@ -124,12 +120,16 @@ describe('TSX', () => {
   });
 });
 
-describe('JavaScript with JSDoc types', () => {
+describe.for([
+  ['file.ts', filePath],
+  ['component.tsx', tsxFilePath],
+  ['jsdoc.js', jsFilePath],
+])('the %s fixture', ([, fixturePath]) => {
   it('converts identically on both backends', () => {
-    const code = fs.readFileSync(jsFilePath, 'utf8');
+    const code = fs.readFileSync(fixturePath, 'utf8');
 
-    expect(convert(code, true, jsFilePath)).toStrictEqual(
-      convert(code, false, jsFilePath),
+    expect(convert(code, true, fixturePath)).toStrictEqual(
+      convert(code, false, fixturePath),
     );
   });
 });

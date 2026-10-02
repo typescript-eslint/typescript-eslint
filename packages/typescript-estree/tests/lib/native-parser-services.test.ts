@@ -6,21 +6,17 @@ import { parseAndGenerateServices } from '../../src/index.js';
 import {
   isolateNativeBackend,
   nativeFilePath as filePath,
+  parseOnBackend,
 } from './nativeTestUtils';
 
 isolateNativeBackend();
 
 function parse(code: string) {
-  const { ast, services } = parseAndGenerateServices(code, {
-    filePath,
-    projectService: { EXPERIMENTAL_backend: 'native' },
-  });
-  assert.isNotNull(services.program);
-  return { ast, services };
+  return parseOnBackend(code, true);
 }
 
 describe('native parser services', () => {
-  it('returns the same parser services shape as the classic backend', () => {
+  it('returns comments, tokens, and typed parser services', () => {
     const { ast, services } = parseAndGenerateServices(
       '// leading\nconst value: string = "text";',
       {
@@ -122,10 +118,6 @@ describe('native parser services', () => {
     const tsNode = services.esTreeNodeToTSNodeMap.get(estreeNode);
 
     expect(services.tsNodeToESTreeNodeMap.get(tsNode)).toBe(estreeNode);
-    expect({
-      forward: services.esTreeNodeToTSNodeMap.has(estreeNode),
-      reverse: services.tsNodeToESTreeNodeMap.has(tsNode),
-    }).toStrictEqual({ forward: true, reverse: true });
   });
 
   it('locates diagnostics in the source file they came from', () => {
@@ -174,26 +166,20 @@ describe('native parser services', () => {
     },
   );
 
-  it('names the missing checker API when an unsupported one is reached', () => {
-    const { services } = parse('const value = 1;');
-    const checker = services.program.getTypeChecker() as unknown as Record<
-      string,
-      unknown
-    >;
+  it.each(['TypeChecker#getAmbientModules', 'Program#getTypeCount'])(
+    'names the missing %s API when an unsupported one is reached',
+    name => {
+      const { checker, program } = parse('const value = 1;');
+      const [owner, member] = name.split('#');
+      const api = (owner === 'TypeChecker'
+        ? checker
+        : program) as unknown as Record<string, unknown>;
 
-    expect(() => checker.getAmbientModules).toThrow(
-      'TypeChecker#getAmbientModules is not available on the TypeScript native preview API.',
-    );
-  });
-
-  it('names the missing program API when an unsupported one is reached', () => {
-    const { services } = parse('const value = 1;');
-    const program = services.program as unknown as Record<string, unknown>;
-
-    expect(() => program.getTypeCount).toThrow(
-      '#getTypeCount is not available on the TypeScript native preview API.',
-    );
-  });
+      expect(() => api[member]).toThrow(
+        `${name} is not available on the TypeScript native preview API.`,
+      );
+    },
+  );
 
   it.each(['then', 'toJSON', 'inspect'])(
     'leaves the %s probe undefined rather than throwing',

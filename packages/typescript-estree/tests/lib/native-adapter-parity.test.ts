@@ -1,55 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
+import fs from 'node:fs';
 import path from 'node:path';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import type { ParserServicesWithTypeInformation } from '../../src/index.js';
-
-import { parseAndGenerateServices } from '../../src/index.js';
 import {
   isolateNativeBackend,
-  nativeFilePath,
   nativeFixtures,
   nativePath,
+  onBothBackends,
+  parseOnBackend,
 } from './nativeTestUtils';
 
 isolateNativeBackend();
-
-interface QueryContext {
-  ast: TSESTree.Program;
-  checker: ts.TypeChecker;
-  program: ts.Program;
-  services: ParserServicesWithTypeInformation;
-  sourceFile: ts.SourceFile;
-  tsNode: (node: TSESTree.Node) => ts.Node;
-}
-
-function parse(code: string, native: boolean, filePath = nativeFilePath) {
-  const { ast, services } = parseAndGenerateServices(code, {
-    filePath,
-    projectService: native ? { EXPERIMENTAL_backend: 'native' } : true,
-  });
-  assert.isNotNull(services.program);
-  return {
-    ast,
-    checker: services.program.getTypeChecker(),
-    program: services.program,
-    services,
-    sourceFile: services.esTreeNodeToTSNodeMap.get(ast),
-    tsNode: (node: TSESTree.Node) => services.esTreeNodeToTSNodeMap.get(node),
-  };
-}
-
-function onBothBackends<T>(
-  code: string,
-  query: (context: QueryContext) => T,
-  filePath = nativeFilePath,
-): { classic: T; native: T } {
-  return {
-    classic: query(parse(code, false, filePath)),
-    native: query(parse(code, true, filePath)),
-  };
-}
 
 function declarationOf(ast: TSESTree.Program, index: number) {
   return (ast.body[index] as TSESTree.VariableDeclaration).declarations[0];
@@ -494,9 +458,31 @@ describe('native adapter parity', () => {
     expect(native).toBe(classic);
   });
 
+  it('answers classic object flags for an instantiation expression', () => {
+    const filePath = nativePath(nativeFixtures, 'instantiation.ts');
+    const { classic, native } = onBothBackends(
+      fs.readFileSync(filePath, 'utf8'),
+      ({ ast, checker, tsNode }) => {
+        const statement = ast.body[1] as TSESTree.ExportNamedDeclaration;
+        const declaration =
+          statement.declaration as TSESTree.VariableDeclaration;
+        const type = checker.getTypeAtLocation(
+          tsNode(declaration.declarations[0]),
+        );
+        return tsutils.isObjectType(type) ? type.objectFlags : undefined;
+      },
+      filePath,
+    );
+
+    expect(native).toBe(classic);
+    expect(
+      native && native & ts.ObjectFlags.InstantiationExpressionType,
+    ).toBeTruthy();
+  });
+
   it('refuses classic objects in native queries', () => {
-    const classic = parse('declare const value: string;', false);
-    const native = parse('declare const value: string;', true);
+    const classic = parseOnBackend('declare const value: string;', false);
+    const native = parseOnBackend('declare const value: string;', true);
     const classicNode = classic.tsNode(declarationOf(classic.ast, 0).id);
 
     expect(() =>

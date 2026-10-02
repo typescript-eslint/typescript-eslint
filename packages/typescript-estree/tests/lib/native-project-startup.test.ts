@@ -1,5 +1,3 @@
-import { afterEach, expect, it, vi } from 'vitest';
-
 afterEach(() => {
   vi.doUnmock('@typescript/native/unstable/sync');
   vi.resetModules();
@@ -34,14 +32,12 @@ it('wraps native API startup failures with their cause', async () => {
   }
   const createNativeProjectService = await importWithNative(API);
 
-  try {
-    createNativeProjectService();
-    throw new Error('Expected startup to fail.');
-  } catch (error) {
-    expect(error).toBeInstanceOf(Error);
-    expect((error as Error).message).toMatch(
-      /^Failed to start the TypeScript native project service:/,
-    );
-    expect((error as Error).cause).toBe(cause);
-  }
+  expect(() => createNativeProjectService()).toThrow(
+    expect.objectContaining({
+      cause,
+      message: expect.stringMatching(
+        /^Failed to start the TypeScript native project service:/,
+      ),
+    }),
+  );
 });
