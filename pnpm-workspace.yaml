@@ -2,7 +2,6 @@ packages:
   - packages/*
 
 minimumReleaseAge: 10080 # 7 days in minutes, matches renovate
-# nx 23.2.0 is newer than the 7-day cooldown; allow this upgrade through.
 minimumReleaseAgeExclude:
   # The native backend needs a TypeScript 7.1 nightly for its checker APIs.
   - typescript@7.1.0-dev.20261001.1
@@ -13,6 +12,7 @@ minimumReleaseAgeExclude:
   - '@typescript/typescript-linux-x64@7.1.0-dev.20261001.1'
   - '@typescript/typescript-win32-arm64@7.1.0-dev.20261001.1'
   - '@typescript/typescript-win32-x64@7.1.0-dev.20261001.1'
+  # nx 23.2.0 is newer than the 7-day cooldown; allow this upgrade through.
   - nx@23.2.0
   - '@nx/devkit@23.2.0'
   - '@nx/js@23.2.0'

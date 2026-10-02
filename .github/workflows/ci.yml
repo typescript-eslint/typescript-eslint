@@ -478,19 +478,10 @@ jobs:
         with:
           node-version: 22
       - name: Run unit tests
-        if: matrix.backend == 'classic'
         run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage=false
         env:
           CI: true
-          TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
-          PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
-
-      - name: Run unit tests
-        if: matrix.backend == 'native'
-        run: pnpm exec nx run-many -t test --projects="$PROJECTS" --exclude=eslint-plugin --coverage=false
-        env:
-          CI: true
-          TYPESCRIPT_ESLINT_NATIVE_BACKEND: true
+          TYPESCRIPT_ESLINT_NATIVE_BACKEND: ${{ matrix.backend == 'native' }}
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
           PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
 

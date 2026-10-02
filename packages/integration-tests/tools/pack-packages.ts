@@ -22,7 +22,7 @@ import rootPackageJson from '../../../package.json';
 export const execFile = promisify(child_process.execFile);
 
 interface PackageJSON {
-  devDependencies?: Record<string, string>;
+  devDependencies: Record<string, string>;
   name: string;
   private?: boolean;
 }
@@ -116,7 +116,7 @@ export const setup = async (project: TestProject): Promise<void> => {
     overrides: tseslintPackages,
   });
 
-  const BASE_DEPENDENCIES: Record<string, string> = {
+  const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
     ...tseslintPackages,
     eslint: PNPM_CATALOG.eslint,
     typescript: PNPM_CATALOG.typescript,
@@ -185,14 +185,7 @@ export const setup = async (project: TestProject): Promise<void> => {
             ...fixturePackageJson,
             devDependencies: {
               ...BASE_DEPENDENCIES,
-              ...Object.fromEntries(
-                Object.entries(fixturePackageJson.devDependencies ?? {}).map(
-                  ([name, version]) => [
-                    name,
-                    version === 'catalog:' ? PNPM_CATALOG[name] : version,
-                  ],
-                ),
-              ),
+              ...fixturePackageJson.devDependencies,
             },
 
             packageManager: rootPackageJson.packageManager,
@@ -266,8 +259,8 @@ async function getPnpmCatalog() {
   return parsed.catalog;
 }
 
-// Using the root pnpm-workspace.yaml content but without the catalog and packages,
-// so it contains only pnpm's settings without the monorepo-related stuff.
+// Using the root pnpm-workspace.yaml content but without the packages,
+// so it contains only pnpm's settings and catalog without the monorepo-related stuff.
 async function getPnpmWorkspaceContent({
   overrides,
 }: {
@@ -280,7 +273,6 @@ async function getPnpmWorkspaceContent({
 
   const parsed = yaml.parse(pnpmWorkspace) as Record<string, unknown>;
 
-  delete parsed.catalog;
   delete parsed.packages;
 
   parsed.overrides = overrides;

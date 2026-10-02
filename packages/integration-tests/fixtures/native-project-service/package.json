@@ -1,9 +1,5 @@
 {
-  "engines": {
-    "node": ">=22"
-  },
   "devDependencies": {
-    "@typescript/native": "catalog:",
-    "typescript": "npm:@typescript/typescript6@6.0.2"
+    "@typescript/native": "catalog:"
   }
 }
