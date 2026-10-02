@@ -152,23 +152,7 @@ export function createNativeProjectService(
       const fileSystem = unchanged
         ? undefined
         : createFileSystemLayer([[compilerPath, code]]);
-      let knownConfigFileName = fileProjects.get(cacheKey);
-
-      if (!knownConfigFileName && snapshot && openProjects.size) {
-        for (const candidate of openProjects) {
-          if (
-            snapshot
-              .getConfiguredProject(candidate)
-              ?.parsedCommandLine.fileNames.some(
-                fileName => getCanonicalFileName(fileName) === cacheKey,
-              )
-          ) {
-            knownConfigFileName = candidate;
-            fileProjects.set(cacheKey, candidate);
-            break;
-          }
-        }
-      }
+      const knownConfigFileName = fileProjects.get(cacheKey);
       if (knownConfigFileName) {
         return contextFor(
           unchanged && snapshot
@@ -218,7 +202,16 @@ export function createNativeProjectService(
         }
         throw error;
       }
-      openProjects.add(configFileName);
+      if (!openProjects.has(configFileName)) {
+        openProjects.add(configFileName);
+        for (const fileName of nextSnapshot.getConfiguredProject(configFileName)
+          ?.parsedCommandLine.fileNames ?? []) {
+          const fileKey = getCanonicalFileName(fileName);
+          if (!fileProjects.has(fileKey)) {
+            fileProjects.set(fileKey, configFileName);
+          }
+        }
+      }
       fileProjects.set(cacheKey, configFileName);
       return contextFor(nextSnapshot, configFileName, compilerPath);
     },
