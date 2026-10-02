@@ -34,6 +34,10 @@ export interface ReferencerOptions extends VisitorOptions {
   lib: Lib[];
 }
 
+type ImplicitVariableMap = ReadonlyMap<string, ImplicitLibVariableOptions>;
+
+const implicitVariablesByLibSet = new Map<string, ImplicitVariableMap>();
+
 // Referencing variables and creating bindings.
 export class Referencer extends Visitor {
   #hasReferencedJsxFactory = false;
@@ -51,14 +55,33 @@ export class Referencer extends Visitor {
     this.#lib = options.lib;
   }
 
-  private populateGlobalsFromLib(globalScope: GlobalScope): void {
-    const libs = this.resolveLibDefinitions();
-    const variables = new Map<string, ImplicitLibVariableOptions>();
+  private collectNamesForImplicitGlobals(): Set<string> {
+    const names = new Set<string>();
 
-    for (const lib of libs) {
+    for (const scope of this.scopeManager.scopes) {
+      for (const reference of scope.references) {
+        names.add(reference.identifier.name);
+      }
+      for (const variable of scope.variables) {
+        names.add(variable.name);
+      }
+    }
+
+    return names;
+  }
+
+  private getImplicitVariablesFromLib(): ImplicitVariableMap {
+    const cacheKey = JSON.stringify([...new Set(this.#lib)].sort());
+    const cached = implicitVariablesByLibSet.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    const implicitVariables = new Map<string, ImplicitLibVariableOptions>();
+    for (const lib of this.resolveLibDefinitions()) {
       for (const [name, variable] of lib.variables) {
-        const existing = variables.get(name);
-        variables.set(
+        const existing = implicitVariables.get(name);
+        implicitVariables.set(
           name,
           existing
             ? {
@@ -73,16 +96,20 @@ export class Referencer extends Visitor {
       }
     }
 
-    for (const [name, variable] of variables) {
-      globalScope.defineImplicitVariable(name, variable);
-    }
+    implicitVariablesByLibSet.set(cacheKey, implicitVariables);
+    return implicitVariables;
+  }
 
-    // Special implicit global for const assertions (`{} as const`, `<const>{}`)
-    globalScope.defineImplicitVariable('const', {
-      eslintImplicitGlobalSetting: 'readonly',
-      isTypeVariable: true,
-      isValueVariable: false,
-    });
+  private populateGlobalsFromLib(
+    globalScope: GlobalScope,
+    implicitVariables: ImplicitVariableMap,
+  ): void {
+    for (const name of this.collectNamesForImplicitGlobals()) {
+      const options = implicitVariables.get(name);
+      if (options && !globalScope.set.has(name)) {
+        globalScope.defineImplicitVariable(name, options);
+      }
+    }
   }
 
   /**
@@ -616,8 +643,18 @@ export class Referencer extends Visitor {
   }
 
   protected Program(node: TSESTree.Program): void {
-    const globalScope = this.scopeManager.nestGlobalScope(node);
-    this.populateGlobalsFromLib(globalScope);
+    const implicitVariables = this.getImplicitVariablesFromLib();
+    const globalScope = this.scopeManager.nestGlobalScope(
+      node,
+      implicitVariables,
+    );
+
+    // Special implicit global for const assertions (`{} as const`, `<const>{}`)
+    globalScope.defineImplicitVariable('const', {
+      eslintImplicitGlobalSetting: 'readonly',
+      isTypeVariable: true,
+      isValueVariable: false,
+    });
 
     if (this.scopeManager.isGlobalReturn()) {
       // Force strictness of GlobalScope to false when using node.js scope.
@@ -634,6 +671,7 @@ export class Referencer extends Visitor {
     }
 
     this.visitChildren(node);
+    this.populateGlobalsFromLib(globalScope, implicitVariables);
     this.close(node);
   }
 
