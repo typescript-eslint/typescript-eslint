@@ -91,7 +91,10 @@ function getModuleDeclarationFlags(node: NativeNode): ts.NodeFlags {
   }
 
   return declaration.name?.kind === NativeSyntaxKind.Identifier &&
-    declaration.name.text === 'global'
+    declaration.name.text === 'global' &&
+    !node
+      .getChildren()
+      .some(child => child.kind === NativeSyntaxKind.ModuleKeyword)
     ? ts.NodeFlags.GlobalAugmentation
     : ts.NodeFlags.None;
 }
@@ -162,6 +165,18 @@ function isHeritageTypeReference(node: NativeNode): boolean {
     node.kind === NativeSyntaxKind.TypeReference &&
     node.parent.kind === NativeSyntaxKind.HeritageClause
   );
+}
+
+/** Classic spells a heritage element's qualified name as property accesses. */
+function isHeritageQualifiedName(node: NativeNode): boolean {
+  if (node.kind !== NativeSyntaxKind.QualifiedName) {
+    return false;
+  }
+  let typeName = node;
+  while (typeName.parent.kind === NativeSyntaxKind.QualifiedName) {
+    typeName = typeName.parent;
+  }
+  return isHeritageTypeReference(typeName.parent);
 }
 
 function isNativeNode(value: unknown): value is NativeNode {
@@ -400,6 +415,10 @@ export function createNativeNodeAdapter({
     switch (property) {
       case 'default':
         return readNative(target, 'defaultType');
+      case 'elements':
+        return target.kind === NativeSyntaxKind.ImportAttributes
+          ? readNative(target, 'attributes')
+          : readNative(target, property);
       case 'escapedText':
         return target.kind === NativeSyntaxKind.Identifier ||
           target.kind === NativeSyntaxKind.PrivateIdentifier
@@ -415,20 +434,36 @@ export function createNativeNodeAdapter({
         );
       // Classic always spells a heritage element as an expression.
       case 'expression':
-        return isHeritageTypeReference(target)
-          ? wrapNode((target as unknown as { typeName: NativeNode }).typeName)
+        if (isHeritageTypeReference(target)) {
+          return wrapNode(
+            (target as unknown as { typeName: NativeNode }).typeName,
+          );
+        }
+        return isHeritageQualifiedName(target)
+          ? readNative(target, 'left')
           : readNative(target, property);
       case 'flags':
         return translateNodeFlags(target);
       case 'kind':
-        return isHeritageTypeReference(target)
-          ? ts.SyntaxKind.ExpressionWithTypeArguments
+        if (isHeritageTypeReference(target)) {
+          return ts.SyntaxKind.ExpressionWithTypeArguments;
+        }
+        return isHeritageQualifiedName(target)
+          ? ts.SyntaxKind.PropertyAccessExpression
           : translateKind(target.kind);
+      // Classic only counts modifiers where they are allowed to appear.
       case 'modifierFlagsCache':
         return (
-          ((target as NativeNode & { modifierFlags?: number }).modifierFlags ??
-            ts.ModifierFlags.None) | ts.ModifierFlags.HasComputedFlags
+          // eslint-disable-next-line @typescript-eslint/no-deprecated -- the native backend runs alongside TypeScript 6
+          (ts.canHaveModifiers(receiver as ts.Node)
+            ? ((target as NativeNode & { modifierFlags?: number })
+                .modifierFlags ?? ts.ModifierFlags.None)
+            : ts.ModifierFlags.None) | ts.ModifierFlags.HasComputedFlags
         );
+      case 'name':
+        return isHeritageQualifiedName(target)
+          ? readNative(target, 'right')
+          : readNative(target, property);
       case 'parseDiagnostics': {
         if (target.kind !== NativeSyntaxKind.SourceFile) {
           return undefined;

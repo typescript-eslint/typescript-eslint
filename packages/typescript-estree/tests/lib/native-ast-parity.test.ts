@@ -79,14 +79,37 @@ describe.for([
     'declare let v: number;\n+v;\n-v;\n!v;\n~v;\n++v;\n--v;\nv++;\nv--;\ntype K = keyof object;\nimport.meta;',
   ],
   [
-    // An interface's `extends` is left out: native models it as a
-    // `TypeReference` where classic uses an `ExpressionWithTypeArguments`.
-    'classes with heritage clauses',
-    'declare class Base {}\nclass Derived extends Base {}',
+    'heritage clauses',
+    'declare class Base {}\nclass Derived extends Base {}\ninterface I extends Base {}',
+  ],
+  [
+    'qualified names in heritage clauses',
+    'declare namespace N { class C {} interface D<T> {} namespace M { interface E {} } }\nclass A implements N.C, N.M.E {}\ninterface I extends N.D<number>, N.M.E {}',
+  ],
+  [
+    'import attributes',
+    'import a from "./dependency" with { type: "json" };\nexport * from "./dependency" with { type: "json" };\ntype T = typeof import("./dependency", { with: { type: "json" } });',
+  ],
+  [
+    'modules named global',
+    'declare global { declare module global {} declare namespace global {} }',
   ],
 ])('%s', ([, code]) => {
   it('converts identically on both backends', () => {
     expect(convert(code, true)).toStrictEqual(convert(code, false));
+  });
+});
+
+describe('invalid modifiers on object properties', () => {
+  it('reports the same error on both backends', () => {
+    const code = '({ abstract property: 1 });';
+
+    expect(() => convert(code, true)).toThrow(
+      "'abstract' modifier cannot be used here.",
+    );
+    expect(() => convert(code, false)).toThrow(
+      "'abstract' modifier cannot be used here.",
+    );
   });
 });
 
