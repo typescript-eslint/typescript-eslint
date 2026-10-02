@@ -370,7 +370,7 @@ export function prefetchTypesAtLocation(
 type CheckerMethod = (...args: unknown[]) => unknown;
 
 class MemoEntry {
-  objects: undefined | WeakMap<object, MemoEntry> = undefined;
+  objects: WeakMap<object, MemoEntry> | undefined = undefined;
   primitives: Map<unknown, MemoEntry> | undefined = undefined;
   resolved = false;
   result: unknown = undefined;
@@ -380,10 +380,7 @@ function getMemoEntry(root: MemoEntry, args: readonly unknown[]): MemoEntry {
   let entry = root;
   for (const arg of args) {
     let next: MemoEntry | undefined;
-    if (
-      (typeof arg === 'object' && arg !== null) ||
-      typeof arg === 'function'
-    ) {
+    if ((typeof arg === 'object' && arg != null) || typeof arg === 'function') {
       entry.objects ??= new WeakMap();
       next = entry.objects.get(arg);
       if (!next) {
