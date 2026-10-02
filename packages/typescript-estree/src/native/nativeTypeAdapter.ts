@@ -188,6 +188,17 @@ export function createNativeTypeAdapter({
     ts.Type,
     Map<string, ts.Symbol | undefined>
   >();
+  const listedPropertiesByName = new WeakMap<ts.Type, Map<string, ts.Symbol>>();
+
+  function listPropertiesByName(type: ts.Type): Map<string, ts.Symbol> {
+    const listed = new Map(
+      unwrapType(type)
+        .getProperties()
+        .map(property => [property.name, wrapSymbol(property)] as const),
+    );
+    listedPropertiesByName.set(type, listed);
+    return listed;
+  }
 
   const typeMethods = {
     getApparentProperties(this: ts.Type) {
@@ -229,7 +240,11 @@ export function createNativeTypeAdapter({
       if (properties.has(name)) {
         return properties.get(name);
       }
-      const property = wrapSymbol(unwrapType(this).getProperty(name));
+      const listed =
+        listedPropertiesByName.get(this) ??
+        (properties.size >= 2 ? listPropertiesByName(this) : undefined);
+      const property =
+        listed?.get(name) ?? wrapSymbol(unwrapType(this).getProperty(name));
       properties.set(name, property);
       return property;
     },
