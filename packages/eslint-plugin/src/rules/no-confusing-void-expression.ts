@@ -14,7 +14,6 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -412,16 +411,21 @@ export default createRule<Options, MessageId>({
         return false;
       }
 
-      const functionNode =
+      const functionNode = nullThrows(
         node.type === AST_NODE_TYPES.ArrowFunctionExpression
           ? node
-          : getParentFunctionNode(node);
+          : getParentFunctionNode(node),
+        'Expected a return statement to be inside a function.',
+      );
+      return functionDeclarationAllowsEmptyReturn(functionNode);
+    }
 
-      /* v8 ignore next 3 -- @preserve this shouldn't happen in correct code, but the parser won't error on bad code */
-      if (!functionNode) {
-        return false;
-      }
-
+    function functionDeclarationAllowsEmptyReturn(
+      functionNode:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): boolean {
       if (!functionNode.returnType) {
         return true;
       }
@@ -431,12 +435,17 @@ export default createRule<Options, MessageId>({
       );
 
       const checker = services.program.getTypeChecker();
-      /* v8 ignore next 3 -- @preserve defensive fallback: getAwaitedType may return undefined, in which case the declared type is used */
       const resolvedReturnType = functionNode.async
         ? (checker.getAwaitedType(declaredReturnType) ?? declaredReturnType)
         : declaredReturnType;
 
-      return !isTypeUnknownType(resolvedReturnType);
+      return tsutils
+        .unionConstituents(resolvedReturnType)
+        .some(
+          part =>
+            tsutils.isTypeFlagSet(part, ts.TypeFlags.Any) ||
+            tsutils.isTypeFlagSet(part, ts.TypeFlags.VoidLike),
+        );
     }
 
     function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
