@@ -98,7 +98,7 @@ export function createNativeChecker({
     return wrapType(type);
   }
 
-  const pendingIdentifiers = new WeakMap<object, ts.Node[]>();
+  const pendingIdentifiers = new WeakMap<object, readonly ts.Node[]>();
 
   const nativeChecker = {
     getAliasedSymbol: symbol =>
@@ -339,16 +339,15 @@ export function createNativeChecker({
     UNSUPPORTED_CHECKER_MEMBERS,
     memoized,
   ) as unknown as ts.TypeChecker;
-  prefetchers.set(classicChecker, nodes => {
-    const nativeNodes = nodes.map(unwrapNode);
-    const types = checker.getTypeAtLocation(nativeNodes);
+  prefetchers.set(classicChecker, (nodes, identifiers) => {
+    const types = checker.getTypeAtLocation(nodes.map(unwrapNode));
     nodes.forEach((node, index) => {
       seed('getTypeAtLocation', [node], wrapType(types[index]));
     });
-    if (nativeNodes.length) {
+    if (identifiers.length) {
       pendingIdentifiers.set(
-        nativeNodes[0].getSourceFile(),
-        nodes.filter(node => node.kind === ts.SyntaxKind.Identifier),
+        unwrapNode(identifiers[0]).getSourceFile(),
+        identifiers,
       );
     }
   });
@@ -357,14 +356,15 @@ export function createNativeChecker({
 
 const prefetchers = new WeakMap<
   ts.TypeChecker,
-  (nodes: readonly ts.Node[]) => void
+  (nodes: readonly ts.Node[], identifiers: readonly ts.Node[]) => void
 >();
 
 export function prefetchTypesAtLocation(
   checker: ts.TypeChecker,
   nodes: readonly ts.Node[],
+  identifiers: readonly ts.Node[],
 ): void {
-  prefetchers.get(checker)?.(nodes);
+  prefetchers.get(checker)?.(nodes, identifiers);
 }
 
 type CheckerMethod = (...args: unknown[]) => unknown;

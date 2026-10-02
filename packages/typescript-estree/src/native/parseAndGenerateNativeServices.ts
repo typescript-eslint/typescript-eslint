@@ -39,16 +39,50 @@ const PREFETCH_KINDS = new Set(
 
 const prefetchedSourceFiles = new WeakSet<NativeSourceFile>();
 
-function collectPrefetchNodes(sourceFile: NativeSourceFile): NativeNode[] {
-  const nodes: NativeNode[] = [];
+const NAME_PREFETCH_PARENT_KINDS = new Set([
+  NativeSyntaxKind.ShorthandPropertyAssignment,
+  NativeSyntaxKind.VariableDeclaration,
+]);
+
+const UNTYPED_IDENTIFIER_PARENT_KINDS = new Set([
+  NativeSyntaxKind.ExportSpecifier,
+  NativeSyntaxKind.ImportClause,
+  NativeSyntaxKind.ImportSpecifier,
+  NativeSyntaxKind.NamespaceExport,
+  NativeSyntaxKind.NamespaceImport,
+  NativeSyntaxKind.QualifiedName,
+  NativeSyntaxKind.TypeReference,
+]);
+
+/** Rules ask after an identifier's type where it is a value, rarely where it names something. */
+function isTypedIdentifier(node: NativeNode): boolean {
+  const { parent } = node;
+  return (
+    !UNTYPED_IDENTIFIER_PARENT_KINDS.has(parent.kind) &&
+    ((parent as NativeNode & { name?: NativeNode }).name !== node ||
+      NAME_PREFETCH_PARENT_KINDS.has(parent.kind))
+  );
+}
+
+function collectPrefetchNodes(sourceFile: NativeSourceFile): {
+  identifiers: NativeNode[];
+  typed: NativeNode[];
+} {
+  const identifiers: NativeNode[] = [];
+  const typed: NativeNode[] = [];
   const visit = (node: NativeNode): void => {
-    if (PREFETCH_KINDS.has(node.kind)) {
-      nodes.push(node);
+    if (node.kind === NativeSyntaxKind.Identifier) {
+      identifiers.push(node);
+      if (isTypedIdentifier(node)) {
+        typed.push(node);
+      }
+    } else if (PREFETCH_KINDS.has(node.kind)) {
+      typed.push(node);
     }
     node.forEachChild(visit);
   };
   sourceFile.forEachChild(visit);
-  return nodes;
+  return { identifiers, typed };
 }
 
 interface NativeAdapters {
@@ -99,11 +133,11 @@ export function parseAndGenerateNativeServices<
   const { astMaps, estree } = astConverter(sourceFile, parseSettings, true);
   if (!prefetchedSourceFiles.has(context.sourceFile)) {
     prefetchedSourceFiles.add(context.sourceFile);
+    const { identifiers, typed } = collectPrefetchNodes(context.sourceFile);
     prefetchTypesAtLocation(
       program.getTypeChecker(),
-      collectPrefetchNodes(context.sourceFile).map(node =>
-        nodeAdapter.wrapNode(node),
-      ),
+      typed.map(node => nodeAdapter.wrapNode(node)),
+      identifiers.map(node => nodeAdapter.wrapNode(node)),
     );
   }
 
