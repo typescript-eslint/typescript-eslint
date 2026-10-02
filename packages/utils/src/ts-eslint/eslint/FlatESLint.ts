@@ -1,12 +1,14 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-import { ESLint } from 'eslint';
-import useAtYourOwnRisk from 'eslint/use-at-your-own-risk';
-
+/* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 import type { FlatConfig } from '../Config';
 import type * as Shared from './ESLintShared';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-declare class FlatESLintBase extends Shared.ESLintBase<
+/**
+ * The ESLint class is the primary class to use in Node.js applications.
+ * This class depends on the Node.js fs module and the file system, so you cannot use it in browsers.
+ *
+ * If you want to lint code on browsers, use the Linter class instead.
+ */
+declare class FlatESLint extends Shared.ESLintBase<
   FlatConfig.Config | FlatConfig.ConfigArray,
   FlatESLint.ESLintOptions
 > {
@@ -34,10 +36,7 @@ declare class FlatESLintBase extends Shared.ESLintBase<
  * This class depends on the Node.js fs module and the file system, so you cannot use it in browsers.
  *
  * If you want to lint code on browsers, use the Linter class instead.
- */
-export class FlatESLint extends ((useAtYourOwnRisk.FlatESLint ??
-  ESLint) as typeof FlatESLintBase) {}
-export namespace FlatESLint {
+ */ export namespace FlatESLint {
   export interface ESLintOptions extends Shared.ESLintOptions<FlatConfig.ConfigArray> {
     /**
      * If false is present, the eslint.lintFiles() method doesn't respect `ignorePatterns` ignorePatterns in your configuration.
@@ -95,3 +94,5 @@ export namespace FlatESLint {
     severity: number;
   }) => boolean;
 }
+
+export type { FlatESLint };
