@@ -343,55 +343,58 @@ export function prefetchTypesAtLocation(
 
 type CheckerMethod = (...args: unknown[]) => unknown;
 
+class MemoEntry {
+  objects: undefined | WeakMap<object, MemoEntry> = undefined;
+  primitives: Map<unknown, MemoEntry> | undefined = undefined;
+  resolved = false;
+  result: unknown = undefined;
+}
+
+function getMemoEntry(root: MemoEntry, args: readonly unknown[]): MemoEntry {
+  let entry = root;
+  for (const arg of args) {
+    let next: MemoEntry | undefined;
+    if (
+      (typeof arg === 'object' && arg !== null) ||
+      typeof arg === 'function'
+    ) {
+      entry.objects ??= new WeakMap();
+      next = entry.objects.get(arg);
+      if (!next) {
+        next = new MemoEntry();
+        entry.objects.set(arg, next);
+      }
+    } else {
+      entry.primitives ??= new Map();
+      next = entry.primitives.get(arg);
+      if (!next) {
+        next = new MemoEntry();
+        entry.primitives.set(arg, next);
+      }
+    }
+    entry = next;
+  }
+  return entry;
+}
+
 function memoizeChecker<Checker extends object>(
   checker: Checker,
 ): {
   memoized: Checker;
   seed: (name: string, args: readonly unknown[], result: unknown) => void;
 } {
-  const results = new Map<string, unknown>();
-  const ids = new WeakMap<object, number>();
-  let nextId = 0;
-
-  function keyOf(value: unknown): string {
-    switch (typeof value) {
-      case 'function':
-      case 'object': {
-        if (value == null) {
-          return 'null';
-        }
-        let id = ids.get(value);
-        if (id == null) {
-          id = nextId++;
-          ids.set(value, id);
-        }
-        return `#${id}`;
-      }
-      case 'string':
-        return JSON.stringify(value);
-      default:
-        return String(value);
-    }
-  }
-
-  function keyOfCall(name: string, args: readonly unknown[]): string {
-    let key = name;
-    for (const arg of args) {
-      key += `,${keyOf(arg)}`;
-    }
-    return key;
-  }
+  const roots = new Map<string, MemoEntry>();
 
   function memoize(name: string, method: CheckerMethod): CheckerMethod {
+    const root = new MemoEntry();
+    roots.set(name, root);
     return function (...args) {
-      const key = keyOfCall(name, args);
-      const cached = results.get(key);
-      if (cached != null || results.has(key)) {
-        return cached;
+      const entry = getMemoEntry(root, args);
+      if (!entry.resolved) {
+        entry.result = method(...args);
+        entry.resolved = true;
       }
-      const result = method(...args);
-      results.set(key, result);
-      return result;
+      return entry.result;
     };
   }
 
@@ -405,7 +408,12 @@ function memoizeChecker<Checker extends object>(
   return {
     memoized: memoized as Checker,
     seed: (name, args, result) => {
-      results.set(keyOfCall(name, args), result);
+      const root = roots.get(name);
+      if (root) {
+        const entry = getMemoEntry(root, args);
+        entry.result = result;
+        entry.resolved = true;
+      }
     },
   };
 }

@@ -268,6 +268,8 @@ export function createNativeTypeAdapter({
     },
   };
 
+  const jsDocTagsBySymbol = new WeakMap<ts.Symbol, ts.JSDocTagInfo[]>();
+
   const symbolMethods = {
     getDeclarations(this: ts.Symbol) {
       return (this as { declarations?: ts.Declaration[] }).declarations;
@@ -283,9 +285,14 @@ export function createNativeTypeAdapter({
       return this.flags;
     },
     getJsDocTags(this: ts.Symbol): ts.JSDocTagInfo[] {
-      return unwrapSymbol(this)
-        .getJsDocTags(checker)
-        .map(tag => toJSDocTagInfo(tag.name, tag.text));
+      let tags = jsDocTagsBySymbol.get(this);
+      if (!tags) {
+        tags = unwrapSymbol(this)
+          .getJsDocTags(checker)
+          .map(tag => toJSDocTagInfo(tag.name, tag.text));
+        jsDocTagsBySymbol.set(this, tags);
+      }
+      return tags;
     },
     getName(this: ts.Symbol) {
       return this.name;
