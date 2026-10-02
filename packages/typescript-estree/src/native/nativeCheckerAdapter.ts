@@ -4,6 +4,7 @@ import type {
   Symbol as NativeSymbol,
 } from '@typescript/native/unstable/sync';
 
+import { SyntaxKind as NativeSyntaxKind } from '@typescript/native/unstable/ast';
 import * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
@@ -68,6 +69,16 @@ export function createNativeChecker({
     wrapTypePredicate,
   } = typeAdapter;
   const { unwrapNode } = nodeAdapter;
+
+  /** Native only answers for parsed nodes, so a meta property's keyword asks after the meta property. */
+  function unwrapLocation(node: ts.Node) {
+    const native = unwrapNode(node);
+    return (native.kind === NativeSyntaxKind.ImportKeyword ||
+      native.kind === NativeSyntaxKind.NewKeyword) &&
+      native.parent.kind === NativeSyntaxKind.MetaProperty
+      ? native.parent
+      : native;
+  }
   const typesOfSymbolsElsewhere = new Map<NativeSymbol, ts.Type>();
 
   // Classic's intrinsic `true` and `false` are the regular constituents of `boolean`.
@@ -181,7 +192,7 @@ export function createNativeChecker({
       checker.getSignaturesOfType(unwrapType(type), kind).map(toSignature),
     getStringType: () => wrapType(checker.getStringType()),
     getSymbolAtLocation: node =>
-      wrapSymbol(checker.getSymbolAtLocation(unwrapNode(node))),
+      wrapSymbol(checker.getSymbolAtLocation(unwrapLocation(node))),
     getSymbolsInScope: (location, meaning) =>
       checker
         .getSymbolsInScope(
@@ -201,7 +212,7 @@ export function createNativeChecker({
     getTypeAtLocation: (node: ts.Node | undefined) =>
       node == null
         ? wrapType(checker.getAnyType())
-        : wrapType(checker.getTypeAtLocation(unwrapNode(node))),
+        : wrapType(checker.getTypeAtLocation(unwrapLocation(node))),
     getTypeFromTypeNode: node =>
       wrapType(
         checker.getTypeFromTypeNode(

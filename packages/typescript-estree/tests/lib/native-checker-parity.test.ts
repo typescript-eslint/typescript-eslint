@@ -138,4 +138,20 @@ describe('native preview API parity', () => {
     // Classic reports `Zebra | Apple`.
     expect(checker.typeToString(type)).toBe('Apple | Zebra');
   });
+
+  it("answers a meta property's keyword with the meta property", () => {
+    const { ast, services } = parse('const meta = import.meta;\nexport {};');
+    const declaration = ast.body[0] as never as {
+      declarations: { init: { meta: never } }[];
+    };
+    const { meta } = declaration.declarations[0].init;
+    assert.isNotNull(services.program);
+    const checker = services.program.getTypeChecker();
+
+    // Classic reports `ImportMetaExpression` and `{ readonly meta: ImportMeta; }`.
+    expect(services.getSymbolAtLocation(meta)?.name).toBe('ImportMeta');
+    expect(checker.typeToString(services.getTypeAtLocation(meta))).toBe(
+      'ImportMeta',
+    );
+  });
 });
