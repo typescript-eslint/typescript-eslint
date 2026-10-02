@@ -98,6 +98,8 @@ export function createNativeChecker({
     return wrapType(type);
   }
 
+  const pendingIdentifiers = new WeakMap<object, ts.Node[]>();
+
   const nativeChecker = {
     getAliasedSymbol: symbol =>
       wrapSymbol(checker.getAliasedSymbol(unwrapSymbol(symbol))),
@@ -191,8 +193,25 @@ export function createNativeChecker({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       checker.getSignaturesOfType(unwrapType(type), kind).map(toSignature),
     getStringType: () => wrapType(checker.getStringType()),
-    getSymbolAtLocation: node =>
-      wrapSymbol(checker.getSymbolAtLocation(unwrapLocation(node))),
+    getSymbolAtLocation: node => {
+      const native = unwrapLocation(node);
+      const sourceFile = native.getSourceFile();
+      const identifiers = pendingIdentifiers.get(sourceFile);
+      if (!identifiers) {
+        return wrapSymbol(checker.getSymbolAtLocation(native));
+      }
+      pendingIdentifiers.delete(sourceFile);
+      const symbols = checker
+        .getSymbolAtLocation(identifiers.map(unwrapNode))
+        .map(symbol => wrapSymbol(symbol));
+      identifiers.forEach((identifier, index) => {
+        seed('getSymbolAtLocation', [identifier], symbols[index]);
+      });
+      const index = identifiers.indexOf(node);
+      return index === -1
+        ? wrapSymbol(checker.getSymbolAtLocation(native))
+        : symbols[index];
+    },
     getSymbolsInScope: (location, meaning) =>
       checker
         .getSymbolsInScope(
@@ -321,10 +340,17 @@ export function createNativeChecker({
     memoized,
   ) as unknown as ts.TypeChecker;
   prefetchers.set(classicChecker, nodes => {
-    const types = checker.getTypeAtLocation(nodes.map(unwrapNode));
+    const nativeNodes = nodes.map(unwrapNode);
+    const types = checker.getTypeAtLocation(nativeNodes);
     nodes.forEach((node, index) => {
       seed('getTypeAtLocation', [node], wrapType(types[index]));
     });
+    if (nativeNodes.length) {
+      pendingIdentifiers.set(
+        nativeNodes[0].getSourceFile(),
+        nodes.filter(node => node.kind === ts.SyntaxKind.Identifier),
+      );
+    }
   });
   return classicChecker;
 }
