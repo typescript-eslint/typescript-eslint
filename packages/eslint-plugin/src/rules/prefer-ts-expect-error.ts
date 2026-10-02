@@ -34,6 +34,7 @@ export default createRule<[], MessageIds>({
     replacedBy: ['@typescript-eslint/ban-ts-comment'],
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     const tsIgnoreRegExpSingleLine = /^\s*\/?\s*@ts-ignore/;

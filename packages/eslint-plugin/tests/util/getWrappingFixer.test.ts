@@ -30,6 +30,7 @@ const voidEverythingRule = createRule({
       'ObjectExpression[properties.0.value.value="wrapObject"]': report,
     };
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   meta: {
     docs: {
@@ -300,6 +301,7 @@ const removeFunctionRule = createRule({
       'CallExpression[callee.name="fn"]': report,
     };
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   meta: {
     docs: {

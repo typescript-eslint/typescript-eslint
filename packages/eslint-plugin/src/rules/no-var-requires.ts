@@ -48,6 +48,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [{ allow: [] }],
   create(context, options) {
     const allowPatterns = options[0].allow.map(
