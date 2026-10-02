@@ -165,6 +165,30 @@ describe('native adapter parity', () => {
     expect(native).toEqual(classic);
   });
 
+  it('leaves a synthesized default alias without declarations', () => {
+    const { classic, native } = onBothBackends(
+      "export async function f() {\n  return (await import('./dependency.cjs')).default;\n}",
+      ({ ast, services }) => {
+        const declaration = ast.body[0] as TSESTree.ExportNamedDeclaration;
+        const statement = (
+          declaration.declaration as TSESTree.FunctionDeclaration
+        ).body.body[0] as TSESTree.ReturnStatement;
+        const symbol = services.getSymbolAtLocation(
+          (statement.argument as TSESTree.MemberExpression).property,
+        );
+
+        return {
+          declarations: symbol?.getDeclarations(),
+          name: symbol?.name,
+        };
+      },
+      nativePath(nativeFixtures, 'commonjs', 'file.mts'),
+    );
+
+    expect(native).toEqual({ declarations: undefined, name: 'default' });
+    expect(native).toEqual(classic);
+  });
+
   it('answers non-nullable types', () => {
     const { classic, native } = onBothBackends(
       'declare const value: string | undefined;',

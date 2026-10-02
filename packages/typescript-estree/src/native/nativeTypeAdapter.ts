@@ -19,6 +19,7 @@ import {
 import {
   ElementFlags,
   ObjectFlags,
+  SymbolFlags,
   TypeFlags,
 } from '@typescript/native/unstable/sync';
 import * as ts from 'typescript';
@@ -487,11 +488,16 @@ export function createNativeTypeAdapter({
 
   function readClassicSymbol(symbol: NativeSymbol, property: string): unknown {
     switch (property) {
-      case 'declarations':
-        // eslint-disable-next-line @typescript-eslint/internal/no-poorly-typed-ts-props -- reading the native symbol, to implement the classic property
-        return symbol.declarations
-          .map(resolveDeclaration)
-          .filter(declaration => declaration != null);
+      // Classic leaves a synthesized alias, such as a CommonJS module's
+      // `default`, without declarations.
+      case 'declarations': {
+        const { declarations } = symbol;
+        return declarations.length === 0 && symbol.flags & SymbolFlags.Alias
+          ? undefined
+          : declarations
+              .map(resolveDeclaration)
+              .filter(declaration => declaration != null);
+      }
       case 'exports':
         return wrapSymbolTable(symbol.getExports());
       case 'members':
