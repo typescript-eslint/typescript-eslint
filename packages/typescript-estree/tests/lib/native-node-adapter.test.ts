@@ -93,7 +93,7 @@ describe('native node adapter', () => {
     });
   });
 
-  it('presents classic property names to in checks and key enumeration', () => {
+  it('presents classic property names to in checks and, once read, key enumeration', () => {
     const code = 'declare function f<T extends object = {}>(value?: T): void;';
     withNativeSourceFile(code, fixturePath, ({ program, sourceFile }) => {
       const adapter = createAdapter(program);
@@ -111,13 +111,16 @@ describe('native node adapter', () => {
       expect('defaultType' in typeParameter).toBe(false);
       expect('questionToken' in parameter).toBe(true);
       expect('escapedText' in typeParameter.name).toBe(true);
+
+      const { constraint, default: defaultType, name } = typeParameter;
+      expect([constraint, defaultType, name]).not.toContain(undefined);
       expect(Object.keys(typeParameter)).toEqual(
         expect.arrayContaining(['constraint', 'default', 'kind', 'name']),
       );
       expect(Object.keys(typeParameter)).not.toContain('defaultType');
       expect(Object.entries(typeParameter)).toContainEqual([
         'default',
-        typeParameter.default,
+        defaultType,
       ]);
     });
   });

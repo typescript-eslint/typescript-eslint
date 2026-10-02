@@ -99,8 +99,14 @@ function getModuleDeclarationFlags(node: NativeNode): ts.NodeFlags {
     : ts.NodeFlags.None;
 }
 
+const translatedNodeFlags = new Map<number, number>();
+
 function translateNodeFlags(node: NativeNode): ts.NodeFlags {
-  const flags = translateFlags(NODE_FLAG_TRANSLATIONS, node.flags);
+  let flags = translatedNodeFlags.get(node.flags);
+  if (flags == null) {
+    flags = translateFlags(NODE_FLAG_TRANSLATIONS, node.flags);
+    translatedNodeFlags.set(node.flags, flags);
+  }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- translated member by member above
   return node.kind === NativeSyntaxKind.ModuleDeclaration
     ? flags | getModuleDeclarationFlags(node)
@@ -108,6 +114,54 @@ function translateNodeFlags(node: NativeNode): ts.NodeFlags {
 }
 
 const KIND_PROPERTIES = new Set(['keywordToken', 'operator', 'token']);
+
+const NATIVE_NODE = Symbol('nativeNode');
+
+const EAGER_KEYS = new Set(['end', 'flags', 'kind', 'pos']);
+
+const VIEW_ONLY_KEYS = [
+  'exclamationToken',
+  'expression',
+  'modifierFlagsCache',
+  'parent',
+  'parseDiagnostics',
+  'questionToken',
+];
+
+interface NodeView {
+  [NATIVE_NODE]: NativeNode;
+  end: number;
+  flags: number;
+  kind: number;
+  pos: number;
+}
+
+function getMemberNames(prototype: object): {
+  getters: string[];
+  methods: string[];
+} {
+  const getters = new Set<string>();
+  const methods = new Set<string>();
+  for (
+    let current: object | null = prototype;
+    current && current !== Object.prototype;
+    current = Object.getPrototypeOf(current) as object | null
+  ) {
+    for (const [name, descriptor] of Object.entries(
+      Object.getOwnPropertyDescriptors(current),
+    )) {
+      if (name === 'constructor' || NATIVE_ONLY_KEYS.has(name)) {
+        continue;
+      }
+      if (descriptor.get) {
+        getters.add(name);
+      } else if (typeof descriptor.value === 'function') {
+        methods.add(name);
+      }
+    }
+  }
+  return { getters: [...getters], methods: [...methods] };
+}
 
 /** Native hoists JSDoc types into JS ASTs; classic leaves them in comments. */
 function isReparsed(node: NativeNode): boolean {
@@ -133,32 +187,6 @@ const NATIVE_ONLY_KEYS = new Set([
 ]);
 
 const CLASSIC_ONLY_KEYS = ['default', 'escapedText'];
-
-const getterNamesByPrototype = new WeakMap<object, readonly string[]>();
-
-function getGetterNames(node: NativeNode): readonly string[] {
-  const prototype = Object.getPrototypeOf(node) as object;
-  let names = getterNamesByPrototype.get(prototype);
-  if (!names) {
-    const collected = new Set<string>();
-    for (
-      let current: object | null = prototype;
-      current && current !== Object.prototype;
-      current = Object.getPrototypeOf(current) as object | null
-    ) {
-      for (const [name, descriptor] of Object.entries(
-        Object.getOwnPropertyDescriptors(current),
-      )) {
-        if (descriptor.get && !NATIVE_ONLY_KEYS.has(name)) {
-          collected.add(name);
-        }
-      }
-    }
-    names = [...collected];
-    getterNamesByPrototype.set(prototype, names);
-  }
-  return names;
-}
 
 function isHeritageTypeReference(node: NativeNode): boolean {
   return (
@@ -203,8 +231,7 @@ function isNativeNodeArray(
 export function createNativeNodeAdapter({
   getSyntacticDiagnostics,
 }: NativeNodeAdapterOptions): NativeNodeAdapter {
-  const nativeToAdapter = new WeakMap<NativeNode, ts.Node>();
-  const adapterToNative = new WeakMap<ts.Node, NativeNode>();
+  const VIEW = Symbol('view');
   const nativeArrayToAdapter = new WeakMap<
     NativeNodeArray<NativeNode>,
     ts.NodeArray<ts.Node>
@@ -232,11 +259,11 @@ export function createNativeNodeAdapter({
     const adapted: ts.Node[] = [];
     const adaptedNodeArray = adapted as unknown as ts.NodeArray<ts.Node>;
     nativeArrayToAdapter.set(nodes, adaptedNodeArray);
-    Object.defineProperties(adaptedNodeArray, {
-      end: { value: nodes.end },
-      hasTrailingComma: { value: nodes.hasTrailingComma },
-      pos: { value: nodes.pos },
-      transformFlags: { value: nodes.transformFlags },
+    Object.assign(adaptedNodeArray, {
+      end: nodes.end,
+      hasTrailingComma: nodes.hasTrailingComma,
+      pos: nodes.pos,
+      transformFlags: nodes.transformFlags,
     });
     for (const node of nodes) {
       if (!isReparsed(node)) {
@@ -260,7 +287,7 @@ export function createNativeNodeAdapter({
       parent: { value: parent },
       pos: { value: pos },
     });
-    adapterToNative.set(token, native);
+    (token as unknown as NodeView)[NATIVE_NODE] = native;
     return token;
   }
 
@@ -497,43 +524,64 @@ export function createNativeNodeAdapter({
     }
   }
 
-  const handler: ProxyHandler<NativeNode> = {
-    get: readClassic,
-    getOwnPropertyDescriptor(target, property) {
-      const value = readClassicKey(target, property);
-      return value == null
-        ? undefined
-        : { configurable: true, enumerable: true, value, writable: false };
-    },
-    has(target, property) {
-      return readClassicKey(target, property) != null;
-    },
-    ownKeys(target) {
-      const keys = new Set<string>();
-      for (const key of [
-        ...Object.keys(target),
-        ...getGetterNames(target),
-        ...CLASSIC_ONLY_KEYS,
-      ]) {
-        if (readClassicKey(target, key) != null) {
-          keys.add(key);
-        }
-      }
-      return [...keys];
-    },
-  };
+  const viewPrototypes = new WeakMap<object, object>();
 
-  function readClassicKey(
-    target: NativeNode,
-    property: string | symbol,
-  ): unknown {
-    return typeof property === 'string' && NATIVE_ONLY_KEYS.has(property)
-      ? undefined
-      : readClassic(target, property, nativeToAdapter.get(target));
+  function memoize(view: object, name: string, value: unknown): void {
+    Object.defineProperty(view, name, {
+      configurable: true,
+      enumerable: true,
+      value,
+      writable: true,
+    });
+  }
+
+  function createViewPrototype(nativePrototype: object): object {
+    const prototype: Record<string, unknown> = {};
+    const { getters, methods } = getMemberNames(nativePrototype);
+    for (const name of methods) {
+      prototype[name] = function (this: NodeView, ...args: unknown[]) {
+        return (this[NATIVE_NODE] as unknown as Record<string, NativeMethod>)[
+          name
+        ].apply(this[NATIVE_NODE], args);
+      };
+    }
+    Object.assign(prototype, nodeMethods);
+    for (const name of new Set([
+      ...getters,
+      ...CLASSIC_ONLY_KEYS,
+      ...VIEW_ONLY_KEYS,
+    ])) {
+      if (EAGER_KEYS.has(name)) {
+        continue;
+      }
+      Object.defineProperty(prototype, name, {
+        configurable: true,
+        enumerable: false,
+        get(this: NodeView) {
+          const value = readClassic(this[NATIVE_NODE], name, this);
+          memoize(this, name, value);
+          return value;
+        },
+        set(this: NodeView, value: unknown) {
+          memoize(this, name, value);
+        },
+      });
+    }
+    return prototype;
+  }
+
+  function getViewPrototype(node: NativeNode): object {
+    const nativePrototype = Object.getPrototypeOf(node) as object;
+    let prototype = viewPrototypes.get(nativePrototype);
+    if (!prototype) {
+      prototype = createViewPrototype(nativePrototype);
+      viewPrototypes.set(nativePrototype, prototype);
+    }
+    return prototype;
   }
 
   function unwrap(node: ts.Node): NativeNode {
-    const native = adapterToNative.get(node);
+    const native = (node as unknown as Partial<NodeView>)[NATIVE_NODE];
     if (!native) {
       throw new Error('The node was not created by this native node adapter.');
     }
@@ -543,14 +591,19 @@ export function createNativeNodeAdapter({
   const forward = createMethodForwarder(unwrap);
 
   function wrapNode(node: NativeNode): ts.Node {
-    const cached = nativeToAdapter.get(node);
+    const cached = (node as NativeNode & { [VIEW]?: ts.Node })[VIEW];
     if (cached) {
       return cached;
     }
-    const proxy = new Proxy(node, handler) as unknown as ts.Node;
-    nativeToAdapter.set(node, proxy);
-    adapterToNative.set(proxy, node);
-    return proxy;
+    const view = Object.create(getViewPrototype(node)) as NodeView;
+    view[NATIVE_NODE] = node;
+    view.kind = readClassic(node, 'kind', view) as number;
+    view.pos = node.pos;
+    view.end = node.end;
+    view.flags = translateNodeFlags(node);
+    const adapted = view as unknown as ts.Node;
+    (node as NativeNode & { [VIEW]?: ts.Node })[VIEW] = adapted;
+    return adapted;
   }
 
   return { unwrapNode: unwrap, wrapNode };
