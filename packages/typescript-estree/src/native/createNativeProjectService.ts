@@ -22,6 +22,13 @@ function startupError(error: unknown): Error {
   );
 }
 
+function isNativeProcessFailure(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    /EPIPE|Unexpected EOF while reading from child process/.test(error.message)
+  );
+}
+
 export function toCompilerPath(filePath: string): string {
   return path
     .resolve(filePath)
@@ -47,12 +54,30 @@ export function createNativeProjectService(
   const openProjects = new Set<string>();
   let closed = false;
   let snapshot: Snapshot | undefined;
-  let api: API;
 
-  try {
-    api = new API({ cwd });
-  } catch (error) {
-    throw startupError(error);
+  function startAPI(): API {
+    try {
+      return new API({ cwd });
+    } catch (error) {
+      throw startupError(error);
+    }
+  }
+
+  let api = startAPI();
+
+  /** A crashed native process would otherwise fail every later file. */
+  function restart(): void {
+    try {
+      api.close();
+    } catch {
+      // Intentionally ignored.
+    }
+    snapshot = undefined;
+    contentHashes.clear();
+    fileContexts.clear();
+    fileProjects.clear();
+    openProjects.clear();
+    api = startAPI();
   }
 
   function assertOpen(): void {
@@ -102,6 +127,87 @@ export function createNativeProjectService(
     return context;
   }
 
+  function openFileInSnapshot(
+    filePath: string,
+    code: string,
+  ): NativeProjectContext {
+    const compilerPath = toCompilerPath(filePath);
+    const cacheKey = getCanonicalFileName(compilerPath);
+    const hash = hashText(code);
+    const previous = contentHashes.get(cacheKey);
+    const cachedContext = fileContexts.get(cacheKey);
+    if (previous === hash && cachedContext) {
+      return cachedContext;
+    }
+    const unchanged = (previous ?? hashFileOnDisk(compilerPath)) === hash;
+    contentHashes.set(cacheKey, hash);
+    const fileSystem = unchanged
+      ? undefined
+      : createFileSystemLayer([[compilerPath, code]]);
+    const knownConfigFileName = fileProjects.get(cacheKey);
+    if (knownConfigFileName) {
+      return contextFor(
+        unchanged && snapshot
+          ? snapshot
+          : replaceSnapshot({
+              ensurePrograms: true,
+              fileNotifications: { changed: [compilerPath] },
+              fileSystem,
+            }),
+        knownConfigFileName,
+        compilerPath,
+      );
+    }
+
+    const discoverySnapshot = replaceSnapshot({
+      fileSystem,
+      openFiles: [compilerPath],
+    });
+    let configFileName: string;
+    let nextSnapshot: Snapshot;
+    try {
+      const discoveredProject =
+        discoverySnapshot.getDefaultProjectForFile(compilerPath);
+      if (!discoveredProject) {
+        throw new Error(
+          `No TypeScript native project was located for '${compilerPath}'.`,
+        );
+      }
+      configFileName = discoveredProject.configFileName;
+      if (!ts.sys.fileExists(configFileName)) {
+        throw new Error(
+          `No TypeScript native configured project was located for '${compilerPath}'.`,
+        );
+      }
+      nextSnapshot = replaceSnapshot({
+        closeFiles: [compilerPath],
+        ensurePrograms: true,
+        openProjects: openProjects.has(configFileName)
+          ? undefined
+          : [configFileName],
+      });
+    } catch (error) {
+      try {
+        replaceSnapshot({ closeFiles: [compilerPath] });
+      } catch {
+        // Intentionally ignored.
+      }
+      throw error;
+    }
+    if (!openProjects.has(configFileName)) {
+      openProjects.add(configFileName);
+      for (const fileName of nextSnapshot.getConfiguredProject(configFileName)
+        ?.parsedCommandLine.fileNames ?? []) {
+        const fileKey = getCanonicalFileName(fileName);
+        if (!fileProjects.has(fileKey)) {
+          fileProjects.set(fileKey, configFileName);
+        }
+      }
+    }
+    fileProjects.set(cacheKey, configFileName);
+    return contextFor(nextSnapshot, configFileName, compilerPath);
+  }
+
   const service: NativeProjectService = {
     close(): void {
       if (closed) {
@@ -139,81 +245,14 @@ export function createNativeProjectService(
 
     openFile(filePath, code): NativeProjectContext {
       assertOpen();
-      const compilerPath = toCompilerPath(filePath);
-      const cacheKey = getCanonicalFileName(compilerPath);
-      const hash = hashText(code);
-      const previous = contentHashes.get(cacheKey);
-      const cachedContext = fileContexts.get(cacheKey);
-      if (previous === hash && cachedContext) {
-        return cachedContext;
-      }
-      const unchanged = (previous ?? hashFileOnDisk(compilerPath)) === hash;
-      contentHashes.set(cacheKey, hash);
-      const fileSystem = unchanged
-        ? undefined
-        : createFileSystemLayer([[compilerPath, code]]);
-      const knownConfigFileName = fileProjects.get(cacheKey);
-      if (knownConfigFileName) {
-        return contextFor(
-          unchanged && snapshot
-            ? snapshot
-            : replaceSnapshot({
-                ensurePrograms: true,
-                fileNotifications: { changed: [compilerPath] },
-                fileSystem,
-              }),
-          knownConfigFileName,
-          compilerPath,
-        );
-      }
-
-      const discoverySnapshot = replaceSnapshot({
-        fileSystem,
-        openFiles: [compilerPath],
-      });
-      let configFileName: string;
-      let nextSnapshot: Snapshot;
       try {
-        const discoveredProject =
-          discoverySnapshot.getDefaultProjectForFile(compilerPath);
-        if (!discoveredProject) {
-          throw new Error(
-            `No TypeScript native project was located for '${compilerPath}'.`,
-          );
-        }
-        configFileName = discoveredProject.configFileName;
-        if (!ts.sys.fileExists(configFileName)) {
-          throw new Error(
-            `No TypeScript native configured project was located for '${compilerPath}'.`,
-          );
-        }
-        nextSnapshot = replaceSnapshot({
-          closeFiles: [compilerPath],
-          ensurePrograms: true,
-          openProjects: openProjects.has(configFileName)
-            ? undefined
-            : [configFileName],
-        });
+        return openFileInSnapshot(filePath, code);
       } catch (error) {
-        try {
-          replaceSnapshot({ closeFiles: [compilerPath] });
-        } catch {
-          // Intentionally ignored.
+        if (isNativeProcessFailure(error)) {
+          restart();
         }
         throw error;
       }
-      if (!openProjects.has(configFileName)) {
-        openProjects.add(configFileName);
-        for (const fileName of nextSnapshot.getConfiguredProject(configFileName)
-          ?.parsedCommandLine.fileNames ?? []) {
-          const fileKey = getCanonicalFileName(fileName);
-          if (!fileProjects.has(fileKey)) {
-            fileProjects.set(fileKey, configFileName);
-          }
-        }
-      }
-      fileProjects.set(cacheKey, configFileName);
-      return contextFor(nextSnapshot, configFileName, compilerPath);
     },
   };
   return service;

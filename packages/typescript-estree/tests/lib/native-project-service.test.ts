@@ -81,6 +81,21 @@ describe('native project service lifecycle', () => {
     });
   });
 
+  it('stays usable after a file beside a composite project', () => {
+    withService(service => {
+      expect(() =>
+        service.openFile(
+          nativePath(nativeFixtures, 'composite/outside.ts'),
+          'export const outside = 1;',
+        ),
+      ).toThrow();
+
+      expect(
+        service.openFile(filePath, readFixture()).sourceFile.fileName,
+      ).toBe(filePath);
+    });
+  });
+
   it('resolves project references from source', () => {
     withService(service => {
       const referencesPath = nativePath(nativeFixtures, 'references/file.ts');
