@@ -220,6 +220,8 @@ const [[[x]]] = [spooky];
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 const {
@@ -245,6 +247,7 @@ const {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 let value: number;

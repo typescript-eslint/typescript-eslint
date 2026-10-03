@@ -156,6 +156,8 @@ class A {
         },
       ],
     },
+    // Verify multiple instances of error
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class A {
@@ -183,6 +185,7 @@ class A {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 class A {

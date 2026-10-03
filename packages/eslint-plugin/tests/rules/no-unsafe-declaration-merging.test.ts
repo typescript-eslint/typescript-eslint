@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors -- The rule naturally makes multiple errors */
 import rule from '../../src/rules/no-unsafe-declaration-merging';
 import { createRuleTesterWithTypes } from '../RuleTester';
 

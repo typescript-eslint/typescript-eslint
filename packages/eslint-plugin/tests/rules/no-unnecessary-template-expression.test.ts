@@ -649,6 +649,8 @@ function foo<T extends string>() {
       ],
       output: '`useless`;',
     },
+    // Verify nested errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: noFormat`
 \`u\${
@@ -692,6 +694,7 @@ function foo<T extends string>() {
       `,
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: noFormat`
 \`use\${
