@@ -1,9 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/naming-convention/naming-convention.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 77
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-use-before-define.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 1
