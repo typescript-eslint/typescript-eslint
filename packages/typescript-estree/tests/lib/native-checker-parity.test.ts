@@ -74,6 +74,73 @@ describe('native preview API parity', () => {
     expect(native).toBeDefined();
   });
 
+  describe('getTypeOfSymbolAtLocation', () => {
+    const code = [
+      'class Box {',
+      "  get 'value'(): string { return ''; }",
+      "  set 'value'(value: string | number) {}",
+      '}',
+      'declare const box: Box;',
+      "box['value'] = 1;",
+      'export const exported = 1;',
+      'exported;',
+    ].join('\n');
+
+    function boxValue({ ast, checker, tsNode }: NativeQueryContext) {
+      const declaration = ast.body[0] as TSESTree.ClassDeclaration;
+      return checker
+        .getDeclaredTypeOfSymbol(
+          checker.getSymbolAtLocation(tsNode(declaration.id!))!,
+        )
+        .getProperty('value')!;
+    }
+
+    it.each([
+      [
+        'a set accessor’s name',
+        'string | number',
+        (context: NativeQueryContext) => {
+          const declaration = context.ast.body[0] as TSESTree.ClassDeclaration;
+          const setter = declaration.body.body[1] as TSESTree.MethodDefinition;
+          return context.checker.getTypeOfSymbolAtLocation(
+            boxValue(context),
+            context.tsNode(setter.key),
+          );
+        },
+      ],
+      [
+        'an element access being written',
+        'string | number',
+        (context: NativeQueryContext) => {
+          const statement = context.ast.body[2] as TSESTree.ExpressionStatement;
+          const { left } =
+            statement.expression as TSESTree.AssignmentExpression;
+          return context.checker.getTypeOfSymbolAtLocation(
+            boxValue(context),
+            context.tsNode((left as TSESTree.MemberExpression).property),
+          );
+        },
+      ],
+      [
+        'an exported local',
+        '1',
+        (context: NativeQueryContext) => {
+          const location = context.tsNode(context.ast.body[4]);
+          const local = context.checker
+            .getSymbolsInScope(location, ts.SymbolFlags.Value)
+            .find(symbol => symbol.name === 'exported')!;
+          return context.checker.getTypeOfSymbolAtLocation(local, location);
+        },
+      ],
+    ])('answers the same as classic at %s', (_name, expected, query) => {
+      const results = onBothBackends(code, context =>
+        context.checker.typeToString(query(context)),
+      );
+
+      expect(results).toEqual({ classic: expected, native: expected });
+    });
+  });
+
   it('orders union constituents by name where classic orders them by type id', () => {
     const results = onBothBackends(
       [

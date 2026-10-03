@@ -5,6 +5,7 @@ import type {
 } from '@typescript/native/unstable/sync';
 
 import { SyntaxKind as NativeSyntaxKind } from '@typescript/native/unstable/ast';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
@@ -49,6 +50,19 @@ const UNSUPPORTED_CHECKER_MEMBERS = new Set([
   'typeParameterToDeclaration',
   'typePredicateToString',
 ] satisfies readonly (keyof ts.TypeChecker)[]);
+
+/** Where classic's answer can differ from the symbol's own type: narrowing and write types. */
+function isTypeOfSymbolLocation(node: ts.Node) {
+  return (
+    node.kind === ts.SyntaxKind.Identifier ||
+    node.kind === ts.SyntaxKind.PrivateIdentifier ||
+    (!ts.isSourceFile(node) &&
+      ((ts.isSetAccessorDeclaration(node.parent) &&
+        node.parent.name === node) ||
+        (ts.isElementAccessExpression(node.parent) &&
+          node.parent.argumentExpression === node)))
+  );
+}
 
 export function createNativeChecker({
   checker,
@@ -253,12 +267,11 @@ export function createNativeChecker({
       wrapType(checker.getTypeOfPropertyOfType(unwrapType(type), name)),
     getTypeOfSymbol: symbol =>
       wrapType(checker.getTypeOfSymbol(unwrapSymbol(symbol))),
-    // The checker only consults an identifier location, for narrowing.
-    // Anywhere else the answer is the symbol's own, so one serves them all.
+    // Elsewhere the answer is the symbol's own, so one serves them all.
     getTypeOfSymbolAtLocation: (symbol, node) => {
       const nativeSymbol = unwrapSymbol(symbol);
-      return node.kind === ts.SyntaxKind.Identifier ||
-        node.kind === ts.SyntaxKind.PrivateIdentifier
+      return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.ExportValue) ||
+        isTypeOfSymbolLocation(node)
         ? wrapType(
             checker.getTypeOfSymbolAtLocation(nativeSymbol, unwrapNode(node)),
           )
