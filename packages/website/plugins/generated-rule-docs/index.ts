@@ -9,6 +9,7 @@ import type { RuleDocsPage } from './RuleDocsPage';
 
 import { nodeIsParagraph, nodeIsParent } from '../utils/nodes';
 import { isESLintPluginRuleModule, isVFileWithStem } from '../utils/rules';
+import { addCodeDiagnostics } from './addCodeDiagnostics';
 import { addESLintHashToCodeBlocksMeta } from './addESLintHashToCodeBlocksMeta';
 import { createRuleDocsPage } from './createRuleDocsPage';
 import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences';
@@ -43,6 +44,7 @@ export const generatedRuleDocs: Plugin = () => {
     insertResources(page);
     insertRuleOptions(page);
     addESLintHashToCodeBlocksMeta(page, eslintrc);
+    addCodeDiagnostics(page);
     insertExtensionNotice(page, rule, file.stem);
   };
 };
