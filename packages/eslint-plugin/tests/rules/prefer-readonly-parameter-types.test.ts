@@ -208,6 +208,18 @@ function foo(arg: Foo) {}
         },
       ],
     },
+    {
+      code: `
+function method() {}
+method.helper = function () {};
+function foo(arg: typeof method) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
     // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
     {
       code: `

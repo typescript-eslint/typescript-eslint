@@ -326,6 +326,28 @@ describe(isTypeReadonly, () => {
             expect(code).toBeReadOnly(options);
           },
         );
+
+        it.for([
+          [
+            'function foo() {} foo.bar = function () {}; type Test = typeof foo;',
+          ],
+        ] as const)(
+          'treats methods assigned to functions as readonly: %s',
+          ([code], { expect }) => {
+            expect(code).toBeReadOnly(options);
+          },
+        );
+      });
+
+      describe('is not readonly', () => {
+        it.for([
+          ['function foo() {} foo.bar = 1; type Test = typeof foo;'],
+        ] as const)(
+          'treats properties assigned to functions as mutable: %s',
+          ([code], { expect }) => {
+            expect(code).not.toBeReadOnly(options);
+          },
+        );
       });
     });
 

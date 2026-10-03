@@ -42,9 +42,42 @@ export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
 };
 
-function isMethodDeclaration(declaration: ts.Node) {
+function isCommonJSExports(node: ts.Expression) {
+  return ts.isIdentifier(node)
+    ? node.text === 'exports'
+    : ts.isPropertyAccessExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === 'module' &&
+        node.name.text === 'exports';
+}
+
+// Classic flags functions assigned to function or prototype members as methods; native doesn't.
+function isMethodDeclaration(declaration: ts.Declaration) {
+  if (
+    ts.isMethodDeclaration(declaration) ||
+    ts.isMethodSignature(declaration)
+  ) {
+    return true;
+  }
+  const assignment = ts.isBinaryExpression(declaration)
+    ? declaration
+    : declaration.parent;
+  if (
+    !ts.isBinaryExpression(assignment) ||
+    assignment.operatorToken.kind !== ts.SyntaxKind.EqualsToken ||
+    !(
+      ts.isFunctionExpression(assignment.right) ||
+      ts.isArrowFunction(assignment.right)
+    )
+  ) {
+    return false;
+  }
+  const { left } = assignment;
   return (
-    ts.isMethodDeclaration(declaration) || ts.isMethodSignature(declaration)
+    (ts.isPropertyAccessExpression(left) ||
+      ts.isElementAccessExpression(left)) &&
+    left.expression.kind !== ts.SyntaxKind.ThisKeyword &&
+    !isCommonJSExports(left.expression)
   );
 }
 
