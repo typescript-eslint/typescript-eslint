@@ -444,6 +444,16 @@ describe('TypeOrValueSpecifier', () => {
           package: 'assert',
         },
       ],
+      // This has to be a linked workspace package.
+      // See https://github.com/typescript-eslint/typescript-eslint/issues/10038
+      [
+        'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
+        {
+          from: 'package',
+          name: 'ParserOptions',
+          package: '@typescript-eslint/types',
+        },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
