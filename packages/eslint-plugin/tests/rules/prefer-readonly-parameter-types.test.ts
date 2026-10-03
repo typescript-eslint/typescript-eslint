@@ -225,6 +225,11 @@ function foo<T>(
   arg: T extends string ? readonly string[] : readonly number[],
 ) {}
     `,
+    `
+declare function constant<const T>(value: T): T;
+const value = constant({ prop: 1 });
+function foo(arg: typeof value) {}
+    `,
     // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
     {
       code: `

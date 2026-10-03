@@ -17,6 +17,7 @@ import {
   getTextOfJSDocComment,
 } from '@typescript/native/unstable/ast';
 import {
+  CheckFlags,
   ElementFlags,
   ObjectFlags,
   SymbolFlags,
@@ -67,6 +68,12 @@ interface NativeTypeAdapterContext {
 const OBJECT_FLAG_TRANSLATIONS = createFlagTranslations(
   ObjectFlags,
   ts.ObjectFlags,
+);
+
+const CHECK_FLAG_TRANSLATIONS = createFlagTranslations(
+  CheckFlags,
+  (ts as unknown as Record<'CheckFlags', Record<string, number | string>>)
+    .CheckFlags,
 );
 
 function toPseudoBigInt(value: bigint) {
@@ -521,6 +528,22 @@ export function createNativeTypeAdapter({
       }
       case 'exports':
         return wrapSymbolTable(symbol.getExports());
+      // Classic keeps a transient symbol's check flags and type in its links.
+      case 'links': {
+        if (!(symbol.flags & SymbolFlags.Transient)) {
+          return undefined;
+        }
+        let type: ts.Type | undefined;
+        return {
+          get type() {
+            return (type ??= wrapType(checker.getTypeOfSymbol(symbol)));
+          },
+          checkFlags: translateFlags(
+            CHECK_FLAG_TRANSLATIONS,
+            symbol.checkFlags,
+          ),
+        };
+      }
       case 'members':
         return wrapSymbolTable(symbol.getMembers());
       case 'parent':
