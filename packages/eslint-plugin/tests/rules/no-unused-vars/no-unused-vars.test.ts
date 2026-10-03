@@ -1145,6 +1145,10 @@ export const foo: number = 1;
 export type Foo = typeof foo;
     `,
     `
+export const Both = 0;
+export type Both = typeof Both;
+    `,
+    `
 import { foo } from 'foo';
 
 export type Foo = typeof foo;
@@ -1160,6 +1164,18 @@ export const value = 1234 as typeof SomeType;
 import { foo } from 'foo';
 
 export type Bar = typeof foo;
+    `,
+    `
+const Value = 123;
+console.log(Value);
+export type Value = typeof Value;
+    `,
+    `
+export const Foo = 1;
+
+namespace Foo {
+  export type T = string;
+}
     `,
     {
       code: `
@@ -2472,6 +2488,91 @@ export type Foo = typeof foo;
         {
           column: 7,
           data: { action: 'assigned a value', additional: '', varName: 'foo' },
+          endColumn: 10,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const A = 0;
+export type A = typeof A;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'A',
+          },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const A = {};
+
+type B = typeof A;
+
+export interface A extends B {}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'A',
+          },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+interface LocalName {}
+const LocalName = 0;
+export type UsesLocalName = LocalName;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'LocalName',
+          },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+    },
+    {
+      code: `
+const Foo = 1;
+interface Foo {}
+export type UsesFoo = Foo;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'Foo',
+          },
           endColumn: 10,
           endLine: 2,
           line: 2,
