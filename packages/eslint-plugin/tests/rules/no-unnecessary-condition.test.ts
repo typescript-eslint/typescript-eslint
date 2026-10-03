@@ -1133,10 +1133,114 @@ foo.bar[key] ??= 1;
       `,
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
+    {
+      code: `
+declare const record: { optional?: number } & Record<
+  string,
+  number | undefined
+>;
+record.optional ?? 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const record: { optional?: number } & Record<
+  string,
+  number | undefined
+>;
+record['optional'] ?? 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare let record: { optional?: number } & Record<string, number | undefined>;
+record.optional ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare let record: { optional?: number } & Record<string, number | undefined>;
+record['optional'] ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
     `
 declare let foo: number;
 foo &&= 1;
     `,
+    `
+declare const read: Record<string, number | undefined>;
+read.missing ?? 1;
+    `,
+    `
+declare const read: Record<string, number | undefined>;
+read['missing'] ?? 1;
+    `,
+    `
+declare const read: Record<string, number | undefined>;
+declare const key: string;
+read[key] ?? 1;
+    `,
+    `
+declare let assignment: Record<string, number | undefined>;
+assignment.missing ??= 1;
+    `,
+    `
+declare let assignment: Record<string, number | undefined>;
+assignment['missing'] ??= 1;
+    `,
+    `
+declare let assignment: Record<string, number | undefined>;
+declare const key: string;
+assignment[key] ??= 1;
+    `,
+    {
+      code: `
+declare const read: Record<string, number>;
+read.missing ?? 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare const read: Record<string, number>;
+read['missing'] ?? 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare const read: Record<string, number>;
+declare const key: string;
+read[key] ?? 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+assignment.missing ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+assignment['missing'] ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+declare const key: string;
+assignment[key] ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
     `
 function foo<T extends object>(arg: T, key: keyof T): void {
   arg[key] ??= 'default';
@@ -4393,6 +4497,280 @@ foo.bar ??= 1;
         },
       ],
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const read: Record<string, number>;
+read.missing ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 13,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const read: Record<string, number>;
+read['missing'] ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const read: Record<string, number>;
+declare const key: string;
+read[key] ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+assignment.missing ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+assignment['missing'] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare let assignment: Record<string, number>;
+declare const key: string;
+assignment[key] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record.required ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record['required'] ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare let record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record.required ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare let record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record['required'] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record.required ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare const record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record['required'] ?? 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare let record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record.required ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare let record: { optional?: number; required: number } & Record<
+  string,
+  number | undefined
+>;
+record['required'] ??= 1;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'neverNullish',
+        },
+      ],
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+declare const record: Record<string, number>;
+record.toString ?? (() => '');
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const record: Record<string, number>;
+record['toString'] ?? (() => '');
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
     },
     {
       code: `

@@ -146,7 +146,7 @@ export default createRule<Options, MessageIds>({
     const fixStyle = option.fixStyle ?? 'separate-type-imports';
 
     let hasDecoratorMetadata = false;
-    const sourceImportsMap: Record<string, SourceImports> = {};
+    const sourceImportsMap: Record<string, SourceImports | undefined> = {};
 
     const emitDecoratorMetadata =
       getParserServices(context, true).emitDecoratorMetadata ?? false;
@@ -342,7 +342,7 @@ export default createRule<Options, MessageIds>({
         }
 
         for (const sourceImports of Object.values(sourceImportsMap)) {
-          if (sourceImports.reportValueImports.length === 0) {
+          if (!sourceImports || sourceImports.reportValueImports.length === 0) {
             // nothing to fix. value specifiers and type specifiers are correctly written
             continue;
           }
