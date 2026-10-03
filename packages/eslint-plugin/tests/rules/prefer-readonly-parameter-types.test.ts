@@ -225,6 +225,7 @@ function foo<T>(
   arg: T extends string ? readonly string[] : readonly number[],
 ) {}
     `,
+    'function foo(arg: Partial<Readonly<{ prop: string }>>) {}',
     `
 declare function constant<const T>(value: T): T;
 const value = constant({ prop: 1 });

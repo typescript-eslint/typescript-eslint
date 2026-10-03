@@ -94,6 +94,17 @@ function getConditionalBranchTypes(
       );
 }
 
+const READONLY_CHECK_FLAG = (
+  ts as unknown as Record<'CheckFlags', Record<'Readonly', number>>
+).CheckFlags.Readonly;
+
+// ts-api-utils sees through mapped types via their modifiers types, which the
+// native backend can't provide. Both backends flag those properties instead.
+function hasReadonlyCheckFlag(property: ts.Symbol) {
+  const { links } = property as { links?: { checkFlags: number } };
+  return !!links && (links.checkFlags & READONLY_CHECK_FLAG) !== 0;
+}
+
 function isTypeReadonlyArrayOrTuple(
   program: ts.Program,
   type: ts.Type,
@@ -201,6 +212,7 @@ function isTypeReadonlyObject(
       }
 
       if (
+        hasReadonlyCheckFlag(property) ||
         tsutils.isPropertyReadonlyInType(
           type,
           property.getEscapedName(),

@@ -15,6 +15,7 @@ describe(isTypeReadonly, () => {
           it.for([
             ['type Test = { readonly bar: string; };'],
             ['type Test = Readonly<{ bar: string; }>;'],
+            ['type Test = Partial<Readonly<{ bar: string; }>>;'],
           ] as const)(
             'handles fully readonly records: %s',
             ([code], { expect }) => {
