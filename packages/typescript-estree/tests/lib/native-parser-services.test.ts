@@ -16,6 +16,21 @@ function parse(code: string) {
 }
 
 describe('native parser services', () => {
+  it('shares node views of unchanged files across programs', () => {
+    function promiseDeclaration(code: string) {
+      const { ast, checker, tsNode } = parse(code);
+      const declaration = ast.body[0] as TSESTree.VariableDeclaration;
+      return checker
+        .getTypeAtLocation(tsNode(declaration.declarations[0].init!))
+        .getSymbol()!
+        .getDeclarations()![0];
+    }
+
+    expect(promiseDeclaration('const value = Promise.resolve(1);')).toBe(
+      promiseDeclaration('const value = Promise.resolve(2);'),
+    );
+  });
+
   it('returns comments, tokens, and typed parser services', () => {
     const { ast, services } = parseAndGenerateServices(
       '// leading\nconst value: string = "text";',

@@ -82,8 +82,17 @@ function collectPrefetchNodes(sourceFile: NativeSourceFile) {
 
 function createAdapters({ project }: NativeProjectContext) {
   let diagnosticsByFile: Map<string, NativeDiagnostic[]> | undefined;
-  const nodeAdapter = createNativeNodeAdapter({
-    getSyntacticDiagnostics: fileName => {
+  const { checker, prefetch } = createNativeChecker({
+    checker: project.checker,
+    nodeAdapter,
+    typeAdapter: createNativeTypeAdapter({
+      checker: project.checker,
+      nodeAdapter,
+      project,
+    }),
+  });
+  return {
+    getSyntacticDiagnostics(fileName: string) {
       if (!diagnosticsByFile) {
         diagnosticsByFile = new Map();
         for (const diagnostic of project.program.getSyntacticDiagnostics()) {
@@ -98,23 +107,20 @@ function createAdapters({ project }: NativeProjectContext) {
       }
       return diagnosticsByFile.get(fileName) ?? [];
     },
-  });
-  const { checker, prefetch } = createNativeChecker({
-    checker: project.checker,
-    nodeAdapter,
-    typeAdapter: createNativeTypeAdapter({
-      checker: project.checker,
-      nodeAdapter,
-      project,
-    }),
-  });
-  return {
-    nodeAdapter,
     prefetch,
     prefetchedSourceFiles: new WeakSet<NativeSourceFile>(),
     program: createNativeProgram({ checker, nodeAdapter, project }),
   };
 }
+
+let currentAdapters: ReturnType<typeof createAdapters> | undefined;
+
+// Views depend only on their native node, so one adapter lets every program
+// share them; native nodes of unchanged files outlive snapshots.
+const nodeAdapter = createNativeNodeAdapter({
+  getSyntacticDiagnostics: fileName =>
+    currentAdapters?.getSyntacticDiagnostics(fileName) ?? [],
+});
 
 const adaptersByProgram = new WeakMap<
   NativeProgram,
@@ -136,8 +142,8 @@ export function parseAndGenerateNativeServices<
   const context = getNativeProjectService(
     parseSettings.tsconfigRootDir,
   ).openFile(parseSettings.filePath, parseSettings.codeFullText);
-  const { nodeAdapter, prefetch, prefetchedSourceFiles, program } =
-    getAdapters(context);
+  currentAdapters = getAdapters(context);
+  const { prefetch, prefetchedSourceFiles, program } = currentAdapters;
   const sourceFile = nodeAdapter.wrapNode(context.sourceFile) as ts.SourceFile;
   const { astMaps, estree } = astConverter(sourceFile, parseSettings, true);
   if (!prefetchedSourceFiles.has(context.sourceFile)) {
