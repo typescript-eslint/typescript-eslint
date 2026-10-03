@@ -153,6 +153,90 @@ class TestModifiableInline {
 }
     `,
     `
+class TestModifiableInNestedClass {
+  private correctlyModifiableInNestedClass = false;
+
+  public getInner() {
+    const outer = this;
+
+    return class {
+      public mutate() {
+        outer.correctlyModifiableInNestedClass = true;
+      }
+    };
+  }
+}
+    `,
+    `
+class TestModifiableInNestedClass {
+  #correctlyModifiableInNestedClass = false;
+
+  public getInner() {
+    const outer = this;
+
+    return class {
+      public mutate() {
+        outer.#correctlyModifiableInNestedClass = true;
+      }
+    };
+  }
+}
+    `,
+    `
+class TestModifiableInNestedClass {
+  private correctlyModifiableInNestedClass = 0;
+
+  public getInner(outer: TestModifiableInNestedClass) {
+    return class {
+      public mutate() {
+        outer.correctlyModifiableInNestedClass++;
+      }
+    };
+  }
+}
+    `,
+    `
+class TestModifiableInNestedClass {
+  private static correctlyModifiableInNestedClass = false;
+
+  public getInner() {
+    return class {
+      public mutate() {
+        TestModifiableInNestedClass.correctlyModifiableInNestedClass = true;
+      }
+    };
+  }
+}
+    `,
+    `
+class TestModifiableInNestedClassInConstructor {
+  private correctlyModifiableInNestedClassInConstructor = false;
+
+  public constructor() {
+    const outer = this;
+
+    class Inner {
+      public mutate() {
+        outer.correctlyModifiableInNestedClassInConstructor = true;
+      }
+    }
+  }
+}
+    `,
+    `
+class TestModifiableInNestedClassInConstructor {
+  private correctlyModifiableInNestedClassInConstructor = false;
+
+  public constructor() {
+    const outer = this;
+
+    class Inner {
+      field = (outer.correctlyModifiableInNestedClassInConstructor = true);
+    }
+  }
+}
+    `,
+    `
 class TestModifiableDelayed {
   private correctlyModifiableDelayed = 7;
 
@@ -985,6 +1069,84 @@ class TestIncorrectlyModifiableInline {
     return class {
       readonly #incorrectlyModifiableInline = 7;
     };
+  }
+}
+      `,
+    },
+    {
+      code: `
+class TestIncorrectlyModifiableInNestedClass {
+  private incorrectlyModifiableInNestedClass = 7;
+
+  public getInner() {
+    const outer = this;
+
+    return class {
+      public read() {
+        return outer.incorrectlyModifiableInNestedClass;
+      }
+    };
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'incorrectlyModifiableInNestedClass',
+          },
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class TestIncorrectlyModifiableInNestedClass {
+  private readonly incorrectlyModifiableInNestedClass = 7;
+
+  public getInner() {
+    const outer = this;
+
+    return class {
+      public read() {
+        return outer.incorrectlyModifiableInNestedClass;
+      }
+    };
+  }
+}
+      `,
+    },
+    {
+      code: `
+class TestIncorrectlyModifiableAfterNestedClass {
+  private incorrectlyModifiableAfterNestedClass = 7;
+
+  public constructor() {
+    class Inner {}
+    this.incorrectlyModifiableAfterNestedClass = 8;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'incorrectlyModifiableAfterNestedClass',
+          },
+          endColumn: 48,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class TestIncorrectlyModifiableAfterNestedClass {
+  private readonly incorrectlyModifiableAfterNestedClass: number = 7;
+
+  public constructor() {
+    class Inner {}
+    this.incorrectlyModifiableAfterNestedClass = 8;
   }
 }
       `,
