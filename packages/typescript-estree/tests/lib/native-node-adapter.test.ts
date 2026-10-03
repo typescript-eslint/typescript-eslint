@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import * as ts from 'typescript';
 
 import { astConverter } from '../../src/ast-converter';
+import { getImportClausePhaseModifier } from '../../src/getImportClausePhaseModifier';
 import { createNativeProjectService } from '../../src/native/createNativeProjectService';
 import { createNativeNodeAdapter } from '../../src/native/nativeNodeAdapter';
 import { createParseSettings } from '../../src/parseSettings/createParseSettings';
@@ -148,6 +149,24 @@ describe('native node adapter', () => {
         expect(lessThan.kind).toBe(ts.SyntaxKind.LessThanToken);
         expect(slash.kind).toBe(ts.SyntaxKind.SlashToken);
         expect(adapter.unwrapNode(lessThan)).toBe(adapter.unwrapNode(slash));
+      },
+    );
+  });
+
+  it.each([
+    ['import type { value } from "./dependency";', 'type'],
+    ['import defer * as dependency from "./dependency";', 'defer'],
+  ])('translates the phase modifier of %s', (code, phase) => {
+    withNativeSourceFile(
+      code,
+      fixturePath,
+      ({ project: { program }, sourceFile }) => {
+        const clause = findNode(
+          createAdapter(program).wrapNode(sourceFile),
+          ts.SyntaxKind.ImportClause,
+        ) as ts.ImportClause;
+
+        expect(getImportClausePhaseModifier(clause)).toBe(phase);
       },
     );
   });

@@ -119,7 +119,12 @@ function translateNodeFlags(node: NativeNode) {
     : flags;
 }
 
-const KIND_PROPERTIES = new Set(['keywordToken', 'operator', 'token']);
+const KIND_PROPERTIES = new Set([
+  'keywordToken',
+  'operator',
+  'phaseModifier',
+  'token',
+]);
 
 const NATIVE_NODE = Symbol('nativeNode');
 
