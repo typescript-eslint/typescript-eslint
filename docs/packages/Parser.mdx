@@ -353,7 +353,7 @@ See [FAQs > Typed Linting > Project Service Issues](../troubleshooting/typed-lin
 #### Experimental TypeScript 7 native backend
 
 The parser includes an experimental native backend for TypeScript >=7.1.
-It requires Node.js 22 or newer and a side-by-side installation of classic TypeScript 6 and a TypeScript 7.1 nightly aliased as `@typescript/native`.
+It requires a Node.js version that can `require()` ES modules (20.19, 22.12, or newer) and a side-by-side installation of classic TypeScript 6 and a TypeScript 7.1 nightly aliased as `@typescript/native`.
 The nightly must be at least `7.1.0-dev.20261001.1`:
 
 ```shell

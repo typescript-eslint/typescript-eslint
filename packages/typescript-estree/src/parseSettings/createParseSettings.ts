@@ -315,8 +315,7 @@ function validateNativeProjectService(
     typeof projectService === 'object' ? projectService : {},
     viaEnvironment,
   );
-  const unsupportedNodeVersion =
-    Number.parseInt(process.versions.node, 10) < 22;
+  const unsupportedNodeVersion = !process.features.require_module;
 
   if (viaEnvironment) {
     return !unsupportedOption && !unsupportedNodeVersion;
@@ -324,7 +323,7 @@ function validateNativeProjectService(
 
   if (unsupportedNodeVersion) {
     throw new Error(
-      'The experimental native project service requires Node.js 22 or newer.',
+      'The experimental native project service requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',
     );
   }
   if (unsupportedOption) {

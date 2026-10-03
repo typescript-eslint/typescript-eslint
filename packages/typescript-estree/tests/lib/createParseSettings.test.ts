@@ -209,11 +209,10 @@ describe(createParseSettings, () => {
       });
     });
 
-    it('requires Node.js 22 for the native service', () => {
-      vi.spyOn(process, 'versions', 'get').mockReturnValue({
-        ...process.versions,
-        node: '20.19.0',
-      });
+    it('requires require(esm) support for the native service', () => {
+      vi.spyOn(process.features, 'require_module', 'get').mockReturnValue(
+        false,
+      );
 
       expect(() =>
         createParseSettings('', {
@@ -221,7 +220,7 @@ describe(createParseSettings, () => {
           projectService: { EXPERIMENTAL_backend: 'native' },
         }),
       ).toThrow(
-        'The experimental native project service requires Node.js 22 or newer.',
+        'The experimental native project service requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',
       );
     });
   });
