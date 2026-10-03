@@ -407,7 +407,45 @@ export default createRule<Options, MessageId>({
           : node.body;
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+      if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
+        return false;
+      }
+
+      const functionNode = nullThrows(
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression
+          ? node
+          : getParentFunctionNode(node),
+        'Expected a return statement to be inside a function.',
+      );
+      return functionDeclarationAllowsEmptyReturn(functionNode);
+    }
+
+    function functionDeclarationAllowsEmptyReturn(
+      functionNode:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      if (!functionNode.returnType) {
+        return true;
+      }
+
+      const declaredReturnType = services.getTypeFromTypeNode(
+        functionNode.returnType.typeAnnotation,
+      );
+
+      const checker = services.program.getTypeChecker();
+      const resolvedReturnType = functionNode.async
+        ? (checker.getAwaitedType(declaredReturnType) ?? declaredReturnType)
+        : declaredReturnType;
+
+      return tsutils
+        .unionConstituents(resolvedReturnType)
+        .some(
+          part =>
+            tsutils.isTypeFlagSet(part, ts.TypeFlags.Any) ||
+            tsutils.isTypeFlagSet(part, ts.TypeFlags.VoidLike),
+        );
     }
 
     function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
