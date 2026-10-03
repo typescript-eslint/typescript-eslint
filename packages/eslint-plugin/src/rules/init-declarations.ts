@@ -30,6 +30,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: ['always'],
   create(context, [mode]) {
     // Make a custom context to adjust the loc of reports where the base

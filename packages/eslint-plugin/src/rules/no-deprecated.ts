@@ -55,6 +55,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allow: [],
@@ -333,6 +334,20 @@ export default createRule<Options, MessageIds>({
       return getJsDocDeprecation(symbol);
     }
 
+    function getObjectLiteralPropertyDeprecation(
+      objectExpression: TSESTree.ObjectExpression,
+      propertyName: string,
+    ): string | undefined {
+      const contextualType = services.getContextualType(objectExpression);
+      if (!contextualType) {
+        return;
+      }
+
+      const symbol = contextualType.getProperty(propertyName);
+
+      return getJsDocDeprecation(symbol);
+    }
+
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
@@ -344,6 +359,13 @@ export default createRule<Options, MessageIds>({
         node.type !== AST_NODE_TYPES.Super
       ) {
         return getJSXAttributeDeprecation(node.parent.parent, node.name);
+      }
+
+      if (isObjectLiteralPropertyKey(node)) {
+        return getObjectLiteralPropertyDeprecation(
+          node.parent.parent,
+          node.name,
+        );
       }
 
       if (
@@ -372,7 +394,10 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
-      if (isDeclaration(node) || isInsideImport(node)) {
+      if (
+        (isDeclaration(node) && !isObjectLiteralPropertyKey(node)) ||
+        isInsideImport(node)
+      ) {
         return;
       }
 
@@ -506,4 +531,25 @@ function getReportedNodeName(node: IdentifierLike): string {
   }
 
   return node.name;
+}
+
+/**
+ * Whether the node is the key of a non-computed property in an object literal,
+ * such as `const x: Foo = { key: 1 }` or `func({ key: 1 })`.
+ *
+ * Such a key refers to a property of the object literal's contextual type,
+ * rather than declaring a new property of its own.
+ */
+function isObjectLiteralPropertyKey(
+  node: TSESTree.Node,
+): node is TSESTree.Identifier & {
+  parent: TSESTree.Property & { parent: TSESTree.ObjectExpression };
+} {
+  return (
+    node.type === AST_NODE_TYPES.Identifier &&
+    node.parent.type === AST_NODE_TYPES.Property &&
+    node.parent.key === node &&
+    !node.parent.computed &&
+    node.parent.parent.type === AST_NODE_TYPES.ObjectExpression
+  );
 }
