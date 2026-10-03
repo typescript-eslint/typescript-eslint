@@ -402,7 +402,10 @@ export default createRule<Options, MessageIds>({
               })();
 
               context.report({
-                node: report.node,
+                node:
+                  report.typeSpecifiers.length === 1
+                    ? report.typeSpecifiers[0]
+                    : report.node,
                 ...message,
                 *fix(fixer) {
                   // take all the typeSpecifiers and put them on a new line
