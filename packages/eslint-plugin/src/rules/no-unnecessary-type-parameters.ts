@@ -470,8 +470,10 @@ function collectTypeParameterUsageCounts(
           // They have properties, so we need to avoid double-counting.
           visitType(type.templateType ?? type.constraintType, false);
 
-          // An instantiated mapped type's constraint isn't reachable through
-          // its type parameter's declaration, which holds the original one.
+          // `templateType` is a lazily populated checker cache. Once it is
+          // populated on an instantiated mapped type, its constraint is
+          // reachable only here: the type parameter's declaration holds the
+          // original constraint from before instantiation.
           if (
             type.templateType &&
             type.constraintType &&
@@ -509,14 +511,6 @@ function collectTypeParameterUsageCounts(
     }
   }
 
-  function getDeclaredConstraintType(typeParameter: ts.Type) {
-    const declaration = typeParameter.getSymbol()?.getDeclarations()?.[0] as
-      ts.TypeParameterDeclaration | undefined;
-    return declaration?.constraint
-      ? checker.getTypeAtLocation(declaration.constraint)
-      : undefined;
-  }
-
   function incrementIdentifierCount(
     id: ts.Identifier,
     assumeMultipleUses: boolean,
@@ -530,6 +524,16 @@ function collectTypeParameterUsageCounts(
     const count = (typeUsages.get(type) ?? 0) + 1;
     typeUsages.set(type, count);
     return count;
+  }
+
+  function getDeclaredConstraintType(
+    typeParameter: ts.Type | undefined,
+  ): ts.Type | undefined {
+    const constraint = typeParameter
+      ?.getSymbol()
+      ?.getDeclarations()
+      ?.find(ts.isTypeParameterDeclaration)?.constraint;
+    return constraint && checker.getTypeAtLocation(constraint);
   }
 
   function visitSignature(signature: ts.Signature | undefined): void {

@@ -387,6 +387,28 @@ function inferredMappedReturnType<T extends string>(x: T) {
 }
     `,
     `
+declare function fill<T, Value>(
+  shape: T,
+  value: Value,
+): { [K in keyof T]: Value };
+declare function unfill<U>(mapped: { [K in keyof U]: number }): U;
+
+function filled<T>(shape: T, warmed = !unfill(fill(shape, 1))) {
+  return fill(shape, 1);
+}
+    `,
+    `
+declare function fill<T, Value>(
+  shape: T,
+  value: Value,
+): { [K in keyof T]: Value };
+declare function unfill<U>(mapped: { [K in keyof U]: number }): U;
+
+function filled<T>(shape: T) {
+  return [!unfill(fill(shape, 1)), fill(shape, 1)] as const;
+}
+    `,
+    `
 type Identity<T> = T;
 
 type Mapped<T, Value> = Identity<{ [P in keyof T]: Value }>;
