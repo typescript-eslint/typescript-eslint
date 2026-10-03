@@ -4,21 +4,6 @@
       "count": 77
     }
   },
-  "packages/eslint-plugin/tests/rules/no-unused-private-class-members.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unused-vars/no-unused-vars-eslint.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 10
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-unused-vars/no-unused-vars.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 4
-    }
-  },
   "packages/eslint-plugin/tests/rules/no-use-before-define.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 1
