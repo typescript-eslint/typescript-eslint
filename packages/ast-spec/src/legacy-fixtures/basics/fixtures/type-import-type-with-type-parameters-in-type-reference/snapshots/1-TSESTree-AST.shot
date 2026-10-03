@@ -23,7 +23,7 @@ Program {
           params: [
             TSImportType {
               type: "TSImportType",
-              options: null,
+              options: [],
               qualifier: Identifier {
                 type: "Identifier",
                 decorators: [],
