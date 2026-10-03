@@ -2,6 +2,7 @@ import type {
   Checker as NativeChecker,
   SymbolFlags,
   Symbol as NativeSymbol,
+  Type as NativeType,
 } from '@typescript/native/unstable/sync';
 
 import { SyntaxKind as NativeSyntaxKind } from '@typescript/native/unstable/ast';
@@ -51,6 +52,22 @@ const UNSUPPORTED_CHECKER_MEMBERS = new Set([
   'typePredicateToString',
 ] satisfies readonly (keyof ts.TypeChecker)[]);
 
+const CONSTRAINED_FLAGS: ts.TypeFlags =
+  ts.TypeFlags.InstantiableNonPrimitive |
+  ts.TypeFlags.UnionOrIntersection |
+  ts.TypeFlags.TemplateLiteral |
+  ts.TypeFlags.StringMapping |
+  ts.TypeFlags.Index;
+
+const PRIMITIVE_KINDS: readonly ts.TypeFlags[] = [
+  ts.TypeFlags.String | ts.TypeFlags.StringLiteral,
+  ts.TypeFlags.Number | ts.TypeFlags.NumberLiteral,
+  ts.TypeFlags.BigInt | ts.TypeFlags.BigIntLiteral,
+  ts.TypeFlags.BooleanLiteral,
+  ts.TypeFlags.ESSymbol | ts.TypeFlags.UniqueESSymbol,
+  ts.TypeFlags.NonPrimitive,
+];
+
 /** Where classic's answer can differ from the symbol's own type: narrowing and write types. */
 function isTypeOfSymbolLocation(node: ts.Node) {
   return (
@@ -89,6 +106,8 @@ export function createNativeChecker({
     wrapTypePredicate,
   } = typeAdapter;
   const { unwrapNode } = nodeAdapter;
+  const apparentTypesByKind = new Map<number, ts.Type>();
+  const arrayTargets = new Map<number, boolean>();
 
   /** Native only answers for parsed nodes, so a meta property's keyword asks after the meta property. */
   function unwrapLocation(node: ts.Node) {
@@ -127,11 +146,34 @@ export function createNativeChecker({
     getAliasedSymbol: symbol =>
       wrapSymbol(checker.getAliasedSymbol(unwrapSymbol(symbol))),
     getAnyType: () => wrapType(checker.getAnyType()),
-    getApparentType: type =>
-      wrapType(checker.getApparentType(unwrapType(type))),
+    // Plain object types are their own apparent types, and primitives of a kind share one.
+    getApparentType: type => {
+      if (
+        tsutils.isObjectType(type) &&
+        !tsutils.isObjectFlagSet(type, ts.ObjectFlags.Mapped)
+      ) {
+        return type;
+      }
+      const kind = PRIMITIVE_KINDS.find(flags =>
+        tsutils.isTypeFlagSet(type, flags),
+      );
+      if (kind == null) {
+        return wrapType(checker.getApparentType(unwrapType(type)));
+      }
+      let apparentType = apparentTypesByKind.get(kind);
+      if (!apparentType) {
+        apparentType = wrapType(checker.getApparentType(unwrapType(type)));
+        apparentTypesByKind.set(kind, apparentType);
+      }
+      return apparentType;
+    },
     getAwaitedType: type => wrapType(checker.getAwaitedType(unwrapType(type))),
+    // Only these types and tuples, which may be variadic, have base constraints.
     getBaseConstraintOfType: type =>
-      wrapType(checker.getBaseConstraintOfType(unwrapType(type))),
+      tsutils.isTypeFlagSet(type, CONSTRAINED_FLAGS) ||
+      unwrapType(type).isTupleType()
+        ? wrapType(checker.getBaseConstraintOfType(unwrapType(type)))
+        : undefined,
     getBaseTypeOfLiteralType: type =>
       wrapType(checker.getBaseTypeOfLiteralType(unwrapType(type))),
     getBaseTypes: type =>
@@ -288,8 +330,24 @@ export function createNativeChecker({
     isArgumentsSymbol: symbol =>
       checker.isArgumentsSymbol(unwrapSymbol(symbol)),
     isArrayLikeType: type => checker.isArrayLikeType(unwrapType(type)),
-    isArrayType: type => checker.isArrayType(unwrapType(type)),
-    isTupleType: type => checker.isTupleType(unwrapType(type)),
+    // Whether a reference is to an array depends only on its target.
+    isArrayType: type => {
+      const native = unwrapType(type);
+      const { target } = native as NativeType & { target?: number };
+      if (!native.isTypeReference()) {
+        return false;
+      }
+      if (target == null) {
+        return checker.isArrayType(native);
+      }
+      let isArray = arrayTargets.get(target);
+      if (isArray == null) {
+        isArray = checker.isArrayType(native);
+        arrayTargets.set(target, isArray);
+      }
+      return isArray;
+    },
+    isTupleType: type => unwrapType(type).isTupleType(),
     isTypeAssignableTo: (source, target) =>
       checker.isTypeAssignableTo(unwrapType(source), unwrapType(target)),
     isUndefinedSymbol: symbol =>
