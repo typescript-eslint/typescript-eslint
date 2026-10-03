@@ -223,6 +223,9 @@ export default createRule<Options, MessageIds>({
       'ClassDeclaration, ClassExpression'(
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
       ): void {
+        // code in a nested class doesn't run directly in the enclosing class's
+        // constructor, so treat it like a nested function scope there
+        classScopeStack.at(-1)?.enterNonConstructor();
         classScopeStack.push(
           new ClassScope(
             checker,
@@ -236,6 +239,7 @@ export default createRule<Options, MessageIds>({
           classScopeStack.pop(),
           'Stack should exist on class exit',
         );
+        classScopeStack.at(-1)?.exitNonConstructor();
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
           const { esNode, nameNode } =
@@ -353,13 +357,15 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const classScope = classScopeStack[classScopeStack.length - 1];
-
+        // a nested class can modify members of any enclosing class, and each
+        // scope only records modifications through its own class type
         if (!node.computed) {
           const tsNode = services.esTreeNodeToTSNodeMap.get(
             node,
           ) as ts.PropertyAccessExpression;
-          handlePropertyAccessExpression(tsNode, tsNode.parent, classScope);
+          for (const classScope of classScopeStack) {
+            handlePropertyAccessExpression(tsNode, tsNode.parent, classScope);
+          }
         } else {
           const tsNode = services.esTreeNodeToTSNodeMap.get(node);
           if (
@@ -370,10 +376,12 @@ export default createRule<Options, MessageIds>({
           ) {
             const memberName = getStaticMemberAccessValue(node, context);
             if (typeof memberName === 'string') {
-              classScope.addVariableModificationByName(
-                tsNode.expression,
-                memberName,
-              );
+              for (const classScope of classScopeStack) {
+                classScope.addVariableModificationByName(
+                  tsNode.expression,
+                  memberName,
+                );
+              }
             }
           }
         }
