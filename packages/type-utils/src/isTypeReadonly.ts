@@ -81,6 +81,19 @@ function isMethodDeclaration(declaration: ts.Declaration) {
   );
 }
 
+// Native conditional types have no root, so their resolved branches stand in.
+function getConditionalBranchTypes(
+  checker: ts.TypeChecker,
+  type: ts.ConditionalType,
+) {
+  const { root } = type as Partial<ts.ConditionalType>;
+  return root
+    ? [root.node.trueType, root.node.falseType].map(checker.getTypeFromTypeNode)
+    : [type.resolvedTrueType, type.resolvedFalseType].filter(
+        branch => branch != null,
+      );
+}
+
 function isTypeReadonlyArrayOrTuple(
   program: ts.Program,
   type: ts.Type,
@@ -320,14 +333,12 @@ function isTypeReadonlyRecurser(
   }
 
   if (tsutils.isConditionalType(type)) {
-    const result = [type.root.node.trueType, type.root.node.falseType]
-      .map(checker.getTypeFromTypeNode)
-      .every(
-        t =>
-          seenTypes.has(t) ||
-          isTypeReadonlyRecurser(program, t, options, seenTypes) ===
-            Readonlyness.Readonly,
-      );
+    const result = getConditionalBranchTypes(checker, type).every(
+      t =>
+        seenTypes.has(t) ||
+        isTypeReadonlyRecurser(program, t, options, seenTypes) ===
+          Readonlyness.Readonly,
+    );
 
     const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
     return readonlyness;

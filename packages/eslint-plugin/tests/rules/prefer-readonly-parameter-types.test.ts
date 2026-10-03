@@ -220,6 +220,11 @@ function foo(arg: typeof method) {}
         },
       ],
     },
+    `
+function foo<T>(
+  arg: T extends string ? readonly string[] : readonly number[],
+) {}
+    `,
     // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
     {
       code: `
@@ -632,6 +637,18 @@ function foo(arg: MyReadonlyType) {}
     },
   ],
   invalid: [
+    {
+      code: 'function foo<T>(arg: T extends string ? string[] : number[]) {}',
+      errors: [
+        {
+          column: 17,
+          endColumn: 60,
+          endLine: 1,
+          line: 1,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
     // arrays
     // Removing readonly causes duplicates
     {
