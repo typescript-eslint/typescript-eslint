@@ -5,6 +5,7 @@ import type {
 
 import { createFileSystemLayer } from '@typescript/native/unstable/fs';
 import { API } from '@typescript/native/unstable/sync';
+import fs from 'node:fs';
 import path from 'node:path';
 
 import type { NativeProjectContext, NativeProjectService } from './types';
@@ -47,6 +48,8 @@ export function createNativeProjectService(
 ): NativeProjectService {
   const fileContexts = new Map<string, NativeProjectContext>();
   const fileProjects = new Map<string, string>();
+  const unverifiedFiles = new Map<string, string>();
+  const nearestConfigs = new Map<string, string | undefined>();
   const openProjects = new Set<string>();
   let closed = false;
   let snapshot: Snapshot | undefined;
@@ -70,7 +73,46 @@ export function createNativeProjectService(
     snapshot = undefined;
     fileContexts.clear();
     fileProjects.clear();
+    unverifiedFiles.clear();
+    nearestConfigs.clear();
     openProjects.clear();
+  }
+
+  function findNearestConfig(directory: string): string | undefined {
+    if (nearestConfigs.has(directory)) {
+      return nearestConfigs.get(directory);
+    }
+    const parent = path.dirname(directory);
+    const nearest =
+      ['tsconfig.json', 'jsconfig.json']
+        .map(name => path.join(directory, name))
+        .find(fileName => fs.existsSync(fileName)) ??
+      (parent === directory ? undefined : findNearestConfig(parent));
+    nearestConfigs.set(directory, nearest);
+    return nearest;
+  }
+
+  // A project's root files default to it only if it is their nearest config.
+  function addProject(nextSnapshot: Snapshot, configFileName: string) {
+    openProjects.add(configFileName);
+    const configKey = getCanonicalFileName(configFileName);
+    for (const fileName of nextSnapshot.getConfiguredProject(configFileName)
+      ?.parsedCommandLine.fileNames ?? []) {
+      const fileKey = getCanonicalFileName(fileName);
+      if (fileProjects.has(fileKey)) {
+        continue;
+      }
+      const nearestConfig = findNearestConfig(path.dirname(fileName));
+      if (
+        nearestConfig &&
+        getCanonicalFileName(toCompilerPath(nearestConfig)) === configKey
+      ) {
+        fileProjects.set(fileKey, configFileName);
+        unverifiedFiles.delete(fileKey);
+      } else {
+        unverifiedFiles.set(fileKey, fileName);
+      }
+    }
   }
 
   function replaceSnapshot(params: CreateSnapshotParams) {
@@ -142,11 +184,16 @@ export function createNativeProjectService(
       );
     }
 
+    const verifyingFiles = [...unverifiedFiles.values()].filter(
+      fileName => getCanonicalFileName(fileName) !== cacheKey,
+    );
+    const openedFiles = [compilerPath, ...verifyingFiles];
     const discoverySnapshot = replaceSnapshot({
       fileSystem: createFileSystemLayer([[compilerPath, code]]),
-      openFiles: [compilerPath],
+      openFiles: openedFiles,
     });
     let configFileName: string | undefined;
+    let verifiedConfigFileNames: (string | undefined)[];
     let nextSnapshot: Snapshot;
     try {
       configFileName =
@@ -156,8 +203,13 @@ export function createNativeProjectService(
       if (!configFileName) {
         throw notFoundError(filePath);
       }
+      verifiedConfigFileNames = verifyingFiles.map(
+        (_, index) =>
+          discoverySnapshot.operation.openedFiles?.[index + 1]?.project
+            .configFileName,
+      );
       nextSnapshot = replaceSnapshot({
-        closeFiles: [compilerPath],
+        closeFiles: openedFiles,
         ensurePrograms: true,
         openProjects: openProjects.has(configFileName)
           ? undefined
@@ -165,23 +217,29 @@ export function createNativeProjectService(
       });
     } catch (error) {
       try {
-        replaceSnapshot({ closeFiles: [compilerPath] });
+        replaceSnapshot({ closeFiles: openedFiles });
       } catch {
         // Intentionally ignored.
       }
       throw error;
     }
-    if (!openProjects.has(configFileName)) {
-      openProjects.add(configFileName);
-      for (const fileName of nextSnapshot.getConfiguredProject(configFileName)
-        ?.parsedCommandLine.fileNames ?? []) {
-        const fileKey = getCanonicalFileName(fileName);
-        if (!fileProjects.has(fileKey)) {
-          fileProjects.set(fileKey, configFileName);
-        }
+    for (const [index, fileName] of verifyingFiles.entries()) {
+      const fileKey = getCanonicalFileName(fileName);
+      const verifiedConfigFileName = verifiedConfigFileNames[index];
+      unverifiedFiles.delete(fileKey);
+      if (
+        verifiedConfigFileName &&
+        (verifiedConfigFileName === configFileName ||
+          openProjects.has(verifiedConfigFileName))
+      ) {
+        fileProjects.set(fileKey, verifiedConfigFileName);
       }
     }
+    if (!openProjects.has(configFileName)) {
+      addProject(nextSnapshot, configFileName);
+    }
     fileProjects.set(cacheKey, configFileName);
+    unverifiedFiles.delete(cacheKey);
     return withCode(
       contextFor(nextSnapshot, configFileName, compilerPath),
       compilerPath,

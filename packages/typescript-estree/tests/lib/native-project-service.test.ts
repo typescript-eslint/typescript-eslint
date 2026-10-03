@@ -120,6 +120,36 @@ describe('native project service lifecycle', () => {
     });
   });
 
+  it('opens a file in its default project after another project includes it', () => {
+    withService(service => {
+      const includingPath = nativePath(nativeFixtures, 'including/file.ts');
+      const includedPath = nativePath(nativeFixtures, 'included/file.ts');
+      service.openFile(includingPath, readFixture(includingPath));
+      const included = service.openFile(
+        includedPath,
+        readFixture(includedPath),
+      );
+
+      expect(included.project.configFileName).toBe(
+        nativePath(nativeFixtures, 'included/tsconfig.json'),
+      );
+      expect(included.project.program.getCompilerOptions().strict).toBe(true);
+    });
+  });
+
+  it('opens sibling files in the project their solution references', () => {
+    withService(service => {
+      const firstPath = nativePath(nativeFixtures, 'solution/src/first.ts');
+      const secondPath = nativePath(nativeFixtures, 'solution/src/second.ts');
+      service.openFile(firstPath, readFixture(firstPath));
+
+      expect(
+        service.openFile(secondPath, readFixture(secondPath)).project
+          .configFileName,
+      ).toBe(nativePath(nativeFixtures, 'solution/tsconfig.app.json'));
+    });
+  });
+
   it('opens a project whose TSConfig lists plugins', () => {
     withService(service => {
       const pluginsPath = nativePath(nativeFixtures, 'plugins/file.ts');
