@@ -20,7 +20,7 @@ Program {
         type: "TSTypeQuery",
         exprName: TSImportType {
           type: "TSImportType",
-          options: null,
+          options: [],
           qualifier: null,
           source: Literal {
             type: "Literal",
@@ -72,7 +72,7 @@ Program {
       },
       typeAnnotation: TSImportType {
         type: "TSImportType",
-        options: null,
+        options: [],
         qualifier: Identifier {
           type: "Identifier",
           decorators: [],

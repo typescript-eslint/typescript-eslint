@@ -30,7 +30,8 @@ Snapshot Diff:
             params: Array [
               TSImportType {
                 type: 'TSImportType',
-                options: null,
+-               options: Array [],
++               options: null,
                 qualifier: Identifier {
                   type: 'Identifier',
                   decorators: Array [],
