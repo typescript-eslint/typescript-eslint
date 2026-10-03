@@ -32,6 +32,7 @@ export default (
     '@typescript-eslint/no-generated-empty-object-type': 'off',
     '@typescript-eslint/no-implied-eval': 'off',
     '@typescript-eslint/no-meaningless-void-operator': 'off',
+    '@typescript-eslint/no-misused-disposable': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/no-misused-spread': 'off',
     '@typescript-eslint/no-mixed-enums': 'off',
