@@ -19,4 +19,14 @@ it('documents the pinned @typescript/native preview as the minimum', () => {
   );
   expect(docs).toContain(`at least \`${version}\``);
   expect(docs).toContain(`@typescript/native@npm:typescript@${version}`);
+
+  const packageJson = JSON.parse(
+    fs.readFileSync(
+      path.join(repositoryRoot, 'packages/typescript-estree/package.json'),
+      'utf8',
+    ),
+  ) as { peerDependencies: Record<string, string> };
+  expect(packageJson.peerDependencies['@typescript/native']).toBe(
+    `npm:typescript@>=${version} || >=7.1.0-beta <7.1.0-dev`,
+  );
 });
