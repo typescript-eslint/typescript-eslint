@@ -29,7 +29,9 @@ function notFoundError(filePath: string): Error {
 function isNativeProcessFailure(error: unknown): boolean {
   return (
     error instanceof Error &&
-    /EPIPE|Unexpected EOF while reading from child process/.test(error.message)
+    /EBADF|EPIPE|Unexpected EOF while reading from child process/.test(
+      error.message,
+    )
   );
 }
 
@@ -202,11 +204,12 @@ export function createNativeProjectService(
       try {
         return openFileInSnapshot(filePath, code);
       } catch (error) {
-        if (isNativeProcessFailure(error)) {
-          reset();
-          api = startAPI();
+        if (!isNativeProcessFailure(error)) {
+          throw error;
         }
-        throw error;
+        reset();
+        api = startAPI();
+        return openFileInSnapshot(filePath, code);
       }
     },
   };
