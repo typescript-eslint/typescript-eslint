@@ -504,6 +504,26 @@ function getTypeArguments(checker: ts.TypeChecker, type: ts.Type) {
   return tsutils.isTypeReference(type) ? checker.getTypeArguments(type) : [];
 }
 
+const genericTypes = new WeakMap<ts.Type, boolean>();
+
+function isGenericType(checker: ts.TypeChecker, type: ts.Type): boolean {
+  let generic = genericTypes.get(type);
+  if (generic == null) {
+    genericTypes.set(type, false);
+    generic =
+      tsutils.isTypeFlagSet(type, ts.TypeFlags.Instantiable) ||
+      [
+        ...(tsutils.isUnionOrIntersectionType(type) ? type.types : []),
+        ...(type.aliasTypeArguments ?? []),
+        ...getTypeArguments(checker, type),
+      ].some(part => isGenericType(checker, part));
+    genericTypes.set(type, generic);
+  }
+  return generic;
+}
+
+const maximumDepth = 5;
+
 const topLevelMismatches = new WeakMap<ts.Type, WeakMap<ts.Type, boolean>>();
 
 function hasEnumAssignmentMismatch(
@@ -529,7 +549,13 @@ function hasDeepEnumAssignmentMismatch(
   senderType: ts.Type,
   receiverType: ts.Type,
   visited = new WeakMap<ts.Type, WeakSet<ts.Type>>(),
+  depth = 0,
+  withinGenericMembers = false,
 ): boolean {
+  if (depth > maximumDepth) {
+    return false;
+  }
+
   const constrainedSenderType = getConstraintType(checker, senderType);
   const constrainedReceiverType = getConstraintType(checker, receiverType);
   if (constrainedSenderType === constrainedReceiverType) {
@@ -570,10 +596,20 @@ function hasDeepEnumAssignmentMismatch(
         senderTypeArgument,
         receiverTypeArguments[index],
         visited,
+        depth + 1,
+        withinGenericMembers,
       ),
     )
   ) {
     return true;
+  }
+
+  // Members of generic types can instantiate ever-larger generic types.
+  const generic =
+    isGenericType(checker, constrainedSenderType) ||
+    isGenericType(checker, constrainedReceiverType);
+  if (generic && withinGenericMembers) {
+    return false;
   }
 
   // [number, Fruit] -> Fruit[]
@@ -587,6 +623,8 @@ function hasDeepEnumAssignmentMismatch(
       senderElementType,
       receiverElementType,
       visited,
+      depth + 1,
+      generic || withinGenericMembers,
     )
   ) {
     return true;
@@ -605,6 +643,8 @@ function hasDeepEnumAssignmentMismatch(
         checker.getTypeOfSymbol(senderProperty),
         checker.getTypeOfSymbol(receiverProperty),
         visited,
+        depth + 1,
+        generic || withinGenericMembers,
       )
     );
   });
