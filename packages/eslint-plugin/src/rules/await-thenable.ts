@@ -22,6 +22,12 @@ import {
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 import { isPromiseAggregatorMethod } from '../util/isPromiseAggregatorMethod';
 
+export type Options = [
+  {
+    allowMixedPromiseArrays?: boolean;
+  },
+];
+
 export type MessageId =
   | 'await'
   | 'awaitUsingOfNonAsyncDisposable'
@@ -30,7 +36,7 @@ export type MessageId =
   | 'invalidPromiseAggregatorInput'
   | 'removeAwait';
 
-export default createRule<[], MessageId>({
+export default createRule<Options, MessageId>({
   name: 'await-thenable',
   meta: {
     type: 'problem',
@@ -51,11 +57,23 @@ export default createRule<[], MessageId>({
         'Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.',
       removeAwait: 'Remove unnecessary `await`.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowMixedPromiseArrays: {
+            type: 'boolean',
+            description:
+              'Whether to allow arrays and other iterables that mix Promises with non-Promise values to be passed to promise aggregator methods.',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
+  defaultOptions: [{ allowMixedPromiseArrays: false }],
 
-  create(context) {
+  create(context, [{ allowMixedPromiseArrays = false }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -139,20 +157,30 @@ export default createRule<[], MessageId>({
         }
 
         if (argument.type === TSESTree.AST_NODE_TYPES.ArrayExpression) {
-          for (const element of argument.elements) {
-            if (element == null) {
-              continue;
-            }
+          const elements = argument.elements.filter(element => element != null);
 
-            const type = getConstrainedTypeAtLocation(services, element);
-            const tsNode = services.esTreeNodeToTSNodeMap.get(element);
+          const nonAwaitableElements = elements.filter(element =>
+            isAlwaysNonAwaitableType(
+              getConstrainedTypeAtLocation(services, element),
+              services.esTreeNodeToTSNodeMap.get(element),
+              checker,
+            ),
+          );
 
-            if (isAlwaysNonAwaitableType(type, tsNode, checker)) {
-              context.report({
-                node: element,
-                messageId: 'invalidPromiseAggregatorInput',
-              });
-            }
+          // With the option on, a literal is fine as long as at least one of its
+          // elements might be awaitable.
+          if (
+            allowMixedPromiseArrays &&
+            nonAwaitableElements.length < elements.length
+          ) {
+            return;
+          }
+
+          for (const element of nonAwaitableElements) {
+            context.report({
+              node: element,
+              messageId: 'invalidPromiseAggregatorInput',
+            });
           }
 
           return;
@@ -165,6 +193,7 @@ export default createRule<[], MessageId>({
             checker,
             services.esTreeNodeToTSNodeMap.get(argument),
             type,
+            allowMixedPromiseArrays,
           )
         ) {
           context.report({
@@ -277,6 +306,7 @@ function isInvalidPromiseAggregatorInput(
   checker: ts.TypeChecker,
   node: ts.Node,
   type: ts.Type,
+  allowMixedPromiseArrays: boolean,
 ): boolean {
   // non array/tuple/iterable types already show up as a type error
   if (!isIterable(type, checker)) {
@@ -286,12 +316,25 @@ function isInvalidPromiseAggregatorInput(
   for (const part of tsutils.unionConstituents(type)) {
     const valueTypes = getValueTypesOfArrayLike(part, checker);
 
-    if (valueTypes != null) {
-      for (const typeArgument of valueTypes) {
-        if (containsNonAwaitableType(typeArgument, node, checker)) {
-          return true;
-        }
-      }
+    if (valueTypes == null || valueTypes.length === 0) {
+      continue;
+    }
+
+    // The check is per union constituent of the input type, not the input as a
+    // whole. With the option on, a constituent is reported only when every one
+    // of its value types is always non-awaitable — so Array<number> |
+    // Array<Promise<number>> still reports. Without the option, any value type
+    // that can never be awaited is enough to report that constituent.
+    const isInvalid = allowMixedPromiseArrays
+      ? valueTypes.every(valueType =>
+          isAlwaysNonAwaitableType(valueType, node, checker),
+        )
+      : valueTypes.some(valueType =>
+          containsNonAwaitableType(valueType, node, checker),
+        );
+
+    if (isInvalid) {
+      return true;
     }
   }
 
