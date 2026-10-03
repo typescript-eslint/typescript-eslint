@@ -476,7 +476,7 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-          node-version: 22
+          node-version: ${{ matrix.backend == 'native' && 22 || 18 }}
       - name: Run unit tests
         run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage=false
         env:
