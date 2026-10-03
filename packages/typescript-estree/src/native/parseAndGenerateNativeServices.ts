@@ -62,10 +62,41 @@ function isTypedIdentifier(node: NativeNode) {
   );
 }
 
+const CALL_KINDS = new Set([
+  NativeSyntaxKind.CallExpression,
+  NativeSyntaxKind.NewExpression,
+]);
+
+function isContextualTypeCandidate(node: NativeNode) {
+  switch (node.parent.kind) {
+    case NativeSyntaxKind.CallExpression:
+    case NativeSyntaxKind.NewExpression:
+      return (
+        (
+          node.parent as NativeNode & { arguments?: readonly NativeNode[] }
+        ).arguments?.includes(node) ?? false
+      );
+    case NativeSyntaxKind.PropertyAssignment:
+    case NativeSyntaxKind.ReturnStatement:
+    case NativeSyntaxKind.ShorthandPropertyAssignment:
+      return true;
+    default:
+      return false;
+  }
+}
+
 function collectPrefetchNodes(sourceFile: NativeSourceFile) {
+  const calls: NativeNode[] = [];
+  const contextual: NativeNode[] = [];
   const identifiers: NativeNode[] = [];
   const typed: NativeNode[] = [];
   const visit = (node: NativeNode): void => {
+    if (CALL_KINDS.has(node.kind)) {
+      calls.push(node);
+    }
+    if (isContextualTypeCandidate(node)) {
+      contextual.push(node);
+    }
     if (node.kind === NativeSyntaxKind.Identifier) {
       identifiers.push(node);
       if (isTypedIdentifier(node)) {
@@ -77,12 +108,13 @@ function collectPrefetchNodes(sourceFile: NativeSourceFile) {
     node.forEachChild(visit);
   };
   sourceFile.forEachChild(visit);
-  return { identifiers, typed };
+  return { calls, contextual, identifiers, typed };
 }
 
-function createAdapters({ project }: NativeProjectContext) {
+function createAdapters({ api, project }: NativeProjectContext) {
   let diagnosticsByFile: Map<string, NativeDiagnostic[]> | undefined;
   const { checker, prefetch } = createNativeChecker({
+    api,
     checker: project.checker,
     nodeAdapter,
     typeAdapter: createNativeTypeAdapter({
@@ -148,11 +180,17 @@ export function parseAndGenerateNativeServices<
   const { astMaps, estree } = astConverter(sourceFile, parseSettings, true);
   if (!prefetchedSourceFiles.has(context.sourceFile)) {
     prefetchedSourceFiles.add(context.sourceFile);
-    const { identifiers, typed } = collectPrefetchNodes(context.sourceFile);
-    prefetch(
-      typed.map(node => nodeAdapter.wrapNode(node)),
-      identifiers.map(node => nodeAdapter.wrapNode(node)),
+    const wrap = (nodes: NativeNode[]) =>
+      nodes.map(node => nodeAdapter.wrapNode(node));
+    const { calls, contextual, identifiers, typed } = collectPrefetchNodes(
+      context.sourceFile,
     );
+    prefetch({
+      calls: wrap(calls),
+      contextual: wrap(contextual),
+      identifiers: wrap(identifiers),
+      typed: wrap(typed),
+    });
   }
 
   if (parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues) {

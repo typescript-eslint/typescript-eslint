@@ -1,11 +1,14 @@
 import type {
+  API,
+  APIRequestGenerator,
   Checker as NativeChecker,
-  SymbolFlags,
+  Signature as NativeSignature,
   Symbol as NativeSymbol,
   Type as NativeType,
 } from '@typescript/native/unstable/sync';
 
 import { SyntaxKind as NativeSyntaxKind } from '@typescript/native/unstable/ast';
+import { SymbolFlags } from '@typescript/native/unstable/sync';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -15,6 +18,7 @@ import type { NativeTypeAdapter } from './nativeTypeAdapter';
 import { throwOnUnsupportedMembers } from './throwOnUnsupportedMembers';
 
 interface NativeCheckerAdapterContext {
+  api: API;
   checker: NativeChecker;
   nodeAdapter: NativeNodeAdapter;
   typeAdapter: NativeTypeAdapter;
@@ -82,15 +86,18 @@ function isTypeOfSymbolLocation(node: ts.Node) {
 }
 
 export function createNativeChecker({
+  api,
   checker,
   nodeAdapter,
   typeAdapter,
 }: NativeCheckerAdapterContext): {
   checker: ts.TypeChecker;
-  prefetch: (
-    nodes: readonly ts.Node[],
-    identifiers: readonly ts.Node[],
-  ) => void;
+  prefetch: (nodes: {
+    calls: readonly ts.Node[];
+    contextual: readonly ts.Node[];
+    identifiers: readonly ts.Node[];
+    typed: readonly ts.Node[];
+  }) => void;
 } {
   const {
     toSignature,
@@ -119,8 +126,11 @@ export function createNativeChecker({
       : native;
   }
 
-  const getTypeOfSymbolElsewhere = memoize((symbol: NativeSymbol) =>
-    wrapType(checker.getNonMissingTypeOfSymbol(symbol)),
+  const typeOfSymbolElsewhereRoot = new MemoEntry();
+  const getTypeOfSymbolElsewhere = memoize(
+    (symbol: NativeSymbol) =>
+      wrapType(checker.getNonMissingTypeOfSymbol(symbol)),
+    typeOfSymbolElsewhereRoot,
   );
 
   // Classic's intrinsic `true` and `false` are the regular constituents of `boolean`.
@@ -141,6 +151,53 @@ export function createNativeChecker({
   }
 
   const pendingIdentifiers = new WeakMap<object, readonly ts.Node[]>();
+  const pendingCalls = new WeakMap<object, readonly ts.Node[]>();
+  const pendingArguments = new WeakMap<object, readonly ts.Node[]>();
+  const pendingContextual = new WeakMap<object, readonly ts.Node[]>();
+
+  function takePending(
+    pending: WeakMap<object, readonly ts.Node[]>,
+    node: ts.Node,
+  ) {
+    const sourceFile = unwrapNode(node).getSourceFile();
+    const nodes = pending.get(sourceFile);
+    pending.delete(sourceFile);
+    return nodes;
+  }
+
+  // Batches also ask after nodes no rule asked about, so a failure falls back to asking alone.
+  function batch<Result>(generators: APIRequestGenerator<Result>[]) {
+    try {
+      return api.batch(...generators);
+    } catch {
+      return undefined;
+    }
+  }
+
+  function prefetchParameterTypes(
+    signatures: readonly (NativeSignature | undefined)[],
+  ) {
+    const parameterLists = batch(
+      [...new Set(signatures)]
+        .filter(signature => signature != null)
+        .map(signature => signature.getParameters.gen()),
+    );
+    const parameters = [...new Set(parameterLists?.flat())];
+    if (!parameters.length) {
+      return;
+    }
+    const types = batch([checker.getTypeOfSymbol.gen(parameters)])?.[0];
+    if (!types) {
+      return;
+    }
+    parameters.forEach((parameter, index) => {
+      const type = wrapType(types[index]);
+      seed(memoRoots.getTypeOfSymbol, [wrapSymbol(parameter)], type);
+      if (!(parameter.flags & SymbolFlags.Optional)) {
+        seed(typeOfSymbolElsewhereRoot, [parameter], type);
+      }
+    });
+  }
 
   const nativeChecker = {
     getAliasedSymbol: symbol =>
@@ -185,21 +242,80 @@ export function createNativeChecker({
     getBigIntType: () => wrapType(checker.getBigIntType()),
     getBooleanType: () => wrapType(checker.getBooleanType()),
     getConstantValue: node => checker.getConstantValue(unwrapNode(node)),
-    getContextualType: node =>
-      wrapType(
+    getContextualType: node => {
+      const candidates = takePending(pendingContextual, node);
+      if (candidates) {
+        const types = batch(
+          candidates.map(candidate =>
+            checker.getContextualType.gen(
+              unwrapNode(candidate) as Parameters<
+                NativeChecker['getContextualType']
+              >[0],
+            ),
+          ),
+        )?.map(type => wrapType(type));
+        if (types) {
+          candidates.forEach((candidate, index) => {
+            seed(memoRoots.getContextualType, [candidate], types[index]);
+          });
+          const index = candidates.indexOf(node);
+          if (index !== -1) {
+            return types[index];
+          }
+        }
+      }
+      return wrapType(
         checker.getContextualType(
           unwrapNode(node) as Parameters<NativeChecker['getContextualType']>[0],
         ),
-      ),
-    getContextualTypeForArgumentAtIndex: (call: ts.Node, index: number) =>
-      wrapType(
+      );
+    },
+    getContextualTypeForArgumentAtIndex: (call: ts.Node, index: number) => {
+      const calls = takePending(pendingArguments, call);
+      if (calls) {
+        const keys = calls.flatMap(pendingCall =>
+          ts.isCallExpression(pendingCall) || ts.isNewExpression(pendingCall)
+            ? (pendingCall.arguments ?? []).map(
+                (_, argumentIndex) => [pendingCall, argumentIndex] as const,
+              )
+            : [],
+        );
+        const types = batch(
+          keys.map(([pendingCall, argumentIndex]) =>
+            checker.getContextualTypeForArgumentAtIndex.gen(
+              unwrapNode(pendingCall) as Parameters<
+                NativeChecker['getContextualTypeForArgumentAtIndex']
+              >[0],
+              argumentIndex,
+            ),
+          ),
+        )?.map(type => wrapType(type));
+        if (types) {
+          keys.forEach((key, keyIndex) => {
+            seed(
+              memoRoots.getContextualTypeForArgumentAtIndex,
+              key,
+              types[keyIndex],
+            );
+          });
+          const keyIndex = keys.findIndex(
+            ([pendingCall, argumentIndex]) =>
+              pendingCall === call && argumentIndex === index,
+          );
+          if (keyIndex !== -1) {
+            return types[keyIndex];
+          }
+        }
+      }
+      return wrapType(
         checker.getContextualTypeForArgumentAtIndex(
           unwrapNode(call) as Parameters<
             NativeChecker['getContextualTypeForArgumentAtIndex']
           >[0],
           index,
         ),
-      ),
+      );
+    },
     getDeclaredTypeOfSymbol: symbol =>
       wrapType(checker.getDeclaredTypeOfSymbol(unwrapSymbol(symbol))),
     getDefaultFromTypeParameter: type =>
@@ -242,8 +358,28 @@ export function createNativeChecker({
       checker.getPropertiesOfType(unwrapType(type)).map(toSymbol),
     getPropertyOfType: (type, name) =>
       wrapSymbol(checker.getPropertyOfType(unwrapType(type), name)),
-    getResolvedSignature: node =>
-      wrapSignature(checker.getResolvedSignature(unwrapNode(node))),
+    getResolvedSignature: node => {
+      const calls = takePending(pendingCalls, node);
+      if (calls) {
+        const nativeSignatures = batch(
+          calls.map(call => checker.getResolvedSignature.gen(unwrapNode(call))),
+        );
+        if (nativeSignatures) {
+          const signatures = nativeSignatures.map(signature =>
+            wrapSignature(signature),
+          );
+          calls.forEach((call, index) => {
+            seed(memoRoots.getResolvedSignature, [call], signatures[index]);
+          });
+          prefetchParameterTypes(nativeSignatures);
+          const index = calls.indexOf(node);
+          if (index !== -1) {
+            return signatures[index];
+          }
+        }
+      }
+      return wrapSignature(checker.getResolvedSignature(unwrapNode(node)));
+    },
     getReturnTypeOfSignature: signature =>
       wrapType(checker.getReturnTypeOfSignature(unwrapSignature(signature))),
     getShorthandAssignmentValueSymbol: node =>
@@ -268,7 +404,7 @@ export function createNativeChecker({
           .getSymbolAtLocation(identifiers.map(unwrapNode))
           .map(symbol => wrapSymbol(symbol));
         identifiers.forEach((identifier, index) => {
-          seed(memoRoots.getSymbolAtLocation, identifier, symbols[index]);
+          seed(memoRoots.getSymbolAtLocation, [identifier], symbols[index]);
         });
         const index = identifiers.indexOf(node);
         if (index !== -1) {
@@ -419,16 +555,20 @@ export function createNativeChecker({
       UNSUPPORTED_CHECKER_MEMBERS,
       memoized,
     ) as unknown as ts.TypeChecker,
-    prefetch(nodes, identifiers) {
-      const types = checker.getTypeAtLocation(nodes.map(unwrapNode));
-      nodes.forEach((node, index) => {
-        seed(memoRoots.getTypeAtLocation, node, wrapType(types[index]));
+    prefetch({ calls, contextual, identifiers, typed }) {
+      const types = checker.getTypeAtLocation(typed.map(unwrapNode));
+      typed.forEach((node, index) => {
+        seed(memoRoots.getTypeAtLocation, [node], wrapType(types[index]));
       });
-      if (identifiers.length) {
-        pendingIdentifiers.set(
-          unwrapNode(identifiers[0]).getSourceFile(),
-          identifiers,
-        );
+      for (const [pending, nodes] of [
+        [pendingIdentifiers, identifiers],
+        [pendingCalls, calls],
+        [pendingArguments, calls],
+        [pendingContextual, contextual],
+      ] as const) {
+        if (nodes.length) {
+          pending.set(unwrapNode(nodes[0]).getSourceFile(), nodes);
+        }
       }
     },
   };
@@ -490,8 +630,8 @@ function memoize<Args extends unknown[], Result>(
   };
 }
 
-function seed(root: MemoEntry, node: ts.Node, result: unknown) {
-  const entry = getMemoEntry(root, [node], 1);
+function seed(root: MemoEntry, args: readonly unknown[], result: unknown) {
+  const entry = getMemoEntry(root, args, args.length);
   entry.result = result;
   entry.resolved = true;
 }

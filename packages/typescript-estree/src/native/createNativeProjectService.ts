@@ -146,7 +146,7 @@ export function createNativeProjectService(
         `The TypeScript native project did not contain '${compilerPath}'.`,
       );
     }
-    const context = { project, sourceFile };
+    const context = { api, project, sourceFile };
     fileContexts.set(getCanonicalFileName(compilerPath), context);
     return context;
   }
