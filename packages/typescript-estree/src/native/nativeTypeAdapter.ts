@@ -27,6 +27,7 @@ import * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 
+import { getModifiers } from '../getModifiers';
 import { createFlagTranslations, translateFlags } from './translateFlags';
 
 export interface NativeTypeAdapter {
@@ -291,6 +292,42 @@ export function createNativeTypeAdapter({
     },
   };
 
+  // Like classic, the same member of the first base type that has it, if declared once.
+  function getInheritedJsDocTags(declaration: ts.Declaration) {
+    const container = ts.isConstructorDeclaration(declaration.parent)
+      ? declaration.parent.parent
+      : declaration.parent;
+    const name = ts.getNameOfDeclaration(declaration);
+    if (
+      !name ||
+      !('text' in name) ||
+      !(ts.isClassLike(container) || ts.isInterfaceDeclaration(container))
+    ) {
+      return undefined;
+    }
+    const isStatic = getModifiers(declaration)?.some(
+      modifier => modifier.kind === ts.SyntaxKind.StaticKeyword,
+    );
+    for (const clause of container.heritageClauses ?? []) {
+      for (const superTypeNode of clause.types) {
+        const baseType = checker.getTypeAtLocation(
+          nodeAdapter.unwrapNode(superTypeNode),
+        );
+        const baseSymbol = baseType.getSymbol();
+        const symbol = checker.getPropertyOfType(
+          isStatic && baseSymbol
+            ? checker.getTypeOfSymbol(baseSymbol)
+            : baseType,
+          name.text,
+        );
+        if (symbol?.declarations.length === 1) {
+          return wrapSymbol(symbol).getJsDocTags();
+        }
+      }
+    }
+    return undefined;
+  }
+
   const jsDocTagsBySymbol = new WeakMap<ts.Symbol, ts.JSDocTagInfo[]>();
 
   const symbolMethods = {
@@ -333,14 +370,23 @@ export function createNativeTypeAdapter({
     // A signature carries no symbol, and a symbol lookup would merge overloads.
     getJsDocTags(this: ts.Signature) {
       const declaration = unwrapSignature(this).declaration?.resolve(project);
-      return declaration
-        ? getJSDocTags(declaration).map(tag =>
-            toJSDocTagInfo(
-              tag.tagName.text,
-              getTextOfJSDocComment(tag.comment),
-            ),
-          )
-        : [];
+      if (!declaration) {
+        return [];
+      }
+      const tags = getJSDocTags(declaration).map(tag =>
+        toJSDocTagInfo(tag.tagName.text, getTextOfJSDocComment(tag.comment)),
+      );
+      return tags.length &&
+        !tags.some(
+          tag => tag.name === 'inheritDoc' || tag.name === 'inheritdoc',
+        )
+        ? tags
+        : [
+            ...(getInheritedJsDocTags(
+              nodeAdapter.wrapNode(declaration) as ts.Declaration,
+            ) ?? []),
+            ...tags,
+          ];
     },
     getParameters(this: ts.Signature) {
       return this.parameters;
