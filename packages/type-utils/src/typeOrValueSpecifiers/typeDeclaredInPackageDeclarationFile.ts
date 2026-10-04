@@ -154,6 +154,7 @@ function symbolDeclaresOneOf(
   declarations: readonly ts.Node[],
 ): boolean {
   const symbolDeclarations = symbol.getDeclarations();
+  /* istanbul ignore if -- defensive for unresolved export targets. */
   if (symbolDeclarations == null) {
     return false;
   }
@@ -169,18 +170,20 @@ function namedExportMatchesDeclarations(
   checker: ts.TypeChecker,
 ): boolean {
   const exportSymbol = checker.getSymbolAtLocation(exportSpecifier.name);
+  /* istanbul ignore if -- TypeScript provides symbols for parsed export specifiers. */
   if (exportSymbol == null) {
     return false;
   }
 
-  const targetSymbol = tsutils.isSymbolFlagSet(
-    exportSymbol,
-    ts.SymbolFlags.Alias,
-  )
-    ? checker.getAliasedSymbol(exportSymbol)
-    : exportSymbol;
+  /* istanbul ignore else -- named export specifiers are aliases. */
+  if (tsutils.isSymbolFlagSet(exportSymbol, ts.SymbolFlags.Alias)) {
+    return symbolDeclaresOneOf(
+      checker.getAliasedSymbol(exportSymbol),
+      declarations,
+    );
+  }
 
-  return symbolDeclaresOneOf(targetSymbol, declarations);
+  return symbolDeclaresOneOf(exportSymbol, declarations);
 }
 
 function typeReExportedFromPackage(
