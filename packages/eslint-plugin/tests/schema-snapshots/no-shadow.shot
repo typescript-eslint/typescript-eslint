@@ -21,8 +21,16 @@
         "enum": ["all", "functions", "functions-and-types", "never", "types"],
         "type": "string"
       },
+      "ignoreEnumMembersOfLiteralEnums": {
+        "description": "Whether to ignore members of enums whose members are all literals.",
+        "type": "boolean"
+      },
       "ignoreFunctionTypeParameterNameValueShadow": {
         "description": "Whether to ignore function parameters named the same as a variable.",
+        "type": "boolean"
+      },
+      "ignoreLiteralEnumMembers": {
+        "description": "Whether to ignore members of enums whose members are all literals.",
         "type": "boolean"
       },
       "ignoreOnInitialization": {
@@ -55,8 +63,12 @@ type Options = [
       | 'types'
       /** Whether to report shadowing before outer functions or variables are defined. */
       | 'all';
+    /** Whether to ignore members of enums whose members are all literals. */
+    ignoreEnumMembersOfLiteralEnums?: boolean;
     /** Whether to ignore function parameters named the same as a variable. */
     ignoreFunctionTypeParameterNameValueShadow?: boolean;
+    /** Whether to ignore members of enums whose members are all literals. */
+    ignoreLiteralEnumMembers?: boolean;
     /** Whether to ignore the variable initializers when the shadowed variable is presumably still uninitialized. */
     ignoreOnInitialization?: boolean;
     /** Whether to ignore types named the same as a variable. */

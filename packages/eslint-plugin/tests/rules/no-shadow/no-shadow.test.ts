@@ -757,6 +757,136 @@ foo5: boolean;
       },
       options: [{ builtinGlobals: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12947
+    {
+      code: `
+const TOKEN = 'abc123';
+enum Header {
+  TOKEN = 'x-token',
+  TRACE = 'x-trace',
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+const TOKEN = 'abc123';
+enum Header {
+  TOKEN = 'x-token',
+  TRACE = 'x-trace',
+}
+      `,
+      options: [{ ignoreEnumMembersOfLiteralEnums: true }],
+    },
+    {
+      code: `
+const ZERO = 0;
+const ONE = 1;
+enum Numbers {
+  ZERO = 0,
+  ONE = 1,
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+const A = 1;
+const B = 2;
+enum Direction {
+  A,
+  B,
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+const STR = 'str';
+const NUM = 42;
+const AUTO = 100;
+enum Mixed {
+  STR = 'hello',
+  NUM = 42,
+  AUTO,
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+const STR = 'str';
+const NUM = 42;
+const AUTO = 100;
+enum Mixed {
+  STR = 'hello',
+  NUM = 42,
+  AUTO,
+}
+      `,
+      options: [{ ignoreEnumMembersOfLiteralEnums: true }],
+    },
+    {
+      code: `
+const NEG = -1;
+const POS = 1;
+enum Signed {
+  NEG = -1,
+  POS = +2,
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+const STR = 'str';
+enum Templated {
+  STR = \`hello\`,
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+enum A {
+  A = 'a',
+  B = 'b',
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+enum A {
+  A,
+  B,
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+const TOKEN = 'abc';
+enum Header {
+  TOKEN = 'x-token',
+}
+enum Header {
+  TRACE = 'x-trace',
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+function test() {
+  const FOO = 'outer';
+  enum Bar {
+    FOO = 'inner',
+  }
+}
+      `,
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
   ],
   invalid: [
     {
@@ -1844,6 +1974,270 @@ const fn = (has: string) => {};
         },
       },
       options: [{ builtinGlobals: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12947
+    {
+      code: `
+const TOKEN = 'abc123';
+enum Header {
+  TOKEN = 'x-token',
+  TRACE = 'x-trace',
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'TOKEN',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+const ZERO = 0;
+enum Numbers {
+  ZERO = 0,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'ZERO',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 7,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+const STR = 'str';
+enum Mixed {
+  STR = 'hello',
+  NUM = 42,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'STR',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+const NUM = 42;
+enum Mixed {
+  STR = 'hello',
+  NUM = 42,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'NUM',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 6,
+          endLine: 5,
+          line: 5,
+          messageId: 'noShadow',
+        },
+      ],
+    },
+    {
+      code: `
+const TOKEN = 'abc123';
+enum Header {
+  TOKEN = 'x-token',
+  AUTH = TOKEN,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'TOKEN',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+const TOKEN = 'abc123';
+enum Header {
+  TOKEN = 'x-token',
+  AUTH = TOKEN,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'TOKEN',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreEnumMembersOfLiteralEnums: true }],
+    },
+    {
+      code: `
+const A = 1;
+enum Computed {
+  A = 10,
+  B = 1 + 2,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 4,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+function getValue(): number {
+  return 1;
+}
+const A = 1;
+enum ComputedFn {
+  A = 10,
+  B = getValue(),
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            shadowedColumn: 7,
+            shadowedLine: 5,
+          },
+          endColumn: 4,
+          endLine: 7,
+          line: 7,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+const X = 'world';
+const STR = 'str';
+enum TemplatedComputed {
+  STR = \`hello \${X}\`,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'STR',
+            shadowedColumn: 7,
+            shadowedLine: 3,
+          },
+          endColumn: 6,
+          endLine: 5,
+          line: 5,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+enum A {
+  A,
+  B = A,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 2,
+          },
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'noEnumShadow',
+        },
+      ],
+      options: [{ ignoreLiteralEnumMembers: true }],
+    },
+    {
+      code: `
+const TOKEN = 'abc';
+enum Header {
+  TOKEN = 'x-token',
+}
+enum Header {
+  AUTH = TOKEN,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'TOKEN',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreLiteralEnumMembers: true }],
     },
   ],
 });

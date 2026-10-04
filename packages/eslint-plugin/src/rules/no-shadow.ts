@@ -12,7 +12,9 @@ export type Options = [
     allow?: string[];
     builtinGlobals?: boolean;
     hoist?: 'all' | 'functions' | 'functions-and-types' | 'never' | 'types';
+    ignoreEnumMembersOfLiteralEnums?: boolean;
     ignoreFunctionTypeParameterNameValueShadow?: boolean;
+    ignoreLiteralEnumMembers?: boolean;
     ignoreOnInitialization?: boolean;
     ignoreTypeValueShadow?: boolean;
   },
@@ -74,10 +76,20 @@ export default createRule<Options, MessageIds>({
               'Whether to report shadowing before outer functions or variables are defined.',
             enum: ['all', 'functions', 'functions-and-types', 'never', 'types'],
           },
+          ignoreEnumMembersOfLiteralEnums: {
+            type: 'boolean',
+            description:
+              'Whether to ignore members of enums whose members are all literals.',
+          },
           ignoreFunctionTypeParameterNameValueShadow: {
             type: 'boolean',
             description:
               'Whether to ignore function parameters named the same as a variable.',
+          },
+          ignoreLiteralEnumMembers: {
+            type: 'boolean',
+            description:
+              'Whether to ignore members of enums whose members are all literals.',
           },
           ignoreOnInitialization: {
             type: 'boolean',
@@ -98,7 +110,9 @@ export default createRule<Options, MessageIds>({
       allow: [],
       builtinGlobals: false,
       hoist: 'functions-and-types',
+      ignoreEnumMembersOfLiteralEnums: false,
       ignoreFunctionTypeParameterNameValueShadow: true,
+      ignoreLiteralEnumMembers: false,
       ignoreOnInitialization: false,
       ignoreTypeValueShadow: true,
     },
@@ -331,6 +345,79 @@ export default createRule<Options, MessageIds>({
         block.type === AST_NODE_TYPES.TSEnumDeclaration &&
         block.id === variable.identifiers[0]
       );
+    }
+
+    function isLiteral(node: TSESTree.Node): boolean {
+      switch (node.type) {
+        case AST_NODE_TYPES.Literal:
+          return (
+            typeof node.value === 'string' || typeof node.value === 'number'
+          );
+
+        case AST_NODE_TYPES.TemplateLiteral:
+          return node.expressions.length === 0;
+
+        case AST_NODE_TYPES.UnaryExpression:
+          return (
+            (node.operator === '+' || node.operator === '-') &&
+            isLiteral(node.argument)
+          );
+
+        default:
+          return false;
+      }
+    }
+
+    function isLiteralMember(member: TSESTree.TSEnumMember): boolean {
+      if (member.initializer == null) {
+        return true;
+      }
+      return isLiteral(member.initializer);
+    }
+
+    function isLiteralEnumDeclaration(
+      decl: TSESTree.TSEnumDeclaration,
+    ): boolean {
+      return decl.body.members.every(isLiteralMember);
+    }
+
+    function isEnumMemberOfLiteralEnum(
+      variable: TSESLint.Scope.Variable,
+    ): boolean {
+      if (
+        !options.ignoreEnumMembersOfLiteralEnums &&
+        !options.ignoreLiteralEnumMembers
+      ) {
+        return false;
+      }
+
+      if (variable.scope.type !== ScopeType.tsEnum) {
+        return false;
+      }
+
+      const isEnumMember = variable.defs.some(
+        def => def.type === DefinitionType.TSEnumMember,
+      );
+      if (!isEnumMember) {
+        return false;
+      }
+
+      const enumBlock = variable.scope.block;
+
+      const enumVar = ASTUtils.findVariable(
+        variable.scope.upper,
+        enumBlock.id.name,
+      );
+      if (enumVar) {
+        const enumDefs = enumVar.defs.filter(
+          def => def.type === DefinitionType.TSEnumName,
+        );
+        if (enumDefs.length > 0) {
+          return enumDefs.every(def => isLiteralEnumDeclaration(def.node));
+        }
+      }
+
+      return isLiteralEnumDeclaration(enumBlock);
     }
 
     /**
@@ -674,6 +761,11 @@ export default createRule<Options, MessageIds>({
           ? ASTUtils.findVariable(scope.upper, variable.name)
           : null;
         if (!shadowed) {
+          continue;
+        }
+
+        // ignore enum members if the enum consists solely of literal values
+        if (isEnumMemberOfLiteralEnum(variable)) {
           continue;
         }
 

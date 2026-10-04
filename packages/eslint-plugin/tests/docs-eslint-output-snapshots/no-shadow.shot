@@ -35,3 +35,22 @@ Options: { "ignoreFunctionTypeParameterNameValueShadow": true }
 
 const test = 1;
 type Func = (test: string) => typeof test;
+
+Options: { "ignoreLiteralEnumMembers": true }
+
+const TOKEN = 'abc123';
+
+enum Header {
+  TOKEN = 'x-token',
+  TRACE = 'x-trace',
+}
+
+Options: { "ignoreLiteralEnumMembers": true }
+
+const TOKEN = 'abc123';
+
+enum Header {
+  TOKEN = 'x-token',
+  ~~~~~ 'TOKEN' is already declared in the upper scope on line 1 column 7.
+  AUTH = TOKEN,
+}

@@ -23,15 +23,19 @@ type HoistOptionEntries =
 
 interface Options extends BaseNoShadowOptions {
   hoist?: HoistOptionEntries;
-  ignoreTypeValueShadow?: boolean;
+  ignoreEnumMembersOfLiteralEnums?: boolean;
   ignoreFunctionTypeParameterNameValueShadow?: boolean;
+  ignoreLiteralEnumMembers?: boolean;
+  ignoreTypeValueShadow?: boolean;
 }
 
 const defaultOptions: Options = {
   ...baseNoShadowDefaultOptions,
   hoist: 'functions-and-types',
-  ignoreTypeValueShadow: true,
+  ignoreEnumMembersOfLiteralEnums: false,
   ignoreFunctionTypeParameterNameValueShadow: true,
+  ignoreLiteralEnumMembers: false,
+  ignoreTypeValueShadow: true,
 };
 ```
 
@@ -118,6 +122,35 @@ Examples of **correct** code with `{ ignoreFunctionTypeParameterNameValueShadow:
 ```ts option='{ "ignoreFunctionTypeParameterNameValueShadow": true }' showPlaygroundButton
 const test = 1;
 type Func = (test: string) => typeof test;
+```
+
+### `ignoreLiteralEnumMembers`
+
+{/* insert option description */}
+
+When this option is enabled, shadowing is allowed for enum members if the enum consists solely of literal values (string literals, numeric literals, or uninitialized members).
+Because a literal-only enum body never reads a variable or member name, the enum member cannot inadvertently shadow an outer declaration within the enum's own member initializers.
+
+Examples of **correct** code with `{ ignoreLiteralEnumMembers: true }`:
+
+```ts option='{ "ignoreLiteralEnumMembers": true }' showPlaygroundButton
+const TOKEN = 'abc123';
+
+enum Header {
+  TOKEN = 'x-token',
+  TRACE = 'x-trace',
+}
+```
+
+Examples of **incorrect** code with `{ ignoreLiteralEnumMembers: true }`:
+
+```ts option='{ "ignoreLiteralEnumMembers": true }' showPlaygroundButton
+const TOKEN = 'abc123';
+
+enum Header {
+  TOKEN = 'x-token',
+  AUTH = TOKEN,
+}
 ```
 
 ## FAQ
