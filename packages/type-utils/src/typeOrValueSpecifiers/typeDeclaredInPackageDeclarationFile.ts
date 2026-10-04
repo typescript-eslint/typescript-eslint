@@ -101,6 +101,122 @@ function typeDeclaredInDeclarationFile(
   });
 }
 
+const reExportSourceFilesCache = new WeakMap<
+  ts.Program,
+  Map<string, ts.SourceFile[]>
+>();
+
+function packageIdMatchesSpecifier(
+  packageIdName: string,
+  packageName: string,
+): boolean {
+  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
+
+  return (
+    pathIsInPackage(packageIdName, packageName) ||
+    pathIsInPackage(packageIdName.replace(/^@types\//, ''), typesPackageName)
+  );
+}
+
+function getExternalSourceFilesForPackage(
+  packageName: string,
+  program: ts.Program,
+): ts.SourceFile[] {
+  let packageCache = reExportSourceFilesCache.get(program);
+  if (packageCache == null) {
+    packageCache = new Map();
+    reExportSourceFilesCache.set(program, packageCache);
+  }
+
+  const cached = packageCache.get(packageName);
+  if (cached != null) {
+    return cached;
+  }
+
+  const sourceFiles = program.getSourceFiles().filter(sourceFile => {
+    if (!program.isSourceFileFromExternalLibrary(sourceFile)) {
+      return false;
+    }
+
+    const packageIdName = program.sourceFileToPackageName.get(sourceFile.path);
+    return (
+      packageIdName != null &&
+      packageIdMatchesSpecifier(packageIdName, packageName)
+    );
+  });
+
+  packageCache.set(packageName, sourceFiles);
+  return sourceFiles;
+}
+
+function symbolDeclaresOneOf(
+  symbol: ts.Symbol,
+  declarations: readonly ts.Node[],
+): boolean {
+  const symbolDeclarations = symbol.getDeclarations();
+  if (symbolDeclarations == null) {
+    return false;
+  }
+
+  return symbolDeclarations.some(declaration =>
+    declarations.includes(declaration),
+  );
+}
+
+function namedExportMatchesDeclarations(
+  exportSpecifier: ts.ExportSpecifier,
+  declarations: readonly ts.Node[],
+  checker: ts.TypeChecker,
+): boolean {
+  const exportSymbol = checker.getSymbolAtLocation(exportSpecifier.name);
+  if (exportSymbol == null) {
+    return false;
+  }
+
+  const targetSymbol = tsutils.isSymbolFlagSet(
+    exportSymbol,
+    ts.SymbolFlags.Alias,
+  )
+    ? checker.getAliasedSymbol(exportSymbol)
+    : exportSymbol;
+
+  return symbolDeclaresOneOf(targetSymbol, declarations);
+}
+
+function typeReExportedFromPackage(
+  packageName: string,
+  declarations: readonly ts.Node[],
+  program: ts.Program,
+): boolean {
+  if (declarations.length === 0) {
+    return false;
+  }
+
+  const checker = program.getTypeChecker();
+
+  return getExternalSourceFilesForPackage(packageName, program).some(
+    sourceFile =>
+      sourceFile.statements.some(statement => {
+        if (!ts.isExportDeclaration(statement)) {
+          return false;
+        }
+
+        const { exportClause } = statement;
+        if (exportClause == null || !ts.isNamedExports(exportClause)) {
+          return false;
+        }
+
+        return exportClause.elements.some(exportSpecifier =>
+          namedExportMatchesDeclarations(
+            exportSpecifier,
+            declarations,
+            checker,
+          ),
+        );
+      }),
+  );
+}
+
 export function typeDeclaredInPackageDeclarationFile(
   packageName: string,
   symbol: ts.Symbol | undefined,
@@ -111,6 +227,7 @@ export function typeDeclaredInPackageDeclarationFile(
   return (
     typeDeclaredInDeclareModule(packageName, declarations) ||
     typeDeclaredInDeclarationFile(packageName, declarationFiles, program) ||
-    typeExportedFromDeclareModule(packageName, symbol, program)
+    typeExportedFromDeclareModule(packageName, symbol, program) ||
+    typeReExportedFromPackage(packageName, declarations, program)
   );
 }

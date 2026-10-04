@@ -488,6 +488,22 @@ describe('TypeOrValueSpecifier', () => {
         `,
         { from: 'package', name: 'GlobalType', package: 'global-declarer' },
       ],
+      [
+        'import type { ReexportedError } from "reexported-error/public"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported-error/public',
+        },
+      ],
+      [
+        'import type { ReexportedError } from "reexported-error/typed"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported-error/typed',
+        },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -680,6 +696,22 @@ describe('TypeOrValueSpecifier', () => {
           type Test = GlobalType;
         `,
         { from: 'package', name: 'GlobalType', package: 'other-module' },
+      ],
+      [
+        'import type { ReexportedError } from "other-error"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported-error/public',
+        },
+      ],
+      [
+        'import type { ReexportedError } from "reexported-error/star"; type Test = ReexportedError;',
+        {
+          from: 'package',
+          name: 'ReexportedError',
+          package: 'reexported-error/star',
+        },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",
