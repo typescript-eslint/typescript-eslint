@@ -205,6 +205,8 @@ import _ = require('_');
 
       `,
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 import _ = require('_');
@@ -233,5 +235,6 @@ import _ = require('_');
 
       `,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
   ],
 });

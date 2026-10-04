@@ -1,29 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/no-use-before-define.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-useless-default-assignment.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 2
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/no-var-requires.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/parameter-properties.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 12
-    }
-  },
   "packages/eslint-plugin/tests/rules/prefer-enum-initializers.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 1
