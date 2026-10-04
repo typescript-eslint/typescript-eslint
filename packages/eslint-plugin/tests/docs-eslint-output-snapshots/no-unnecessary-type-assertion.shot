@@ -51,6 +51,12 @@ Options: { "checkLiteralConstAssertions": true }
 const foo = 'foo' as const;
             ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
 
+Options: { "checkLiteralConstAssertions": true }
+
+type Recipient = { kind: 'a' | 'b' };
+const r: Recipient = { kind: 'a' as const };
+                             ~~~~~~~~~~~~ This assertion is unnecessary since the receiver accepts the original type of the expression.
+
 Options: { "typesToIgnore": ["Foo"] }
 
 type Foo = 3;

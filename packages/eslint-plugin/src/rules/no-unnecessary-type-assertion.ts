@@ -657,6 +657,102 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isContextuallyLiteralConstAssertionType(
+      castType: ts.Type,
+      contextualType: ts.Type,
+    ): boolean {
+      return tsutils.unionConstituents(contextualType).every(part => {
+        return (
+          isTypeLiteral(part) ||
+          (checker.isTupleType(castType) && checker.isTupleType(part))
+        );
+      });
+    }
+
+    /**
+     * Removing `as const` can widen what a generic call or `new` expression
+     * infers for its type parameters, so don't report those arguments.
+     * Explicitly written type arguments already pin the parameters down.
+     */
+    function isArgumentOfGenericCallWithUnsafeInference(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
+      if (
+        (parent.type !== AST_NODE_TYPES.CallExpression &&
+          parent.type !== AST_NODE_TYPES.NewExpression) ||
+        parent.typeArguments != null ||
+        !parent.arguments.includes(node)
+      ) {
+        return false;
+      }
+
+      const calleeType = checker.getTypeAtLocation(
+        services.esTreeNodeToTSNodeMap.get(parent.callee),
+      );
+      const signatures =
+        parent.type === AST_NODE_TYPES.NewExpression
+          ? calleeType.getConstructSignatures()
+          : calleeType.getCallSignatures();
+      if (!signatures.some(hasTypeParams)) {
+        return false;
+      }
+      if (signatures.length > 1) {
+        return true;
+      }
+
+      if (parent.type === AST_NODE_TYPES.NewExpression) {
+        const callContextualType = checker.getContextualType(
+          services.esTreeNodeToTSNodeMap.get(parent),
+        );
+        if (callContextualType && !containsTypeVariable(callContextualType)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    /**
+     * Substitutions in a generic tagged template feed inference the same way.
+     */
+    function isSubstitutionOfGenericTaggedTemplate(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
+      if (
+        parent.type !== AST_NODE_TYPES.TemplateLiteral ||
+        parent.parent.type !== AST_NODE_TYPES.TaggedTemplateExpression
+      ) {
+        return false;
+      }
+
+      const tagType = checker.getTypeAtLocation(
+        services.esTreeNodeToTSNodeMap.get(parent.parent.tag),
+      );
+      return tagType.getCallSignatures().some(hasTypeParams);
+    }
+
+    /**
+     * `as const` narrows the types of the literals it covers, so removing it
+     * inside an expression constrained by `satisfies` can change the inferred
+     * type of the annotated value.
+     */
+    function isInsideSatisfiesExpression(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      for (
+        let current: TSESTree.Node | undefined = node.parent;
+        current;
+        current = current.parent
+      ) {
+        if (current.type === AST_NODE_TYPES.TSSatisfiesExpression) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     function isAssignmentInNonStatementContext(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
@@ -984,6 +1080,34 @@ export default createRule<Options, MessageIds>({
         }
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
+
+        if (
+          options.checkLiteralConstAssertions &&
+          typeAnnotationIsConstAssertion &&
+          (castTypeIsLiteral || checker.isTupleType(castType)) &&
+          !isInsideSatisfiesExpression(node) &&
+          !isSubstitutionOfGenericTaggedTemplate(node) &&
+          !isArgumentOfGenericCallWithUnsafeInference(node) &&
+          !isInGenericContext(node)
+        ) {
+          const contextualType = checker.getContextualType(originalNode);
+          if (
+            contextualType &&
+            !isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+            ) &&
+            isContextuallyLiteralConstAssertionType(castType, contextualType) &&
+            checker.isTypeAssignableTo(castType, contextualType)
+          ) {
+            context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
+              fix: createAssertionFixer(node),
+            });
+            return;
+          }
+        }
 
         const castIsAny =
           isTypeFlagSet(castType, ts.TypeFlags.Any) &&
