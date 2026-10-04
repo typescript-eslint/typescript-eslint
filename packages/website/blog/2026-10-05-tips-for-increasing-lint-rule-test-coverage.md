@@ -6,7 +6,7 @@ tags: [code coverage, contributing, rule tester, testing]
 title: Tips For Increasing Lint Rule Test Coverage
 ---
 
-[We aim for 100% code coverage when possible](/contributing/pull-requests#code-coverage) because lint rules are extremely tricky, nuanced pieces of code.
+[In typescript-eslint, we aim for 100% code coverage when possible](/contributing/pull-requests#code-coverage) because lint rules can be extremely tricky, nuanced pieces of code.
 When a lint rule's source has an uncovered line, it's more than it "just" missing test coverage.
 It can also mean that rule logic written for an AST shape is not exercised, which means nothing has checked whether that branch does the right thing.
 Often it doesn't.
