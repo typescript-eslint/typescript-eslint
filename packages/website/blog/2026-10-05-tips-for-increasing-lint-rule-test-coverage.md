@@ -6,13 +6,16 @@ tags: [code coverage, contributing, rule tester, testing]
 title: Tips For Increasing Lint Rule Test Coverage
 ---
 
-Someone probably linked you here from a pull request review that flagged uncovered lines in a lint rule.
-It's one of the most common changes we request, and rather than retype the same explanation every time, we wrote it down.
-
 [We aim for 100% code coverage when possible](/contributing/pull-requests#code-coverage) because lint rules are extremely tricky, nuanced pieces of code.
 When a lint rule's source has an uncovered line, it's more than it "just" missing test coverage.
 It can also mean that rule logic written for an AST shape is not exercised, which means nothing has checked whether that branch does the right thing.
 Often it doesn't.
+
+:::note
+If someone linked you here from a pull request review that flagged uncovered lines in a lint rule:
+Hello! Thanks for contributing!
+This is one of the most common changes we request, and rather than retype the same explanation every time, we wrote it down.
+:::
 
 Every coverage gap we've reviewed has come down to one of three answers:
 
@@ -58,8 +61,9 @@ ruleTester.run('no-underscore-members', rule, {
 });
 ```
 
-Both outcomes of `startsWith('_')` are covered.
-The `return` above them never runs once, and that's what the coverage report will point at:
+Both outcomes of `startsWith('_')` are covered, but the unit tests never run the `return` above them.
+A code coverage report would rightfully point that out as unused code.
+Here's an example visualization from a code coverage reporter like [Codecov](http://codecov.io), the one we use:
 
 <!-- prettier-ignore -->
 ```ts
@@ -79,18 +83,19 @@ MethodDefinition(node) {
 ```
 
 :::info Legend
-**Green** - Line is _fully_ covered by tests
+**Green _(unmarked)_**: Line is _fully_ covered by tests
 
-**Yellow** - Line is _partially_ covered by tests (usually in conditional branches where only some outcomes are exercised)
+**Yellow _(!)_**: Line is _partially_ covered by tests (usually in conditional branches where only some outcomes are exercised)
 
-**Red** - Line is _not_ covered by tests
+**Red _(x)_**: Line is _not_ covered by tests
 :::
 
 ## The Code Is Reachable, So A Unit Test Should Exercise It
 
-The first question worth asking about an uncovered branch is whether a user can get there.
+A good first question to ask about an uncovered branch is whether a user can get there in the first place.
 
-For `node.key.type !== AST_NODE_TYPES.Identifier`, they can, each of the following pieces of code would hit the uncovered branch:
+For `node.key.type !== AST_NODE_TYPES.Identifier`, they can.
+Each of the following pieces of code would hit the uncovered branch:
 
 <!-- prettier-ignore -->
 ```ts
@@ -99,13 +104,12 @@ class Example {
   1() {}           // Literal
   #_update() {}    // PrivateIdentifier
   ['_update']() {} // Literal, computed
-  [update]() {}    // Identifier, computed
 }
 ```
 
 The rule's early `return` causes its logic to ignore any AST node that's not an identifier.
 `'_update'()`, `['_update']()`, and `#_update()` are all non-identifier forms that declare the same method.
-The coverage report found a bug.
+_The coverage report found a bug._
 
 When the type checker reports that `.name` doesn't exist on `node.key`, it's tempting to make the complaint go away:
 
@@ -115,7 +119,7 @@ const name = (node.key as TSESTree.Identifier).name;
 ```
 
 That fixes the coverage number, but leads us into a worse bug.
-`.name` is `undefined` for a string literal key, causing `name.startsWith` to throw - e.g., the rule now _crashes_ on code it used to quietly ignore!
+`.name` is `undefined` for a string literal key, causing `name.startsWith` to throw - i.e., the rule now _crashes_ on code it used to quietly ignore!
 
 Handle the shapes instead.
 Switching on `node.key.type` gives the right field for each one, and `node.computed` says whether that name belongs to the method or to a variable somewhere else:
@@ -184,14 +188,14 @@ ruleTester.run('no-underscore-members', rule, {
 });
 ```
 
-Those last two `valid` cases are worth examining more closely.
+Those last two `valid` cases are particularly interesting.
 A computed key built from a variable or a function call has no name the rule can read, so the rule skips it.
 That's a deliberate decision about rule behavior, and now there's a test holding us to it.
 Without the coverage report, it would have stayed an accident.
 
 :::tip
 Not sure which shapes a node can take?
-Paste code into [our playground](/play) and read the AST tab.
+Paste code into [our playground](/play) and read the ESTree tab.
 That tab shows what each of the the ESLint, TypeScript, and typescript-eslint parsers produce.
 :::
 
@@ -246,7 +250,7 @@ This might be safe for now, but as the rule changes over time it's risky in code
 The next change that adds a call to `getReplacementName` from somewhere else might get a nullish `name` and cause a crash.
 
 The actual problem is that `getStaticName` runs twice.
-Each call forces the surrounding code to answer "and what if there's no static name?", so asking twice means answering twice.
+Each call forces the surrounding code to answer _"and what if there's no static name?"_, so asking twice means answering twice.
 Answer it once, then pass the answer along:
 
 ```ts
@@ -288,15 +292,15 @@ Duplicated work is behind most genuinely unreachable branches we see in rules, a
 
 ## This Is A Difficult-To-Represent Edge Case In Types
 
-An edge case in types is when a specific case can't be represented in types,
+An “edge case in types” is when a specific case can't be represented in TypeScript's type system,
 or when it's guaranteed that a specific case will never occur at runtime.
 This one is the least common.
 Most gaps are one of the first two, so reach for this only after ruling those out.
 
-Token lookups, are a case that often comes up.
+Token lookups are a case that often comes up.
 `getFirstToken`, for example, returns `TSESTree.Token | null` for every node, including nodes that cannot exist without the token being looked for.
 
-Assume we're adding a suggestion to `no-underscore-members` for methods that declare an accessibility, so `protected _update()` will become `private update()`:
+Suppose we're adding a suggestion to `no-underscore-members` for methods that declare an accessibility, so `protected _update()` will become `private update()`:
 
 ```ts
 MethodDefinition(node) {
@@ -360,52 +364,6 @@ const accessibilityToken = nullThrows(
 ```
 
 Both are single expressions, so neither adds a branch to the rule or anything for the coverage report to warn about.
-
-### Optional Chaining vs Non-Null Assertion
-
-If we're already talking about type assertions, it's worth noting that the same gap in coverage sometimes arrives as an optional chain instead of an `if`.
-
-For example, the type of `node.parent.parent` is `Node | undefined` only because the first `.parent` might be a `Program`, so a rule that never reaches a `Program` still gets written defensively:
-
-```ts
-const grandparent = node.parent?.parent;
-```
-
-The `undefined` now spreads to every line that touches `grandparent`, causing us to write defensive code that clutters the coverage report.
-In such cases, reach for `!` rather than `?.`:
-
-```ts
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const grandparent = node.parent.parent!;
-```
-
-_`!` states the type is wrong; `?.` pretends it is right._
-
-:::danger
-An assertion is the answer only when it's confirmed the shape being ruled out is impossible.
-Check in [the playground](/play) before deciding.
-A rule that asserts its way past a shape users can write is worse than one that never handled the shape at all, because now it crashes instead of staying quiet.
-:::
-
-## Finding The Gaps Before Review
-
-There is no need to wait for the review to see any of this.
-To generate a report for one package:
-
-```shell
-npx nx test eslint-plugin --coverage
-```
-
-That writes `packages/eslint-plugin/coverage/lcov-report/index.html`.
-Open it in a browser, find the rule, and uncovered branches are highlighted in the source.
-Pass a test file path to narrow the run down to the specific rule:
-
-```shell
-npx nx test eslint-plugin --coverage tests/rules/no-underscore-members.test.ts
-```
-
-`pnpm test-coverage` from the repo root does the same for every package, though it takes considerably longer.
-On the pull request itself, the `codecov` bot comments with links to line-by-line coverage for each touched file.
 
 ## Ask Us For Help
 
