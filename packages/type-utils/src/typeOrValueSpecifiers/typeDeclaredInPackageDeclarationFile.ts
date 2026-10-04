@@ -153,8 +153,10 @@ function symbolDeclaresOneOf(
   symbol: ts.Symbol,
   declarations: readonly ts.Node[],
 ): boolean {
-  return symbol.getDeclarations()!.some(declaration =>
-    declarations.includes(declaration),
+  return (
+    symbol
+      .getDeclarations()
+      ?.some(declaration => declarations.includes(declaration)) ?? false
   );
 }
 
@@ -163,10 +165,13 @@ function namedExportMatchesDeclarations(
   declarations: readonly ts.Node[],
   checker: ts.TypeChecker,
 ): boolean {
+  const localSymbol = checker.getSymbolAtLocation(exportSpecifier.name);
+  if (localSymbol == null) {
+    return false;
+  }
+
   return symbolDeclaresOneOf(
-    checker.getAliasedSymbol(
-      checker.getSymbolAtLocation(exportSpecifier.name)!,
-    ),
+    checker.getAliasedSymbol(localSymbol),
     declarations,
   );
 }
