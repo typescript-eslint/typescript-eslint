@@ -761,31 +761,14 @@ class Test2 {
   // should report
   private [Symbol.iterator] = 7;
 }
-
-class Test4 {
-  // should report
-  private [1] = 7;
-}
       `,
       errors: [
         {
           column: 3,
-          data: {
-            name: 'Symbol.iterator',
-          },
+          data: { name: 'Symbol.iterator' },
           endColumn: 28,
           endLine: 4,
           line: 4,
-          messageId: 'preferReadonly',
-        },
-        {
-          column: 3,
-          data: {
-            name: '1',
-          },
-          endColumn: 14,
-          endLine: 9,
-          line: 9,
           messageId: 'preferReadonly',
         },
       ],
@@ -794,7 +777,26 @@ class Test2 {
   // should report
   private readonly [Symbol.iterator] = 7;
 }
-
+      `,
+    },
+    {
+      code: `
+class Test4 {
+  // should report
+  private [1] = 7;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: '1' },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
 class Test4 {
   // should report
   private readonly [1] = 7;
@@ -810,9 +812,7 @@ class TestIncorrectlyModifiableStatic {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'incorrectlyModifiableStatic',
-          },
+          data: { name: 'incorrectlyModifiableStatic' },
           endColumn: 45,
           endLine: 3,
           line: 3,
@@ -834,9 +834,7 @@ class TestIncorrectlyModifiableStatic {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#incorrectlyModifiableStatic',
-          },
+          data: { name: '#incorrectlyModifiableStatic' },
           endColumn: 38,
           endLine: 3,
           line: 3,
@@ -858,9 +856,7 @@ class TestIncorrectlyModifiableStaticArrow {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'incorrectlyModifiableStaticArrow',
-          },
+          data: { name: 'incorrectlyModifiableStaticArrow' },
           endColumn: 50,
           endLine: 3,
           line: 3,
@@ -882,9 +878,7 @@ class TestIncorrectlyModifiableStaticArrow {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#incorrectlyModifiableStaticArrow',
-          },
+          data: { name: '#incorrectlyModifiableStaticArrow' },
           endColumn: 43,
           endLine: 3,
           line: 3,
@@ -901,7 +895,27 @@ class TestIncorrectlyModifiableStaticArrow {
       code: `
 class TestIncorrectlyModifiableInline {
   private incorrectlyModifiableInline = 7;
-
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'incorrectlyModifiableInline' },
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class TestIncorrectlyModifiableInline {
+  private readonly incorrectlyModifiableInline = 7;
+}
+      `,
+    },
+    {
+      code: `
+class TestIncorrectlyModifiableInline {
   public createConfusingChildClass() {
     return class {
       private incorrectlyModifiableInline = 7;
@@ -911,30 +925,16 @@ class TestIncorrectlyModifiableInline {
       `,
       errors: [
         {
-          column: 3,
-          data: {
-            name: 'incorrectlyModifiableInline',
-          },
-          endColumn: 38,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-        {
           column: 7,
-          data: {
-            name: 'incorrectlyModifiableInline',
-          },
+          data: { name: 'incorrectlyModifiableInline' },
           endColumn: 42,
-          endLine: 7,
-          line: 7,
+          endLine: 5,
+          line: 5,
           messageId: 'preferReadonly',
         },
       ],
       output: `
 class TestIncorrectlyModifiableInline {
-  private readonly incorrectlyModifiableInline = 7;
-
   public createConfusingChildClass() {
     return class {
       private readonly incorrectlyModifiableInline = 7;
@@ -947,7 +947,27 @@ class TestIncorrectlyModifiableInline {
       code: `
 class TestIncorrectlyModifiableInline {
   #incorrectlyModifiableInline = 7;
-
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: '#incorrectlyModifiableInline' },
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class TestIncorrectlyModifiableInline {
+  readonly #incorrectlyModifiableInline = 7;
+}
+      `,
+    },
+    {
+      code: `
+class TestIncorrectlyModifiableInline {
   public createConfusingChildClass() {
     return class {
       #incorrectlyModifiableInline = 7;
@@ -957,30 +977,16 @@ class TestIncorrectlyModifiableInline {
       `,
       errors: [
         {
-          column: 3,
-          data: {
-            name: '#incorrectlyModifiableInline',
-          },
-          endColumn: 31,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-        {
           column: 7,
-          data: {
-            name: '#incorrectlyModifiableInline',
-          },
+          data: { name: '#incorrectlyModifiableInline' },
           endColumn: 35,
-          endLine: 7,
-          line: 7,
+          endLine: 5,
+          line: 5,
           messageId: 'preferReadonly',
         },
       ],
       output: `
 class TestIncorrectlyModifiableInline {
-  readonly #incorrectlyModifiableInline = 7;
-
   public createConfusingChildClass() {
     return class {
       readonly #incorrectlyModifiableInline = 7;
@@ -1002,9 +1008,7 @@ class TestIncorrectlyModifiableDelayed {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'incorrectlyModifiableDelayed',
-          },
+          data: { name: 'incorrectlyModifiableDelayed' },
           endColumn: 39,
           endLine: 3,
           line: 3,
@@ -1034,9 +1038,7 @@ class TestIncorrectlyModifiableDelayed {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#incorrectlyModifiableDelayed',
-          },
+          data: { name: '#incorrectlyModifiableDelayed' },
           endColumn: 32,
           endLine: 3,
           line: 3,
@@ -1072,9 +1074,7 @@ class TestChildClassExpressionModifiable {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'childClassExpressionModifiable',
-          },
+          data: { name: 'childClassExpressionModifiable' },
           endColumn: 41,
           endLine: 3,
           line: 3,
@@ -1116,9 +1116,7 @@ class TestChildClassExpressionModifiable {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#childClassExpressionModifiable',
-          },
+          data: { name: '#childClassExpressionModifiable' },
           endColumn: 34,
           endLine: 3,
           line: 3,
@@ -1154,9 +1152,7 @@ class TestIncorrectlyModifiablePostMinus {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'incorrectlyModifiablePostMinus',
-          },
+          data: { name: 'incorrectlyModifiablePostMinus' },
           endColumn: 41,
           endLine: 3,
 
@@ -1187,9 +1183,7 @@ class TestIncorrectlyModifiablePostMinus {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#incorrectlyModifiablePostMinus',
-          },
+          data: { name: '#incorrectlyModifiablePostMinus' },
           endColumn: 34,
           endLine: 3,
           line: 3,
@@ -1219,9 +1213,7 @@ class TestIncorrectlyModifiablePostPlus {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'incorrectlyModifiablePostPlus',
-          },
+          data: { name: 'incorrectlyModifiablePostPlus' },
           endColumn: 40,
           endLine: 3,
 
@@ -1252,9 +1244,7 @@ class TestIncorrectlyModifiablePostPlus {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#incorrectlyModifiablePostPlus',
-          },
+          data: { name: '#incorrectlyModifiablePostPlus' },
           endColumn: 33,
           endLine: 3,
 
@@ -1285,9 +1275,7 @@ class TestIncorrectlyModifiablePreMinus {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'incorrectlyModifiablePreMinus',
-          },
+          data: { name: 'incorrectlyModifiablePreMinus' },
           endColumn: 40,
           endLine: 3,
           line: 3,
@@ -1317,9 +1305,7 @@ class TestIncorrectlyModifiablePreMinus {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#incorrectlyModifiablePreMinus',
-          },
+          data: { name: '#incorrectlyModifiablePreMinus' },
           endColumn: 33,
           endLine: 3,
 
@@ -1350,9 +1336,7 @@ class TestIncorrectlyModifiablePrePlus {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'incorrectlyModifiablePrePlus',
-          },
+          data: { name: 'incorrectlyModifiablePrePlus' },
           endColumn: 39,
           endLine: 3,
 
@@ -1383,9 +1367,7 @@ class TestIncorrectlyModifiablePrePlus {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#incorrectlyModifiablePrePlus',
-          },
+          data: { name: '#incorrectlyModifiablePrePlus' },
           endColumn: 32,
           endLine: 3,
 
@@ -1420,9 +1402,7 @@ class SimilarClass {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'overlappingClassVariable',
-          },
+          data: { name: 'overlappingClassVariable' },
           endColumn: 35,
           endLine: 3,
 
@@ -1453,9 +1433,7 @@ class TestIncorrectlyModifiableParameter {
       errors: [
         {
           column: 22,
-          data: {
-            name: 'incorrectlyModifiableParameter',
-          },
+          data: { name: 'incorrectlyModifiableParameter' },
           endColumn: 60,
           endLine: 3,
           line: 3,
@@ -1480,9 +1458,7 @@ class TestIncorrectlyModifiableParameter {
       errors: [
         {
           column: 5,
-          data: {
-            name: 'incorrectlyModifiableParameter',
-          },
+          data: { name: 'incorrectlyModifiableParameter' },
           endColumn: 43,
           endLine: 5,
 
@@ -1508,9 +1484,7 @@ class TestCorrectlyNonInlineLambdas {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'incorrectlyInlineLambda',
-          },
+          data: { name: 'incorrectlyInlineLambda' },
           endColumn: 34,
           endLine: 3,
           line: 3,
@@ -1539,9 +1513,7 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
       errors: [
         {
           column: 5,
-          data: {
-            name: '_name',
-          },
+          data: { name: '_name' },
           endColumn: 18,
           endLine: 4,
           line: 4,
@@ -1567,9 +1539,7 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
       errors: [
         {
           column: 5,
-          data: {
-            name: '#name',
-          },
+          data: { name: '#name' },
           endColumn: 10,
           endLine: 4,
           line: 4,
@@ -1599,9 +1569,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
 
@@ -1636,9 +1604,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -1674,9 +1640,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 7,
           line: 7,
@@ -1714,9 +1678,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 7,
           line: 7,
@@ -1751,9 +1713,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
 
@@ -1786,9 +1746,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -1818,9 +1776,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -1848,9 +1804,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
 
@@ -1879,9 +1833,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -1909,9 +1861,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -1939,9 +1889,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
 
@@ -1970,9 +1918,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -2000,9 +1946,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -2030,9 +1974,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -2060,9 +2002,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -2090,9 +2030,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -2120,9 +2058,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -2150,9 +2086,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -2180,9 +2114,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -2210,9 +2142,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -2240,9 +2170,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'testObj',
-          },
+          data: { name: 'testObj' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -2270,9 +2198,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: '#testObj',
-          },
+          data: { name: '#testObj' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -2302,9 +2228,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2336,9 +2260,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2370,9 +2292,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2403,9 +2323,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2431,9 +2349,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2461,9 +2377,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 5,
           line: 5,
@@ -2493,9 +2407,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 5,
           line: 5,
@@ -2523,9 +2435,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2551,9 +2461,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2581,9 +2489,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 5,
           line: 5,
@@ -2615,9 +2521,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2643,9 +2547,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -2673,9 +2575,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 5,
           line: 5,
@@ -2712,9 +2612,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 8,
           line: 8,
@@ -2750,9 +2648,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 8,
           line: 8,
@@ -2790,9 +2686,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 10,
           line: 10,
@@ -2832,9 +2726,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 10,
           line: 10,
@@ -2870,9 +2762,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 10,
           line: 10,
@@ -2916,9 +2806,7 @@ function wrapper() {
       errors: [
         {
           column: 5,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 17,
           endLine: 13,
           line: 13,
@@ -2970,9 +2858,7 @@ function wrapper() {
       errors: [
         {
           column: 5,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 17,
           endLine: 13,
           line: 13,
@@ -3024,9 +2910,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 14,
           line: 14,
@@ -3063,9 +2947,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3091,9 +2973,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3119,9 +2999,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3147,9 +3025,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3183,9 +3059,7 @@ class X {
       errors: [
         {
           column: 3,
-          data: {
-            name: '_isValid',
-          },
+          data: { name: '_isValid' },
           endColumn: 19,
           endLine: 3,
           line: 3,
@@ -3215,9 +3089,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3239,9 +3111,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3267,9 +3137,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3299,9 +3167,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3335,9 +3201,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3373,9 +3237,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 5,
           line: 5,
@@ -3403,9 +3265,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3431,9 +3291,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3459,9 +3317,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,
@@ -3483,9 +3339,7 @@ class Test {
       errors: [
         {
           column: 3,
-          data: {
-            name: 'prop',
-          },
+          data: { name: 'prop' },
           endColumn: 15,
           endLine: 3,
           line: 3,

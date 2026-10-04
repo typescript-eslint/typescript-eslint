@@ -1,44 +1,4 @@
 {
-  "packages/eslint-plugin/tests/rules/prefer-enum-initializers.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-for-of.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-literal-enum-member.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 17
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-namespace-keyword.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-nullish-coalescing.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-readonly-parameter-types.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-readonly.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 3
-    }
-  },
-  "packages/eslint-plugin/tests/rules/prefer-regexp-exec.test.ts": {
-    "@typescript-eslint/internal/no-multiple-lines-of-errors": {
-      "count": 1
-    }
-  },
   "packages/eslint-plugin/tests/rules/promise-function-async.test.ts": {
     "@typescript-eslint/internal/no-multiple-lines-of-errors": {
       "count": 13
