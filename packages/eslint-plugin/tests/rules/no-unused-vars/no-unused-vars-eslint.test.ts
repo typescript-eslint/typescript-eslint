@@ -1398,11 +1398,7 @@ const _c = a + 5;
       `,
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          args: 'all',
-          reportUsedIgnorePattern: true,
-          varsIgnorePattern: '^_',
-        },
+        { args: 'all', reportUsedIgnorePattern: true, varsIgnorePattern: '^_' },
       ],
     },
     {
@@ -1412,11 +1408,7 @@ const _c = a + 5;
 })(5);
       `,
       options: [
-        {
-          args: 'all',
-          argsIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
-        },
+        { args: 'all', argsIgnorePattern: '^_', reportUsedIgnorePattern: true },
       ],
     },
     {
@@ -1426,10 +1418,7 @@ console.log(a + c);
       `,
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          destructuredArrayIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
-        },
+        { destructuredArrayIgnorePattern: '^_', reportUsedIgnorePattern: true },
       ],
     },
   ],
@@ -4092,11 +4081,7 @@ const _b = _a + 5;
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          args: 'all',
-          reportUsedIgnorePattern: true,
-          varsIgnorePattern: '^_',
-        },
+        { args: 'all', reportUsedIgnorePattern: true, varsIgnorePattern: '^_' },
       ],
     },
     {
@@ -4115,11 +4100,7 @@ foo(() => _a);
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          args: 'all',
-          reportUsedIgnorePattern: true,
-          varsIgnorePattern: '^_',
-        },
+        { args: 'all', reportUsedIgnorePattern: true, varsIgnorePattern: '^_' },
       ],
     },
     {
@@ -4138,11 +4119,7 @@ foo(() => _a);
         },
       ],
       options: [
-        {
-          args: 'all',
-          argsIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
-        },
+        { args: 'all', argsIgnorePattern: '^_', reportUsedIgnorePattern: true },
       ],
     },
     {
@@ -4164,10 +4141,7 @@ console.log(a + _b);
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          destructuredArrayIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
-        },
+        { destructuredArrayIgnorePattern: '^_', reportUsedIgnorePattern: true },
       ],
     },
     {
@@ -4291,10 +4265,7 @@ try {
         },
       ],
       options: [
-        {
-          caughtErrorsIgnorePattern: 'ignored',
-          varsIgnorePattern: '_',
-        },
+        { caughtErrorsIgnorePattern: 'ignored', varsIgnorePattern: '_' },
       ],
     },
     {
@@ -4362,12 +4333,7 @@ _ => {
           line: 3,
         },
       ],
-      options: [
-        {
-          argsIgnorePattern: 'ignored',
-          varsIgnorePattern: '_',
-        },
-      ],
+      options: [{ argsIgnorePattern: 'ignored', varsIgnorePattern: '_' }],
     },
   ],
 });

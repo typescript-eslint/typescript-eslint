@@ -468,12 +468,14 @@ setTimeout(function () {
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 var a = 3;
 function b() {
   var a = 10;
-  var c = 0;
+  var b = 0;
 }
 setTimeout(function () {
   b();
@@ -488,20 +490,6 @@ setTimeout(function () {
           line: 4,
           messageId: 'noShadow',
         },
-      ],
-    },
-    {
-      code: `
-var a = 3;
-function b() {
-  var c = 10;
-  var b = 0;
-}
-setTimeout(function () {
-  b();
-}, 0);
-      `,
-      errors: [
         {
           column: 7,
           data: { name: 'b', shadowedColumn: 10, shadowedLine: 3 },
@@ -512,6 +500,7 @@ setTimeout(function () {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 var x = 1;
@@ -1144,11 +1133,13 @@ class A {
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 (function a() {
   function a() {
-    function foo() {}
+    function a() {}
   }
 })();
       `,
@@ -1161,36 +1152,6 @@ class A {
           line: 3,
           messageId: 'noShadow',
         },
-      ],
-    },
-    {
-      code: `
-(function a() {
-  function foo() {
-    function a() {}
-  }
-})();
-      `,
-      errors: [
-        {
-          column: 14,
-          data: { name: 'a', shadowedColumn: 11, shadowedLine: 2 },
-          endColumn: 15,
-          endLine: 4,
-          line: 4,
-          messageId: 'noShadow',
-        },
-      ],
-    },
-    {
-      code: `
-(function foo() {
-  function a() {
-    function a() {}
-  }
-})();
-      `,
-      errors: [
         {
           column: 14,
           data: { name: 'a', shadowedColumn: 12, shadowedLine: 3 },
@@ -1201,6 +1162,7 @@ class A {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function foo() {
