@@ -262,6 +262,13 @@ export function clearTSServerProjectService(): void {
 }
 
 /**
+ * Closes a file opened by the TypeScript server project service.
+ */
+export function closeTSServerProjectServiceFile(filePath: string): void {
+  TSSERVER_PROJECT_SERVICE?.service.closeClientFile(filePath);
+}
+
+/**
  * Ensures source code is a string.
  */
 function enforceCodeString(code: unknown): string {

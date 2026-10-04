@@ -12,6 +12,7 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 
 import * as parser from '@typescript-eslint/parser';
+import { closeTSServerProjectServiceFile } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import assert from 'node:assert';
@@ -68,6 +69,7 @@ const DUPLICATE_PARSER_ERROR_MESSAGE = `Do not set the parser at the test level 
 // a bit weird, but if they're using this tooling, it'll be installed
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const defaultParser = require(TYPESCRIPT_ESLINT_PARSER) as typeof ParserType;
+let lastFilenameWithParserState: string | undefined;
 
 /*
  * testerDefaultConfig must not be modified as it allows to reset the tester to
@@ -217,6 +219,18 @@ export class RuleTester extends TestFramework {
       basePath = path.parse(
         path.resolve(basePath ?? process.cwd(), filename),
       ).root;
+    }
+
+    const parserFilename =
+      filename == null
+        ? undefined
+        : path.resolve(basePath ?? process.cwd(), filename);
+    if (parserFilename !== lastFilenameWithParserState) {
+      // Prevent script globals in one test's virtual file from leaking into another.
+      if (lastFilenameWithParserState != null) {
+        closeTSServerProjectServiceFile(lastFilenameWithParserState);
+      }
+      lastFilenameWithParserState = parserFilename;
     }
 
     let linterForBasePath = this.#lintersByBasePath.get(basePath);

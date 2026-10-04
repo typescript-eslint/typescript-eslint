@@ -3,6 +3,7 @@ export * from './ast-converter';
 export * from './create-program/getScriptKind';
 export type { ParseSettings } from './parseSettings';
 export { SUPPORTED_TYPESCRIPT_VERSIONS } from './parseSettings/warnAboutTSVersion';
+export { closeTSServerProjectServiceFile } from './parseSettings/createParseSettings';
 
 // required by packages/utils/src/ts-estree.ts
 export * from './getModifiers';

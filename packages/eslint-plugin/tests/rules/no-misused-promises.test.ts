@@ -1873,6 +1873,21 @@ function f(): () => void {
     },
     {
       code: `
+type O = { f: () => void };
+const o: O = { f: async () => 'foo' };
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 25,
+          endLine: 3,
+          line: 3,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
 type O = {
   func: () => void;
 };
