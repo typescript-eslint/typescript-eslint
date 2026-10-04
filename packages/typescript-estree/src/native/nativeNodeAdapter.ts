@@ -127,6 +127,7 @@ const KIND_PROPERTIES = new Set([
 ]);
 
 const NATIVE_NODE = Symbol('nativeNode');
+const VALUES = Symbol('values');
 
 const EAGER_KEYS = new Set(['end', 'flags', 'kind', 'pos']);
 
@@ -149,6 +150,7 @@ const FORWARDED_METHODS = [
 
 interface NodeView {
   [NATIVE_NODE]: NativeNode;
+  [VALUES]: Map<string, unknown> | undefined;
   end: number;
   flags: number;
   kind: number;
@@ -505,15 +507,6 @@ export function createNativeNodeAdapter({
 
   const viewPrototypes = new WeakMap<object, object>();
 
-  function memoize(view: object, name: string, value: unknown) {
-    Object.defineProperty(view, name, {
-      configurable: true,
-      enumerable: true,
-      value,
-      writable: true,
-    });
-  }
-
   function createViewPrototype(nativePrototype: object) {
     const prototype: Record<string, unknown> = {};
     for (const name of FORWARDED_METHODS) {
@@ -536,16 +529,21 @@ export function createNativeNodeAdapter({
       if (EAGER_KEYS.has(name)) {
         continue;
       }
+      // Read values live in a map so that reading them doesn't reshape the view.
       Object.defineProperty(prototype, name, {
         configurable: true,
         enumerable: false,
         get(this: NodeView) {
+          const values = this[VALUES];
+          if (values?.has(name)) {
+            return values.get(name);
+          }
           const value = readClassic(this[NATIVE_NODE], name, this);
-          memoize(this, name, value);
+          (this[VALUES] ??= new Map()).set(name, value);
           return value;
         },
         set(this: NodeView, value: unknown) {
-          memoize(this, name, value);
+          (this[VALUES] ??= new Map()).set(name, value);
         },
       });
     }
@@ -577,6 +575,7 @@ export function createNativeNodeAdapter({
     }
     const view = Object.create(getViewPrototype(node)) as NodeView;
     view[NATIVE_NODE] = node;
+    view[VALUES] = undefined;
     view.kind = translateNodeKind(node);
     view.pos = node.pos;
     view.end = node.end;
