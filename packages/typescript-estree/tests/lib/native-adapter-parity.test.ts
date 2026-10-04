@@ -1,0 +1,497 @@
+import type { TSESTree } from '@typescript-eslint/types';
+
+import fs from 'node:fs';
+import path from 'node:path';
+import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
+
+import {
+  isolateNativeBackend,
+  nativeFixtures,
+  nativePath,
+  onBothBackends,
+  parseOnBackend,
+} from './nativeTestUtils';
+
+isolateNativeBackend();
+
+function declarationOf(ast: TSESTree.Program, index: number) {
+  return (ast.body[index] as TSESTree.VariableDeclaration).declarations[0];
+}
+
+describe('native adapter parity', () => {
+  it('answers intrinsic types', () => {
+    const { classic, native } = onBothBackends('export {};', ({ checker }) =>
+      [
+        checker.getAnyType(),
+        checker.getBigIntType(),
+        checker.getBooleanType(),
+        checker.getESSymbolType(),
+        checker.getFalseType(),
+        checker.getNeverType(),
+        checker.getNullType(),
+        checker.getTrueType(),
+        checker.getUndefinedType(),
+        checker.getUnknownType(),
+        checker.getVoidType(),
+      ].map(type => checker.typeToString(type)),
+    );
+
+    expect(native).toEqual(classic);
+  });
+
+  it('answers the type of a symbol away from an identifier', () => {
+    const { classic, native } = onBothBackends(
+      [
+        'declare const maybe: string | undefined;',
+        'if (maybe) {',
+        '  maybe;',
+        '}',
+      ].join('\n'),
+      ({ ast, checker, tsNode }) => {
+        const declaration = declarationOf(ast, 0);
+        const symbol = checker.getSymbolAtLocation(tsNode(declaration.id))!;
+        const ifStatement = ast.body[1] as TSESTree.IfStatement;
+        const narrowed = (
+          (ifStatement.consequent as TSESTree.BlockStatement)
+            .body[0] as TSESTree.ExpressionStatement
+        ).expression;
+
+        return {
+          atDeclaration: checker.typeToString(
+            checker.getTypeOfSymbolAtLocation(symbol, tsNode(declaration)),
+          ),
+          atIdentifier: checker.typeToString(
+            checker.getTypeOfSymbolAtLocation(symbol, tsNode(narrowed)),
+          ),
+        };
+      },
+    );
+
+    expect(native).toEqual({
+      atDeclaration: 'string | undefined',
+      atIdentifier: 'string',
+    });
+    expect(native).toEqual(classic);
+  });
+
+  it('answers constant values', () => {
+    const { classic, native } = onBothBackends(
+      'enum Enum { A = 3 }',
+      ({ ast, checker, tsNode }) =>
+        checker.getConstantValue(
+          tsNode(
+            (ast.body[0] as TSESTree.TSEnumDeclaration).body.members[0],
+          ) as ts.EnumMember,
+        ),
+    );
+
+    expect(native).toBe(3);
+    expect(native).toBe(classic);
+  });
+
+  it('answers module exports and aliases', () => {
+    const { classic, native } = onBothBackends(
+      [
+        "import * as dependencyModule from './dependency';",
+        "import { dependency } from './dependency';",
+        'export { dependency as renamed };',
+        'export const local = dependencyModule;',
+      ].join('\n'),
+      ({ ast, checker, tsNode }) => {
+        const [namespaceImport, namedImport, reexport] = ast.body as [
+          TSESTree.ImportDeclaration,
+          TSESTree.ImportDeclaration,
+          TSESTree.ExportNamedDeclaration,
+        ];
+        const moduleSymbol = checker.getSymbolAtLocation(
+          tsNode(namespaceImport.source),
+        )!;
+        const exports = checker.getExportsOfModule(moduleSymbol);
+        const alias = checker.getSymbolAtLocation(
+          tsNode(namedImport.specifiers[0].local),
+        )!;
+
+        return {
+          aliased: checker.getImmediateAliasedSymbol(alias)?.name,
+          exports: exports.map(symbol => symbol.name),
+          localTarget: checker.getExportSpecifierLocalTargetSymbol(
+            tsNode(reexport.specifiers[0]) as ts.ExportSpecifier,
+          )?.name,
+          qualifiedName: checker
+            .getFullyQualifiedName(exports[0])
+            .split('.')
+            .at(-1),
+        };
+      },
+    );
+
+    expect(native).toEqual(classic);
+  });
+
+  it('leaves a synthesized default alias without declarations', () => {
+    const { classic, native } = onBothBackends(
+      "export async function f() {\n  return (await import('./dependency.cjs')).default;\n}",
+      ({ ast, services }) => {
+        const declaration = ast.body[0] as TSESTree.ExportNamedDeclaration;
+        const statement = (
+          declaration.declaration as TSESTree.FunctionDeclaration
+        ).body.body[0] as TSESTree.ReturnStatement;
+        const symbol = services.getSymbolAtLocation(
+          (statement.argument as TSESTree.MemberExpression).property,
+        );
+
+        return {
+          declarations: symbol?.getDeclarations(),
+          name: symbol?.name,
+        };
+      },
+      nativePath(nativeFixtures, 'commonjs', 'file.mts'),
+    );
+
+    expect(native).toEqual({ declarations: undefined, name: 'default' });
+    expect(native).toEqual(classic);
+  });
+
+  it('answers non-nullable types', () => {
+    const { classic, native } = onBothBackends(
+      'declare const value: string | undefined;',
+      ({ ast, checker, tsNode }) =>
+        checker.typeToString(
+          checker.getNonNullableType(
+            checker.getTypeAtLocation(tsNode(declarationOf(ast, 0).id)),
+          ),
+        ),
+    );
+
+    expect(native).toBe('string');
+    expect(native).toBe(classic);
+  });
+
+  it('answers special symbols and names in scope', () => {
+    const { classic, native } = onBothBackends(
+      'function f() {\n  return [arguments, undefined];\n}',
+      ({ ast, checker, tsNode }) => {
+        const returned = (
+          (ast.body[0] as TSESTree.FunctionDeclaration).body
+            .body[0] as TSESTree.ReturnStatement
+        ).argument as TSESTree.ArrayExpression;
+        const [argumentsSymbol, undefinedSymbol] = returned.elements.map(
+          element => checker.getSymbolAtLocation(tsNode(element!))!,
+        );
+
+        return {
+          isArguments: checker.isArgumentsSymbol(argumentsSymbol),
+          isUndefined: checker.isUndefinedSymbol(undefinedSymbol),
+          isUnknown: checker.isUnknownSymbol(argumentsSymbol),
+          resolved: checker.resolveName(
+            'Promise',
+            tsNode(returned),
+            ts.SymbolFlags.Type,
+            false,
+          )?.name,
+        };
+      },
+    );
+
+    expect(native).toEqual({
+      isArguments: true,
+      isUndefined: true,
+      isUnknown: false,
+      resolved: 'Promise',
+    });
+    expect(native).toEqual(classic);
+  });
+
+  it('answers signature declarations and type nodes', () => {
+    const { classic, native } = onBothBackends(
+      'declare function f(a: string, b?: number): boolean;',
+      ({ ast, checker, tsNode }) => {
+        const declaration = tsNode(ast.body[0]) as ts.FunctionDeclaration;
+        const signature = checker.getSignatureFromDeclaration(declaration)!;
+        const signatureDeclaration = checker.signatureToSignatureDeclaration(
+          signature,
+          ts.SyntaxKind.FunctionType,
+          undefined,
+          undefined,
+        )!;
+        const typeNode = checker.typeToTypeNode(
+          checker.getTypeAtLocation(declaration.name!),
+          undefined,
+          undefined,
+        )!;
+
+        return {
+          parameters: signatureDeclaration.parameters.length,
+          signatureKind: ts.SyntaxKind[signatureDeclaration.kind],
+          typeNodeKind: ts.SyntaxKind[typeNode.kind],
+        };
+      },
+    );
+
+    expect(native).toEqual(classic);
+  });
+
+  it('answers program diagnostics and files', () => {
+    const { classic, native } = onBothBackends(
+      "import { dependency } from './dependency';\nconst value: string = dependency;",
+      ({ program, sourceFile }) => ({
+        configFileParsing: program.getConfigFileParsingDiagnostics().length,
+        declaration: program.getDeclarationDiagnostics(sourceFile).length,
+        external: program.isSourceFileFromExternalLibrary(sourceFile),
+        global: program.getGlobalDiagnostics().length,
+        hasDependency: program
+          .getSourceFiles()
+          .some(file => file.fileName.endsWith('dependency.ts')),
+        library: program.isSourceFileDefaultLibrary(sourceFile),
+        options: program.getOptionsDiagnostics().length,
+        roots: program
+          .getRootFileNames()
+          .map(fileName => path.basename(fileName))
+          .sort(),
+        semantic: program
+          .getSemanticDiagnostics(sourceFile)
+          .map(diagnostic => diagnostic.code),
+        sourceFileByPath:
+          program.getSourceFileByPath(
+            (sourceFile as ts.SourceFile & { path: ts.Path }).path,
+          )?.fileName === sourceFile.fileName,
+        syntactic: program.getSyntacticDiagnostics(sourceFile).length,
+      }),
+    );
+
+    expect(native.semantic).toEqual([2322]);
+    expect(native.sourceFileByPath).toBe(true);
+    expect(native).toEqual(classic);
+  });
+
+  it('answers diagnostic message chains and related information', () => {
+    const { classic, native } = onBothBackends(
+      [
+        'export const value: { a: string } = {} as { a: number };',
+        'function takesOne(first: string) {}',
+        'takesOne();',
+      ].join('\n'),
+      ({ program, sourceFile }) =>
+        program.getSemanticDiagnostics(sourceFile).map(diagnostic => ({
+          code: diagnostic.code,
+          message: ts.flattenDiagnosticMessageText(
+            diagnostic.messageText,
+            '\n',
+          ),
+          related: diagnostic.relatedInformation?.map(related => ({
+            code: related.code,
+            fileName: related.file?.fileName,
+            start: related.start,
+          })),
+        })),
+    );
+
+    expect(native.map(diagnostic => diagnostic.code)).toEqual([2322, 2554]);
+    expect(native).toEqual(classic);
+  });
+
+  it('answers project references', () => {
+    const { classic, native } = onBothBackends(
+      "import { second } from '../second/file';",
+      ({ program }) =>
+        program
+          .getProjectReferences()
+          ?.map(reference => path.relative(nativeFixtures, reference.path)),
+      nativePath(nativeFixtures, 'references/file.ts'),
+    );
+
+    expect(native).toEqual(['second']);
+    expect(native).toEqual(classic);
+  });
+
+  it('answers resolution modes', () => {
+    const { classic, native } = onBothBackends(
+      "import { dependency } from './dependency';\nexport { dependency };",
+      ({ ast, program, sourceFile, tsNode }) => ({
+        atIndex: program.getModeForResolutionAtIndex(sourceFile, 0),
+        usage: program.getModeForUsageLocation(
+          sourceFile,
+          tsNode(
+            (ast.body[0] as TSESTree.ImportDeclaration).source,
+          ) as ts.StringLiteral,
+        ),
+      }),
+    );
+
+    expect(native).toEqual(classic);
+  });
+
+  it('answers type members', () => {
+    const { classic, native } = onBothBackends(
+      [
+        'function withDefault<T = string>(value?: T) { return value; }',
+        'class Box {}',
+        'declare const box: Box;',
+        "declare const literal: 'text';",
+        'function constrained<T extends U, U extends string>() {}',
+      ].join('\n'),
+      ({ ast, checker, tsNode }) => {
+        const typeParameter = checker.getTypeAtLocation(
+          tsNode(
+            (ast.body[0] as TSESTree.FunctionDeclaration).typeParameters!
+              .params[0],
+          ),
+        );
+
+        const constrained = checker.getTypeAtLocation(
+          tsNode(
+            (ast.body[4] as TSESTree.FunctionDeclaration).typeParameters!
+              .params[0],
+          ),
+        );
+
+        return {
+          apparentProperties: checker
+            .getTypeAtLocation(tsNode(declarationOf(ast, 3).id))
+            .getApparentProperties().length,
+          constraint: checker.typeToString(constrained.getConstraint()!),
+          default: checker.typeToString(typeParameter.getDefault()!),
+          isClass: checker
+            .getTypeAtLocation(tsNode(declarationOf(ast, 2).id))
+            .isClass(),
+        };
+      },
+    );
+
+    expect(native).toEqual(classic);
+  });
+
+  it('answers symbol and signature documentation', () => {
+    const { classic, native } = onBothBackends(
+      [
+        '/**',
+        ' * Adds one.',
+        ' * @deprecated Use add instead.',
+        ' */',
+        'export function increment(value: number) {',
+        '  return value + 1;',
+        '}',
+      ].join('\n'),
+      ({ ast, checker, tsNode }) => {
+        const declaration = tsNode(
+          (ast.body[0] as TSESTree.ExportNamedDeclaration).declaration!,
+        ) as ts.FunctionDeclaration;
+        const symbol = checker.getSymbolAtLocation(declaration.name!)!;
+        const tags = (tagInfos: ts.JSDocTagInfo[]) =>
+          tagInfos.map(tag => [tag.name, ts.displayPartsToString(tag.text)]);
+
+        return {
+          documentation: ts.displayPartsToString(
+            symbol.getDocumentationComment(checker),
+          ),
+          isFunction: (symbol.getFlags() & ts.SymbolFlags.Function) !== 0,
+          signatureTags: tags(
+            checker.getSignatureFromDeclaration(declaration)!.getJsDocTags(),
+          ),
+          symbolTags: tags(symbol.getJsDocTags(checker)),
+        };
+      },
+    );
+
+    expect(native).toEqual(classic);
+  });
+
+  it('answers signature parameter types', () => {
+    const { classic, native } = onBothBackends(
+      'declare function first<T>(values: T[]): T;',
+      ({ ast, checker, tsNode }) =>
+        checker.typeToString(
+          checker
+            .getSignatureFromDeclaration(
+              tsNode(ast.body[0]) as ts.FunctionDeclaration,
+            )!
+            .getTypeParameterAtPosition(0),
+        ),
+    );
+
+    expect(native).toBe(classic);
+  });
+
+  it('answers node children and text', () => {
+    const { classic, native } = onBothBackends(
+      '// leading\nconst value = [1, 2];',
+      ({ ast, sourceFile, tsNode }) => {
+        const statement = tsNode(ast.body[0]);
+        let arrays = 0;
+        let children = 0;
+        sourceFile.forEachChild(
+          () => {
+            children++;
+          },
+          () => {
+            arrays++;
+          },
+        );
+
+        return {
+          arrays,
+          childCount: statement.getChildCount(sourceFile),
+          children,
+          fullText: statement.getFullText(sourceFile),
+          lastToken: ts.SyntaxKind[statement.getLastToken(sourceFile)!.kind],
+          leadingTriviaWidth: statement.getLeadingTriviaWidth(sourceFile),
+        };
+      },
+    );
+
+    expect(native).toEqual(classic);
+  });
+
+  it('answers a JSX closing tag’s first token as classic splits it', () => {
+    const { classic, native } = onBothBackends(
+      'const element = <div></div>;',
+      ({ ast, sourceFile, tsNode }) => {
+        const element = declarationOf(ast, 0).init as TSESTree.JSXElement;
+        const closing = tsNode(element.closingElement!);
+
+        return ts.SyntaxKind[closing.getFirstToken(sourceFile)!.kind];
+      },
+      nativePath(nativeFixtures, 'component.tsx'),
+    );
+
+    expect(native).toBe(classic);
+  });
+
+  it('answers classic object flags for an instantiation expression', () => {
+    const filePath = nativePath(nativeFixtures, 'instantiation.ts');
+    const { classic, native } = onBothBackends(
+      fs.readFileSync(filePath, 'utf8'),
+      ({ ast, checker, tsNode }) => {
+        const statement = ast.body[1] as TSESTree.ExportNamedDeclaration;
+        const declaration =
+          statement.declaration as TSESTree.VariableDeclaration;
+        const type = checker.getTypeAtLocation(
+          tsNode(declaration.declarations[0]),
+        );
+        return tsutils.isObjectType(type) ? type.objectFlags : undefined;
+      },
+      filePath,
+    );
+
+    expect(native).toBe(classic);
+    expect(
+      native && native & ts.ObjectFlags.InstantiationExpressionType,
+    ).toBeTruthy();
+  });
+
+  it('refuses classic objects in native queries', () => {
+    const classic = parseOnBackend('declare const value: string;', false);
+    const native = parseOnBackend('declare const value: string;', true);
+    const classicNode = classic.tsNode(declarationOf(classic.ast, 0).id);
+
+    expect(() =>
+      native.checker.typeToString(
+        classic.checker.getTypeAtLocation(classicNode),
+      ),
+    ).toThrow('cannot be mixed');
+    expect(() => native.checker.getTypeAtLocation(classicNode)).toThrow(
+      'not created by a native node adapter',
+    );
+  });
+});

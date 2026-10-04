@@ -208,6 +208,29 @@ function foo(arg: Foo) {}
         },
       ],
     },
+    {
+      code: `
+function method() {}
+method.helper = function () {};
+function foo(arg: typeof method) {}
+      `,
+      options: [
+        {
+          treatMethodsAsReadonly: true,
+        },
+      ],
+    },
+    `
+function foo<T>(
+  arg: T extends string ? readonly string[] : readonly number[],
+) {}
+    `,
+    'function foo(arg: Partial<Readonly<{ prop: string }>>) {}',
+    `
+declare function constant<const T>(value: T): T;
+const value = constant({ prop: 1 });
+function foo(arg: typeof value) {}
+    `,
     // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
     {
       code: `
@@ -620,6 +643,18 @@ function foo(arg: MyReadonlyType) {}
     },
   ],
   invalid: [
+    {
+      code: 'function foo<T>(arg: T extends string ? string[] : number[]) {}',
+      errors: [
+        {
+          column: 17,
+          endColumn: 60,
+          endLine: 1,
+          line: 1,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
     // arrays
     // Removing readonly causes duplicates
     {

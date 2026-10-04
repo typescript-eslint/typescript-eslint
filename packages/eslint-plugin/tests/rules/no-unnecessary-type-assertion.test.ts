@@ -3472,3 +3472,19 @@ const value = get<string>();
     },
   ],
 });
+
+// The native backend only runs under the project service.
+createRuleTesterWithTypes().run('no-unnecessary-type-assertion', rule, {
+  valid: [
+    `
+interface Obj {
+  id: number;
+}
+type Optional<T> = { [K in keyof T]?: T[K] };
+type ReadonlyOptional<T> = { [K in keyof Readonly<T>]?: Readonly<T>[K] };
+declare const obj: ReadonlyOptional<Obj>;
+const obj2 = obj as Optional<Obj>;
+    `,
+  ],
+  invalid: [],
+});
