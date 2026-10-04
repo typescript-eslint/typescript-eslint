@@ -95,7 +95,6 @@ export function createNativeChecker({
   prefetch: (nodes: {
     calls: readonly ts.Node[];
     contextual: readonly ts.Node[];
-    identifiers: readonly ts.Node[];
     typed: readonly ts.Node[];
   }) => void;
 } {
@@ -150,7 +149,10 @@ export function createNativeChecker({
     return wrapType(type);
   }
 
-  const pendingIdentifiers = new WeakMap<object, readonly ts.Node[]>();
+  const pendingTypes = new WeakMap<
+    object,
+    { misses: number; nodes: readonly ts.Node[] }
+  >();
   const pendingCalls = new WeakMap<object, readonly ts.Node[]>();
   const pendingArguments = new WeakMap<object, readonly ts.Node[]>();
   const pendingContextual = new WeakMap<object, readonly ts.Node[]>();
@@ -172,6 +174,30 @@ export function createNativeChecker({
     } catch {
       return undefined;
     }
+  }
+
+  // Light rule sets ask after a few of a file's nodes and heavy ones after most,
+  // so a file's types are batched once enough of them have been asked for alone.
+  function prefetchTypes(node: ts.Node, sourceFile: object) {
+    const pending = pendingTypes.get(sourceFile);
+    if (
+      !pending ||
+      ++pending.misses <
+        Math.max(2, pending.nodes.length * PREFETCH_TYPES_AFTER_MISSES)
+    ) {
+      return undefined;
+    }
+    pendingTypes.delete(sourceFile);
+    const nodes = pending.nodes.filter(
+      pendingNode =>
+        !getMemoEntry(memoRoots.getTypeAtLocation, [pendingNode], 1).resolved,
+    );
+    const types = checker.getTypeAtLocation(nodes.map(unwrapNode));
+    nodes.forEach((pendingNode, index) => {
+      seed(memoRoots.getTypeAtLocation, [pendingNode], wrapType(types[index]));
+    });
+    const entry = getMemoEntry(memoRoots.getTypeAtLocation, [node], 1);
+    return entry.resolved ? entry : undefined;
   }
 
   function prefetchParameterTypes(
@@ -394,25 +420,8 @@ export function createNativeChecker({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
       checker.getSignaturesOfType(unwrapType(type), kind).map(toSignature),
     getStringType: () => wrapType(checker.getStringType()),
-    getSymbolAtLocation: node => {
-      const native = unwrapLocation(node);
-      const sourceFile = native.getSourceFile();
-      const identifiers = pendingIdentifiers.get(sourceFile);
-      if (identifiers) {
-        pendingIdentifiers.delete(sourceFile);
-        const symbols = checker
-          .getSymbolAtLocation(identifiers.map(unwrapNode))
-          .map(symbol => wrapSymbol(symbol));
-        identifiers.forEach((identifier, index) => {
-          seed(memoRoots.getSymbolAtLocation, [identifier], symbols[index]);
-        });
-        const index = identifiers.indexOf(node);
-        if (index !== -1) {
-          return symbols[index];
-        }
-      }
-      return wrapSymbol(checker.getSymbolAtLocation(native));
-    },
+    getSymbolAtLocation: node =>
+      wrapSymbol(checker.getSymbolAtLocation(unwrapLocation(node))),
     getSymbolsInScope: (location, meaning) =>
       checker
         .getSymbolsInScope(
@@ -429,10 +438,16 @@ export function createNativeChecker({
         .map(toType),
     // Classic answers its error type for a missing node. The native API has no
     // error type to return, so `any` stands in.
-    getTypeAtLocation: (node: ts.Node | undefined) =>
-      node == null
-        ? wrapType(checker.getAnyType())
-        : wrapType(checker.getTypeAtLocation(unwrapLocation(node))),
+    getTypeAtLocation: (node: ts.Node | undefined) => {
+      if (node == null) {
+        return wrapType(checker.getAnyType());
+      }
+      const location = unwrapLocation(node);
+      const prefetched = prefetchTypes(node, location.getSourceFile());
+      return prefetched
+        ? (prefetched.result as ts.Type)
+        : wrapType(checker.getTypeAtLocation(location));
+    },
     getTypeFromTypeNode: node =>
       wrapType(
         checker.getTypeFromTypeNode(
@@ -555,13 +570,14 @@ export function createNativeChecker({
       UNSUPPORTED_CHECKER_MEMBERS,
       memoized,
     ) as unknown as ts.TypeChecker,
-    prefetch({ calls, contextual, identifiers, typed }) {
-      const types = checker.getTypeAtLocation(typed.map(unwrapNode));
-      typed.forEach((node, index) => {
-        seed(memoRoots.getTypeAtLocation, [node], wrapType(types[index]));
-      });
+    prefetch({ calls, contextual, typed }) {
+      if (typed.length) {
+        pendingTypes.set(unwrapNode(typed[0]).getSourceFile(), {
+          misses: 0,
+          nodes: typed,
+        });
+      }
       for (const [pending, nodes] of [
-        [pendingIdentifiers, identifiers],
         [pendingCalls, calls],
         [pendingArguments, calls],
         [pendingContextual, contextual],
@@ -575,6 +591,8 @@ export function createNativeChecker({
 }
 
 type CheckerMethod = (...args: unknown[]) => unknown;
+
+const PREFETCH_TYPES_AFTER_MISSES = 0.1;
 
 class MemoEntry {
   objects: WeakMap<object, MemoEntry> | undefined = undefined;
