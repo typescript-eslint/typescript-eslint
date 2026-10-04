@@ -147,7 +147,7 @@ function getStaticName(node: TSESTree.MethodDefinition): string | null {
 In real world scenarios, helpers like `getStaticStringValue` and `ASTUtils.getStaticValue` are often used to handle these cases.
 :::
 
-Every one of those branches needs a test, and every one of those tests describes real code someone will eventually write:
+Every one of those branches needs a test, and every one of those tests describes real code someone could eventually write:
 
 ```ts
 ruleTester.run('no-underscore-members', rule, {
