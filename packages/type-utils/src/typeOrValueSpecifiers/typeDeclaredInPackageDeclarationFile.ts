@@ -153,13 +153,7 @@ function symbolDeclaresOneOf(
   symbol: ts.Symbol,
   declarations: readonly ts.Node[],
 ): boolean {
-  const symbolDeclarations = symbol.getDeclarations();
-  /* istanbul ignore if -- defensive for unresolved export targets. */
-  if (symbolDeclarations == null) {
-    return false;
-  }
-
-  return symbolDeclarations.some(declaration =>
+  return symbol.getDeclarations()!.some(declaration =>
     declarations.includes(declaration),
   );
 }
@@ -169,21 +163,12 @@ function namedExportMatchesDeclarations(
   declarations: readonly ts.Node[],
   checker: ts.TypeChecker,
 ): boolean {
-  const exportSymbol = checker.getSymbolAtLocation(exportSpecifier.name);
-  /* istanbul ignore if -- TypeScript provides symbols for parsed export specifiers. */
-  if (exportSymbol == null) {
-    return false;
-  }
-
-  /* istanbul ignore else -- named export specifiers are aliases. */
-  if (tsutils.isSymbolFlagSet(exportSymbol, ts.SymbolFlags.Alias)) {
-    return symbolDeclaresOneOf(
-      checker.getAliasedSymbol(exportSymbol),
-      declarations,
-    );
-  }
-
-  return symbolDeclaresOneOf(exportSymbol, declarations);
+  return symbolDeclaresOneOf(
+    checker.getAliasedSymbol(
+      checker.getSymbolAtLocation(exportSpecifier.name)!,
+    ),
+    declarations,
+  );
 }
 
 function typeReExportedFromPackage(
@@ -191,10 +176,6 @@ function typeReExportedFromPackage(
   declarations: readonly ts.Node[],
   program: ts.Program,
 ): boolean {
-  if (declarations.length === 0) {
-    return false;
-  }
-
   const checker = program.getTypeChecker();
 
   return getExternalSourceFilesForPackage(packageName, program).some(
