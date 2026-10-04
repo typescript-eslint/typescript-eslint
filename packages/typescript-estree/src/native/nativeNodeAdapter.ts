@@ -14,6 +14,7 @@ import * as ts from 'typescript';
 import { createFlagTranslations, translateFlags } from './translateFlags';
 
 export interface NativeNodeAdapter {
+  releaseChildren(sourceFile: NativeSourceFile): void;
   unwrapNode(node: ts.Node): NativeNode;
   wrapNode(node: NativeNode): ts.Node;
 }
@@ -251,7 +252,19 @@ export function createNativeNodeAdapter({
     NativeNodeArray<NativeNode>,
     ts.NodeArray<ts.Node>
   >();
-  const nativeToChildren = new WeakMap<NativeNode, readonly ts.Node[]>();
+  const childrenBySourceFile = new WeakMap<
+    NativeSourceFile,
+    Map<NativeNode, readonly ts.Node[]>
+  >();
+
+  // Children are only needed while a file is converted, but the native client
+  // otherwise caches them per source file for the snapshot's lifetime.
+  function releaseChildren(sourceFile: NativeSourceFile) {
+    childrenBySourceFile.delete(sourceFile);
+    (
+      sourceFile as NativeSourceFile & { childrenCache?: unknown }
+    ).childrenCache = undefined;
+  }
 
   function adaptArray(nodes: NativeNodeArray<NativeNode>) {
     const cached = nativeArrayToAdapter.get(nodes);
@@ -296,7 +309,13 @@ export function createNativeNodeAdapter({
 
   /** Classic splits a JSX closing tag's `</` into `<` and `/`; native keeps it whole. */
   function getChildren(node: NativeNode) {
-    const cached = nativeToChildren.get(node);
+    const sourceFile = node.getSourceFile();
+    let cache = childrenBySourceFile.get(sourceFile);
+    if (!cache) {
+      cache = new Map();
+      childrenBySourceFile.set(sourceFile, cache);
+    }
+    const cached = cache.get(node);
     if (cached) {
       return cached;
     }
@@ -326,7 +345,7 @@ export function createNativeNodeAdapter({
         ),
       ];
     });
-    nativeToChildren.set(node, children);
+    cache.set(node, children);
     return children;
   }
 
@@ -585,5 +604,5 @@ export function createNativeNodeAdapter({
     return adapted;
   }
 
-  return { unwrapNode: unwrap, wrapNode };
+  return { releaseChildren, unwrapNode: unwrap, wrapNode };
 }
