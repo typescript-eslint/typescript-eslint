@@ -84,6 +84,8 @@ describe('native preview API parity', () => {
       "box['value'] = 1;",
       'export const exported = 1;',
       'exported;',
+      'declare function call(callback: () => void): void;',
+      'call(() => {});',
     ].join('\n');
 
     function boxValue({ ast, checker, tsNode }: NativeQueryContext) {
@@ -130,6 +132,21 @@ describe('native preview API parity', () => {
             .getSymbolsInScope(location, ts.SymbolFlags.Value)
             .find(symbol => symbol.name === 'exported')!;
           return context.checker.getTypeOfSymbolAtLocation(local, location);
+        },
+      ],
+      [
+        'a differently named identifier',
+        '() => void',
+        (context: NativeQueryContext) => {
+          const statement = context.ast.body[6] as TSESTree.ExpressionStatement;
+          const call = statement.expression as TSESTree.CallExpression;
+          const signature = context.checker.getResolvedSignature(
+            context.tsNode(call) as ts.CallExpression,
+          )!;
+          return context.checker.getTypeOfSymbolAtLocation(
+            signature.parameters[0],
+            context.tsNode(call.callee),
+          );
         },
       ],
     ])('answers the same as classic at %s', (_name, expected, query) => {

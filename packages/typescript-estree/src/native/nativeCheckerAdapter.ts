@@ -73,9 +73,13 @@ const PRIMITIVE_KINDS: readonly ts.TypeFlags[] = [
 ];
 
 /** Where classic's answer can differ from the symbol's own type: narrowing and write types. */
-function isTypeOfSymbolLocation(node: ts.Node) {
+function isTypeOfSymbolLocation(symbol: ts.Symbol, node: ts.Node) {
   return (
-    node.kind === ts.SyntaxKind.Identifier ||
+    // An identifier only narrows the symbol it names.
+    (ts.isIdentifier(node) &&
+      (node.text === symbol.name ||
+        ts.isPropertyAccessExpression(node.parent) ||
+        ts.isQualifiedName(node.parent))) ||
     node.kind === ts.SyntaxKind.PrivateIdentifier ||
     (!ts.isSourceFile(node) &&
       ((ts.isSetAccessorDeclaration(node.parent) &&
@@ -464,7 +468,7 @@ export function createNativeChecker({
     getTypeOfSymbolAtLocation: (symbol, node) => {
       const nativeSymbol = unwrapSymbol(symbol);
       return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.ExportValue) ||
-        isTypeOfSymbolLocation(node)
+        isTypeOfSymbolLocation(symbol, node)
         ? wrapType(
             checker.getTypeOfSymbolAtLocation(nativeSymbol, unwrapNode(node)),
           )
