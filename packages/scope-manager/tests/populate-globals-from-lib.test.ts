@@ -130,6 +130,35 @@ describe('populateGlobalsFromLib – selective population', () => {
     ]);
   });
 
+  it('populates a lib global referenced from a nested scope', () => {
+    const result = analyze(
+      parse('function getArray() { return Array.from([]); }', {
+        range: true,
+      }),
+      { lib: ['es2015'] },
+    );
+    const arrayVariable = result.globalScope!.set.get('Array');
+    const arrayReference = result.scopes
+      .flatMap(scope => scope.references)
+      .find(reference => reference.identifier.name === 'Array');
+
+    expect(arrayVariable).toBeInstanceOf(ImplicitLibVariable);
+    expect(arrayReference?.resolved).toBe(arrayVariable);
+  });
+
+  it('includes declarations from nested scopes when selecting lib globals', () => {
+    const result = analyze(
+      parse('function getMap() { const Map = 1; return Map; }', {
+        range: true,
+      }),
+      { lib: ['es2015'] },
+    );
+
+    expect(result.globalScope!.set.get('Map')).toBeInstanceOf(
+      ImplicitLibVariable,
+    );
+  });
+
   it('does not treat property names as referenced globals', () => {
     const result = analyze(
       parse('const object = { Map: 1 }; object.Map;', { range: true }),

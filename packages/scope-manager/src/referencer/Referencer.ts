@@ -2,7 +2,7 @@ import type { Lib, TSESTree } from '@typescript-eslint/types';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import type { GlobalScope, Scope } from '../scope';
+import type { Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
 import type {
   ImplicitLibVariableMap,
@@ -57,21 +57,6 @@ export class Referencer extends Visitor {
     this.#lib = options.lib;
   }
 
-  private collectNamesForImplicitGlobals(): Set<string> {
-    const names = new Set<string>();
-
-    for (const scope of this.scopeManager.scopes) {
-      for (const reference of scope.references) {
-        names.add(reference.identifier.name);
-      }
-      for (const variable of scope.variables) {
-        names.add(variable.name);
-      }
-    }
-
-    return names;
-  }
-
   private getImplicitVariablesFromLib(): ImplicitLibVariableMap {
     const cacheKey = JSON.stringify([...new Set(this.#lib)].sort());
     const cached = implicitVariablesByLibSet.get(cacheKey);
@@ -100,18 +85,6 @@ export class Referencer extends Visitor {
 
     implicitVariablesByLibSet.set(cacheKey, implicitVariables);
     return implicitVariables;
-  }
-
-  private populateGlobalsFromLib(
-    globalScope: GlobalScope,
-    implicitVariables: ImplicitLibVariableMap,
-  ): void {
-    for (const name of this.collectNamesForImplicitGlobals()) {
-      const options = implicitVariables.get(name);
-      if (options && !globalScope.set.has(name)) {
-        globalScope.defineImplicitVariable(name, options);
-      }
-    }
   }
 
   /**
@@ -673,7 +646,6 @@ export class Referencer extends Visitor {
     }
 
     this.visitChildren(node);
-    this.populateGlobalsFromLib(globalScope, implicitVariables);
     this.close(node);
   }
 

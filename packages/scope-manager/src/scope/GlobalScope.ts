@@ -88,6 +88,23 @@ export class GlobalScope extends ScopeBase<
   public override close(scopeManager: ScopeManager): Scope | null {
     assert(this.leftToResolve);
 
+    const names = new Set<string>();
+    for (const ref of this.leftToResolve) {
+      names.add(ref.identifier.name);
+    }
+    for (const scope of scopeManager.scopes) {
+      for (const variable of scope.variables) {
+        names.add(variable.name);
+      }
+    }
+
+    for (const name of names) {
+      const options = this.#implicitLibVariables.get(name);
+      if (options && !this.set.has(name)) {
+        this.defineImplicitVariable(name, options);
+      }
+    }
+
     for (const ref of this.leftToResolve) {
       if (ref.maybeImplicitGlobal && !this.set.has(ref.identifier.name)) {
         // create an implicit global variable from assignment expression
