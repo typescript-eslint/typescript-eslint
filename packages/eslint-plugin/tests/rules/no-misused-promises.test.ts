@@ -1312,6 +1312,13 @@ if (f()) {
         },
       ],
     },
+    // a `return` with no enclosing function: legal in a CommonJS module
+    `
+return console.log('foo');
+    `,
+    `
+return Promise.resolve();
+    `,
   ],
 
   invalid: [

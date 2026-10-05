@@ -7,6 +7,7 @@ ruleTester.run('prefer-optional-chain-or-eqeq-undefined', rule, {
   assertionOptions: {
     requireData: true,
   },
+  valid: [],
   invalid: [
     {
       code: `
@@ -786,5 +787,4 @@ foo.bar?.()?.baz == undefined;
       `,
     },
   ],
-  valid: [],
 });

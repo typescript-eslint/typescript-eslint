@@ -8,1441 +8,6 @@ ruleTester.run('member-ordering-alphabetically-order', rule, {
   assertionOptions: {
     requireData: true,
   },
-  invalid: [
-    // Without grouping
-    // default option + interface + wrong order
-    {
-      code: `
-interface Foo {
-  b(): void;
-  a: b;
-  [a: string]: number;
-  new (): Bar;
-  (): Baz;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 8,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'new',
-            member: 'call',
-          },
-          endColumn: 11,
-          endLine: 7,
-          line: 7,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // default option + interface + literal properties
-    {
-      code: `
-interface Foo {
-  'b.d': Foo;
-  'b.c': Foo;
-  a: Foo;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b.d',
-            member: 'b.c',
-          },
-          endColumn: 14,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b.c',
-            member: 'a',
-          },
-          endColumn: 10,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { order: 'alphabetically' } }],
-    },
-
-    // default option + interface + wrong order (multiple)
-    {
-      code: `
-interface Foo {
-  c: string;
-  b: string;
-  a: string;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 13,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 13,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // default option + type literal + wrong order
-    {
-      code: `
-type Foo = {
-  b(): void;
-  a: b;
-  [a: string]: number;
-  new (): Bar;
-  (): Baz;
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 8,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'new',
-            member: 'call',
-          },
-          endColumn: 11,
-          endLine: 7,
-          line: 7,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // default option + type + literal properties
-    {
-      code: `
-type Foo = {
-  'b.d': Foo;
-  'b.c': Foo;
-  a: Foo;
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b.d',
-            member: 'b.c',
-          },
-          endColumn: 14,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b.c',
-            member: 'a',
-          },
-          endColumn: 10,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { order: 'alphabetically' } }],
-    },
-
-    // default option + type literal + wrong order (multiple)
-    {
-      code: `
-type Foo = {
-  c: string;
-  b: string;
-  a: string;
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 13,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 13,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // default option + class + wrong order
-    {
-      code: `
-class Foo {
-  protected static b: string = '';
-  public static a: string;
-  private static c: string = '';
-  constructor() {}
-  public d: string = '';
-  protected e: string = '';
-  private f: string = '';
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // default option + class + wrong order (multiple)
-    {
-      code: `
-class Foo {
-  public static c: string;
-  public static b: string;
-  public static a: string;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 27,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // default option + class expression + wrong order
-    {
-      code: `
-const foo = class Foo {
-  protected static b: string = '';
-  public static a: string;
-  private static c: string = '';
-  constructor() {}
-  public d: string = '';
-  protected e: string = '';
-  private f: string = '';
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // default option + class expression + wrong order (multiple)
-    {
-      code: `
-const foo = class Foo {
-  public static c: string;
-  public static b: string;
-  public static a: string;
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 27,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // classes option + class + wrong order
-    {
-      code: `
-class Foo {
-  protected static b: string = '';
-  public static a: string;
-  private static c: string = '';
-  constructor() {}
-  public d: string = '';
-  protected e: string = '';
-  private f: string = '';
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // classes option + class + wrong order (multiple)
-    {
-      code: `
-class Foo {
-  public static c: string;
-  public static b: string;
-  public static a: string;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 27,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // classExpressions option + class expression + wrong order
-    {
-      code: `
-const foo = class Foo {
-  protected static b: string = '';
-  public static a: string;
-  private static c: string = '';
-  constructor() {}
-  public d: string = '';
-  protected e: string = '';
-  private f: string = '';
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [
-        { classExpressions: { memberTypes: 'never', order: 'alphabetically' } },
-      ],
-    },
-
-    // classExpressions option + class expression + wrong order (multiple)
-    {
-      code: `
-const foo = class Foo {
-  public static c: string;
-  public static b: string;
-  public static a: string;
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 27,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [
-        { classExpressions: { memberTypes: 'never', order: 'alphabetically' } },
-      ],
-    },
-
-    // interfaces option + interface + wrong order
-    {
-      code: `
-interface Foo {
-  b(): void;
-  a: b;
-  [a: string]: number;
-  new (): Bar;
-  (): Baz;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 8,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'new',
-            member: 'call',
-          },
-          endColumn: 11,
-          endLine: 7,
-          line: 7,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [
-        { interfaces: { memberTypes: 'never', order: 'alphabetically' } },
-      ],
-    },
-
-    // interfaces option + interface + wrong order (multiple)
-    {
-      code: `
-interface Foo {
-  c: string;
-  b: string;
-  a: string;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 13,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 13,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [
-        { interfaces: { memberTypes: 'never', order: 'alphabetically' } },
-      ],
-    },
-
-    // typeLiterals option + type literal + wrong order
-    {
-      code: `
-type Foo = {
-  b(): void;
-  a: b;
-  [a: string]: number;
-  new (): Bar;
-  (): Baz;
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 8,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'new',
-            member: 'call',
-          },
-          endColumn: 11,
-          endLine: 7,
-          line: 7,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [
-        { typeLiterals: { memberTypes: 'never', order: 'alphabetically' } },
-      ],
-    },
-
-    // typeLiterals option + type literal + wrong order (multiple)
-    {
-      code: `
-type Foo = {
-  c: string;
-  b: string;
-  a: string;
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 13,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 13,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [
-        { typeLiterals: { memberTypes: 'never', order: 'alphabetically' } },
-      ],
-    },
-
-    // With grouping
-
-    // default option + class + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-class FooTestGetter {
-  public static a: string;
-  protected static b: string = '';
-  private static c: string = '';
-
-  public d: string = '';
-  protected e: string = '';
-  private f: string = '';
-
-  get h() {}
-
-  set g() {}
-
-  constructor() {}
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            name: 'constructor',
-            rank: 'public instance get',
-          },
-          endColumn: 19,
-          endLine: 15,
-          line: 15,
-          messageId: 'incorrectGroupOrder',
-        },
-      ],
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically',
-          },
-        },
-      ],
-    },
-
-    // default option + class + custom + alphabetically
-    {
-      code: `
-class Foo {
-  @Bar
-  get a() {}
-
-  get b() {}
-
-  @Bar
-  set c() {}
-
-  set d() {}
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            name: 'b',
-            rank: 'decorated get',
-          },
-          endColumn: 13,
-          endLine: 6,
-          line: 6,
-          messageId: 'incorrectGroupOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'd',
-            rank: 'decorated set',
-          },
-          endColumn: 13,
-          endLine: 11,
-          line: 11,
-          messageId: 'incorrectGroupOrder',
-        },
-      ],
-      options: [
-        {
-          default: {
-            memberTypes: ['get', 'decorated-get', 'set', 'decorated-set'],
-            order: 'alphabetically',
-          },
-        },
-      ],
-    },
-
-    // default option + class + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-class FooTestGetter {
-  public static a: string;
-  protected static b: string = '';
-  private static c: string = '';
-
-  public d: string = '';
-  protected e: string = '';
-  private f: string = '';
-
-  set g() {}
-
-  constructor() {}
-
-  get h() {}
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            name: 'constructor',
-            rank: 'public instance set',
-          },
-          endColumn: 19,
-          endLine: 13,
-          line: 13,
-          messageId: 'incorrectGroupOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'h',
-            rank: 'public instance set',
-          },
-          endColumn: 13,
-          endLine: 15,
-          line: 15,
-          messageId: 'incorrectGroupOrder',
-        },
-      ],
-      options: [
-        {
-          default: {
-            memberTypes: defaultOrder,
-            order: 'alphabetically',
-          },
-        },
-      ],
-    },
-    // default option + class expression + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-const foo = class Foo {
-  public static c: string = '';
-  public static b: string = '';
-  public static a: string;
-
-  constructor() {}
-
-  public d: string = '';
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 32,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'd',
-            rank: 'public constructor',
-          },
-          endColumn: 25,
-          endLine: 9,
-          line: 9,
-          messageId: 'incorrectGroupOrder',
-        },
-      ],
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
-    // default option + class + decorators + custom order + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-class Foo {
-  @Dec() a1: string;
-  @Dec()
-  a3: string;
-  @Dec()
-  a2: string;
-
-  constructor() {}
-
-  b1: string;
-  b2: string;
-
-  public c(): void;
-  @Dec() d(): void {}
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'a3',
-            member: 'a2',
-          },
-          endColumn: 14,
-          endLine: 7,
-          line: 6,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'b1',
-            rank: 'constructor',
-          },
-          endColumn: 14,
-          endLine: 11,
-          line: 11,
-          messageId: 'incorrectGroupOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'b2',
-            rank: 'constructor',
-          },
-          endColumn: 14,
-          endLine: 12,
-          line: 12,
-          messageId: 'incorrectGroupOrder',
-        },
-      ],
-      options: [
-        {
-          default: {
-            memberTypes: [
-              'decorated-field',
-              'field',
-              'constructor',
-              'decorated-method',
-            ],
-            order: 'alphabetically',
-          },
-        },
-      ],
-    },
-
-    // default option + class + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-class Foo {
-  public static c: string = '';
-  public static b: string = '';
-  public static a: string;
-
-  constructor() {}
-
-  public d: string = '';
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 32,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 27,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'd',
-            rank: 'public constructor',
-          },
-          endColumn: 25,
-          endLine: 9,
-          line: 9,
-          messageId: 'incorrectGroupOrder',
-        },
-      ],
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
-
-    // default option + interface + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-interface Foo {
-  [a: string]: number;
-
-  a: x;
-  b: x;
-  c: x;
-
-  c(): void;
-  b(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 13,
-          endLine: 10,
-          line: 10,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 13,
-          endLine: 11,
-          line: 11,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-          endColumn: 11,
-          endLine: 13,
-          line: 13,
-          messageId: 'incorrectGroupOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-          endColumn: 15,
-          endLine: 15,
-          line: 15,
-          messageId: 'incorrectGroupOrder',
-        },
-      ],
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
-
-    // default option + type literal + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-type Foo = {
-  [a: string]: number;
-
-  a: x;
-  b: x;
-  c: x;
-
-  c(): void;
-  b(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-};
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 13,
-          endLine: 10,
-          line: 10,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 13,
-          endLine: 11,
-          line: 11,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-          endColumn: 11,
-          endLine: 13,
-          line: 13,
-          messageId: 'incorrectGroupOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-          endColumn: 15,
-          endLine: 15,
-          line: 15,
-          messageId: 'incorrectGroupOrder',
-        },
-      ],
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
-
-    // default option + private identifiers
-    {
-      code: `
-class Foo {
-  #c = 3;
-  #b = 2;
-  #a = 1;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 10,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 10,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
-    // default option + accessors
-    {
-      code: `
-class Foo {
-  @Dec() accessor b;
-  @Dec() accessor a;
-
-  accessor d;
-  accessor c;
-
-  abstract accessor f;
-  abstract accessor e;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 21,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'd',
-            member: 'c',
-          },
-          endColumn: 14,
-          endLine: 7,
-          line: 7,
-          messageId: 'incorrectOrder',
-        },
-        {
-          column: 3,
-          data: {
-            beforeMember: 'f',
-            member: 'e',
-          },
-          endColumn: 23,
-          endLine: 10,
-          line: 10,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-    },
-    // accessors with wrong group order
-    {
-      code: `
-class Foo {
-  accessor a;
-  abstract accessor b;
-  accessor c;
-  @Dec() accessor d;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            name: 'c',
-            rank: 'abstract accessor',
-          },
-          endColumn: 14,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectGroupOrder',
-        },
-        {
-          column: 3,
-          data: {
-            name: 'd',
-            rank: 'accessor',
-          },
-          endColumn: 21,
-          endLine: 6,
-          line: 6,
-          messageId: 'incorrectGroupOrder',
-        },
-      ],
-      options: [
-        {
-          default: {
-            memberTypes: [
-              'decorated-accessor',
-              'accessor',
-              'abstract-accessor',
-            ],
-            order: 'alphabetically',
-          },
-        },
-      ],
-    },
-
-    // fields referencing later members are still reported (deferred reference)
-    {
-      code: `
-class Foo {
-  b: number = 42;
-  a: () => number = () => this.b;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 34,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // references in regular functions are deferred
-    {
-      code: `
-class Foo {
-  b: number = 42;
-  a: () => number = function () {
-    return this.b;
-  };
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 5,
-          endLine: 6,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // references in nested classes do not refer to the containing class
-    {
-      code: `
-class Foo {
-  b: number = 42;
-  a = class {
-    value = this.b;
-  };
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 5,
-          endLine: 6,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // fields referencing members they would not be moved before are still reported
-    {
-      code: `
-class Foo {
-  a: number = 1;
-  c: number = 2;
-  b: number = this.a;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 22,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // fields after a field that cannot be moved are compared against the last movable field
-    {
-      code: `
-class Foo {
-  c: number = 1;
-  a: number = this.c;
-  b: number = 2;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'c',
-            member: 'b',
-          },
-          endColumn: 17,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-
-    // fields whose initializers reference members by dynamic computed name are still reported
-    {
-      code: `
-declare const key: string;
-class Foo {
-  b: number = 42;
-  a: number = this[key];
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 25,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-    {
-      code: `
-declare const other: { b: number };
-class Foo {
-  b: number = 42;
-  a: number = other.b;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 23,
-          endLine: 5,
-          line: 5,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-    {
-      code: `
-class Foo {
-  b: number;
-  a: number = this.b;
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: {
-            beforeMember: 'b',
-            member: 'a',
-          },
-          endColumn: 22,
-          endLine: 4,
-          line: 4,
-          messageId: 'incorrectOrder',
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-  ],
   valid: [
     // Without grouping
     // default option + interface + multiple types
@@ -3159,6 +1724,1441 @@ class Foo {
   a2: number = this.a;
 }
       `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+  ],
+  invalid: [
+    // Without grouping
+    // default option + interface + wrong order
+    {
+      code: `
+interface Foo {
+  b(): void;
+  a: b;
+  [a: string]: number;
+  new (): Bar;
+  (): Baz;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'new',
+            member: 'call',
+          },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + interface + literal properties
+    {
+      code: `
+interface Foo {
+  'b.d': Foo;
+  'b.c': Foo;
+  a: Foo;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b.d',
+            member: 'b.c',
+          },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b.c',
+            member: 'a',
+          },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { order: 'alphabetically' } }],
+    },
+
+    // default option + interface + wrong order (multiple)
+    {
+      code: `
+interface Foo {
+  c: string;
+  b: string;
+  a: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + type literal + wrong order
+    {
+      code: `
+type Foo = {
+  b(): void;
+  a: b;
+  [a: string]: number;
+  new (): Bar;
+  (): Baz;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'new',
+            member: 'call',
+          },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + type + literal properties
+    {
+      code: `
+type Foo = {
+  'b.d': Foo;
+  'b.c': Foo;
+  a: Foo;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b.d',
+            member: 'b.c',
+          },
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b.c',
+            member: 'a',
+          },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { order: 'alphabetically' } }],
+    },
+
+    // default option + type literal + wrong order (multiple)
+    {
+      code: `
+type Foo = {
+  c: string;
+  b: string;
+  a: string;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + class + wrong order
+    {
+      code: `
+class Foo {
+  protected static b: string = '';
+  public static a: string;
+  private static c: string = '';
+  constructor() {}
+  public d: string = '';
+  protected e: string = '';
+  private f: string = '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + class + wrong order (multiple)
+    {
+      code: `
+class Foo {
+  public static c: string;
+  public static b: string;
+  public static a: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + class expression + wrong order
+    {
+      code: `
+const foo = class Foo {
+  protected static b: string = '';
+  public static a: string;
+  private static c: string = '';
+  constructor() {}
+  public d: string = '';
+  protected e: string = '';
+  private f: string = '';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // default option + class expression + wrong order (multiple)
+    {
+      code: `
+const foo = class Foo {
+  public static c: string;
+  public static b: string;
+  public static a: string;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // classes option + class + wrong order
+    {
+      code: `
+class Foo {
+  protected static b: string = '';
+  public static a: string;
+  private static c: string = '';
+  constructor() {}
+  public d: string = '';
+  protected e: string = '';
+  private f: string = '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // classes option + class + wrong order (multiple)
+    {
+      code: `
+class Foo {
+  public static c: string;
+  public static b: string;
+  public static a: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // classExpressions option + class expression + wrong order
+    {
+      code: `
+const foo = class Foo {
+  protected static b: string = '';
+  public static a: string;
+  private static c: string = '';
+  constructor() {}
+  public d: string = '';
+  protected e: string = '';
+  private f: string = '';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        { classExpressions: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
+    // classExpressions option + class expression + wrong order (multiple)
+    {
+      code: `
+const foo = class Foo {
+  public static c: string;
+  public static b: string;
+  public static a: string;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        { classExpressions: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
+    // interfaces option + interface + wrong order
+    {
+      code: `
+interface Foo {
+  b(): void;
+  a: b;
+  [a: string]: number;
+  new (): Bar;
+  (): Baz;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'new',
+            member: 'call',
+          },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        { interfaces: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
+    // interfaces option + interface + wrong order (multiple)
+    {
+      code: `
+interface Foo {
+  c: string;
+  b: string;
+  a: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        { interfaces: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
+    // typeLiterals option + type literal + wrong order
+    {
+      code: `
+type Foo = {
+  b(): void;
+  a: b;
+  [a: string]: number;
+  new (): Bar;
+  (): Baz;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 8,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'new',
+            member: 'call',
+          },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        { typeLiterals: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
+    // typeLiterals option + type literal + wrong order (multiple)
+    {
+      code: `
+type Foo = {
+  c: string;
+  b: string;
+  a: string;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        { typeLiterals: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+
+    // With grouping
+
+    // default option + class + wrong order within group and wrong group order + alphabetically
+    {
+      code: `
+class FooTestGetter {
+  public static a: string;
+  protected static b: string = '';
+  private static c: string = '';
+
+  public d: string = '';
+  protected e: string = '';
+  private f: string = '';
+
+  get h() {}
+
+  set g() {}
+
+  constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'public instance get',
+          },
+          endColumn: 19,
+          endLine: 15,
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+
+    // default option + class + custom + alphabetically
+    {
+      code: `
+class Foo {
+  @Bar
+  get a() {}
+
+  get b() {}
+
+  @Bar
+  set c() {}
+
+  set d() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'b',
+            rank: 'decorated get',
+          },
+          endColumn: 13,
+          endLine: 6,
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'd',
+            rank: 'decorated set',
+          },
+          endColumn: 13,
+          endLine: 11,
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['get', 'decorated-get', 'set', 'decorated-set'],
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+
+    // default option + class + wrong order within group and wrong group order + alphabetically
+    {
+      code: `
+class FooTestGetter {
+  public static a: string;
+  protected static b: string = '';
+  private static c: string = '';
+
+  public d: string = '';
+  protected e: string = '';
+  private f: string = '';
+
+  set g() {}
+
+  constructor() {}
+
+  get h() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'public instance set',
+          },
+          endColumn: 19,
+          endLine: 13,
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'h',
+            rank: 'public instance set',
+          },
+          endColumn: 13,
+          endLine: 15,
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    // default option + class expression + wrong order within group and wrong group order + alphabetically
+    {
+      code: `
+const foo = class Foo {
+  public static c: string = '';
+  public static b: string = '';
+  public static a: string;
+
+  constructor() {}
+
+  public d: string = '';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 32,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'd',
+            rank: 'public constructor',
+          },
+          endColumn: 25,
+          endLine: 9,
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
+    // default option + class + decorators + custom order + wrong order within group and wrong group order + alphabetically
+    {
+      code: `
+class Foo {
+  @Dec() a1: string;
+  @Dec()
+  a3: string;
+  @Dec()
+  a2: string;
+
+  constructor() {}
+
+  b1: string;
+  b2: string;
+
+  public c(): void;
+  @Dec() d(): void {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'a3',
+            member: 'a2',
+          },
+          endColumn: 14,
+          endLine: 7,
+          line: 6,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'b1',
+            rank: 'constructor',
+          },
+          endColumn: 14,
+          endLine: 11,
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'b2',
+            rank: 'constructor',
+          },
+          endColumn: 14,
+          endLine: 12,
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: [
+              'decorated-field',
+              'field',
+              'constructor',
+              'decorated-method',
+            ],
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+
+    // default option + class + wrong order within group and wrong group order + alphabetically
+    {
+      code: `
+class Foo {
+  public static c: string = '';
+  public static b: string = '';
+  public static a: string;
+
+  constructor() {}
+
+  public d: string = '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 32,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'd',
+            rank: 'public constructor',
+          },
+          endColumn: 25,
+          endLine: 9,
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
+
+    // default option + interface + wrong order within group and wrong group order + alphabetically
+    {
+      code: `
+interface Foo {
+  [a: string]: number;
+
+  a: x;
+  b: x;
+  c: x;
+
+  c(): void;
+  b(): void;
+  a(): void;
+
+  (): Baz;
+
+  new (): Bar;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 13,
+          endLine: 10,
+          line: 10,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 13,
+          endLine: 11,
+          line: 11,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'call',
+            rank: 'field',
+          },
+          endColumn: 11,
+          endLine: 13,
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'method',
+          },
+          endColumn: 15,
+          endLine: 15,
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
+
+    // default option + type literal + wrong order within group and wrong group order + alphabetically
+    {
+      code: `
+type Foo = {
+  [a: string]: number;
+
+  a: x;
+  b: x;
+  c: x;
+
+  c(): void;
+  b(): void;
+  a(): void;
+
+  (): Baz;
+
+  new (): Bar;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 13,
+          endLine: 10,
+          line: 10,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 13,
+          endLine: 11,
+          line: 11,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'call',
+            rank: 'field',
+          },
+          endColumn: 11,
+          endLine: 13,
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'method',
+          },
+          endColumn: 15,
+          endLine: 15,
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
+
+    // default option + private identifiers
+    {
+      code: `
+class Foo {
+  #c = 3;
+  #b = 2;
+  #a = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
+    // default option + accessors
+    {
+      code: `
+class Foo {
+  @Dec() accessor b;
+  @Dec() accessor a;
+
+  accessor d;
+  accessor c;
+
+  abstract accessor f;
+  abstract accessor e;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'd',
+            member: 'c',
+          },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'f',
+            member: 'e',
+          },
+          endColumn: 23,
+          endLine: 10,
+          line: 10,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
+    // accessors with wrong group order
+    {
+      code: `
+class Foo {
+  accessor a;
+  abstract accessor b;
+  accessor c;
+  @Dec() accessor d;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'c',
+            rank: 'abstract accessor',
+          },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'd',
+            rank: 'accessor',
+          },
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: [
+              'decorated-accessor',
+              'accessor',
+              'abstract-accessor',
+            ],
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+
+    // fields referencing later members are still reported (deferred reference)
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: () => number = () => this.b;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 34,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // references in regular functions are deferred
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a: () => number = function () {
+    return this.b;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 5,
+          endLine: 6,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // references in nested classes do not refer to the containing class
+    {
+      code: `
+class Foo {
+  b: number = 42;
+  a = class {
+    value = this.b;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 5,
+          endLine: 6,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields referencing members they would not be moved before are still reported
+    {
+      code: `
+class Foo {
+  a: number = 1;
+  c: number = 2;
+  b: number = this.a;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 22,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields after a field that cannot be moved are compared against the last movable field
+    {
+      code: `
+class Foo {
+  c: number = 1;
+  a: number = this.c;
+  b: number = 2;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'c',
+            member: 'b',
+          },
+          endColumn: 17,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+
+    // fields whose initializers reference members by dynamic computed name are still reported
+    {
+      code: `
+declare const key: string;
+class Foo {
+  b: number = 42;
+  a: number = this[key];
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 25,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+declare const other: { b: number };
+class Foo {
+  b: number = 42;
+  a: number = other.b;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+class Foo {
+  b: number;
+  a: number = this.b;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'b',
+            member: 'a',
+          },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'incorrectOrder',
+        },
+      ],
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
   ],

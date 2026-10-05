@@ -18,6 +18,20 @@ ruleTester.run('no-poorly-typed-ts-props', rule, {
   assertionOptions: {
     requireData: true,
   },
+  valid: [
+    `
+declare const foo: { declarations: string[] };
+foo.declarations.map(decl => console.log(decl));
+    `,
+    `
+declare const bar: Symbol;
+bar.declarations.map(decl => console.log(decl));
+    `,
+    `
+declare const baz: Type;
+baz.symbol.name;
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -124,19 +138,5 @@ thing?.getSymbol();
         },
       ],
     },
-  ],
-  valid: [
-    `
-declare const foo: { declarations: string[] };
-foo.declarations.map(decl => console.log(decl));
-    `,
-    `
-declare const bar: Symbol;
-bar.declarations.map(decl => console.log(decl));
-    `,
-    `
-declare const baz: Type;
-baz.symbol.name;
-    `,
   ],
 });

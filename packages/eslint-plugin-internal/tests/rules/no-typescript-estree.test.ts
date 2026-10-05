@@ -8,6 +8,11 @@ ruleTester.run('no-typescript-estree-import', rule, {
   assertionOptions: {
     requireData: true,
   },
+  valid: [
+    "import { foo } from '@typescript-eslint/utils';",
+    "import foo from '@typescript-eslint/utils';",
+    "import * as foo from '@typescript-eslint/utils';",
+  ],
   invalid: [
     {
       code: "import { foo } from '@typescript-eslint/typescript-estree';",
@@ -93,10 +98,5 @@ ruleTester.run('no-typescript-estree-import', rule, {
       ],
       output: "import * as foo from '@typescript-eslint/utils';",
     },
-  ],
-  valid: [
-    "import { foo } from '@typescript-eslint/utils';",
-    "import foo from '@typescript-eslint/utils';",
-    "import * as foo from '@typescript-eslint/utils';",
   ],
 });
