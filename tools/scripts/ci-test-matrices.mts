@@ -58,9 +58,6 @@ const LINUX_GROUPS = [
   ],
 ];
 
-// The unit tests job has one Codecov upload step per index in a Linux group.
-const MAX_LINUX_GROUP_SIZE = 7;
-
 const WINDOWS_GROUPS = [
   ['typescript-estree', 'rule-tester', 'types'],
   ['typescript-eslint', 'repo', 'project-service'],
@@ -100,16 +97,6 @@ export function getTestMatrices(affected: string[]): TestMatrices {
     );
   }
 
-  const oversized = LINUX_GROUPS.find(
-    group => group.length > MAX_LINUX_GROUP_SIZE,
-  );
-
-  if (oversized) {
-    throw new Error(
-      `Linux unit tests group has more than ${MAX_LINUX_GROUP_SIZE} packages: ${oversized.join(', ')}`,
-    );
-  }
-
   return {
     isPluginAffected: affected.includes('eslint-plugin'),
 
@@ -122,7 +109,15 @@ export function getTestMatrices(affected: string[]): TestMatrices {
     ),
 
     unitTestsMatrix: [
-      ...toMatrix('ubuntu-latest', LINUX_GROUPS, unitTests),
+      // Linux groups run all their packages so each group's Codecov upload always has the same flags.
+      // Otherwise, Codecov drops the group's previous upload, including packages that didn't run.
+      ...toMatrix(
+        'ubuntu-latest',
+        LINUX_GROUPS.filter(group =>
+          group.some(pkg => unitTests.includes(pkg)),
+        ),
+        LINUX_GROUPS.flat(),
+      ),
       ...toMatrix('windows-latest', WINDOWS_GROUPS, unitTests),
     ],
   };
