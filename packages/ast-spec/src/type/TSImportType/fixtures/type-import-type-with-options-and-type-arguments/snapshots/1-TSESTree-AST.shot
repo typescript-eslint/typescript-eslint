@@ -1,0 +1,183 @@
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      declare: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "A",
+        optional: false,
+
+        range: [5, 6],
+        loc: {
+          start: { column: 5, line: 1 },
+          end: { column: 6, line: 1 },
+        },
+      },
+      typeAnnotation: TSImportType {
+        type: "TSImportType",
+        options: ObjectExpression {
+          type: "ObjectExpression",
+          properties: [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "with",
+                optional: false,
+
+                range: [23, 27],
+                loc: {
+                  start: { column: 23, line: 1 },
+                  end: { column: 27, line: 1 },
+                },
+              },
+              kind: "init",
+              method: false,
+              optional: false,
+              shorthand: false,
+              value: ObjectExpression {
+                type: "ObjectExpression",
+                properties: [
+                  Property {
+                    type: "Property",
+                    computed: false,
+                    key: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "type",
+                      optional: false,
+
+                      range: [31, 35],
+                      loc: {
+                        start: { column: 31, line: 1 },
+                        end: { column: 35, line: 1 },
+                      },
+                    },
+                    kind: "init",
+                    method: false,
+                    optional: false,
+                    shorthand: false,
+                    value: Literal {
+                      type: "Literal",
+                      raw: "'json'",
+                      value: "json",
+
+                      range: [37, 43],
+                      loc: {
+                        start: { column: 37, line: 1 },
+                        end: { column: 43, line: 1 },
+                      },
+                    },
+
+                    range: [31, 43],
+                    loc: {
+                      start: { column: 31, line: 1 },
+                      end: { column: 43, line: 1 },
+                    },
+                  },
+                ],
+
+                range: [29, 45],
+                loc: {
+                  start: { column: 29, line: 1 },
+                  end: { column: 45, line: 1 },
+                },
+              },
+
+              range: [23, 45],
+              loc: {
+                start: { column: 23, line: 1 },
+                end: { column: 45, line: 1 },
+              },
+            },
+          ],
+
+          range: [21, 47],
+          loc: {
+            start: { column: 21, line: 1 },
+            end: { column: 47, line: 1 },
+          },
+        },
+        qualifier: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "B",
+          optional: false,
+
+          range: [49, 50],
+          loc: {
+            start: { column: 49, line: 1 },
+            end: { column: 50, line: 1 },
+          },
+        },
+        source: Literal {
+          type: "Literal",
+          raw: "'A'",
+          value: "A",
+
+          range: [16, 19],
+          loc: {
+            start: { column: 16, line: 1 },
+            end: { column: 19, line: 1 },
+          },
+        },
+        typeArguments: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: [
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "C",
+                optional: false,
+
+                range: [51, 52],
+                loc: {
+                  start: { column: 51, line: 1 },
+                  end: { column: 52, line: 1 },
+                },
+              },
+
+              range: [51, 52],
+              loc: {
+                start: { column: 51, line: 1 },
+                end: { column: 52, line: 1 },
+              },
+            },
+          ],
+
+          range: [50, 53],
+          loc: {
+            start: { column: 50, line: 1 },
+            end: { column: 53, line: 1 },
+          },
+        },
+
+        range: [9, 53],
+        loc: {
+          start: { column: 9, line: 1 },
+          end: { column: 53, line: 1 },
+        },
+      },
+
+      range: [0, 54],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 54, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 55],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

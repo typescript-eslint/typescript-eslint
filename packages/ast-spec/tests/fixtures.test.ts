@@ -1,3 +1,9 @@
+import type { TSESTree } from '@typescript-eslint/typescript-estree';
+
+import {
+  AST_NODE_TYPES,
+  simpleTraverse,
+} from '@typescript-eslint/typescript-estree';
 import { glob } from 'glob';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
@@ -268,6 +274,43 @@ describe('AST Fixtures', async () => {
             snapshotFiles.success.tsestree.tokens(2),
           );
         });
+
+        it.skipIf(isError)(
+          'TSESTree - Visitor keys follow source order',
+          () => {
+            assert.isSuccessResponse(TSESTreeParsed);
+
+            const previousChildren = new WeakMap<
+              TSESTree.Node,
+              TSESTree.Node
+            >();
+
+            simpleTraverse(TSESTreeParsed.ast as TSESTree.Program, {
+              enter(node, parent) {
+                if (!parent) {
+                  return;
+                }
+
+                const previous = previousChildren.get(parent);
+                // Template parts interleave in source, but visitor keys visit all
+                // quasis before all expressions (or types).
+                const startsTemplateSubstitutions =
+                  (parent.type === AST_NODE_TYPES.TemplateLiteral ||
+                    parent.type === AST_NODE_TYPES.TSTemplateLiteralType) &&
+                  previous?.type === AST_NODE_TYPES.TemplateElement &&
+                  node.type !== AST_NODE_TYPES.TemplateElement;
+
+                if (previous && !startsTemplateSubstitutions) {
+                  expect(
+                    previous.range[0],
+                    `${parent.type}: ${previous.type} must precede ${node.type}`,
+                  ).toBeLessThanOrEqual(node.range[0]);
+                }
+                previousChildren.set(parent, node);
+              },
+            });
+          },
+        );
 
         const hasExpectBabelToNotSupport =
           config.expectBabelToNotSupport != null;
