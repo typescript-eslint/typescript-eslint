@@ -10,6 +10,7 @@ import {
   getParserServices,
   isBuiltinTypeAliasLike,
   isDefinitionFile,
+  isParenthesized,
 } from '../util';
 
 type MessageIds = 'unused';
@@ -17,12 +18,6 @@ type MessageIds = 'unused';
 type PropertyMember = TSESTree.TSMethodSignature | TSESTree.TSPropertySignature;
 
 type PropertyName = string | ts.Type;
-
-interface TypeAnnotationOf<T> {
-  typeAnnotation: TSESTree.TSTypeAnnotation & {
-    typeAnnotation: T;
-  };
-}
 
 export default createRule<[], MessageIds>({
   name: 'no-unused-destructure-type-properties',
@@ -126,7 +121,7 @@ export default createRule<[], MessageIds>({
       }
 
       const used = new Set<TSESTree.TypeElement>();
-      const nested = new Map<TSESTree.TypeNode, TSESTree.Node[]>();
+      const nested = new Map<TSESTree.TypeNode, Set<TSESTree.Node>>();
 
       function markPropertyUsed(
         member: PropertyMember,
@@ -138,10 +133,10 @@ export default createRule<[], MessageIds>({
           member.typeAnnotation
         ) {
           const memberTypeNode = member.typeAnnotation.typeAnnotation;
-          nested.set(memberTypeNode, [
-            ...(nested.get(memberTypeNode) ?? []),
-            property.value,
-          ]);
+          nested.set(
+            memberTypeNode,
+            new Set(nested.get(memberTypeNode)).add(property.value),
+          );
         }
       }
 
@@ -195,7 +190,7 @@ export default createRule<[], MessageIds>({
             }
           }
 
-          if (matched || tsutils.isUniqueESSymbolType(keyType)) {
+          if (matched) {
             continue;
           }
 
@@ -230,8 +225,8 @@ export default createRule<[], MessageIds>({
       }
 
       for (const [nestedTypeNode, nestedPatterns] of nested) {
-        if (nestedPatterns.length === 1) {
-          checkPattern(nestedPatterns[0], nestedTypeNode);
+        if (nestedPatterns.size === 1) {
+          checkPattern([...nestedPatterns][0], nestedTypeNode);
         }
       }
     }
@@ -252,7 +247,7 @@ export default createRule<[], MessageIds>({
         restIndex === -1
           ? typeNode.elementTypes
           : typeNode.elementTypes.slice(0, restIndex);
-      const used = new Map<TSESTree.TypeNode, TSESTree.Node[]>();
+      const used = new Map<TSESTree.TypeNode, Set<TSESTree.Node>>();
 
       for (const [property, propertyKeyTypes] of keyTypes) {
         for (const keyType of propertyKeyTypes) {
@@ -263,14 +258,14 @@ export default createRule<[], MessageIds>({
 
           if (Number(name) in elements) {
             const element = elements[Number(name)];
-            used.set(element, [...(used.get(element) ?? []), property.value]);
+            used.set(element, new Set(used.get(element)).add(property.value));
           }
         }
       }
 
       for (const [element, elementPatterns] of used) {
-        if (elementPatterns.length === 1) {
-          checkPattern(elementPatterns[0], element);
+        if (elementPatterns.size === 1) {
+          checkPattern([...elementPatterns][0], element);
         }
       }
 
@@ -422,10 +417,7 @@ export default createRule<[], MessageIds>({
     }
 
     function mightBeKey(memberKeyType: ts.Type, keyType: ts.Type) {
-      if (
-        tsutils.isIntrinsicAnyType(keyType) ||
-        checker.isTypeAssignableTo(memberKeyType, keyType)
-      ) {
+      if (checker.isTypeAssignableTo(memberKeyType, keyType)) {
         return true;
       }
 
@@ -439,11 +431,6 @@ export default createRule<[], MessageIds>({
           checker.getStringLiteralType(name),
           keyType,
         ) ||
-        (isNumericName(name) &&
-          checker.isTypeAssignableTo(
-            checker.getNumberLiteralType(Number(name)),
-            keyType,
-          )) ||
         (!tsutils.isTemplateLiteralType(keyType) &&
           (checker.isTypeAssignableTo(keyType, checker.getStringType()) ||
             (isNumericName(name) &&
@@ -453,7 +440,6 @@ export default createRule<[], MessageIds>({
 
     function typesOverlap(a: ts.Type, b: ts.Type) {
       return (
-        tsutils.isIntrinsicAnyType(a) ||
         checker.isTypeAssignableTo(a, b) ||
         checker.isTypeAssignableTo(b, a) ||
         (tsutils.isIntrinsicStringType(b) &&
@@ -508,18 +494,23 @@ export default createRule<[], MessageIds>({
       node: TSESTree.Node,
       range: TSESTree.Range,
     ) {
-      const hasLeadingComments =
-        context.sourceCode.getCommentsBefore(node).length > 0;
-      const isParenthesized =
-        context.sourceCode.getTokenBefore(node)?.value === '(' &&
-        context.sourceCode.getTokenAfter(node)?.value === ')';
+      const tokenBefore = context.sourceCode.getTokenBefore(node);
+      const hasLeadingComments = context.sourceCode
+        .getCommentsBefore(node)
+        .some(
+          comment =>
+            comment.loc.start.line !== tokenBefore?.loc.end.line ||
+            comment.loc.end.line === node.loc.start.line,
+        );
       const hasComments = context.sourceCode
         .getAllComments()
         .some(
           comment => comment.range[0] < range[1] && comment.range[1] > range[0],
         );
 
-      return hasLeadingComments || isParenthesized || hasComments
+      return hasLeadingComments ||
+        hasComments ||
+        isParenthesized(node, context.sourceCode)
         ? null
         : fixer.removeRange(range);
     }
@@ -541,8 +532,9 @@ export default createRule<[], MessageIds>({
 
     return {
       ':matches(ArrayPattern, ObjectPattern)[typeAnnotation]'(
-        node: (TSESTree.ArrayPattern | TSESTree.ObjectPattern) &
-          TypeAnnotationOf<TSESTree.TypeNode>,
+        node: (TSESTree.ArrayPattern | TSESTree.ObjectPattern) & {
+          typeAnnotation: TSESTree.TSTypeAnnotation;
+        },
       ) {
         if (
           !isDefinitionFile(context.filename) &&

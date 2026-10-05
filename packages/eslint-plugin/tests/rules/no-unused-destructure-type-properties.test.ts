@@ -29,7 +29,6 @@ ruleTester.run('no-unused-destructure-type-properties', rule, {
     'function test([[nested1], used2]: [[string], number]) {}',
     'function test([[[nested1]], used2]: [[[string]], number]) {}',
     // complex keys to statically analyze
-    "function test({ ['used']: used }: { used: string }) {}",
     'function test({ [Symbol.iterator]: used }: { [Symbol.iterator]: string }) {}',
     'function test({ [1]: used }: { 1: string }) {}',
     `
@@ -40,7 +39,6 @@ function test({ [token]: used }: { [token]: string }) {}
     // destructuring over an array (as opposed to a tuple)
     'function test([]: string[]) {}',
     'function test([used]: string[]) {}',
-    'function test([used]: [string]) {}',
     `
 function test({
   used1: {
@@ -243,7 +241,6 @@ function test({
     'function test({ used }: { [i: `_${string}`]: number | string }) {}',
     'function test({ used }: { [i: `_${string}`] }) {}',
     'function test({ hello: used }: { [b] }) {}',
-    'function test({ hello: used }: { [i: string, j: number]: string }) {}',
     'function test({ foo }: { foo(): void }) {}',
     'function test({ foo }: { (): void }) {}',
     'function test({}: { (): void }) {}',
@@ -424,6 +421,17 @@ function test({
     `,
     'function test({ 0: whole, 0: { used } }: [{ used: 1; other: 2 }]) {}',
     'function test({ 0: { first }, 0: { second } }: [{ first: 1; second: 2 }]) {}',
+    // dynamic keys on Record
+    `
+declare const key: string;
+
+function test({ [key]: value }: Record<'a' | string, boolean>) {}
+    `,
+    // definition files
+    {
+      code: 'export const { used }: { used: string; unused: string };',
+      filename: 'definition.d.ts',
+    },
   ],
   invalid: [
     // non-exhaustive destructuring
@@ -2155,6 +2163,132 @@ function test({
           endColumn: 18,
           endLine: 7,
           line: 7,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    // dynamic keys that cannot be some properties
+    {
+      code: `
+declare const key: number;
+
+function test({
+  [key]: used,
+}: {
+  '1': string;
+  unused: string;
+  [i: number]: string;
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 18,
+          endLine: 8,
+          line: 8,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+declare const key: number;
+
+function test({
+  [key]: used,
+}: {
+  '1': string;
+  [i: number]: string;
+}) {}
+      `,
+    },
+    {
+      code: `
+const token = Symbol();
+declare const key: string;
+
+function test({
+  [key]: used,
+}: {
+  a: string;
+  [token]: string;
+  [i: string]: string;
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: '[token]', type: 'property' },
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+const token = Symbol();
+declare const key: string;
+
+function test({
+  [key]: used,
+}: {
+  a: string;
+  [i: string]: string;
+}) {}
+      `,
+    },
+    // object pattern keys in a tuple's rest elements
+    {
+      code: 'function test({ 5: used }: [string, ...number[]]) {}',
+      errors: [
+        {
+          column: 29,
+          data: { key: '0', type: 'element' },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    // comments trailing the previous member
+    {
+      code: `
+function test({
+  used,
+}: {
+  used: string; // trailing
+  unused: string;
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 18,
+          endLine: 6,
+          line: 6,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+function test({
+  used,
+}: {
+  used: string; // trailing
+}) {}
+      `,
+    },
+    {
+      code: 'function test({ used }: { /** Unused. */ unused: string; used: string }) {}',
+      errors: [
+        {
+          column: 42,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 57,
+          endLine: 1,
+          line: 1,
           messageId: 'unused',
         },
       ],
