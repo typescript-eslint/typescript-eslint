@@ -1,0 +1,43 @@
+Incorrect
+
+function Button({ text }: { text: string; onClick: () => void }) {
+                                          ~~~~~~~~~~~~~~~~~~~ This type declares property 'onClick', but the destructuring pattern never uses it.
+  return text;
+}
+
+function getFirst([first]: [string, number]) {
+                                    ~~~~~~ This type declares element '1', but the destructuring pattern never uses it.
+  return first;
+}
+
+function getName({ name }: Record<'id' | 'name', string>) {
+                                  ~~~~ This type declares key 'id', but the destructuring pattern never uses it.
+  return name;
+}
+
+function getCity({
+  address: { city },
+}: {
+  address: { city: string; street: string };
+                           ~~~~~~~~~~~~~~ This type declares property 'street', but the destructuring pattern never uses it.
+}) {
+  return city;
+}
+
+Correct
+
+function Button({ text, onClick }: { text: string; onClick: () => void }) {
+  return [text, onClick];
+}
+
+function getFirst([first]: [string]) {
+  return first;
+}
+
+function getName({ name }: Record<'name', string>) {
+  return name;
+}
+
+function getCity({ address: { city } }: { address: { city: string } }) {
+  return city;
+}
