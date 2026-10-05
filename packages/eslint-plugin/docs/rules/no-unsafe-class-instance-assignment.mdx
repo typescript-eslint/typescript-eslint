@@ -1,5 +1,5 @@
 ---
-description: 'Disallow object literals where a class instance is expected.'
+description: 'Disallow assigning non-instance values to class instance typed locations.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,10 +7,12 @@ import TabItem from '@theme/TabItem';
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
-> See **https://typescript-eslint.io/rules/no-object-literal-class-instances** for documentation.
+> See **https://typescript-eslint.io/rules/no-unsafe-class-instance-assignment** for documentation.
 
-In TypeScript, a class name can be used as a type for any value with the same shape.
-That means an object literal, or any plain object, can be used where an instance of a class is expected without ever calling the class's constructor.
+In TypeScript, a class whose members are all public can be used as a type for any value with the same shape.
+That means an object literal, or any other value with a matching shape, can be used where an instance of the class is expected without ever calling the class's constructor.
+Only classes with `private` or `protected` members are compared nominally.
+See [Relationships Between Classes](https://www.typescriptlang.org/docs/handbook/2/classes.html#relationships-between-classes) in the TypeScript Handbook for more details.
 
 This rule reports values that aren't created by a class's constructor but are used where an instance of the class is expected: in variable declarations, assignments, function arguments, return values, `as` assertions, and so on.
 That includes values the class only appears inside of, such as a `Promise` of a plain object assigned to a `Promise<Point>`.

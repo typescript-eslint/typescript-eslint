@@ -60,7 +60,6 @@ import noNamespace from './no-namespace';
 import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-coalescing';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noNonNullAssertion from './no-non-null-assertion';
-import noObjectLiteralClassInstances from './no-object-literal-class-instances';
 import noRedeclare from './no-redeclare';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
@@ -82,6 +81,7 @@ import noUnnecessaryTypeParameters from './no-unnecessary-type-parameters';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
+import noUnsafeClassInstanceAssignment from './no-unsafe-class-instance-assignment';
 import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
 import noUnsafeEnumAssignment from './no-unsafe-enum-assignment';
 import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
@@ -199,7 +199,6 @@ const rules = {
   'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-non-null-assertion': noNonNullAssertion,
-  'no-object-literal-class-instances': noObjectLiteralClassInstances,
   'no-redeclare': noRedeclare,
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
@@ -222,6 +221,7 @@ const rules = {
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
+  'no-unsafe-class-instance-assignment': noUnsafeClassInstanceAssignment,
   'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
   'no-unsafe-enum-assignment': noUnsafeEnumAssignment,
   'no-unsafe-enum-comparison': noUnsafeEnumComparison,

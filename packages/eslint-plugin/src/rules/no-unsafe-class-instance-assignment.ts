@@ -7,12 +7,12 @@ import * as ts from 'typescript';
 import { createRule, getParserServices, matchesTypeOrBaseType } from '../util';
 
 export default createRule({
-  name: 'no-object-literal-class-instances',
+  name: 'no-unsafe-class-instance-assignment',
   meta: {
     type: 'problem',
     docs: {
       description:
-        'Disallow object literals where a class instance is expected',
+        'Disallow assigning non-instance values to class instance typed locations',
       recommended: 'strict',
       requiresTypeChecking: true,
     },

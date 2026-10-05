@@ -1,9 +1,9 @@
-import rule from '../../src/rules/no-object-literal-class-instances';
+import rule from '../../src/rules/no-unsafe-class-instance-assignment';
 import { createRuleTesterWithTypes } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes();
 
-ruleTester.run('no-object-literal-class-instances', rule, {
+ruleTester.run('no-unsafe-class-instance-assignment', rule, {
   valid: [
     `
 class Point {
@@ -573,6 +573,72 @@ const point: Point = { x: 1, y: 2 };
           endLine: 8,
           line: 8,
           messageId: 'objectLiteral',
+        },
+      ],
+    },
+    {
+      code: `
+class Point {
+  x: number = Math.random();
+  y: number = Math.random();
+}
+const o = { x: 1, y: 1 };
+const p: Point = o;
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { type: 'Point' },
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    {
+      code: `
+class Point {
+  x: number = Math.random();
+  y: number = Math.random();
+}
+function foo(o: { x: number; y: number }): Point {
+  return o;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { type: 'Point' },
+          endColumn: 11,
+          endLine: 7,
+          line: 7,
+          messageId: 'nonInstance',
+        },
+      ],
+    },
+    {
+      code: `
+class Point {
+  x: number = Math.random();
+  y: number = Math.random();
+}
+class Point2 {
+  x: number = Math.random();
+  y: number = Math.random();
+}
+function bar(p2: Point2): Point {
+  return p2;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { type: 'Point' },
+          endColumn: 12,
+          endLine: 11,
+          line: 11,
+          messageId: 'nonInstance',
         },
       ],
     },

@@ -54,7 +54,7 @@ function createMockProjectService() {
     openClientFile,
     reloadProjects,
     // The mock service is a plain object, not a real ProjectService.
-    // eslint-disable-next-line @typescript-eslint/no-object-literal-class-instances
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-class-instance-assignment
     service: service as typeof service & TypeScriptProjectService,
   };
 }
@@ -244,7 +244,7 @@ describe(useProgramFromProjectService, () => {
       filePath === symlinkedDirectory ? realDirectory : filePath,
     );
     // The mock project is a plain object, not a real ConfiguredProject.
-    // eslint-disable-next-line @typescript-eslint/no-object-literal-class-instances
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-class-instance-assignment
     service.configuredProjects.set('tsconfig.json', {
       getFileNames: () => [symlinkedFilePath],
     } as ts.server.ConfiguredProject);
