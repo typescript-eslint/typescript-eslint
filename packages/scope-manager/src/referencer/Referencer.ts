@@ -4,7 +4,11 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
-import type { ImplicitLibVariableOptions, LibDefinition } from '../variable';
+import type {
+  ImplicitLibVariableMap,
+  ImplicitLibVariableOptions,
+  LibDefinition,
+} from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -34,9 +38,7 @@ export interface ReferencerOptions extends VisitorOptions {
   lib: Lib[];
 }
 
-type ImplicitVariableMap = ReadonlyMap<string, ImplicitLibVariableOptions>;
-
-const implicitVariablesByLibSet = new Map<string, ImplicitVariableMap>();
+const implicitVariablesByLibSet = new Map<string, ImplicitLibVariableMap>();
 
 // Referencing variables and creating bindings.
 export class Referencer extends Visitor {
@@ -70,7 +72,7 @@ export class Referencer extends Visitor {
     return names;
   }
 
-  private getImplicitVariablesFromLib(): ImplicitVariableMap {
+  private getImplicitVariablesFromLib(): ImplicitLibVariableMap {
     const cacheKey = JSON.stringify([...new Set(this.#lib)].sort());
     const cached = implicitVariablesByLibSet.get(cacheKey);
     if (cached) {
@@ -102,7 +104,7 @@ export class Referencer extends Visitor {
 
   private populateGlobalsFromLib(
     globalScope: GlobalScope,
-    implicitVariables: ImplicitVariableMap,
+    implicitVariables: ImplicitLibVariableMap,
   ): void {
     for (const name of this.collectNamesForImplicitGlobals()) {
       const options = implicitVariables.get(name);

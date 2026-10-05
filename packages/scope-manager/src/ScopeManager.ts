@@ -1,7 +1,7 @@
 import type { SourceType, TSESTree } from '@typescript-eslint/types';
 
 import type { Scope } from './scope';
-import type { ImplicitLibVariableOptions, Variable } from './variable';
+import type { ImplicitLibVariableMap, Variable } from './variable';
 
 import { assert } from './assert';
 import {
@@ -231,10 +231,7 @@ export class ScopeManager {
 
   public nestGlobalScope(
     node: GlobalScope['block'],
-    implicitLibVariables: ReadonlyMap<
-      string,
-      ImplicitLibVariableOptions
-    > = new Map(),
+    implicitLibVariables?: ImplicitLibVariableMap,
   ): GlobalScope {
     return this.nestScope(new GlobalScope(this, node, implicitLibVariables));
   }

@@ -5,7 +5,11 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import type { Definition } from '../definition';
 import type { Reference } from '../referencer/Reference';
 import type { ScopeManager } from '../ScopeManager';
-import type { ImplicitLibVariableOptions, Variable } from '../variable';
+import type {
+  ImplicitLibVariableMap,
+  ImplicitLibVariableOptions,
+  Variable,
+} from '../variable';
 import type { Scope } from './Scope';
 
 import { assert } from '../assert';
@@ -22,10 +26,7 @@ export class GlobalScope extends ScopeBase<
    */
   null
 > {
-  readonly #implicitLibVariables: ReadonlyMap<
-    string,
-    ImplicitLibVariableOptions
-  >;
+  readonly #implicitLibVariables: ImplicitLibVariableMap;
 
   // note this is accessed in used in the legacy eslint-scope tests, so it can't be true private
   private readonly implicit: {
@@ -41,10 +42,7 @@ export class GlobalScope extends ScopeBase<
   constructor(
     scopeManager: ScopeManager,
     block: GlobalScope['block'],
-    implicitLibVariables: ReadonlyMap<
-      string,
-      ImplicitLibVariableOptions
-    > = new Map(),
+    implicitLibVariables: ImplicitLibVariableMap = new Map(),
   ) {
     super(scopeManager, ScopeType.global, null, block, false);
     this.#implicitLibVariables = implicitLibVariables;
