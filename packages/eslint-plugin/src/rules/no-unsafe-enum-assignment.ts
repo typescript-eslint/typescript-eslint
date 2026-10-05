@@ -654,6 +654,10 @@ function getMappedKeyConstraintTypes(
   checker: ts.TypeChecker,
   declaration: ts.Declaration,
 ) {
+  function getEnumKeyType(type: ts.Type) {
+    return getEnumTypes(checker, type).length > 0 ? [type] : [];
+  }
+
   if (
     !(
       ts.isGetAccessorDeclaration(declaration) ||
@@ -671,14 +675,14 @@ function getMappedKeyConstraintTypes(
 
   // { [key in Fruit]: string } -> [Fruit]
   if (ts.isMappedTypeNode(typeNode)) {
-    return [
+    return getEnumKeyType(
       checker.getTypeFromTypeNode(
         nullThrows(
           typeNode.typeParameter.constraint,
           'Expected the mapped type parameter to have a constraint.',
         ),
       ),
-    ];
+    );
   }
 
   // { [Fruit.Apple]: string; [Vegetable.Asparagus]: string } -> [Fruit.Apple, Vegetable.Asparagus]
@@ -687,7 +691,7 @@ function getMappedKeyConstraintTypes(
       const name = ts.getNameOfDeclaration(member);
 
       return name && ts.isComputedPropertyName(name)
-        ? [checker.getTypeAtLocation(name.expression)]
+        ? getEnumKeyType(checker.getTypeAtLocation(name.expression))
         : [];
     });
   }
