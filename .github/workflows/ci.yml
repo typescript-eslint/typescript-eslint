@@ -441,14 +441,70 @@ jobs:
           CI: true
           PROJECTS: ${{ join(matrix.projects, ',') }}
 
-      - name: Upload coverage to Codecov
-        if: matrix.os == 'ubuntu-latest'
+      # Each package needs its own upload and flag, so Codecov can carry forward the packages that didn't run.
+      # Steps can't loop, so there's one per group index. Keep in sync with MAX_LINUX_GROUP_SIZE.
+      - name: Upload coverage to Codecov (${{ matrix.projects[0] }})
+        if: matrix.os == 'ubuntu-latest' && matrix.projects[0]
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: packages/*/coverage/lcov.info
-          flags: ${{ join(matrix.projects, ',') }}
-          name: ${{ join(matrix.projects, '-') }}
+          files: packages/${{ matrix.projects[0] }}/coverage/lcov.info
+          flags: ${{ matrix.projects[0] }}
+          name: ${{ matrix.projects[0] }}
+
+      - name: Upload coverage to Codecov (${{ matrix.projects[1] }})
+        if: matrix.os == 'ubuntu-latest' && matrix.projects[1]
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.projects[1] }}/coverage/lcov.info
+          flags: ${{ matrix.projects[1] }}
+          name: ${{ matrix.projects[1] }}
+
+      - name: Upload coverage to Codecov (${{ matrix.projects[2] }})
+        if: matrix.os == 'ubuntu-latest' && matrix.projects[2]
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.projects[2] }}/coverage/lcov.info
+          flags: ${{ matrix.projects[2] }}
+          name: ${{ matrix.projects[2] }}
+
+      - name: Upload coverage to Codecov (${{ matrix.projects[3] }})
+        if: matrix.os == 'ubuntu-latest' && matrix.projects[3]
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.projects[3] }}/coverage/lcov.info
+          flags: ${{ matrix.projects[3] }}
+          name: ${{ matrix.projects[3] }}
+
+      - name: Upload coverage to Codecov (${{ matrix.projects[4] }})
+        if: matrix.os == 'ubuntu-latest' && matrix.projects[4]
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.projects[4] }}/coverage/lcov.info
+          flags: ${{ matrix.projects[4] }}
+          name: ${{ matrix.projects[4] }}
+
+      - name: Upload coverage to Codecov (${{ matrix.projects[5] }})
+        if: matrix.os == 'ubuntu-latest' && matrix.projects[5]
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.projects[5] }}/coverage/lcov.info
+          flags: ${{ matrix.projects[5] }}
+          name: ${{ matrix.projects[5] }}
+
+      - name: Upload coverage to Codecov (${{ matrix.projects[6] }})
+        if: matrix.os == 'ubuntu-latest' && matrix.projects[6]
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.projects[6] }}/coverage/lcov.info
+          flags: ${{ matrix.projects[6] }}
+          name: ${{ matrix.projects[6] }}
 
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
