@@ -1282,6 +1282,57 @@ function first() {
   return arguments[0];
 }
     `,
+    `
+type Unwrap<T> = T extends (infer U)[] ? U : T;
+
+interface Schema<T> {
+  in: Schema<Unwrap<T>>;
+  out: Schema<Unwrap<T>[]>;
+}
+
+function widen<T>(schema: Schema<T>): Schema<T | undefined> {
+  return schema;
+}
+    `,
+    `
+type Unwrap<T> = T extends (infer U)[] ? U : T;
+
+interface Schema<T> {
+  in: Schema<Unwrap<T>>;
+  out: Schema<Unwrap<T>[]>;
+}
+
+declare function register(schema: Schema<unknown>): void;
+
+function forward<T>(schema: Schema<T>) {
+  register(schema);
+}
+    `,
+    `
+enum Fruit {
+  Apple,
+}
+
+type Unwrap<T> = T extends (infer U)[] ? U : T;
+
+interface Schema<T> {
+  in: Schema<Unwrap<T>>;
+  out: Schema<Unwrap<T>[]>;
+}
+
+declare function register(schema: Schema<{ fruit: Fruit }>): void;
+
+function forward<T extends { fruit: Fruit }>(schema: Schema<T>) {
+  register(schema);
+}
+    `,
+    `
+type Wrapper<T> = { next: Wrapper<[T]>; value: T };
+
+declare const wrapper: Wrapper<0>;
+
+const widened: Wrapper<0 | 1> = wrapper;
+    `,
   ],
   invalid: [
     {
@@ -4105,6 +4156,79 @@ const box: { fruit: Fruit } = source ?? { fruit: 1 };
           column: 7,
           data: { enumNames: "'Fruit'" },
           endColumn: 53,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+interface NumberBox<T> {
+  fruit: number;
+  value: T;
+}
+
+interface FruitBox<T> {
+  fruit: Fruit;
+  value: T;
+}
+
+function getFruitBox<T>(box: NumberBox<T>): FruitBox<T> {
+  return box;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 14,
+          endLine: 17,
+          line: 17,
+          messageId: 'unsafeEnumReturn',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const numbers: Promise<Map<string, Set<number>[]>>;
+
+const fruits: Promise<Map<string, Set<Fruit>[]>> = numbers;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 59,
+          endLine: 8,
+          line: 8,
+          messageId: 'unsafeEnumAssignment',
+        },
+      ],
+    },
+    {
+      code: `
+enum Fruit {
+  Apple,
+}
+
+declare const config: { a: { b: { c: { d: { fruit: number } } } } };
+
+const fruitConfig: { a: { b: { c: { d: { fruit: Fruit } } } } } = config;
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { enumNames: "'Fruit'" },
+          endColumn: 73,
           endLine: 8,
           line: 8,
           messageId: 'unsafeEnumAssignment',

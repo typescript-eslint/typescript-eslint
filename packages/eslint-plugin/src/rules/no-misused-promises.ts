@@ -406,8 +406,9 @@ export default createRule<Options, MessageId>({
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       if (
-        node.type === AST_NODE_TYPES.CallExpression &&
-        isPromiseFinallyMethod(node)
+        node.arguments.length === 0 ||
+        (node.type === AST_NODE_TYPES.CallExpression &&
+          isPromiseFinallyMethod(node))
       ) {
         return;
       }
