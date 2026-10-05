@@ -61,7 +61,7 @@ function includesType(
 const MAYBE_UNDEFINED_FLAGS =
   ts.TypeFlags.Any |
   ts.TypeFlags.Unknown |
-  ts.TypeFlags.TypeParameter |
+  ts.TypeFlags.InstantiableNonPrimitive |
   ts.TypeFlags.Undefined |
   ts.TypeFlags.Void;
 

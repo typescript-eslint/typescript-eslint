@@ -56,6 +56,24 @@ function f<T extends number | null>(v: T) {
   return foo && foo.bar == v;
 }
     `,
+    `
+function f<T, K extends keyof T>(foo: { bar?: number } | undefined, v: T[K]) {
+  return foo && foo.bar === v;
+}
+    `,
+    `
+function f<T, K extends keyof T>(foo: { bar?: number } | undefined, v: T[K]) {
+  return !foo || foo.bar !== v;
+}
+    `,
+    `
+function f<T>(
+  foo: { bar?: number } | undefined,
+  v: T extends string ? undefined : number,
+) {
+  return foo && foo.bar === v;
+}
+    `,
     'foo && foo.bar == undeclaredVar;',
     'foo && foo.bar == null;',
     'foo && foo.bar == undefined;',
