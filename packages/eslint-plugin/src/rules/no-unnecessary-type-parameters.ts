@@ -486,6 +486,11 @@ function collectTypeParameterUsageCounts(
 
         // TS doesn't count mapped types key remapping (`{[K in 'a' as T]: K}`)
         // but handles this under `MappedType.nameType`, so we need to visit that too.
+        // Instantiated mapped types populate it lazily, which getting the
+        // awaited type forces.
+        if (!type.nameType) {
+          checker.getAwaitedType(type);
+        }
         if (type.nameType) {
           visitType(type.nameType, false);
         }
