@@ -10,12 +10,10 @@ import TabItem from '@theme/TabItem';
 > See **https://typescript-eslint.io/rules/no-unused-destructure-type-properties** for documentation.
 
 When a destructuring pattern is annotated with an inline type, nothing else refers to that type.
-Any property the type declares but the pattern does not destructure is required from callers without being read through the pattern.
-This often happens when a property is removed from the pattern but left behind in its type, such as when refactoring a UI component's props.
+Any property the type declares but the pattern does not destructure is effectively dead code.
+These are often left behind when a property is removed from the pattern but not from its type.
 
-This rule reports properties, index signatures, tuple elements, and `Record` keys of inline types that are not used by the destructuring pattern they annotate.
-It checks function parameters and variable declarations, including nested inline types.
-Signatures without an implementation, such as overload signatures, function types, and anything in a `declare` block or `.d.ts` file, are not checked.
+This rule reports properties of inline types that a destructuring pattern doesn't use.
 
 ## Examples
 
@@ -68,44 +66,11 @@ function getCity({ address: { city } }: { address: { city: string } }) {
 </TabItem>
 </Tabs>
 
-### Named Types
-
-Type aliases, interfaces, and other type references might be used elsewhere, so this rule does not report on their properties.
-Only types written inline in the annotation are checked.
-
-```ts
-interface ButtonProps {
-  text: string;
-  onClick: () => void;
-}
-
-// ✅ Not reported: ButtonProps might be used elsewhere
-function Button({ text }: ButtonProps) {
-  return text;
-}
-```
-
-### Rest Elements and Skipped Elements
-
-A rest element collects every remaining property, so patterns containing one are not reported.
-Tuple elements that are explicitly skipped before a later element are considered used.
-
-```ts
-function Button({ text, ...rest }: { text: string; onClick: () => void }) {
-  return [text, rest];
-}
-
-function getSecond([, second]: [string, number]) {
-  return second;
-}
-```
-
 ## When Not To Use It
 
-Removing an unused property makes a parameter's type less specific.
-If you intentionally declare properties you don't read, such as to require callers to provide them ahead of a planned change, this rule might not be for you.
+If you intentionally require properties you don't read, such as ahead of a planned change, this rule might not be for you.
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Related To
 
-- [`no-unused-vars`](./no-unused-vars.mdx): reports the opposite case of variables that are destructured but never used. This rule reports properties that are declared in a type but never destructured.
+- [`no-unused-vars`](./no-unused-vars.mdx): reports destructured variables that are never used.
