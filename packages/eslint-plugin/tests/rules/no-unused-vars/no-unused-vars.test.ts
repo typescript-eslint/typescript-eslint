@@ -3815,5 +3815,53 @@ export function g(a: string, b: unknown, c: string): asserts b {}
         },
       ],
     },
+    {
+      code: `
+export function g(a: string, b: unknown, c: string) {
+  var b;
+  type b = string;
+  return '' as b;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'a',
+          },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 30,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'b',
+          },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+        {
+          column: 42,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'c',
+          },
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ args: 'after-used' }],
+    },
   ],
 });
