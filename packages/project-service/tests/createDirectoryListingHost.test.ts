@@ -29,9 +29,7 @@ describe(createDirectoryListingHost, () => {
   it('lists the same files as ts.sys for a single-level *.* listing', () => {
     const host = createDirectoryListingHost(ts.sys);
 
-    const actual = host.readDirectory(directory, undefined, undefined, [
-      '*.*',
-    ]);
+    const actual = host.readDirectory(directory, undefined, undefined, ['*.*']);
 
     expect(toBaseNames(actual)).toStrictEqual(
       toBaseNames(

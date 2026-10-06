@@ -40,7 +40,13 @@ export function createDirectoryListingHost(
         include?.length !== 1 ||
         include[0] !== '*.*'
       ) {
-        return sys.readDirectory(directory, extensions, exclude, include, depth);
+        return sys.readDirectory(
+          directory,
+          extensions,
+          exclude,
+          include,
+          depth,
+        );
       }
 
       const entries = readDirectoryEntries(directory);
