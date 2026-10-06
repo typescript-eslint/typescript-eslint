@@ -117,8 +117,6 @@ export function getTestMatrices(affected: string[]): TestMatrices {
     ),
 
     unitTestsMatrix: [
-      // Linux groups run all their packages so each group's Codecov upload always has the same flags.
-      // Otherwise, Codecov drops the group's previous upload, including packages that didn't run.
       ...toMatrix(
         'ubuntu-latest',
         LINUX_GROUPS.filter(group =>
