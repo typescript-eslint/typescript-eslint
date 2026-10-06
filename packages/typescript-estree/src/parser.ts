@@ -1,8 +1,11 @@
-import type * as ts from 'typescript';
-
 import debug from 'debug';
+import * as ts from 'typescript';
 
-import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
+import type {
+  ASTAndDefiniteProgram,
+  ASTAndProgram,
+  CanonicalPath,
+} from './create-program/shared';
 import type {
   ParserServices,
   ParserServicesNodeMaps,
@@ -21,12 +24,16 @@ import {
 } from './create-program/createSourceFile';
 import { getWatchProgramsForProjects } from './create-program/getWatchProgramsForProjects';
 import {
+  getAstFromProgram,
+  getCanonicalFileName,
+} from './create-program/shared';
+import {
   createProgramFromConfigFile,
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
-import { useSingleRunProgramForProjectService } from './create-program/useSingleRunProgramForProjectService';
 import { createParserServices } from './createParserServices';
 import { createParseSettings } from './parseSettings/createParseSettings';
+import { getProjectConfigFiles } from './parseSettings/getProjectConfigFiles';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { useProgramFromProjectService } from './useProgramFromProjectService';
 
@@ -38,8 +45,79 @@ const log = debug('typescript-eslint:typescript-estree:parser');
  * clearProgramCache() is only intended to be used in testing to ensure the parser is clean between tests.
  */
 const existingPrograms = new Map<CanonicalPath, ts.Program>();
+
+/**
+ * Tsconfigs with project references, which single runs leave to the project service.
+ */
+const configFilesWithReferences = new Set<CanonicalPath>();
+
 export function clearProgramCache(): void {
   existingPrograms.clear();
+  configFilesWithReferences.clear();
+}
+
+/**
+ * Files don't change on disk during a single run, so the project service's
+ * bookkeeping for each opened file isn't needed. Instead, each file can come
+ * from a Program created once for its tsconfig, the same as with
+ * `parserOptions.project`. Anything less straightforward is left to the
+ * project service: default project files, extra file extensions, project
+ * references, and files not found in their tsconfig's Program.
+ */
+function useSingleRunProgramForProjectService(
+  parseSettings: ParseSettings,
+): ASTAndDefiniteProgram | undefined {
+  if (
+    parseSettings.extraFileExtensions.length ||
+    parseSettings.projectService?.allowDefaultProject?.length
+  ) {
+    return undefined;
+  }
+
+  let configFile: string | undefined;
+  try {
+    [configFile] = getProjectConfigFiles(parseSettings, true) ?? [];
+  } catch {
+    return undefined;
+  }
+
+  if (!configFile) {
+    return undefined;
+  }
+
+  const canonicalConfigFile = getCanonicalFileName(configFile);
+  if (configFilesWithReferences.has(canonicalConfigFile)) {
+    return undefined;
+  }
+
+  let program = existingPrograms.get(canonicalConfigFile);
+  if (!program) {
+    // The project service loads referenced projects from their source files,
+    // while a Program would use their built declaration files.
+    // References aren't inherited through extends, so the raw file is enough.
+    const rawConfig = ts.readConfigFile(configFile, ts.sys.readFile).config as
+      { references?: unknown[] } | undefined;
+    if (rawConfig?.references?.length) {
+      configFilesWithReferences.add(canonicalConfigFile);
+      return undefined;
+    }
+
+    log('Creating single-run Program for project service: %s', configFile);
+    program = createProgramFromConfigFile(
+      configFile,
+      undefined,
+      parseSettings.jsDocParsingMode,
+    );
+    existingPrograms.set(canonicalConfigFile, program);
+  }
+
+  const astAndProgram = getAstFromProgram(program, parseSettings.filePath);
+  if (astAndProgram?.ast.text !== parseSettings.codeFullText) {
+    return undefined;
+  }
+
+  astAndProgram.program.getTypeChecker(); // ensure parent pointers are set in source files
+  return astAndProgram;
 }
 
 const defaultProjectMatchedFiles = new Set<string>();

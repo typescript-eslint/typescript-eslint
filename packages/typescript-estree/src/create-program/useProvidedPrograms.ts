@@ -58,12 +58,15 @@ export function useProvidedPrograms(
  *
  * @param configFile the path to the tsconfig.json file, relative to `projectDirectory`
  * @param projectDirectory the project directory to use as the CWD, defaults to `process.cwd()`
+ * @param jsDocParsingMode how much JSDoc to parse, defaults to TypeScript's default of parsing all JSDoc
  */
 export function createProgramFromConfigFile(
   configFile: string,
   projectDirectory?: string,
+  jsDocParsingMode?: ts.JSDocParsingMode,
 ): ts.Program {
   const parsed = getParsedConfigFile(ts, configFile, projectDirectory);
   const host = ts.createCompilerHost(parsed.options, true);
+  host.jsDocParsingMode = jsDocParsingMode;
   return ts.createProgram(parsed.fileNames, parsed.options, host);
 }
