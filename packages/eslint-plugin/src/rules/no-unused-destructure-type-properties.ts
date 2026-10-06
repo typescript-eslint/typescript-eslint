@@ -17,7 +17,18 @@ type MessageIds = 'unused';
 
 type PropertyMember = TSESTree.TSMethodSignature | TSESTree.TSPropertySignature;
 
+type PatternOwner =
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression
+  | TSESTree.VariableDeclarator;
+
 type PropertyName = string | ts.Type;
+
+interface PatternRoot {
+  fixable: boolean;
+  inferenceReferences: TSESTree.Node[];
+}
 
 export default createRule<[], MessageIds>({
   name: 'no-unused-destructure-type-properties',
@@ -40,8 +51,16 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function checkPattern(pattern: TSESTree.Node, typeNode: TSESTree.Node) {
+    function checkPattern(
+      root: PatternRoot,
+      pattern: TSESTree.Node,
+      typeNode: TSESTree.Node,
+    ) {
       if (pattern.type === AST_NODE_TYPES.AssignmentPattern) {
+        root = {
+          ...root,
+          fixable: root.fixable && isFixableInitializer(pattern.right),
+        };
         pattern = pattern.left;
       }
 
@@ -63,7 +82,7 @@ export default createRule<[], MessageIds>({
 
       if (pattern.type === AST_NODE_TYPES.ArrayPattern) {
         if (typeNode.type === AST_NODE_TYPES.TSTupleType) {
-          checkArrayPatternOnTuple(pattern, typeNode);
+          checkArrayPatternOnTuple(root, pattern, typeNode);
         }
         return;
       }
@@ -74,18 +93,19 @@ export default createRule<[], MessageIds>({
 
       switch (typeNode.type) {
         case AST_NODE_TYPES.TSTupleType:
-          checkObjectPatternOnTuple(pattern, typeNode);
+          checkObjectPatternOnTuple(root, pattern, typeNode);
           break;
         case AST_NODE_TYPES.TSTypeLiteral:
-          checkObjectPatternOnTypeLiteral(pattern, typeNode);
+          checkObjectPatternOnTypeLiteral(root, pattern, typeNode);
           break;
         case AST_NODE_TYPES.TSTypeReference:
-          checkObjectPatternOnRecord(pattern, typeNode);
+          checkObjectPatternOnRecord(root, pattern, typeNode);
           break;
       }
     }
 
     function checkObjectPatternOnTypeLiteral(
+      root: PatternRoot,
       pattern: TSESTree.ObjectPattern,
       typeNode: TSESTree.TSTypeLiteral,
     ) {
@@ -112,7 +132,9 @@ export default createRule<[], MessageIds>({
           member.type === AST_NODE_TYPES.TSMethodSignature ||
           member.type === AST_NODE_TYPES.TSPropertySignature
         ) {
-          const keyType = getMemberKeyType(member);
+          const keyType = member.computed
+            ? services.getTypeAtLocation(member.key)
+            : getStaticKeyType(member.key);
           const name = getPropertyName(keyType);
           if (name != null) {
             propertyMembers.set(member, { name, keyType });
@@ -123,21 +145,46 @@ export default createRule<[], MessageIds>({
       const used = new Set<TSESTree.TypeElement>();
       const nested = new Map<TSESTree.TypeNode, Set<TSESTree.Node>>();
 
-      function markPropertyUsed(
-        member: PropertyMember,
+      function markPropertiesUsed(
         property: TSESTree.Property,
+        predicate: (memberKey: {
+          keyType: ts.Type;
+          name: PropertyName;
+        }) => boolean,
       ) {
-        used.add(member);
-        if (
-          member.type === AST_NODE_TYPES.TSPropertySignature &&
-          member.typeAnnotation
-        ) {
-          const memberTypeNode = member.typeAnnotation.typeAnnotation;
-          nested.set(
-            memberTypeNode,
-            new Set(nested.get(memberTypeNode)).add(property.value),
-          );
+        let matched = false;
+        for (const [member, memberKey] of propertyMembers) {
+          if (!predicate(memberKey)) {
+            continue;
+          }
+
+          matched = true;
+          used.add(member);
+          if (
+            member.type === AST_NODE_TYPES.TSPropertySignature &&
+            member.typeAnnotation
+          ) {
+            addNestedPattern(
+              nested,
+              member.typeAnnotation.typeAnnotation,
+              property.value,
+            );
+          }
         }
+        return matched;
+      }
+
+      function markIndexSignaturesUsed(
+        predicate: (indexKeyType: ts.Type) => boolean,
+      ) {
+        let matched = false;
+        for (const [member, indexKeyTypes] of indexSignatures) {
+          if (indexKeyTypes.some(predicate)) {
+            matched = true;
+            used.add(member);
+          }
+        }
+        return matched;
       }
 
       for (const [property, propertyKeyTypes] of keyTypes) {
@@ -145,66 +192,51 @@ export default createRule<[], MessageIds>({
           const name = getPropertyName(keyType);
 
           if (name == null) {
-            for (const [member, memberKey] of propertyMembers) {
-              if (mightBeKey(memberKey.keyType, keyType)) {
-                markPropertyUsed(member, property);
-              }
-            }
-            for (const [member, indexKeyTypes] of indexSignatures) {
-              if (
-                indexKeyTypes.some(indexKeyType =>
-                  typesOverlap(keyType, indexKeyType),
-                )
-              ) {
-                used.add(member);
-              }
-            }
-            continue;
-          }
-
-          let matched = false;
-
-          for (const [member, memberKey] of propertyMembers) {
-            if (memberKey.name !== name) {
-              continue;
-            }
-
-            matched = true;
-            markPropertyUsed(member, property);
-          }
-
-          if (matched) {
-            continue;
-          }
-
-          for (const [member, indexKeyTypes] of indexSignatures) {
-            if (
-              indexKeyTypes.some(
-                indexKeyType =>
-                  !tsutils.isIntrinsicStringType(indexKeyType) &&
-                  isApplicableKey(keyType, indexKeyType),
-              )
-            ) {
-              matched = true;
-              used.add(member);
-            }
-          }
-
-          if (matched) {
-            continue;
-          }
-
-          for (const [member, indexKeyTypes] of indexSignatures) {
-            if (indexKeyTypes.some(tsutils.isIntrinsicStringType)) {
-              used.add(member);
-            }
+            markPropertiesUsed(property, memberKey =>
+              mightBeKey(memberKey.keyType, keyType),
+            );
+            markIndexSignaturesUsed(indexKeyType =>
+              typesOverlap(keyType, indexKeyType),
+            );
+          } else if (
+            !markPropertiesUsed(
+              property,
+              memberKey => memberKey.name === name,
+            ) &&
+            !markIndexSignaturesUsed(
+              indexKeyType =>
+                !tsutils.isIntrinsicStringType(indexKeyType) &&
+                isApplicableKey(keyType, indexKeyType),
+            )
+          ) {
+            markIndexSignaturesUsed(tsutils.isIntrinsicStringType);
           }
         }
       }
 
+      const reported = new Set<TSESTree.TypeElement>(
+        [...propertyMembers.keys(), ...indexSignatures.keys()].filter(
+          member => !used.has(member),
+        ),
+      );
+      const remaining = typeNode.members.filter(
+        member => !reported.has(member),
+      );
+      const membersRoot =
+        remaining.length > 0 &&
+        remaining.every(
+          member =>
+            (member.type === AST_NODE_TYPES.TSMethodSignature ||
+              member.type === AST_NODE_TYPES.TSPropertySignature) &&
+            member.optional,
+        )
+          ? { ...root, fixable: false }
+          : root;
+
       for (const [member, { name }] of propertyMembers) {
-        if (!used.has(member)) {
+        if (reported.has(member)) {
           report(
+            membersRoot,
             member,
             'property',
             typeof name === 'string'
@@ -215,8 +247,9 @@ export default createRule<[], MessageIds>({
       }
 
       for (const [member, indexKeyTypes] of indexSignatures) {
-        if (!used.has(member)) {
+        if (reported.has(member)) {
           report(
+            membersRoot,
             member,
             'index signature',
             `[${indexKeyTypes.map(type => checker.typeToString(type)).join(' | ')}]`,
@@ -224,14 +257,11 @@ export default createRule<[], MessageIds>({
         }
       }
 
-      for (const [nestedTypeNode, nestedPatterns] of nested) {
-        if (nestedPatterns.size === 1) {
-          checkPattern([...nestedPatterns][0], nestedTypeNode);
-        }
-      }
+      checkNestedPatterns(root, nested);
     }
 
     function checkObjectPatternOnTuple(
+      root: PatternRoot,
       pattern: TSESTree.ObjectPattern,
       typeNode: TSESTree.TSTupleType,
     ) {
@@ -256,27 +286,24 @@ export default createRule<[], MessageIds>({
             return;
           }
 
-          if (Number(name) in elements) {
-            const element = elements[Number(name)];
-            used.set(element, new Set(used.get(element)).add(property.value));
+          const element = elements.find((_, index) => String(index) === name);
+          if (element) {
+            addNestedPattern(used, element, property.value);
           }
         }
       }
 
-      for (const [element, elementPatterns] of used) {
-        if (elementPatterns.size === 1) {
-          checkPattern([...elementPatterns][0], element);
-        }
-      }
+      checkNestedPatterns(root, used);
 
       for (const [index, element] of elements.entries()) {
         if (!used.has(element)) {
-          report(element, 'element', String(index), null);
+          report(root, element, 'element', String(index), null);
         }
       }
     }
 
     function checkObjectPatternOnRecord(
+      root: PatternRoot,
       pattern: TSESTree.ObjectPattern,
       typeNode: TSESTree.TSTypeReference,
     ) {
@@ -320,6 +347,7 @@ export default createRule<[], MessageIds>({
 
       for (const { name, constituent } of unused) {
         report(
+          root,
           constituent,
           'key',
           name,
@@ -331,6 +359,7 @@ export default createRule<[], MessageIds>({
     }
 
     function checkArrayPatternOnTuple(
+      root: PatternRoot,
       pattern: TSESTree.ArrayPattern,
       typeNode: TSESTree.TSTupleType,
     ) {
@@ -350,7 +379,7 @@ export default createRule<[], MessageIds>({
               .slice(patternIndex)
               .every(laterElement => laterElement == null)
           ) {
-            report(member, 'element', String(index));
+            report(root, member, 'element', String(index), null);
           }
           continue;
         }
@@ -360,7 +389,7 @@ export default createRule<[], MessageIds>({
         }
 
         if (restTypesCount === 0) {
-          checkPattern(element, member);
+          checkPattern(root, element, member);
         }
       }
     }
@@ -391,10 +420,15 @@ export default createRule<[], MessageIds>({
       return keyTypes;
     }
 
-    function getMemberKeyType(member: PropertyMember) {
-      return member.computed
-        ? services.getTypeAtLocation(member.key)
-        : getStaticKeyType(member.key);
+    function checkNestedPatterns(
+      root: PatternRoot,
+      nested: Map<TSESTree.TypeNode, Set<TSESTree.Node>>,
+    ) {
+      for (const [typeNode, patterns] of nested) {
+        if (patterns.size === 1) {
+          checkPattern(root, [...patterns][0], typeNode);
+        }
+      }
     }
 
     function getStaticKeyType(key: TSESTree.Identifier | TSESTree.Literal) {
@@ -454,38 +488,46 @@ export default createRule<[], MessageIds>({
       constituent: TSESTree.TypeNode,
     ) {
       const tokenAfter = context.sourceCode.getTokenAfter(constituent);
-      if (tokenAfter?.value === '|') {
-        return removeRange(fixer, constituent, [
-          constituent.range[0],
-          tokenAfter.range[1],
-        ]);
-      }
-
       const tokenBefore = context.sourceCode.getTokenBefore(constituent);
-      return removeRange(fixer, constituent, [
-        tokenBefore?.value === '|'
-          ? tokenBefore.range[0]
-          : constituent.range[0],
-        constituent.range[1],
-      ]);
+
+      return removeRange(
+        fixer,
+        constituent,
+        tokenAfter?.value === '|'
+          ? [constituent.range[0], tokenAfter.range[1]]
+          : [
+              tokenBefore?.value === '|'
+                ? tokenBefore.range[0]
+                : constituent.range[0],
+              constituent.range[1],
+            ],
+      );
     }
 
     function removeMember(fixer: TSESLint.RuleFixer, member: TSESTree.Node) {
       const { text } = context.sourceCode;
       const tokenAfter = context.sourceCode.getTokenAfter(member);
-      const end =
-        tokenAfter?.value === ',' ? tokenAfter.range[1] : member.range[1];
+      const tokenBefore = context.sourceCode.getTokenBefore(member);
+      if (
+        (tokenAfter?.value === '(' || tokenAfter?.value === '<') &&
+        tokenBefore?.value !== '{' &&
+        tokenBefore?.value !== ',' &&
+        tokenBefore?.value !== ';'
+      ) {
+        return null;
+      }
+
       const lineStart = text.lastIndexOf('\n', member.range[0] - 1) + 1;
-      const lineEnd = text.indexOf('\n', end);
+      const lineEnd = text.indexOf('\n', member.range[1]);
 
       return removeRange(
         fixer,
         member,
         lineEnd !== -1 &&
           !text.slice(lineStart, member.range[0]).trim() &&
-          !text.slice(end, lineEnd).trim()
+          !text.slice(member.range[1], lineEnd).trim()
           ? [lineStart, lineEnd + 1]
-          : [member.range[0], end],
+          : member.range,
       );
     }
 
@@ -515,7 +557,43 @@ export default createRule<[], MessageIds>({
         : fixer.removeRange(range);
     }
 
+    function isStandaloneOwner(owner: PatternOwner) {
+      if (
+        owner.type === AST_NODE_TYPES.FunctionDeclaration ||
+        owner.type === AST_NODE_TYPES.VariableDeclarator
+      ) {
+        return true;
+      }
+
+      const { parent } = owner;
+
+      switch (parent.type) {
+        case AST_NODE_TYPES.MethodDefinition:
+          return parent.kind === 'constructor'
+            ? parent.parent.body.every(
+                member =>
+                  member === parent ||
+                  member.type !== AST_NODE_TYPES.MethodDefinition ||
+                  member.kind !== 'constructor',
+              )
+            : !isConstrainedClass(parent.parent.parent) &&
+                services
+                  .getTypeAtLocation(parent)
+                  .getCallSignatures()
+                  .every(
+                    signature =>
+                      signature.getDeclaration() ===
+                      services.esTreeNodeToTSNodeMap.get(parent),
+                  );
+        case AST_NODE_TYPES.VariableDeclarator:
+          return !parent.id.typeAnnotation;
+        default:
+          return false;
+      }
+    }
+
     function report(
+      root: PatternRoot,
       node: TSESTree.Node,
       type: string,
       key: string,
@@ -526,7 +604,15 @@ export default createRule<[], MessageIds>({
         node,
         messageId: 'unused',
         data: { type, key },
-        fix,
+        fix:
+          root.fixable &&
+          !root.inferenceReferences.some(
+            reference =>
+              node.range[0] <= reference.range[0] &&
+              reference.range[1] <= node.range[1],
+          )
+            ? fix
+            : null,
       });
     }
 
@@ -536,16 +622,83 @@ export default createRule<[], MessageIds>({
           typeAnnotation: TSESTree.TSTypeAnnotation;
         },
       ) {
-        if (
-          !isDefinitionFile(context.filename) &&
-          isImplementationPattern(node)
-        ) {
-          checkPattern(node, node.typeAnnotation.typeAnnotation);
+        const owner = getImplementationOwner(node);
+        if (!owner || isDefinitionFile(context.filename)) {
+          return;
         }
+
+        const initializer =
+          node.parent.type === AST_NODE_TYPES.AssignmentPattern
+            ? node.parent.right
+            : owner.type === AST_NODE_TYPES.VariableDeclarator
+              ? owner.init
+              : null;
+
+        checkPattern(
+          {
+            fixable:
+              isFixableInitializer(initializer) && isStandaloneOwner(owner),
+            inferenceReferences:
+              owner.type === AST_NODE_TYPES.VariableDeclarator
+                ? []
+                : [
+                    owner,
+                    ...(owner.typeParameters?.params ?? []),
+                    ...(owner.parent.type === AST_NODE_TYPES.MethodDefinition &&
+                    owner.parent.kind === 'constructor'
+                      ? (owner.parent.parent.parent.typeParameters?.params ??
+                        [])
+                      : []),
+                  ].flatMap(declaration =>
+                    context.sourceCode
+                      .getDeclaredVariables(declaration)
+                      .flatMap(variable =>
+                        variable.references.map(
+                          reference => reference.identifier,
+                        ),
+                      ),
+                  ),
+          },
+          node,
+          node.typeAnnotation.typeAnnotation,
+        );
       },
     };
   },
 });
+
+function addNestedPattern(
+  nested: Map<TSESTree.TypeNode, Set<TSESTree.Node>>,
+  typeNode: TSESTree.TypeNode,
+  pattern: TSESTree.Node,
+) {
+  nested.set(typeNode, new Set(nested.get(typeNode)).add(pattern));
+}
+
+function isFixableInitializer(node: TSESTree.Expression | null) {
+  switch (node?.type) {
+    case undefined:
+    case AST_NODE_TYPES.Identifier:
+    case AST_NODE_TYPES.MemberExpression:
+      return true;
+    case AST_NODE_TYPES.ObjectExpression:
+      return node.properties.length === 0;
+    default:
+      return false;
+  }
+}
+
+function isConstrainedClass(
+  node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
+) {
+  return (
+    node.superClass != null ||
+    node.implements.length > 0 ||
+    node.body.body.some(
+      member => member.type === AST_NODE_TYPES.TSIndexSignature,
+    )
+  );
+}
 
 function getPropertyName(type: ts.Type): PropertyName | undefined {
   if (tsutils.isStringLiteralType(type) || tsutils.isNumberLiteralType(type)) {
@@ -555,13 +708,13 @@ function getPropertyName(type: ts.Type): PropertyName | undefined {
   return tsutils.isUniqueESSymbolType(type) ? type : undefined;
 }
 
-function isImplementationPattern(node: TSESTree.Node) {
+function getImplementationOwner(node: TSESTree.Node) {
   for (let ancestor = node.parent; ancestor; ancestor = ancestor.parent) {
     if (
       ancestor.type === AST_NODE_TYPES.TSModuleDeclaration &&
       ancestor.declare
     ) {
-      return false;
+      return undefined;
     }
   }
 
@@ -573,12 +726,17 @@ function isImplementationPattern(node: TSESTree.Node) {
   switch (parent?.type) {
     case AST_NODE_TYPES.ArrowFunctionExpression:
     case AST_NODE_TYPES.FunctionDeclaration:
+      return parent;
     case AST_NODE_TYPES.FunctionExpression:
-      return true;
+      return (parent.parent.type === AST_NODE_TYPES.MethodDefinition ||
+        parent.parent.type === AST_NODE_TYPES.Property) &&
+        parent.parent.kind === 'set'
+        ? undefined
+        : parent;
     case AST_NODE_TYPES.VariableDeclarator:
-      return !parent.parent.declare;
+      return parent.parent.declare ? undefined : parent;
     default:
-      return false;
+      return undefined;
   }
 }
 

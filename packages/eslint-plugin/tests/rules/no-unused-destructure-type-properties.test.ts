@@ -432,6 +432,25 @@ function test({ [key]: value }: Record<'a' | string, boolean>) {}
       code: 'export const { used }: { used: string; unused: string };',
       filename: 'definition.d.ts',
     },
+    `
+declare const key: string;
+
+function test({ used }: { used: string; [key]: number }) {}
+    `,
+    `
+class Test {
+  #value = { used: '', unused: 0 };
+  get value() {
+    return this.#value;
+  }
+  set value({ used }: { used: string; unused: number }) {}
+}
+    `,
+    `
+const test = {
+  set value({ used }: { used: string; unused: number }) {},
+};
+    `,
   ],
   invalid: [
     // non-exhaustive destructuring
@@ -489,7 +508,7 @@ function test({ [key]: value }: Record<'a' | string, boolean>) {}
           messageId: 'unused',
         },
       ],
-      output: 'function test([]: []) {}',
+      output: null,
     },
     {
       code: 'function test([a]: [boolean, number]) {}',
@@ -503,7 +522,7 @@ function test({ [key]: value }: Record<'a' | string, boolean>) {}
           messageId: 'unused',
         },
       ],
-      output: 'function test([a]: [boolean, ]) {}',
+      output: null,
     },
     {
       code: 'function test([a]: [boolean, number, string]) {}',
@@ -525,7 +544,7 @@ function test({ [key]: value }: Record<'a' | string, boolean>) {}
           messageId: 'unused',
         },
       ],
-      output: 'function test([a]: [boolean,  ]) {}',
+      output: null,
     },
     {
       code: 'function test([{ used }]: [{ used: string; unused: number }, number]) {}',
@@ -547,7 +566,7 @@ function test({ [key]: value }: Record<'a' | string, boolean>) {}
           messageId: 'unused',
         },
       ],
-      output: 'function test([{ used }]: [{ used: string;  }, ]) {}',
+      output: 'function test([{ used }]: [{ used: string;  }, number]) {}',
     },
     {
       code: 'function test([[used]]: [[string, number], number]) {}',
@@ -569,7 +588,7 @@ function test({ [key]: value }: Record<'a' | string, boolean>) {}
           messageId: 'unused',
         },
       ],
-      output: 'function test([[used]]: [[string, ], ]) {}',
+      output: null,
     },
     // complex keys to statically analyze
     {
@@ -1280,7 +1299,7 @@ class Test {
           messageId: 'unused',
         },
       ],
-      output: 'function test({ used }: { used?: string;  }) {}',
+      output: null,
     },
     {
       code: "function test({ used = 'default' }: { used: string; unused: string }) {}",
@@ -1309,7 +1328,7 @@ class Test {
           messageId: 'unused',
         },
       ],
-      output: 'function test([, a]: [string, number, ]) {}',
+      output: null,
     },
     {
       code: 'function test([a, , b]: [string, number, boolean, string]) {}',
@@ -1323,7 +1342,7 @@ class Test {
           messageId: 'unused',
         },
       ],
-      output: 'function test([a, , b]: [string, number, boolean, ]) {}',
+      output: null,
     },
     {
       code: 'function test([a, , b, , ,]: [string, number, boolean, string]) {}',
@@ -1337,7 +1356,7 @@ class Test {
           messageId: 'unused',
         },
       ],
-      output: 'function test([a, , b, , ,]: [string, number, boolean, ]) {}',
+      output: null,
     },
     // misc
     {
@@ -1374,13 +1393,7 @@ function test<R extends string>({
           messageId: 'unused',
         },
       ],
-      output: `
-function test<R extends string>({
-  1: a,
-}: {
-  [i: number]: number;
-}) {}
-      `,
+      output: null,
     },
     {
       code: 'function test<R>({ a }: { [i: string]: number; [i: `_${string}_`]: R }) {}',
@@ -1394,7 +1407,7 @@ function test<R extends string>({
           messageId: 'unused',
         },
       ],
-      output: 'function test<R>({ a }: { [i: string]: number;  }) {}',
+      output: null,
     },
     {
       code: `
@@ -1415,13 +1428,7 @@ function test<R extends boolean>({
           messageId: 'unused',
         },
       ],
-      output: `
-function test<R extends boolean>({
-  a,
-}: {
-  [i: string]: number;
-}) {}
-      `,
+      output: null,
     },
     {
       code: `
@@ -1442,13 +1449,7 @@ function test<R extends boolean>({
           messageId: 'unused',
         },
       ],
-      output: `
-function test<R extends boolean>({
-  a,
-}: {
-  [i: string]: number;
-}) {}
-      `,
+      output: null,
     },
     {
       code: `
@@ -1508,9 +1509,7 @@ function test([a]: [number, ...string[], boolean]) {}
           messageId: 'unused',
         },
       ],
-      output: `
-function test([a]: [number,  ]) {}
-      `,
+      output: null,
     },
     {
       code: `
@@ -1526,9 +1525,7 @@ function test([a, b]: [number, boolean, ...string[]]) {}
           messageId: 'unused',
         },
       ],
-      output: `
-function test([a, b]: [number, boolean, ]) {}
-      `,
+      output: null,
     },
     // template literal index signatures matched by key
     {
@@ -1577,13 +1574,7 @@ function test({
           messageId: 'unused',
         },
       ],
-      output: `
-function test({
-  used: { nested } = {},
-}: {
-  used?: { nested?: number;  };
-}) {}
-      `,
+      output: null,
     },
     // named and optional tuple members
     {
@@ -1598,7 +1589,7 @@ function test({
           messageId: 'unused',
         },
       ],
-      output: 'function test([first]: [first: string, ]) {}',
+      output: null,
     },
     {
       code: 'function test([{ used }]: [first: { used: string; unused: string }]) {}',
@@ -1630,11 +1621,7 @@ function test([{ used } = { used: '', unused: '' }]: [
           messageId: 'unused',
         },
       ],
-      output: `
-function test([{ used } = { used: '', unused: '' }]: [
-  { used: string;  }?,
-]) {}
-      `,
+      output: null,
     },
     // object patterns on tuples
     {
@@ -1826,13 +1813,7 @@ on(({ used }: { used: string; unused: string }) => {});
           messageId: 'unused',
         },
       ],
-      output: `
-declare function on(
-  callback: (event: { used: string; unused: string }) => void,
-): void;
-
-on(({ used }: { used: string;  }) => {});
-      `,
+      output: null,
     },
     {
       code: `
@@ -1854,15 +1835,7 @@ class Test implements Handler {
           messageId: 'unused',
         },
       ],
-      output: `
-interface Handler {
-  handle(event: { used: string; unused: string }): void;
-}
-
-class Test implements Handler {
-  handle({ used }: { used: string;  }) {}
-}
-      `,
+      output: null,
     },
     {
       code: `
@@ -1880,11 +1853,7 @@ const callback: Callback = ({ used }: { used: string; unused: string }) => {};
           messageId: 'unused',
         },
       ],
-      output: `
-type Callback = (event: { used: string; unused: string }) => void;
-
-const callback: Callback = ({ used }: { used: string;  }) => {};
-      `,
+      output: null,
     },
     // readonly tuples
     {
@@ -1899,7 +1868,7 @@ const callback: Callback = ({ used }: { used: string;  }) => {};
           messageId: 'unused',
         },
       ],
-      output: 'function test([first]: readonly [string, ]) {}',
+      output: null,
     },
     // other kinds of keys
     {
@@ -1974,28 +1943,6 @@ function test({ [Key.Used]: used }: { 0: string;  }) {}
     },
     // different kinds of implementations
     {
-      code: `
-class Test {
-  set value({ used }: { used: string; unused: string }) {}
-}
-      `,
-      errors: [
-        {
-          column: 39,
-          data: { key: 'unused', type: 'property' },
-          endColumn: 53,
-          endLine: 3,
-          line: 3,
-          messageId: 'unused',
-        },
-      ],
-      output: `
-class Test {
-  set value({ used }: { used: string;  }) {}
-}
-      `,
-    },
-    {
       code: "function test({ used }: { used: string; unused: string } = { used: '' }) {}",
       errors: [
         {
@@ -2007,7 +1954,7 @@ class Test {
           messageId: 'unused',
         },
       ],
-      output: "function test({ used }: { used: string;  } = { used: '' }) {}",
+      output: null,
     },
     // comments
     {
@@ -2087,7 +2034,7 @@ function test({
           messageId: 'unused',
         },
       ],
-      output: 'function test([first]: [string, number /* comment */, ]) {}',
+      output: null,
     },
     {
       code: "function test({ used }: Record<'used' | /* comment */ 'unused', string>) {}",
@@ -2289,6 +2236,716 @@ function test({
           endColumn: 57,
           endLine: 1,
           line: 1,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test(
+  { used }: { used: string; unused: number } = { used: '', unused: 1 },
+) {}
+      `,
+      errors: [
+        {
+          column: 29,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 43,
+          endLine: 3,
+          line: 3,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: "const { used }: { used: string; unused: number } = { used: '', unused: 1 };",
+      errors: [
+        {
+          column: 33,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function getObj(): { used: string; unused: number };
+
+const { used }: { used: string; unused: number } = getObj();
+      `,
+      errors: [
+        {
+          column: 33,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 47,
+          endLine: 4,
+          line: 4,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare const obj: { value: { used: string; unused: number } };
+
+const { used }: { used: string; unused: number } = obj.value;
+      `,
+      errors: [
+        {
+          column: 33,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 47,
+          endLine: 4,
+          line: 4,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+declare const obj: { value: { used: string; unused: number } };
+
+const { used }: { used: string;  } = obj.value;
+      `,
+    },
+    {
+      code: 'function test({ used }: { used?: string; unused?: number } = {}) {}',
+      errors: [
+        {
+          column: 42,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 57,
+          endLine: 1,
+          line: 1,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test({
+  outer: { used } = { used: '', unused: 1 },
+}: {
+  outer: { used: string; unused: number };
+}) {}
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 40,
+          endLine: 5,
+          line: 5,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: "function test([used]: [string, number] = ['', 1]) {}",
+      errors: [
+        {
+          column: 32,
+          data: { key: '1', type: 'element' },
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test(value: [string, number]): void;
+function test([used]: [string, number]) {}
+      `,
+      errors: [
+        {
+          column: 32,
+          data: { key: '1', type: 'element' },
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>({ used }: { used: string; unused: T }): T {
+  return null!;
+}
+      `,
+      errors: [
+        {
+          column: 44,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 53,
+          endLine: 2,
+          line: 2,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test<T>({ used }: { used: T; unused: string }): T {
+  return used;
+}
+      `,
+      errors: [
+        {
+          column: 39,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 53,
+          endLine: 2,
+          line: 2,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+function test<T>({ used }: { used: T;  }): T {
+  return used;
+}
+      `,
+    },
+    {
+      code: `
+function outer<T>() {
+  const inner = ({ used }: { used: string; unused: T }) => {};
+  return inner;
+}
+      `,
+      errors: [
+        {
+          column: 44,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 53,
+          endLine: 3,
+          line: 3,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+function outer<T>() {
+  const inner = ({ used }: { used: string;  }) => {};
+  return inner;
+}
+      `,
+    },
+    {
+      code: noFormat`
+function test({ used }: {
+  used
+  unused: number
+  (value: number): boolean
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+function test({ used }: {
+  used
+  unused: number
+  <T>(value: T): T
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: noFormat`
+function test({ used }: {
+  used;
+  unused: number
+  (value: number): boolean
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+function test({ used }: {
+  used;
+  (value: number): boolean
+}) {}
+      `,
+    },
+    {
+      code: noFormat`
+function test({ used }: {
+  used,
+  unused: number,
+  (value: number): boolean
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+function test({ used }: {
+  used,
+  (value: number): boolean
+}) {}
+      `,
+    },
+    {
+      code: noFormat`
+function test({ used }: {
+  unused: number
+  (value: number): boolean
+  used: string
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+function test({ used }: {
+  (value: number): boolean
+  used: string
+}) {}
+      `,
+    },
+    {
+      code: 'function test({}: { unused?: number } = {}) {}',
+      errors: [
+        {
+          column: 21,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 36,
+          endLine: 1,
+          line: 1,
+          messageId: 'unused',
+        },
+      ],
+      output: 'function test({}: {  } = {}) {}',
+    },
+    {
+      code: `
+declare const obj: { unused: number };
+
+function test({ used }: { used?: string; unused?: number } = obj) {}
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 57,
+          endLine: 4,
+          line: 4,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+function test(value: { unused: number }): void;
+function test({ used }: { used?: string; unused?: number }) {}
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 57,
+          endLine: 3,
+          line: 3,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class Test<T> {
+  constructor({ used }: { used: string; unused: T }) {}
+}
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 50,
+          endLine: 3,
+          line: 3,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class Test {
+  constructor({ used }: { used: string; unused: number }) {}
+}
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 55,
+          endLine: 3,
+          line: 3,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+class Test {
+  constructor({ used }: { used: string;  }) {}
+}
+      `,
+    },
+    {
+      code: `
+class Test<T> {
+  method({ used }: { used: string; unused: T }) {}
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+class Test<T> {
+  method({ used }: { used: string;  }) {}
+}
+      `,
+    },
+    {
+      code: `
+function test<T>(value: T, { used }: { used: string; unused: typeof value }) {}
+      `,
+      errors: [
+        {
+          column: 54,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 74,
+          endLine: 2,
+          line: 2,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function make<T>(
+  callback: (value: { used: string; unused: T }) => void,
+): T;
+
+make(({ used }: { used: string; unused: number }) => {});
+      `,
+      errors: [
+        {
+          column: 33,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 47,
+          endLine: 6,
+          line: 6,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function make<T>(handlers: {
+  method(value: { used: string; unused: T }): void;
+}): T;
+
+make({ method({ used }: { used: string; unused: number }) {} });
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 55,
+          endLine: 6,
+          line: 6,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class Test {
+  property = ({ used }: { used: string; unused: number }) => {};
+}
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 55,
+          endLine: 3,
+          line: 3,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class Test {
+  method(value: { unused: number }): void;
+  method({ used }: { used: string; unused: number }) {}
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 50,
+          endLine: 4,
+          line: 4,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+abstract class Base {
+  abstract method(value: { unused: number }): void;
+}
+
+class Test extends Base {
+  method({ used }: { used: string; unused: number }) {}
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 50,
+          endLine: 7,
+          line: 7,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+abstract class Base {
+  abstract method(value: { unused: number }): void;
+}
+
+class Test extends Base {
+  method = ({ used }: { used: string; unused: number }) => {};
+}
+      `,
+      errors: [
+        {
+          column: 39,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 53,
+          endLine: 7,
+          line: 7,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class Base {}
+
+class Test extends Base {
+  constructor({ used }: { used: string; unused: number }) {
+    super();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 55,
+          endLine: 5,
+          line: 5,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+class Base {}
+
+class Test extends Base {
+  constructor({ used }: { used: string;  }) {
+    super();
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  constructor(value: { unused: number });
+  constructor({ used }: { used: string; unused: number }) {}
+}
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 55,
+          endLine: 4,
+          line: 4,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class Test {
+  property = 1;
+  method() {}
+  constructor({ used }: { used: string; unused: number }) {}
+}
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 55,
+          endLine: 5,
+          line: 5,
+          messageId: 'unused',
+        },
+      ],
+      output: `
+class Test {
+  property = 1;
+  method() {}
+  constructor({ used }: { used: string;  }) {}
+}
+      `,
+    },
+    {
+      code: `
+interface Handler {
+  handle(event: { unused: number }): void;
+}
+
+class Test {
+  handle: Handler['handle'] = ({
+    used,
+  }: {
+    used: string;
+    unused: number;
+  }) => {};
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 20,
+          endLine: 11,
+          line: 11,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Handler {
+  handle(event: { unused: number }): void;
+}
+
+const handle: Handler['handle'] = function ({
+  used,
+}: {
+  used: string;
+  unused: number;
+}) {};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 18,
+          endLine: 10,
+          line: 10,
+          messageId: 'unused',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+class Test {
+  [key: string]: unknown;
+  method({ used }: { used: string; unused: number }) {}
+}
+      `,
+      errors: [
+        {
+          column: 36,
+          data: { key: 'unused', type: 'property' },
+          endColumn: 50,
+          endLine: 4,
+          line: 4,
           messageId: 'unused',
         },
       ],
