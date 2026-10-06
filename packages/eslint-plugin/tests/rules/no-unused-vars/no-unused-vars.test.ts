@@ -3581,5 +3581,139 @@ export const myTypeGuard = (data: unknown): data is string => {
         },
       ],
     },
+    {
+      code: `
+export function g(a: string, b: unknown, c: string): b is true {
+  return true;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'a',
+          },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 30,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'b',
+          },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+        {
+          column: 42,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'c',
+          },
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export function g(a: string, b: any, c: string): typeof b {
+  return undefined as any;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'a',
+          },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 30,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'b',
+          },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+        {
+          column: 42,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'c',
+          },
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+export function g(a: string, b: unknown, c: string): asserts b {
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'a',
+          },
+          endColumn: 22,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 30,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'b',
+          },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+        {
+          column: 42,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'c',
+          },
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
   ],
 });
