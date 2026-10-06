@@ -784,7 +784,10 @@ If you absolutely need more files included, set parserOptions.projectService.max
       mockCreateProjectProgram.mockReturnValueOnce(program);
 
       const actual = useProgramFromProjectService(
-        createProjectServiceSettings({ allowDefaultProject: undefined, service }),
+        createProjectServiceSettings({
+          allowDefaultProject: undefined,
+          service,
+        }),
         singleRunParseSettings,
         true,
         new Set(),
@@ -804,7 +807,10 @@ If you absolutely need more files included, set parserOptions.projectService.max
       });
 
       useProgramFromProjectService(
-        createProjectServiceSettings({ allowDefaultProject: undefined, service }),
+        createProjectServiceSettings({
+          allowDefaultProject: undefined,
+          service,
+        }),
         singleRunParseSettings,
         true,
         new Set(),
@@ -825,7 +831,10 @@ If you absolutely need more files included, set parserOptions.projectService.max
       });
 
       useProgramFromProjectService(
-        createProjectServiceSettings({ allowDefaultProject: undefined, service }),
+        createProjectServiceSettings({
+          allowDefaultProject: undefined,
+          service,
+        }),
         singleRunParseSettings,
         true,
         new Set(),

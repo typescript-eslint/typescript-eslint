@@ -302,7 +302,9 @@ function findNearestConfigFile(
   const visited: string[] = [];
   let configFile: string | undefined;
   let current = directory;
-  const withinRoot = !path.relative(tsconfigRootDir, directory).startsWith('..');
+  const withinRoot = !path
+    .relative(tsconfigRootDir, directory)
+    .startsWith('..');
 
   while (true) {
     if (cache.has(current)) {
