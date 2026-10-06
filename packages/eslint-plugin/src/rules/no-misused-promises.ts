@@ -13,8 +13,6 @@ import {
   isFunction,
   isPromiseLike,
   isRestParameterDeclaration,
-  nullThrows,
-  NullThrowsReasons,
 } from '../util';
 import { parseFinallyCall } from '../util/promiseUtils';
 
@@ -408,8 +406,9 @@ export default createRule<Options, MessageId>({
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       if (
-        node.type === AST_NODE_TYPES.CallExpression &&
-        isPromiseFinallyMethod(node)
+        node.arguments.length === 0 ||
+        (node.type === AST_NODE_TYPES.CallExpression &&
+          isPromiseFinallyMethod(node))
       ) {
         return;
       }
@@ -626,8 +625,14 @@ export default createRule<Options, MessageId>({
         while (current && !isFunction(current)) {
           current = current.parent;
         }
-        return nullThrows(current, NullThrowsReasons.MissingParent);
+        return current;
       })();
+
+      // A `return` with no enclosing function is legal in a CommonJS module, and
+      // there is no function signature for the returned value to be misused against.
+      if (!functionNode) {
+        return;
+      }
 
       if (
         functionNode.returnType &&

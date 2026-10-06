@@ -1,3 +1,25 @@
+## 8.71.1 (2026-10-05)
+
+### 🩹 Fixes
+
+- **project-service:** throttle cleanup when opening files ([#12934](https://github.com/typescript-eslint/typescript-eslint/pull/12934))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.0 (2026-09-28)
+
+This was a version bump only for project-service to align it with other projects, there were no code changes.
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.70.1 (2026-09-21)
 
 This was a version bump only for project-service to align it with other projects, there were no code changes.

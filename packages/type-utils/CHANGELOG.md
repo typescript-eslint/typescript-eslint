@@ -1,3 +1,34 @@
+## 8.71.1 (2026-10-05)
+
+### 🩹 Fixes
+
+- **type-utils:** match re-exports and global declarations in `TypeOrValueSpecifier` ([#12943](https://github.com/typescript-eslint/typescript-eslint/pull/12943))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.0 (2026-09-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-enum-assignment] add rule ([#12732](https://github.com/typescript-eslint/typescript-eslint/pull/12732))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Josh Goldberg ✨
+- Zamiell @Zamiell
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.70.1 (2026-09-21)
 
 ### 🩹 Fixes

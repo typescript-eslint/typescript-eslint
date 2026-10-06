@@ -375,6 +375,7 @@ export default createRule({
                   literal: typeValues.map(name => name.typeName).join(' | '),
                   primitive:
                     primitiveTypeFlagNames[
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
                       primitive as keyof typeof primitiveTypeFlagNames
                     ],
                 },
