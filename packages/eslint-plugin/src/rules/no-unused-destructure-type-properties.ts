@@ -13,8 +13,6 @@ import {
   isParenthesized,
 } from '../util';
 
-type MessageIds = 'unused';
-
 type PropertyMember = TSESTree.TSMethodSignature | TSESTree.TSPropertySignature;
 
 type PatternOwner =
@@ -30,7 +28,7 @@ interface PatternRoot {
   inferenceReferences: TSESTree.Node[];
 }
 
-export default createRule<[], MessageIds>({
+export default createRule({
   name: 'no-unused-destructure-type-properties',
   meta: {
     type: 'suggestion',
