@@ -3726,6 +3726,7 @@ export function g(a: string, b: unknown, c: string): b is true {
           messageId: 'unusedVar',
         },
       ],
+      options: [{ args: 'after-used' }],
     },
     {
       code: `
@@ -3771,6 +3772,7 @@ export function g(a: string, b: any, c: string): typeof b {
           messageId: 'unusedVar',
         },
       ],
+      options: [{ args: 'after-used' }],
     },
     {
       code: `
@@ -3814,6 +3816,7 @@ export function g(a: string, b: unknown, c: string): asserts b {}
           messageId: 'unusedVar',
         },
       ],
+      options: [{ args: 'after-used' }],
     },
     {
       code: `
