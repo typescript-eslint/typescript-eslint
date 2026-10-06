@@ -206,10 +206,11 @@ export default createRule<[], MessageIds>({
             !markIndexSignaturesUsed(
               indexKeyType =>
                 !tsutils.isIntrinsicStringType(indexKeyType) &&
-                isApplicableKey(keyType, indexKeyType),
-            )
+                checker.isTypeAssignableTo(keyType, indexKeyType),
+            ) &&
+            !markIndexSignaturesUsed(tsutils.isIntrinsicStringType)
           ) {
-            markIndexSignaturesUsed(tsutils.isIntrinsicStringType);
+            markIndexSignaturesUsed(tsutils.isIntrinsicNumberType);
           }
         }
       }
@@ -277,19 +278,20 @@ export default createRule<[], MessageIds>({
         restIndex === -1
           ? typeNode.elementTypes
           : typeNode.elementTypes.slice(0, restIndex);
+      const elementsByName = new Map(
+        elements.map((element, index) => [String(index), element]),
+      );
       const used = new Map<TSESTree.TypeNode, Set<TSESTree.Node>>();
 
       for (const [property, propertyKeyTypes] of keyTypes) {
         for (const keyType of propertyKeyTypes) {
           const name = getPropertyName(keyType);
-          if (typeof name !== 'string' || !isNumericName(name)) {
+          const element = typeof name === 'string' && elementsByName.get(name);
+          if (!element) {
             return;
           }
 
-          const element = elements.find((_, index) => String(index) === name);
-          if (element) {
-            addNestedPattern(used, element, property.value);
-          }
+          addNestedPattern(used, element, property.value);
         }
       }
 
@@ -441,15 +443,6 @@ export default createRule<[], MessageIds>({
         : checker.getStringLiteralType(String(key.value));
     }
 
-    function isApplicableKey(source: ts.Type, target: ts.Type) {
-      return (
-        checker.isTypeAssignableTo(source, target) ||
-        (tsutils.isStringLiteralType(source) &&
-          isNumericName(source.value) &&
-          checker.isTypeAssignableTo(checker.getNumberType(), target))
-      );
-    }
-
     function mightBeKey(memberKeyType: ts.Type, keyType: ts.Type) {
       if (checker.isTypeAssignableTo(memberKeyType, keyType)) {
         return true;
@@ -467,8 +460,7 @@ export default createRule<[], MessageIds>({
         ) ||
         (!tsutils.isTemplateLiteralType(keyType) &&
           (checker.isTypeAssignableTo(keyType, checker.getStringType()) ||
-            (isNumericName(name) &&
-              checker.isTypeAssignableTo(keyType, checker.getNumberType()))))
+            checker.isTypeAssignableTo(keyType, checker.getNumberType())))
       );
     }
 
@@ -738,8 +730,4 @@ function getImplementationOwner(node: TSESTree.Node) {
     default:
       return undefined;
   }
-}
-
-function isNumericName(name: string) {
-  return String(Number(name)) === name;
 }

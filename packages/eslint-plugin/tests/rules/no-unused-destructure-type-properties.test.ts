@@ -451,6 +451,18 @@ const test = {
   set value({ used }: { used: string; unused: number }) {},
 };
     `,
+    `
+declare const key: number;
+
+function test({
+  [key]: used,
+}: {
+  '1': string;
+  unused: string;
+  [i: number]: string;
+}) {}
+    `,
+    'function test({ 5: used }: [string, ...number[]]) {}',
   ],
   invalid: [
     // non-exhaustive destructuring
@@ -2115,40 +2127,6 @@ function test({
       ],
       output: null,
     },
-    // dynamic keys that cannot be some properties
-    {
-      code: `
-declare const key: number;
-
-function test({
-  [key]: used,
-}: {
-  '1': string;
-  unused: string;
-  [i: number]: string;
-}) {}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: { key: 'unused', type: 'property' },
-          endColumn: 18,
-          endLine: 8,
-          line: 8,
-          messageId: 'unused',
-        },
-      ],
-      output: `
-declare const key: number;
-
-function test({
-  [key]: used,
-}: {
-  '1': string;
-  [i: number]: string;
-}) {}
-      `,
-    },
     {
       code: `
 const token = Symbol();
@@ -2183,21 +2161,6 @@ function test({
   [i: string]: string;
 }) {}
       `,
-    },
-    // object pattern keys in a tuple's rest elements
-    {
-      code: 'function test({ 5: used }: [string, ...number[]]) {}',
-      errors: [
-        {
-          column: 29,
-          data: { key: '0', type: 'element' },
-          endColumn: 35,
-          endLine: 1,
-          line: 1,
-          messageId: 'unused',
-        },
-      ],
-      output: null,
     },
     // comments trailing the previous member
     {
