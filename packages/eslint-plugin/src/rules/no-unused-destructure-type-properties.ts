@@ -35,6 +35,7 @@ export default createRule({
     docs: {
       description:
         'Disallow properties of inline object and tuple types that are never destructured',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     fixable: 'code',
