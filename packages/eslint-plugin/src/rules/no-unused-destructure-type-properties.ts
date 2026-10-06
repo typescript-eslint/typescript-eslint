@@ -57,49 +57,45 @@ export default createRule<[], MessageIds>({
       typeNode: TSESTree.Node,
     ) {
       if (pattern.type === AST_NODE_TYPES.AssignmentPattern) {
-        root = {
-          ...root,
-          fixable: root.fixable && isFixableInitializer(pattern.right),
-        };
-        pattern = pattern.left;
-      }
-
-      if (typeNode.type === AST_NODE_TYPES.TSNamedTupleMember) {
-        typeNode = typeNode.elementType;
-      }
-
-      if (typeNode.type === AST_NODE_TYPES.TSOptionalType) {
-        typeNode = typeNode.typeAnnotation;
-      }
-
-      if (
-        typeNode.type === AST_NODE_TYPES.TSTypeOperator &&
-        typeNode.operator === 'readonly' &&
-        typeNode.typeAnnotation
-      ) {
-        typeNode = typeNode.typeAnnotation;
-      }
-
-      if (pattern.type === AST_NODE_TYPES.ArrayPattern) {
-        if (typeNode.type === AST_NODE_TYPES.TSTupleType) {
-          checkArrayPatternOnTuple(root, pattern, typeNode);
-        }
-        return;
-      }
-
-      if (pattern.type !== AST_NODE_TYPES.ObjectPattern) {
+        checkPattern(
+          {
+            ...root,
+            fixable: root.fixable && isFixableInitializer(pattern.right),
+          },
+          pattern.left,
+          typeNode,
+        );
         return;
       }
 
       switch (typeNode.type) {
+        case AST_NODE_TYPES.TSNamedTupleMember:
+          checkPattern(root, pattern, typeNode.elementType);
+          break;
+        case AST_NODE_TYPES.TSOptionalType:
+          checkPattern(root, pattern, typeNode.typeAnnotation);
+          break;
+        case AST_NODE_TYPES.TSTypeOperator:
+          if (typeNode.operator === 'readonly' && typeNode.typeAnnotation) {
+            checkPattern(root, pattern, typeNode.typeAnnotation);
+          }
+          break;
         case AST_NODE_TYPES.TSTupleType:
-          checkObjectPatternOnTuple(root, pattern, typeNode);
+          if (pattern.type === AST_NODE_TYPES.ArrayPattern) {
+            checkArrayPatternOnTuple(root, pattern, typeNode);
+          } else if (pattern.type === AST_NODE_TYPES.ObjectPattern) {
+            checkObjectPatternOnTuple(root, pattern, typeNode);
+          }
           break;
         case AST_NODE_TYPES.TSTypeLiteral:
-          checkObjectPatternOnTypeLiteral(root, pattern, typeNode);
+          if (pattern.type === AST_NODE_TYPES.ObjectPattern) {
+            checkObjectPatternOnTypeLiteral(root, pattern, typeNode);
+          }
           break;
         case AST_NODE_TYPES.TSTypeReference:
-          checkObjectPatternOnRecord(root, pattern, typeNode);
+          if (pattern.type === AST_NODE_TYPES.ObjectPattern) {
+            checkObjectPatternOnRecord(root, pattern, typeNode);
+          }
           break;
       }
     }
@@ -164,10 +160,10 @@ export default createRule<[], MessageIds>({
             member.type === AST_NODE_TYPES.TSPropertySignature &&
             member.typeAnnotation
           ) {
-            addNestedPattern(
-              nested,
-              member.typeAnnotation.typeAnnotation,
-              property.value,
+            const memberTypeNode = member.typeAnnotation.typeAnnotation;
+            nested.set(
+              memberTypeNode,
+              new Set(nested.get(memberTypeNode)).add(property.value),
             );
           }
         }
@@ -291,7 +287,7 @@ export default createRule<[], MessageIds>({
             return;
           }
 
-          addNestedPattern(used, element, property.value);
+          used.set(element, new Set(used.get(element)).add(property.value));
         }
       }
 
@@ -659,14 +655,6 @@ export default createRule<[], MessageIds>({
   },
 });
 
-function addNestedPattern(
-  nested: Map<TSESTree.TypeNode, Set<TSESTree.Node>>,
-  typeNode: TSESTree.TypeNode,
-  pattern: TSESTree.Node,
-) {
-  nested.set(typeNode, new Set(nested.get(typeNode)).add(pattern));
-}
-
 function isFixableInitializer(node: TSESTree.Expression | null) {
   switch (node?.type) {
     case undefined:
@@ -692,12 +680,16 @@ function isConstrainedClass(
   );
 }
 
-function getPropertyName(type: ts.Type): PropertyName | undefined {
+function getPropertyName(type: ts.Type) {
   if (tsutils.isStringLiteralType(type) || tsutils.isNumberLiteralType(type)) {
     return String(type.value);
   }
 
-  return tsutils.isUniqueESSymbolType(type) ? type : undefined;
+  if (tsutils.isUniqueESSymbolType(type)) {
+    return type;
+  }
+
+  return undefined;
 }
 
 function getImplementationOwner(node: TSESTree.Node) {
