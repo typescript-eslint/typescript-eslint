@@ -124,7 +124,9 @@ describe(createProjectService, () => {
       service.openClientFile(path.resolve('/no-tsconfig/a.ts'), 'export {};');
       service.openClientFile(path.resolve('/no-tsconfig/b.ts'), 'export {};');
 
-      expect(mockGetParsedConfigFileFromTSServer).toHaveBeenCalledExactlyOnceWith(
+      expect(
+        mockGetParsedConfigFileFromTSServer,
+      ).toHaveBeenCalledExactlyOnceWith(
         expect.any(Object),
         'tsconfig.json',
         false,
