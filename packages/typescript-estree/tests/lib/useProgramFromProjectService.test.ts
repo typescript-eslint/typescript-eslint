@@ -836,6 +836,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
     it('opens the file when the file is allowed in the default project', () => {
       const { service } = createLoadedProjectService();
+      service.openClientFile.mockReturnValueOnce({});
 
       useProgramFromProjectService(
         createProjectServiceSettings({
