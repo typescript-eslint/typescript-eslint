@@ -3682,5 +3682,73 @@ export const myTypeGuard = (data: unknown): data is string => {
         },
       ],
     },
+    {
+      code: `
+export function isCtx(dir: string, ctx: unknown): ctx is string {
+  return true;
+}
+      `,
+      errors: [
+        {
+          column: 23,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'dir',
+          },
+          endColumn: 26,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 36,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'ctx',
+          },
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+      options: [{ args: 'after-used' }],
+    },
+    {
+      code: `
+export function getCtx(dir: string, ctx: number): typeof ctx {
+  return 1;
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'dir',
+          },
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 37,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'ctx',
+          },
+          endColumn: 40,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+      ],
+      options: [{ args: 'after-used' }],
+    },
   ],
 });
