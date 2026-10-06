@@ -3,6 +3,7 @@ import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import debug from 'debug';
 
+import { createDirectoryListingHost } from './createDirectoryListingHost.js';
 import { getParsedConfigFileFromTSServer } from './getParsedConfigFileFromTSServer.js';
 import { throttleOpenedFileCleanup } from './throttleOpenedFileCleanup.js';
 
@@ -127,6 +128,7 @@ export function createProjectService({
   // (this "goes nuclear on TypeScript")
   const system: ts.server.ServerHost = {
     ...tsserver.sys,
+    ...createDirectoryListingHost(tsserver.sys),
     clearImmediate,
     clearTimeout,
     setImmediate,
