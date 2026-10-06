@@ -1,10 +1,25 @@
 
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowMixedPromiseArrays": {
+        "description": "Whether to allow arrays and other iterables that mix Promises with non-Promise values to be passed to promise aggregator methods.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];
+type Options = [
+  {
+    /** Whether to allow arrays and other iterables that mix Promises with non-Promise values to be passed to promise aggregator methods. */
+    allowMixedPromiseArrays?: boolean;
+  },
+];
