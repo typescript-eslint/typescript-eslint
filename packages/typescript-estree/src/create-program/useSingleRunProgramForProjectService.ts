@@ -54,14 +54,14 @@ export function useSingleRunProgramForProjectService(
     return undefined;
   }
 
-  let program = programs.get(configFile);
-  if (program === undefined) {
+  if (!programs.has(configFile)) {
     log('Creating single-run Program for project service: %s', configFile);
-    program = createProgram(configFile, parseSettings);
-    programs.set(configFile, program);
+    programs.set(configFile, createProgram(configFile, parseSettings));
   }
 
-  const astAndProgram = program && getAstFromProgram(program, parseSettings.filePath);
+  const program = programs.get(configFile);
+  const astAndProgram =
+    program && getAstFromProgram(program, parseSettings.filePath);
   if (astAndProgram?.ast.text !== parseSettings.codeFullText) {
     return undefined;
   }
@@ -98,7 +98,9 @@ function findNearestConfigFile(
   tsconfigRootDir: string,
 ): string | undefined {
   const visited: string[] = [];
-  const withinRoot = !path.relative(tsconfigRootDir, directory).startsWith('..');
+  const withinRoot = !path
+    .relative(tsconfigRootDir, directory)
+    .startsWith('..');
   let configFile: string | undefined;
   let current = directory;
 
