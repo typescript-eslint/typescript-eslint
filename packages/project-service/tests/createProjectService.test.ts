@@ -1,4 +1,5 @@
 import debug from 'debug';
+import path from 'node:path';
 import * as ts from 'typescript';
 
 import { createProjectService } from '../src/createProjectService.js';
@@ -101,6 +102,36 @@ describe(createProjectService, () => {
         defaultProject,
         true,
         undefined,
+      );
+    });
+
+    it('does not parse the default project when neither options.allowDefaultProject nor options.defaultProject is set', () => {
+      createProjectService();
+
+      expect(mockGetParsedConfigFileFromTSServer).not.toHaveBeenCalled();
+    });
+
+    it('parses the default project once before creating the first inferred project when neither options.allowDefaultProject nor options.defaultProject is set', () => {
+      const compilerOptions: ts.CompilerOptions = { strict: true };
+      mockGetParsedConfigFileFromTSServer.mockReturnValueOnce({
+        errors: [],
+        fileNames: [],
+        options: compilerOptions,
+      });
+
+      const { service } = createProjectService();
+
+      service.openClientFile(path.resolve('/no-tsconfig/a.ts'), 'export {};');
+      service.openClientFile(path.resolve('/no-tsconfig/b.ts'), 'export {};');
+
+      expect(mockGetParsedConfigFileFromTSServer).toHaveBeenCalledExactlyOnceWith(
+        expect.any(Object),
+        'tsconfig.json',
+        false,
+        undefined,
+      );
+      expect(mockSetCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
+        compilerOptions,
       );
     });
   });

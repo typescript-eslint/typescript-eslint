@@ -4,6 +4,7 @@ import type * as ts from 'typescript/lib/tsserverlibrary';
 import debug from 'debug';
 
 import { getParsedConfigFileFromTSServer } from './getParsedConfigFileFromTSServer.js';
+import { runBeforeFirstInferredProject } from './runBeforeFirstInferredProject.js';
 import { throttleOpenedFileCleanup } from './throttleOpenedFileCleanup.js';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
@@ -201,23 +202,33 @@ export function createProjectService({
     },
   });
 
-  log('Enabling default project: %s', options.defaultProject);
+  const enableDefaultProject = (): void => {
+    log('Enabling default project: %s', options.defaultProject);
 
-  const configFile = getParsedConfigFileFromTSServer(
-    tsserver,
-    options.defaultProject,
-    !!optionsRaw.defaultProject,
-    tsconfigRootDir,
-  );
-
-  if (configFile) {
-    service.setCompilerOptionsForInferredProjects(
-      // NOTE: The inferred projects API is not intended for source files when a tsconfig
-      // exists. There is no API that generates an InferredProjectCompilerOptions suggesting
-      // it is meant for hard coded options passed in. Hard asserting as a work around.
-      // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
-      configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
+    const configFile = getParsedConfigFileFromTSServer(
+      tsserver,
+      options.defaultProject,
+      !!optionsRaw.defaultProject,
+      tsconfigRootDir,
     );
+
+    if (configFile) {
+      service.setCompilerOptionsForInferredProjects(
+        // NOTE: The inferred projects API is not intended for source files when a tsconfig
+        // exists. There is no API that generates an InferredProjectCompilerOptions suggesting
+        // it is meant for hard coded options passed in. Hard asserting as a work around.
+        // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
+        configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
+      );
+    }
+  };
+
+  // Parsing the default project lists every file it includes, which is wasted
+  // work when no file ends up in the default project.
+  if (optionsRaw.defaultProject || options.allowDefaultProject?.length) {
+    enableDefaultProject();
+  } else {
+    runBeforeFirstInferredProject(service, enableDefaultProject);
   }
 
   return {
