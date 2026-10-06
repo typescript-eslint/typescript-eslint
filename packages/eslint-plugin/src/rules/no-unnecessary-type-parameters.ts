@@ -469,10 +469,28 @@ function collectTypeParameterUsageCounts(
           // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
           // They have properties, so we need to avoid double-counting.
           visitType(type.templateType ?? type.constraintType, false);
+
+          // `templateType` is a lazily populated checker cache. Once it is
+          // populated on an instantiated mapped type, its constraint is
+          // reachable only here: the type parameter's declaration holds the
+          // original constraint from before instantiation.
+          if (
+            type.templateType &&
+            type.constraintType &&
+            type.constraintType !==
+              getDeclaredConstraintType(type.typeParameter)
+          ) {
+            visitType(type.constraintType, false);
+          }
         }
 
         // TS doesn't count mapped types key remapping (`{[K in 'a' as T]: K}`)
         // but handles this under `MappedType.nameType`, so we need to visit that too.
+        // Instantiated mapped types populate it lazily, which getting the
+        // awaited type forces.
+        if (!type.nameType) {
+          checker.getAwaitedType(type);
+        }
         if (type.nameType) {
           visitType(type.nameType, false);
         }
@@ -511,6 +529,16 @@ function collectTypeParameterUsageCounts(
     const count = (typeUsages.get(type) ?? 0) + 1;
     typeUsages.set(type, count);
     return count;
+  }
+
+  function getDeclaredConstraintType(
+    typeParameter: ts.Type | undefined,
+  ): ts.Type | undefined {
+    const constraint = typeParameter
+      ?.getSymbol()
+      ?.getDeclarations()
+      ?.find(ts.isTypeParameterDeclaration)?.constraint;
+    return constraint && checker.getTypeAtLocation(constraint);
   }
 
   function visitSignature(signature: ts.Signature | undefined): void {
