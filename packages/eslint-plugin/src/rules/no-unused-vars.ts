@@ -26,8 +26,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
-import { referenceContainsTypePredicate } from '../util/referenceContainsTypePredicate';
-import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
+import { isTypeOnlyReference } from '../util/isTypeOnlyReference';
 
 export type MessageIds =
   | 'removeUnusedImportDeclaration'
@@ -1212,10 +1211,8 @@ export default createRule<Options, MessageIds>({
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
-            const usedOnlyAsType = unusedVar.references.some(
-              ref =>
-                referenceContainsTypeQuery(ref.identifier) ||
-                referenceContainsTypePredicate(ref.identifier),
+            const usedOnlyAsType = unusedVar.references.some(ref =>
+              isTypeOnlyReference(unusedVar, ref),
             );
             const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 
