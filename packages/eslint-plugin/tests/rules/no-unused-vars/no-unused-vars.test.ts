@@ -1388,6 +1388,15 @@ await using resource = getResource();
       },
       options: [{ ignoreUsingDeclarations: true }],
     },
+    {
+      code: `
+export function g(a: string, b: unknown) {
+  const c: typeof b = b;
+  return c;
+}
+      `,
+      options: [{ args: 'after-used' }],
+    },
   ],
 
   invalid: [
