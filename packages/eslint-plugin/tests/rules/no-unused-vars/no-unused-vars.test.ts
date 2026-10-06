@@ -3774,8 +3774,7 @@ export function g(a: string, b: any, c: string): typeof b {
     },
     {
       code: `
-export function g(a: string, b: unknown, c: string): asserts b {
-}
+export function g(a: string, b: unknown, c: string): asserts b {}
       `,
       errors: [
         {
