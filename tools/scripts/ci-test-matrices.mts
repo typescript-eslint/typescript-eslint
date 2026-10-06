@@ -65,7 +65,6 @@ const WINDOWS_GROUPS = [
   ['eslint-plugin', 'type-utils', 'parser', 'tsconfig-utils'],
 ];
 
-// Codecov silently drops uploads with longer names.
 const CODECOV_NAME_MAX_LENGTH = 100;
 
 const toMatrix = (
