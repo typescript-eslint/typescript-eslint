@@ -1,5 +1,6 @@
 import { clearWatchCaches } from './create-program/getWatchProgramsForProjects';
 import { clearRealPathCache } from './create-program/shared';
+import { clearSingleRunProjectServicePrograms } from './create-program/useSingleRunProgramForProjectService';
 import {
   clearDefaultProjectMatchedFiles,
   clearProgramCache as clearProgramCacheOriginal,
@@ -23,6 +24,7 @@ export function clearCaches(): void {
   clearDefaultProjectMatchedFiles();
   clearProgramCacheOriginal();
   clearRealPathCache();
+  clearSingleRunProjectServicePrograms();
   clearWatchCaches();
   clearTSConfigMatchCache();
   clearTSServerProjectService();

@@ -24,6 +24,7 @@ import {
   createProgramFromConfigFile,
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
+import { useSingleRunProgramForProjectService } from './create-program/useSingleRunProgramForProjectService';
 import { createParserServices } from './createParserServices';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
@@ -56,6 +57,14 @@ function getProgramAndAST(
   hasFullTypeInformation: boolean,
 ): ASTAndProgram {
   if (parseSettings.projectService) {
+    if (parseSettings.singleRun && hasFullTypeInformation) {
+      const fromSingleRunProgram =
+        useSingleRunProgramForProjectService(parseSettings);
+      if (fromSingleRunProgram) {
+        return fromSingleRunProgram;
+      }
+    }
+
     const fromProjectService = useProgramFromProjectService(
       parseSettings.projectService,
       parseSettings,
