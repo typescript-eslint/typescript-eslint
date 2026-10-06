@@ -279,6 +279,104 @@ function createNoProgramWithProjectService(
   return createNoProgram(parseSettings);
 }
 
+const nearestConfigFiles = new WeakMap<
+  ts.server.ProjectService,
+  Map<string, string | undefined>
+>();
+
+/**
+ * Finds the tsconfig.json or jsconfig.json the project service would pick for
+ * files in a directory, without asking the service to look it up per file.
+ */
+function findNearestConfigFile(
+  service: ts.server.ProjectService,
+  directory: string,
+  tsconfigRootDir: string,
+): string | undefined {
+  let cache = nearestConfigFiles.get(service);
+  if (!cache) {
+    cache = new Map();
+    nearestConfigFiles.set(service, cache);
+  }
+
+  const visited: string[] = [];
+  let configFile: string | undefined;
+  let current = directory;
+  const withinRoot = !path.relative(tsconfigRootDir, directory).startsWith('..');
+
+  while (true) {
+    if (cache.has(current)) {
+      configFile = cache.get(current);
+      break;
+    }
+
+    visited.push(current);
+
+    configFile = ['tsconfig.json', 'jsconfig.json']
+      .map(fileName => path.join(current, fileName))
+      .find(filePath => service.host.fileExists(filePath));
+
+    const parent = path.dirname(current);
+    if (
+      configFile ||
+      parent === current ||
+      path.basename(current) === 'node_modules' ||
+      (withinRoot && current === tsconfigRootDir)
+    ) {
+      break;
+    }
+
+    current = parent;
+  }
+
+  for (const visitedDirectory of visited) {
+    cache.set(visitedDirectory, configFile);
+  }
+
+  return configFile && ts.server.toNormalizedPath(configFile);
+}
+
+/**
+ * Linted files don't change on disk during a single run, so a file that its
+ * tsconfig's already-loaded project includes with the same text doesn't need
+ * to be opened. Opening it would look up its tsconfig and clean up the service.
+ */
+function retrieveASTAndProgramFromLoadedProject(
+  filePathAbsolute: string,
+  parseSettings: Readonly<MutableParseSettings>,
+  service: ts.server.ProjectService,
+): ASTAndDefiniteProgram | undefined {
+  const scriptInfo = service.getScriptInfo(filePathAbsolute);
+  if (!scriptInfo || scriptInfo.isScriptOpen()) {
+    return undefined;
+  }
+
+  const configFile = findNearestConfigFile(
+    service,
+    path.dirname(filePathAbsolute),
+    parseSettings.tsconfigRootDir,
+  );
+  const project = scriptInfo.containingProjects.find(
+    (project): project is ts.server.ConfiguredProject =>
+      project instanceof ts.server.ConfiguredProject &&
+      project.getConfigFilePath() === configFile,
+  );
+  const program = project
+    ?.getLanguageService(/*ensureSynchronized*/ true)
+    .getProgram();
+
+  if (
+    !program ||
+    program.getSourceFile(filePathAbsolute)?.text !== parseSettings.codeFullText
+  ) {
+    return undefined;
+  }
+
+  log('Found loaded project program for: %s', filePathAbsolute);
+
+  return createProjectProgram(parseSettings, [program]);
+}
+
 function retrieveASTAndProgramFor(
   filePathAbsolute: string,
   parseSettings: Readonly<MutableParseSettings>,
@@ -363,6 +461,21 @@ export function useProgramFromProjectService(
       parseSettings,
       serviceAndSettings.service,
     );
+  }
+
+  if (
+    hasFullTypeInformation &&
+    parseSettings.singleRun &&
+    !isDefaultProjectAllowed
+  ) {
+    const fromLoadedProject = retrieveASTAndProgramFromLoadedProject(
+      filePathAbsolute,
+      parseSettings,
+      serviceAndSettings.service,
+    );
+    if (fromLoadedProject) {
+      return fromLoadedProject;
+    }
   }
 
   // If type info was requested, we attempt to open it in the project service.

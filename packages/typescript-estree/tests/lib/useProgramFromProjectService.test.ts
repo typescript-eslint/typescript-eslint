@@ -730,4 +730,124 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
     expect(actual).toBe(program);
   });
+
+  describe('in single-run mode', () => {
+    const code = 'export const value = 1;';
+    const filePathAbsolute = path.normalize(
+      `${currentDirectory}/${mockParseSettings.filePath}`,
+    );
+    const singleRunParseSettings = {
+      ...mockParseSettings,
+      codeFullText: code,
+      singleRun: true,
+    } as ParseSettings;
+
+    function createLoadedProjectService({
+      configFiles = [`${currentDirectory}/tsconfig.json`],
+      sourceText = code,
+    } = {}) {
+      const mocks = createMockProjectService();
+      const program = {
+        getSourceFile: vi.fn(() => ({ text: sourceText })),
+      };
+      const project = Object.assign(
+        Object.create(
+          ts.server.ConfiguredProject.prototype,
+        ) as ts.server.ConfiguredProject,
+        {
+          getConfigFilePath: () =>
+            ts.server.toNormalizedPath(`${currentDirectory}/tsconfig.json`),
+          getLanguageService: () => ({ getProgram: () => program }),
+        },
+      );
+      const normalizedConfigFiles = new Set(
+        configFiles.map(configFile => path.normalize(configFile)),
+      );
+
+      Object.assign(mocks.service, {
+        getScriptInfo: () => ({
+          containingProjects: [project],
+          isScriptOpen: () => false,
+        }),
+        host: {
+          fileExists: (filePath: string) =>
+            normalizedConfigFiles.has(path.normalize(filePath)),
+          getCurrentDirectory: () => currentDirectory,
+        },
+      });
+
+      return { ...mocks, program };
+    }
+
+    it('returns the loaded project program without opening the file when the file text matches', () => {
+      const { program, service } = createLoadedProjectService();
+      mockCreateProjectProgram.mockReturnValueOnce(program);
+
+      const actual = useProgramFromProjectService(
+        createProjectServiceSettings({ allowDefaultProject: undefined, service }),
+        singleRunParseSettings,
+        true,
+        new Set(),
+      );
+
+      expect(actual).toBe(program);
+      expect(program.getSourceFile).toHaveBeenCalledWith(filePathAbsolute);
+      expect(service.openClientFile).not.toHaveBeenCalled();
+    });
+
+    it('opens the file when its text differs from the loaded project', () => {
+      const { service } = createLoadedProjectService({
+        sourceText: 'export const value = 2;',
+      });
+      service.openClientFile.mockReturnValueOnce({
+        configFileName: 'tsconfig.json',
+      });
+
+      useProgramFromProjectService(
+        createProjectServiceSettings({ allowDefaultProject: undefined, service }),
+        singleRunParseSettings,
+        true,
+        new Set(),
+      );
+
+      expect(service.openClientFile).toHaveBeenCalledOnce();
+    });
+
+    it('opens the file when a closer tsconfig than the loaded project exists', () => {
+      const { service } = createLoadedProjectService({
+        configFiles: [
+          `${currentDirectory}/tsconfig.json`,
+          `${currentDirectory}/path/PascalCaseDirectory/tsconfig.json`,
+        ],
+      });
+      service.openClientFile.mockReturnValueOnce({
+        configFileName: 'tsconfig.json',
+      });
+
+      useProgramFromProjectService(
+        createProjectServiceSettings({ allowDefaultProject: undefined, service }),
+        singleRunParseSettings,
+        true,
+        new Set(),
+      );
+
+      expect(service.openClientFile).toHaveBeenCalledOnce();
+    });
+
+    it('opens the file when the file is allowed in the default project', () => {
+      const { service } = createLoadedProjectService();
+
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          service,
+        }),
+        singleRunParseSettings,
+        true,
+        new Set(),
+      );
+
+      expect(service.openClientFile).toHaveBeenCalledOnce();
+    });
+  });
 });
