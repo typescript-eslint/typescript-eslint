@@ -1,4 +1,5 @@
 interface UnitTestsGroup {
+  codecovName: string;
   name: string;
   os: 'ubuntu-latest' | 'windows-latest';
   projects: string[];
@@ -64,6 +65,9 @@ const WINDOWS_GROUPS = [
   ['eslint-plugin', 'type-utils', 'parser', 'tsconfig-utils'],
 ];
 
+// Codecov silently drops uploads with longer names.
+const CODECOV_NAME_MAX_LENGTH = 100;
+
 const toMatrix = (
   os: UnitTestsGroup['os'],
   groups: string[][],
@@ -72,7 +76,12 @@ const toMatrix = (
   groups
     .map(group => group.filter(pkg => packages.includes(pkg)))
     .filter(projects => projects.length > 0)
-    .map(projects => ({ name: projects.join(', '), os, projects }));
+    .map(projects => ({
+      codecovName: projects.join('-').slice(0, CODECOV_NAME_MAX_LENGTH),
+      name: projects.join(', '),
+      os,
+      projects,
+    }));
 
 export function getTestMatrices(affected: string[]): TestMatrices {
   const unitTests = affected.filter(pkg => !EXCLUDED_PACKAGES.includes(pkg));
