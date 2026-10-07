@@ -26,6 +26,14 @@ vi.mock('../../src/create-program/createProjectProgram', () => ({
   },
 }));
 
+const mockGetProjectConfigFiles = vi.fn();
+
+vi.mock('../../src/parseSettings/getProjectConfigFiles', () => ({
+  get getProjectConfigFiles() {
+    return mockGetProjectConfigFiles;
+  },
+}));
+
 const mockGetProgram = vi.fn();
 
 const currentDirectory = '/repos/repo';
@@ -743,7 +751,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
     } as ParseSettings;
 
     function createLoadedProjectService({
-      configFiles = [`${currentDirectory}/tsconfig.json`],
+      configFile = `${currentDirectory}/tsconfig.json`,
       sourceText = code,
     } = {}) {
       const mocks = createMockProjectService();
@@ -760,20 +768,13 @@ If you absolutely need more files included, set parserOptions.projectService.max
           getLanguageService: () => ({ getProgram: () => program }),
         },
       );
-      const normalizedConfigFiles = new Set(
-        configFiles.map(configFile => path.normalize(configFile)),
-      );
+      mockGetProjectConfigFiles.mockReturnValue([configFile]);
 
       Object.assign(mocks.service, {
         getScriptInfo: () => ({
           containingProjects: [project],
           isScriptOpen: () => false,
         }),
-        host: {
-          fileExists: (filePath: string) =>
-            normalizedConfigFiles.has(path.normalize(filePath)),
-          getCurrentDirectory: () => currentDirectory,
-        },
       });
 
       return { ...mocks, program };
@@ -821,10 +822,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
     it('opens the file when a closer tsconfig than the loaded project exists', () => {
       const { service } = createLoadedProjectService({
-        configFiles: [
-          `${currentDirectory}/tsconfig.json`,
-          `${currentDirectory}/path/PascalCaseDirectory/tsconfig.json`,
-        ],
+        configFile: `${currentDirectory}/path/PascalCaseDirectory/tsconfig.json`,
       });
       service.openClientFile.mockReturnValueOnce({
         configFileName: 'tsconfig.json',

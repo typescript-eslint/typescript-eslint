@@ -21,6 +21,7 @@ import {
   getPathToSameFile,
 } from './create-program/shared';
 import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
+import { getProjectConfigFiles } from './parseSettings/getProjectConfigFiles';
 
 const RELOAD_THROTTLE_MS = 250;
 
@@ -279,65 +280,6 @@ function createNoProgramWithProjectService(
   return createNoProgram(parseSettings);
 }
 
-const nearestConfigFiles = new WeakMap<
-  ts.server.ProjectService,
-  Map<string, string | undefined>
->();
-
-/**
- * Finds the tsconfig.json or jsconfig.json the project service would pick for
- * files in a directory, without asking the service to look it up per file.
- */
-function findNearestConfigFile(
-  service: ts.server.ProjectService,
-  directory: string,
-  tsconfigRootDir: string,
-): string | undefined {
-  let cache = nearestConfigFiles.get(service);
-  if (!cache) {
-    cache = new Map();
-    nearestConfigFiles.set(service, cache);
-  }
-
-  const visited: string[] = [];
-  let configFile: string | undefined;
-  let current = directory;
-  const withinRoot = !path
-    .relative(tsconfigRootDir, directory)
-    .startsWith('..');
-
-  while (true) {
-    if (cache.has(current)) {
-      configFile = cache.get(current);
-      break;
-    }
-
-    visited.push(current);
-
-    configFile = ['tsconfig.json', 'jsconfig.json']
-      .map(fileName => path.join(current, fileName))
-      .find(filePath => service.host.fileExists(filePath));
-
-    const parent = path.dirname(current);
-    if (
-      configFile ||
-      parent === current ||
-      path.basename(current) === 'node_modules' ||
-      (withinRoot && current === tsconfigRootDir)
-    ) {
-      break;
-    }
-
-    current = parent;
-  }
-
-  for (const visitedDirectory of visited) {
-    cache.set(visitedDirectory, configFile);
-  }
-
-  return configFile && ts.server.toNormalizedPath(configFile);
-}
-
 /**
  * Linted files don't change on disk during a single run, so a file that its
  * tsconfig's already-loaded project includes with the same text doesn't need
@@ -353,15 +295,26 @@ function retrieveASTAndProgramFromLoadedProject(
     return undefined;
   }
 
-  const configFile = findNearestConfigFile(
-    service,
-    path.dirname(filePathAbsolute),
-    parseSettings.tsconfigRootDir,
-  );
+  let configFile: string | undefined;
+  try {
+    [configFile] =
+      getProjectConfigFiles(
+        { ...parseSettings, filePath: filePathAbsolute },
+        true,
+      ) ?? [];
+  } catch {
+    return undefined;
+  }
+
+  if (!configFile) {
+    return undefined;
+  }
+
+  const normalizedConfigFile = ts.server.toNormalizedPath(configFile);
   const project = scriptInfo.containingProjects.find(
     (project): project is ts.server.ConfiguredProject =>
       project instanceof ts.server.ConfiguredProject &&
-      project.getConfigFilePath() === configFile,
+      project.getConfigFilePath() === normalizedConfigFile,
   );
   const program = project
     ?.getLanguageService(/*ensureSynchronized*/ true)
