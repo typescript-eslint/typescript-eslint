@@ -462,6 +462,14 @@ describe('TypeOrValueSpecifier', () => {
           package: 'versionless-package',
         },
       ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        {
+          from: 'package',
+          name: 'VersionlessType',
+          package: 'versionless-package/index.d.ts',
+        },
+      ],
       // Re-exported symbols in ambient declarations.
       [
         'import { URL } from "node:url"; declare const url: URL; type Test = typeof url;',
