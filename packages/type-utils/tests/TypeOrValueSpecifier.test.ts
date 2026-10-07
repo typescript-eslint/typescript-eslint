@@ -454,6 +454,14 @@ describe('TypeOrValueSpecifier', () => {
           package: '@typescript-eslint/types',
         },
       ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        {
+          from: 'package',
+          name: 'VersionlessType',
+          package: 'versionless-package',
+        },
+      ],
       // Re-exported symbols in ambient declarations.
       [
         'import { URL } from "node:url"; declare const url: URL; type Test = typeof url;',
@@ -662,6 +670,27 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import {SemVer} from "semver"; type Test = SemVer;',
         { from: 'package', name: 'SemVer', package: 's.mver' },
+      ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        { from: 'package', name: 'VersionlessType', package: 'versionless' },
+      ],
+      // Linked workspace packages respect package boundaries too.
+      [
+        'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
+        {
+          from: 'package',
+          name: 'ParserOptions',
+          package: '@typescript-eslint/type',
+        },
+      ],
+      [
+        'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
+        {
+          from: 'package',
+          name: 'ParserOptions',
+          package: '@typescript-eslint/utils',
+        },
       ],
       [
         'declare const buffer: Buffer; type Test = typeof buffer;',

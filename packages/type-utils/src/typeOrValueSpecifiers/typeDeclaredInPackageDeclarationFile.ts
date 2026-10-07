@@ -84,102 +84,82 @@ function typeDeclaredInDeclarationFile(
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
   return declarationFiles.some(declaration => {
+    if (!program.isSourceFileFromExternalLibrary(declaration)) {
+      return false;
+    }
+
     // A package id name is a path within the package, such as
     // `typescript/lib/typescript.d.ts` or `@types/semver/classes/semver.d.ts`.
-    const packageIdName = getPackageIdName(declaration, program);
+    const packageIdName =
+      program.sourceFileToPackageName.get(declaration.path) ??
+      resolvePackageIdName(declaration.fileName);
+
     if (packageIdName == null) {
       return false;
     }
 
     return (
-      (pathIsInPackage(packageIdName, packageName) ||
-        pathIsInPackage(
-          packageIdName.replace(/^@types\//, ''),
-          typesPackageName,
-        )) &&
-      program.isSourceFileFromExternalLibrary(declaration)
+      pathIsInPackage(packageIdName, packageName) ||
+      pathIsInPackage(packageIdName.replace(/^@types\//, ''), typesPackageName)
     );
   });
 }
 
-function getPackageIdName(
-  declaration: ts.SourceFile,
-  program: ts.Program,
-): string | undefined {
-  const packageIdName = program.sourceFileToPackageName.get(declaration.path);
+/**
+ * TypeScript's `sourceFileToPackageName` doesn't include (1) files in linked
+ * packages (e.g., workspace packages) that are reached through relative
+ * imports, rather than by package name, or (2) any files of packages without
+ * `version` in their `package.json`.
+ *
+ * So we're looking for the nearest `package.json` that has a `name` field,
+ * starting from the directory of the declaration file, and using that as the
+ * package name.
+ */
+function resolvePackageIdName(fileName: string): string | undefined {
+  const packageRoot = findPackageRoot(path.dirname(fileName));
 
-  if (packageIdName != null) {
-    return packageIdName;
+  if (!packageRoot) {
+    return undefined;
   }
 
-  const packageRoots = getPackageRoots(program);
+  const fileRelativeToPackage = fileName.slice(packageRoot.directory.length);
 
-  let directory = path.posix.dirname(declaration.path);
-
-  while (true) {
-    const packageName = packageRoots.get(directory);
-
-    if (packageName != null) {
-      const relativeDeclarationPath = declaration.path.slice(directory.length);
-
-      return `${packageName}${relativeDeclarationPath}`;
-    }
-
-    const parentDirectory = path.posix.dirname(directory);
-
-    // Reached the file system root without finding a package.
-    if (parentDirectory === directory) {
-      return undefined;
-    }
-
-    directory = parentDirectory;
-  }
+  return `${packageRoot.name}${fileRelativeToPackage}`;
 }
 
-const packageRootsCache = new WeakMap<ts.Program, Map<string, string>>();
+interface PackageRoot {
+  directory: string;
+  name: string;
+}
 
-/**
- * Map TypeScript's `sourceFileToPackageName` to `package-root-directory -> package-name`.
- *
- * We need this because for linked packages (e.g. workspace dependencies),
- * `sourceFileToPackageName` only includes files that are imported by package
- * name, such as the entry point. Other files in the package are imported with
- * relative paths that point outside `node_modules`, so TypeScript doesn't
- * know which package they belong to.
- *
- * E.g., mapping this:
- *  `/repo/packages/linked-package/dist/index.d.ts -> @org/linked-package/dist/index.d.ts`
- *
- * to this:
- *  `/repo/packages/linked-package -> @org/linked-package`
- *
- * So a file that TypeScript didn't name, such as
- * `/repo/packages/linked-package/dist/types.d.ts`, can be matched to its
- * package root and named `@org/linked-package/dist/types.d.ts`.
- */
-function getPackageRoots(program: ts.Program): Map<string, string> {
-  let packageRoots = packageRootsCache.get(program);
+const packageRoots = new Map<string, PackageRoot | undefined>();
 
-  if (packageRoots == null) {
-    packageRoots = new Map();
+function findPackageRoot(directory: string): PackageRoot | undefined {
+  if (!packageRoots.has(directory)) {
+    const parentDir = path.dirname(directory);
+    const packageName = getPackageName(directory);
 
-    for (const [absPath, packageIdName] of program.sourceFileToPackageName) {
-      const packageName = /^(@[^/]+\/)?[^/]+/.exec(packageIdName)?.[0];
+    const packageRoot = packageName
+      ? { directory, name: packageName }
+      : parentDir === directory
+        ? undefined
+        : findPackageRoot(parentDir);
 
-      if (packageName == null) {
-        continue;
-      }
-
-      const subPathLength = packageIdName.length - packageName.length;
-      const packagePath = absPath.slice(0, absPath.length - subPathLength);
-
-      packageRoots.set(packagePath, packageName);
-    }
-
-    packageRootsCache.set(program, packageRoots);
+    packageRoots.set(directory, packageRoot);
   }
 
-  return packageRoots;
+  return packageRoots.get(directory);
+}
+
+function getPackageName(directory: string): string | undefined {
+  const result = ts.readConfigFile(
+    path.join(directory, 'package.json'),
+    ts.sys.readFile,
+  );
+
+  const config = result.config as { name?: unknown } | undefined;
+
+  return typeof config?.name === 'string' ? config.name : undefined;
 }
 
 export function typeDeclaredInPackageDeclarationFile(
