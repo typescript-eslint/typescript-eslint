@@ -17,8 +17,10 @@ import {
 } from '@typescript-eslint/utils';
 
 import { isTypeImport } from './isTypeImport';
-import { referenceContainsTypePredicate } from './referenceContainsTypePredicate';
-import { referenceContainsTypeQuery } from './referenceContainsTypeQuery';
+import {
+  isMergedTypeValueVariable,
+  isTypeOnlyReference,
+} from './isTypeOnlyReference';
 
 interface VariableAnalysis {
   readonly unusedVariables: ReadonlySet<ScopeVariable>;
@@ -419,6 +421,18 @@ const MERGEABLE_TYPES = new Set([
   AST_NODE_TYPES.TSModuleDeclaration,
   AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
+
+function isMergedTypeDeclaration(
+  variable: ScopeVariable,
+  node: TSESTree.Node,
+): boolean {
+  return (
+    (node.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+      node.type === AST_NODE_TYPES.TSInterfaceDeclaration) &&
+    isMergedTypeValueVariable(variable)
+  );
+}
+
 /**
  * Determine if the variable is directly exported
  * @param variable the variable to check
@@ -438,7 +452,7 @@ function isMergeableExported(variable: ScopeVariable): boolean {
         def.node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) ||
       def.node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ) {
-      return true;
+      return !isMergedTypeDeclaration(variable, def.node);
     }
   }
 
@@ -460,7 +474,10 @@ function isExported(variable: ScopeVariable): boolean {
       return false;
     }
 
-    return node.parent.type.startsWith('Export');
+    return (
+      !isMergedTypeDeclaration(variable, node) &&
+      node.parent.type.startsWith('Export')
+    );
   });
 }
 
@@ -793,11 +810,7 @@ function isUsedVariable(variable: ScopeVariable): boolean {
     return (
       ref.isRead() &&
       !forItself &&
-      !(
-        !isImportedAsType &&
-        (referenceContainsTypeQuery(ref.identifier) ||
-          referenceContainsTypePredicate(ref.identifier))
-      ) &&
+      !(!isImportedAsType && isTypeOnlyReference(variable, ref)) &&
       !(isFunctionDefinition && isSelfReference(ref, functionNodes)) &&
       !(isTypeDecl && isInsideOneOf(ref, typeDeclNodes)) &&
       !(isModuleDecl && isSelfReference(ref, moduleDeclNodes)) &&

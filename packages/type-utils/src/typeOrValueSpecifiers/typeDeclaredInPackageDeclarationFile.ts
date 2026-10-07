@@ -1,4 +1,5 @@
 import path from 'node:path';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 function findParentModuleDeclaration(
@@ -6,8 +7,11 @@ function findParentModuleDeclaration(
 ): ts.ModuleDeclaration | undefined {
   switch (node.kind) {
     case ts.SyntaxKind.ModuleDeclaration:
-      // "namespace x {...}" should be ignored here
-      if (node.flags & ts.NodeFlags.Namespace) {
+      // "namespace x {...}" and "global {...}" should be ignored here
+      if (
+        node.flags &
+        (ts.NodeFlags.Namespace | ts.NodeFlags.GlobalAugmentation)
+      ) {
         break;
       }
       return ts.isStringLiteral((node as ts.ModuleDeclaration).name)
@@ -27,6 +31,37 @@ function typeDeclaredInDeclareModule(
     declaration =>
       findParentModuleDeclaration(declaration)?.name.text === packageName,
   );
+}
+
+function typeExportedFromDeclareModule(
+  packageName: string,
+  symbol: ts.Symbol | undefined,
+  program: ts.Program,
+): boolean {
+  if (!symbol) {
+    return false;
+  }
+
+  const checker = program.getTypeChecker();
+
+  const moduleSymbol = checker
+    .getAmbientModules()
+    .find(ambientModule => ambientModule.name === `"${packageName}"`);
+
+  if (!moduleSymbol) {
+    return false;
+  }
+
+  return checker.getExportsOfModule(moduleSymbol).some(exportedSymbol => {
+    const resolvedSymbol = tsutils.isSymbolFlagSet(
+      exportedSymbol,
+      ts.SymbolFlags.Alias,
+    )
+      ? checker.getAliasedSymbol(exportedSymbol)
+      : exportedSymbol;
+
+    return resolvedSymbol === symbol;
+  });
 }
 
 /**
@@ -149,12 +184,14 @@ function getPackageRoots(program: ts.Program): Map<string, string> {
 
 export function typeDeclaredInPackageDeclarationFile(
   packageName: string,
+  symbol: ts.Symbol | undefined,
   declarations: ts.Node[],
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
   return (
     typeDeclaredInDeclareModule(packageName, declarations) ||
-    typeDeclaredInDeclarationFile(packageName, declarationFiles, program)
+    typeDeclaredInDeclarationFile(packageName, declarationFiles, program) ||
+    typeExportedFromDeclareModule(packageName, symbol, program)
   );
 }
