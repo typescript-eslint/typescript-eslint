@@ -24,21 +24,17 @@ This rule reports properties of inline types that a destructuring pattern doesn'
 function Button({ text }: { text: string; onClick: () => void }) {
   return text;
 }
+```
 
+```ts
 function getFirst([first]: [string, number]) {
   return first;
 }
+```
 
+```ts
 function getName({ name }: Record<'id' | 'name', string>) {
   return name;
-}
-
-function getCity({
-  address: { city },
-}: {
-  address: { city: string; street: string };
-}) {
-  return city;
 }
 ```
 
@@ -49,17 +45,17 @@ function getCity({
 function Button({ text, onClick }: { text: string; onClick: () => void }) {
   return [text, onClick];
 }
+```
 
+```ts
 function getFirst([first]: [string]) {
   return first;
 }
+```
 
+```ts
 function getName({ name }: Record<'name', string>) {
   return name;
-}
-
-function getCity({ address: { city } }: { address: { city: string } }) {
-  return city;
 }
 ```
 
