@@ -28,6 +28,7 @@ export function isTypeOnlyReference(
 
   return (
     variable.defs.some(def => def.type === DefinitionType.Variable) &&
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare -- no-unused-vars is one of our rare rules that's used across JS code that is not parsed by our parser. As such `isValueReference` may be undefined and using `!isValueReference` causes false-positives for those users.
     ref.isValueReference === false
   );
 }
