@@ -28,6 +28,6 @@ export function isTypeOnlyReference(
 
   return (
     variable.defs.some(def => def.type === DefinitionType.Variable) &&
-    !ref.isValueReference
+    ref.isValueReference === false
   );
 }
