@@ -750,7 +750,7 @@ type T = { b: B; c: C; d: D };
             {
               column: 10,
               data: { typeImports: '"C" and "D"' },
-              endColumn: 17,
+              endColumn: 14,
               endLine: 5,
               line: 5,
               messageId: 'someImportsAreOnlyTypes',
