@@ -1529,6 +1529,30 @@ type T = A;
 const b = B;
           `,
         },
+        // Multi-line mixed import: underline from the first to the last
+        // type-only specifier rather than the full declaration.
+        {
+          code: `
+import {
+  A,
+  B,
+  C,
+} from 'foo';
+type T = A | C;
+B();
+          `,
+          errors: [
+            {
+              column: 3,
+              data: { typeImports: '"A" and "C"' },
+              endColumn: 4,
+              endLine: 5,
+              line: 3,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [{ prefer: 'type-imports' }],
+        },
         // https://github.com/typescript-eslint/typescript-eslint/issues/4915
         {
           code: `
