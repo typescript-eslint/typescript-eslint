@@ -379,34 +379,20 @@ export default createRule<Options, MessageIds>({
                 specifier => `"${specifier.local.name}"`,
               );
 
-              const message = ((): {
-                data: Record<string, unknown>;
-                messageId: MessageIds;
-              } => {
-                const typeImports = formatWordList(importNames);
-
-                if (importNames.length === 1) {
-                  return {
-                    messageId: 'someImportsAreOnlyTypes',
-                    data: {
-                      typeImports,
-                    },
-                  };
-                }
-                return {
-                  messageId: 'someImportsAreOnlyTypes',
-                  data: {
-                    typeImports,
-                  },
-                };
-              })();
+              const firstSpecifier = report.typeSpecifiers[0];
+              const lastSpecifier =
+                report.typeSpecifiers[report.typeSpecifiers.length - 1];
 
               context.report({
-                node:
-                  report.typeSpecifiers.length === 1
-                    ? report.typeSpecifiers[0]
-                    : report.node,
-                ...message,
+                node: firstSpecifier,
+                loc: {
+                  start: firstSpecifier.loc.start,
+                  end: lastSpecifier.loc.end,
+                },
+                messageId: 'someImportsAreOnlyTypes',
+                data: {
+                  typeImports: formatWordList(importNames),
+                },
                 *fix(fixer) {
                   // take all the typeSpecifiers and put them on a new line
                   yield* fixToTypeImportDeclaration(
