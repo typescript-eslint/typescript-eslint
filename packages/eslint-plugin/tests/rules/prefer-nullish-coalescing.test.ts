@@ -271,6 +271,54 @@ x !== undefined ? x : y;
     },
     {
       code: `
+function test<T>(val: T | undefined) {
+  return val !== undefined ? val : 'foo';
+}
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+function test<T>(val: T | null) {
+  return val !== null ? val : 'foo';
+}
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+function test<T extends string | null>(val: T | undefined) {
+  return val !== undefined ? val : 'foo';
+}
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+class Property<T> {
+  value: T | undefined;
+  defaultValue!: T;
+
+  get(): T {
+    return this.value !== undefined ? this.value : this.defaultValue;
+  }
+}
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+function test<T>(val: T | undefined, fallback: T) {
+  if (val === undefined) {
+    val = fallback;
+  }
+  return val;
+}
+      `,
+      options: [{ ignoreIfStatements: false }],
+    },
+    {
+      code: `
 declare let x: any;
 x === null ? x : y;
       `,
@@ -12677,6 +12725,36 @@ c ?? (c ? 1 : 2);
           ],
         },
       ],
+      output: null,
+    },
+    {
+      code: `
+function test<T extends string>(val: T | undefined) {
+  return val !== undefined ? val : 'foo';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { equals: '' },
+          endColumn: 41,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+function test<T extends string>(val: T | undefined) {
+  return val ?? 'foo';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
       output: null,
     },
   ],
