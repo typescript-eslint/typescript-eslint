@@ -597,13 +597,7 @@ export default createRule<Options, MessageId>({
       );
     }
 
-    function findTypePredicateOfCallback(
-      callback: TSESTree.Expression,
-    ): ts.Type | undefined {
-      const type =
-        services.getContextualType(callback) ??
-        getConstrainedTypeAtLocation(services, callback);
-
+    function getIdentifierTypePredicate(type: ts.Type): ts.Type | undefined {
       for (const signature of tsutils.getCallSignaturesOfType(type)) {
         const predicate = checker.getTypePredicateOfSignature(signature);
         if (
@@ -617,14 +611,34 @@ export default createRule<Options, MessageId>({
       return undefined;
     }
 
-    function getArrayElementType(type: ts.Type): ts.Type | undefined {
-      for (const part of tsutils.unionConstituents(type)) {
-        if (checker.isArrayType(part)) {
-          return checker.getTypeArguments(part)[0];
-        }
+    // `every` / `filter` / `find` / `findLast` instantiate generic guards on
+    // the contextual signature. The other predicate methods do not.
+    function getUnnecessaryCallbackTypeGuard(
+      callback: TSESTree.Expression,
+    ): { elementType: ts.Type; predicateType: ts.Type } | undefined {
+      const declaredPredicate = getIdentifierTypePredicate(
+        getConstrainedTypeAtLocation(services, callback),
+      );
+      if (declaredPredicate == null) {
+        return undefined;
       }
 
-      return undefined;
+      const contextualType = nullThrows(
+        services.getContextualType(callback),
+        'Array method arguments are contextually typed.',
+      );
+      const signatures = tsutils.getCallSignaturesOfType(contextualType);
+      if (signatures.length === 0) {
+        return undefined;
+      }
+
+      return {
+        elementType: checker.getTypeOfSymbol(
+          signatures[0].getParameters()[0],
+        ),
+        predicateType:
+          getIdentifierTypePredicate(contextualType) ?? declaredPredicate,
+      };
     }
 
     function checkCallExpression(node: TSESTree.CallExpression): void {
@@ -695,17 +709,15 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         } else if (
           checkTypePredicates &&
-          callback.type !== AST_NODE_TYPES.SpreadElement &&
-          node.callee.type === AST_NODE_TYPES.MemberExpression
+          callback.type !== AST_NODE_TYPES.SpreadElement
         ) {
-          const typePredicate = findTypePredicateOfCallback(callback);
-          if (typePredicate != null) {
-            const elementType = getArrayElementType(
-              getConstrainedTypeAtLocation(services, node.callee.object),
-            );
+          const typeGuard = getUnnecessaryCallbackTypeGuard(callback);
+          if (typeGuard != null) {
             if (
-              elementType != null &&
-              isUnnecessaryTypeGuard(elementType, typePredicate)
+              isUnnecessaryTypeGuard(
+                typeGuard.elementType,
+                typeGuard.predicateType,
+              )
             ) {
               context.report({
                 node: callback,
