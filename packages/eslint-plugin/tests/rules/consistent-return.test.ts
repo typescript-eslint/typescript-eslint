@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('consistent-return', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // base rule
     `

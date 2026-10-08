@@ -20,6 +20,7 @@ import type {
 } from './PreferOptionalChainOptions';
 
 import {
+  getConstrainedTypeAtLocation,
   getFixOrSuggest,
   getOperatorPrecedenceForNode,
   isClosingParenToken,
@@ -49,6 +50,7 @@ function includesType(
   const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
   const types = unionConstituents(parserServices.getTypeAtLocation(node));
   for (const type of types) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
     if (isTypeFlagSet(type, typeFlag)) {
       return true;
     }
@@ -56,13 +58,22 @@ function includesType(
   return false;
 }
 
+const MAYBE_UNDEFINED_FLAGS =
+  ts.TypeFlags.Any |
+  ts.TypeFlags.Unknown |
+  ts.TypeFlags.InstantiableNonPrimitive |
+  ts.TypeFlags.Undefined |
+  ts.TypeFlags.Void;
+
 function isValidAndLastChainOperand(
   ComparisonValueType: TSESTree.Node,
   comparisonType: ComparisonType,
   parserServices: ParserServicesWithTypeInformation,
 ) {
-  const type = parserServices.getTypeAtLocation(ComparisonValueType);
-  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const type = getConstrainedTypeAtLocation(
+    parserServices,
+    ComparisonValueType,
+  );
 
   const types = unionConstituents(type);
   switch (comparisonType) {
@@ -70,14 +81,16 @@ function isValidAndLastChainOperand(
       const isNullish = types.some(t =>
         isTypeFlagSet(
           t,
-          ANY_UNKNOWN_FLAGS | ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
+          MAYBE_UNDEFINED_FLAGS | ts.TypeFlags.Null,
         ),
       );
       return !isNullish;
     }
     case ComparisonType.StrictEqual: {
       const isUndefined = types.some(t =>
-        isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
+        isTypeFlagSet(t, MAYBE_UNDEFINED_FLAGS),
       );
       return !isUndefined;
     }
@@ -96,8 +109,10 @@ function isValidOrLastChainOperand(
   comparisonType: ComparisonType,
   parserServices: ParserServicesWithTypeInformation,
 ) {
-  const type = parserServices.getTypeAtLocation(ComparisonValueType);
-  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const type = getConstrainedTypeAtLocation(
+    parserServices,
+    ComparisonValueType,
+  );
 
   const types = unionConstituents(type);
   switch (comparisonType) {
@@ -105,14 +120,16 @@ function isValidOrLastChainOperand(
       const isNullish = types.some(t =>
         isTypeFlagSet(
           t,
-          ANY_UNKNOWN_FLAGS | ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
+          MAYBE_UNDEFINED_FLAGS | ts.TypeFlags.Null,
         ),
       );
       return !isNullish;
     }
     case ComparisonType.NotStrictEqual: {
       const isUndefined = types.some(t =>
-        isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
+        isTypeFlagSet(t, MAYBE_UNDEFINED_FLAGS),
       );
       return !isUndefined;
     }

@@ -5,6 +5,9 @@ const ruleTester = createRuleTesterWithTypes();
 
 describe('basic assertions', () => {
   ruleTester.run('no-unsafe-type-assertion', rule, {
+    assertionOptions: {
+      requireData: true,
+    },
     valid: [
       `
 declare const a: string;

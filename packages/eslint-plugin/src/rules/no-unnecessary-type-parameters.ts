@@ -10,7 +10,6 @@ import type { MakeRequired } from '../util';
 import {
   createRule,
   getParserServices,
-  getWrappingFixer,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -109,27 +108,40 @@ export default createRule({
                 for (const reference of smTypeParameterVariable.references) {
                   if (reference.isTypeReference) {
                     const referenceNode = reference.identifier;
-                    const isComplexType =
+                    const isWeakPrecedenceConstraint =
                       constraint?.type === AST_NODE_TYPES.TSUnionType ||
                       constraint?.type === AST_NODE_TYPES.TSIntersectionType ||
-                      constraint?.type === AST_NODE_TYPES.TSConditionalType;
-                    const hasMatchingAncestorType = [
-                      AST_NODE_TYPES.TSArrayType,
-                      AST_NODE_TYPES.TSIndexedAccessType,
-                      AST_NODE_TYPES.TSIntersectionType,
-                      AST_NODE_TYPES.TSUnionType,
-                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    ].some(type => referenceNode.parent.parent!.type === type);
-                    if (isComplexType && hasMatchingAncestorType) {
-                      const fixResult = getWrappingFixer({
-                        node: referenceNode,
-                        innerNode: constraint,
-                        sourceCode: context.sourceCode,
-                        wrap: constraintNode => constraintNode,
-                      })(fixer);
-                      yield fixResult;
+                      constraint?.type === AST_NODE_TYPES.TSConditionalType ||
+                      constraint?.type === AST_NODE_TYPES.TSTypeOperator ||
+                      constraint?.type === AST_NODE_TYPES.TSFunctionType ||
+                      constraint?.type === AST_NODE_TYPES.TSConstructorType;
+
+                    const grandparent = nullThrows(
+                      referenceNode.parent.parent,
+                      NullThrowsReasons.MissingParent,
+                    );
+
+                    const isWeakPrecedenceTypeParent =
+                      grandparent.type === AST_NODE_TYPES.TSArrayType ||
+                      grandparent.type === AST_NODE_TYPES.TSIndexedAccessType ||
+                      grandparent.type === AST_NODE_TYPES.TSIntersectionType ||
+                      grandparent.type === AST_NODE_TYPES.TSUnionType ||
+                      grandparent.type === AST_NODE_TYPES.TSConditionalType ||
+                      grandparent.type === AST_NODE_TYPES.TSTypeOperator;
+
+                    if (
+                      isWeakPrecedenceConstraint &&
+                      isWeakPrecedenceTypeParent
+                    ) {
+                      yield fixer.replaceText(
+                        referenceNode.parent,
+                        `(${constraintText})`,
+                      );
                     } else {
-                      yield fixer.replaceText(referenceNode, constraintText);
+                      yield fixer.replaceText(
+                        referenceNode.parent,
+                        constraintText,
+                      );
                     }
                   }
                 }
@@ -457,10 +469,28 @@ function collectTypeParameterUsageCounts(
           // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
           // They have properties, so we need to avoid double-counting.
           visitType(type.templateType ?? type.constraintType, false);
+
+          // `templateType` is a lazily populated checker cache. Once it is
+          // populated on an instantiated mapped type, its constraint is
+          // reachable only here: the type parameter's declaration holds the
+          // original constraint from before instantiation.
+          if (
+            type.templateType &&
+            type.constraintType &&
+            type.constraintType !==
+              getDeclaredConstraintType(type.typeParameter)
+          ) {
+            visitType(type.constraintType, false);
+          }
         }
 
         // TS doesn't count mapped types key remapping (`{[K in 'a' as T]: K}`)
         // but handles this under `MappedType.nameType`, so we need to visit that too.
+        // Instantiated mapped types populate it lazily, which getting the
+        // awaited type forces.
+        if (!type.nameType) {
+          checker.getAwaitedType(type);
+        }
         if (type.nameType) {
           visitType(type.nameType, false);
         }
@@ -499,6 +529,16 @@ function collectTypeParameterUsageCounts(
     const count = (typeUsages.get(type) ?? 0) + 1;
     typeUsages.set(type, count);
     return count;
+  }
+
+  function getDeclaredConstraintType(
+    typeParameter: ts.Type | undefined,
+  ): ts.Type | undefined {
+    const constraint = typeParameter
+      ?.getSymbol()
+      ?.getDeclarations()
+      ?.find(ts.isTypeParameterDeclaration)?.constraint;
+    return constraint && checker.getTypeAtLocation(constraint);
   }
 
   function visitSignature(signature: ts.Signature | undefined): void {

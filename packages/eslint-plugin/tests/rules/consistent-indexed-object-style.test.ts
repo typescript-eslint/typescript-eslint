@@ -5,6 +5,9 @@ import rule from '../../src/rules/consistent-indexed-object-style';
 const ruleTester = new RuleTester();
 
 ruleTester.run('consistent-indexed-object-style', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // 'record' (default)
     // Record

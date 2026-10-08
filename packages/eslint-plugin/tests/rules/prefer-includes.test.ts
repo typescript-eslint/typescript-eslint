@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-includes', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function f(a: string): void {

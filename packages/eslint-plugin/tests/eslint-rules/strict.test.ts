@@ -7,6 +7,16 @@ const rule = getESLintCoreRule('strict');
 const ruleTester = new RuleTester();
 
 ruleTester.run('strict', rule, {
+  valid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/58
+    `
+window.whatevs = {
+  myFunc() {
+    console.log('yep');
+  },
+};
+    `,
+  ],
   invalid: [
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/58
@@ -32,15 +42,5 @@ window.whatevs = {
         },
       },
     },
-  ],
-  valid: [
-    // https://github.com/typescript-eslint/typescript-eslint/issues/58
-    `
-window.whatevs = {
-  myFunc() {
-    console.log('yep');
-  },
-};
-    `,
   ],
 });

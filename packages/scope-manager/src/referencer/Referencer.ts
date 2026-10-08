@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
-import type { LibDefinition } from '../variable';
+import type { ImplicitLibVariableOptions, LibDefinition } from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -53,11 +53,28 @@ export class Referencer extends Visitor {
 
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
     const libs = this.resolveLibDefinitions();
+    const variables = new Map<string, ImplicitLibVariableOptions>();
 
     for (const lib of libs) {
       for (const [name, variable] of lib.variables) {
-        globalScope.defineImplicitVariable(name, variable);
+        const existing = variables.get(name);
+        variables.set(
+          name,
+          existing
+            ? {
+                ...existing,
+                isTypeVariable:
+                  existing.isTypeVariable || variable.isTypeVariable,
+                isValueVariable:
+                  existing.isValueVariable || variable.isValueVariable,
+              }
+            : variable,
+        );
       }
+    }
+
+    for (const [name, variable] of variables) {
+      globalScope.defineImplicitVariable(name, variable);
     }
 
     // Special implicit global for const assertions (`{} as const`, `<const>{}`)

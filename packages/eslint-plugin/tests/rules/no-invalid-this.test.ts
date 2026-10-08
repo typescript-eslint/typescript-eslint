@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-invalid-this';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-invalid-this', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 describe('foo', () => {

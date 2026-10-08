@@ -5,9 +5,6 @@
       "plugin": "@nx/js/typescript",
       "exclude": ["packages/integration-tests/fixtures/**"],
       "options": {
-        "typecheck": {
-          "targetName": "typecheck"
-        },
         "build": {
           "targetName": "build",
           "configName": "tsconfig.build.json"
@@ -53,7 +50,29 @@
         "command": "tsc --build --emitDeclarationOnly",
         "cwd": "{projectRoot}"
       },
-      "outputs": ["{projectRoot}/dist"]
+      "outputs": [
+        "{projectRoot}/dist/**/*.{d.ts,d.cts,d.mts}",
+        "{projectRoot}/dist/*.tsbuildinfo",
+        "{workspaceRoot}/dist/packages/{projectName}",
+        "{workspaceRoot}/dist/tsconfig.spec.tsbuildinfo",
+        "{workspaceRoot}/dist/*.{d.ts,d.cts,d.mts}"
+      ]
+    },
+    "typecheck": {
+      "cache": true,
+      "executor": "nx:run-commands",
+      "dependsOn": ["build", "^typecheck"],
+      "options": {
+        "command": "tsc6 --build --emitDeclarationOnly",
+        "cwd": "{projectRoot}"
+      },
+      "outputs": [
+        "{projectRoot}/dist/**/*.{d.ts,d.cts,d.mts}",
+        "{projectRoot}/dist/*.tsbuildinfo",
+        "{workspaceRoot}/dist/packages/{projectName}",
+        "{workspaceRoot}/dist/tsconfig.spec.tsbuildinfo",
+        "{workspaceRoot}/dist/*.{d.ts,d.cts,d.mts}"
+      ]
     },
     "lint": {
       "cache": false,

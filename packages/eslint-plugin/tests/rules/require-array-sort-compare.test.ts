@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('require-array-sort-compare', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 function f(a: any[]) {
@@ -146,6 +149,41 @@ function f(a: number[]) {
   a.toSorted((a, b) => a - b);
 }
       `,
+    },
+    {
+      code: `
+function sort<T>(values: (T extends 0 ? string : string)[]) {
+  values.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+function sort<T>(values: (T extends 0 ? string : 'asd')[]) {
+  values.sort();
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
+    },
+    {
+      code: `
+interface ExternalIdRow {
+  appointment_id: string;
+  patient_id: string;
+}
+
+declare function acquireAdvisoryLock(key: string): Promise<void>;
+
+async function lockRowsInDeterministicOrder<C extends keyof ExternalIdRow>(
+  ids: ExternalIdRow[C][],
+): Promise<void> {
+  for (const id of [...ids].sort()) {
+    await acquireAdvisoryLock(id);
+  }
+}
+      `,
+      options: [{ ignoreStringArrays: true }],
     },
   ],
   invalid: [
@@ -427,6 +465,40 @@ function f(a: number[]) {
           messageId: 'requireCompare',
         },
       ],
+    },
+    {
+      code: `
+function sort<T>(values: (T extends 0 ? string : string)[]) {
+  values.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: false }],
+    },
+    {
+      code: `
+function sort<T>(values: (T extends 0 ? string : number)[]) {
+  values.sort();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'requireCompare',
+        },
+      ],
+      options: [{ ignoreStringArrays: true }],
     },
   ],
 });

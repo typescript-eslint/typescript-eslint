@@ -141,6 +141,7 @@ function isValidFalseBooleanCheckType(
   if (options.checkBigInt === true) {
     allowedFlags |= ts.TypeFlags.BigIntLike;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
   return primitiveAndObjectParts.every(t => isTypeFlagSet(t, allowedFlags));
 }
 

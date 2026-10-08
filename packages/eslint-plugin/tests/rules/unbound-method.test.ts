@@ -4,10 +4,21 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('unbound-method', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'Promise.resolve().then(console.log);',
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
+    `
+const collator = new Intl.Collator('en');
+['a', 'b'].sort(collator.compare);
+    `,
+    `
+const { compare } = new Intl.Collator('en');
+compare('a', 'b');
+    `,
     `
 const foo = Number;
 ['1', '2', '3'].map(foo.parseInt);
@@ -69,6 +80,12 @@ const o = {
   f: function (this: void) {},
 };
 const f = o.f;
+    `,
+    `
+class Foo {
+  f = function (this: void) {};
+}
+const f = new Foo().f;
     `,
     `
 const { alert } = window;
@@ -2316,7 +2333,7 @@ const foo = Foo;
           endColumn: 33,
           endLine: 6,
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2453,6 +2470,23 @@ const unbound = new Foo().unbound;
           endColumn: 34,
           endLine: 5,
           line: 5,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function (this: Foo) {};
+}
+const unbound = new Foo().unbound;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 34,
+          endLine: 5,
+          line: 5,
           messageId: 'unbound',
         },
       ],
@@ -2487,7 +2521,7 @@ const { unbound } = new Foo();
           endColumn: 16,
           endLine: 5,
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2523,7 +2557,7 @@ let unbound;
           endColumn: 11,
           endLine: 6,
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2540,7 +2574,7 @@ function foo({ unbound }: Foo = new Foo()) {}
           endColumn: 23,
           endLine: 5,
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2558,7 +2592,7 @@ function foo({ unbound }: Foo = bar) {}
           endColumn: 23,
           endLine: 6,
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2576,7 +2610,7 @@ function foo({ unbound }: Foo = { unbound: () => {} }) {}
           endColumn: 23,
           endLine: 6,
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2611,7 +2645,7 @@ function foo({ unbound }: Foo) {}
           endColumn: 23,
           endLine: 5,
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2629,7 +2663,7 @@ bar(({ unbound }) => {});
           endColumn: 15,
           endLine: 6,
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2647,7 +2681,7 @@ bar(({ unbound } = new Foo()) => {});
           endColumn: 15,
           endLine: 6,
           line: 6,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2665,7 +2699,7 @@ for (const { unbound } of [new Foo(), new Foo()]) {
           endColumn: 21,
           endLine: 5,
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2683,7 +2717,7 @@ class Foo {
           endColumn: 16,
           endLine: 5,
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2703,7 +2737,7 @@ function foo({ unbound }: Foo | Bar) {}
           endColumn: 23,
           endLine: 8,
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2720,7 +2754,7 @@ function foo({ unbound }: { unbound: () => string } | Foo) {}
           endColumn: 23,
           endLine: 5,
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2740,7 +2774,7 @@ function foo({ unbound }: Foo | Bar) {}
           endColumn: 23,
           endLine: 8,
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2757,7 +2791,7 @@ const foo = ({ unbound }: Foo & { foo: () => 'bar' }) => {};
           endColumn: 23,
           endLine: 5,
           line: 5,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2777,7 +2811,7 @@ const foo = ({ unbound }: (Foo & { foo: () => 'bar' }) | Bar) => {};
           endColumn: 23,
           endLine: 8,
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2797,7 +2831,7 @@ const foo = ({ unbound }: Foo & Bar) => {};
           endColumn: 23,
           endLine: 8,
           line: 8,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -2819,7 +2853,7 @@ const foo = ({ unbound, ...rest }: Foo & Bar) => {};
           endColumn: 23,
           endLine: 10,
           line: 10,
-          messageId: 'unbound',
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },
@@ -3166,6 +3200,62 @@ foo[1];
           endColumn: 7,
           endLine: 6,
           line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+const collator = new Intl.Collator('en');
+const f = collator.resolvedOptions;
+f();
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  compare(a: string, b: string): number {
+    return a.length - b.length;
+  }
+}
+declare const foo: Foo;
+const f = foo.compare;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 22,
+          endLine: 8,
+          line: 8,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Collator {
+  compare(a: string, b: string): number {
+    return a.length - b.length;
+  }
+}
+declare const collator: Collator;
+const f = collator.compare;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 27,
+          endLine: 8,
+          line: 8,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],

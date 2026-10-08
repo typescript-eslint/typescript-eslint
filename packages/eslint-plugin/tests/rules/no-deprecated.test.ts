@@ -10,6 +10,9 @@ const ruleTester = createRuleTesterWithTypes({
 });
 
 ruleTester.run('no-deprecated', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     '/** @deprecated */ var a;',
     '/** @deprecated */ var a = 1;',
@@ -4007,6 +4010,7 @@ export { deprecatedFunction };
       errors: [
         {
           column: 10,
+          data: { name: 'deprecatedFunction' },
           endColumn: 28,
           endLine: 4,
           line: 4,
@@ -4021,6 +4025,7 @@ export { deprecatedFunction } from './deprecated';
       errors: [
         {
           column: 10,
+          data: { name: 'deprecatedFunction' },
           endColumn: 28,
           endLine: 2,
           line: 2,
@@ -4035,6 +4040,7 @@ export type { T, U } from './deprecated';
       errors: [
         {
           column: 15,
+          data: { name: 'T', reason: 'Reason' },
           endColumn: 16,
           endLine: 2,
           line: 2,
@@ -4049,6 +4055,7 @@ export { default as foo } from './deprecated';
       errors: [
         {
           column: 21,
+          data: { name: 'foo' },
           endColumn: 24,
           endLine: 2,
           line: 2,
@@ -4063,6 +4070,7 @@ export { deprecatedFunction as bar } from './deprecated';
       errors: [
         {
           column: 32,
+          data: { name: 'bar' },
           endColumn: 35,
           endLine: 2,
           line: 2,
@@ -4079,6 +4087,7 @@ void { deprecatedVariable };
       errors: [
         {
           column: 8,
+          data: { name: 'deprecatedVariable' },
           endColumn: 26,
           endLine: 4,
           line: 4,
@@ -4095,6 +4104,7 @@ void { normalVariable };
       errors: [
         {
           column: 8,
+          data: { name: 'normalVariable' },
           endColumn: 22,
           endLine: 4,
           line: 4,

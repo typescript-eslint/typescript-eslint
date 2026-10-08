@@ -1388,7 +1388,7 @@ export class RuleTester extends TestFramework {
       if (item.output == null) {
         if (result.outputs.length) {
           assert.strictEqual(
-            result.outputs[0],
+            result.outputs.at(-1),
             item.code,
             'Expected no autofixes to be suggested.',
           );
@@ -1396,7 +1396,7 @@ export class RuleTester extends TestFramework {
       } else if (typeof item.output === 'string') {
         assert(result.outputs.length > 0, 'Expected autofix to be suggested.');
         assert.strictEqual(
-          result.outputs[0],
+          result.outputs.at(-1),
           item.output,
           'Output is incorrect.',
         );
@@ -1417,7 +1417,7 @@ export class RuleTester extends TestFramework {
       }
     } else if (result.outputs.length) {
       assert.strictEqual(
-        result.outputs[0],
+        result.outputs.at(-1),
         item.code,
         "The rule fixed the code. Please add 'output' property.",
       );

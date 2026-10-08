@@ -8,6 +8,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-readonly-parameter-types', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     'function foo() {}',
 

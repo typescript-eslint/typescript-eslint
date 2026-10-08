@@ -5,6 +5,9 @@ import rule from '../../src/rules/class-literal-property-style';
 const ruleTester = new RuleTester();
 
 ruleTester.run('class-literal-property-style', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Mx {

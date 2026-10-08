@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/internal/plugin-test-formatting -- Prettier doesn't yet support TS 5.6 string literal module identifiers */
 import { noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/consistent-type-exports';
@@ -9,13 +8,16 @@ const ruleTester = createRuleTesterWithTypes({
 });
 
 ruleTester.run('consistent-type-exports', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // unknown module should be ignored
     "export { Foo } from 'foo';",
 
     "export type { Type1 } from './consistent-type-exports';",
     "export { value1 } from './consistent-type-exports';",
-    'export { value1 as "🍎" } from \'./consistent-type-exports\';',
+    "export { value1 as '🍎' } from './consistent-type-exports';",
     "export type { value1 } from './consistent-type-exports';",
     `
 const variable = 1;
@@ -60,7 +62,7 @@ export { NonTypeNS };
     `
 import * as Foo from './consistent-type-exports';
 type Foo = 1;
-export { Foo }
+export { Foo };
     `,
     `
 import { Type1 } from './consistent-type-exports';
@@ -97,7 +99,7 @@ export { A };
       output: "export type { Type1 } from './consistent-type-exports';",
     },
     {
-      code: 'export { Type1 as "🍎" } from \'./consistent-type-exports\';',
+      code: "export { Type1 as '🍎' } from './consistent-type-exports';",
       errors: [
         {
           column: 1,
@@ -107,14 +109,14 @@ export { A };
           messageId: 'typeOverValue',
         },
       ],
-      output:
-        'export type { Type1 as "🍎" } from \'./consistent-type-exports\';',
+      output: "export type { Type1 as '🍎' } from './consistent-type-exports';",
     },
     {
       code: "export { Type1, value1 } from './consistent-type-exports';",
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1' },
           endColumn: 59,
           endLine: 1,
           line: 1,
@@ -131,6 +133,7 @@ export { Type1, value1, value2 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1' },
           endColumn: 67,
           endLine: 2,
           line: 2,
@@ -149,6 +152,7 @@ export { Type1, value1, Type2, value2 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1 and Type2' },
           endColumn: 74,
           endLine: 2,
           line: 2,
@@ -180,6 +184,7 @@ export { Type2 as Foo, value1 } from './consistent-type-exports';
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type2' },
           endColumn: 66,
           endLine: 2,
           line: 2,
@@ -202,6 +207,7 @@ export {
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type2' },
           endColumn: 36,
           endLine: 6,
           line: 2,
@@ -240,6 +246,7 @@ export { value2, Type2 };
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type2' },
           endColumn: 26,
           endLine: 3,
           line: 3,
@@ -266,6 +273,7 @@ export { Alias, IFace, TypeNS };
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Alias and IFace' },
           endColumn: 33,
           endLine: 9,
           line: 9,
@@ -356,6 +364,7 @@ export { type T, T, x };
       errors: [
         {
           column: 1,
+          data: { exportNames: 'T' },
           endColumn: 25,
           endLine: 4,
           line: 4,
@@ -378,6 +387,7 @@ export { T, x };
       errors: [
         {
           column: 1,
+          data: { exportNames: 'T' },
           endColumn: 17,
           endLine: 4,
           line: 4,
@@ -423,6 +433,7 @@ export {
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1 and Type2' },
           endColumn: 36,
           endLine: 7,
           line: 2,
@@ -447,6 +458,7 @@ export {
       errors: [
         {
           column: 1,
+          data: { exportNames: 'Type1 and Type2' },
           endColumn: 36,
           endLine: 7,
           line: 2,
@@ -465,19 +477,19 @@ export {
     },
     {
       code: `
-        export * from './consistent-type-exports/type-only-exports';
+export * from './consistent-type-exports/type-only-exports';
       `,
       errors: [
         {
-          column: 9,
-          endColumn: 69,
+          column: 1,
+          endColumn: 61,
           endLine: 2,
           line: 2,
           messageId: 'typeOverValue',
         },
       ],
       output: `
-        export type * from './consistent-type-exports/type-only-exports';
+export type * from './consistent-type-exports/type-only-exports';
       `,
     },
     {
@@ -505,76 +517,76 @@ export {
     },
     {
       code: `
-        export * from './consistent-type-exports/type-only-reexport';
+export * from './consistent-type-exports/type-only-reexport';
       `,
       errors: [
         {
-          column: 9,
-          endColumn: 70,
+          column: 1,
+          endColumn: 62,
           endLine: 2,
           line: 2,
           messageId: 'typeOverValue',
         },
       ],
       output: `
-        export type * from './consistent-type-exports/type-only-reexport';
+export type * from './consistent-type-exports/type-only-reexport';
       `,
     },
     {
       code: `
-        export * as foo from './consistent-type-exports/type-only-reexport';
+export * as foo from './consistent-type-exports/type-only-reexport';
       `,
       errors: [
         {
-          column: 9,
-          endColumn: 77,
+          column: 1,
+          endColumn: 69,
           endLine: 2,
           line: 2,
           messageId: 'typeOverValue',
         },
       ],
       output: `
-        export type * as foo from './consistent-type-exports/type-only-reexport';
+export type * as foo from './consistent-type-exports/type-only-reexport';
       `,
     },
     {
       code: `
-        import type * as Foo from './consistent-type-exports';
-        type Foo = 1;
-        export { Foo };
+import type * as Foo from './consistent-type-exports';
+type Foo = 1;
+export { Foo };
       `,
       errors: [
         {
-          column: 9,
-          endColumn: 24,
+          column: 1,
+          endColumn: 16,
           endLine: 4,
           line: 4,
           messageId: 'typeOverValue',
         },
       ],
       output: `
-        import type * as Foo from './consistent-type-exports';
-        type Foo = 1;
-        export type { Foo };
+import type * as Foo from './consistent-type-exports';
+type Foo = 1;
+export type { Foo };
       `,
     },
     {
       code: `
-        import { type NAME as Foo } from './consistent-type-exports';
-        export { Foo };
+import { type NAME as Foo } from './consistent-type-exports';
+export { Foo };
       `,
       errors: [
         {
-          column: 9,
-          endColumn: 24,
+          column: 1,
+          endColumn: 16,
           endLine: 3,
           line: 3,
           messageId: 'typeOverValue',
         },
       ],
       output: `
-        import { type NAME as Foo } from './consistent-type-exports';
-        export type { Foo };
+import { type NAME as Foo } from './consistent-type-exports';
+export type { Foo };
       `,
     },
   ],

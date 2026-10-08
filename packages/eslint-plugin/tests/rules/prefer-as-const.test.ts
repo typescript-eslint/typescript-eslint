@@ -5,6 +5,9 @@ import rule from '../../src/rules/prefer-as-const';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-as-const', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "let foo = 'baz' as const;",
     'let foo = 1 as const;',

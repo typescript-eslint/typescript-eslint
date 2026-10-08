@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-destructuring', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // type annotated
     `

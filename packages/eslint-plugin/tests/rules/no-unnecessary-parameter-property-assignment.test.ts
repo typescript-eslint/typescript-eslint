@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-unnecessary-parameter-property-assignment';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-parameter-property-assignment', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 class Foo {
@@ -170,6 +173,46 @@ class Foo {
 class Foo {
   constructor(public foo: string) {
     this[foo] = foo;
+  }
+}
+    `,
+    `
+class User {
+  constructor(public name: string) {
+    name = name.trim();
+    this.name = name;
+  }
+}
+    `,
+    `
+class User {
+  constructor(public name: string) {
+    name += '!';
+    this.name = name;
+  }
+}
+    `,
+    `
+class User {
+  constructor(
+    public name: string,
+    flag: boolean,
+  ) {
+    if (flag) {
+      name = name.trim();
+    }
+    this.name = name;
+  }
+}
+    `,
+    `
+class User {
+  constructor(
+    public name: string,
+    public age: number,
+  ) {
+    name = name.trim();
+    this.name = name;
   }
 }
     `,
@@ -518,6 +561,69 @@ class Foo {
           endColumn: 21,
           endLine: 5,
           line: 5,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class User {
+  constructor(public name: string) {
+    this.name = name;
+    name = name.trim();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class User {
+  constructor(
+    public name: string,
+    public age: number,
+  ) {
+    name = name.trim();
+    this.name = name;
+    this.age = age;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      // Identifier write that is not the parameter must not suppress the report.
+      code: `
+class User {
+  constructor(public name: string) {
+    let local = name;
+    local = local.trim();
+    this.name = name;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
           messageId: 'unnecessaryAssign',
         },
       ],

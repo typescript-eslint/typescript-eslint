@@ -20,6 +20,9 @@ const optionsWithNoUncheckedIndexedAccess = {
 };
 
 ruleTester.run('no-unnecessary-condition', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 declare const b1: boolean;
@@ -1033,6 +1036,66 @@ declare const foo: { bar: { baz?: number; qux: number } };
 type Key = 'baz' | 'qux';
 declare const key: Key;
 foo.bar[key] ??= 1;
+    `,
+    `
+type Fields = {
+  hello?: number;
+  world?: boolean;
+};
+
+let fields: Fields = {};
+
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+    `,
+    `
+type Fields = {
+  hello?: boolean | number;
+  world?: boolean;
+};
+
+let fields: Fields = {};
+
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+    `,
+    `
+type Fields = {
+  hello?: number;
+  world?: 1 | 2 | 3;
+};
+
+let fields: Fields = {};
+
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+    `,
+    `
+type Fields = {
+  hello?: 1 | 2 | 4;
+  world?: 1 | 3 | 5;
+};
+
+let fields: Fields = {};
+
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+    `,
+    `
+interface Foo {
+  bizz?: number;
+  buzz?: boolean;
+}
+
+let fields: Fields = {};
+
+for (const key of ['bizz', 'buzz'] as const) {
+  fields[key] ??= undefined;
+}
     `,
     `
 enum Keys {
@@ -4180,6 +4243,83 @@ foo ??= null;
     },
     {
       code: `
+declare const foo: { bar: null };
+foo.bar ??= null;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Record<string, undefined>;
+declare const key: string;
+foo[key] ??= undefined;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 9,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      code: `
+type Fields = {
+  hello?: undefined;
+  world?: null;
+};
+
+let fields: Fields = {};
+
+for (const key of ['hello', 'world'] as const) {
+  fields[key] ??= undefined;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 10,
+          line: 10,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bizz?: undefined;
+  buzz?: null;
+}
+
+let fields: Foo = {};
+
+for (const key of ['buzz', 'bizz'] as const) {
+  fields[key] ??= undefined;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 10,
+          line: 10,
+          messageId: 'alwaysNullish',
+        },
+      ],
+    },
+    {
+      code: `
 declare let foo: {};
 foo ||= 1;
       `,
@@ -4491,6 +4631,7 @@ assertsString(a);
       errors: [
         {
           column: 15,
+          data: { typeGuardOrAssertionFunction: 'assertion function' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -4508,6 +4649,7 @@ isString(a);
       errors: [
         {
           column: 10,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 11,
           endLine: 4,
           line: 4,
@@ -4525,6 +4667,7 @@ isString('fa' + 'lafel');
       errors: [
         {
           column: 10,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 24,
           endLine: 4,
           line: 4,
@@ -4544,6 +4687,7 @@ if (isStringOrNumber(s)) {
       errors: [
         {
           column: 22,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 23,
           endLine: 4,
           line: 4,
@@ -4569,6 +4713,7 @@ if (isWider(n)) {
       errors: [
         {
           column: 13,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 14,
           endLine: 11,
           line: 11,
@@ -4596,6 +4741,7 @@ if (isNarrower(w)) {
       errors: [
         {
           column: 16,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
           endColumn: 17,
           endLine: 11,
           line: 11,

@@ -20,6 +20,9 @@ const optionsWithExactOptionalPropertyTypes = {
 };
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
@@ -91,6 +94,14 @@ const foo = { hello: 'hello' } as PossibleTuple;
     `
 type PossibleTuple = { 0: 'hello'; 5: 'hello' };
 const foo = { 0: 'hello', 5: 'hello' } as PossibleTuple;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12856
+    `
+const a = {};
+a as Record<string, string>;
+type Dict = Record<string, string>;
+a as Dict;
+a as { [key: string]: string };
     `,
     `
 let bar: number | undefined = x;
@@ -3343,6 +3354,120 @@ maybeFn?.(s as string | number);
 declare const maybeFn: ((arg: string | number) => void) | undefined;
 declare const s: string;
 maybeFn?.(s);
+      `,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = (await db.list()) as Map<string, Uint8Array>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 61,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = (alert(), db.list()) as Promise<Map<string, Uint8Array>>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 73,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = db?.list() as Promise<Map<string, Uint8Array>>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 63,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>>;
+};
+declare const db: Storage;
+const results = (await db?.list()) as Map<string, Uint8Array>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 62,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+type Storage = {
+  list<T = unknown>(): Promise<Map<string, T>> | undefined;
+};
+declare const db: Storage;
+const results = db.list()! as Promise<Map<string, Uint8Array>>;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 63,
+          endLine: 6,
+          line: 6,
+          messageId: 'contextuallyInferredTypeArguments',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare function get<T>(): T;
+const value = get<string>() as string;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare function get<T>(): T;
+const value = get<string>();
       `,
     },
   ],

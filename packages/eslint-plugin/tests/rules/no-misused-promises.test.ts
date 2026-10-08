@@ -4,6 +4,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-misused-promises', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 if (true) {
@@ -1174,6 +1177,20 @@ if (f()) {
     },
     {
       code: `
+declare const f: () => number | string | Promise<number> | Promise<boolean>;
+if (f()) {
+}
+      `,
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
 declare const f: () => string[] | Promise<number[]>;
 if (f()) {
 }
@@ -1295,6 +1312,13 @@ if (f()) {
         },
       ],
     },
+    // a `return` with no enclosing function: legal in a CommonJS module
+    `
+return console.log('foo');
+    `,
+    `
+return Promise.resolve();
+    `,
   ],
 
   invalid: [
@@ -3271,6 +3295,29 @@ using e = d;
     {
       code: `
 declare const f: () => number | Promise<number>;
+if (f()) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+      options: [
+        {
+          checksConditionals: {
+            flagUnions: 'strict',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: () => number | string | Promise<number> | Promise<string>;
 if (f()) {
 }
       `,

@@ -10,6 +10,9 @@ import { areOptionsValid } from '../areOptionsValid';
 const ruleTester = new RuleTester();
 
 ruleTester.run('array-type', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
     {

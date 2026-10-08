@@ -6,6 +6,9 @@ import { createRuleTesterWithTypes } from '../RuleTester';
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('prefer-find', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     `
 interface JerkCode<T> {

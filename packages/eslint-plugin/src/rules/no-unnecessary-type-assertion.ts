@@ -17,8 +17,8 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
-  isStartOfArrowFunctionBody,
-  isStartOfExpressionStatement,
+  isStartOfArrowFunctionBodyNeedingParentheses,
+  isStartOfExpressionStatementNeedingParentheses,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -30,7 +30,10 @@ export type Options = [
     typesToIgnore?: string[];
   },
 ];
-export type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
+export type MessageIds =
+  | 'contextuallyInferredTypeArguments'
+  | 'contextuallyUnnecessary'
+  | 'unnecessaryAssertion';
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
@@ -44,6 +47,8 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
+      contextuallyInferredTypeArguments:
+        'The type arguments for this generic call may be inferred from the assertion. Specify them explicitly instead.',
       contextuallyUnnecessary:
         'This assertion is unnecessary since the receiver accepts the original type of the expression.',
       unnecessaryAssertion:
@@ -226,7 +231,7 @@ export default createRule<Options, MessageIds>({
       if (
         (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
           !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
-        (hasIndexSignature(uncast) && !hasIndexSignature(cast)) ||
+        hasIndexSignature(uncast) !== hasIndexSignature(cast) ||
         containsAny(uncast) ||
         containsAny(cast) ||
         (containsTypeVariable(cast) && !containsTypeVariable(uncast))
@@ -509,6 +514,40 @@ export default createRule<Options, MessageIds>({
 
     function hasGenericCallSignature(type: ts.Type): boolean {
       return type.getCallSignatures().some(hasTypeParams);
+    }
+
+    function getInnermostCall(
+      expression: TSESTree.Expression,
+    ): TSESTree.CallExpression | undefined {
+      switch (expression.type) {
+        case AST_NODE_TYPES.AwaitExpression:
+          return getInnermostCall(expression.argument);
+        case AST_NODE_TYPES.CallExpression:
+          return expression;
+        case AST_NODE_TYPES.ChainExpression:
+        case AST_NODE_TYPES.TSNonNullExpression:
+          return getInnermostCall(expression.expression);
+        case AST_NODE_TYPES.SequenceExpression:
+          return getInnermostCall(
+            nullThrows(
+              expression.expressions.at(-1),
+              'Expected SequenceExpression to have at least one expression',
+            ),
+          );
+        default:
+          return undefined;
+      }
+    }
+
+    function isGenericCallWithInferredTypeArguments(
+      expression: TSESTree.Expression,
+    ): boolean {
+      const call = getInnermostCall(expression);
+      return (
+        call != null &&
+        call.typeArguments == null &&
+        hasGenericCallSignature(services.getTypeAtLocation(call.callee))
+      );
     }
 
     function isArgumentToOverloadedFunction(
@@ -819,14 +858,16 @@ export default createRule<Options, MessageIds>({
             context.sourceCode.getTokenAfter(closingAngleBracket),
             NullThrowsReasons.MissingToken('operand', 'type assertion'),
           );
-          const breaksExpressionStatement =
-            ['{', 'function', 'class'].includes(firstOperandToken.value) &&
-            isStartOfExpressionStatement(node);
-          const breaksArrowFunctionBody =
-            firstOperandToken.value === '{' &&
-            isStartOfArrowFunctionBody(node, context.sourceCode);
           const needsParens =
-            breaksExpressionStatement || breaksArrowFunctionBody;
+            isStartOfExpressionStatementNeedingParentheses(
+              node,
+              firstOperandToken,
+            ) ||
+            isStartOfArrowFunctionBodyNeedingParentheses(
+              node,
+              firstOperandToken,
+              context.sourceCode,
+            );
 
           const fixes: RuleFix[] = [];
           if (needsParens) {
@@ -927,11 +968,18 @@ export default createRule<Options, MessageIds>({
           : !typeAnnotationIsConstAssertion;
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
-          context.report({
-            node,
-            messageId: 'unnecessaryAssertion',
-            fix: createAssertionFixer(node),
-          });
+          if (isGenericCallWithInferredTypeArguments(node.expression)) {
+            context.report({
+              node,
+              messageId: 'contextuallyInferredTypeArguments',
+            });
+          } else {
+            context.report({
+              node,
+              messageId: 'unnecessaryAssertion',
+              fix: createAssertionFixer(node),
+            });
+          }
           return;
         }
 

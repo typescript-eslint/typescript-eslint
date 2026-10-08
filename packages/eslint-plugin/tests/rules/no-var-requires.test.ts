@@ -5,6 +5,9 @@ import rule from '../../src/rules/no-var-requires';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-var-requires', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     "import foo = require('foo');",
     "require('foo');",

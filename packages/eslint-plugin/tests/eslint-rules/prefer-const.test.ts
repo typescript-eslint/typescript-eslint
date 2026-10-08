@@ -7,7 +7,6 @@ const rule = getESLintCoreRule('prefer-const');
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-const', rule, {
-  invalid: [],
   valid: [
     `
 let x: number | undefined = 1;
@@ -34,4 +33,5 @@ let x: number | undefined = 1;
 (x as number)++;
     `,
   ],
+  invalid: [],
 });

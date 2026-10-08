@@ -70,6 +70,12 @@ export default createRule<
             return;
           }
 
+          // `void (x = value)` discards the assignment result so the
+          // expression evaluates to undefined (e.g. `() => void (x = 1)`).
+          if (inner.type === AST_NODE_TYPES.AssignmentExpression) {
+            return;
+          }
+
           const tsArgument = services.esTreeNodeToTSNodeMap.get(node.argument);
           const argType = services.getTypeAtLocation(node.argument);
           // Allow `void promiseValue` so this rule does not fight no-floating-promises.

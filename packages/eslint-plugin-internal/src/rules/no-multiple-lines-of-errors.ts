@@ -87,7 +87,7 @@ export default createRule({
             property.key.name !== 'invalid' ||
             property.value.type !== AST_NODE_TYPES.ArrayExpression
           ) {
-            return;
+            continue;
           }
 
           for (const element of property.value.elements) {

@@ -15,6 +15,9 @@ function q(str: string): string {
 }
 
 ruleTester.run('dot-notation', rule, {
+  assertionOptions: {
+    requireData: true,
+  },
   valid: [
     //  baseRule
     'a.b;',
@@ -212,6 +215,7 @@ x['priv_prop'] = 123;
       errors: [
         {
           column: 3,
+          data: { key: '"priv_prop"' },
           endColumn: 14,
           endLine: 7,
           line: 7,
@@ -240,6 +244,7 @@ x['pub_prop'] = 123;
       errors: [
         {
           column: 3,
+          data: { key: '"pub_prop"' },
           endColumn: 13,
           endLine: 7,
           line: 7,
@@ -579,6 +584,7 @@ x['protected_prop'] = 123;
       errors: [
         {
           column: 3,
+          data: { key: '"protected_prop"' },
           endColumn: 19,
           endLine: 7,
           line: 7,
@@ -608,6 +614,7 @@ x['prop'] = 'hello';
       errors: [
         {
           column: 3,
+          data: { key: '"prop"' },
           endColumn: 9,
           endLine: 8,
           line: 8,
@@ -636,6 +643,7 @@ foo['key_baz'];
       errors: [
         {
           column: 5,
+          data: { key: '"key_baz"' },
           endColumn: 14,
           endLine: 6,
           line: 6,
@@ -666,6 +674,7 @@ function f<T extends Foo>(x: T) {
       errors: [
         {
           column: 5,
+          data: { key: '"extraKey"' },
           endColumn: 15,
           endLine: 10,
           line: 10,

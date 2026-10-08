@@ -16,7 +16,7 @@ permissions: {}
 jobs:
   pr_labels_from_issue:
     name: Copy labels from the linked issues
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     permissions:
       issues: read
       pull-requests: write
