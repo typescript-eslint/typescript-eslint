@@ -43,9 +43,12 @@ function typeExportedFromDeclareModule(
 
   const checker = program.getTypeChecker();
 
-  const moduleSymbol = checker
-    .getAmbientModules()
-    .find(ambientModule => ambientModule.name === `"${packageName}"`);
+  const moduleSymbol = checker.resolveName(
+    `"${packageName}"`,
+    undefined,
+    ts.SymbolFlags.ValueModule,
+    false,
+  );
 
   if (!moduleSymbol) {
     return false;
