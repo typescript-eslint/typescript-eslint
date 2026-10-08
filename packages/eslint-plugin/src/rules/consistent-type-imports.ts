@@ -384,11 +384,11 @@ export default createRule<Options, MessageIds>({
                 report.typeSpecifiers[report.typeSpecifiers.length - 1];
 
               context.report({
-                node: firstSpecifier,
                 loc: {
                   start: firstSpecifier.loc.start,
                   end: lastSpecifier.loc.end,
                 },
+                node: firstSpecifier,
                 messageId: 'someImportsAreOnlyTypes',
                 data: {
                   typeImports: formatWordList(importNames),
