@@ -1552,6 +1552,16 @@ B();
             },
           ],
           options: [{ prefer: 'type-imports' }],
+          output: `
+import type {
+  A,
+  C} from 'foo';
+import {
+  B
+} from 'foo';
+type T = A | C;
+B();
+          `,
         },
         // https://github.com/typescript-eslint/typescript-eslint/issues/4915
         {
