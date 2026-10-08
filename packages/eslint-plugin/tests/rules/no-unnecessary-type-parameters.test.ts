@@ -2304,6 +2304,63 @@ declare function foo(arg: (keyof Foo)[]): void;
       ],
     },
     {
+      code: 'declare function foo<T extends string | number>(arg: [T?]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: [(string | number)?]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends () => void>(arg: [T?]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: [(() => void)?]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends string>(arg: [T?]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: [string?]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
 interface A {
   x: string;
