@@ -644,9 +644,9 @@ let bar: C;
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A" and "C"' },
-              endColumn: 31,
+              endColumn: 17,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -667,9 +667,9 @@ type T = { bar: C; baz: D };
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A", "C" and "D"' },
-              endColumn: 34,
+              endColumn: 20,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -690,9 +690,9 @@ type T = { foo: A; bar: C; baz: D };
           `,
           errors: [
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"A", "C" and "D"' },
-              endColumn: 34,
+              endColumn: 20,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -748,9 +748,9 @@ type T = { b: B; c: C; d: D };
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"C" and "D"' },
-              endColumn: 31,
+              endColumn: 17,
               endLine: 5,
               line: 5,
               messageId: 'someImportsAreOnlyTypes',
@@ -965,9 +965,9 @@ type T = Type1 | Type2 | Type3 | Type4 | Type5;
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Type4" and "Type5"' },
-              endColumn: 65,
+              endColumn: 22,
               endLine: 5,
               line: 5,
               messageId: 'someImportsAreOnlyTypes',
@@ -1707,9 +1707,9 @@ A();
           `,
           errors: [
             {
-              column: 1,
+              column: 13,
               data: { typeImports: '"B" and "C"' },
-              endColumn: 31,
+              endColumn: 17,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -1836,9 +1836,9 @@ let baz: D;
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"A" and "C"' },
-              endColumn: 31,
+              endColumn: 17,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
