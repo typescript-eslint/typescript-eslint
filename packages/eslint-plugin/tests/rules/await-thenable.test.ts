@@ -735,6 +735,12 @@ Promise.all([]);
     },
     {
       code: `
+Promise.all('abc');
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
 function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
   Promise.all(maybePromises);
 }
