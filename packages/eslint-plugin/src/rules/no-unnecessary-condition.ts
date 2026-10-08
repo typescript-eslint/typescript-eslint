@@ -623,19 +623,16 @@ export default createRule<Options, MessageId>({
         return undefined;
       }
 
-      const contextualType = nullThrows(
-        services.getContextualType(callback),
-        'Array method arguments are contextually typed.',
-      );
+      // Array method arguments are contextually typed.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const contextualType = services.getContextualType(callback)!;
       const signatures = tsutils.getCallSignaturesOfType(contextualType);
       if (signatures.length === 0) {
         return undefined;
       }
 
       return {
-        elementType: checker.getTypeOfSymbol(
-          signatures[0].getParameters()[0],
-        ),
+        elementType: checker.getTypeOfSymbol(signatures[0].getParameters()[0]),
         predicateType:
           getIdentifierTypePredicate(contextualType) ?? declaredPredicate,
       };
