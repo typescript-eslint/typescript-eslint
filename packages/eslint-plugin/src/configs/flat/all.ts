@@ -73,6 +73,7 @@ export default (
       '@typescript-eslint/no-extraneous-class': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-for-in-array': 'error',
+      '@typescript-eslint/no-generated-empty-object-type': 'error',
       'no-implied-eval': 'off',
       '@typescript-eslint/no-implied-eval': 'error',
       '@typescript-eslint/no-import-type-side-effects': 'error',

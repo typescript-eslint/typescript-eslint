@@ -556,6 +556,16 @@ declare const b2: true;
 const x = b1 && b2;
       `,
     },
+    `
+function test(foo?: boolean, bar?: boolean) {
+  return (foo && 'foo') || (bar && 'bar');
+}
+    `,
+    `
+declare const b1: boolean;
+declare const b2: boolean;
+const x = (b1 && 'b1') || b2;
+    `,
     {
       code: `
 while (true) {}
@@ -1647,6 +1657,88 @@ if (b1 || b2 || true) {
           endColumn: 21,
           endLine: 8,
           line: 8,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if ((b1 && 'b1') || b2) {
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+do {} while ((b1 && 'b1') || b2);
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+for (; (b1 && 'b1') || b2;) {}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if (!((b1 && 'b1') || b2)) {
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+const t1 = b1 && 'b1' && b2;
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
       ],
