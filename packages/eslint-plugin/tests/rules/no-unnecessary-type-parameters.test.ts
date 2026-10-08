@@ -409,6 +409,13 @@ function filled<T>(shape: T) {
 }
     `,
     `
+declare function remap<T extends string>(t: T): { [K in 'a' as T]: 0 };
+
+function f<P extends string>(p: P) {
+  return remap(p);
+}
+    `,
+    `
 type Identity<T> = T;
 
 type Mapped<T, Value> = Identity<{ [P in keyof T]: Value }>;
