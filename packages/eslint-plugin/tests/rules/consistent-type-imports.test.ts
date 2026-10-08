@@ -748,7 +748,7 @@ type T = { b: B; c: C; d: D };
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 13,
+              column: 10,
               data: { typeImports: '"C" and "D"' },
               endColumn: 17,
               endLine: 5,
@@ -1532,7 +1532,7 @@ const b = B;
         // Multi-line mixed import: underline from the first to the last
         // type-only specifier rather than the full declaration.
         {
-          code: `
+          code: noFormat`
 import {
   A,
   B,
