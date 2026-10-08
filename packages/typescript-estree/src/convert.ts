@@ -660,7 +660,7 @@ export class Converter {
       case SyntaxKind.SourceFile: {
         return this.createNode<TSESTree.Program>(node, {
           type: AST_NODE_TYPES.Program,
-          range: [node.getStart(this.ast), node.endOfFileToken.end],
+          range: [0, node.endOfFileToken.end],
           body: this.convertBodyExpressions(node.statements, node),
           comments: undefined,
           sourceType: node.externalModuleIndicator ? 'module' : 'script',
