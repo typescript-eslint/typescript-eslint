@@ -94,6 +94,53 @@ export function foo(sn: string | number): void;
 </TabItem>
 </Tabs>
 
+## Options
+
+### `ignoreAccessors`
+
+{/* insert option description */}
+
+Getters and setters can't be overloaded, but by default this rule treats a getter and setter with the same name as signatures of a single member, so they must be placed next to each other.
+Enabling this option skips accessors entirely, the same way properties are skipped.
+An accessor placed between a method's overload signatures still separates them.
+
+If you want to keep each getter next to its setter, ESLint's [`grouped-accessor-pairs`](https://eslint.org/docs/latest/rules/grouped-accessor-pairs) rule enforces that.
+
+Examples of code with `{ "ignoreAccessors": true }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreAccessors": true }'
+class Foo {
+  foo(s: string): void;
+  get bar(): number {
+    return 1;
+  }
+  foo(n: number): void;
+  foo(sn: string | number): void {}
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "ignoreAccessors": true }'
+class Foo {
+  get a(): number {
+    return 1;
+  }
+  get b(): number {
+    return 2;
+  }
+  set a(value: number) {}
+  set b(value: number) {}
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## When Not To Use It
 
 It can sometimes be useful to place overload signatures alongside other meaningful parts of a type.

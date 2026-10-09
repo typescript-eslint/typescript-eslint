@@ -1,10 +1,25 @@
 
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "ignoreAccessors": {
+        "description": "Whether to skip getters and setters instead of treating them as overload signatures.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];
+type Options = [
+  {
+    /** Whether to skip getters and setters instead of treating them as overload signatures. */
+    ignoreAccessors?: boolean;
+  },
+];

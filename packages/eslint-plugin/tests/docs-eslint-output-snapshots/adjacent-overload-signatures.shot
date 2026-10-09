@@ -72,3 +72,30 @@ export function bar(): void;
 export function foo(s: string): void;
 export function foo(n: number): void;
 export function foo(sn: string | number): void;
+
+Incorrect
+Options: { "ignoreAccessors": true }
+
+class Foo {
+  foo(s: string): void;
+  get bar(): number {
+    return 1;
+  }
+  foo(n: number): void;
+  ~~~~~~~~~~~~~~~~~~~~~ All foo signatures should be adjacent.
+  foo(sn: string | number): void {}
+}
+
+Correct
+Options: { "ignoreAccessors": true }
+
+class Foo {
+  get a(): number {
+    return 1;
+  }
+  get b(): number {
+    return 2;
+  }
+  set a(value: number) {}
+  set b(value: number) {}
+}
