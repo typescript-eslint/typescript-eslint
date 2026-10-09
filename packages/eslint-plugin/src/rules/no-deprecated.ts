@@ -9,6 +9,7 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getParserServices,
+  getStaticStringValue,
   nullThrows,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
@@ -334,20 +335,6 @@ export default createRule<Options, MessageIds>({
       return getJsDocDeprecation(symbol);
     }
 
-    function getObjectLiteralPropertyDeprecation(
-      objectExpression: TSESTree.ObjectExpression,
-      propertyName: string,
-    ): string | undefined {
-      const contextualType = services.getContextualType(objectExpression);
-      if (!contextualType) {
-        return;
-      }
-
-      const symbol = contextualType.getProperty(propertyName);
-
-      return getJsDocDeprecation(symbol);
-    }
-
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
@@ -359,13 +346,6 @@ export default createRule<Options, MessageIds>({
         node.type !== AST_NODE_TYPES.Super
       ) {
         return getJSXAttributeDeprecation(node.parent.parent, node.name);
-      }
-
-      if (isObjectLiteralPropertyKey(node)) {
-        return getObjectLiteralPropertyDeprecation(
-          node.parent.parent,
-          node.name,
-        );
       }
 
       if (
@@ -394,10 +374,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
-      if (
-        (isDeclaration(node) && !isObjectLiteralPropertyKey(node)) ||
-        isInsideImport(node)
-      ) {
+      if (isDeclaration(node) || isInsideImport(node)) {
         return;
       }
 
@@ -428,6 +405,69 @@ export default createRule<Options, MessageIds>({
               data: { name },
             }),
         node,
+      });
+    }
+
+    /**
+     * The name a key refers to, or `null` when it cannot be determined
+     * statically, as in `const x: Foo = { [someString]: 1 }`.
+     */
+    function getObjectLiteralPropertyName(
+      node: TSESTree.Property,
+    ): string | null {
+      if (!node.computed) {
+        return node.key.type === AST_NODE_TYPES.Identifier
+          ? node.key.name
+          : getStaticStringValue(node.key);
+      }
+
+      const keyType = services.getTypeAtLocation(node.key);
+
+      return keyType.isStringLiteral() ? keyType.value : null;
+    }
+
+    /**
+     * A key of an object literal refers to a property of the literal's
+     * contextual type, rather than declaring a property of its own, so it is
+     * checked against that type instead of the key's own symbol.
+     */
+    function checkObjectLiteralProperty(node: TSESTree.Property): void {
+      if (node.parent.type !== AST_NODE_TYPES.ObjectExpression) {
+        return;
+      }
+
+      const propertyName = getObjectLiteralPropertyName(node);
+      if (propertyName == null) {
+        return;
+      }
+
+      const contextualType = services.getContextualType(node.parent);
+      if (!contextualType) {
+        return;
+      }
+
+      const reason = getJsDocDeprecation(
+        contextualType.getProperty(propertyName),
+      );
+      if (reason == null) {
+        return;
+      }
+
+      if (typeMatchesSomeSpecifier(contextualType, allow, services.program)) {
+        return;
+      }
+
+      context.report({
+        ...(reason
+          ? {
+              messageId: 'deprecatedWithReason',
+              data: { name: propertyName, reason },
+            }
+          : {
+              messageId: 'deprecated',
+              data: { name: propertyName },
+            }),
+        node: node.key,
       });
     }
 
@@ -516,6 +556,7 @@ export default createRule<Options, MessageIds>({
       },
       MemberExpression: checkMemberExpression,
       PrivateIdentifier: checkIdentifier,
+      Property: checkObjectLiteralProperty,
       Super: checkIdentifier,
     };
   },
@@ -531,25 +572,4 @@ function getReportedNodeName(node: IdentifierLike): string {
   }
 
   return node.name;
-}
-
-/**
- * Whether the node is the key of a non-computed property in an object literal,
- * such as `const x: Foo = { key: 1 }` or `func({ key: 1 })`.
- *
- * Such a key refers to a property of the object literal's contextual type,
- * rather than declaring a new property of its own.
- */
-function isObjectLiteralPropertyKey(
-  node: TSESTree.Node,
-): node is TSESTree.Identifier & {
-  parent: TSESTree.Property & { parent: TSESTree.ObjectExpression };
-} {
-  return (
-    node.type === AST_NODE_TYPES.Identifier &&
-    node.parent.type === AST_NODE_TYPES.Property &&
-    node.parent.key === node &&
-    !node.parent.computed &&
-    node.parent.parent.type === AST_NODE_TYPES.ObjectExpression
-  );
 }
