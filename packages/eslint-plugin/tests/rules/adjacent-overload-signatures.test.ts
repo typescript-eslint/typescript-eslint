@@ -269,6 +269,78 @@ if (true) {
   function foo(sn: string | number) {}
 }
     `,
+    // accessors
+    `
+class Test {
+  get a(): number {
+    return 1;
+  }
+  set a(val: number) {}
+  get b(): number {
+    return 2;
+  }
+  set b(val: number) {}
+}
+    `,
+    {
+      code: `
+class Test {
+  #a = 1;
+  #b = 2;
+
+  get a(): number {
+    return this.#a;
+  }
+  get b(): number {
+    return this.#b;
+  }
+  set a(val: number) {
+    this.#a = val;
+  }
+  set b(val: number) {
+    this.#b = val;
+  }
+}
+      `,
+      options: [{ ignoreAccessors: true }],
+    },
+    {
+      code: `
+class Test {
+  static get a(): number {
+    return 1;
+  }
+  static get b(): number {
+    return 2;
+  }
+  static set a(val: number) {}
+  static set b(val: number) {}
+}
+      `,
+      options: [{ ignoreAccessors: true }],
+    },
+    {
+      code: `
+interface Test {
+  get a(): number;
+  get b(): number;
+  set a(val: number);
+  set b(val: number);
+}
+      `,
+      options: [{ ignoreAccessors: true }],
+    },
+    {
+      code: `
+type Test = {
+  get a(): number;
+  get b(): number;
+  set a(val: number);
+  set b(val: number);
+};
+      `,
+      options: [{ ignoreAccessors: true }],
+    },
   ],
   invalid: [
     {
@@ -998,6 +1070,73 @@ class Test {
           messageId: 'adjacentSignature',
         },
       ],
+    },
+    // accessors
+    {
+      code: `
+class Test {
+  get a(): number {
+    return 1;
+  }
+  get b(): number {
+    return 2;
+  }
+  set a(val: number) {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'a' },
+          endColumn: 24,
+          endLine: 9,
+          line: 9,
+          messageId: 'adjacentSignature',
+        },
+      ],
+    },
+    {
+      code: `
+interface Test {
+  get a(): number;
+  get b(): number;
+  set a(val: number);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'a' },
+          endColumn: 22,
+          endLine: 5,
+          line: 5,
+          messageId: 'adjacentSignature',
+        },
+      ],
+      options: [{ ignoreAccessors: false }],
+    },
+    {
+      code: `
+class Test {
+  foo(s: string): void;
+  get bar(): number {
+    return 1;
+  }
+  foo(n: number): void;
+  foo(sn: string | number): void {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'foo' },
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'adjacentSignature',
+        },
+      ],
+      options: [{ ignoreAccessors: true }],
     },
   ],
 });
