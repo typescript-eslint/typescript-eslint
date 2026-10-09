@@ -143,6 +143,57 @@ module.exports = {
 
 You can read more about the rules provided by typescript-eslint in our [rules docs](/rules) and [shared configurations docs](../users/Shared_Configurations.mdx).
 
+## Enabling Individual Type-Checked Rules
+
+You can turn on individual type-checked rules without switching to a type-checked shared config.
+Those rules still need `languageOptions.parserOptions` set for the files they run on.
+For example, to keep the non-type-checked `recommended` config and only add [`no-floating-promises`](/rules/no-floating-promises):
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+export default defineConfig({
+  files: ['**/*.{js,ts}'],
+  extends: [js.configs.recommended, tseslint.configs.recommended],
+  // Added lines start
+  languageOptions: {
+    parserOptions: {
+      projectService: true,
+    },
+  },
+  rules: {
+    '@typescript-eslint/no-floating-promises': 'error',
+  },
+  // Added lines end
+});
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.cjs"
+/* eslint-env node */
+module.exports = {
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  plugins: ['@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
+  // Added lines start
+  parserOptions: {
+    projectService: true,
+    tsconfigRootDir: __dirname,
+  },
+  rules: {
+    '@typescript-eslint/no-floating-promises': 'error',
+  },
+  // Added lines end
+  root: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
 ## Performance
 
 Typed rules come with a catch.

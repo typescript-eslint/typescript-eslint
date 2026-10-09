@@ -9,7 +9,7 @@ import {
   parseAndGenerateServices,
 } from '../../src/parser';
 
-const CONTENTS = {
+export const CONTENTS = {
   bar: 'console.log("bar")',
   'bat/baz/bar': 'console.log("bat/baz/bar")',
   'baz/bar': 'console.log("baz bar")',
@@ -21,40 +21,43 @@ const CONTENTS = {
 
 const homeOrTmpDir = os.tmpdir() || os.homedir();
 
-const tmpDirsParentDirectory = path.join(homeOrTmpDir, 'typescript-estree');
+let tmpDirsParentDirectory: string;
 
-const cwdCopy = process.cwd();
-const tmpDirs = new Set<string>();
-afterEach(() => {
-  // reset project tracking
-  clearDefaultProjectMatchedFiles();
+/**
+ * Registers the hooks every persistent parse test file needs.
+ */
+export function setupPersistentParseTests(): void {
+  const cwdCopy = process.cwd();
 
-  // stop watching the files and folders
-  clearWatchCaches();
+  afterEach(() => {
+    // reset project tracking
+    clearDefaultProjectMatchedFiles();
 
-  tmpDirs.clear();
+    // stop watching the files and folders
+    clearWatchCaches();
 
-  // restore original cwd
-  process.chdir(cwdCopy);
-});
-
-beforeEach(() => {
-  vi.stubEnv(
-    'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
-    'true',
-  );
-});
-
-beforeAll(async () => {
-  await fs.mkdir(tmpDirsParentDirectory, {
-    recursive: true,
+    // restore original cwd
+    process.chdir(cwdCopy);
   });
-});
 
-afterAll(async () => {
-  // clean up the temporary files and folders
-  await fs.rm(tmpDirsParentDirectory, { recursive: true });
-});
+  beforeEach(() => {
+    vi.stubEnv(
+      'TYPESCRIPT_ESLINT_IGNORE_PROJECT_AND_PROJECT_SERVICE_ERROR',
+      'true',
+    );
+  });
+
+  beforeAll(async () => {
+    tmpDirsParentDirectory = await fs.mkdtemp(
+      path.join(homeOrTmpDir, 'typescript-estree-'),
+    );
+  });
+
+  afterAll(async () => {
+    // clean up the temporary files and folders
+    await fs.rm(tmpDirsParentDirectory, { recursive: true });
+  });
+}
 
 async function writeTSConfig(
   dirName: string,
@@ -66,7 +69,8 @@ async function writeTSConfig(
     { encoding: 'utf-8' },
   );
 }
-async function writeFile(
+
+export async function writeFile(
   dirName: string,
   file: keyof typeof CONTENTS,
 ): Promise<void> {
@@ -76,6 +80,7 @@ async function writeFile(
     'utf-8',
   );
 }
+
 async function renameFile(
   dirName: string,
   src: 'bar',
@@ -88,13 +93,12 @@ async function renameFile(
 }
 
 async function createTmpDir(): Promise<string> {
-  const tmpDir = await fs.mkdtemp(`${tmpDirsParentDirectory}/`, {
+  return await fs.mkdtemp(`${tmpDirsParentDirectory}/`, {
     encoding: 'utf-8',
   });
-  tmpDirs.add(tmpDir);
-  return tmpDir;
 }
-async function setup(
+
+export async function setup(
   tsconfig: Record<string, unknown>,
   writeBar = true,
 ): Promise<string> {
@@ -112,7 +116,7 @@ async function setup(
   return tmpDir;
 }
 
-function parseFile(
+export function parseFile(
   filename: keyof typeof CONTENTS,
   tmpDir: string,
   relative?: boolean,
@@ -135,7 +139,7 @@ async function exists(
   return (await fs.lstat(path.join(tmpDir, 'src', `${filename}.ts`))).isFile();
 }
 
-function baseTests(
+export function baseTests(
   tsConfigExcludeBar: Record<string, unknown>,
   tsConfigIncludeAll: Record<string, unknown>,
 ): void {
@@ -278,137 +282,3 @@ function baseTests(
     expect(() => parseFile('bar', PROJECT_DIR, true, true)).not.toThrow();
   });
 }
-
-describe('persistent parse', () => {
-  describe.skipIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')(
-    'includes not ending in a slash',
-    () => {
-      const tsConfigExcludeBar = {
-        exclude: ['./src/bar.ts'],
-        include: ['src'],
-      };
-      const tsConfigIncludeAll = {
-        exclude: [],
-        include: ['src'],
-      };
-
-      baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
-    },
-  );
-
-  /*
-  If the includes ends in a slash, typescript will ask for watchers ending in a slash.
-  These tests ensure the normalization of code works as expected in this case.
-  */
-  describe.skipIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')(
-    'includes ending in a slash',
-    () => {
-      const tsConfigExcludeBar = {
-        exclude: ['./src/bar.ts'],
-        include: ['src/'],
-      };
-      const tsConfigIncludeAll = {
-        exclude: [],
-        include: ['src/'],
-      };
-
-      baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
-    },
-  );
-
-  /*
-  If there is no includes, then typescript will ask for a slightly different set of watchers.
-  */
-
-  describe.runIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true')(
-    'tsconfig with no includes / files',
-    () => {
-      const tsConfigExcludeBar = {
-        exclude: ['./src/bar.ts'],
-      };
-      const tsConfigIncludeAll = {};
-
-      baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
-
-      it('handles tsconfigs with no includes/excludes (single level)', async () => {
-        const PROJECT_DIR = await setup({}, false);
-
-        // parse once to: assert the config as correct, and to make sure the program is setup
-        expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-        expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
-
-        // write a new file and attempt to parse it
-        await writeFile(PROJECT_DIR, 'bar');
-        clearCaches();
-
-        expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-        expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
-      });
-
-      it('handles tsconfigs with no includes/excludes (nested)', async () => {
-        const PROJECT_DIR = await setup({}, false);
-        const bazSlashBar = 'baz/bar';
-
-        // parse once to: assert the config as correct, and to make sure the program is setup
-        expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-        expect(() => parseFile(bazSlashBar, PROJECT_DIR)).toThrow();
-
-        // write a new file and attempt to parse it
-        await writeFile(PROJECT_DIR, bazSlashBar);
-        clearCaches();
-
-        expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-        expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
-      });
-    },
-  );
-
-  /*
-  If there is no includes, then typescript will ask for a slightly different set of watchers.
-  */
-  describe.skipIf(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')(
-    'tsconfig with overlapping globs',
-    () => {
-      const tsConfigExcludeBar = {
-        exclude: ['./src/bar.ts'],
-        include: ['./*', './**/*', './src/**/*'],
-      };
-      const tsConfigIncludeAll = {
-        include: ['./*', './**/*', './src/**/*'],
-      };
-
-      baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
-    },
-  );
-
-  describe('tsconfig with module set', () => {
-    const moduleTypes = [
-      'None',
-      'CommonJS',
-      'AMD',
-      'System',
-      'UMD',
-      'ES6',
-      'ES2015',
-      'ESNext',
-    ] as const;
-
-    const testNames = ['object', 'number', 'string', 'foo'] as const;
-
-    describe.for(moduleTypes)('module %s', module => {
-      const tsConfigIncludeAll = {
-        compilerOptions: { module },
-        include: ['./**/*'],
-      };
-
-      it.for(testNames)(
-        'first parse of %s should not throw',
-        async (name, { expect }) => {
-          const PROJECT_DIR = await setup(tsConfigIncludeAll);
-          await writeFile(PROJECT_DIR, name);
-          expect(() => parseFile(name, PROJECT_DIR)).not.toThrow();
-        },
-      );
-    });
-  });
-});

@@ -1,3 +1,89 @@
+## 8.71.1 (2026-10-05)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] count instantiated mapped type constraints ([#12941](https://github.com/typescript-eslint/typescript-eslint/pull/12941))
+- **eslint-plugin:** [prefer-optional-chain] check the constrained type ([#12953](https://github.com/typescript-eslint/typescript-eslint/pull/12953))
+- **eslint-plugin:** [no-confusing-void-expression] don't autofix when declared return type is unknown ([#12930](https://github.com/typescript-eslint/typescript-eslint/pull/12930))
+- **eslint-plugin:** [no-unsafe-enum-assignment] skip identical types and bound deep type walks ([#12957](https://github.com/typescript-eslint/typescript-eslint/pull/12957))
+- **eslint-plugin:** [require-array-sort-compare] use array argument type constraint ([#12919](https://github.com/typescript-eslint/typescript-eslint/pull/12919))
+- **eslint-plugin:** [no-unused-vars] report usedOnlyAsType for partially exported merged declarations ([#12892](https://github.com/typescript-eslint/typescript-eslint/pull/12892))
+- **eslint-plugin:** [no-misused-promises] skip argument checks for calls without arguments ([#12923](https://github.com/typescript-eslint/typescript-eslint/pull/12923))
+
+### ❤️ Thank You
+
+- Diptajoy Mistry @diptomistry
+- Evyatar Daud @StyleShit
+- Josh Goldberg
+- Josh Goldberg ✨
+- Medhansh Poojari
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.71.0 (2026-09-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-enum-assignment] add rule ([#12732](https://github.com/typescript-eslint/typescript-eslint/pull/12732))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-misused-promises] handle a return outside of any function ([#12912](https://github.com/typescript-eslint/typescript-eslint/pull/12912))
+- **eslint-plugin:** [no-unnecessary-type-assertion] specialize generic assertion report message ([#12832](https://github.com/typescript-eslint/typescript-eslint/pull/12832))
+- **eslint-plugin:** [unbound-method] respect `this: void` on class properties ([7fce9127d](https://github.com/typescript-eslint/typescript-eslint/commit/7fce9127d))
+- **eslint-plugin:** [switch-exhaustiveness-check] always sort literal cases in stable order ([#12885](https://github.com/typescript-eslint/typescript-eslint/pull/12885))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Fatih Çakır @wfatih
+- Josh Goldberg
+- Josh Goldberg ✨
+- Zamiell @Zamiell
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
+## 8.70.1 (2026-09-21)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-misused-promises] handle multiple Promise constituents ([#12904](https://github.com/typescript-eslint/typescript-eslint/pull/12904))
+- **eslint-plugin:** [no-useless-default-assignment] convert the fixer to a suggestion fixer ([#12826](https://github.com/typescript-eslint/typescript-eslint/pull/12826))
+- **eslint-plugin:** [no-unnecessary-condition] handle union-keyed index access on the left-hand side of nullish assignment ([#12747](https://github.com/typescript-eslint/typescript-eslint/pull/12747))
+- **eslint-plugin:** [unbound-method] treat Intl.Collator.prototype.compare as spec-bound ([#12845](https://github.com/typescript-eslint/typescript-eslint/pull/12845))
+- **eslint-plugin:** [no-unnecessary-parameter-property-assignment] account for parameter reassignment ([#12880](https://github.com/typescript-eslint/typescript-eslint/pull/12880))
+- **eslint-plugin:** [await-thenable] prevent autofix from breaking code when removing `await` ([#12716](https://github.com/typescript-eslint/typescript-eslint/pull/12716))
+- **eslint-plugin:** [no-meaningless-void-operator] allow void on assignment expressions ([#12873](https://github.com/typescript-eslint/typescript-eslint/pull/12873))
+- **eslint-plugin:** [no-unnecessary-type-assertion] false positive for empty object asserted to a type alias of Record ([#12869](https://github.com/typescript-eslint/typescript-eslint/pull/12869))
+- **eslint-plugin:** [no-misused-spread] omit WeakMap spread suggestions ([#12850](https://github.com/typescript-eslint/typescript-eslint/pull/12850))
+- **eslint-plugin:** [no-generated-empty-object-type] don't report a mapped type whose keys are not resolved yet ([#12854](https://github.com/typescript-eslint/typescript-eslint/pull/12854))
+- **eslint-plugin:** [no-explicit-any] use unknown[] for bare any rest parameters ([#12818](https://github.com/typescript-eslint/typescript-eslint/pull/12818))
+- **eslint-plugin:** [no-unnecessary-type-parameters] handle type precedence in the suggestion fixer ([#12637](https://github.com/typescript-eslint/typescript-eslint/pull/12637))
+- **eslint-plugin:** [no-useless-default-assignment] avoid false positives on tuples with a rest element ([#12768](https://github.com/typescript-eslint/typescript-eslint/pull/12768))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- Diptajoy Mistry @diptomistry
+- Grit @Grit03
+- Hugo @hugop95
+- Michael Naumov @mnaoumov
+- Mikhail Baev @baevm
+- Om Rawat
+- Sanath @sansynx
+- Shinji
+- Vinccool96
+- 김채영 @cchaeyoung
+- 송재욱
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.70.1) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.70.0 (2026-09-07)
 
 ### 🚀 Features

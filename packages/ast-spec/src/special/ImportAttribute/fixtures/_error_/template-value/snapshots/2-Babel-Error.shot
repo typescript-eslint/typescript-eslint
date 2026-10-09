@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > special > ImportAttribute > _error_ > template-value > Babel - Error`]
+BabelError
+> 1 | export * from 'mod' assert { type: `json` };
+    |                    ^ Missing semicolon. (1:19)
+  2 |
+  

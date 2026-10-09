@@ -47,7 +47,7 @@ declare const day: Day;
 let result = 0;
 
 switch (day) {
-        ~~~ Switch is not exhaustive. Cases not matched: "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"
+        ~~~ Switch is not exhaustive. Cases not matched: "Friday" | "Saturday" | "Sunday" | "Thursday" | "Tuesday" | "Wednesday"
   case 'Monday':
     result = 1;
     break;
