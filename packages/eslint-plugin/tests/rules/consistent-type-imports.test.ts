@@ -35,7 +35,7 @@ const foo: Foo = new Foo();
         `,
         `
 import foo from 'foo';
-const foo: foo.Foo = foo.fn();
+const bar: foo.Foo = foo.fn();
         `,
         `
 import { A, B } from 'foo';
@@ -382,6 +382,40 @@ const x = T;
 import { type T } from 'mod';
 const x = T;
         `,
+
+        // https://github.com/typescript-eslint/typescript-eslint/issues/8315
+        `
+import { Foo } from 'foo';
+interface Foo {
+  bar: string;
+}
+const foo: Foo = Foo();
+        `,
+        `
+import { Foo } from 'foo';
+declare namespace Foo {
+  type Bar = string;
+}
+const foo: Foo.Bar = Foo();
+        `,
+        {
+          code: `
+import { Placeholder } from 'placeholder';
+export type Config = {
+  placeholder: Placeholder;
+};
+export function Main() {
+  return <Placeholder />;
+}
+          `,
+          languageOptions: {
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
+            },
+          },
+        },
       ],
       invalid: [
         {
@@ -2204,6 +2238,178 @@ import {} from 'foo';
 import type { Foo} from 'foo';
 import { Bar } from 'foo';
 function test(foo: Foo) {}
+          `,
+        },
+        // https://github.com/typescript-eslint/typescript-eslint/issues/8315
+        {
+          code: `
+import { Placeholder } from 'placeholder';
+export type Config = {
+  placeholder: Placeholder;
+};
+function Placeholder() {
+  return null;
+}
+export function Main() {
+  return <Placeholder />;
+}
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 43,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          languageOptions: {
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
+            },
+          },
+          output: `
+import type { Placeholder } from 'placeholder';
+export type Config = {
+  placeholder: Placeholder;
+};
+function Placeholder() {
+  return null;
+}
+export function Main() {
+  return <Placeholder />;
+}
+          `,
+        },
+        {
+          code: `
+import { Foo } from 'foo';
+type T = Foo;
+const Foo = 1;
+const foo = Foo;
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 27,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          output: `
+import type { Foo } from 'foo';
+type T = Foo;
+const Foo = 1;
+const foo = Foo;
+          `,
+        },
+        {
+          code: `
+import { Foo } from 'foo';
+type T = Foo;
+type U = typeof Foo;
+function Foo() {}
+Foo();
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 27,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          output: `
+import type { Foo } from 'foo';
+type T = Foo;
+type U = typeof Foo;
+function Foo() {}
+Foo();
+          `,
+        },
+        {
+          code: `
+import { Bar, Foo } from 'foo';
+type T = Foo;
+function Foo() {}
+Foo();
+Bar();
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"Foo"' },
+              endColumn: 32,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
+import type { Foo } from 'foo';
+import { Bar } from 'foo';
+type T = Foo;
+function Foo() {}
+Foo();
+Bar();
+          `,
+        },
+        {
+          code: `
+import { Bar, Foo } from 'foo';
+type T = Foo;
+function Foo() {}
+Foo();
+Bar();
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"Foo"' },
+              endColumn: 32,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [{ fixStyle: 'inline-type-imports' }],
+          output: `
+import { Bar, type Foo } from 'foo';
+type T = Foo;
+function Foo() {}
+Foo();
+Bar();
+          `,
+        },
+        {
+          code: `
+import { Foo } from 'foo';
+type T = Foo;
+function fn() {
+  function Foo() {}
+  return Foo();
+}
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 27,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          output: `
+import type { Foo } from 'foo';
+type T = Foo;
+function fn() {
+  function Foo() {}
+  return Foo();
+}
           `,
         },
       ],

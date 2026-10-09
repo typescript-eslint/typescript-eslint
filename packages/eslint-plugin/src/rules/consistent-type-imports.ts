@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { RuleListener } from '@typescript-eslint/utils/eslint-utils';
 
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -218,6 +219,19 @@ export default createRule<Options, MessageIds>({
           if (variable.references.length === 0) {
             unusedSpecifiers.push(specifier);
           } else {
+            // An import and a declaration of the same name in the same scope
+            // share one variable, so its references include the references to
+            // that declaration. If the declaration has a value, the import
+            // can't also have one (TS2440), so value references resolve to the
+            // declaration rather than the import.
+            // A namespace only has a value when it's instantiated, which we
+            // can't tell from the scope analysis, so it's excluded.
+            const hasLocalValueDeclaration = variable.defs.some(
+              def =>
+                def.isVariableDefinition &&
+                def.type !== DefinitionType.ImportBinding &&
+                def.type !== DefinitionType.TSModuleName,
+            );
             const onlyHasTypeReferences = variable.references.every(ref => {
               /**
                * keep origin import kind when export
@@ -238,6 +252,9 @@ export default createRule<Options, MessageIds>({
                 return node.importKind === 'type';
               }
               if (ref.isValueReference) {
+                if (hasLocalValueDeclaration) {
+                  return true;
+                }
                 let parent = ref.identifier.parent as TSESTree.Node | undefined;
                 let child: TSESTree.Node = ref.identifier;
                 while (parent) {
