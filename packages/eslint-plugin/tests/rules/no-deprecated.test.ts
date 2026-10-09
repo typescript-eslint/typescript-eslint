@@ -4114,3 +4114,32 @@ void { normalVariable };
     },
   ],
 });
+
+// The native backend only runs under the project service.
+createRuleTesterWithTypes().run('no-deprecated', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: `
+class Base {
+  /** @deprecated Use other. */
+  method(): void {}
+}
+class Sub extends Base {
+  override method(): void {}
+}
+new Sub().method();
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: 'method', reason: 'Use other.' },
+          endColumn: 17,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+  ],
+});

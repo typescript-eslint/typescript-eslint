@@ -13,8 +13,17 @@ import {
   valueMatchesSpecifier,
 } from '../src/index.js';
 
+// Specifier paths are relative to the program's current directory: the
+// process's for `project`, and the TSConfig's for the native project service.
 const ROOT_DIR = path.posix.join(
-  ...path.relative(process.cwd(), path.join(__dirname, '..')).split(path.sep),
+  ...path
+    .relative(
+      process.env.TYPESCRIPT_ESLINT_NATIVE_BACKEND === 'true'
+        ? path.join(__dirname, 'fixtures')
+        : process.cwd(),
+      path.join(__dirname, '..'),
+    )
+    .split(path.sep),
 );
 
 describe('TypeOrValueSpecifier', () => {
