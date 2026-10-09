@@ -733,6 +733,22 @@ interface A {
 declare let key: string;
 const x: A = { [key]: 'string' };
     `,
+    `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { notDeprecatedField: 'string' };
+    `,
+    `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { ['notDeprecatedField']: 'string' };
+    `,
     {
       code: `
 interface A {
