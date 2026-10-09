@@ -26,8 +26,6 @@ ruleTester.defineRule('collect-unused-vars', {
     collectVariables(context);
     return {};
   },
-  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
-  defaultOptions: [],
   meta: {
     messages: {},
     schema: [],

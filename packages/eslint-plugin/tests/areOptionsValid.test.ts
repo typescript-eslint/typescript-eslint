@@ -5,9 +5,8 @@ const exampleRule = createRule<['value-a' | 'value-b'], never>({
   create() {
     return {};
   },
-  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
-  defaultOptions: ['value-a'],
   meta: {
+    defaultOptions: ['value-a'],
     docs: {
       description: 'Detects something or other',
     },

@@ -19,8 +19,6 @@ const rule = ESLintUtils.RuleCreator.withoutDocs({
     type: 'problem',
     hasSuggestions: true,
   },
-  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
-  defaultOptions: [],
   create: context => ({
     Program(node): void {
       context.report({
