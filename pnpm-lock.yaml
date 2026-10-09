@@ -1209,8 +1209,8 @@ importers:
         specifier: 'catalog:'
         version: 5.0.10
       satori:
-        specifier: ^0.33.4
-        version: 0.33.4
+        specifier: ^0.35.0
+        version: 0.35.0
       stylelint:
         specifier: ^16.26.1
         version: 16.26.1(@typescript/typescript6@6.0.2)(supports-color@8.1.1)
@@ -9261,8 +9261,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  satori@0.33.4:
-    resolution: {integrity: sha512-dCnaW6D/tkCJxG5UvpZPWnnvfTdGTVVSAq1tzH6xC5MeOhAeeswRcSq5zT7C6lRCdTGow9PRGus7PCzdp5JJYw==}
+  satori@0.35.0:
+    resolution: {integrity: sha512-YyoP7axF2T93XOWXQXLH4t+cvLgZ+MeYV/xruXJfPa/czpcRqaG41/8Bz3mzgYj/7NxdrqJOx3YtzWy1MLtG5g==}
     engines: {node: '>=16'}
 
   sax@1.6.1:
@@ -20467,7 +20467,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  satori@0.33.4:
+  satori@0.35.0:
     dependencies:
       '@shuding/opentype.js': 1.4.0-beta.0
       css-background-parser: 0.1.0
