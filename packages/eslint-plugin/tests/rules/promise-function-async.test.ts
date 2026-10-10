@@ -423,10 +423,6 @@ class Test {
   public nonAsyncPromiseMethodA(p: Promise<void>) {
     return p;
   }
-
-  public static nonAsyncPromiseMethodB() {
-    return new Promise<void>();
-  }
 }
       `,
       errors: [
@@ -437,20 +433,34 @@ class Test {
           line: 3,
           messageId: 'missingAsync',
         },
-        {
-          column: 3,
-          endColumn: 39,
-          endLine: 7,
-          line: 7,
-          messageId: 'missingAsync',
-        },
       ],
       output: `
 class Test {
   public async nonAsyncPromiseMethodA(p: Promise<void>) {
     return p;
   }
-
+}
+      `,
+    },
+    {
+      code: `
+class Test {
+  public static nonAsyncPromiseMethodB() {
+    return new Promise<void>();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Test {
   public static async nonAsyncPromiseMethodB() {
     return new Promise<void>();
   }
@@ -463,10 +473,54 @@ const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
   return p;
 };
 
+const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
+      `,
+      errors: [
+        {
+          column: 43,
+          endColumn: 52,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ checkArrowFunctions: false }],
+      output: `
+const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
+  return p;
+};
+
+const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
+      `,
+    },
+    {
+      code: `
 function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
   return p;
 }
 
+const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ checkArrowFunctions: false }],
+      output: `
+async function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
+
+const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
+      `,
+    },
+    {
+      code: `
 const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
 
 class Test {
@@ -477,37 +531,15 @@ class Test {
       `,
       errors: [
         {
-          column: 43,
-          endColumn: 52,
-          endLine: 2,
-          line: 2,
-          messageId: 'missingAsync',
-        },
-        {
-          column: 1,
-          endColumn: 44,
-          endLine: 6,
-          line: 6,
-          messageId: 'missingAsync',
-        },
-        {
           column: 3,
           endColumn: 31,
-          endLine: 13,
-          line: 13,
+          endLine: 5,
+          line: 5,
           messageId: 'missingAsync',
         },
       ],
       options: [{ checkArrowFunctions: false }],
       output: `
-const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
-  return p;
-};
-
-async function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
-  return p;
-}
-
 const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
 
 class Test {
@@ -526,14 +558,6 @@ const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
 function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
   return p;
 }
-
-const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
-
-class Test {
-  public nonAsyncPromiseMethod(p: Promise<void>) {
-    return p;
-  }
-}
       `,
       errors: [
         {
@@ -541,20 +565,6 @@ class Test {
           endColumn: 52,
           endLine: 2,
           line: 2,
-          messageId: 'missingAsync',
-        },
-        {
-          column: 57,
-          endColumn: 59,
-          endLine: 10,
-          line: 10,
-          messageId: 'missingAsync',
-        },
-        {
-          column: 3,
-          endColumn: 31,
-          endLine: 13,
-          line: 13,
           messageId: 'missingAsync',
         },
       ],
@@ -567,8 +577,60 @@ const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
 function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
   return p;
 }
+      `,
+    },
+    {
+      code: `
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
+
+const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
+      `,
+      errors: [
+        {
+          column: 57,
+          endColumn: 59,
+          endLine: 6,
+          line: 6,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ checkFunctionDeclarations: false }],
+      output: `
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
 
 const nonAsyncPromiseArrowFunction = async (p: Promise<void>) => p;
+      `,
+    },
+    {
+      code: `
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
+
+class Test {
+  public nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 31,
+          endLine: 7,
+          line: 7,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ checkFunctionDeclarations: false }],
+      output: `
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
 
 class Test {
   public async nonAsyncPromiseMethod(p: Promise<void>) {
@@ -586,14 +648,6 @@ const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
 function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
   return p;
 }
-
-const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
-
-class Test {
-  public nonAsyncPromiseMethod(p: Promise<void>) {
-    return p;
-  }
-}
       `,
       errors: [
         {
@@ -601,20 +655,6 @@ class Test {
           endColumn: 44,
           endLine: 6,
           line: 6,
-          messageId: 'missingAsync',
-        },
-        {
-          column: 57,
-          endColumn: 59,
-          endLine: 10,
-          line: 10,
-          messageId: 'missingAsync',
-        },
-        {
-          column: 3,
-          endColumn: 31,
-          endLine: 13,
-          line: 13,
           messageId: 'missingAsync',
         },
       ],
@@ -627,8 +667,60 @@ const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
 async function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
   return p;
 }
+      `,
+    },
+    {
+      code: `
+const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
+  return p;
+};
+
+const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
+      `,
+      errors: [
+        {
+          column: 57,
+          endColumn: 59,
+          endLine: 6,
+          line: 6,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ checkFunctionExpressions: false }],
+      output: `
+const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
+  return p;
+};
 
 const nonAsyncPromiseArrowFunction = async (p: Promise<void>) => p;
+      `,
+    },
+    {
+      code: `
+const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
+  return p;
+};
+
+class Test {
+  public nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 31,
+          endLine: 7,
+          line: 7,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ checkFunctionExpressions: false }],
+      output: `
+const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
+  return p;
+};
 
 class Test {
   public async nonAsyncPromiseMethod(p: Promise<void>) {
@@ -642,12 +734,6 @@ class Test {
 const nonAsyncPromiseFunctionExpression = function (p: Promise<void>) {
   return p;
 };
-
-function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
-  return p;
-}
-
-const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
 
 class Test {
   public nonAsyncPromiseMethod(p: Promise<void>) {
@@ -663,20 +749,6 @@ class Test {
           line: 2,
           messageId: 'missingAsync',
         },
-        {
-          column: 1,
-          endColumn: 44,
-          endLine: 6,
-          line: 6,
-          messageId: 'missingAsync',
-        },
-        {
-          column: 57,
-          endColumn: 59,
-          endLine: 10,
-          line: 10,
-          messageId: 'missingAsync',
-        },
       ],
       options: [{ checkMethodDeclarations: false }],
       output: `
@@ -684,10 +756,68 @@ const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
   return p;
 };
 
+class Test {
+  public nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
+    },
+    {
+      code: `
+function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
+  return p;
+}
+
+class Test {
+  public nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ checkMethodDeclarations: false }],
+      output: `
 async function nonAsyncPromiseFunctionDeclaration(p: Promise<void>) {
   return p;
 }
 
+class Test {
+  public nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
+    },
+    {
+      code: `
+const nonAsyncPromiseArrowFunction = (p: Promise<void>) => p;
+
+class Test {
+  public nonAsyncPromiseMethod(p: Promise<void>) {
+    return p;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 57,
+          endColumn: 59,
+          endLine: 2,
+          line: 2,
+          messageId: 'missingAsync',
+        },
+      ],
+      options: [{ checkMethodDeclarations: false }],
+      output: `
 const nonAsyncPromiseArrowFunction = async (p: Promise<void>) => p;
 
 class Test {
@@ -785,12 +915,6 @@ class Test {
   static protected[(1)]() {
     return Promise.resolve(1);
   }
-  public'bar'() {
-    return Promise.resolve(2);
-  }
-  private['baz']() {
-    return Promise.resolve(3);
-  }
 }
       `,
       errors: [
@@ -801,20 +925,6 @@ class Test {
           line: 4,
           messageId: 'missingAsync',
         },
-        {
-          column: 3,
-          endColumn: 14,
-          endLine: 7,
-          line: 7,
-          messageId: 'missingAsync',
-        },
-        {
-          column: 3,
-          endColumn: 17,
-          endLine: 10,
-          line: 10,
-          messageId: 'missingAsync',
-        },
       ],
       output: `
 class Test {
@@ -822,9 +932,53 @@ class Test {
   static protected async [(1)]() {
     return Promise.resolve(1);
   }
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  public'bar'() {
+    return Promise.resolve(2);
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Test {
   public async 'bar'() {
     return Promise.resolve(2);
   }
+}
+      `,
+    },
+    {
+      code: noFormat`
+class Test {
+  private['baz']() {
+    return Promise.resolve(3);
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Test {
   private async ['baz']() {
     return Promise.resolve(3);
   }
@@ -838,15 +992,6 @@ class Foo {
   catch() {
     return Promise.resolve(1);
   }
-
-  public default() {
-    return Promise.resolve(2);
-  }
-
-  @decorator
-  private case<T>() {
-    return Promise.resolve(3);
-  }
 }
       `,
       errors: [
@@ -857,31 +1002,60 @@ class Foo {
           line: 3,
           messageId: 'missingAsync',
         },
-        {
-          column: 3,
-          endColumn: 17,
-          endLine: 7,
-          line: 7,
-          messageId: 'missingAsync',
-        },
-        {
-          column: 3,
-          endColumn: 18,
-          endLine: 12,
-          line: 12,
-          messageId: 'missingAsync',
-        },
       ],
       output: `
 class Foo {
   async catch() {
     return Promise.resolve(1);
   }
-
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  public default() {
+    return Promise.resolve(2);
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Foo {
   public async default() {
     return Promise.resolve(2);
   }
-
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  @decorator
+  private case<T>() {
+    return Promise.resolve(3);
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingAsync',
+        },
+      ],
+      output: `
+class Foo {
   @decorator
   private async case<T>() {
     return Promise.resolve(3);

@@ -1480,7 +1480,7 @@ foo(() => {
   label: while (maybe) {
     for (const i of [1, 2, 3]) {
       if (maybe) return null;
-      else return null;
+      else return void 0;
     }
   }
   return void 0;
@@ -1494,6 +1494,22 @@ foo(() => {
           line: 6,
           messageId: 'nonVoidReturn',
         },
+      ],
+    },
+    {
+      code: `
+declare function foo(cb: () => void): void;
+foo(() => {
+  label: while (maybe) {
+    for (const i of [1, 2, 3]) {
+      if (maybe) return void 0;
+      else return null;
+    }
+  }
+  return void 0;
+});
+      `,
+      errors: [
         {
           column: 12,
           endColumn: 18,
@@ -1664,8 +1680,6 @@ declare function foo(...cbs: Array<() => void>): void;
 foo(
   () => {},
   () => false,
-  () => 0,
-  () => '',
 );
       `,
       errors: [
@@ -1676,29 +1690,50 @@ foo(
           line: 5,
           messageId: 'nonVoidReturn',
         },
+      ],
+    },
+    {
+      code: `
+declare function foo(...cbs: Array<() => void>): void;
+foo(
+  () => {},
+  () => 0,
+);
+      `,
+      errors: [
         {
           column: 9,
           endColumn: 10,
-          endLine: 6,
-          line: 6,
-          messageId: 'nonVoidReturn',
-        },
-        {
-          column: 9,
-          endColumn: 11,
-          endLine: 7,
-          line: 7,
+          endLine: 5,
+          line: 5,
           messageId: 'nonVoidReturn',
         },
       ],
     },
     {
       code: `
-declare function foo(...cbs: [() => void, () => void, (() => void)?]): void;
+declare function foo(...cbs: Array<() => void>): void;
+foo(
+  () => {},
+  () => '',
+);
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 11,
+          endLine: 5,
+          line: 5,
+          messageId: 'nonVoidReturn',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(...cbs: [() => void, (() => void)?]): void;
 foo(
   () => {},
   () => Math.random(),
-  () => (1).toString(),
 );
       `,
       errors: [
@@ -1712,30 +1747,39 @@ foo(
             {
               messageId: 'suggestAddVoidOp',
               output: `
-declare function foo(...cbs: [() => void, () => void, (() => void)?]): void;
+declare function foo(...cbs: [() => void, (() => void)?]): void;
 foo(
   () => {},
   () => void Math.random(),
-  () => (1).toString(),
 );
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+declare function foo(...cbs: [() => void, (() => void)?]): void;
+foo(
+  () => {},
+  () => (1).toString(),
+);
+      `,
+      errors: [
         {
           column: 9,
           endColumn: 23,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'nonVoidReturn',
           suggestions: [
             {
               messageId: 'suggestAddVoidOp',
               output: `
-declare function foo(...cbs: [() => void, () => void, (() => void)?]): void;
+declare function foo(...cbs: [() => void, (() => void)?]): void;
 foo(
   () => {},
-  () => Math.random(),
   () => void (1).toString(),
 );
       `,
@@ -1766,7 +1810,6 @@ interface Win {
 }
 declare const win: Win;
 win.addEventListener('DOMContentLoaded', ev => ev);
-win.addEventListener('custom', ev => ev);
       `,
       errors: [
         {
@@ -1776,11 +1819,37 @@ win.addEventListener('custom', ev => ev);
           line: 21,
           messageId: 'nonVoidReturn',
         },
+      ],
+    },
+    {
+      code: `
+interface Ev {}
+interface EvMap {
+  DOMContentLoaded: Ev;
+}
+type EvListOrEvListObj = EvList | EvListObj;
+interface EvList {
+  (evt: Event): void;
+}
+interface EvListObj {
+  handleEvent(object: Ev): void;
+}
+interface Win {
+  addEventListener<K extends keyof EvMap>(
+    type: K,
+    listener: (ev: EvMap[K]) => any,
+  ): void;
+  addEventListener(type: string, listener: EvListOrEvListObj): void;
+}
+declare const win: Win;
+win.addEventListener('custom', ev => ev);
+      `,
+      errors: [
         {
           column: 38,
           endColumn: 40,
-          endLine: 22,
-          line: 22,
+          endLine: 21,
+          line: 21,
           messageId: 'nonVoidReturn',
         },
       ],
@@ -2166,7 +2235,7 @@ const foo: () => void = function () {
   if (maybe) {
     return null;
   } else {
-    return null;
+    return;
   }
 };
       `,
@@ -2178,6 +2247,19 @@ const foo: () => void = function () {
           line: 4,
           messageId: 'nonVoidReturn',
         },
+      ],
+    },
+    {
+      code: `
+const foo: () => void = function () {
+  if (maybe) {
+    return;
+  } else {
+    return null;
+  }
+};
+      `,
+      errors: [
         {
           column: 5,
           endColumn: 11,
@@ -2214,7 +2296,7 @@ const foo: { (arg: number): void; (arg: string): void } = arg => {
     case 'number':
       return 0;
     case 'string':
-      return '';
+      return;
   }
 };
       `,
@@ -2226,6 +2308,21 @@ const foo: { (arg: number): void; (arg: string): void } = arg => {
           line: 6,
           messageId: 'nonVoidReturn',
         },
+      ],
+    },
+    {
+      code: `
+const foo: { (arg: number): void; (arg: string): void } = arg => {
+  console.log('foo');
+  switch (typeof arg) {
+    case 'number':
+      return;
+    case 'string':
+      return '';
+  }
+};
+      `,
+      errors: [
         {
           column: 7,
           endColumn: 13,
@@ -2400,12 +2497,58 @@ return <Foo cb={() => 1} />;
     {
       code: `
 declare function Foo(props: { cb: () => void }): unknown;
-declare function getNull(): null;
 return (
   <Foo
     cb={() => {
       if (maybe) return Math.random();
-      else return getNull();
+      else return;
+    }}
+  />
+);
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          endLine: 6,
+          line: 6,
+          messageId: 'nonVoidReturn',
+        },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+declare function Foo(props: { cb: () => void }): unknown;
+return (
+  <Foo
+    cb={() => {
+      if (maybe) return;
+      else return Math.random();
+    }}
+  />
+);
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 7,
+          line: 7,
+          messageId: 'nonVoidReturn',
+        },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+declare function Foo(props: { cb: () => void }): unknown;
+declare function getNull(): null;
+return (
+  <Foo
+    cb={() => {
+      if (maybe) return getNull();
+      else return;
     }}
   />
 );
@@ -2418,6 +2561,23 @@ return (
           line: 7,
           messageId: 'nonVoidReturn',
         },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: `
+declare function Foo(props: { cb: () => void }): unknown;
+declare function getNull(): null;
+return (
+  <Foo
+    cb={() => {
+      if (maybe) return;
+      else return getNull();
+    }}
+  />
+);
+      `,
+      errors: [
         {
           column: 12,
           endColumn: 18,
@@ -2716,6 +2876,8 @@ foo = {
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare function cb(): number;
@@ -2742,6 +2904,7 @@ const foo: Record<string, () => void> = {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare function cb(): number;
@@ -2795,9 +2958,6 @@ const foo: { cbs: Array<() => void> | null } = {
     function* () {
       yield 1;
     },
-    async () => {
-      await 1;
-    },
     null,
   ],
 };
@@ -2810,11 +2970,25 @@ const foo: { cbs: Array<() => void> | null } = {
           line: 4,
           messageId: 'nonVoidFunc',
         },
+      ],
+    },
+    {
+      code: `
+const foo: { cbs: Array<() => void> | null } = {
+  cbs: [
+    async () => {
+      await 1;
+    },
+    null,
+  ],
+};
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 16,
-          endLine: 7,
-          line: 7,
+          endLine: 4,
+          line: 4,
           messageId: 'asyncFunc',
           suggestions: [
             {
@@ -2822,9 +2996,6 @@ const foo: { cbs: Array<() => void> | null } = {
               output: `
 const foo: { cbs: Array<() => void> | null } = {
   cbs: [
-    function* () {
-      yield 1;
-    },
      () => void (async () => {
       await 1;
     })(),
@@ -3001,7 +3172,7 @@ class Bar extends Foo {
 class Baz extends Bar {
   cb1 = () => Math.random();
   cb2() {
-    return Math.random();
+    return void Math.random();
   }
 }
       `,
@@ -3025,13 +3196,31 @@ class Bar extends Foo {
 class Baz extends Bar {
   cb1 = () => void Math.random();
   cb2() {
-    return Math.random();
+    return void Math.random();
   }
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  cb1 = () => {};
+}
+class Bar extends Foo {
+  cb2() {}
+}
+class Baz extends Bar {
+  cb1 = () => void Math.random();
+  cb2() {
+    return Math.random();
+  }
+}
+      `,
+      errors: [
         {
           column: 5,
           endColumn: 11,
@@ -3077,7 +3266,7 @@ class Bar extends Foo {
     if (maybe) {
       return Promise.resolve('siema');
     } else {
-      return Promise.resolve('nara');
+      return void Promise.resolve('nara');
     }
   }
 }
@@ -3090,6 +3279,27 @@ class Bar extends Foo {
           line: 11,
           messageId: 'nonVoidReturn',
         },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  fn() {
+    return 'a';
+  }
+  cb() {}
+}
+class Bar extends Foo {
+  cb() {
+    if (maybe) {
+      return void Promise.resolve('siema');
+    } else {
+      return Promise.resolve('nara');
+    }
+  }
+}
+      `,
+      errors: [
         {
           column: 7,
           endColumn: 13,
@@ -3362,7 +3572,7 @@ class Bar implements Foo1, Foo2 {
   async cb1() {
     console.log('a');
   }
-  async *cb2() {
+  cb2() {
     console.log('b');
   }
 }
@@ -3388,7 +3598,7 @@ class Bar implements Foo1, Foo2 {
    cb1() { (async () => {
     console.log('a');
   })(); }
-  async *cb2() {
+  cb2() {
     console.log('b');
   }
 }
@@ -3396,6 +3606,26 @@ class Bar implements Foo1, Foo2 {
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+interface Foo1 {
+  cb1(): void;
+}
+interface Foo2 {
+  cb2: () => void;
+}
+class Bar implements Foo1, Foo2 {
+  cb1() {
+    console.log('a');
+  }
+  async *cb2() {
+    console.log('b');
+  }
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 13,
@@ -3418,9 +3648,9 @@ class Baz {
 }
 class Bar extends Baz implements Foo1, Foo2 {
   async cb1() {}
-  async *cb2() {}
+  cb2() {}
   cb3() {
-    return Math.random();
+    return void Math.random();
   }
 }
       `,
@@ -3446,15 +3676,37 @@ class Baz {
 }
 class Bar extends Baz implements Foo1, Foo2 {
    cb1() { (async () => {})(); }
-  async *cb2() {}
+  cb2() {}
   cb3() {
-    return Math.random();
+    return void Math.random();
   }
 }
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+interface Foo1 {
+  cb1(): void;
+}
+interface Foo2 {
+  cb2: () => void;
+}
+class Baz {
+  cb3() {}
+}
+class Bar extends Baz implements Foo1, Foo2 {
+  cb1() {}
+  async *cb2() {}
+  cb3() {
+    return void Math.random();
+  }
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 13,
@@ -3462,6 +3714,28 @@ class Bar extends Baz implements Foo1, Foo2 {
           line: 13,
           messageId: 'nonVoidFunc',
         },
+      ],
+    },
+    {
+      code: `
+interface Foo1 {
+  cb1(): void;
+}
+interface Foo2 {
+  cb2: () => void;
+}
+class Baz {
+  cb3() {}
+}
+class Bar extends Baz implements Foo1, Foo2 {
+  cb1() {}
+  cb2() {}
+  cb3() {
+    return Math.random();
+  }
+}
+      `,
+      errors: [
         {
           column: 5,
           endColumn: 11,
@@ -3523,7 +3797,7 @@ class Bar implements Foo2 {
   async cb1() {
     console.log('a');
   }
-  async *cb2() {
+  cb2() {
     console.log('b');
   }
 }
@@ -3549,7 +3823,7 @@ class Bar implements Foo2 {
    cb1() { (async () => {
     console.log('a');
   })(); }
-  async *cb2() {
+  cb2() {
     console.log('b');
   }
 }
@@ -3557,6 +3831,26 @@ class Bar implements Foo2 {
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+interface Foo1 {
+  cb1(): void;
+}
+interface Foo2 extends Foo1 {
+  cb2: () => void;
+}
+class Bar implements Foo2 {
+  cb1() {
+    console.log('a');
+  }
+  async *cb2() {
+    console.log('b');
+  }
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 13,
@@ -3696,48 +3990,117 @@ foo(function () {
     },
     {
       code: noFormat`
-        declare function foo(cb: () => () => void): void;
-        foo(() => () => {
-          if (n == 1) {
-            console.log('asd')
-            return [1].map(x => x)
-          }
-          if (n == 2) {
-            console.log('asd')
-            return -Math.random()
-          }
-          if (n == 3) {
-            console.log('asd')
-            return \`x\`.toUpperCase()
-          }
-          return <i>{Math.random()}</i>
-        });
+declare function foo(cb: () => () => void): void;
+foo(() => () => {
+  if (n == 1) {
+    console.log('asd')
+    return [1].map(x => x)
+  }
+  if (n == 2) {
+    console.log('asd')
+    return void -Math.random()
+  }
+  if (n == 3) {
+    console.log('asd')
+    return void \`x\`.toUpperCase()
+  }
+  return void <i>{Math.random()}</i>
+});
       `,
       errors: [
         {
-          column: 13,
-          endColumn: 19,
+          column: 5,
+          endColumn: 11,
           endLine: 6,
           line: 6,
           messageId: 'nonVoidReturn',
         },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: noFormat`
+declare function foo(cb: () => () => void): void;
+foo(() => () => {
+  if (n == 1) {
+    console.log('asd')
+    return void [1].map(x => x)
+  }
+  if (n == 2) {
+    console.log('asd')
+    return -Math.random()
+  }
+  if (n == 3) {
+    console.log('asd')
+    return void \`x\`.toUpperCase()
+  }
+  return void <i>{Math.random()}</i>
+});
+      `,
+      errors: [
         {
-          column: 13,
-          endColumn: 19,
+          column: 5,
+          endColumn: 11,
           endLine: 10,
           line: 10,
           messageId: 'nonVoidReturn',
         },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: noFormat`
+declare function foo(cb: () => () => void): void;
+foo(() => () => {
+  if (n == 1) {
+    console.log('asd')
+    return void [1].map(x => x)
+  }
+  if (n == 2) {
+    console.log('asd')
+    return void -Math.random()
+  }
+  if (n == 3) {
+    console.log('asd')
+    return \`x\`.toUpperCase()
+  }
+  return void <i>{Math.random()}</i>
+});
+      `,
+      errors: [
         {
-          column: 13,
-          endColumn: 19,
+          column: 5,
+          endColumn: 11,
           endLine: 14,
           line: 14,
           messageId: 'nonVoidReturn',
         },
+      ],
+      filename: 'react.tsx',
+    },
+    {
+      code: noFormat`
+declare function foo(cb: () => () => void): void;
+foo(() => () => {
+  if (n == 1) {
+    console.log('asd')
+    return void [1].map(x => x)
+  }
+  if (n == 2) {
+    console.log('asd')
+    return void -Math.random()
+  }
+  if (n == 3) {
+    console.log('asd')
+    return void \`x\`.toUpperCase()
+  }
+  return <i>{Math.random()}</i>
+});
+      `,
+      errors: [
         {
-          column: 11,
-          endColumn: 17,
+          column: 3,
+          endColumn: 9,
           endLine: 16,
           line: 16,
           messageId: 'nonVoidReturn',
