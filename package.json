@@ -110,7 +110,7 @@
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.8.0+sha512.3916e9559cdfbddf7dc921e8999076584425161de773f6cabf7f47467f0d9452bfa89a689ec245753ad3d55abcb3cf706e667ac12062dbc9c625fbd72bca20dc",
+  "packageManager": "pnpm@12.9.0+sha512.8f64efa0b792986ca98ae568791bcd7722807e274c4f0c1d9853c62116495c584119db98762a2a5343b1684d361b9ae26fdd16d551666d7635346d3fae830ddd",
   "nx": {
     "name": "repo",
     "includedScripts": [
