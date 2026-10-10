@@ -17,9 +17,7 @@ export function getTypeOfPropertyOfName(
     .getProperties()
     .find(property => property.escapedName === escapedName);
 
-  return escapedProperty
-    ? checker.getDeclaredTypeOfSymbol(escapedProperty)
-    : undefined;
+  return escapedProperty ? checker.getTypeOfSymbol(escapedProperty) : undefined;
 }
 
 export function getTypeOfPropertyOfType(
