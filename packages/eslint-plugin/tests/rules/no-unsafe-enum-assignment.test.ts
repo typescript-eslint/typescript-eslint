@@ -219,6 +219,16 @@ declare const foo: { [key in Fruit | number]: string };
 foo[0];
     `,
     `
+function get(foo: { ['a']: string; ['b']: string }, key: 'a' | 'b') {
+  return foo[key];
+}
+    `,
+    `
+declare const foo: { [key in 'a' | 'b']: string };
+
+foo[0];
+    `,
+    `
 enum Fruit {
   Apple,
 }
