@@ -99,12 +99,18 @@ function foo(arg: Test) {}
     `
 interface Test extends ReadonlyArray<string> {
   readonly property: boolean;
+  readonly [Symbol.unscopables]: Readonly<
+    ReadonlyArray<string>[typeof Symbol.unscopables]
+  >;
 }
 function foo(arg: Readonly<Test>) {}
     `,
     `
 type Test = readonly string[] & {
   readonly property: boolean;
+  readonly [Symbol.unscopables]: Readonly<
+    ReadonlyArray<string>[typeof Symbol.unscopables]
+  >;
 };
 function foo(arg: Readonly<Test>) {}
     `,
@@ -620,6 +626,41 @@ function foo(arg: MyReadonlyType) {}
     },
   ],
   invalid: [
+    // The inherited Symbol.unscopables object has writable properties.
+    {
+      code: `
+interface Test extends ReadonlyArray<string> {
+  readonly property: boolean;
+}
+function foo(arg: Readonly<Test>) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 33,
+          endLine: 5,
+          line: 5,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+type Test = readonly string[] & {
+  readonly property: boolean;
+};
+function foo(arg: Readonly<Test>) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 33,
+          endLine: 5,
+          line: 5,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
     // arrays
     // Removing readonly causes duplicates
     {
