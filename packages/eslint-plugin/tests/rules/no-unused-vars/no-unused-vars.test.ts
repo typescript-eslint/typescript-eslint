@@ -1388,6 +1388,15 @@ await using resource = getResource();
       },
       options: [{ ignoreUsingDeclarations: true }],
     },
+    {
+      code: `
+export function g(a: string, b: unknown) {
+  const c: typeof b = b;
+  return c;
+}
+      `,
+      options: [{ args: 'after-used' }],
+    },
   ],
 
   invalid: [
@@ -3681,6 +3690,190 @@ export const myTypeGuard = (data: unknown): data is string => {
           messageId: 'usedOnlyAsType',
         },
       ],
+    },
+    {
+      code: `
+export function g(a: string, b: unknown, c: string): b is true {
+  return true;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'a',
+          },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 30,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'b',
+          },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+        {
+          column: 42,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'c',
+          },
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ args: 'after-used' }],
+    },
+    {
+      code: `
+export function g(a: string, b: any, c: string): typeof b {
+  return undefined as any;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'a',
+          },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 30,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'b',
+          },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+        {
+          column: 38,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'c',
+          },
+          endColumn: 39,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ args: 'after-used' }],
+    },
+    {
+      code: `
+export function g(a: string, b: unknown, c: string): asserts b {}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'a',
+          },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 30,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'b',
+          },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+        {
+          column: 42,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'c',
+          },
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ args: 'after-used' }],
+    },
+    {
+      code: `
+export function g(a: string, b: unknown, c: string) {
+  var b;
+  type b = string;
+  return '' as b;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'a',
+          },
+          endColumn: 20,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+        {
+          column: 30,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'b',
+          },
+          endColumn: 31,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+        },
+        {
+          column: 42,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'c',
+          },
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      options: [{ args: 'after-used' }],
     },
   ],
 });
