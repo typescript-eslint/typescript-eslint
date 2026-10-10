@@ -856,41 +856,66 @@ function foo(arg: Test) {}
     {
       code: `
 class Foo {
-  constructor(
-    private arg1: string[],
-    public arg2: string[],
-    protected arg3: string[],
-    readonly arg4: string[],
-  ) {}
+  constructor(private arg1: string[]) {}
 }
       `,
       errors: [
         {
-          column: 13,
-          endColumn: 27,
-          endLine: 4,
-          line: 4,
+          column: 23,
+          endColumn: 37,
+          endLine: 3,
+          line: 3,
           messageId: 'shouldBeReadonly',
         },
+      ],
+      options: [{ checkParameterProperties: true }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public arg2: string[]) {}
+}
+      `,
+      errors: [
         {
-          column: 12,
-          endColumn: 26,
-          endLine: 5,
-          line: 5,
+          column: 22,
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
           messageId: 'shouldBeReadonly',
         },
+      ],
+      options: [{ checkParameterProperties: true }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(protected arg3: string[]) {}
+}
+      `,
+      errors: [
         {
-          column: 15,
-          endColumn: 29,
-          endLine: 6,
-          line: 6,
+          column: 25,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
           messageId: 'shouldBeReadonly',
         },
+      ],
+      options: [{ checkParameterProperties: true }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(readonly arg4: string[]) {}
+}
+      `,
+      errors: [
         {
-          column: 14,
-          endColumn: 28,
-          endLine: 7,
-          line: 7,
+          column: 24,
+          endColumn: 38,
+          endLine: 3,
+          line: 3,
           messageId: 'shouldBeReadonly',
         },
       ],

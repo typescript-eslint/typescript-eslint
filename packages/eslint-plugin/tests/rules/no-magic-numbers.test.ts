@@ -245,9 +245,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 13,
           endLine: 1,
           line: 1,
@@ -261,9 +259,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '-1',
-          },
+          data: { raw: '-1' },
           endColumn: 14,
           endLine: 1,
           line: 1,
@@ -277,9 +273,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 13,
           endLine: 1,
           line: 1,
@@ -287,9 +281,7 @@ type Foo = {
         },
         {
           column: 16,
-          data: {
-            raw: '2',
-          },
+          data: { raw: '2' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -297,9 +289,7 @@ type Foo = {
         },
         {
           column: 20,
-          data: {
-            raw: '3',
-          },
+          data: { raw: '3' },
           endColumn: 21,
           endLine: 1,
           line: 1,
@@ -313,9 +303,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 13,
           endLine: 1,
           line: 1,
@@ -323,9 +311,7 @@ type Foo = {
         },
         {
           column: 16,
-          data: {
-            raw: '-1',
-          },
+          data: { raw: '-1' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -343,9 +329,7 @@ interface Foo {
       errors: [
         {
           column: 8,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -359,39 +343,53 @@ interface Foo {
 enum foo {
   SECOND = 1000,
   NUM = '0123456789',
-  NEG = -1,
-  POS = +1,
 }
       `,
       errors: [
         {
           column: 12,
-          data: {
-            raw: '1000',
-          },
+          data: { raw: '1000' },
           endColumn: 16,
           endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
+      ],
+      options: [{ ignoreEnums: false }],
+    },
+    {
+      code: `
+enum foo {
+  NUM = '0123456789',
+  NEG = -1,
+}
+      `,
+      errors: [
         {
           column: 9,
-          data: {
-            raw: '-1',
-          },
+          data: { raw: '-1' },
           endColumn: 11,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'noMagic',
         },
+      ],
+      options: [{ ignoreEnums: false }],
+    },
+    {
+      code: `
+enum foo {
+  NUM = '0123456789',
+  POS = +1,
+}
+      `,
+      errors: [
         {
           column: 10,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 11,
-          endLine: 6,
-          line: 6,
+          endLine: 4,
+          line: 4,
           messageId: 'noMagic',
         },
       ],
@@ -401,83 +399,123 @@ enum foo {
       code: `
 class Foo {
   readonly A = 1;
-  readonly B = 2;
-  public static readonly C = 3;
-  static readonly D = 4;
-  readonly E = -5;
-  readonly F = +6;
-  private readonly G = 100n;
 }
       `,
       errors: [
         {
           column: 16,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'noMagic',
         },
+      ],
+      options: [{ ignoreReadonlyClassProperties: false }],
+    },
+    {
+      code: `
+class Foo {
+  readonly B = 2;
+}
+      `,
+      errors: [
         {
           column: 16,
-          data: {
-            raw: '2',
-          },
+          data: { raw: '2' },
           endColumn: 17,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'noMagic',
         },
+      ],
+      options: [{ ignoreReadonlyClassProperties: false }],
+    },
+    {
+      code: `
+class Foo {
+  public static readonly C = 3;
+}
+      `,
+      errors: [
         {
           column: 30,
-          data: {
-            raw: '3',
-          },
+          data: { raw: '3' },
           endColumn: 31,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'noMagic',
         },
+      ],
+      options: [{ ignoreReadonlyClassProperties: false }],
+    },
+    {
+      code: `
+class Foo {
+  static readonly D = 4;
+}
+      `,
+      errors: [
         {
           column: 23,
-          data: {
-            raw: '4',
-          },
+          data: { raw: '4' },
           endColumn: 24,
-          endLine: 6,
-          line: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'noMagic',
         },
+      ],
+      options: [{ ignoreReadonlyClassProperties: false }],
+    },
+    {
+      code: `
+class Foo {
+  readonly E = -5;
+}
+      `,
+      errors: [
         {
           column: 16,
-          data: {
-            raw: '-5',
-          },
+          data: { raw: '-5' },
           endColumn: 18,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'noMagic',
         },
+      ],
+      options: [{ ignoreReadonlyClassProperties: false }],
+    },
+    {
+      code: `
+class Foo {
+  readonly F = +6;
+}
+      `,
+      errors: [
         {
           column: 17,
-          data: {
-            raw: '6',
-          },
+          data: { raw: '6' },
           endColumn: 18,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noMagic',
         },
+      ],
+      options: [{ ignoreReadonlyClassProperties: false }],
+    },
+    {
+      code: `
+class Foo {
+  private readonly G = 100n;
+}
+      `,
+      errors: [
         {
           column: 24,
-          data: {
-            raw: '100n',
-          },
+          data: { raw: '100n' },
           endColumn: 28,
-          endLine: 9,
-          line: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'noMagic',
         },
       ],
@@ -488,9 +526,7 @@ class Foo {
       errors: [
         {
           column: 16,
-          data: {
-            raw: '0',
-          },
+          data: { raw: '0' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -504,9 +540,7 @@ class Foo {
       errors: [
         {
           column: 16,
-          data: {
-            raw: '-1',
-          },
+          data: { raw: '-1' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -520,9 +554,7 @@ class Foo {
       errors: [
         {
           column: 16,
-          data: {
-            raw: '0xab',
-          },
+          data: { raw: '0xab' },
           endColumn: 20,
           endLine: 1,
           line: 1,
@@ -536,9 +568,7 @@ class Foo {
       errors: [
         {
           column: 16,
-          data: {
-            raw: '5.6e1',
-          },
+          data: { raw: '5.6e1' },
           endColumn: 21,
           endLine: 1,
           line: 1,
@@ -552,9 +582,7 @@ class Foo {
       errors: [
         {
           column: 16,
-          data: {
-            raw: '10n',
-          },
+          data: { raw: '10n' },
           endColumn: 19,
           endLine: 1,
           line: 1,
@@ -568,9 +596,7 @@ class Foo {
       errors: [
         {
           column: 16,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -578,9 +604,7 @@ class Foo {
         },
         {
           column: 20,
-          data: {
-            raw: '-2',
-          },
+          data: { raw: '-2' },
           endColumn: 22,
           endLine: 1,
           line: 1,
@@ -594,9 +618,7 @@ class Foo {
       errors: [
         {
           column: 16,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -604,9 +626,7 @@ class Foo {
         },
         {
           column: 20,
-          data: {
-            raw: '-2',
-          },
+          data: { raw: '-2' },
           endColumn: 22,
           endLine: 1,
           line: 1,
@@ -620,9 +640,7 @@ class Foo {
       errors: [
         {
           column: 16,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -636,9 +654,7 @@ class Foo {
       errors: [
         {
           column: 18,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 19,
           endLine: 1,
           line: 1,
@@ -646,9 +662,7 @@ class Foo {
         },
         {
           column: 22,
-          data: {
-            raw: '-2',
-          },
+          data: { raw: '-2' },
           endColumn: 24,
           endLine: 1,
           line: 1,
@@ -656,9 +670,7 @@ class Foo {
         },
         {
           column: 28,
-          data: {
-            raw: '3',
-          },
+          data: { raw: '3' },
           endColumn: 29,
           endLine: 1,
           line: 1,
@@ -666,9 +678,7 @@ class Foo {
         },
         {
           column: 33,
-          data: {
-            raw: '4',
-          },
+          data: { raw: '4' },
           endColumn: 34,
           endLine: 1,
           line: 1,
@@ -682,9 +692,7 @@ class Foo {
       errors: [
         {
           column: 28,
-          data: {
-            raw: '2',
-          },
+          data: { raw: '2' },
           endColumn: 29,
           endLine: 1,
           line: 1,
@@ -704,9 +712,7 @@ type Foo = {
       errors: [
         {
           column: 22,
-          data: {
-            raw: '0',
-          },
+          data: { raw: '0' },
           endColumn: 23,
           endLine: 5,
           line: 5,
@@ -728,9 +734,7 @@ type Foo = {
       errors: [
         {
           column: 4,
-          data: {
-            raw: '0',
-          },
+          data: { raw: '0' },
           endColumn: 5,
           endLine: 3,
           line: 3,
@@ -738,9 +742,7 @@ type Foo = {
         },
         {
           column: 8,
-          data: {
-            raw: '3',
-          },
+          data: { raw: '3' },
           endColumn: 9,
           endLine: 3,
           line: 3,
@@ -758,9 +760,7 @@ type Foo = {
       errors: [
         {
           column: 9,
-          data: {
-            raw: '0',
-          },
+          data: { raw: '0' },
           endColumn: 10,
           endLine: 3,
           line: 3,
@@ -768,9 +768,7 @@ type Foo = {
         },
         {
           column: 13,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 14,
           endLine: 3,
           line: 3,
@@ -778,9 +776,7 @@ type Foo = {
         },
         {
           column: 17,
-          data: {
-            raw: '2',
-          },
+          data: { raw: '2' },
           endColumn: 18,
           endLine: 3,
           line: 3,
@@ -788,9 +784,7 @@ type Foo = {
         },
         {
           column: 21,
-          data: {
-            raw: '0',
-          },
+          data: { raw: '0' },
           endColumn: 22,
           endLine: 3,
           line: 3,
@@ -804,9 +798,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '1',
-          },
+          data: { raw: '1' },
           endColumn: 13,
           endLine: 1,
           line: 1,
@@ -820,9 +812,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '-2',
-          },
+          data: { raw: '-2' },
           endColumn: 14,
           endLine: 1,
           line: 1,
@@ -836,9 +826,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '3n',
-          },
+          data: { raw: '3n' },
           endColumn: 14,
           endLine: 1,
           line: 1,
@@ -852,9 +840,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '-4n',
-          },
+          data: { raw: '-4n' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -868,9 +854,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '5.6',
-          },
+          data: { raw: '5.6' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -884,9 +868,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '-7.8',
-          },
+          data: { raw: '-7.8' },
           endColumn: 16,
           endLine: 1,
           line: 1,
@@ -900,9 +882,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '0x0a',
-          },
+          data: { raw: '0x0a' },
           endColumn: 16,
           endLine: 1,
           line: 1,
@@ -916,9 +896,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '-0xbc',
-          },
+          data: { raw: '-0xbc' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -932,9 +910,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '1e2',
-          },
+          data: { raw: '1e2' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -948,9 +924,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '-3e4',
-          },
+          data: { raw: '-3e4' },
           endColumn: 16,
           endLine: 1,
           line: 1,
@@ -964,9 +938,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '5e-6',
-          },
+          data: { raw: '5e-6' },
           endColumn: 16,
           endLine: 1,
           line: 1,
@@ -980,9 +952,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '-7e-8',
-          },
+          data: { raw: '-7e-8' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -996,9 +966,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '1.1e2',
-          },
+          data: { raw: '1.1e2' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -1012,9 +980,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '-3.1e4',
-          },
+          data: { raw: '-3.1e4' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -1028,9 +994,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '5.1e-6',
-          },
+          data: { raw: '5.1e-6' },
           endColumn: 18,
           endLine: 1,
           line: 1,
@@ -1044,9 +1008,7 @@ type Foo = {
       errors: [
         {
           column: 12,
-          data: {
-            raw: '-7.1e-8',
-          },
+          data: { raw: '-7.1e-8' },
           endColumn: 19,
           endLine: 1,
           line: 1,
