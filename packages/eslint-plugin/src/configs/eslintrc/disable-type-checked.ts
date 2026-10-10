@@ -46,6 +46,7 @@ export = {
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/no-unsafe-type-assertion': 'off',
     '@typescript-eslint/no-unsafe-unary-minus': 'off',
+    '@typescript-eslint/no-unused-destructure-type-properties': 'off',
     '@typescript-eslint/no-useless-default-assignment': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
     '@typescript-eslint/only-throw-error': 'off',
