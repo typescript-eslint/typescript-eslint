@@ -734,9 +734,7 @@ type T = A;
 import type Already1Def from 'foo';
 import type { Already1 } from 'foo';
 import A, { B } from 'foo';
-import { C, D, E } from 'bar';
-import type { Already2 } from 'bar';
-type T = { b: B; c: C; d: D };
+type T = { b: B };
           `,
           errors: [
             {
@@ -747,22 +745,34 @@ type T = { b: B; c: C; d: D };
               line: 4,
               messageId: 'someImportsAreOnlyTypes',
             },
-            {
-              column: 1,
-              data: { typeImports: '"C" and "D"' },
-              endColumn: 31,
-              endLine: 5,
-              line: 5,
-              messageId: 'someImportsAreOnlyTypes',
-            },
           ],
           output: `
 import type Already1Def from 'foo';
 import type { Already1 , B } from 'foo';
 import A from 'foo';
+type T = { b: B };
+          `,
+        },
+        {
+          code: `
+import { C, D, E } from 'bar';
+import type { Already2 } from 'bar';
+type T = { c: C; d: D };
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"C" and "D"' },
+              endColumn: 31,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
 import { E } from 'bar';
 import type { Already2 , C, D} from 'bar';
-type T = { b: B; c: C; d: D };
+type T = { c: C; d: D };
           `,
         },
         {
@@ -787,10 +797,9 @@ type T = B;
           `,
         },
         {
-          code: noFormat`
+          code: `
 import { A, B, C } from 'foo';
-import { D, E, F, } from 'bar';
-type T = A | D;
+type T = A;
           `,
           errors: [
             {
@@ -801,28 +810,38 @@ type T = A | D;
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
-            {
-              column: 1,
-              data: { typeImports: '"D"' },
-              endColumn: 32,
-              endLine: 3,
-              line: 3,
-              messageId: 'someImportsAreOnlyTypes',
-            },
           ],
           output: `
 import type { A} from 'foo';
 import { B, C } from 'foo';
-import type { D} from 'bar';
-import { E, F, } from 'bar';
-type T = A | D;
+type T = A;
           `,
         },
         {
           code: noFormat`
-import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
-type T = B | E;
+type T = D;
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"D"' },
+              endColumn: 32,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
+import type { D} from 'bar';
+import { E, F, } from 'bar';
+type T = D;
+          `,
+        },
+        {
+          code: `
+import { A, B, C } from 'foo';
+type T = B;
           `,
           errors: [
             {
@@ -833,28 +852,38 @@ type T = B | E;
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
-            {
-              column: 1,
-              data: { typeImports: '"E"' },
-              endColumn: 32,
-              endLine: 3,
-              line: 3,
-              messageId: 'someImportsAreOnlyTypes',
-            },
           ],
           output: `
 import type { B} from 'foo';
 import { A, C } from 'foo';
-import type { E} from 'bar';
-import { D, F, } from 'bar';
-type T = B | E;
+type T = B;
           `,
         },
         {
           code: noFormat`
-import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
-type T = C | F;
+type T = E;
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"E"' },
+              endColumn: 32,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
+import type { E} from 'bar';
+import { D, F, } from 'bar';
+type T = E;
+          `,
+        },
+        {
+          code: `
+import { A, B, C } from 'foo';
+type T = C;
           `,
           errors: [
             {
@@ -865,31 +894,39 @@ type T = C | F;
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
-            {
-              column: 1,
-              data: { typeImports: '"F"' },
-              endColumn: 32,
-              endLine: 3,
-              line: 3,
-              messageId: 'someImportsAreOnlyTypes',
-            },
           ],
           output: `
 import type { C } from 'foo';
 import { A, B } from 'foo';
-import type { F} from 'bar';
-import { D, E } from 'bar';
-type T = C | F;
+type T = C;
           `,
         },
         {
-          // all type fix cases
+          code: noFormat`
+import { D, E, F, } from 'bar';
+type T = F;
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"F"' },
+              endColumn: 32,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
+import type { F} from 'bar';
+import { D, E } from 'bar';
+type T = F;
+          `,
+        },
+        // all type fix cases
+        {
           code: `
 import { Type1, Type2 } from 'named_types';
-import Type from 'default_type';
-import * as Types from 'namespace_type';
-import Default, { Named } from 'default_and_named_type';
-type T = Type1 | Type2 | Type | Types.A | Default | Named;
+type T = Type1 | Type2;
           `,
           errors: [
             {
@@ -899,45 +936,75 @@ type T = Type1 | Type2 | Type | Types.A | Default | Named;
               line: 2,
               messageId: 'typeOverValue',
             },
+          ],
+          output: `
+import type { Type1, Type2 } from 'named_types';
+type T = Type1 | Type2;
+          `,
+        },
+        {
+          code: `
+import Type from 'default_type';
+type T = Type;
+          `,
+          errors: [
             {
               column: 1,
               endColumn: 33,
-              endLine: 3,
-              line: 3,
-              messageId: 'typeOverValue',
-            },
-            {
-              column: 1,
-              endColumn: 41,
-              endLine: 4,
-              line: 4,
-              messageId: 'typeOverValue',
-            },
-            {
-              column: 1,
-              endColumn: 57,
-              endLine: 5,
-              line: 5,
+              endLine: 2,
+              line: 2,
               messageId: 'typeOverValue',
             },
           ],
           output: `
-import type { Type1, Type2 } from 'named_types';
 import type Type from 'default_type';
-import type * as Types from 'namespace_type';
-import type { Named } from 'default_and_named_type';
-import type Default from 'default_and_named_type';
-type T = Type1 | Type2 | Type | Types.A | Default | Named;
+type T = Type;
           `,
         },
         {
-          // some type fix cases
+          code: `
+import * as Types from 'namespace_type';
+type T = Types.A;
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 41,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          output: `
+import type * as Types from 'namespace_type';
+type T = Types.A;
+          `,
+        },
+        {
+          code: `
+import Default, { Named } from 'default_and_named_type';
+type T = Default | Named;
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 57,
+              endLine: 2,
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          output: `
+import type { Named } from 'default_and_named_type';
+import type Default from 'default_and_named_type';
+type T = Default | Named;
+          `,
+        },
+        // some type fix cases
+        {
           code: `
 import { Value1, Type1 } from 'named_import';
-import Type2, { Value2 } from 'default_import';
-import Value3, { Type3 } from 'default_import2';
-import Type4, { Type5, Value4 } from 'default_and_named_import';
-type T = Type1 | Type2 | Type3 | Type4 | Type5;
+type T = Type1;
           `,
           errors: [
             {
@@ -948,49 +1015,81 @@ type T = Type1 | Type2 | Type3 | Type4 | Type5;
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
-            {
-              column: 1,
-              data: { typeImports: '"Type2"' },
-              endColumn: 48,
-              endLine: 3,
-              line: 3,
-              messageId: 'someImportsAreOnlyTypes',
-            },
-            {
-              column: 1,
-              data: { typeImports: '"Type3"' },
-              endColumn: 49,
-              endLine: 4,
-              line: 4,
-              messageId: 'someImportsAreOnlyTypes',
-            },
-            {
-              column: 1,
-              data: { typeImports: '"Type4" and "Type5"' },
-              endColumn: 65,
-              endLine: 5,
-              line: 5,
-              messageId: 'someImportsAreOnlyTypes',
-            },
           ],
           output: `
 import type { Type1 } from 'named_import';
 import { Value1 } from 'named_import';
+type T = Type1;
+          `,
+        },
+        {
+          code: `
+import Type2, { Value2 } from 'default_import';
+type T = Type2;
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"Type2"' },
+              endColumn: 48,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
 import type Type2 from 'default_import';
 import { Value2 } from 'default_import';
+type T = Type2;
+          `,
+        },
+        {
+          code: `
+import Value3, { Type3 } from 'default_import2';
+type T = Type3;
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"Type3"' },
+              endColumn: 49,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
 import type { Type3 } from 'default_import2';
 import Value3 from 'default_import2';
+type T = Type3;
+          `,
+        },
+        {
+          code: `
+import Type4, { Type5, Value4 } from 'default_and_named_import';
+type T = Type4 | Type5;
+          `,
+          errors: [
+            {
+              column: 1,
+              data: { typeImports: '"Type4" and "Type5"' },
+              endColumn: 65,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          output: `
 import type { Type5} from 'default_and_named_import';
 import type Type4 from 'default_and_named_import';
 import { Value4 } from 'default_and_named_import';
-type T = Type1 | Type2 | Type3 | Type4 | Type5;
+type T = Type4 | Type5;
           `,
         },
         // type annotations
         {
           code: `
 let foo: import('foo');
-let bar: import('foo').Bar;
           `,
           errors: [
             {
@@ -1000,11 +1099,19 @@ let bar: import('foo').Bar;
               line: 2,
               messageId: 'noImportTypeAnnotations',
             },
+          ],
+          output: null,
+        },
+        {
+          code: `
+let bar: import('foo').Bar;
+          `,
+          errors: [
             {
               column: 10,
               endColumn: 27,
-              endLine: 3,
-              line: 3,
+              endLine: 2,
+              line: 2,
               messageId: 'noImportTypeAnnotations',
             },
           ],
@@ -1350,15 +1457,12 @@ export default Type; // is a type-only export
 export type { Type }; // is a type-only export
           `,
         },
+        // type with comments
         {
-          // type with comments
-          code: noFormat`
+          code: `
 import type /*comment*/ * as AllType from 'foo';
-import type // comment
-DefType from 'foo';
-import type /*comment*/ { Type } from 'foo';
 
-type T = { a: AllType; b: DefType; c: Type };
+type T = { a: AllType };
           `,
           errors: [
             {
@@ -1368,29 +1472,58 @@ type T = { a: AllType; b: DefType; c: Type };
               line: 2,
               messageId: 'avoidImportType',
             },
+          ],
+          options: [{ prefer: 'no-type-imports' }],
+          output: `
+import /*comment*/ * as AllType from 'foo';
+
+type T = { a: AllType };
+          `,
+        },
+        {
+          code: `
+import type // comment
+DefType from 'foo';
+
+type T = { b: DefType };
+          `,
+          errors: [
             {
               column: 1,
               endColumn: 20,
-              endLine: 4,
-              line: 3,
-              messageId: 'avoidImportType',
-            },
-            {
-              column: 1,
-              endColumn: 45,
-              endLine: 5,
-              line: 5,
+              endLine: 3,
+              line: 2,
               messageId: 'avoidImportType',
             },
           ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
-import /*comment*/ * as AllType from 'foo';
 import // comment
 DefType from 'foo';
+
+type T = { b: DefType };
+          `,
+        },
+        {
+          code: noFormat`
+import type /*comment*/ { Type } from 'foo';
+
+type T = { c: Type };
+          `,
+          errors: [
+            {
+              column: 1,
+              endColumn: 45,
+              endLine: 2,
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
+          options: [{ prefer: 'no-type-imports' }],
+          output: `
 import /*comment*/ { Type } from 'foo';
 
-type T = { a: AllType; b: DefType; c: Type };
+type T = { c: Type };
           `,
         },
         {
@@ -1634,7 +1767,7 @@ B();
         {
           code: `
 import { A } from 'foo';
-import { B } from 'foo';
+import { type B } from 'foo';
 type T = A;
 type U = B;
           `,
@@ -1646,6 +1779,25 @@ type U = B;
               line: 2,
               messageId: 'typeOverValue',
             },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
+          output: `
+import { type A } from 'foo';
+import { type B } from 'foo';
+type T = A;
+type U = B;
+          `,
+        },
+        {
+          code: `
+import { type A } from 'foo';
+import { B } from 'foo';
+type T = A;
+type U = B;
+          `,
+          errors: [
             {
               column: 1,
               endColumn: 25,
@@ -1667,7 +1819,7 @@ type U = B;
         {
           code: `
 import { A } from 'foo';
-import B from 'foo';
+import type B from 'foo';
 type T = A;
 type U = B;
           `,
@@ -1679,6 +1831,25 @@ type U = B;
               line: 2,
               messageId: 'typeOverValue',
             },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
+          output: `
+import { type A } from 'foo';
+import type B from 'foo';
+type T = A;
+type U = B;
+          `,
+        },
+        {
+          code: `
+import { type A } from 'foo';
+import B from 'foo';
+type T = A;
+type U = B;
+          `,
+          errors: [
             {
               column: 1,
               endColumn: 21,

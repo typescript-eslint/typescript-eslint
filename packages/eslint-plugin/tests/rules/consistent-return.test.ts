@@ -248,8 +248,7 @@ function bar(flag: boolean): undefined {
     if (flag) return;
     return undefined;
   }
-  if (flag) return baz();
-  return;
+  return baz();
 }
       `,
       errors: [
@@ -261,6 +260,21 @@ function bar(flag: boolean): undefined {
           line: 6,
           messageId: 'unexpectedReturnValue',
         },
+      ],
+    },
+    {
+      code: `
+declare function foo(): void;
+function bar(flag: boolean): undefined {
+  function baz(): undefined {
+    if (flag) return;
+    return;
+  }
+  if (flag) return baz();
+  return;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: { name: "Function 'bar'" },

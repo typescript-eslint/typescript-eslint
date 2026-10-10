@@ -1737,7 +1737,6 @@ interface Foo {
   a: b;
   [a: string]: number;
   new (): Bar;
-  (): Baz;
 }
       `,
       errors: [
@@ -1752,6 +1751,20 @@ interface Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+interface Foo {
+  a: b;
+  [a: string]: number;
+  b(): void;
+  new (): Bar;
+  (): Baz;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -1773,7 +1786,6 @@ interface Foo {
 interface Foo {
   'b.d': Foo;
   'b.c': Foo;
-  a: Foo;
 }
       `,
       errors: [
@@ -1788,6 +1800,17 @@ interface Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [{ default: { order: 'alphabetically' } }],
+    },
+    {
+      code: `
+interface Foo {
+  'b.c': Foo;
+  a: Foo;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -1795,8 +1818,8 @@ interface Foo {
             member: 'a',
           },
           endColumn: 10,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -1809,7 +1832,6 @@ interface Foo {
 interface Foo {
   c: string;
   b: string;
-  a: string;
 }
       `,
       errors: [
@@ -1824,6 +1846,17 @@ interface Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+interface Foo {
+  b: string;
+  a: string;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -1831,8 +1864,8 @@ interface Foo {
             member: 'a',
           },
           endColumn: 13,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -1847,7 +1880,6 @@ type Foo = {
   a: b;
   [a: string]: number;
   new (): Bar;
-  (): Baz;
 };
       `,
       errors: [
@@ -1862,6 +1894,20 @@ type Foo = {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+type Foo = {
+  a: b;
+  [a: string]: number;
+  b(): void;
+  new (): Bar;
+  (): Baz;
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -1883,7 +1929,6 @@ type Foo = {
 type Foo = {
   'b.d': Foo;
   'b.c': Foo;
-  a: Foo;
 };
       `,
       errors: [
@@ -1898,6 +1943,17 @@ type Foo = {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [{ default: { order: 'alphabetically' } }],
+    },
+    {
+      code: `
+type Foo = {
+  'b.c': Foo;
+  a: Foo;
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -1905,8 +1961,8 @@ type Foo = {
             member: 'a',
           },
           endColumn: 10,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -1919,7 +1975,6 @@ type Foo = {
 type Foo = {
   c: string;
   b: string;
-  a: string;
 };
       `,
       errors: [
@@ -1934,6 +1989,17 @@ type Foo = {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+type Foo = {
+  b: string;
+  a: string;
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -1941,8 +2007,8 @@ type Foo = {
             member: 'a',
           },
           endColumn: 13,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -1984,7 +2050,6 @@ class Foo {
 class Foo {
   public static c: string;
   public static b: string;
-  public static a: string;
 }
       `,
       errors: [
@@ -1999,6 +2064,17 @@ class Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+class Foo {
+  public static b: string;
+  public static a: string;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2006,8 +2082,8 @@ class Foo {
             member: 'a',
           },
           endColumn: 27,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -2049,7 +2125,6 @@ const foo = class Foo {
 const foo = class Foo {
   public static c: string;
   public static b: string;
-  public static a: string;
 };
       `,
       errors: [
@@ -2064,6 +2139,17 @@ const foo = class Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+const foo = class Foo {
+  public static b: string;
+  public static a: string;
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2071,8 +2157,8 @@ const foo = class Foo {
             member: 'a',
           },
           endColumn: 27,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -2114,7 +2200,6 @@ class Foo {
 class Foo {
   public static c: string;
   public static b: string;
-  public static a: string;
 }
       `,
       errors: [
@@ -2129,6 +2214,17 @@ class Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [{ classes: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+class Foo {
+  public static b: string;
+  public static a: string;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2136,8 +2232,8 @@ class Foo {
             member: 'a',
           },
           endColumn: 27,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -2181,7 +2277,6 @@ const foo = class Foo {
 const foo = class Foo {
   public static c: string;
   public static b: string;
-  public static a: string;
 };
       `,
       errors: [
@@ -2196,6 +2291,19 @@ const foo = class Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [
+        { classExpressions: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+    {
+      code: `
+const foo = class Foo {
+  public static b: string;
+  public static a: string;
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2203,8 +2311,8 @@ const foo = class Foo {
             member: 'a',
           },
           endColumn: 27,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -2221,7 +2329,6 @@ interface Foo {
   a: b;
   [a: string]: number;
   new (): Bar;
-  (): Baz;
 }
       `,
       errors: [
@@ -2236,6 +2343,22 @@ interface Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [
+        { interfaces: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  a: b;
+  [a: string]: number;
+  b(): void;
+  new (): Bar;
+  (): Baz;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2259,7 +2382,6 @@ interface Foo {
 interface Foo {
   c: string;
   b: string;
-  a: string;
 }
       `,
       errors: [
@@ -2274,6 +2396,19 @@ interface Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [
+        { interfaces: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  b: string;
+  a: string;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2281,8 +2416,8 @@ interface Foo {
             member: 'a',
           },
           endColumn: 13,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -2299,7 +2434,6 @@ type Foo = {
   a: b;
   [a: string]: number;
   new (): Bar;
-  (): Baz;
 };
       `,
       errors: [
@@ -2314,6 +2448,22 @@ type Foo = {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [
+        { typeLiterals: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  a: b;
+  [a: string]: number;
+  b(): void;
+  new (): Bar;
+  (): Baz;
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2337,7 +2487,6 @@ type Foo = {
 type Foo = {
   c: string;
   b: string;
-  a: string;
 };
       `,
       errors: [
@@ -2352,6 +2501,19 @@ type Foo = {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [
+        { typeLiterals: { memberTypes: 'never', order: 'alphabetically' } },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  b: string;
+  a: string;
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2359,8 +2521,8 @@ type Foo = {
             member: 'a',
           },
           endColumn: 13,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -2421,11 +2583,6 @@ class Foo {
   get a() {}
 
   get b() {}
-
-  @Bar
-  set c() {}
-
-  set d() {}
 }
       `,
       errors: [
@@ -2440,6 +2597,26 @@ class Foo {
           line: 6,
           messageId: 'incorrectGroupOrder',
         },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: ['get', 'decorated-get', 'set', 'decorated-set'],
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  @Bar
+  set c() {}
+
+  set d() {}
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2447,8 +2624,8 @@ class Foo {
             rank: 'decorated set',
           },
           endColumn: 13,
-          endLine: 11,
-          line: 11,
+          endLine: 6,
+          line: 6,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -2477,8 +2654,6 @@ class FooTestGetter {
   set g() {}
 
   constructor() {}
-
-  get h() {}
 }
       `,
       errors: [
@@ -2493,6 +2668,33 @@ class FooTestGetter {
           line: 13,
           messageId: 'incorrectGroupOrder',
         },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: defaultOrder,
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class FooTestGetter {
+  public static a: string;
+  protected static b: string = '';
+  private static c: string = '';
+
+  public d: string = '';
+  protected e: string = '';
+  private f: string = '';
+
+  set g() {}
+
+  get h() {}
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2500,8 +2702,8 @@ class FooTestGetter {
             rank: 'public instance set',
           },
           endColumn: 13,
-          endLine: 15,
-          line: 15,
+          endLine: 13,
+          line: 13,
           messageId: 'incorrectGroupOrder',
         },
       ],
@@ -2514,6 +2716,13 @@ class FooTestGetter {
         },
       ],
     },
+
+    // The following cases are regression tests for
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8100:
+    // alphabetical order must be reported for every member group even when
+    // the group order is incorrect, so they inherently assert multiple errors.
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
+
     // default option + class expression + wrong order within group and wrong group order + alphabetically
     {
       code: `
@@ -2827,6 +3036,7 @@ type Foo = {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
 
     // default option + private identifiers
     {
@@ -2834,7 +3044,6 @@ type Foo = {
 class Foo {
   #c = 3;
   #b = 2;
-  #a = 1;
 }
       `,
       errors: [
@@ -2849,6 +3058,19 @@ class Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #b = 2;
+  #a = 1;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2856,8 +3078,8 @@ class Foo {
             member: 'a',
           },
           endColumn: 10,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -2871,12 +3093,6 @@ class Foo {
 class Foo {
   @Dec() accessor b;
   @Dec() accessor a;
-
-  accessor d;
-  accessor c;
-
-  abstract accessor f;
-  abstract accessor e;
 }
       `,
       errors: [
@@ -2891,6 +3107,19 @@ class Foo {
           line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor d;
+  accessor c;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2898,10 +3127,23 @@ class Foo {
             member: 'c',
           },
           endColumn: 14,
-          endLine: 7,
-          line: 7,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
+      ],
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  abstract accessor f;
+  abstract accessor e;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2909,8 +3151,8 @@ class Foo {
             member: 'e',
           },
           endColumn: 23,
-          endLine: 10,
-          line: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'incorrectOrder',
         },
       ],
@@ -2925,7 +3167,6 @@ class Foo {
   accessor a;
   abstract accessor b;
   accessor c;
-  @Dec() accessor d;
 }
       `,
       errors: [
@@ -2940,6 +3181,29 @@ class Foo {
           line: 5,
           messageId: 'incorrectGroupOrder',
         },
+      ],
+      options: [
+        {
+          default: {
+            memberTypes: [
+              'decorated-accessor',
+              'accessor',
+              'abstract-accessor',
+            ],
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor a;
+  abstract accessor b;
+  @Dec() accessor d;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2947,8 +3211,8 @@ class Foo {
             rank: 'accessor',
           },
           endColumn: 21,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'incorrectGroupOrder',
         },
       ],

@@ -925,13 +925,6 @@ class Test {
     return 1;
   }
   set prop() {}
-  method() {
-    return;
-  }
-  arrow = () => 'arrow';
-  private method() {
-    return;
-  }
 }
       `,
       errors: [
@@ -942,25 +935,56 @@ class Test {
           line: 4,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+class Test {
+  method() {
+    return;
+  }
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 9,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+class Test {
+  arrow = () => 'arrow';
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 11,
-          endLine: 11,
-          line: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+    },
+    {
+      code: `
+class Test {
+  private method() {
+    return;
+  }
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 17,
-          endLine: 12,
-          line: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
       ],
@@ -1038,11 +1062,6 @@ function test() {
       code: `
 class Foo {
   public a = () => {};
-  public b = function () {};
-  public c = function test() {};
-
-  static d = () => {};
-  static e = function () {};
 }
       `,
       errors: [
@@ -1053,32 +1072,72 @@ class Foo {
           line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowExpressions: true }],
+    },
+    {
+      code: `
+class Foo {
+  public b = function () {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 23,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowExpressions: true }],
+    },
+    {
+      code: `
+class Foo {
+  public c = function test() {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 27,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowExpressions: true }],
+    },
+    {
+      code: `
+class Foo {
+  static d = () => {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 14,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [{ allowExpressions: true }],
+    },
+    {
+      code: `
+class Foo {
+  static e = function () {};
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 23,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
       ],
@@ -1539,10 +1598,6 @@ function FunctionDeclaration() {
       code: `
 declare function foo(arg: () => void): void;
 foo(() => 1);
-foo(() => {});
-foo(() => null);
-foo(() => true);
-foo(() => '');
       `,
       errors: [
         {
@@ -1552,32 +1607,84 @@ foo(() => '');
           line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: () => void): void;
+foo(() => {});
+      `,
+      errors: [
         {
           column: 8,
           endColumn: 10,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: () => void): void;
+foo(() => null);
+      `,
+      errors: [
         {
           column: 8,
           endColumn: 10,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: () => void): void;
+foo(() => true);
+      `,
+      errors: [
         {
           column: 8,
           endColumn: 10,
-          endLine: 6,
-          line: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: () => void): void;
+foo(() => '');
+      `,
+      errors: [
         {
           column: 8,
           endColumn: 10,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
       ],
@@ -1639,16 +1746,6 @@ foo({
     return 1;
   },
 });
-foo({
-  meth: function () {
-    return 1;
-  },
-});
-foo({
-  meth: () => {
-    return 1;
-  },
-});
       `,
       errors: [
         {
@@ -1658,18 +1755,52 @@ foo({
           line: 4,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: { meth: () => number }): void;
+foo({
+  meth: function () {
+    return 1;
+  },
+});
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 18,
-          endLine: 9,
-          line: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: { meth: () => number }): void;
+foo({
+  meth: () => {
+    return 1;
+  },
+});
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 9,
-          endLine: 14,
-          line: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'missingReturnType',
         },
       ],
@@ -1736,23 +1867,30 @@ const x: HigherOrderType = () => arg1 => arg2 => 'foo';
       ],
     },
     {
-      code: `
-const func = (value: number) => ({ type: 'X', value }) as any;
-const func = (value: number) => ({ type: 'X', value }) as Action;
-      `,
+      code: "const func = (value: number) => ({ type: 'X', value }) as any;",
       errors: [
         {
           column: 30,
           endColumn: 32,
-          endLine: 2,
-          line: 2,
+          endLine: 1,
+          line: 1,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: "const func = (value: number) => ({ type: 'X', value }) as Action;",
+      errors: [
         {
           column: 30,
           endColumn: 32,
-          endLine: 3,
-          line: 3,
+          endLine: 1,
+          line: 1,
           messageId: 'missingReturnType',
         },
       ],
@@ -1889,25 +2027,6 @@ const log = function <A>(a: A) {
 function hoge() {
   return;
 }
-const foo = () => {
-  return;
-};
-const baz = function () {
-  return;
-};
-let [test, test] = function () {
-  return;
-};
-class X {
-  [test] = function () {
-    return;
-  };
-}
-const x = {
-  1: function () {
-    reutrn;
-  },
-};
       `,
       errors: [
         {
@@ -1917,39 +2036,113 @@ const x = {
           line: 2,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowedNames: ['test', '1'],
+        },
+      ],
+    },
+    {
+      code: `
+const foo = () => {
+  return;
+};
+      `,
+      errors: [
         {
           column: 16,
           endColumn: 18,
-          endLine: 5,
-          line: 5,
+          endLine: 2,
+          line: 2,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowedNames: ['test', '1'],
+        },
+      ],
+    },
+    {
+      code: `
+const baz = function () {
+  return;
+};
+      `,
+      errors: [
         {
           column: 13,
           endColumn: 22,
-          endLine: 8,
-          line: 8,
+          endLine: 2,
+          line: 2,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowedNames: ['test', '1'],
+        },
+      ],
+    },
+    {
+      code: `
+let [test, test] = function () {
+  return;
+};
+      `,
+      errors: [
         {
           column: 20,
           endColumn: 29,
-          endLine: 11,
-          line: 11,
+          endLine: 2,
+          line: 2,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowedNames: ['test', '1'],
+        },
+      ],
+    },
+    {
+      code: `
+class X {
+  [test] = function () {
+    return;
+  };
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 21,
-          endLine: 15,
-          line: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
+      ],
+      options: [
+        {
+          allowedNames: ['test', '1'],
+        },
+      ],
+    },
+    {
+      code: `
+const x = {
+  1: function () {
+    reutrn;
+  },
+};
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 15,
-          endLine: 20,
-          line: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'missingReturnType',
         },
       ],

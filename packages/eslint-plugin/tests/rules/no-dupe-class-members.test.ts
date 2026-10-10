@@ -160,19 +160,11 @@ class A {
       code: `
 class A {
   foo() {}
-  foo() {}
+  bar() {}
   foo() {}
 }
       `,
       errors: [
-        {
-          column: 3,
-          data: { name: 'foo' },
-          endColumn: 6,
-          endLine: 4,
-          line: 4,
-          messageId: 'unexpected',
-        },
         {
           column: 3,
           data: { name: 'foo' },

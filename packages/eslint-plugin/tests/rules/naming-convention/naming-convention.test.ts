@@ -1079,24 +1079,6 @@ const child_process = require('child_process');
     {
       code: `
 declare const any_camelCase01: any;
-declare const any_camelCase02: any | null;
-declare const any_camelCase03: any | null | undefined;
-declare const string_camelCase01: string;
-declare const string_camelCase02: string | null;
-declare const string_camelCase03: string | null | undefined;
-declare const string_camelCase04: 'a' | null | undefined;
-declare const string_camelCase05: string | 'a' | null | undefined;
-declare const number_camelCase06: number;
-declare const number_camelCase07: number | null;
-declare const number_camelCase08: number | null | undefined;
-declare const number_camelCase09: 1 | null | undefined;
-declare const number_camelCase10: number | 2 | null | undefined;
-declare const boolean_camelCase11: boolean;
-declare const boolean_camelCase12: boolean | null;
-declare const boolean_camelCase13: boolean | null | undefined;
-declare const boolean_camelCase14: true | null | undefined;
-declare const boolean_camelCase15: false | null | undefined;
-declare const boolean_camelCase16: true | false | null | undefined;
       `,
       errors: [
         {
@@ -1112,6 +1094,22 @@ declare const boolean_camelCase16: true | false | null | undefined;
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['const'],
+          prefix: ['any_'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+declare const any_camelCase02: any | null;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1121,229 +1119,8 @@ declare const boolean_camelCase16: true | false | null | undefined;
             type: 'Variable',
           },
           endColumn: 42,
-          endLine: 3,
-          line: 3,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'UPPER_CASE',
-            name: 'any_camelCase03',
-            processedName: 'camelCase03',
-            type: 'Variable',
-          },
-          endColumn: 54,
-          endLine: 4,
-          line: 4,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'string_camelCase01',
-            processedName: 'camelCase01',
-            type: 'Variable',
-          },
-          endColumn: 41,
-          endLine: 5,
-          line: 5,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'string_camelCase02',
-            processedName: 'camelCase02',
-            type: 'Variable',
-          },
-          endColumn: 48,
-          endLine: 6,
-          line: 6,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'string_camelCase03',
-            processedName: 'camelCase03',
-            type: 'Variable',
-          },
-          endColumn: 60,
-          endLine: 7,
-          line: 7,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'string_camelCase04',
-            processedName: 'camelCase04',
-            type: 'Variable',
-          },
-          endColumn: 57,
-          endLine: 8,
-          line: 8,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'string_camelCase05',
-            processedName: 'camelCase05',
-            type: 'Variable',
-          },
-          endColumn: 66,
-          endLine: 9,
-          line: 9,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'number_camelCase06',
-            processedName: 'camelCase06',
-            type: 'Variable',
-          },
-          endColumn: 41,
-          endLine: 10,
-          line: 10,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'number_camelCase07',
-            processedName: 'camelCase07',
-            type: 'Variable',
-          },
-          endColumn: 48,
-          endLine: 11,
-          line: 11,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'number_camelCase08',
-            processedName: 'camelCase08',
-            type: 'Variable',
-          },
-          endColumn: 60,
-          endLine: 12,
-          line: 12,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'number_camelCase09',
-            processedName: 'camelCase09',
-            type: 'Variable',
-          },
-          endColumn: 55,
-          endLine: 13,
-          line: 13,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'number_camelCase10',
-            processedName: 'camelCase10',
-            type: 'Variable',
-          },
-          endColumn: 64,
-          endLine: 14,
-          line: 14,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'boolean_camelCase11',
-            processedName: 'camelCase11',
-            type: 'Variable',
-          },
-          endColumn: 43,
-          endLine: 15,
-          line: 15,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'boolean_camelCase12',
-            processedName: 'camelCase12',
-            type: 'Variable',
-          },
-          endColumn: 50,
-          endLine: 16,
-          line: 16,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'boolean_camelCase13',
-            processedName: 'camelCase13',
-            type: 'Variable',
-          },
-          endColumn: 62,
-          endLine: 17,
-          line: 17,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'boolean_camelCase14',
-            processedName: 'camelCase14',
-            type: 'Variable',
-          },
-          endColumn: 59,
-          endLine: 18,
-          line: 18,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'boolean_camelCase15',
-            processedName: 'camelCase15',
-            type: 'Variable',
-          },
-          endColumn: 60,
-          endLine: 19,
-          line: 19,
-          messageId: 'doesNotMatchFormatTrimmed',
-        },
-        {
-          column: 15,
-          data: {
-            formats: 'snake_case',
-            name: 'boolean_camelCase16',
-            processedName: 'camelCase16',
-            type: 'Variable',
-          },
-          endColumn: 67,
-          endLine: 20,
-          line: 20,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
       ],
@@ -1355,18 +1132,493 @@ declare const boolean_camelCase16: true | false | null | undefined;
           prefix: ['any_'],
           selector: 'variable',
         },
+      ],
+    },
+    {
+      code: `
+declare const any_camelCase03: any | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'UPPER_CASE',
+            name: 'any_camelCase03',
+            processedName: 'camelCase03',
+            type: 'Variable',
+          },
+          endColumn: 54,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['const'],
+          prefix: ['any_'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+declare const string_camelCase01: string;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase01',
+            processedName: 'camelCase01',
+            type: 'Variable',
+          },
+          endColumn: 41,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
         {
           format: ['snake_case'],
           prefix: ['string_'],
           selector: 'variable',
           types: ['string'],
         },
+      ],
+    },
+    {
+      code: `
+declare const string_camelCase02: string | null;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase02',
+            processedName: 'camelCase02',
+            type: 'Variable',
+          },
+          endColumn: 48,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['string_'],
+          selector: 'variable',
+          types: ['string'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const string_camelCase03: string | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase03',
+            processedName: 'camelCase03',
+            type: 'Variable',
+          },
+          endColumn: 60,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['string_'],
+          selector: 'variable',
+          types: ['string'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const string_camelCase04: 'a' | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase04',
+            processedName: 'camelCase04',
+            type: 'Variable',
+          },
+          endColumn: 57,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['string_'],
+          selector: 'variable',
+          types: ['string'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const string_camelCase05: string | 'a' | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'string_camelCase05',
+            processedName: 'camelCase05',
+            type: 'Variable',
+          },
+          endColumn: 66,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['string_'],
+          selector: 'variable',
+          types: ['string'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const number_camelCase06: number;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase06',
+            processedName: 'camelCase06',
+            type: 'Variable',
+          },
+          endColumn: 41,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
         {
           format: ['snake_case'],
           prefix: ['number_'],
           selector: 'variable',
           types: ['number'],
         },
+      ],
+    },
+    {
+      code: `
+declare const number_camelCase07: number | null;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase07',
+            processedName: 'camelCase07',
+            type: 'Variable',
+          },
+          endColumn: 48,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['number_'],
+          selector: 'variable',
+          types: ['number'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const number_camelCase08: number | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase08',
+            processedName: 'camelCase08',
+            type: 'Variable',
+          },
+          endColumn: 60,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['number_'],
+          selector: 'variable',
+          types: ['number'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const number_camelCase09: 1 | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase09',
+            processedName: 'camelCase09',
+            type: 'Variable',
+          },
+          endColumn: 55,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['number_'],
+          selector: 'variable',
+          types: ['number'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const number_camelCase10: number | 2 | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'number_camelCase10',
+            processedName: 'camelCase10',
+            type: 'Variable',
+          },
+          endColumn: 64,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['number_'],
+          selector: 'variable',
+          types: ['number'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const boolean_camelCase11: boolean;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase11',
+            processedName: 'camelCase11',
+            type: 'Variable',
+          },
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['boolean_'],
+          selector: 'variable',
+          types: ['boolean'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const boolean_camelCase12: boolean | null;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase12',
+            processedName: 'camelCase12',
+            type: 'Variable',
+          },
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['boolean_'],
+          selector: 'variable',
+          types: ['boolean'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const boolean_camelCase13: boolean | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase13',
+            processedName: 'camelCase13',
+            type: 'Variable',
+          },
+          endColumn: 62,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['boolean_'],
+          selector: 'variable',
+          types: ['boolean'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const boolean_camelCase14: true | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase14',
+            processedName: 'camelCase14',
+            type: 'Variable',
+          },
+          endColumn: 59,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['boolean_'],
+          selector: 'variable',
+          types: ['boolean'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const boolean_camelCase15: false | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase15',
+            processedName: 'camelCase15',
+            type: 'Variable',
+          },
+          endColumn: 60,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['boolean_'],
+          selector: 'variable',
+          types: ['boolean'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const boolean_camelCase16: true | false | null | undefined;
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            formats: 'snake_case',
+            name: 'boolean_camelCase16',
+            processedName: 'camelCase16',
+            type: 'Variable',
+          },
+          endColumn: 67,
+          endLine: 2,
+          line: 2,
+          messageId: 'doesNotMatchFormatTrimmed',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
         {
           format: ['snake_case'],
           prefix: ['boolean_'],
@@ -1378,10 +1630,6 @@ declare const boolean_camelCase16: true | false | null | undefined;
     {
       code: `
 declare const function_camelCase1: () => void;
-declare const function_camelCase2: (() => void) | null;
-declare const function_camelCase3: (() => void) | null | undefined;
-declare const function_camelCase4:
-  (() => void) | (() => string) | null | undefined;
       `,
       errors: [
         {
@@ -1397,6 +1645,22 @@ declare const function_camelCase4:
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['function_'],
+          selector: 'variable',
+          types: ['function'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const function_camelCase2: (() => void) | null;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1406,10 +1670,26 @@ declare const function_camelCase4:
             type: 'Variable',
           },
           endColumn: 55,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['function_'],
+          selector: 'variable',
+          types: ['function'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const function_camelCase3: (() => void) | null | undefined;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1419,10 +1699,27 @@ declare const function_camelCase4:
             type: 'Variable',
           },
           endColumn: 67,
-          endLine: 4,
-          line: 4,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['function_'],
+          selector: 'variable',
+          types: ['function'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const function_camelCase4:
+  (() => void) | (() => string) | null | undefined;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1432,8 +1729,8 @@ declare const function_camelCase4:
             type: 'Variable',
           },
           endColumn: 51,
-          endLine: 6,
-          line: 5,
+          endLine: 3,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
       ],
@@ -1450,15 +1747,6 @@ declare const function_camelCase4:
     {
       code: `
 declare const array_camelCase1: Array<number>;
-declare const array_camelCase2: ReadonlyArray<number> | null;
-declare const array_camelCase3: number[] | null | undefined;
-declare const array_camelCase4: readonly number[] | null | undefined;
-declare const array_camelCase5:
-  number[] | (number | string)[] | null | undefined;
-declare const array_camelCase6: [] | null | undefined;
-declare const array_camelCase7: [number] | null | undefined;
-declare const array_camelCase8:
-  readonly number[] | Array<string> | [boolean] | null | undefined;
       `,
       errors: [
         {
@@ -1474,6 +1762,22 @@ declare const array_camelCase8:
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['array_'],
+          selector: 'variable',
+          types: ['array'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const array_camelCase2: ReadonlyArray<number> | null;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1483,10 +1787,26 @@ declare const array_camelCase8:
             type: 'Variable',
           },
           endColumn: 61,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['array_'],
+          selector: 'variable',
+          types: ['array'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const array_camelCase3: number[] | null | undefined;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1496,10 +1816,26 @@ declare const array_camelCase8:
             type: 'Variable',
           },
           endColumn: 60,
-          endLine: 4,
-          line: 4,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['array_'],
+          selector: 'variable',
+          types: ['array'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const array_camelCase4: readonly number[] | null | undefined;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1509,10 +1845,27 @@ declare const array_camelCase8:
             type: 'Variable',
           },
           endColumn: 69,
-          endLine: 5,
-          line: 5,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['array_'],
+          selector: 'variable',
+          types: ['array'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const array_camelCase5:
+  number[] | (number | string)[] | null | undefined;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1522,10 +1875,26 @@ declare const array_camelCase8:
             type: 'Variable',
           },
           endColumn: 52,
-          endLine: 7,
-          line: 6,
+          endLine: 3,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['array_'],
+          selector: 'variable',
+          types: ['array'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const array_camelCase6: [] | null | undefined;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1535,10 +1904,26 @@ declare const array_camelCase8:
             type: 'Variable',
           },
           endColumn: 54,
-          endLine: 8,
-          line: 8,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['array_'],
+          selector: 'variable',
+          types: ['array'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const array_camelCase7: [number] | null | undefined;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1548,10 +1933,27 @@ declare const array_camelCase8:
             type: 'Variable',
           },
           endColumn: 60,
-          endLine: 9,
-          line: 9,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['snake_case'],
+          prefix: ['array_'],
+          selector: 'variable',
+          types: ['array'],
+        },
+      ],
+    },
+    {
+      code: `
+declare const array_camelCase8:
+  readonly number[] | Array<string> | [boolean] | null | undefined;
+      `,
+      errors: [
         {
           column: 15,
           data: {
@@ -1561,8 +1963,8 @@ declare const array_camelCase8:
             type: 'Variable',
           },
           endColumn: 67,
-          endLine: 11,
-          line: 10,
+          endLine: 3,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
       ],
@@ -1907,10 +2309,6 @@ const foo = {
     {
       code: `
 const myfoo_bar = 'abcs';
-function fun(myfoo: string) {}
-class foo {
-  Myfoo: string;
-}
       `,
       errors: [
         {
@@ -1926,6 +2324,22 @@ class foo {
           line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          prefix: ['my', 'My'],
+          selector: ['variable', 'property', 'parameter'],
+          types: ['string'],
+        },
+      ],
+    },
+    {
+      code: `
+function fun(myfoo: string) {}
+      `,
+      errors: [
         {
           column: 14,
           data: {
@@ -1935,10 +2349,28 @@ class foo {
             type: 'Parameter',
           },
           endColumn: 27,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormatTrimmed',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          prefix: ['my', 'My'],
+          selector: ['variable', 'property', 'parameter'],
+          types: ['string'],
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  Myfoo: string;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -1948,8 +2380,8 @@ class foo {
             type: 'Class Property',
           },
           endColumn: 8,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormatTrimmed',
         },
       ],
@@ -2074,11 +2506,6 @@ declare class Foo {
     {
       code: `
 export const PascalCaseVar = 1;
-export enum PascalCaseEnum {}
-export class PascalCaseClass {}
-export function PascalCaseFunction() {}
-export interface PascalCaseInterface {}
-export type PascalCaseType = {};
       `,
       errors: [
         {
@@ -2093,6 +2520,49 @@ export type PascalCaseType = {};
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+export enum PascalCaseEnum {}
+      `,
+      errors: [
         {
           column: 13,
           data: {
@@ -2101,10 +2571,53 @@ export type PascalCaseType = {};
             type: 'Enum',
           },
           endColumn: 27,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+export class PascalCaseClass {}
+      `,
+      errors: [
         {
           column: 14,
           data: {
@@ -2113,10 +2626,53 @@ export type PascalCaseType = {};
             type: 'Class',
           },
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+export function PascalCaseFunction() {}
+      `,
+      errors: [
         {
           column: 17,
           data: {
@@ -2125,10 +2681,53 @@ export type PascalCaseType = {};
             type: 'Function',
           },
           endColumn: 35,
-          endLine: 5,
-          line: 5,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+export interface PascalCaseInterface {}
+      `,
+      errors: [
         {
           column: 18,
           data: {
@@ -2137,10 +2736,53 @@ export type PascalCaseType = {};
             type: 'Interface',
           },
           endColumn: 37,
-          endLine: 6,
-          line: 6,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+export type PascalCaseType = {};
+      `,
+      errors: [
         {
           column: 13,
           data: {
@@ -2149,8 +2791,8 @@ export type PascalCaseType = {};
             type: 'Type Alias',
           },
           endColumn: 27,
-          endLine: 7,
-          line: 7,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -2194,19 +2836,7 @@ export type PascalCaseType = {};
     {
       code: `
 const PascalCaseVar = 1;
-enum PascalCaseEnum {}
-class PascalCaseClass {}
-function PascalCaseFunction() {}
-interface PascalCaseInterface {}
-type PascalCaseType = {};
-export {
-  PascalCaseVar,
-  PascalCaseEnum,
-  PascalCaseClass,
-  PascalCaseFunction,
-  PascalCaseInterface,
-  PascalCaseType,
-};
+export { PascalCaseVar };
       `,
       errors: [
         {
@@ -2221,6 +2851,47 @@ export {
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        { format: ['snake_case'], selector: 'default' },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+enum PascalCaseEnum {}
+export { PascalCaseEnum };
+      `,
+      errors: [
         {
           column: 6,
           data: {
@@ -2229,10 +2900,51 @@ export {
             type: 'Enum',
           },
           endColumn: 20,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        { format: ['snake_case'], selector: 'default' },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+class PascalCaseClass {}
+export { PascalCaseClass };
+      `,
+      errors: [
         {
           column: 7,
           data: {
@@ -2241,10 +2953,51 @@ export {
             type: 'Class',
           },
           endColumn: 22,
-          endLine: 4,
-          line: 4,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        { format: ['snake_case'], selector: 'default' },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+function PascalCaseFunction() {}
+export { PascalCaseFunction };
+      `,
+      errors: [
         {
           column: 10,
           data: {
@@ -2253,10 +3006,51 @@ export {
             type: 'Function',
           },
           endColumn: 28,
-          endLine: 5,
-          line: 5,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        { format: ['snake_case'], selector: 'default' },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+interface PascalCaseInterface {}
+export { PascalCaseInterface };
+      `,
+      errors: [
         {
           column: 11,
           data: {
@@ -2265,10 +3059,51 @@ export {
             type: 'Interface',
           },
           endColumn: 30,
-          endLine: 6,
-          line: 6,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        { format: ['snake_case'], selector: 'default' },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+type PascalCaseType = {};
+export { PascalCaseType };
+      `,
+      errors: [
         {
           column: 6,
           data: {
@@ -2277,8 +3112,8 @@ export {
             type: 'Type Alias',
           },
           endColumn: 20,
-          endLine: 7,
-          line: 7,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -2319,8 +3154,6 @@ export {
     {
       code: `
 const PascalCaseVar = 1;
-function PascalCaseFunction() {}
-declare function PascalCaseDeclaredFunction();
       `,
       errors: [
         {
@@ -2335,6 +3168,26 @@ declare function PascalCaseDeclaredFunction();
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        { format: ['snake_case'], selector: 'default' },
+        {
+          format: ['camelCase'],
+          modifiers: ['global'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['global'],
+          selector: 'function',
+        },
+      ],
+    },
+    {
+      code: `
+function PascalCaseFunction() {}
+      `,
+      errors: [
         {
           column: 10,
           data: {
@@ -2343,10 +3196,30 @@ declare function PascalCaseDeclaredFunction();
             type: 'Function',
           },
           endColumn: 28,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        { format: ['snake_case'], selector: 'default' },
+        {
+          format: ['camelCase'],
+          modifiers: ['global'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['global'],
+          selector: 'function',
+        },
+      ],
+    },
+    {
+      code: `
+declare function PascalCaseDeclaredFunction();
+      `,
+      errors: [
         {
           column: 18,
           data: {
@@ -2355,8 +3228,8 @@ declare function PascalCaseDeclaredFunction();
             type: 'Function',
           },
           endColumn: 44,
-          endLine: 4,
-          line: 4,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -2377,7 +3250,6 @@ declare function PascalCaseDeclaredFunction();
     {
       code: `
 const { some_name1 } = {};
-const { some_name2 = 2 } = {};
 const { ignored: IgnoredDueToModifiers1 } = {};
 const { ignored: IgnoredDueToModifiers2 = 3 } = {};
 const IgnoredDueToModifiers3 = 1;
@@ -2395,6 +3267,27 @@ const IgnoredDueToModifiers3 = 1;
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['destructured'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+const { some_name2 = 2 } = {};
+const { ignored: IgnoredDueToModifiers1 } = {};
+const { ignored: IgnoredDueToModifiers2 = 3 } = {};
+const IgnoredDueToModifiers3 = 1;
+      `,
+      errors: [
         {
           column: 9,
           data: {
@@ -2403,8 +3296,8 @@ const IgnoredDueToModifiers3 = 1;
             type: 'Variable',
           },
           endColumn: 19,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -2424,7 +3317,6 @@ const IgnoredDueToModifiers3 = 1;
       code: `
 export function Foo(
   { aName },
-  { anotherName = 1 },
   { ignored: IgnoredDueToModifiers1 },
   { ignored: IgnoredDueToModifiers1 = 2 },
   IgnoredDueToModifiers2,
@@ -2443,6 +3335,29 @@ export function Foo(
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['destructured'],
+          selector: 'parameter',
+        },
+      ],
+    },
+    {
+      code: `
+export function Foo(
+  { anotherName = 1 },
+  { ignored: IgnoredDueToModifiers1 },
+  { ignored: IgnoredDueToModifiers1 = 2 },
+  IgnoredDueToModifiers2,
+) {}
+      `,
+      errors: [
         {
           column: 5,
           data: {
@@ -2451,8 +3366,8 @@ export function Foo(
             type: 'Parameter',
           },
           endColumn: 16,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -2636,16 +3551,6 @@ class IgnoredDueToModifier {}
     {
       code: `
 const UnusedVar = 1;
-function UnusedFunc(
-  // this line is intentionally broken out
-  UnusedParam: string,
-) {}
-class UnusedClass {}
-interface UnusedInterface {}
-type UnusedType<
-  // this line is intentionally broken out
-  UnusedTypeParam,
-> = {};
       `,
       errors: [
         {
@@ -2660,6 +3565,27 @@ type UnusedType<
           line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['unused'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+function UnusedFunc(
+  // this line is intentionally broken out
+  unused_param: string,
+) {}
+      `,
+      errors: [
         {
           column: 10,
           data: {
@@ -2668,10 +3594,31 @@ type UnusedType<
             type: 'Function',
           },
           endColumn: 20,
-          endLine: 3,
-          line: 3,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['unused'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+function unused_func(
+  // this line is intentionally broken out
+  UnusedParam: string,
+) {}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2680,10 +3627,28 @@ type UnusedType<
             type: 'Parameter',
           },
           endColumn: 22,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['unused'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+class UnusedClass {}
+      `,
+      errors: [
         {
           column: 7,
           data: {
@@ -2692,10 +3657,28 @@ type UnusedType<
             type: 'Class',
           },
           endColumn: 18,
-          endLine: 7,
-          line: 7,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['unused'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+interface UnusedInterface {}
+      `,
+      errors: [
         {
           column: 11,
           data: {
@@ -2704,10 +3687,31 @@ type UnusedType<
             type: 'Interface',
           },
           endColumn: 26,
-          endLine: 8,
-          line: 8,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['unused'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+type UnusedType<
+  // this line is intentionally broken out
+  unused_type_param,
+> = {};
+      `,
+      errors: [
         {
           column: 6,
           data: {
@@ -2716,10 +3720,31 @@ type UnusedType<
             type: 'Type Alias',
           },
           endColumn: 16,
-          endLine: 9,
-          line: 9,
+          endLine: 2,
+          line: 2,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['unused'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+type unused_type<
+  // this line is intentionally broken out
+  UnusedTypeParam,
+> = {};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2728,8 +3753,8 @@ type UnusedType<
             type: 'Type Parameter',
           },
           endColumn: 18,
-          endLine: 11,
-          line: 11,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -2749,31 +3774,7 @@ type UnusedType<
       code: `
 const ignored1 = {
   'a a': 1,
-  'b b'() {},
-  get 'c c'() {
-    return 1;
-  },
-  set 'd d'(value: string) {},
 };
-class ignored2 {
-  'a a' = 1;
-  'b b'() {}
-  get 'c c'() {
-    return 1;
-  }
-  set 'd d'(value: string) {}
-}
-interface ignored3 {
-  'a a': 1;
-  'b b'(): void;
-}
-type ignored4 = {
-  'a a': 1;
-  'b b'(): void;
-};
-enum ignored5 {
-  'a a',
-}
       `,
       errors: [
         {
@@ -2788,6 +3789,26 @@ enum ignored5 {
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+const ignored1 = {
+  'b b'() {},
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2796,10 +3817,32 @@ enum ignored5 {
             type: 'Object Literal Method',
           },
           endColumn: 8,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+const ignored1 = {
+  get 'c c'() {
+    return 1;
+  },
+};
+      `,
+      errors: [
         {
           column: 7,
           data: {
@@ -2808,10 +3851,30 @@ enum ignored5 {
             type: 'Classic Accessor',
           },
           endColumn: 12,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+const ignored1 = {
+  set 'd d'(value: string) {},
+};
+      `,
+      errors: [
         {
           column: 7,
           data: {
@@ -2820,10 +3883,30 @@ enum ignored5 {
             type: 'Classic Accessor',
           },
           endColumn: 12,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+class ignored2 {
+  'a a' = 1;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2832,10 +3915,30 @@ enum ignored5 {
             type: 'Class Property',
           },
           endColumn: 8,
-          endLine: 11,
-          line: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+class ignored2 {
+  'b b'() {}
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2844,10 +3947,32 @@ enum ignored5 {
             type: 'Class Method',
           },
           endColumn: 8,
-          endLine: 12,
-          line: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+class ignored2 {
+  get 'c c'() {
+    return 1;
+  }
+}
+      `,
+      errors: [
         {
           column: 7,
           data: {
@@ -2856,10 +3981,30 @@ enum ignored5 {
             type: 'Classic Accessor',
           },
           endColumn: 12,
-          endLine: 13,
-          line: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+class ignored2 {
+  set 'd d'(value: string) {}
+}
+      `,
+      errors: [
         {
           column: 7,
           data: {
@@ -2868,10 +4013,30 @@ enum ignored5 {
             type: 'Classic Accessor',
           },
           endColumn: 12,
-          endLine: 16,
-          line: 16,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+interface ignored3 {
+  'a a': 1;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2880,10 +4045,30 @@ enum ignored5 {
             type: 'Type Property',
           },
           endColumn: 8,
-          endLine: 19,
-          line: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+interface ignored3 {
+  'b b'(): void;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2892,10 +4077,30 @@ enum ignored5 {
             type: 'Type Method',
           },
           endColumn: 8,
-          endLine: 20,
-          line: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+type ignored4 = {
+  'a a': 1;
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2904,10 +4109,30 @@ enum ignored5 {
             type: 'Type Property',
           },
           endColumn: 8,
-          endLine: 23,
-          line: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+type ignored4 = {
+  'b b'(): void;
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2916,10 +4141,30 @@ enum ignored5 {
             type: 'Type Method',
           },
           endColumn: 8,
-          endLine: 24,
-          line: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+enum ignored5 {
+  'a a',
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -2928,8 +4173,8 @@ enum ignored5 {
             type: 'Enum Member',
           },
           endColumn: 8,
-          endLine: 27,
-          line: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -2949,18 +4194,8 @@ enum ignored5 {
       code: noFormat`
         type Foo = {
           'foo     Bar': string;
-          '': string;
-          '0': string;
-          'foo': string;
-          'foo-bar': string;
-          '#foo-bar': string;
         };
-
-        interface Bar {
-          'boo-----foo': string;
-        }
       `,
-      // 6, not 7 because 'foo' is valid
       errors: [
         {
           column: 11,
@@ -2974,6 +4209,15 @@ enum ignored5 {
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+    },
+    {
+      code: noFormat`
+        type Foo = {
+          '': string;
+        };
+      `,
+      errors: [
         {
           column: 11,
           data: {
@@ -2982,10 +4226,19 @@ enum ignored5 {
             type: 'Type Property',
           },
           endColumn: 13,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+    },
+    {
+      code: noFormat`
+        type Foo = {
+          '0': string;
+        };
+      `,
+      errors: [
         {
           column: 11,
           data: {
@@ -2994,10 +4247,21 @@ enum ignored5 {
             type: 'Type Property',
           },
           endColumn: 14,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+    },
+    {
+      code: noFormat`
+        type Foo = {
+          'foo': string;
+          'foo-bar': string;
+        };
+      `,
+      // only 'foo-bar' is reported because 'foo' is valid
+      errors: [
         {
           column: 11,
           data: {
@@ -3006,10 +4270,19 @@ enum ignored5 {
             type: 'Type Property',
           },
           endColumn: 20,
-          endLine: 7,
-          line: 7,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+    },
+    {
+      code: noFormat`
+        type Foo = {
+          '#foo-bar': string;
+        };
+      `,
+      errors: [
         {
           column: 11,
           data: {
@@ -3018,10 +4291,19 @@ enum ignored5 {
             type: 'Type Property',
           },
           endColumn: 21,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+    },
+    {
+      code: noFormat`
+        interface Bar {
+          'boo-----foo': string;
+        }
+      `,
+      errors: [
         {
           column: 11,
           data: {
@@ -3030,8 +4312,8 @@ enum ignored5 {
             type: 'Type Property',
           },
           endColumn: 24,
-          endLine: 12,
-          line: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -3049,20 +4331,6 @@ class foo {
   public async asyncBar() {
     return 42;
   }
-  // ❌ error
-  public AsyncBar2 = async () => {
-    return 42;
-  };
-  // ❌ error
-  public AsyncBar3 = async function () {
-    return 42;
-  };
-}
-abstract class foo {
-  public abstract Bar(): number;
-  public abstract async async_bar(): number;
-  // ❌ error
-  public abstract async ASYNC_BAR(): number;
 }
       `,
       errors: [
@@ -3078,6 +4346,40 @@ abstract class foo {
           line: 10,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['method', 'objectLiteralMethod'],
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  public Bar() {
+    return 42;
+  }
+  public async async_bar() {
+    return 42;
+  }
+  // ❌ error
+  public AsyncBar2 = async () => {
+    return 42;
+  };
+}
+      `,
+      errors: [
         {
           column: 10,
           data: {
@@ -3086,10 +4388,44 @@ abstract class foo {
             type: 'Class Method',
           },
           endColumn: 19,
-          endLine: 14,
-          line: 14,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['method', 'objectLiteralMethod'],
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  public Bar() {
+    return 42;
+  }
+  public async async_bar() {
+    return 42;
+  }
+  // ❌ error
+  public AsyncBar3 = async function () {
+    return 42;
+  };
+}
+      `,
+      errors: [
         {
           column: 10,
           data: {
@@ -3098,10 +4434,38 @@ abstract class foo {
             type: 'Class Method',
           },
           endColumn: 19,
-          endLine: 18,
-          line: 18,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['method', 'objectLiteralMethod'],
+        },
+      ],
+    },
+    {
+      code: `
+abstract class foo {
+  public abstract Bar(): number;
+  public abstract async async_bar(): number;
+  // ❌ error
+  public abstract async ASYNC_BAR(): number;
+}
+      `,
+      errors: [
         {
           column: 25,
           data: {
@@ -3110,8 +4474,8 @@ abstract class foo {
             type: 'Class Method',
           },
           endColumn: 34,
-          endLine: 26,
-          line: 26,
+          endLine: 6,
+          line: 6,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -3145,14 +4509,6 @@ const obj = {
   async AsyncBar() {
     return 42;
   },
-  // ❌ error
-  AsyncBar2: async () => {
-    return 42;
-  },
-  // ❌ error
-  AsyncBar3: async function () {
-    return 42;
-  },
 };
       `,
       errors: [
@@ -3168,6 +4524,40 @@ const obj = {
           line: 10,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['method', 'objectLiteralMethod'],
+        },
+      ],
+    },
+    {
+      code: `
+const obj = {
+  Bar() {
+    return 42;
+  },
+  async async_bar() {
+    return 42;
+  },
+  // ❌ error
+  AsyncBar2: async () => {
+    return 42;
+  },
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -3176,10 +4566,44 @@ const obj = {
             type: 'Object Literal Method',
           },
           endColumn: 12,
-          endLine: 14,
-          line: 14,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['method', 'objectLiteralMethod'],
+        },
+      ],
+    },
+    {
+      code: `
+const obj = {
+  Bar() {
+    return 42;
+  },
+  async async_bar() {
+    return 42;
+  },
+  // ❌ error
+  AsyncBar3: async function () {
+    return 42;
+  },
+};
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -3188,8 +4612,8 @@ const obj = {
             type: 'Object Literal Method',
           },
           endColumn: 12,
-          endLine: 18,
-          line: 18,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -3221,8 +4645,6 @@ const AsyncBar1 = async () => {};
 const async_bar1 = async () => {};
 const async_bar3 = async function async_bar4() {};
 async function async_bar2() {}
-// ❌ error
-const asyncBar5 = async function async_bar6() {};
       `,
       errors: [
         {
@@ -3237,6 +4659,33 @@ const asyncBar5 = async function async_bar6() {};
           line: 7,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'variableLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['variableLike'],
+        },
+      ],
+    },
+    {
+      code: `
+const syncbar1 = () => {};
+function syncBar2() {}
+const syncBar3 = function syncBar4() {};
+
+const async_bar1 = async () => {};
+const async_bar3 = async function async_bar4() {};
+async function async_bar2() {}
+// ❌ error
+const asyncBar5 = async function async_bar6() {};
+      `,
+      errors: [
         {
           column: 7,
           data: {
@@ -3245,8 +4694,8 @@ const asyncBar5 = async function async_bar6() {};
             type: 'Variable',
           },
           endColumn: 16,
-          endLine: 12,
-          line: 12,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -3272,10 +4721,6 @@ const syncBar3 = function syncBar4() {};
 const async_bar1 = async () => {};
 // ❌ error
 async function asyncBar2() {}
-const async_bar3 = async function async_bar4() {};
-async function async_bar2() {}
-// ❌ error
-const async_bar3 = async function ASYNC_BAR4() {};
       `,
       errors: [
         {
@@ -3290,6 +4735,33 @@ const async_bar3 = async function ASYNC_BAR4() {};
           line: 8,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'variableLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['variableLike'],
+        },
+      ],
+    },
+    {
+      code: `
+const syncbar1 = () => {};
+function syncBar2() {}
+const syncBar3 = function syncBar4() {};
+
+const async_bar1 = async () => {};
+const async_bar3 = async function async_bar4() {};
+async function async_bar2() {}
+// ❌ error
+const async_bar3 = async function ASYNC_BAR4() {};
+      `,
+      errors: [
         {
           column: 35,
           data: {
@@ -3298,8 +4770,8 @@ const async_bar3 = async function ASYNC_BAR4() {};
             type: 'Function',
           },
           endColumn: 45,
-          endLine: 12,
-          line: 12,
+          endLine: 10,
+          line: 10,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -3398,10 +4870,6 @@ class foo extends bar {
   public override get some_getter_override(): string;
   // ❌ error
   public override get someGetterOverride(): string;
-  public set someSetter(val: string);
-  public override set some_setter_override(val: string);
-  // ❌ error
-  public override set someSetterOverride(val: string);
 }
       `,
       errors: [
@@ -3417,6 +4885,30 @@ class foo extends bar {
           line: 6,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['override'],
+          selector: ['memberLike'],
+        },
+      ],
+    },
+    {
+      code: `
+class foo extends bar {
+  public set someSetter(val: string);
+  public override set some_setter_override(val: string);
+  // ❌ error
+  public override set someSetterOverride(val: string);
+}
+      `,
+      errors: [
         {
           column: 23,
           data: {
@@ -3425,8 +4917,8 @@ class foo extends bar {
             type: 'Classic Accessor',
           },
           endColumn: 41,
-          endLine: 10,
-          line: 10,
+          endLine: 6,
+          line: 6,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -3449,9 +4941,6 @@ class foo {
   private firstPrivateField = 1;
   // ❌ error
   private first_private_field = 1;
-  // ❌ error
-  #secondPrivateField = 1;
-  #second_private_field = 1;
 }
       `,
       errors: [
@@ -3467,6 +4956,29 @@ class foo {
           line: 5,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['#private'],
+          selector: ['memberLike'],
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  // ❌ error
+  #secondPrivateField = 1;
+  #second_private_field = 1;
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -3475,8 +4987,8 @@ class foo {
             type: 'Class Property',
           },
           endColumn: 22,
-          endLine: 7,
-          line: 7,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
       ],
@@ -3499,9 +5011,6 @@ class foo {
   private firstPrivateMethod() {}
   // ❌ error
   private first_private_method() {}
-  // ❌ error
-  #secondPrivateMethod() {}
-  #second_private_method() {}
 }
       `,
       errors: [
@@ -3517,6 +5026,29 @@ class foo {
           line: 5,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['#private'],
+          selector: ['memberLike'],
+        },
+      ],
+    },
+    {
+      code: `
+class foo {
+  // ❌ error
+  #secondPrivateMethod() {}
+  #second_private_method() {}
+}
+      `,
+      errors: [
         {
           column: 3,
           data: {
@@ -3525,8 +5057,8 @@ class foo {
             type: 'Class Method',
           },
           endColumn: 23,
-          endLine: 7,
-          line: 7,
+          endLine: 4,
+          line: 4,
           messageId: 'doesNotMatchFormat',
         },
       ],
