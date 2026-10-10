@@ -41,6 +41,7 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [{ allow: [], allowAsImport: false }],
   create(context, options) {
     const allowAsImport = options[0].allowAsImport;

@@ -38,7 +38,6 @@ ruleTester.defineRule('use-every-a', {
       VariableDeclaration: useA,
     };
   },
-  defaultOptions: [],
   meta: {
     messages: {},
     schema: [],

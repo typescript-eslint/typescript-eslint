@@ -38,6 +38,7 @@ export default createRule<Options, MessageIds>({
       noEmptyWithSuper:
         'An interface declaring no members is equivalent to its supertype.',
     },
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint < 9.21
     replacedBy: ['@typescript-eslint/no-empty-object-type'],
     schema: [
       {
@@ -53,6 +54,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allowSingleExtends: false,

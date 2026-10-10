@@ -9,6 +9,7 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getParserServices,
+  getStaticStringValue,
   nullThrows,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
@@ -55,6 +56,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allow: [],
@@ -406,6 +408,69 @@ export default createRule<Options, MessageIds>({
       });
     }
 
+    /**
+     * The name a key refers to, or `null` when it cannot be determined
+     * statically, as in `const x: Foo = { [someString]: 1 }`.
+     */
+    function getObjectLiteralPropertyName(
+      node: TSESTree.Property,
+    ): string | null {
+      if (!node.computed) {
+        return node.key.type === AST_NODE_TYPES.Identifier
+          ? node.key.name
+          : getStaticStringValue(node.key);
+      }
+
+      const keyType = services.getTypeAtLocation(node.key);
+
+      return keyType.isStringLiteral() ? keyType.value : null;
+    }
+
+    /**
+     * A key of an object literal refers to a property of the literal's
+     * contextual type, rather than declaring a property of its own, so it is
+     * checked against that type instead of the key's own symbol.
+     */
+    function checkObjectLiteralProperty(node: TSESTree.Property): void {
+      if (node.parent.type !== AST_NODE_TYPES.ObjectExpression) {
+        return;
+      }
+
+      const propertyName = getObjectLiteralPropertyName(node);
+      if (propertyName == null) {
+        return;
+      }
+
+      const contextualType = services.getContextualType(node.parent);
+      if (!contextualType) {
+        return;
+      }
+
+      const reason = getJsDocDeprecation(
+        contextualType.getProperty(propertyName),
+      );
+      if (reason == null) {
+        return;
+      }
+
+      if (typeMatchesSomeSpecifier(contextualType, allow, services.program)) {
+        return;
+      }
+
+      context.report({
+        ...(reason
+          ? {
+              messageId: 'deprecatedWithReason',
+              data: { name: propertyName, reason },
+            }
+          : {
+              messageId: 'deprecated',
+              data: { name: propertyName },
+            }),
+        node: node.key,
+      });
+    }
+
     function checkMemberExpression(node: TSESTree.MemberExpression): void {
       if (!node.computed) {
         return;
@@ -491,6 +556,7 @@ export default createRule<Options, MessageIds>({
       },
       MemberExpression: checkMemberExpression,
       PrivateIdentifier: checkIdentifier,
+      Property: checkObjectLiteralProperty,
       Super: checkIdentifier,
     };
   },

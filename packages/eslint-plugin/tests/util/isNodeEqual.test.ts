@@ -25,7 +25,6 @@ const rule = createRule({
       },
     };
   },
-  defaultOptions: [],
   meta: {
     docs: {
       description: 'Remove useless expressions.',

@@ -1,3 +1,5 @@
+import { noFormat } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-deprecated';
 import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
 
@@ -723,6 +725,44 @@ interface Foo {
 declare const a: Foo;
 const { notDeprecatedProperty: deprecatedProperty } = a;
     `,
+    `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+declare let key: string;
+const x: A = { [key]: 'string' };
+    `,
+    `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { notDeprecatedField: 'string' };
+    `,
+    `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { ['notDeprecatedField']: 'string' };
+    `,
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+const x: A = { deprecatedField: 'string' };
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'A' }],
+        },
+      ],
+    },
     `
 interface Foo {
   /** @deprecated */
@@ -3778,6 +3818,364 @@ class A {
           column: 10,
           data: { name: '#b' },
           endColumn: 12,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+const x: A = { deprecatedField: 'string' };
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: 'deprecatedField' },
+          endColumn: 31,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+let x: A;
+x = { deprecatedField: 'string' };
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { name: 'deprecatedField' },
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+interface B {
+  nested: A;
+}
+const y: B = { nested: { deprecatedField: 'string' } };
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { name: 'deprecatedField' },
+          endColumn: 41,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+declare function func(x: A): void;
+func({ deprecatedField: 'string' });
+      `,
+      errors: [
+        {
+          column: 8,
+          data: { name: 'deprecatedField' },
+          endColumn: 23,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+function func(): A {
+  return { deprecatedField: 'string' };
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'deprecatedField' },
+          endColumn: 27,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+const x: A[] = [{ deprecatedField: 'string' }];
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { name: 'deprecatedField' },
+          endColumn: 34,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+const x = { deprecatedField: 'string' } as A;
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { name: 'deprecatedField' },
+          endColumn: 28,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+const x = { deprecatedField: 'string' } satisfies A;
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { name: 'deprecatedField' },
+          endColumn: 28,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+class C {
+  /** @deprecated */
+  deprecatedField = 'x';
+}
+const x: C = { deprecatedField: 'string' };
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: 'deprecatedField' },
+          endColumn: 31,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+const deprecatedField = 'string';
+const x: A = { deprecatedField };
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: 'deprecatedField' },
+          endColumn: 31,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedMethod(): void;
+}
+const x: A = { deprecatedMethod() {} };
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: 'deprecatedMethod' },
+          endColumn: 32,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { 'deprecatedField': 'string' };
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: 'deprecatedField' },
+          endColumn: 33,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { ['deprecatedField']: 'string' };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: 'deprecatedField' },
+          endColumn: 34,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+declare const key: 'deprecatedField';
+const x: A = { [key]: 'string' };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: 'deprecatedField' },
+          endColumn: 20,
+          endLine: 8,
+          line: 8,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { ['deprecatedField' as const]: 'string' };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: 'deprecatedField' },
+          endColumn: 43,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { ['deprecatedField' satisfies string]: 'string' };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: 'deprecatedField' },
+          endColumn: 51,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { ['notDeprecatedField' as 'deprecatedField']: 'string' };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: 'deprecatedField' },
+          endColumn: 58,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+  notDeprecatedField: string;
+}
+const x: A = { [\`\${'deprecated'}Field\`]: 'string' };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: 'deprecatedField' },
+          endColumn: 39,
           endLine: 7,
           line: 7,
           messageId: 'deprecated',
