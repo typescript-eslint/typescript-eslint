@@ -431,16 +431,44 @@ function checkMethod(
 
   return {
     dangerous:
-      !thisArgIsVoid &&
-      !(
-        ignoreStatic &&
-        tsutils.includesModifier(
-          getModifiers(valueDeclaration),
-          ts.SyntaxKind.StaticKeyword,
-        )
-      ),
+      !thisArgIsVoid && !(ignoreStatic && isStaticMethod(valueDeclaration)),
     firstParamIsThis,
   };
+}
+
+/**
+ * Whether the method is a `static` class member, or an object type member of a
+ * constructible type (i.e. one with a construct signature), which is how static
+ * members of a class are typically declared on a `var`, such as `Buffer`
+ * in `@types/node`:
+ *
+ * ```ts
+ * interface BufferConstructor {
+ *   new (str: string): Buffer;
+ *   compare(buf1: Uint8Array, buf2: Uint8Array): number;
+ * }
+ * declare var Buffer: BufferConstructor;
+ * ```
+ */
+function isStaticMethod(
+  valueDeclaration:
+    ts.FunctionExpression | ts.MethodDeclaration | ts.MethodSignature,
+): boolean {
+  if (
+    tsutils.includesModifier(
+      getModifiers(valueDeclaration),
+      ts.SyntaxKind.StaticKeyword,
+    )
+  ) {
+    return true;
+  }
+
+  const { parent } = valueDeclaration;
+  return (
+    ts.isMethodSignature(valueDeclaration) &&
+    (ts.isInterfaceDeclaration(parent) || ts.isTypeLiteralNode(parent)) &&
+    parent.members.some(member => ts.isConstructSignatureDeclaration(member))
+  );
 }
 
 function isSafeUse(node: TSESTree.Node): boolean {

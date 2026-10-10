@@ -8,6 +8,36 @@ ruleTester.run('unbound-method', rule, {
     requireData: true,
   },
   valid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7893
+    {
+      code: `
+interface Buffer extends Uint8Array {}
+
+interface BufferConstructor {
+  new (str: string): Buffer;
+  from(str: string): Buffer;
+  compare(buf1: Uint8Array, buf2: Uint8Array): number;
+}
+
+declare var Buffer: BufferConstructor;
+
+const arr = [Buffer.from('1234'), Buffer.from('0123')];
+arr.sort(Buffer.compare);
+      `,
+      options: [{ ignoreStatic: true }],
+    },
+    {
+      code: `
+declare const Foo: {
+  new (): object;
+  bar(): void;
+};
+
+const { bar } = Foo;
+const baz = Foo.bar;
+      `,
+      options: [{ ignoreStatic: true }],
+    },
     'Promise.resolve().then(console.log);',
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
@@ -1828,6 +1858,46 @@ foo[bazz];
     `,
   ],
   invalid: [
+    {
+      code: `
+interface ConstructorLike {
+  new (): object;
+  method(): void;
+}
+declare const Foo: ConstructorLike;
+
+const x = Foo.method;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 21,
+          endLine: 8,
+          line: 8,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+interface NotConstructible {
+  method(): void;
+}
+declare const foo: NotConstructible;
+
+const x = foo.method;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 21,
+          endLine: 7,
+          line: 7,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+      options: [{ ignoreStatic: true }],
+    },
     {
       code: `
 class Console {

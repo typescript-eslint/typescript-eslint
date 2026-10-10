@@ -104,6 +104,21 @@ const { log } = OtherClass;
 log();
 ```
 
+Members of an object type that has a construct signature are treated the same way, since that is how the statics of a class are usually declared on a variable:
+
+```ts option='{ "ignoreStatic": true }' showPlaygroundButton
+interface ParserConstructor {
+  new (): object;
+  parse(text: string): object;
+}
+
+declare const Parser: ParserConstructor;
+
+const { parse } = Parser;
+
+parse('text');
+```
+
 ## When Not To Use It
 
 If your project dynamically changes `this` scopes around in a way TypeScript has difficulties modeling, this rule may not be viable to use.
