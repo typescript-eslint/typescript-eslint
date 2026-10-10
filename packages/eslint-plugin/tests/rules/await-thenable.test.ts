@@ -693,6 +693,60 @@ Promise.all([
 ]);
       `,
     },
+    {
+      code: `
+declare const maybePromises: (number | Promise<number>)[];
+Promise.all(maybePromises);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const maybePromises: [number, Promise<number>];
+Promise.all(maybePromises);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const maybePromises: number[] | Promise<number>[];
+Promise.all(maybePromises);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([1, 2, Promise.resolve(3)]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const maybePromise: number | Promise<number>;
+Promise.all([1, maybePromise]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([]);
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all('abc');
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
+  Promise.all(maybePromises);
+}
+      `,
+      options: [{ allowMixedPromiseArrays: true }],
+    },
   ],
 
   invalid: [
@@ -1776,6 +1830,60 @@ Promise.all([...[1, 2, 3]]);
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
+    },
+    {
+      code: `
+declare const numbers: number[];
+Promise.all(numbers);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+declare const numbers: [number, string];
+Promise.all(numbers);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all([1, 2]);
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 15,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+        {
+          column: 17,
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
     },
   ],
 });
