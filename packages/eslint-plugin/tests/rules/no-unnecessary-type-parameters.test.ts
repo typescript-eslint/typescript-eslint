@@ -416,6 +416,23 @@ function f<P extends string>(p: P) {
 }
     `,
     `
+declare function remap<T extends string, V>(t: T, v: V): { [K in 'a' as T]: V };
+
+function f<P extends string, N>(p: P, n: N) {
+  return remap(p, n);
+}
+    `,
+    `
+declare function prefixKeys<O, T extends string>(
+  obj: O,
+  prefix: T,
+): { [K in keyof O & string as \`\${T}\${K}\`]: O[K] };
+
+function f<P extends string, N>(p: P, n: N) {
+  return prefixKeys({ a: n }, p);
+}
+    `,
+    `
 type Identity<T> = T;
 
 type Mapped<T, Value> = Identity<{ [P in keyof T]: Value }>;
@@ -1797,6 +1814,37 @@ type Fn = () => Other;
             {
               messageId: 'replaceUsagesWithConstraint',
               output: "type Fn = () => { [K in 'a']: unknown };",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function remap<T extends string, V>(t: T, v: V): { [K in 'a' as T]: V };
+
+function f<P extends string, N>(p: P) {
+  return remap<P, N>(p, null!);
+}
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { descriptor: 'function', name: 'N', uses: 'used only once' },
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare function remap<T extends string, V>(t: T, v: V): { [K in 'a' as T]: V };
+
+function f<P extends string>(p: P) {
+  return remap<P, unknown>(p, null!);
+}
+      `,
             },
           ],
         },
