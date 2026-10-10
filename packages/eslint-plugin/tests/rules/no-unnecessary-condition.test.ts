@@ -1308,6 +1308,55 @@ isString(a);
       `,
       options: [{ checkTypePredicates: false }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12343
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: (string | null)[];
+arr.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const mixed: (string | number)[];
+mixed.filter(isString);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: any[];
+arr.filter(isNotNil);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function hasLength(value: string): boolean;
+declare const arr: string[];
+arr.filter(hasLength);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const mixed: (string | number)[];
+mixed.some(isString);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
     {
       // Technically, this has type 'falafel' and not string.
       code: `
@@ -4745,6 +4794,169 @@ if (isNarrower(w)) {
           endColumn: 17,
           endLine: 11,
           line: 11,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12343
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.filter(isNotNil);
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const arr: string[];
+arr.find(isNotNil);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: string[];
+arr.every(isString);
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: string[];
+arr.some(isString);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: string[];
+arr.findIndex(isString);
+      `,
+      errors: [
+        {
+          column: 15,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: string[];
+arr.findLast(isString);
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const arr: string[];
+arr.findLastIndex(isString);
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isNotNil<T>(value: T | null | undefined): value is T;
+declare const pair: [string, string];
+pair.filter(isNotNil);
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(value: unknown): value is string;
+declare const intersection: string[] & { extra: true };
+intersection.filter(isString);
+      `,
+      errors: [
+        {
+          column: 21,
+          data: { typeGuardOrAssertionFunction: 'type guard' },
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
           messageId: 'typeGuardAlreadyIsType',
         },
       ],

@@ -677,6 +677,70 @@ export default createRule<Options, MessageId>({
       checkNode(node.test);
     }
 
+    function isUnnecessaryTypeGuard(
+      typeOfArgument: ts.Type,
+      typeGuardType: ts.Type,
+    ): boolean {
+      // Skip `any` — it is assignable to everything, producing
+      // false positives for meaningful runtime type guards.
+      return (
+        !tsutils.isTypeFlagSet(
+          typeOfArgument,
+          ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+        ) &&
+        checker.isTypeAssignableTo(typeOfArgument, typeGuardType) &&
+        // Only flag if the types are mutually assignable (i.e. equivalent,
+        // like Narrower ↔ Wider with optional props) or the predicate type
+        // is a union that the argument is a strict subtype of.  This avoids
+        // false positives with structural subtypes whose extra members are
+        // all optional in the *predicate* type (e.g. custom MappedType
+        // interfaces extending ts.Type).
+        (checker.isTypeAssignableTo(typeGuardType, typeOfArgument) ||
+          typeGuardType.isUnion())
+      );
+    }
+
+    function getIdentifierTypePredicate(type: ts.Type): ts.Type | undefined {
+      for (const signature of tsutils.getCallSignaturesOfType(type)) {
+        const predicate = checker.getTypePredicateOfSignature(signature);
+        if (
+          predicate?.type != null &&
+          predicate.kind === ts.TypePredicateKind.Identifier
+        ) {
+          return predicate.type;
+        }
+      }
+
+      return undefined;
+    }
+
+    // `every` / `filter` / `find` / `findLast` instantiate generic guards on
+    // the contextual signature. The other predicate methods do not.
+    function getUnnecessaryCallbackTypeGuard(
+      callback: TSESTree.Expression,
+    ): { elementType: ts.Type; predicateType: ts.Type } | undefined {
+      const declaredPredicate = getIdentifierTypePredicate(
+        getConstrainedTypeAtLocation(services, callback),
+      );
+      if (declaredPredicate == null) {
+        return undefined;
+      }
+
+      // Array method arguments are contextually typed.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const contextualType = services.getContextualType(callback)!;
+      const signatures = tsutils.getCallSignaturesOfType(contextualType);
+      if (signatures.length === 0) {
+        return undefined;
+      }
+
+      return {
+        elementType: checker.getTypeOfSymbol(signatures[0].getParameters()[0]),
+        predicateType:
+          getIdentifierTypePredicate(contextualType) ?? declaredPredicate,
+      };
+    }
+
     function checkCallExpression(node: TSESTree.CallExpression): void {
       if (checkTypePredicates) {
         const truthinessAssertedArgument = findTruthinessAssertedArgument(
@@ -697,27 +761,10 @@ export default createRule<Options, MessageId>({
             typeGuardAssertedArgument.argument,
           );
           if (
-            // Skip `any` — it is assignable to everything, producing
-            // false positives for meaningful runtime type guards.
-            !tsutils.isTypeFlagSet(
-              typeOfArgument,
-              ts.TypeFlags.Any | ts.TypeFlags.Unknown,
-            ) &&
-            checker.isTypeAssignableTo(
+            isUnnecessaryTypeGuard(
               typeOfArgument,
               typeGuardAssertedArgument.type,
-            ) &&
-            // Only flag if the types are mutually assignable (i.e. equivalent,
-            // like Narrower ↔ Wider with optional props) or the predicate type
-            // is a union that the argument is a strict subtype of.  This avoids
-            // false positives with structural subtypes whose extra members are
-            // all optional in the *predicate* type (e.g. custom MappedType
-            // interfaces extending ts.Type).
-            (checker.isTypeAssignableTo(
-              typeGuardAssertedArgument.type,
-              typeOfArgument,
-            ) ||
-              typeGuardAssertedArgument.type.isUnion())
+            )
           ) {
             context.report({
               node: typeGuardAssertedArgument.argument,
@@ -760,6 +807,28 @@ export default createRule<Options, MessageId>({
           // Potential enhancement: could use code-path analysis to check
           //   any function with a single return statement
           // (Value to complexity ratio is dubious however)
+        } else if (
+          checkTypePredicates &&
+          callback.type !== AST_NODE_TYPES.SpreadElement
+        ) {
+          const typeGuard = getUnnecessaryCallbackTypeGuard(callback);
+          if (typeGuard != null) {
+            if (
+              isUnnecessaryTypeGuard(
+                typeGuard.elementType,
+                typeGuard.predicateType,
+              )
+            ) {
+              context.report({
+                node: callback,
+                messageId: 'typeGuardAlreadyIsType',
+                data: {
+                  typeGuardOrAssertionFunction: 'type guard',
+                },
+              });
+            }
+            return;
+          }
         }
         // Otherwise just do type analysis on the function as a whole.
         const returnTypes = tsutils
