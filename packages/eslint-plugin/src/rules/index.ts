@@ -81,6 +81,7 @@ import noUnnecessaryTypeParameters from './no-unnecessary-type-parameters';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
+import noUnsafeClassInstanceAssignment from './no-unsafe-class-instance-assignment';
 import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
 import noUnsafeEnumAssignment from './no-unsafe-enum-assignment';
 import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
@@ -220,6 +221,7 @@ const rules = {
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
+  'no-unsafe-class-instance-assignment': noUnsafeClassInstanceAssignment,
   'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
   'no-unsafe-enum-assignment': noUnsafeEnumAssignment,
   'no-unsafe-enum-comparison': noUnsafeEnumComparison,
