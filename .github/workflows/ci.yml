@@ -448,7 +448,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/*/coverage/lcov.info
           flags: ${{ join(matrix.projects, ',') }}
-          name: ${{ join(matrix.projects, '-') }}
+          name: ${{ matrix.codecovName }}
 
   unit_tests_project_service:
     name: Run Unit Tests with Project Service
