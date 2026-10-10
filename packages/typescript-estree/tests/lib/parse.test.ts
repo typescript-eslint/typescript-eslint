@@ -79,6 +79,27 @@ describe(parser.parseAndGenerateServices, () => {
     vi.restoreAllMocks();
   });
 
+  it('includes leading and trailing comments and whitespace in the Program range', () => {
+    const code = `
+// foo
+
+x
+
+/* bar */
+\t`;
+    const { ast } = parser.parseAndGenerateServices(code, {
+      loc: true,
+      range: true,
+    });
+
+    expect(ast.range).toStrictEqual([0, code.length]);
+
+    expect(ast.loc).toStrictEqual({
+      end: { column: 1, line: 7 },
+      start: { column: 0, line: 1 },
+    });
+  });
+
   describe('preserveNodeMaps', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
