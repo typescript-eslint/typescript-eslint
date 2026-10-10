@@ -125,6 +125,7 @@ export default createRule({
                       grandparent.type === AST_NODE_TYPES.TSArrayType ||
                       grandparent.type === AST_NODE_TYPES.TSIndexedAccessType ||
                       grandparent.type === AST_NODE_TYPES.TSIntersectionType ||
+                      grandparent.type === AST_NODE_TYPES.TSOptionalType ||
                       grandparent.type === AST_NODE_TYPES.TSUnionType ||
                       grandparent.type === AST_NODE_TYPES.TSConditionalType ||
                       grandparent.type === AST_NODE_TYPES.TSTypeOperator;

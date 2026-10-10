@@ -2413,5 +2413,43 @@ declare function foo(
         },
       ],
     },
+    {
+      code: 'declare function join<T extends string | number>(els: [T?]): void;',
+      errors: [
+        {
+          column: 23,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 48,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function join(els: [(string | number)?]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function call<T extends () => void>(fns: [T?]): void;',
+      errors: [
+        {
+          column: 23,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function call(fns: [(() => void)?]): void;',
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
