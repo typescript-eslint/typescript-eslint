@@ -3846,6 +3846,25 @@ const x: A = { deprecatedField: 'string' };
     {
       code: `
 interface A {
+  /** @deprecated use newField instead */
+  deprecatedField: string;
+}
+const x: A = { deprecatedField: 'string' };
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: 'deprecatedField', reason: 'use newField instead' },
+          endColumn: 31,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
   /** @deprecated */
   deprecatedField: string;
 }
