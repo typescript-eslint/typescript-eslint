@@ -487,6 +487,28 @@ enum T {
 const b = 1 as T.Value2;
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12271
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const values: Record<Color, string>;
+declare const valueStr: string;
+values[+valueStr as Color] = 'updated';
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const n = color as number;
+    `,
     `
 const foo: unknown = {};
 const baz: {} = foo!;
