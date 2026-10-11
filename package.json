@@ -97,7 +97,7 @@
     "get-github-auth-token": "^0.2.0",
     "globals": "catalog:",
     "husky": "^9.1.7",
-    "knip": "6.38.0",
+    "knip": "6.39.0",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.49.0",
     "nx": "23.2.0",
@@ -110,7 +110,7 @@
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.6.0+sha512.3ef68f951cb111ac204b4a5a16f0b2ddf0da56a96e0413e81d855d9f0b55ef926714709028e1cd00c405c2c5fb7b9e8ec4dc46777c805d0373c2f2ff00fd20ec",
+  "packageManager": "pnpm@12.9.0+sha512.8f64efa0b792986ca98ae568791bcd7722807e274c4f0c1d9853c62116495c584119db98762a2a5343b1684d361b9ae26fdd16d551666d7635346d3fae830ddd",
   "nx": {
     "name": "repo",
     "includedScripts": [

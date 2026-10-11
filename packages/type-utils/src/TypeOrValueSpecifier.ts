@@ -193,6 +193,7 @@ export function typeMatchesSpecifier(
       case 'package':
         return typeDeclaredInPackageDeclarationFile(
           specifier.package,
+          symbol,
           declarations,
           declarationFiles,
           program,
@@ -270,6 +271,7 @@ export function valueMatchesSpecifier(
     );
     return typeDeclaredInPackageDeclarationFile(
       specifier.package,
+      symbol,
       declarations,
       declarationFiles,
       program,
