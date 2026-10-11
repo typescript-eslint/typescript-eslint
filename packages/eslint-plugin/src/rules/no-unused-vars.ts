@@ -964,7 +964,9 @@ export default createRule<Options, MessageIds>({
 
         // If any used parameters occur after this parameter, do not report.
         return !posteriorParams.some(
-          v => v.references.length > 0 || v.eslintUsed,
+          v =>
+            v.eslintUsed ||
+            v.references.some(ref => !isTypeOnlyReference(v, ref)),
         );
       }
 
