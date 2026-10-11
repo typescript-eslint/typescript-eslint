@@ -1992,6 +1992,70 @@ const b = a;
     },
     {
       code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const k: 0 | 1 | 2;
+const c = k as Color;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 21,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const k: 0 | 1 | 2;
+const c = k;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare function update(color: Color): void;
+declare const valueStr: string;
+update(+valueStr as Color);
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 26,
+          endLine: 10,
+          line: 10,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare function update(color: Color): void;
+declare const valueStr: string;
+update(+valueStr);
+      `,
+    },
+    {
+      code: `
 const foo: unknown = {};
 const bar: unknown = foo!;
       `,
