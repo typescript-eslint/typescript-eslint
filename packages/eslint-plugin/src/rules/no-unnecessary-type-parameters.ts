@@ -466,6 +466,12 @@ function collectTypeParameterUsageCounts(
       if (isMappedType(type)) {
         visitType(type.typeParameter, false);
         if (properties.length === 0) {
+          // Instantiated mapped types populate `templateType` lazily, which
+          // building a type node forces.
+          if (!type.templateType) {
+            checker.typeToTypeNode(type, undefined, undefined);
+          }
+
           // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
           // They have properties, so we need to avoid double-counting.
           visitType(type.templateType ?? type.constraintType, false);
