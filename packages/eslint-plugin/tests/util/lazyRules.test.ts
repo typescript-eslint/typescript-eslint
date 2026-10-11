@@ -27,4 +27,15 @@ describe(lazyRules, () => {
     expect(loadA).toHaveBeenCalledOnce();
     expect(loadB).not.toHaveBeenCalled();
   });
+
+  it('loads a rule only once across repeated accesses', () => {
+    const loadA = vi.fn(() => ({ default: ruleA }));
+
+    const rules = lazyRules({ a: loadA });
+
+    expect(rules.a).toBe(ruleA);
+    expect(rules.a).toBe(ruleA);
+
+    expect(loadA).toHaveBeenCalledOnce();
+  });
 });

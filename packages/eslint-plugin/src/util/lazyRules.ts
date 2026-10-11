@@ -8,9 +8,15 @@ export function lazyRules<T extends Record<string, Loader>>(
   const rules = {} as Record<keyof T, ESLintPluginRuleModule>;
 
   for (const [name, load] of Object.entries(loaders)) {
+    let rule: ESLintPluginRuleModule | undefined;
+
     Object.defineProperty(rules, name, {
       enumerable: true,
-      get: () => load().default,
+      get: () => {
+        rule ??= load().default;
+
+        return rule;
+      },
     });
   }
 
