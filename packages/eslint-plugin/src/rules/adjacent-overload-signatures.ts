@@ -51,7 +51,7 @@ export default createRule<Options, MessageIds>({
     ],
   },
   defaultOptions: [{ ignoreAccessors: false }],
-  create(context, [{ ignoreAccessors }]) {
+  create(context, [{ ignoreAccessors = false }]) {
     interface Method {
       callSignature: boolean;
       name: string;
