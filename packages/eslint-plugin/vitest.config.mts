@@ -15,6 +15,9 @@ const vitestConfig = mergeConfig(
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
 
+      // To support `require` calls of the rules lazy loading.
+      setupFiles: ['tsx/cjs'],
+
       // Skip rules tests on Windows CI since they aren't affected by OS.
       exclude: isWindowsCI()
         ? [...configDefaults.exclude, './rules/**/*', './eslint-rules/**/*']
