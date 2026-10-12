@@ -18,7 +18,14 @@ type Member =
 type MemberDeclaration =
   TSESTree.DefaultExportDeclarations | TSESTree.NamedExportDeclarations;
 
-export default createRule({
+export type Options = [
+  {
+    ignoreAccessors?: boolean;
+  },
+];
+export type MessageIds = 'adjacentSignature';
+
+export default createRule<Options, MessageIds>({
   name: 'adjacent-overload-signatures',
   meta: {
     type: 'suggestion',
@@ -29,10 +36,22 @@ export default createRule({
     messages: {
       adjacentSignature: 'All {{name}} signatures should be adjacent.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ignoreAccessors: {
+            type: 'boolean',
+            description:
+              'Whether to ignore getters and setters, which cannot be overloaded.',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ ignoreAccessors: false }],
+  create(context, [{ ignoreAccessors = false }]) {
     interface Method {
       callSignature: boolean;
       name: string;
@@ -73,6 +92,12 @@ export default createRule({
         }
         case AST_NODE_TYPES.TSMethodSignature:
         case AST_NODE_TYPES.MethodDefinition:
+          if (
+            ignoreAccessors &&
+            (member.kind === 'get' || member.kind === 'set')
+          ) {
+            return null;
+          }
           return {
             ...getNameFromMember(member, context.sourceCode),
             callSignature: false,
