@@ -4027,6 +4027,26 @@ interface A {
   /** @deprecated */
   deprecatedField: string;
 }
+interface B extends A {}
+const b: B = { deprecatedField: 'x' };
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: 'deprecatedField' },
+          endColumn: 31,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
 const deprecatedField = 'string';
 const x: A = { deprecatedField };
       `,
