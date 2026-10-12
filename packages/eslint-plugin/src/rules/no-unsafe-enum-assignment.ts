@@ -439,7 +439,10 @@ export default createRule<[], MessageIds>({
             ?.declarations?.flatMap(declaration =>
               getMappedKeyConstraintTypes(checker, declaration),
             ) ?? [];
-        if (receiverTypes.length === 0) {
+        const enumReceiverTypes = receiverTypes.filter(
+          receiverType => getEnumTypes(checker, receiverType).length > 0,
+        );
+        if (enumReceiverTypes.length === 0) {
           return;
         }
 
@@ -453,7 +456,7 @@ export default createRule<[], MessageIds>({
               !checker.isTypeAssignableTo(senderType, receiverType),
           )
         ) {
-          report(node.property, 'unsafeEnumAccess', receiverTypes);
+          report(node.property, 'unsafeEnumAccess', enumReceiverTypes);
         }
       },
       ObjectExpression(node) {
@@ -654,10 +657,6 @@ function getMappedKeyConstraintTypes(
   checker: ts.TypeChecker,
   declaration: ts.Declaration,
 ) {
-  function getEnumKeyType(type: ts.Type) {
-    return getEnumTypes(checker, type).length > 0 ? [type] : [];
-  }
-
   if (
     !(
       ts.isGetAccessorDeclaration(declaration) ||
@@ -675,14 +674,14 @@ function getMappedKeyConstraintTypes(
 
   // { [key in Fruit]: string } -> [Fruit]
   if (ts.isMappedTypeNode(typeNode)) {
-    return getEnumKeyType(
+    return [
       checker.getTypeFromTypeNode(
         nullThrows(
           typeNode.typeParameter.constraint,
           'Expected the mapped type parameter to have a constraint.',
         ),
       ),
-    );
+    ];
   }
 
   // { [Fruit.Apple]: string; [Vegetable.Asparagus]: string } -> [Fruit.Apple, Vegetable.Asparagus]
@@ -691,7 +690,7 @@ function getMappedKeyConstraintTypes(
       const name = ts.getNameOfDeclaration(member);
 
       return name && ts.isComputedPropertyName(name)
-        ? getEnumKeyType(checker.getTypeAtLocation(name.expression))
+        ? [checker.getTypeAtLocation(name.expression)]
         : [];
     });
   }
