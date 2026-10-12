@@ -9,7 +9,6 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getParserServices,
-  getStaticStringValue,
   nullThrows,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
@@ -418,12 +417,14 @@ export default createRule<Options, MessageIds>({
       if (!node.computed) {
         return node.key.type === AST_NODE_TYPES.Identifier
           ? node.key.name
-          : getStaticStringValue(node.key);
+          : String(node.key.value);
       }
 
       const keyType = services.getTypeAtLocation(node.key);
 
-      return keyType.isStringLiteral() ? keyType.value : null;
+      return keyType.isStringLiteral() || keyType.isNumberLiteral()
+        ? String(keyType.value)
+        : null;
     }
 
     /**

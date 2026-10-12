@@ -4203,6 +4203,44 @@ const x: A = { [\`\${'deprecated'}Field\`]: 'string' };
     },
     {
       code: `
+interface Foo {
+  /** @deprecated */
+  1: string;
+}
+const a: Foo = { 1: '' };
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { name: '1' },
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  /** @deprecated */
+  1: string;
+}
+const a: Foo = { [1]: '' };
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { name: '1' },
+          endColumn: 20,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
 const a = {
   /** @deprecated */
   b: 'string',
