@@ -125,14 +125,22 @@ export default createRule<Options, MessageIds>({
         );
 
       if (options.ignoreVariableMerge && identifiers.length === 2) {
-        const [first, second] = identifiers;
+        const variableDecl = identifiers.find(
+          ({ parent }) => parent.type === AST_NODE_TYPES.VariableDeclarator,
+        );
         if (
           // variable + type alias/interface merging
-          (first.parent.type === AST_NODE_TYPES.VariableDeclarator &&
-            TYPE_DECLARATION_NODES.has(second.parent.type)) ||
-          (second.parent.type === AST_NODE_TYPES.VariableDeclarator &&
-            TYPE_DECLARATION_NODES.has(first.parent.type))
+          variableDecl &&
+          identifiers.some(({ parent }) =>
+            TYPE_DECLARATION_NODES.has(parent.type),
+          )
         ) {
+          // the variable can still redeclare a builtin or a global comment
+          yield {
+            loc: variableDecl.identifier.loc,
+            node: variableDecl.identifier,
+            type: 'syntax',
+          };
           return;
         }
       }

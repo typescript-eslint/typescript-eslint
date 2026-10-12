@@ -873,5 +873,24 @@ type A = number;
       ],
       options: [{ ignoreVariableMerge: true }],
     },
+    {
+      code: `
+var Object = 0;
+type Object = number;
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            id: 'Object',
+          },
+          endColumn: 11,
+          endLine: 2,
+          line: 2,
+          messageId: 'redeclaredAsBuiltin',
+        },
+      ],
+      options: [{ builtinGlobals: true, ignoreVariableMerge: true }],
+    },
   ],
 });
