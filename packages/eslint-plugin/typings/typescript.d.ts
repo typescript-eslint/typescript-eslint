@@ -1,6 +1,12 @@
 import 'typescript';
 
 declare module 'typescript' {
+  enum ObjectFlags {
+    // internal TS APIs
+
+    NonInferrableType = 1 << 18,
+  }
+
   interface TypeChecker {
     // internal TS APIs
 
