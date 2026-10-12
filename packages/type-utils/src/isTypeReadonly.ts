@@ -11,6 +11,9 @@ import {
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
+import { typeDeclaredInFile } from './typeOrValueSpecifiers/typeDeclaredInFile';
+import { typeDeclaredInLib } from './typeOrValueSpecifiers/typeDeclaredInLib';
+import { typeDeclaredInPackageDeclarationFile } from './typeOrValueSpecifiers/typeDeclaredInPackageDeclarationFile';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */
@@ -221,6 +224,41 @@ function isTypeReadonlyObject(
   return Readonlyness.Readonly;
 }
 
+function aliasMatchesSpecifier(
+  aliasSymbol: ts.Symbol,
+  specifier: TypeOrValueSpecifier,
+  program: ts.Program,
+): boolean {
+  const specifierName =
+    typeof specifier === 'string' ? specifier : specifier.name;
+  const names = Array.isArray(specifierName) ? specifierName : [specifierName];
+  if (!names.includes(aliasSymbol.getName())) {
+    return false;
+  }
+  if (typeof specifier === 'string') {
+    return true;
+  }
+
+  const declarations = aliasSymbol.getDeclarations() ?? [];
+  const declarationFiles = declarations.map(declaration =>
+    declaration.getSourceFile(),
+  );
+  switch (specifier.from) {
+    case 'file':
+      return typeDeclaredInFile(specifier.path, declarationFiles, program);
+    case 'lib':
+      return typeDeclaredInLib(declarationFiles, program);
+    case 'package':
+      return typeDeclaredInPackageDeclarationFile(
+        specifier.package,
+        aliasSymbol,
+        declarations,
+        declarationFiles,
+        program,
+      );
+  }
+}
+
 // a helper function to ensure the seenTypes map is always passed down, except by the external caller
 function isTypeReadonlyRecurser(
   program: ts.Program,
@@ -232,20 +270,14 @@ function isTypeReadonlyRecurser(
   seenTypes.add(type);
 
   // If the type has an alias symbol, check it against the allow list first
-  if (type.aliasSymbol && options.allow) {
-    const aliasSymbol = type.aliasSymbol;
-    const aliasMatches = options.allow.some(specifier => {
-      const specifierName =
-        typeof specifier === 'string' ? specifier : specifier.name;
-      const names = Array.isArray(specifierName)
-        ? specifierName
-        : [specifierName];
-      return names.includes(aliasSymbol.getName());
-    });
-
-    if (aliasMatches) {
-      return Readonlyness.Readonly;
-    }
+  const { aliasSymbol } = type;
+  if (
+    aliasSymbol &&
+    options.allow?.some(specifier =>
+      aliasMatchesSpecifier(aliasSymbol, specifier, program),
+    )
+  ) {
+    return Readonlyness.Readonly;
   }
 
   if (typeMatchesSomeSpecifier(type, options.allow, program)) {

@@ -1323,6 +1323,69 @@ function foo(arg: Foo) {}
     },
     {
       code: `
+type Foo = { prop: string };
+
+function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { prop: string };
+
+function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      options: [
+        {
+          allow: [{ from: 'package', name: 'Foo', package: 'foo-lib' }],
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { prop: string };
+
+function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo', path: 'other-file.ts' }],
+        },
+      ],
+    },
+    {
+      code: `
 function foo(arg: RegExp) {}
       `,
       errors: [

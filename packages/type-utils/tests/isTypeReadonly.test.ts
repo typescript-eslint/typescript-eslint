@@ -403,6 +403,42 @@ describe(isTypeReadonly, () => {
       });
     });
 
+    describe('type alias origin matching', () => {
+      const unionAlias =
+        'type MyMutableType = { a: string } | { b: string }; type Test = MyMutableType;';
+
+      it('treats a union type alias declared in the file as readonly', ({
+        expect,
+      }) => {
+        expect(unionAlias).toBeReadOnly({
+          allow: [{ from: 'file', name: 'MyMutableType' }],
+        });
+      });
+
+      it('treats a type alias declared in lib as readonly', ({ expect }) => {
+        expect('type Test = Partial<{ prop: string }>;').toBeReadOnly({
+          allow: [{ from: 'lib', name: 'Partial' }],
+        });
+        expect('type Test = Partial<{ prop: string }>;').not.toBeReadOnly({
+          allow: [{ from: 'file', name: 'Partial' }],
+        });
+      });
+
+      it.for([
+        [{ from: 'file', name: 'MyMutableType', path: 'other.ts' }],
+        [{ from: 'lib', name: 'MyMutableType' }],
+        [{ from: 'package', name: 'MyMutableType', package: 'some-package' }],
+      ] as const)(
+        'checks structure when the type alias is declared elsewhere: %o',
+        ([specifier], { expect }) => {
+          expect(unionAlias).not.toBeReadOnly({ allow: [specifier] });
+          expect(
+            'type MyMutableType = { prop: string }; type Test = MyMutableType;',
+          ).not.toBeReadOnly({ allow: [specifier] });
+        },
+      );
+    });
+
     describe('string format allow specifier', () => {
       const options: ReadonlynessOptions = {
         allow: ['StringFormatType'],
