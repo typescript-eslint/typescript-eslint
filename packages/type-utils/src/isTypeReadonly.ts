@@ -8,6 +8,7 @@ import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
 
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import {
+  symbolDeclaredInSpecifier,
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
@@ -231,7 +232,11 @@ function isTypeReadonlyRecurser(
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 
-  // If the type has an alias symbol, check it against the allow list first
+  // If the type has an alias symbol, check it against the allow list first.
+  // The alias must satisfy the specifier's `from` / `path` / `package`
+  // constraints as well as its name: matching on the name alone would let an
+  // alias declared anywhere be allowed by a specifier pointing at an entirely
+  // different file or package.
   if (type.aliasSymbol && options.allow) {
     const aliasSymbol = type.aliasSymbol;
     const aliasMatches = options.allow.some(specifier => {
@@ -240,7 +245,14 @@ function isTypeReadonlyRecurser(
       const names = Array.isArray(specifierName)
         ? specifierName
         : [specifierName];
-      return names.includes(aliasSymbol.getName());
+      if (!names.includes(aliasSymbol.getName())) {
+        return false;
+      }
+
+      return (
+        typeof specifier === 'string' ||
+        symbolDeclaredInSpecifier(aliasSymbol, specifier, program)
+      );
     });
 
     if (aliasMatches) {

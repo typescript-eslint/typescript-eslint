@@ -161,6 +161,41 @@ export const typeOrValueSpecifiersSchema = {
   type: 'array',
 } as const satisfies JSONSchema4;
 
+/**
+ * Checks whether a symbol was declared in the location described by a
+ * `file` / `lib` / `package` specifier.
+ *
+ * The symbol's own name is deliberately not compared here: callers match names
+ * separately, because a type or alias may be referenced under a name that
+ * differs from its declaration's symbol name. Keeping the two concerns apart
+ * lets alias symbols go through the same location matching as any other symbol.
+ */
+export function symbolDeclaredInSpecifier(
+  symbol: ts.Symbol,
+  specifier: FileSpecifier | LibSpecifier | PackageSpecifier,
+  program: ts.Program,
+): boolean {
+  const declarations = symbol.getDeclarations() ?? [];
+  const declarationFiles = declarations.map(declaration =>
+    declaration.getSourceFile(),
+  );
+
+  switch (specifier.from) {
+    case 'file':
+      return typeDeclaredInFile(specifier.path, declarationFiles, program);
+    case 'lib':
+      return typeDeclaredInLib(declarationFiles, program);
+    case 'package':
+      return typeDeclaredInPackageDeclarationFile(
+        specifier.package,
+        symbol,
+        declarations,
+        declarationFiles,
+        program,
+      );
+  }
+}
+
 export function typeMatchesSpecifier(
   type: ts.Type,
   specifier: TypeOrValueSpecifier,

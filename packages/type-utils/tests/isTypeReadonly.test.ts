@@ -403,6 +403,39 @@ describe(isTypeReadonly, () => {
       });
     });
 
+    describe('type alias location matching', () => {
+      // A type alias must satisfy the specifier's `from` / `path` / `package`
+      // constraints, not just its name. Otherwise an alias declared in user
+      // code would be allowed by a specifier pointing at `lib` or another
+      // package entirely.
+      const code =
+        'type MyMutableType = { prop: string }; type Test = MyMutableType;';
+
+      describe('is not readonly', () => {
+        it('does not match a type alias declared outside of the specifier lib', ({
+          expect,
+        }) => {
+          expect(code).not.toBeReadOnly({
+            allow: [{ from: 'lib', name: 'MyMutableType' }],
+          });
+        });
+
+        it('does not match a type alias declared outside of the specifier package', ({
+          expect,
+        }) => {
+          expect(code).not.toBeReadOnly({
+            allow: [
+              {
+                from: 'package',
+                name: 'MyMutableType',
+                package: 'some-other-package',
+              },
+            ],
+          });
+        });
+      });
+    });
+
     describe('string format allow specifier', () => {
       const options: ReadonlynessOptions = {
         allow: ['StringFormatType'],
