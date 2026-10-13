@@ -1401,6 +1401,88 @@ Promise.all(x);
     },
     {
       code: `
+interface NumIter extends Iterable<number> {}
+declare const x: NumIter;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  *[Symbol.iterator]() {
+    yield 1;
+  }
+}
+Promise.all(new Foo());
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 22,
+          endLine: 7,
+          line: 7,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare class Box<T> {
+  [Symbol.iterator](): Iterator<number>;
+}
+declare const values: Box<Promise<number>>;
+Promise.all(values);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const values: Map<Promise<number>, number>;
+Promise.all(values);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all('abc');
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
 declare const x: Array<number> | Array<Promise<number>>;
 Promise.race(x);
       `,

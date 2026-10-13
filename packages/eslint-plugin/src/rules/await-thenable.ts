@@ -284,7 +284,7 @@ function isInvalidPromiseAggregatorInput(
   }
 
   for (const part of tsutils.unionConstituents(type)) {
-    const valueTypes = getValueTypesOfArrayLike(part, checker);
+    const valueTypes = getValueTypesOfArrayLike(part, node, checker);
 
     if (valueTypes != null) {
       for (const typeArgument of valueTypes) {
@@ -300,6 +300,7 @@ function isInvalidPromiseAggregatorInput(
 
 function getValueTypesOfArrayLike(
   type: ts.Type,
+  node: ts.Node,
   checker: ts.TypeChecker,
 ): readonly ts.Type[] | null {
   if (checker.isTupleType(type)) {
@@ -313,6 +314,28 @@ function getValueTypesOfArrayLike(
         'number index type should exist on an array-like',
       ),
     ];
+  }
+
+  const iteratorSymbol = tsutils.getWellKnownSymbolPropertyOfType(
+    type,
+    'iterator',
+    checker,
+  );
+  if (iteratorSymbol != null) {
+    const iteratorType = checker.getTypeOfSymbolAtLocation(
+      iteratorSymbol,
+      node,
+    );
+    const valueTypes = iteratorType.getCallSignatures().flatMap(signature => {
+      const returnType = checker.getReturnTypeOfSignature(signature);
+      return tsutils.isTypeReference(returnType)
+        ? checker.getTypeArguments(returnType).slice(0, 1)
+        : [];
+    });
+
+    if (valueTypes.length > 0) {
+      return valueTypes;
+    }
   }
 
   // `Iterable<...>`
