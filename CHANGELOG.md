@@ -1,3 +1,27 @@
+## 8.71.2 (2026-10-12)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unused-vars] avoid false-positives when not using our parser ([#12989](https://github.com/typescript-eslint/typescript-eslint/pull/12989))
+- **eslint-plugin:** [no-unnecessary-type-parameters] count instantiated mapped type templates ([#12974](https://github.com/typescript-eslint/typescript-eslint/pull/12974))
+- **eslint-plugin:** [no-unused-vars] ignore type-only refs for after-used ([#12977](https://github.com/typescript-eslint/typescript-eslint/pull/12977))
+- **eslint-plugin:** [no-unnecessary-type-parameters] parenthesize constraint in optional tuple elements ([#12995](https://github.com/typescript-eslint/typescript-eslint/pull/12995))
+- **eslint-plugin:** [prefer-optional-chain] safe fix when the chain ends with a strict null comparison ([#12805](https://github.com/typescript-eslint/typescript-eslint/pull/12805))
+- **type-utils:** match linked packages and packages with missing version in `TypeOrValueSpecifier` ([#12948](https://github.com/typescript-eslint/typescript-eslint/pull/12948))
+
+### ❤️ Thank You
+
+- Abraham Guo
+- Brad Zacher @bradzacher
+- Evyatar Daud @StyleShit
+- Josh Goldberg
+- Vinccool96
+- Younsang Na @nayounsang
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.71.1 (2026-10-05)
 
 ### 🩹 Fixes

@@ -1,3 +1,17 @@
+## 8.71.2 (2026-10-12)
+
+### 🩹 Fixes
+
+- **type-utils:** match linked packages and packages with missing version in `TypeOrValueSpecifier` ([#12948](https://github.com/typescript-eslint/typescript-eslint/pull/12948))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.71.2) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.71.1 (2026-10-05)
 
 ### 🩹 Fixes
