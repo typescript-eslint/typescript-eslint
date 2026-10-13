@@ -138,6 +138,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
   invalid: [
     {
       code: "String('asdf');",
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -162,6 +163,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
     },
     {
       code: "'asdf'.toString();",
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 8,
@@ -189,6 +191,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
     },
     {
       code: "'' + 'asdf';",
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -213,6 +216,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
     },
     {
       code: "'asdf' + '';",
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 7,
@@ -240,6 +244,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
 let str = 'asdf';
 str += '';
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -273,6 +278,7 @@ str satisfies string;
 let str = 'asdf';
 'asdf' + (str += '');
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 11,
@@ -303,6 +309,7 @@ let str = 'asdf';
     },
     {
       code: 'Number(123);',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -327,6 +334,7 @@ let str = 'asdf';
     },
     {
       code: '+123;',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -354,6 +362,7 @@ let str = 'asdf';
     },
     {
       code: '~~123;',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -378,6 +387,7 @@ let str = 'asdf';
     },
     {
       code: 'Boolean(true);',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -405,6 +415,7 @@ let str = 'asdf';
     },
     {
       code: '!!true;',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -429,6 +440,7 @@ let str = 'asdf';
     },
     {
       code: 'BigInt(3n);',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -459,6 +471,7 @@ function f<T extends string>(x: T) {
   return String(x);
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
@@ -495,6 +508,7 @@ function f<T extends number>(x: T) {
   return Number(x);
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
@@ -531,6 +545,7 @@ function f<T extends boolean>(x: T) {
   return Boolean(x);
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
@@ -570,6 +585,7 @@ function f<T extends bigint>(x: T) {
   return BigInt(x);
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
@@ -604,6 +620,7 @@ function f<T extends bigint>(x: T) {
     // make sure fixes preserve parentheses in cases where logic would otherwise break
     {
       code: "String('a' + 'b').length;",
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -628,6 +645,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: "('a' + 'b').toString().length;",
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 13,
@@ -655,6 +673,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: '2 * +(2 + 2);',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 5,
@@ -682,6 +701,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: '2 * Number(2 + 2);',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 5,
@@ -706,6 +726,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: 'false && !!(false || true);',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
@@ -730,6 +751,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: 'false && Boolean(false || true);',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 10,
@@ -757,6 +779,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: '2n * BigInt(2n + 2n);',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 6,
@@ -786,6 +809,7 @@ function f<T extends bigint>(x: T) {
 let str = 'asdf';
 String(str).length;
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -819,6 +843,7 @@ let str = 'asdf';
 let str = 'asdf';
 str.toString().length;
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 5,
@@ -852,6 +877,7 @@ let str = 'asdf';
     },
     {
       code: '~~1;',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -876,6 +902,7 @@ let str = 'asdf';
     },
     {
       code: '~~-1;',
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,
@@ -903,6 +930,7 @@ let str = 'asdf';
 declare const threeOrFour: 3 | 4;
 ~~threeOrFour;
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,

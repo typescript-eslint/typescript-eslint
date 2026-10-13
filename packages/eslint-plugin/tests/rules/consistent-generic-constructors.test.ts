@@ -26,11 +26,14 @@ class Foo {
   a = new Foo<string>();
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   accessor a = new Foo<string>();
 }
-    `,
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 function foo(a: Foo = new Foo<string>()) {}
     `,
@@ -145,6 +148,7 @@ class Foo {
   accessor a: Foo<string> = new Foo();
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       options: ['type-annotation'],
     },
     {
@@ -358,6 +362,7 @@ class Foo {
   accessor a: Foo<string> = new Foo();
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -379,6 +384,7 @@ class Foo {
   accessor a = new Foo<string>();
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -401,6 +407,7 @@ class Foo {
   accessor [a]: Foo<string> = new Foo();
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

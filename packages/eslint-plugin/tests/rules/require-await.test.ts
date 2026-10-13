@@ -217,11 +217,14 @@ async function* f() {
   yield* x;
 }
     `,
-    `
+    {
+      code: `
 const fn = async () => {
   await using foo = new Bar();
 };
-    `,
+      `,
+      dependencyConstraints: { typescript: '5.2' },
+    },
     `
 async function* test1() {
   yield Promise.resolve(1);
@@ -655,6 +658,7 @@ const fn = async () => {
   using foo = new Bar();
 };
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 21,

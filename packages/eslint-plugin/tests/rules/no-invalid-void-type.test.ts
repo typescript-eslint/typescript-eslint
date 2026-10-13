@@ -137,11 +137,14 @@ function returnsVoidPromiseDirectly(): Promise<void> {
     'type promiseNeverUnion = Promise<void> | never;',
     'const arrowGeneric1 = <T = void,>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
-    `
+    {
+      code: `
 class ClassName {
   accessor propName: number;
 }
-    `,
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 function f(): void;
 function f(x: string): string;
@@ -506,6 +509,7 @@ class ClassName {
   accessor propName: void;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 22,

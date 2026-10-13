@@ -79,6 +79,7 @@ a as string;
 declare const a: string | number;
 a satisfies string as string;
         `,
+        dependencyConstraints: { typescript: '4.9' },
         errors: [
           {
             column: 1,
@@ -495,10 +496,13 @@ a as { hello: unknown };
 declare const a: { hello: string };
 a as { hello?: string };
       `,
-      `
+      {
+        code: `
 declare const a: { hello: string };
 a satisfies Record<string, string> as { hello?: string };
-      `,
+        `,
+        dependencyConstraints: { typescript: '4.9' },
+      },
     ],
     invalid: [
       {
@@ -526,6 +530,7 @@ var foo = {} as {
 declare const a: { hello: string };
 a satisfies Record<string, string> as { hello: string; world: string };
         `,
+        dependencyConstraints: { typescript: '4.9' },
         errors: [
           {
             column: 1,

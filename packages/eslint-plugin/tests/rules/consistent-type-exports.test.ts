@@ -17,7 +17,10 @@ ruleTester.run('consistent-type-exports', rule, {
 
     "export type { Type1 } from './consistent-type-exports';",
     "export { value1 } from './consistent-type-exports';",
-    "export { value1 as '🍎' } from './consistent-type-exports';",
+    {
+      code: "export { value1 as '🍎' } from './consistent-type-exports';",
+      dependencyConstraints: { typescript: '5.6' },
+    },
     "export type { value1 } from './consistent-type-exports';",
     `
 const variable = 1;
@@ -100,6 +103,7 @@ export { A };
     },
     {
       code: "export { Type1 as '🍎' } from './consistent-type-exports';",
+      dependencyConstraints: { typescript: '5.6' },
       errors: [
         {
           column: 1,

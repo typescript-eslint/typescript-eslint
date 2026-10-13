@@ -1335,6 +1335,7 @@ declare class Bar {}
 using resource = getResource();
 resource;
       `,
+      dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
@@ -1345,6 +1346,7 @@ resource;
       code: `
 using resource = getResource();
       `,
+      dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
@@ -1356,6 +1358,7 @@ using resource = getResource();
       code: `
 await using resource = getResource();
       `,
+      dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
@@ -3282,6 +3285,7 @@ export {};
       code: `
 using resource = getResource();
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 7,
@@ -3306,6 +3310,7 @@ using resource = getResource();
       code: `
 await using resource = getResource();
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 13,

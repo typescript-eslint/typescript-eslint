@@ -241,6 +241,7 @@ declare const box: { value: string };
 declare const box: { value: string };
 void (box.value satisfies string);
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 1,

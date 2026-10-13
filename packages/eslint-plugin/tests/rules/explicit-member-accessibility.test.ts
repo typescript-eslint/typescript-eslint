@@ -318,6 +318,7 @@ class Test {
   private accessor foo = 1;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
     },
     {
       code: `
@@ -325,6 +326,7 @@ abstract class Test {
   private abstract accessor foo: number;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
     },
   ],
   invalid: [
@@ -2053,6 +2055,7 @@ class SomeClass {
   accessor foo = 1;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -2100,6 +2103,7 @@ abstract class SomeClass {
   abstract accessor foo: string;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

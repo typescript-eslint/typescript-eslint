@@ -1658,6 +1658,7 @@ class Foo {
   accessor a: number = this.b;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
 
@@ -3049,6 +3050,7 @@ class Foo {
   @Dec() accessor a;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3070,6 +3072,7 @@ class Foo {
   accessor c;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3091,6 +3094,7 @@ class Foo {
   abstract accessor e;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3114,6 +3118,7 @@ class Foo {
   accessor c;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3145,6 +3150,7 @@ class Foo {
   @Dec() accessor d;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

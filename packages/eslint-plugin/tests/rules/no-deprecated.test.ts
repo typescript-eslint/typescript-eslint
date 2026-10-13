@@ -174,22 +174,28 @@ class A {
 
 new A()['b']();
     `,
-    `
+    {
+      code: `
 class A {
   accessor b: 1;
   /** @deprecated */ accessor c: 2;
 }
 
 new A().b;
-    `,
-    `
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 class A {
   accessor b: 1;
   /** @deprecated */ accessor c: 2;
 }
 
 new A()['b'];
-    `,
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 declare class A {
   /** @deprecated */
@@ -208,7 +214,8 @@ declare class A {
 
 A['c'];
     `,
-    `
+    {
+      code: `
 declare class A {
   /** @deprecated */
   static accessor b: string;
@@ -216,8 +223,11 @@ declare class A {
 }
 
 A.c;
-    `,
-    `
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 declare class A {
   /** @deprecated */
   static accessor b: string;
@@ -225,7 +235,9 @@ declare class A {
 }
 
 A['c'];
-    `,
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 namespace A {
   /** @deprecated */
@@ -377,12 +389,18 @@ export {
   default as ts,
 } from 'typescript';
     `,
-    `
+    {
+      code: `
 export { deprecatedFunction as 'bur' } from './deprecated';
-    `,
-    `
+      `,
+      dependencyConstraints: { typescript: '5.6' },
+    },
+    {
+      code: `
 export { 'deprecatedFunction' } from './deprecated';
-    `,
+      `,
+      dependencyConstraints: { typescript: '5.6' },
+    },
     `
 namespace A {
   /** @deprecated */
@@ -3654,6 +3672,7 @@ declare const a: A;
 
 a.b;
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3676,6 +3695,7 @@ declare const a: A;
 
 a['b'];
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3698,6 +3718,7 @@ declare const a: A;
 
 a.b();
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3720,6 +3741,7 @@ declare const a: A;
 
 a['b']();
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3744,6 +3766,7 @@ declare const a: A;
 
 a.b();
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3764,6 +3787,7 @@ declare class A {
 
 A.b();
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

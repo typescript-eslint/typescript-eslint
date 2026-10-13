@@ -417,13 +417,16 @@ class A {
   }
 }
     `,
-    `
+    {
+      code: `
 class A {
   a = 5;
   b = this.a;
   accessor c = this.a;
 }
-    `,
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
 
   invalid: [

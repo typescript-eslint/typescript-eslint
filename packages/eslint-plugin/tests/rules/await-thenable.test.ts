@@ -230,6 +230,7 @@ await using foo = d;
 
 export {};
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -239,6 +240,7 @@ using foo = {
 
 export {};
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -246,6 +248,7 @@ await using foo = 3 as any;
 
 export {};
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       // bad bad code but not this rule's problem
@@ -256,6 +259,7 @@ using foo = {
 
 export {};
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -264,6 +268,7 @@ async function foo() {
   await using _ = maybeAsyncDisposable;
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -272,6 +277,7 @@ async function iterateUsing(arr: Array<AsyncDisposable>) {
   }
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -1189,6 +1195,7 @@ async function foo() {
   await using d = disposable;
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 19,
@@ -1218,6 +1225,7 @@ async function foo() {
   };
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 19,
@@ -1253,6 +1261,7 @@ async function foo() {
     e = disposable;
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 19,
@@ -1287,6 +1296,7 @@ async function foo() {
     b = disposable;
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 9,

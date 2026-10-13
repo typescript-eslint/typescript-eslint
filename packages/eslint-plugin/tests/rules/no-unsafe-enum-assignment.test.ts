@@ -2284,6 +2284,7 @@ class Basket {
   accessor fruit: Fruit = 1;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -2433,6 +2434,7 @@ class TestBasket implements Basket {
   accessor fruit = 1;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3736,6 +3738,7 @@ enum Fruit {
 
 const box = { fruit: 1 } satisfies { fruit: Fruit };
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 15,

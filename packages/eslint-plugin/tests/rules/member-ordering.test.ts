@@ -2119,6 +2119,7 @@ class Foo {
   baz() {}
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       options: [
         {
           default: ['accessor', 'method'],
@@ -5260,6 +5261,7 @@ class Foo {
   baz() {}
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

@@ -171,16 +171,22 @@ for (let i = 0; i < arr.length; i++) {
   (arr[i] as unknown as number)++;
 }
     `,
-    `
+    {
+      code: `
 for (let i = 0; i < arr.length; i++) {
   (arr[i] satisfies number)++;
 }
-    `,
-    `
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 for (let i = 0; i < arr.length; i++) {
   (arr[i]! satisfies number)++;
 }
-    `,
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 for (let i = 0; i < arr.length; i++) {
   [arr[i]] = [1];

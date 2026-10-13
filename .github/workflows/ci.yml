@@ -17,6 +17,8 @@ concurrency:
 
 env:
   PRIMARY_NODE_VERSION: 24
+  # Should match the lower bound of `SUPPORTED_TYPESCRIPT_VERSIONS`
+  OLDEST_TYPESCRIPT_VERSION: '4.8.4'
   # Value will be controlled via GitHub environment (called "main") secret, will be read-write for main branch, read-only for other branches
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
@@ -400,6 +402,64 @@ jobs:
           files: packages/${{ matrix.package.name }}/coverage/lcov.info
           flags: ${{ matrix.package.name }}
           name: ${{ matrix.package.name }}-${{ strategy.job-index }}
+
+  plugin_unit_tests_old_typescript:
+    name: Run Unit Tests (oldest TypeScript, ${{ matrix.shard }})
+    environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
+    needs: [build]
+    if: ${{ needs.build.outputs.is_plugin_affected == 'true' }}
+    # TODO: remove once the remaining failures on old TS versions are triaged
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ['1/4', '2/4', '3/4', '4/4']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Build
+        run: pnpm exec nx run-many -t build --projects=eslint-plugin
+
+      - name: Install TypeScript ${{ env.OLDEST_TYPESCRIPT_VERSION }}
+        run: |
+          pnpm config set --location project --json overrides "{\"typescript\": \"$OLDEST_TYPESCRIPT_VERSION\"}"
+          pnpm install --no-frozen-lockfile --prefer-offline --ignore-scripts
+
+          actual="$(cd packages/eslint-plugin && node -p "require('typescript').version")"
+
+          if [ "$actual" != "$OLDEST_TYPESCRIPT_VERSION" ]; then
+            echo "::error::Expected TypeScript $OLDEST_TYPESCRIPT_VERSION but resolved $actual"
+            exit 1
+          fi
+
+      - name: Remove compiler options unknown to old TypeScript versions
+        run: |
+          node -e '
+            const fs = require("node:fs");
+
+            for (const file of fs.globSync("packages/eslint-plugin/tests/fixtures/**/tsconfig*.json")) {
+              const tsconfig = JSON.parse(fs.readFileSync(file, "utf8"));
+
+              delete tsconfig.compilerOptions?.stableTypeOrdering;
+
+              fs.writeFileSync(file, JSON.stringify(tsconfig, null, 2));
+            }
+          '
+
+      - name: Run unit tests
+        working-directory: packages/eslint-plugin
+        run: pnpm exec vitest run --shard="$SHARD"
+        env:
+          CI: true
+          SHARD: ${{ matrix.shard }}
 
   unit_tests:
     name: Run Unit Tests (${{ matrix.os }}, ${{ matrix.name }})

@@ -66,11 +66,14 @@ class Foo {
   readonly a: number = 5;
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   accessor a = 5;
 }
-    `,
+      `,
+      dependencyConstraints: { typescript: '4.9' },
+    },
 
     'const a: any = 5;',
     "const fn = function (a: any = 5, b: any = true, c: any = 'foo') {};",
@@ -103,6 +106,7 @@ class Foo {
   accessor a: number = 5;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ ignoreProperties: true }],
     },
     {
@@ -816,6 +820,7 @@ class Foo {
   accessor a: number = 5;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,

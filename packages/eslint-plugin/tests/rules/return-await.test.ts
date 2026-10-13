@@ -335,6 +335,7 @@ async function f() {
   return await Promise.resolve(2);
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -344,6 +345,7 @@ async function f() {
   return await Promise.resolve(2);
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -355,6 +357,7 @@ async function f() {
   }
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -364,6 +367,7 @@ async function f() {
   using something = bleh;
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -373,6 +377,7 @@ async function f() {
   using something = bleh;
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       options: ['always'],
     },
     {
@@ -388,6 +393,7 @@ async function returnAwait() {
   return await asyncFn();
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       options: ['in-try-catch'],
     },
     {
@@ -405,6 +411,7 @@ async function outerFunction() {
   }
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       options: ['in-try-catch'],
     },
     {
@@ -420,6 +427,7 @@ async function outerFunction() {
   const innerFunction = async () => asyncFn();
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       options: ['in-try-catch'],
     },
     {
@@ -429,6 +437,7 @@ async function outerFunction() {
 using foo = 1 as any;
 return Promise.resolve(42);
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       // intentionally invalid AST - return is outside a function.
@@ -439,6 +448,7 @@ return Promise.resolve(42);
   return Promise.resolve(42);
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -2023,6 +2033,7 @@ async function f() {
   }
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 14,
@@ -2063,6 +2074,7 @@ async function f() {
   }
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 14,
@@ -2102,6 +2114,7 @@ async function f() {
   }
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 12,
@@ -2138,6 +2151,7 @@ async function outerFunction() {
   }
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 12,
@@ -2176,6 +2190,7 @@ async function outerFunction() {
   const innerFunction = async () => await asyncFn();
 }
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 37,
