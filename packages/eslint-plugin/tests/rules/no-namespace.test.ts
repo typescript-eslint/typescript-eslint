@@ -272,6 +272,8 @@ export declare namespace foo {
       ],
       options: [{ allowDeclarations: false }],
     },
+    // Nested namespaces
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 namespace Foo.Bar {
@@ -349,6 +351,7 @@ namespace A {
       ],
       options: [{ allowDeclarations: true }],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 namespace A {
@@ -444,6 +447,8 @@ namespace A {
       ],
       options: [{ allowDeclarations: true }],
     },
+    // Nested namespaces
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 namespace A {
@@ -522,6 +527,7 @@ export namespace A {
       ],
       options: [{ allowDeclarations: true }],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 export namespace A {
@@ -617,6 +623,8 @@ export namespace A {
       ],
       options: [{ allowDeclarations: true }],
     },
+    // Nested namespace
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 export namespace A {
@@ -643,5 +651,6 @@ export namespace A {
       ],
       options: [{ allowDeclarations: true }],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
   ],
 });
