@@ -8,6 +8,33 @@ ruleTester.run('unbound-method', rule, {
     requireData: true,
   },
   valid: [
+    {
+      code: `
+interface Constructible {
+  new ();
+  method(): void;
+}
+declare const Foo: Constructible;
+
+const { method } = Foo;
+      `,
+      options: [{ ignoreStatic: true }],
+    },
+    {
+      code: `
+declare namespace NS {
+  interface Instance {}
+}
+interface Constructible {
+  new (): NS.Instance;
+  method(): void;
+}
+declare const Foo: Constructible;
+
+const { method } = Foo;
+      `,
+      options: [{ ignoreStatic: true }],
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/7893
     {
       code: `
