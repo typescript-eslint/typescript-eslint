@@ -286,9 +286,6 @@ const methods = {
   methodB() {
     return true
   },
-  methodC() {
-    return this()
-  }
 };
       `,
       errors: [
@@ -300,12 +297,26 @@ const methods = {
           line: 4,
           messageId: 'unsafeCallThis',
         },
+      ],
+    },
+    {
+      code: noFormat`
+const methods = {
+  methodB() {
+    return true
+  },
+  methodC() {
+    return this()
+  }
+};
+      `,
+      errors: [
         {
           column: 12,
           data: { type: 'an `any`' },
           endColumn: 16,
-          endLine: 10,
-          line: 10,
+          endLine: 7,
+          line: 7,
           messageId: 'unsafeCallThis',
         },
       ],
@@ -499,7 +510,6 @@ new value();
       code: `
 function callThis(this: NotKnown) {
   this();
-  this.method();
 }
       `,
       errors: [
@@ -510,11 +520,20 @@ function callThis(this: NotKnown) {
           line: 3,
           messageId: 'errorCallThis',
         },
+      ],
+    },
+    {
+      code: `
+function callThis(this: NotKnown) {
+  this.method();
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 14,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'errorCallThis',
         },
       ],

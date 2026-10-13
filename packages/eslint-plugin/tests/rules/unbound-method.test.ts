@@ -1998,8 +1998,6 @@ const arith = {
 
 function foo(arg: ContainsMethods | null) {
   const unbound = arg?.unbound;
-  arg.unbound += 1;
-  arg?.unbound as any;
 }
       `,
       errors: [
@@ -2010,18 +2008,68 @@ function foo(arg: ContainsMethods | null) {
           line: 19,
           messageId: 'unboundWithoutThisAnnotation',
         },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+function foo(arg: ContainsMethods | null) {
+  arg.unbound += 1;
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 14,
-          endLine: 20,
-          line: 20,
+          endLine: 19,
+          line: 19,
           messageId: 'unboundWithoutThisAnnotation',
         },
+      ],
+    },
+    {
+      code: `
+class ContainsMethods {
+  bound?: () => void;
+  unbound?(): void;
+
+  static boundStatic?: () => void;
+  static unboundStatic?(): void;
+}
+
+let instance = new ContainsMethods();
+
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+
+function foo(arg: ContainsMethods | null) {
+  arg?.unbound as any;
+}
+      `,
+      errors: [
         {
           column: 3,
           endColumn: 15,
-          endLine: 21,
-          line: 21,
+          endLine: 19,
+          line: 19,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
