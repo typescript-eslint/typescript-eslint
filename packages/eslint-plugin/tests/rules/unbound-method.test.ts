@@ -1859,6 +1859,49 @@ foo[bazz];
   ],
   invalid: [
     {
+      // a constructor returning its own type creates instances with the same members
+      code: `
+interface Foo {
+  new (): Foo;
+  bothIsAndIsNotAStatic(): number;
+}
+declare const Foo: Foo;
+
+const x = Foo.bothIsAndIsNotAStatic;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 36,
+          endLine: 8,
+          line: 8,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+      options: [{ ignoreStatic: true }],
+    },
+    {
+      code: `
+type Foo = {
+  new (): Foo;
+  method(): void;
+};
+declare const Foo: Foo;
+
+const x = Foo.method;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 21,
+          endLine: 8,
+          line: 8,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+      options: [{ ignoreStatic: true }],
+    },
+    {
       code: `
 interface ConstructorLike {
   new (): object;
