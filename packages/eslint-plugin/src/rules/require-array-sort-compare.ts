@@ -60,7 +60,11 @@ export default createRule<Options, MessageIds>({
       const type = getConstrainedTypeAtLocation(services, node);
 
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
-        const typeArgs = checker.getTypeArguments(type);
+        // Before TS 5.1, a constrained type parameter's array type has an extra `this` type argument
+        const typeArgs = checker
+          .getTypeArguments(type)
+          .slice(0, type.target.typeParameters?.length);
+
         return typeArgs.every(arg => {
           const typeName = getTypeName(
             checker,
