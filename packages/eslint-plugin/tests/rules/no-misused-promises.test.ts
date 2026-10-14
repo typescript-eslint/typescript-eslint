@@ -3431,6 +3431,7 @@ const a = {
 };
 const b: Disposable = a;
       `,
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 23,

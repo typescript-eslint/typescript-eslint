@@ -523,6 +523,8 @@ export type * from './consistent-type-exports/type-only-exports';
       code: `
 export * from './consistent-type-exports/type-only-reexport';
       `,
+      // The re-exported fixture uses `export type *`, which requires TS 5.0
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 1,
@@ -540,6 +542,8 @@ export type * from './consistent-type-exports/type-only-reexport';
       code: `
 export * as foo from './consistent-type-exports/type-only-reexport';
       `,
+      // The re-exported fixture uses `export type *`, which requires TS 5.0
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 1,

@@ -404,12 +404,10 @@ jobs:
           name: ${{ matrix.package.name }}-${{ strategy.job-index }}
 
   plugin_unit_tests_old_typescript:
-    name: Run Unit Tests (oldest TypeScript, ${{ matrix.shard }})
+    name: Run Unit Tests (eslint-plugin, oldest TypeScript, ${{ matrix.shard }})
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
     if: ${{ needs.build.outputs.is_plugin_affected == 'true' }}
-    # TODO: remove once the remaining failures on old TS versions are triaged
-    continue-on-error: true
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
