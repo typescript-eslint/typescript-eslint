@@ -470,6 +470,14 @@ Promise.all(x);
     },
     {
       code: `
+interface NumIter extends Iterable<Promise<number>> {}
+
+declare const x: NumIter;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
 declare const x: Iterable<Promise<number>> | Iterable<Promise<string>>;
 
 // @ts-expect-error
@@ -1240,7 +1248,6 @@ async function foo() {
         },
       ],
     },
-    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const disposable: Disposable;
@@ -1277,7 +1284,6 @@ async function foo() {
         },
       ],
     },
-    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const anee: any;
@@ -1517,6 +1523,92 @@ Promise.all(x);
           endColumn: 14,
           endLine: 3,
           line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13023
+    {
+      code: `
+interface NumIter extends Iterable<number> {}
+
+declare const x: NumIter;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  *[Symbol.iterator]() {
+    yield 1;
+  }
+}
+
+Promise.all(new Foo());
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 22,
+          endLine: 8,
+          line: 8,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare class Box<T> {
+  [Symbol.iterator](): Iterator<number>;
+}
+
+declare const x: Box<Promise<number>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Map<Promise<number>, number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all('abc');
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],

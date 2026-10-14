@@ -284,7 +284,7 @@ function isInvalidPromiseAggregatorInput(
   }
 
   for (const part of tsutils.unionConstituents(type)) {
-    const valueTypes = getValueTypesOfArrayLike(part, checker);
+    const valueTypes = getValueTypesOfArrayLike(part, node, checker);
 
     if (valueTypes != null) {
       for (const typeArgument of valueTypes) {
@@ -300,6 +300,7 @@ function isInvalidPromiseAggregatorInput(
 
 function getValueTypesOfArrayLike(
   type: ts.Type,
+  node: ts.Node,
   checker: ts.TypeChecker,
 ): readonly ts.Type[] | null {
   if (checker.isTupleType(type)) {
@@ -315,12 +316,30 @@ function getValueTypesOfArrayLike(
     ];
   }
 
-  // `Iterable<...>`
-  if (tsutils.isTypeReference(type)) {
-    return checker.getTypeArguments(type).slice(0, 1);
-  }
+  // Yield type of `[Symbol.iterator]()`, not this type's own type arguments.
+  const yieldType = getIterableYieldType(type, node, checker);
+  return yieldType == null ? null : [yieldType];
+}
 
-  return null;
+function getIterableYieldType(
+  type: ts.Type,
+  node: ts.Node,
+  checker: ts.TypeChecker,
+): ts.Type | undefined {
+  const iteratorProperty = nullThrows(
+    tsutils.getWellKnownSymbolPropertyOfType(type, 'iterator', checker),
+    'Expected an iterable type to have a [Symbol.iterator] property.',
+  );
+
+  const iteratorType = checker.getReturnTypeOfSignature(
+    checker
+      .getTypeOfSymbolAtLocation(iteratorProperty, node)
+      .getCallSignatures()[0],
+  );
+
+  return tsutils.isTypeReference(iteratorType)
+    ? checker.getTypeArguments(iteratorType).at(0)
+    : undefined;
 }
 
 function isAlwaysNonAwaitableType(
