@@ -403,6 +403,93 @@ describe(isTypeReadonly, () => {
       });
     });
 
+    describe('qualified alias matching', () => {
+      describe('package specifier from a different package', () => {
+        const options: ReadonlynessOptions = {
+          allow: [
+            {
+              from: 'package',
+              name: ['OptionsAlias', 'OptionsInterface'],
+              package: 'some-package',
+            },
+          ],
+        };
+
+        it.for([
+          ['type OptionsAlias = { items: string[] };'],
+        ] as const)(
+          'does not treat a local type alias as allowed: %s',
+          ([code], { expect }) => {
+            expect(code).not.toBeReadOnly(options);
+          },
+        );
+      });
+
+      describe('file specifier with a different path', () => {
+        const options: ReadonlynessOptions = {
+          allow: [{ from: 'file', name: 'OptionsAlias', path: 'other.ts' }],
+        };
+
+        it.for([
+          ['type OptionsAlias = { items: string[] };'],
+        ] as const)(
+          'does not treat an alias from another file as allowed: %s',
+          ([code], { expect }) => {
+            expect(code).not.toBeReadOnly(options);
+          },
+        );
+      });
+
+      describe('lib specifier for a local alias', () => {
+        const options: ReadonlynessOptions = {
+          allow: [{ from: 'lib', name: 'OptionsAlias' }],
+        };
+
+        it.for([
+          ['type OptionsAlias = { items: string[] };'],
+        ] as const)(
+          'does not treat a local alias as a lib type: %s',
+          ([code], { expect }) => {
+            expect(code).not.toBeReadOnly(options);
+          },
+        );
+      });
+
+      describe('union alias with a package specifier from a different package', () => {
+        const options: ReadonlynessOptions = {
+          allow: [{ from: 'package', name: 'MyUnion', package: 'some-package' }],
+        };
+
+        it.for([
+          [
+            'type MyUnion = A | B; type A = { a: string }; type B = { b: string };',
+          ],
+        ] as const)(
+          'does not treat a local union alias as allowed: %s',
+          ([code], { expect }) => {
+            expect(code).not.toBeReadOnly(options);
+          },
+        );
+      });
+
+      describe('union alias with a file specifier', () => {
+        const options: ReadonlynessOptions = {
+          allow: [{ from: 'file', name: 'MyUnion' }],
+        };
+
+        it.for([
+          [
+            'type MyUnion = A | B; type A = { a: string }; type B = { b: string };',
+          ],
+        ] as const)(
+          'treats a union alias from this file as allowed: %s',
+          ([code], { expect }) => {
+            expect(code).toBeReadOnly(options);
+          },
+        );
+      });
+    });
+
     describe('string format allow specifier', () => {
       const options: ReadonlynessOptions = {
         allow: ['StringFormatType'],

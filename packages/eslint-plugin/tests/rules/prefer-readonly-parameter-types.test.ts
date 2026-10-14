@@ -584,6 +584,19 @@ function process(arg1: ViewStyle, arg2: StyleProp<ViewStyle>): void {}
     },
     {
       code: `
+type OptionsAlias = { items: string[] };
+
+function foo(arg: OptionsAlias) {}
+      `,
+      name: 'type alias allowed by file specifier with matching path',
+      options: [
+        {
+          allow: [{ from: 'file', name: 'OptionsAlias', path: 'file.ts' }],
+        },
+      ],
+    },
+    {
+      code: `
 type MyArray<T> = T | T[] | null;
 interface Item {
   value: string;
@@ -620,6 +633,85 @@ function foo(arg: MyReadonlyType) {}
     },
   ],
   invalid: [
+    {
+      code: `
+type OptionsAlias = { items: string[] };
+interface OptionsInterface {
+  items: string[];
+}
+
+function withAlias(options: OptionsAlias): void {}
+function withInterface(options: OptionsInterface): void {}
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 41,
+          line: 7,
+          messageId: 'shouldBeReadonly',
+        },
+        {
+          column: 24,
+          endColumn: 49,
+          line: 8,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      name: 'alias and interface are both reported when the allow package does not match',
+      options: [
+        {
+          allow: [
+            {
+              from: 'package',
+              name: ['OptionsAlias', 'OptionsInterface'],
+              package: 'some-package',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+type OptionsAlias = { items: string[] };
+
+function foo(arg: OptionsAlias) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 31,
+          line: 4,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      name: 'alias is reported when the allow file path does not match',
+      options: [
+        {
+          allow: [{ from: 'file', name: 'OptionsAlias', path: 'other.ts' }],
+        },
+      ],
+    },
+    {
+      code: `
+type OptionsAlias = { items: string[] };
+
+function foo(arg: OptionsAlias) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 31,
+          line: 4,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      name: 'alias is reported when the allow specifier is from lib',
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'OptionsAlias' }],
+        },
+      ],
+    },
     // arrays
     // Removing readonly causes duplicates
     {
