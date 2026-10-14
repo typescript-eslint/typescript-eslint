@@ -938,6 +938,8 @@ declare const a: A;
 
 a.a?.a?.a;
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       languageOptions: {
         parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
@@ -1351,12 +1353,17 @@ if (isNarrower(w)) {
       `,
       options: [{ checkTypePredicates: true }],
     },
-    `
+    {
+      code: `
 type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
 a.a?.a?.a;
-    `,
-    `
+      `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 interface T {
   [name: Lowercase<string>]: {
     [name: Lowercase<string>]: {
@@ -1378,7 +1385,10 @@ declare const t: T;
 
 t.a.a.a.value;
 t.A?.A?.A?.VALUE;
-    `,
+      `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
 
   invalid: [
@@ -5328,6 +5338,8 @@ declare const a: A;
 
 a.a?.a?.a;
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 7,
@@ -5379,6 +5391,8 @@ declare const t: T;
 
 t.a?.a?.a?.value;
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 4,
