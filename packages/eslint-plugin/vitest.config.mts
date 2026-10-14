@@ -13,7 +13,6 @@ const oldTypeScriptSkippedTests = [
   // See https://github.com/typescript-eslint/typescript-eslint/pull/13024#issuecomment-6161399272
   './rules/no-unnecessary-type-parameters.test.ts',
   './rules/no-unsafe-enum-assignment.test.ts',
-  './rules/no-unsafe-type-assertion.test.ts',
 ];
 
 const vitestConfig = mergeConfig(
