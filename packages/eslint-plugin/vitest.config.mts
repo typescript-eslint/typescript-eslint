@@ -1,5 +1,5 @@
-import { typescriptVersionIsAtLeast } from '@typescript-eslint/type-utils';
 import * as path from 'node:path';
+import ts from 'typescript';
 import { defineProject, mergeConfig, configDefaults } from 'vitest/config';
 
 import { vitestBaseConfig } from '../../vitest.config.base.mjs';
@@ -30,7 +30,7 @@ const vitestConfig = mergeConfig(
         // Skip rules tests on Windows CI since they aren't affected by OS.
         ...(isWindowsCI() ? ['./rules/**/*', './eslint-rules/**/*'] : []),
 
-        ...(typescriptVersionIsAtLeast['4.9'] ? [] : oldTypeScriptSkippedTests),
+        ...(ts.version.startsWith('4.8.') ? oldTypeScriptSkippedTests : []),
       ],
 
       name: packageJson.name.replace('@typescript-eslint/', ''),
