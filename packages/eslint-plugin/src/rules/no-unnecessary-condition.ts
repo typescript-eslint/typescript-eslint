@@ -19,6 +19,7 @@ import {
   isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
+  isTypeLiteralType,
   isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
@@ -65,7 +66,7 @@ function toStaticValue(
   type: ts.Type,
 ):
   { value: bigint | boolean | number | string | null | undefined } | undefined {
-  // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
+  // isTypeLiteralType() only covers numbers/bigints and strings, hence the rest of the branches.
   if (tsutils.isBooleanLiteralType(type)) {
     return { value: tsutils.isTrueLiteralType(type) };
   }
@@ -75,7 +76,7 @@ function toStaticValue(
   if (type.flags === ts.TypeFlags.Null) {
     return { value: null };
   }
-  if (type.isLiteral()) {
+  if (isTypeLiteralType(type)) {
     return { value: getValueOfLiteralType(type) };
   }
 
