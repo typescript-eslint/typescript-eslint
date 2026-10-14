@@ -16,7 +16,6 @@ const oldTypeScriptSkippedTests = [
   './rules/no-unnecessary-condition.test.ts',
   './rules/no-unnecessary-type-parameters.test.ts',
   './rules/no-unsafe-enum-assignment.test.ts',
-  './rules/no-unsafe-return.test.ts',
   './rules/no-unsafe-type-assertion.test.ts',
   './rules/require-array-sort-compare.test.ts',
 ];
