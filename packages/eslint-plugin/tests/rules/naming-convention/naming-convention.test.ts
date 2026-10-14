@@ -999,6 +999,7 @@ class foo {
     },
     {
       code: "import { '🍎' as Foo } from 'foo_bar';",
+      // Arbitrary module namespace identifier names require TS 5.6
       dependencyConstraints: { typescript: '5.6' },
       languageOptions: { parserOptions },
       options: [
@@ -4835,6 +4836,7 @@ class foo {
     },
     {
       code: "import { '🍎' as foo } from 'foo_bar';",
+      // Arbitrary module namespace identifier names require TS 5.6
       dependencyConstraints: { typescript: '5.6' },
       errors: [
         {

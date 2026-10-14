@@ -425,6 +425,7 @@ class A {
   accessor c = this.a;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
   ],

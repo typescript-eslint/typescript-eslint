@@ -23,6 +23,7 @@ class Foo implements Bar {
   accessor method = () => {};
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       options: [{ ignoreClassesThatImplementAnInterface: true }],
     },
@@ -72,6 +73,7 @@ class Foo {
   override accessor method = () => {};
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       options: [{ ignoreOverrideMethods: true }],
     },
@@ -369,6 +371,7 @@ class Foo {
   };
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -379,6 +382,7 @@ class Foo {
   };
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
   ],
@@ -443,6 +447,7 @@ class Foo {
   accessor method = () => {};
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -462,6 +467,7 @@ class Foo {
   private accessor method = () => {};
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -481,6 +487,7 @@ class Foo {
   protected accessor method = () => {};
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

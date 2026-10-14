@@ -63,6 +63,7 @@ for (let i = 0; i < 3; i++) {
   const fn = () => resource;
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -75,6 +76,7 @@ async function f() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
   ],

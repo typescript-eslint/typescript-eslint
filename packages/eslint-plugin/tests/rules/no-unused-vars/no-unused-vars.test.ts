@@ -1335,6 +1335,7 @@ declare class Bar {}
 using resource = getResource();
 resource;
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
@@ -1346,6 +1347,7 @@ resource;
       code: `
 using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
@@ -1358,6 +1360,7 @@ using resource = getResource();
       code: `
 await using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
@@ -3285,6 +3288,7 @@ export {};
       code: `
 using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -3310,6 +3314,7 @@ using resource = getResource();
       code: `
 await using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {

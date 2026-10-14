@@ -468,6 +468,7 @@ class Bar extends Foo {
   public static accessor doThing = async (): Promise<void> => {};
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -480,6 +481,7 @@ class Bar extends Foo {
   public static accessor doThing = (): void => {};
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -1107,6 +1109,7 @@ using a = {
   [Symbol.dispose]() {},
 };
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -1117,6 +1120,7 @@ async function test() {
   };
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -1125,6 +1129,7 @@ using c = {
   async [Symbol.asyncDispose]() {},
 };
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     `
@@ -2683,6 +2688,7 @@ class MySubclassExtendsMyClass extends MyClass {
   };
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2705,6 +2711,7 @@ abstract class MySubclassExtendsMyClass extends MyClass {
   abstract accessor setThing: () => Promise<void>;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -3431,6 +3438,7 @@ const a = {
 };
 const b: Disposable = a;
       `,
+      // `Symbol.dispose` requires TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -3448,6 +3456,7 @@ using c = {
   async [Symbol.dispose]() {},
 };
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -3466,6 +3475,7 @@ const d = {
 };
 using e = d;
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {

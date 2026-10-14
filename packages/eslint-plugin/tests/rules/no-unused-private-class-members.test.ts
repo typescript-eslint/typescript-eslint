@@ -50,6 +50,7 @@ class C {
   }
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     `
@@ -597,6 +598,7 @@ class C {
   private accessor accessorMember = 42;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

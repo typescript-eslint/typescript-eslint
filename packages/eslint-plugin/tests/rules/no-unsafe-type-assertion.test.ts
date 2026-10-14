@@ -79,6 +79,7 @@ a as string;
 declare const a: string | number;
 a satisfies string as string;
         `,
+        // `satisfies` requires TS 4.9
         dependencyConstraints: { typescript: '4.9' },
         errors: [
           {
@@ -501,6 +502,7 @@ a as { hello?: string };
 declare const a: { hello: string };
 a satisfies Record<string, string> as { hello?: string };
         `,
+        // `satisfies` requires TS 4.9
         dependencyConstraints: { typescript: '4.9' },
       },
     ],
@@ -530,6 +532,7 @@ var foo = {} as {
 declare const a: { hello: string };
 a satisfies Record<string, string> as { hello: string; world: string };
         `,
+        // `satisfies` requires TS 4.9
         dependencyConstraints: { typescript: '4.9' },
         errors: [
           {

@@ -96,6 +96,7 @@ class Foo {
   accessor prop: string;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -107,6 +108,7 @@ class Foo {
   }
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     `
@@ -120,6 +122,7 @@ abstract class Foo {
   accessor prop: string;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -128,6 +131,7 @@ abstract class Foo {
   abstract accessor prop: string;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
   ],
@@ -354,6 +358,7 @@ class Foo {
   static accessor prop: string;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -371,6 +376,7 @@ abstract class Foo {
   static accessor prop: string;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

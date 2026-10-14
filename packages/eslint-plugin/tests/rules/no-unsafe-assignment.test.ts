@@ -40,6 +40,7 @@ class Foo {
   accessor a = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     'const x: Set<string> = new Set();',
@@ -182,6 +183,7 @@ class Foo {
   accessor a = 1 as any;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

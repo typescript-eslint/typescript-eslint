@@ -230,6 +230,7 @@ await using foo = d;
 
 export {};
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -240,6 +241,7 @@ using foo = {
 
 export {};
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -248,6 +250,7 @@ await using foo = 3 as any;
 
 export {};
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -259,6 +262,7 @@ using foo = {
 
 export {};
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -268,6 +272,7 @@ async function foo() {
   await using _ = maybeAsyncDisposable;
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -277,6 +282,7 @@ async function iterateUsing(arr: Array<AsyncDisposable>) {
   }
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -1195,6 +1201,7 @@ async function foo() {
   await using d = disposable;
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -1225,6 +1232,7 @@ async function foo() {
   };
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -1261,6 +1269,7 @@ async function foo() {
     e = disposable;
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -1296,6 +1305,7 @@ async function foo() {
     b = disposable;
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {

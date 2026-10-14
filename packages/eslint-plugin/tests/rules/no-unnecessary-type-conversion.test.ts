@@ -138,6 +138,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
   invalid: [
     {
       code: "String('asdf');",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -163,6 +164,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
     },
     {
       code: "'asdf'.toString();",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -191,6 +193,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
     },
     {
       code: "'' + 'asdf';",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -216,6 +219,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
     },
     {
       code: "'asdf' + '';",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -244,6 +248,7 @@ const compareWithToString = customId === CustomIds.Id1.toString();
 let str = 'asdf';
 str += '';
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -278,6 +283,7 @@ str satisfies string;
 let str = 'asdf';
 'asdf' + (str += '');
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -309,6 +315,7 @@ let str = 'asdf';
     },
     {
       code: 'Number(123);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -334,6 +341,7 @@ let str = 'asdf';
     },
     {
       code: '+123;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -362,6 +370,7 @@ let str = 'asdf';
     },
     {
       code: '~~123;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -387,6 +396,7 @@ let str = 'asdf';
     },
     {
       code: 'Boolean(true);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -415,6 +425,7 @@ let str = 'asdf';
     },
     {
       code: '!!true;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -440,6 +451,7 @@ let str = 'asdf';
     },
     {
       code: 'BigInt(3n);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -471,6 +483,7 @@ function f<T extends string>(x: T) {
   return String(x);
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -508,6 +521,7 @@ function f<T extends number>(x: T) {
   return Number(x);
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -545,6 +559,7 @@ function f<T extends boolean>(x: T) {
   return Boolean(x);
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -585,6 +600,7 @@ function f<T extends bigint>(x: T) {
   return BigInt(x);
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -620,6 +636,7 @@ function f<T extends bigint>(x: T) {
     // make sure fixes preserve parentheses in cases where logic would otherwise break
     {
       code: "String('a' + 'b').length;",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -645,6 +662,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: "('a' + 'b').toString().length;",
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -673,6 +691,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: '2 * +(2 + 2);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -701,6 +720,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: '2 * Number(2 + 2);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -726,6 +746,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: 'false && !!(false || true);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -751,6 +772,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: 'false && Boolean(false || true);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -779,6 +801,7 @@ function f<T extends bigint>(x: T) {
     },
     {
       code: '2n * BigInt(2n + 2n);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -809,6 +832,7 @@ function f<T extends bigint>(x: T) {
 let str = 'asdf';
 String(str).length;
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -843,6 +867,7 @@ let str = 'asdf';
 let str = 'asdf';
 str.toString().length;
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -877,6 +902,7 @@ let str = 'asdf';
     },
     {
       code: '~~1;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -902,6 +928,7 @@ let str = 'asdf';
     },
     {
       code: '~~-1;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -930,6 +957,7 @@ let str = 'asdf';
 declare const threeOrFour: 3 | 4;
 ~~threeOrFour;
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

@@ -335,6 +335,7 @@ async function f() {
   return await Promise.resolve(2);
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -345,6 +346,7 @@ async function f() {
   return await Promise.resolve(2);
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -357,6 +359,7 @@ async function f() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -367,6 +370,7 @@ async function f() {
   using something = bleh;
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -377,6 +381,7 @@ async function f() {
   using something = bleh;
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       options: ['always'],
     },
@@ -393,6 +398,7 @@ async function returnAwait() {
   return await asyncFn();
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       options: ['in-try-catch'],
     },
@@ -411,6 +417,7 @@ async function outerFunction() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       options: ['in-try-catch'],
     },
@@ -427,6 +434,7 @@ async function outerFunction() {
   const innerFunction = async () => asyncFn();
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       options: ['in-try-catch'],
     },
@@ -437,6 +445,7 @@ async function outerFunction() {
 using foo = 1 as any;
 return Promise.resolve(42);
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -448,6 +457,7 @@ return Promise.resolve(42);
   return Promise.resolve(42);
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     {
@@ -2033,6 +2043,7 @@ async function f() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -2074,6 +2085,7 @@ async function f() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -2114,6 +2126,7 @@ async function f() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -2151,6 +2164,7 @@ async function outerFunction() {
   }
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
@@ -2190,6 +2204,7 @@ async function outerFunction() {
   const innerFunction = async () => await asyncFn();
 }
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {

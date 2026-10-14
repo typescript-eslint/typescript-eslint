@@ -223,6 +223,7 @@ const fn = async () => {
   await using foo = new Bar();
 };
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
     },
     `
@@ -658,6 +659,7 @@ const fn = async () => {
   using foo = new Bar();
 };
       `,
+      // `using` declarations require TS 5.2
       dependencyConstraints: { typescript: '5.2' },
       errors: [
         {

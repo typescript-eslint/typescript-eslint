@@ -27,6 +27,7 @@ createTestCases(
       },
     },
   ],
+  // `accessor` keyword requires TS 4.9
   {
     typescript: '4.9',
   },

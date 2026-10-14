@@ -720,6 +720,7 @@ class TestStaticPrivateAccessor {
   private static accessor staticAcc = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -728,6 +729,7 @@ class TestStaticPrivateFieldAccessor {
   static accessor #staticAcc = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -736,6 +738,7 @@ class TestPrivateAccessor {
   private accessor acc = 3;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -744,6 +747,7 @@ class TestPrivateFieldAccessor {
   accessor #acc = 3;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     `

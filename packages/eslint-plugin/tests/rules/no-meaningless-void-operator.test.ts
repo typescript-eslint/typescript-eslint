@@ -241,6 +241,7 @@ declare const box: { value: string };
 declare const box: { value: string };
 void (box.value satisfies string);
       `,
+      // `satisfies` requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

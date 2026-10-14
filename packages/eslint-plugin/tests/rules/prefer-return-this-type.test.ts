@@ -81,6 +81,7 @@ class Foo {
   };
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -91,6 +92,7 @@ class Foo {
   };
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     `
@@ -271,6 +273,7 @@ class Foo {
   };
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -295,6 +298,7 @@ class Foo {
   accessor f = (): Foo => this;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

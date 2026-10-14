@@ -177,6 +177,7 @@ for (let i = 0; i < arr.length; i++) {
   (arr[i] satisfies number)++;
 }
       `,
+      // `satisfies` requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -185,6 +186,7 @@ for (let i = 0; i < arr.length; i++) {
   (arr[i]! satisfies number)++;
 }
       `,
+      // `satisfies` requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     `

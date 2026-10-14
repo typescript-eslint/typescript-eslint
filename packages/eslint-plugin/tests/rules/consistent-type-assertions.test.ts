@@ -1416,6 +1416,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = {} as Foo<int>;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1447,6 +1448,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = {} as a | b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1478,6 +1480,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = ({} as A) + b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1504,6 +1507,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = <Foo<int>>{};',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1535,6 +1539,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = <a | b>{};',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1566,6 +1571,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = <A>{} + b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1592,6 +1598,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = {} as Foo<int>;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1618,6 +1625,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = {} as a | b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1644,6 +1652,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'const x = ({} as A) + b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1665,6 +1674,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'print({ bar: 5 } as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1686,6 +1696,7 @@ const x = { key: 'value' } as unknown;
     },
     {
       code: 'new print({ bar: 5 } as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1711,6 +1722,7 @@ function foo() {
   throw { bar: 5 } as Foo;
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1736,6 +1748,7 @@ function foo() {
     },
     {
       code: 'function b(x = {} as Foo.Bar) {}',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1757,6 +1770,7 @@ function foo() {
     },
     {
       code: 'function c(x = {} as Foo) {}',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1778,6 +1792,7 @@ function foo() {
     },
     {
       code: 'print?.({ bar: 5 } as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1799,6 +1814,7 @@ function foo() {
     },
     {
       code: 'print?.call({ bar: 5 } as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1820,6 +1836,7 @@ function foo() {
     },
     {
       code: 'print`${{ bar: 5 } as Foo}`;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1841,6 +1858,7 @@ function foo() {
     },
     {
       code: 'const x = <Foo<int>>{};',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1872,6 +1890,7 @@ function foo() {
     },
     {
       code: 'const x = <a | b>{};',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1903,6 +1922,7 @@ function foo() {
     },
     {
       code: 'const x = <A>{} + b;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1929,6 +1949,7 @@ function foo() {
     },
     {
       code: 'print(<Foo>{ bar: 5 });',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1955,6 +1976,7 @@ function foo() {
     },
     {
       code: 'new print(<Foo>{ bar: 5 });',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -1985,6 +2007,7 @@ function foo() {
   throw <Foo>{ bar: 5 };
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2015,6 +2038,7 @@ function foo() {
     },
     {
       code: 'print?.(<Foo>{ bar: 5 });',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2041,6 +2065,7 @@ function foo() {
     },
     {
       code: 'print?.call(<Foo>{ bar: 5 });',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2067,6 +2092,7 @@ function foo() {
     },
     {
       code: 'print`${<Foo>{ bar: 5 }}`;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2328,6 +2354,7 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'const x = [] as string[];',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2359,6 +2386,7 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'const x = <string[]>[];',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2390,6 +2418,7 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'print([5] as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2416,6 +2445,7 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'new print([5] as Foo);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2442,6 +2472,7 @@ const bs = (x <<= y) as any;
     },
     {
       code: 'function b(x = [5] as Foo.Bar) {}',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2472,6 +2503,7 @@ function foo() {
   throw [5] as Foo;
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2502,6 +2534,7 @@ function foo() {
     },
     {
       code: 'print`${[5] as Foo}`;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2528,6 +2561,7 @@ function foo() {
     },
     {
       code: 'const foo = () => [5] as Foo;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2554,6 +2588,7 @@ function foo() {
     },
     {
       code: 'new print(<Foo>[5]);',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2580,6 +2615,7 @@ function foo() {
     },
     {
       code: 'function b(x = <Foo.Bar>[5]) {}',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2610,6 +2646,7 @@ function foo() {
   throw <Foo>[5];
 }
       `,
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2640,6 +2677,7 @@ function foo() {
     },
     {
       code: 'print`${<Foo>[5]}`;',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2666,6 +2704,7 @@ function foo() {
     },
     {
       code: 'const foo = <Foo>[5];',
+      // Suggestion output uses `satisfies`, which requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

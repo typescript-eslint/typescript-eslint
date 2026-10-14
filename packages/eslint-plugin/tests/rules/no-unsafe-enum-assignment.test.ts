@@ -2284,6 +2284,7 @@ class Basket {
   accessor fruit: Fruit = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -2434,6 +2435,7 @@ class TestBasket implements Basket {
   accessor fruit = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -3738,6 +3740,7 @@ enum Fruit {
 
 const box = { fruit: 1 } satisfies { fruit: Fruit };
       `,
+      // `satisfies` requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

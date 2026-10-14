@@ -183,6 +183,7 @@ class A {
 
 new A().b;
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -194,6 +195,7 @@ class A {
 
 new A()['b'];
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     `
@@ -224,6 +226,7 @@ declare class A {
 
 A.c;
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     {
@@ -236,6 +239,7 @@ declare class A {
 
 A['c'];
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     `
@@ -393,12 +397,14 @@ export {
       code: `
 export { deprecatedFunction as 'bur' } from './deprecated';
       `,
+      // Arbitrary module namespace identifier names require TS 5.6
       dependencyConstraints: { typescript: '5.6' },
     },
     {
       code: `
 export { 'deprecatedFunction' } from './deprecated';
       `,
+      // Arbitrary module namespace identifier names require TS 5.6
       dependencyConstraints: { typescript: '5.6' },
     },
     `
@@ -3672,6 +3678,7 @@ declare const a: A;
 
 a.b;
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -3695,6 +3702,7 @@ declare const a: A;
 
 a['b'];
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -3718,6 +3726,7 @@ declare const a: A;
 
 a.b();
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -3741,6 +3750,7 @@ declare const a: A;
 
 a['b']();
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -3766,6 +3776,7 @@ declare const a: A;
 
 a.b();
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -3787,6 +3798,7 @@ declare class A {
 
 A.b();
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

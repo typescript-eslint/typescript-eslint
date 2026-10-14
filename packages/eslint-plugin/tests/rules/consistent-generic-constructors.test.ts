@@ -32,6 +32,7 @@ class Foo {
   accessor a = new Foo<string>();
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
     `
@@ -148,6 +149,7 @@ class Foo {
   accessor a: Foo<string> = new Foo();
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       options: ['type-annotation'],
     },
@@ -362,6 +364,7 @@ class Foo {
   accessor a: Foo<string> = new Foo();
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -384,6 +387,7 @@ class Foo {
   accessor a = new Foo<string>();
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
@@ -407,6 +411,7 @@ class Foo {
   accessor [a]: Foo<string> = new Foo();
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {

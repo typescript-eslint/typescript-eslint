@@ -72,6 +72,7 @@ class Foo {
   accessor a = 5;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
     },
 
@@ -106,6 +107,7 @@ class Foo {
   accessor a: number = 5;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       options: [{ ignoreProperties: true }],
     },
@@ -820,6 +822,7 @@ class Foo {
   accessor a: number = 5;
 }
       `,
+      // `accessor` keyword requires TS 4.9
       dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
