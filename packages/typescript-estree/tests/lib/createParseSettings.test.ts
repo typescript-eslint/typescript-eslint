@@ -114,7 +114,7 @@ describe(createParseSettings, () => {
         {
           projectService: {
             defaultProject: 'tsconfig.eslint.json',
-            EXPERIMENTAL_backend: 'native' as const,
+            EXPERIMENTAL_backend: 'tsgo' as const,
           },
         },
         'defaultProject',
@@ -123,7 +123,7 @@ describe(createParseSettings, () => {
       expect(() =>
         createParseSettings('', {
           filePath: '/project/file.ts',
-          projectService: { EXPERIMENTAL_backend: 'native' },
+          projectService: { EXPERIMENTAL_backend: 'tsgo' },
           ...options,
         }),
       ).toThrow(identifyingTerm);
@@ -137,7 +137,7 @@ describe(createParseSettings, () => {
     ])('selects the native service for %s', (_name, options) => {
       const parseSettings = createParseSettings('', {
         filePath: '/project/file.ts',
-        projectService: { EXPERIMENTAL_backend: 'native', ...options },
+        projectService: { EXPERIMENTAL_backend: 'tsgo', ...options },
       });
 
       expect(parseSettings.nativeProjectService).toBe(true);
@@ -222,7 +222,7 @@ describe(createParseSettings, () => {
         expect(() =>
           createParseSettings('', {
             filePath: '/project/file.ts',
-            projectService: { EXPERIMENTAL_backend: 'native' },
+            projectService: { EXPERIMENTAL_backend: 'tsgo' },
           }),
         ).toThrow(
           'The experimental native project service requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',

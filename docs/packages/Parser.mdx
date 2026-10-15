@@ -372,7 +372,7 @@ export default [
       parser,
       parserOptions: {
         projectService: {
-          EXPERIMENTAL_backend: 'native',
+          EXPERIMENTAL_backend: 'tsgo',
         },
       },
     },
@@ -426,7 +426,7 @@ There are several restrictions on this option to prevent it from being overused:
 
 > Default: `undefined` _(the classic TypeScript backend)_
 
-Set to `'native'` to opt in to the experimental TypeScript 7 native backend described [above](#experimental-typescript-7-native-backend).
+Set to `'tsgo'` to opt in to the experimental TypeScript 7 native backend described [above](#experimental-typescript-7-native-backend).
 
 ##### `defaultProject`
 

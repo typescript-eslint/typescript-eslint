@@ -5,7 +5,7 @@ it('names the load failure when the native backend is requested explicitly', () 
   try {
     parseAndGenerateServices('', {
       filePath: '/project/file.ts',
-      projectService: { EXPERIMENTAL_backend: 'native' },
+      projectService: { EXPERIMENTAL_backend: 'tsgo' },
     });
   } catch (error) {
     thrown = error;

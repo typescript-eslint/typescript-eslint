@@ -459,10 +459,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        backend: [classic, native]
+        backend: [classic, tsgo]
         os: [ubuntu-latest]
         include:
-          - backend: native
+          - backend: tsgo
             os: windows-latest
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - ${{ matrix.backend }}'
@@ -476,17 +476,17 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-          node-version: ${{ matrix.backend == 'native' && 22 || 18 }}
+          node-version: ${{ matrix.backend == 'tsgo' && 22 || 18 }}
       - name: Run unit tests
         run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage=false
         env:
           CI: true
-          TYPESCRIPT_ESLINT_NATIVE_BACKEND: ${{ matrix.backend == 'native' }}
+          TYPESCRIPT_ESLINT_NATIVE_BACKEND: ${{ matrix.backend == 'tsgo' }}
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
           PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
 
       - name: Run type-utils unit tests with native backend
-        if: matrix.backend == 'native'
+        if: matrix.backend == 'tsgo'
         run: pnpm exec nx test type-utils --coverage=false
         env:
           CI: true
@@ -494,7 +494,7 @@ jobs:
 
       # collect coverage on just linux
       - name: Run eslint-plugin unit tests with native backend coverage
-        if: matrix.backend == 'native' && matrix.os == 'ubuntu-latest'
+        if: matrix.backend == 'tsgo' && matrix.os == 'ubuntu-latest'
         run: pnpm exec nx test eslint-plugin --coverage --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
         env:
           CI: true
@@ -502,11 +502,11 @@ jobs:
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
       - name: Make native backend coverage paths repository-relative
-        if: matrix.backend == 'native' && matrix.os == 'ubuntu-latest'
+        if: matrix.backend == 'tsgo' && matrix.os == 'ubuntu-latest'
         run: sed -i 's#^SF:\.\./#SF:packages/#' packages/eslint-plugin/coverage/lcov.info
 
       - name: Upload native backend coverage to Codecov
-        if: matrix.backend == 'native' && matrix.os == 'ubuntu-latest'
+        if: matrix.backend == 'tsgo' && matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

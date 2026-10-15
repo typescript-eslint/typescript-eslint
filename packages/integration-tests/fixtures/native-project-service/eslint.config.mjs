@@ -6,7 +6,7 @@ export default [
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        projectService: { EXPERIMENTAL_backend: 'native' },
+        projectService: { EXPERIMENTAL_backend: 'tsgo' },
         tsconfigRootDir: import.meta.dirname,
       },
     },

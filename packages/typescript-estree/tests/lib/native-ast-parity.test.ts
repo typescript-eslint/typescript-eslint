@@ -22,7 +22,7 @@ function convert(code: string, native: boolean, convertedFilePath = filePath) {
     range: true,
     tokens: true,
     ...(native
-      ? { projectService: { EXPERIMENTAL_backend: 'native' as const } }
+      ? { projectService: { EXPERIMENTAL_backend: 'tsgo' as const } }
       : { project: false }),
   });
   return structuredClone(ast);

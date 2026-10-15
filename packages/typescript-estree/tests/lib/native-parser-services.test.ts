@@ -37,7 +37,7 @@ describe('native parser services', () => {
       {
         comment: true,
         filePath,
-        projectService: { EXPERIMENTAL_backend: 'native' },
+        projectService: { EXPERIMENTAL_backend: 'tsgo' },
         tokens: true,
       },
     );
@@ -159,7 +159,7 @@ describe('native parser services', () => {
       parseAndGenerateServices(code, {
         errorOnTypeScriptSyntacticAndSemanticIssues: true,
         filePath,
-        projectService: { EXPERIMENTAL_backend: 'native' },
+        projectService: { EXPERIMENTAL_backend: 'tsgo' },
       }),
     ).toThrow(message);
   });

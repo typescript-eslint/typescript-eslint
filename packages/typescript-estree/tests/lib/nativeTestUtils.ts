@@ -42,7 +42,7 @@ export function parseOnBackend(
 ): NativeQueryContext {
   const { ast, services } = parseAndGenerateServices(code, {
     filePath,
-    projectService: native ? { EXPERIMENTAL_backend: 'native' } : true,
+    projectService: native ? { EXPERIMENTAL_backend: 'tsgo' } : true,
   });
   assert.isNotNull(services.program);
   return {

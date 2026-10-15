@@ -297,7 +297,7 @@ function validateNativeProjectService(
   const { projectService } = tsestreeOptions;
   const requested =
     typeof projectService === 'object' &&
-    projectService.EXPERIMENTAL_backend === 'native';
+    projectService.EXPERIMENTAL_backend === 'tsgo';
 
   const viaEnvironment =
     !requested &&
