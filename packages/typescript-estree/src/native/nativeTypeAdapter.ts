@@ -96,9 +96,9 @@ function createWrapper<Native extends object, Classic extends object>(
 ) {
   const CACHE = Symbol('cache');
   const NATIVE = Symbol('native');
-  const VIEW = Symbol('view');
   const forwarders = new WeakMap<NativeMethod, NativeMethod>();
   const prototypes = new WeakMap<object, object>();
+  const views = new WeakMap<Native, Classic>();
 
   interface View {
     [CACHE]: Map<string, unknown>;
@@ -184,7 +184,7 @@ function createWrapper<Native extends object, Classic extends object>(
     if (!native) {
       return undefined;
     }
-    const cached = (native as Partial<Record<typeof VIEW, Classic>>)[VIEW];
+    const cached = views.get(native);
     if (cached) {
       return cached;
     }
@@ -198,7 +198,7 @@ function createWrapper<Native extends object, Classic extends object>(
     view[CACHE] = new Map();
     view[NATIVE] = native;
     const classic = view as unknown as Classic;
-    (native as Partial<Record<typeof VIEW, Classic>>)[VIEW] = classic;
+    views.set(native, classic);
     for (const [name, isPresent] of Object.entries(presenceChecks)) {
       if (isPresent(native)) {
         Object.defineProperty(view, name, readClassicProperty(name));

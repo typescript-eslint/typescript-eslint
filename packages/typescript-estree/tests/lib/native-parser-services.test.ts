@@ -1,5 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
+import v8 from 'node:v8';
+import vm from 'node:vm';
 import * as ts from 'typescript';
 
 import { parseAndGenerateServices } from '../../src/index.js';
@@ -29,6 +31,33 @@ describe('native parser services', () => {
     expect(promiseDeclaration('const value = Promise.resolve(1);')).toBe(
       promiseDeclaration('const value = Promise.resolve(2);'),
     );
+  });
+
+  it('releases checkers that wrapped symbols of unchanged files', async () => {
+    v8.setFlagsFromString('--expose-gc');
+    const gc = vm.runInNewContext('gc') as () => void;
+
+    const checkers = [1, 2, 3].map(value => {
+      const { ast, checker, tsNode } = parse(
+        `import { dependency } from './dependency';\nconst value = dependency + ${value};`,
+      );
+      const declaration = ast.body[1] as TSESTree.VariableDeclaration;
+      const init = declaration.declarations[0]
+        .init as TSESTree.BinaryExpression;
+      checker
+        .getAliasedSymbol(checker.getSymbolAtLocation(tsNode(init.left))!)
+        .getDeclarations();
+      return new WeakRef(checker);
+    });
+
+    await new Promise(resolve => setTimeout(resolve));
+    gc();
+
+    expect(checkers.map(checker => checker.deref() != null)).toStrictEqual([
+      false,
+      false,
+      true,
+    ]);
   });
 
   it('returns comments, tokens, and typed parser services', () => {
