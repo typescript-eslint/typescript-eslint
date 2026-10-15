@@ -178,12 +178,12 @@ export function parseAndGenerateServices<
     parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
   }
 
-  if (parseSettings.nativeProjectService) {
+  if (parseSettings.backend === 'tsgo') {
     const nativeParser = getNativeParser();
     if (!nativeParser) {
       const cause = getNativeBackendLoadError();
       throw new Error(
-        `The experimental native project service could not be loaded${
+        `The experimental tsgo backend could not be loaded${
           cause instanceof Error ? `: ${cause.message}` : ''
         }. Install @typescript/native.`,
         { cause },

@@ -28,6 +28,11 @@ export interface MutableParseSettings {
   allowInvalidAST: boolean;
 
   /**
+   * Which TypeScript implementation powers type information: classic TypeScript or the experimental tsgo.
+   */
+  backend: 'classic' | 'tsgo';
+
+  /**
    * Code of the file being parsed, or raw source file containing it.
    */
   code: string | ts.SourceFile;
@@ -116,11 +121,6 @@ export interface MutableParseSettings {
    * Normalized paths to provided project paths.
    */
   projects: ReadonlyMap<CanonicalPath, string>;
-
-  /**
-   * Whether the experimental TypeScript 7.X backend powers types.
-   */
-  nativeProjectService: boolean;
 
   /**
    * TypeScript server to power program creation.

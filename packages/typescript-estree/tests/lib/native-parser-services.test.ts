@@ -191,7 +191,7 @@ describe('native parser services', () => {
         : program) as unknown as Record<string, unknown>;
 
       expect(() => api[member]).toThrow(
-        `${name} is not available on the TypeScript native preview API.`,
+        `${name} is not available on the tsgo API.`,
       );
     },
   );

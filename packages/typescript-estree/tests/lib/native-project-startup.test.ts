@@ -79,7 +79,7 @@ it('wraps native API startup failures with their cause', async () => {
     expect.objectContaining({
       cause,
       message: expect.stringMatching(
-        /^Failed to start the TypeScript native project service:/,
+        /^Failed to start the tsgo project service:/,
       ),
     }),
   );

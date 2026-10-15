@@ -481,38 +481,38 @@ jobs:
         run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage=false
         env:
           CI: true
-          TYPESCRIPT_ESLINT_NATIVE_BACKEND: ${{ matrix.backend == 'tsgo' }}
+          TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND: ${{ matrix.backend }}
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
           PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
 
-      - name: Run type-utils unit tests with native backend
+      - name: Run type-utils unit tests with tsgo backend
         if: matrix.backend == 'tsgo'
         run: pnpm exec nx test type-utils --coverage=false
         env:
           CI: true
-          TYPESCRIPT_ESLINT_NATIVE_BACKEND: true
+          TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND: tsgo
 
       # collect coverage on just linux
-      - name: Run eslint-plugin unit tests with native backend coverage
+      - name: Run eslint-plugin unit tests with tsgo backend coverage
         if: matrix.backend == 'tsgo' && matrix.os == 'ubuntu-latest'
         run: pnpm exec nx test eslint-plugin --coverage --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
         env:
           CI: true
-          TYPESCRIPT_ESLINT_NATIVE_BACKEND: true
+          TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND: tsgo
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
-      - name: Make native backend coverage paths repository-relative
+      - name: Make tsgo backend coverage paths repository-relative
         if: matrix.backend == 'tsgo' && matrix.os == 'ubuntu-latest'
         run: sed -i 's#^SF:\.\./#SF:packages/#' packages/eslint-plugin/coverage/lcov.info
 
-      - name: Upload native backend coverage to Codecov
+      - name: Upload tsgo backend coverage to Codecov
         if: matrix.backend == 'tsgo' && matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/eslint-plugin/coverage/lcov.info
-          flags: native-backend
-          name: native-backend
+          flags: tsgo-backend
+          name: tsgo-backend
 
   # Some test jobs are created dynamically and conditionally skipped (see the affected projects step in the build job),
   # so they can't be marked in the branch ruleset as required.

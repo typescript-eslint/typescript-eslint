@@ -3473,7 +3473,7 @@ const value = get<string>();
   ],
 });
 
-// The native backend only runs under the project service.
+// The tsgo backend only runs under the project service.
 createRuleTesterWithTypes().run('no-unnecessary-type-assertion', rule, {
   valid: [
     `

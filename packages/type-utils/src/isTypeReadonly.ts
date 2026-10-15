@@ -51,7 +51,7 @@ function isCommonJSExports(node: ts.Expression) {
         node.name.text === 'exports';
 }
 
-// Classic flags functions assigned to function or prototype members as methods; native doesn't.
+// Classic flags functions assigned to function or prototype members as methods; tsgo doesn't.
 function isMethodDeclaration(declaration: ts.Declaration) {
   if (
     ts.isMethodDeclaration(declaration) ||
@@ -81,7 +81,7 @@ function isMethodDeclaration(declaration: ts.Declaration) {
   );
 }
 
-// Native conditional types have no root, so their resolved branches stand in.
+// tsgo's conditional types have no root, so their resolved branches stand in.
 function getConditionalBranchTypes(
   checker: ts.TypeChecker,
   type: ts.ConditionalType,
@@ -99,7 +99,7 @@ const READONLY_CHECK_FLAG = (
 ).CheckFlags.Readonly;
 
 // ts-api-utils sees through mapped types via their modifiers types, which the
-// native backend can't provide. Both backends flag those properties instead.
+// tsgo backend can't provide. Both backends flag those properties instead.
 function hasReadonlyCheckFlag(property: ts.Symbol) {
   const { links } = property as { links?: { checkFlags: number } };
   return !!links && (links.checkFlags & READONLY_CHECK_FLAG) !== 0;

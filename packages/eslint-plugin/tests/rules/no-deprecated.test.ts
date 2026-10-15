@@ -4115,7 +4115,7 @@ void { normalVariable };
   ],
 });
 
-// The native backend only runs under the project service.
+// The tsgo backend only runs under the project service.
 createRuleTesterWithTypes().run('no-deprecated', rule, {
   valid: [],
   invalid: [

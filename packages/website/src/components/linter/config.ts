@@ -3,6 +3,7 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export const defaultParseSettings: ParseSettings = {
   allowInvalidAST: false,
+  backend: 'classic',
   code: '',
   codeFullText: '',
   comment: true,
@@ -18,7 +19,6 @@ export const defaultParseSettings: ParseSettings = {
   jsx: true,
   loc: true,
   log: console.log,
-  nativeProjectService: false,
   preserveNodeMaps: true,
   programs: null,
   projects: new Map(),

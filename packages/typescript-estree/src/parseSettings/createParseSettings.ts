@@ -51,7 +51,7 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
-  const nativeProjectService = validateNativeProjectService(tsestreeOptions);
+  const backend = resolveBackend(tsestreeOptions);
 
   const tsconfigRootDir = (() => {
     if (tsestreeOptions.tsconfigRootDir == null) {
@@ -120,6 +120,7 @@ export function createParseSettings(
     loc: tsestreeOptions.loc === true,
     range: tsestreeOptions.range === true,
     allowInvalidAST: tsestreeOptions.allowInvalidAST === true,
+    backend,
     code,
     codeFullText,
     comment: tsestreeOptions.comment === true,
@@ -146,14 +147,13 @@ export function createParseSettings(
         : tsestreeOptions.loggerFn === false
           ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
           : console.log, // eslint-disable-line no-console
-    nativeProjectService,
     preserveNodeMaps: tsestreeOptions.preserveNodeMaps !== false,
     programs: Array.isArray(tsestreeOptions.programs)
       ? tsestreeOptions.programs
       : null,
     projects: new Map(),
     projectService:
-      !nativeProjectService &&
+      backend === 'classic' &&
       (tsestreeOptions.projectService ||
         (tsestreeOptions.project &&
           tsestreeOptions.projectService !== false &&
@@ -230,7 +230,7 @@ export function createParseSettings(
   if (
     !parseSettings.programs &&
     !parseSettings.projectService &&
-    !parseSettings.nativeProjectService
+    parseSettings.backend === 'classic'
   ) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: tsestreeOptions.cacheLifetime,
@@ -248,7 +248,7 @@ export function createParseSettings(
     parseSettings.projects.size === 0 &&
     parseSettings.programs == null &&
     parseSettings.projectService == null &&
-    !parseSettings.nativeProjectService
+    parseSettings.backend === 'classic'
   ) {
     parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
   }
@@ -291,9 +291,7 @@ function findUnsupportedNativeOption(
   return unsupported.find(([, value]) => value)?.[0];
 }
 
-function validateNativeProjectService(
-  tsestreeOptions: Partial<TSESTreeOptions>,
-) {
+function resolveBackend(tsestreeOptions: Partial<TSESTreeOptions>) {
   const { projectService } = tsestreeOptions;
   const requested =
     typeof projectService === 'object' &&
@@ -301,13 +299,13 @@ function validateNativeProjectService(
 
   const viaEnvironment =
     !requested &&
-    process.env.TYPESCRIPT_ESLINT_NATIVE_BACKEND === 'true' &&
+    process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo' &&
     getNativeParser() != null &&
     projectService !== false &&
     (projectService != null || !!tsestreeOptions.project);
 
   if (!requested && !viaEnvironment) {
-    return false;
+    return 'classic';
   }
 
   const unsupportedOption = findUnsupportedNativeOption(
@@ -318,21 +316,21 @@ function validateNativeProjectService(
   const unsupportedNodeVersion = !process.features.require_module;
 
   if (viaEnvironment) {
-    return !unsupportedOption && !unsupportedNodeVersion;
+    return unsupportedOption || unsupportedNodeVersion ? 'classic' : 'tsgo';
   }
 
   if (unsupportedNodeVersion) {
     throw new Error(
-      'The experimental native project service requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',
+      'The experimental tsgo backend requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',
     );
   }
   if (unsupportedOption) {
     throw new Error(
-      `${unsupportedOption} is not supported by the experimental native project service.`,
+      `${unsupportedOption} is not supported by the experimental tsgo backend.`,
     );
   }
 
-  return true;
+  return 'tsgo';
 }
 
 export function clearTSConfigMatchCache(): void {

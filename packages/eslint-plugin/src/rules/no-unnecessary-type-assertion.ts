@@ -40,7 +40,7 @@ const READONLY_CHECK_FLAG = (
 ).CheckFlags.Readonly;
 
 // ts-api-utils sees through mapped types via their modifiers types, which the
-// native backend can't provide. Both backends flag those properties instead.
+// tsgo backend can't provide. Both backends flag those properties instead.
 function hasReadonlyCheckFlag(property: ts.Symbol) {
   const { links } = property as { links?: { checkFlags: number } };
   return !!links && (links.checkFlags & READONLY_CHECK_FLAG) !== 0;

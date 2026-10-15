@@ -12,11 +12,11 @@ import type { NativeProjectContext, NativeProjectService } from './types';
 
 import { getCanonicalFileName } from '../create-program/shared';
 
-const CLOSED_ERROR = 'The TypeScript native project service is closed.';
+const CLOSED_ERROR = 'The tsgo project service is closed.';
 
 function startupError(error: unknown): Error {
   return new Error(
-    `Failed to start the TypeScript native project service: ${error instanceof Error ? error.message : String(error)}`,
+    `Failed to start the tsgo project service: ${error instanceof Error ? error.message : String(error)}`,
     { cause: error },
   );
 }
@@ -142,9 +142,7 @@ export function createNativeProjectService(
     const project = nextSnapshot.getConfiguredProject(configFileName);
     const sourceFile = project?.program.getSourceFile(compilerPath);
     if (!project || !sourceFile) {
-      throw new Error(
-        `The TypeScript native project did not contain '${compilerPath}'.`,
-      );
+      throw new Error(`The tsgo project did not contain '${compilerPath}'.`);
     }
     const context = { api, project, sourceFile };
     fileContexts.set(getCanonicalFileName(compilerPath), context);

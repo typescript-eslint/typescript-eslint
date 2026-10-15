@@ -14,11 +14,11 @@ import {
 } from '../src/index.js';
 
 // Specifier paths are relative to the program's current directory: the
-// process's for `project`, and the TSConfig's for the native project service.
+// process's for `project`, and the TSConfig's for the tsgo backend.
 const ROOT_DIR = path.posix.join(
   ...path
     .relative(
-      process.env.TYPESCRIPT_ESLINT_NATIVE_BACKEND === 'true'
+      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo'
         ? path.join(__dirname, 'fixtures')
         : process.cwd(),
       path.join(__dirname, '..'),

@@ -91,7 +91,7 @@
       "inputs": [
         "default",
         "{workspaceRoot}/vitest.config.base.mts",
-        { "env": "TYPESCRIPT_ESLINT_NATIVE_BACKEND" },
+        { "env": "TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND" },
         { "env": "TYPESCRIPT_ESLINT_PROJECT_SERVICE" }
       ],
       "outputs": ["{projectRoot}/coverage", "{projectRoot}/**/*.shot"]

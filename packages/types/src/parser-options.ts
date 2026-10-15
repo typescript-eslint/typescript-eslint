@@ -47,7 +47,7 @@ export type JSDocParsingMode = 'all' | 'none' | 'type-info';
 export interface ProjectServiceOptions {
   /**
    * Set to `'tsgo'` to power type information with the experimental
-   * TypeScript 7.1 native backend instead of the classic TypeScript API.
+   * TypeScript 7.1 (tsgo) backend instead of the classic TypeScript API.
    *
    * @experimental This is not part of the public API. It may change or be
    * removed in any release, including a patch.

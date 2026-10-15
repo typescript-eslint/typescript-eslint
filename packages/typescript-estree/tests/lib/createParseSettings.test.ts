@@ -33,8 +33,8 @@ describe(createParseSettings, () => {
       clearTSServerProjectService();
       createProjectService.mockClear();
       // These assertions are about the classic project service, so the blanket
-      // native switch has to stay out of the way.
-      vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'false');
+      // tsgo switch has to stay out of the way.
+      vi.stubEnv('TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND', 'classic');
     });
 
     afterEach(() => {
@@ -119,7 +119,7 @@ describe(createParseSettings, () => {
         },
         'defaultProject',
       ],
-    ])('rejects unsupported native option %s', (options, identifyingTerm) => {
+    ])('rejects unsupported tsgo option %s', (options, identifyingTerm) => {
       expect(() =>
         createParseSettings('', {
           filePath: '/project/file.ts',
@@ -134,35 +134,35 @@ describe(createParseSettings, () => {
       ['no other options', {}],
       ['loadTypeScriptPlugins: false', { loadTypeScriptPlugins: false }],
       ['an empty allowDefaultProject', { allowDefaultProject: [] }],
-    ])('selects the native service for %s', (_name, options) => {
+    ])('selects the tsgo backend for %s', (_name, options) => {
       const parseSettings = createParseSettings('', {
         filePath: '/project/file.ts',
         projectService: { EXPERIMENTAL_backend: 'tsgo', ...options },
       });
 
-      expect(parseSettings.nativeProjectService).toBe(true);
+      expect(parseSettings.backend).toBe('tsgo');
       expect(parseSettings.projectService).toBeUndefined();
       expect(createProjectService).not.toHaveBeenCalled();
     });
 
     describe.runIf(process.features.require_module)(
-      'TYPESCRIPT_ESLINT_NATIVE_BACKEND',
+      'TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND',
       () => {
         beforeEach(() => {
-          vi.stubEnv('TYPESCRIPT_ESLINT_NATIVE_BACKEND', 'true');
+          vi.stubEnv('TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND', 'tsgo');
           vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'true');
         });
 
         it.each([
           ['project', { project: './tsconfig.json' }],
           ['projectService', { projectService: true }],
-        ])('selects the native service for %s', (_name, options) => {
+        ])('selects the tsgo backend for %s', (_name, options) => {
           const parseSettings = createParseSettings('', {
             filePath: '/project/file.ts',
             ...options,
           });
 
-          expect(parseSettings.nativeProjectService).toBe(true);
+          expect(parseSettings.backend).toBe('tsgo');
           expect(parseSettings.projectService).toBeUndefined();
           expect(createProjectService).not.toHaveBeenCalled();
         });
@@ -173,7 +173,7 @@ describe(createParseSettings, () => {
             projectService: { allowDefaultProject: ['file.ts'] },
           });
 
-          expect(parseSettings.nativeProjectService).toBe(false);
+          expect(parseSettings.backend).toBe('classic');
           expect(parseSettings.projectService).toBe(projectService);
         });
 
@@ -186,7 +186,7 @@ describe(createParseSettings, () => {
             ...options,
           });
 
-          expect(parseSettings.nativeProjectService).toBe(false);
+          expect(parseSettings.backend).toBe('classic');
           expect(parseSettings.projectService).toBeUndefined();
           expect(createProjectService).not.toHaveBeenCalled();
         });
@@ -204,7 +204,7 @@ describe(createParseSettings, () => {
             tsconfigRootDir,
           });
 
-          expect(parseSettings.nativeProjectService).toBe(false);
+          expect(parseSettings.backend).toBe('classic');
           expect(parseSettings.projectService).toBeUndefined();
           expect(parseSettings.projects.size).toBe(1);
           expect(createProjectService).not.toHaveBeenCalled();
@@ -213,7 +213,7 @@ describe(createParseSettings, () => {
     );
 
     it.runIf(process.features.require_module)(
-      'requires require(esm) support for the native service',
+      'requires require(esm) support for the tsgo backend',
       () => {
         vi.spyOn(process.features, 'require_module', 'get').mockReturnValue(
           false,
@@ -225,7 +225,7 @@ describe(createParseSettings, () => {
             projectService: { EXPERIMENTAL_backend: 'tsgo' },
           }),
         ).toThrow(
-          'The experimental native project service requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',
+          'The experimental tsgo backend requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',
         );
       },
     );
