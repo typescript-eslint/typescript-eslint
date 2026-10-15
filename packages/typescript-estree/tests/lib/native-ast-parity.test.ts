@@ -96,6 +96,37 @@ describe.for([
   });
 });
 
+describe.for([
+  [
+    'JSDoc @type casts',
+    'const a = /** @type {HTMLElement} */ (document.body);\nconst b = /** @type {const} */ ([1, 2]);\nconst c = /** @type {number} */ (/** @type {unknown} */ (1));',
+  ],
+  [
+    'JSDoc @satisfies casts',
+    'const a = /** @satisfies {object} */ ({});\n/** @satisfies {object} */\nconst b = {};\nconst o = {\n  /** @satisfies {object} */\n  p: {},\n};\n/** @satisfies {object} */\nexport default {};',
+  ],
+  ['non-null assertions', 'declare const x: number;\nx!;'],
+  ['optional parameters', 'function f(x?) {}'],
+  ['parameter properties', 'class C { constructor(public x) {} }'],
+  ['type annotations', 'const t: number = 1;'],
+  ['as and satisfies', 'const a = 1 as number;\nconst b = 1 satisfies number;'],
+  [
+    'type-only imports',
+    'import type { A } from "./dependency";\nexport type { A };',
+  ],
+  [
+    'TypeScript declarations',
+    'interface I {}\ntype T = 1;\nenum E { A }\nfunction s(): void;',
+  ],
+  ['parameter decorators', 'const dec = () => {};\nclass Y { m(@dec p) {} }'],
+])('JavaScript %s', ([, code]) => {
+  it('converts identically on both backends', () => {
+    expect(convert(code, true, jsFilePath)).toStrictEqual(
+      convert(code, false, jsFilePath),
+    );
+  });
+});
+
 describe('invalid modifiers on object properties', () => {
   it('reports the same error on both backends', () => {
     const code = '({ abstract property: 1 });';

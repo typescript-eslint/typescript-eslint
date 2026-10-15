@@ -6,6 +6,8 @@ import type {
 import type { Diagnostic as NativeDiagnostic } from '@typescript/native/unstable/sync';
 
 import {
+  isAsExpression,
+  isSatisfiesExpression,
   NodeFlags as NativeNodeFlags,
   SyntaxKind as NativeSyntaxKind,
 } from '@typescript/native/unstable/ast';
@@ -181,6 +183,31 @@ function isReparsed(node: NativeNode) {
   return (node.flags & NativeNodeFlags.Reparsed) !== 0;
 }
 
+/** Native wraps JSDoc `@type` and `@satisfies` casts around their expressions; classic leaves them in comments. */
+function isReparsedCast(node: NativeNode) {
+  return (
+    (isAsExpression(node) || isSatisfiesExpression(node)) &&
+    isReparsed(node.type)
+  );
+}
+
+function skipReparsedCasts(node: NativeNode) {
+  while (
+    (isAsExpression(node) || isSatisfiesExpression(node)) &&
+    isReparsed(node.type)
+  ) {
+    node = node.expression;
+  }
+  return node;
+}
+
+function skipReparsedCastParents(node: NativeNode) {
+  while (isReparsedCast(node)) {
+    node = node.parent;
+  }
+  return node;
+}
+
 const NATIVE_ONLY_KEYS = new Set([
   'childMask',
   'data',
@@ -283,7 +310,7 @@ export function createNativeNodeAdapter({
     });
     for (const node of nodes) {
       if (!isReparsed(node)) {
-        adapted.push(wrapNode(node));
+        adapted.push(wrapNode(skipReparsedCasts(node)));
       }
     }
     return adaptedNodeArray;
@@ -326,7 +353,7 @@ export function createNativeNodeAdapter({
         return [];
       }
       if (child.kind !== NativeSyntaxKind.LessThanSlashToken) {
-        return [wrapNode(child)];
+        return [wrapNode(skipReparsedCasts(child))];
       }
       return [
         createToken(
@@ -364,7 +391,14 @@ export function createNativeNodeAdapter({
       return translateKind(value);
     }
     if (isNativeNode(value)) {
-      return isReparsed(value) ? undefined : wrapNode(value);
+      if (isReparsed(value)) {
+        return undefined;
+      }
+      return wrapNode(
+        property === 'parent'
+          ? skipReparsedCastParents(value)
+          : skipReparsedCasts(value),
+      );
     }
     if (isNativeNodeArray(value)) {
       const adapted = adaptArray(value);
@@ -413,7 +447,10 @@ export function createNativeNodeAdapter({
       visitArray?: (children: ts.NodeArray<ts.Node>) => T,
     ): T | undefined {
       return unwrap(this).forEachChild(
-        child => (isReparsed(child) ? undefined : visitor(wrapNode(child))),
+        child =>
+          isReparsed(child)
+            ? undefined
+            : visitor(wrapNode(skipReparsedCasts(child))),
         visitArray && (children => visitArray(adaptArray(children))),
       );
     },

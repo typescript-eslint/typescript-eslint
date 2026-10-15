@@ -109,6 +109,12 @@ function collectPrefetchNodes(sourceFile: NativeSourceFile) {
   return { calls, contextual, typed };
 }
 
+/** Classic's `parseDiagnostics` leave out the grammar errors that `getJSSyntacticDiagnosticsForFile` adds for JavaScript files. */
+const JS_ONLY_SYNTACTIC_CODES = new Set([
+  1206, 1486, 8002, 8003, 8004, 8005, 8006, 8008, 8009, 8010, 8011, 8012, 8013,
+  8016, 8017, 8037, 8038,
+]);
+
 function createAdapters({ api, project }: NativeProjectContext) {
   let diagnosticsByFile: Map<string, NativeDiagnostic[]> | undefined;
   const { checker, prefetch } = createNativeChecker({
@@ -126,6 +132,9 @@ function createAdapters({ api, project }: NativeProjectContext) {
       if (!diagnosticsByFile) {
         diagnosticsByFile = new Map();
         for (const diagnostic of project.program.getSyntacticDiagnostics()) {
+          if (JS_ONLY_SYNTACTIC_CODES.has(diagnostic.code)) {
+            continue;
+          }
           const key = diagnostic.fileName ?? '';
           const existing = diagnosticsByFile.get(key);
           if (existing) {
