@@ -618,6 +618,21 @@ function foo(arg: MyReadonlyType) {}
         },
       ],
     },
+    {
+      code: `
+declare module 'foo-lib' {
+  export type Foo = RegExp | string[];
+}
+
+function foo(arg: import('foo-lib').Foo) {}
+      `,
+      name: 'union type alias allowed from the package that declares it',
+      options: [
+        {
+          allow: [{ from: 'package', name: 'Foo', package: 'foo-lib' }],
+        },
+      ],
+    },
   ],
   invalid: [
     // arrays
@@ -1391,6 +1406,76 @@ function foo(arg: RegExp) {}
       options: [
         {
           allow: [{ from: 'package', name: 'RegExp', package: 'regexp-lib' }],
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  readonly prop: RegExp;
+};
+
+function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 22,
+          endLine: 6,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      name: 'type alias allowed from lib but declared locally',
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  readonly prop: RegExp;
+};
+
+function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 22,
+          endLine: 6,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      name: 'type alias allowed from a package but declared locally',
+      options: [
+        {
+          allow: [{ from: 'package', name: 'Foo', package: 'foo-lib' }],
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = RegExp | string[];
+
+function foo(arg: Foo) {}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 22,
+          endLine: 4,
+          line: 4,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+      name: 'union type alias allowed from a package but declared locally',
+      options: [
+        {
+          allow: [{ from: 'package', name: 'Foo', package: 'foo-lib' }],
         },
       ],
     },

@@ -11,6 +11,7 @@ import {
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
+import { specifierSourceMatches } from './typeOrValueSpecifiers/specifierSourceMatches';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */
@@ -235,12 +236,16 @@ function isTypeReadonlyRecurser(
   if (type.aliasSymbol && options.allow) {
     const aliasSymbol = type.aliasSymbol;
     const aliasMatches = options.allow.some(specifier => {
-      const specifierName =
-        typeof specifier === 'string' ? specifier : specifier.name;
-      const names = Array.isArray(specifierName)
-        ? specifierName
-        : [specifierName];
-      return names.includes(aliasSymbol.getName());
+      if (typeof specifier === 'string') {
+        return specifier === aliasSymbol.getName();
+      }
+      const names = Array.isArray(specifier.name)
+        ? specifier.name
+        : [specifier.name];
+      return (
+        names.includes(aliasSymbol.getName()) &&
+        specifierSourceMatches(specifier, aliasSymbol, program)
+      );
     });
 
     if (aliasMatches) {
