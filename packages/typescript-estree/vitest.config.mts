@@ -13,9 +13,13 @@ const vitestConfig = mergeConfig(
     test: {
       dir: path.join(import.meta.dirname, 'tests', 'lib'),
 
-      exclude: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
-        ? [...defaultExclude, 'parse.project-true.test.ts']
-        : [...defaultExclude],
+      exclude: [
+        ...defaultExclude,
+        ...(process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+          ? ['parse.project-true.test.ts']
+          : []),
+        ...(process.features.require_module ? [] : ['native-*.test.ts']),
+      ],
 
       isolate: true,
       name: packageJson.name.replace('@typescript-eslint/', ''),
