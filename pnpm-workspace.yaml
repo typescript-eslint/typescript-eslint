@@ -2,32 +2,6 @@ packages:
   - packages/*
 
 minimumReleaseAge: 10080 # 7 days in minutes, matches renovate
-minimumReleaseAgeExclude:
-  # The native backend needs a TypeScript 7.1 nightly for its checker APIs.
-  - typescript@7.1.0-dev.20261001.1
-  - '@typescript/typescript-darwin-arm64@7.1.0-dev.20261001.1'
-  - '@typescript/typescript-darwin-x64@7.1.0-dev.20261001.1'
-  - '@typescript/typescript-linux-arm@7.1.0-dev.20261001.1'
-  - '@typescript/typescript-linux-arm64@7.1.0-dev.20261001.1'
-  - '@typescript/typescript-linux-x64@7.1.0-dev.20261001.1'
-  - '@typescript/typescript-win32-arm64@7.1.0-dev.20261001.1'
-  - '@typescript/typescript-win32-x64@7.1.0-dev.20261001.1'
-  # nx 23.2.0 is newer than the 7-day cooldown; allow this upgrade through.
-  - nx@23.2.0
-  - '@nx/devkit@23.2.0'
-  - '@nx/js@23.2.0'
-  - '@nx/vitest@23.2.0'
-  - '@nx/workspace@23.2.0'
-  - '@nx/nx-darwin-arm64@23.2.0'
-  - '@nx/nx-darwin-x64@23.2.0'
-  - '@nx/nx-freebsd-x64@23.2.0'
-  - '@nx/nx-linux-arm-gnueabihf@23.2.0'
-  - '@nx/nx-linux-arm64-gnu@23.2.0'
-  - '@nx/nx-linux-arm64-musl@23.2.0'
-  - '@nx/nx-linux-x64-gnu@23.2.0'
-  - '@nx/nx-linux-x64-musl@23.2.0'
-  - '@nx/nx-win32-arm64-msvc@23.2.0'
-  - '@nx/nx-win32-x64-msvc@23.2.0'
 blockExoticSubdeps: true
 
 allowBuilds:
