@@ -5,23 +5,18 @@ function Button({ text }: { text: string; onClick: () => void }) {
   return text;
 }
 
+Incorrect
+
 function getFirst([first]: [string, number]) {
                                     ~~~~~~ This type declares element '1', but the destructuring pattern never uses it.
   return first;
 }
 
+Incorrect
+
 function getName({ name }: Record<'id' | 'name', string>) {
                                   ~~~~ This type declares key 'id', but the destructuring pattern never uses it.
   return name;
-}
-
-function getCity({
-  address: { city },
-}: {
-  address: { city: string; street: string };
-                           ~~~~~~~~~~~~~~ This type declares property 'street', but the destructuring pattern never uses it.
-}) {
-  return city;
 }
 
 Correct
@@ -30,14 +25,14 @@ function Button({ text, onClick }: { text: string; onClick: () => void }) {
   return [text, onClick];
 }
 
+Correct
+
 function getFirst([first]: [string]) {
   return first;
 }
 
+Correct
+
 function getName({ name }: Record<'name', string>) {
   return name;
-}
-
-function getCity({ address: { city } }: { address: { city: string } }) {
-  return city;
 }
