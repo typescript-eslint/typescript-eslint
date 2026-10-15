@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > declaration > ClassDeclaration > _error_ > abstract-precedes-export > TSESTree - Error`]
+TSError
+  1 | // Prettier removes the `export` instead of erroring: https://github.com/prettier/prettier/issues/20166
+  2 | // prettier-ignore
+> 3 | abstract export class A{}
+    |          ^^^^^^ 'export' modifier must precede 'abstract' modifier.
+  4 |
