@@ -187,7 +187,7 @@ export function parseAndGenerateNativeServices<
   const { astMaps, estree } = astConverter(
     sourceFile,
     parseSettings,
-    parseSettings.preserveNodeMaps,
+    parseSettings.preserveNodeMaps ?? true,
   );
   nodeAdapter.releaseChildren(context.sourceFile);
   if (!prefetchedSourceFiles.has(context.sourceFile)) {
