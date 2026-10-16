@@ -37,6 +37,26 @@ declare const value: object;
 value as unknown as typeof recursiveMethod;
     `,
     `
+type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
+  options: NewOptions,
+) => RecursiveMethod<Options & NewOptions>) &
+  ((command: string) => Promise<void>);
+
+declare const value: object;
+
+value as unknown as RecursiveMethod & { extra: true };
+    `,
+    `
+type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
+  options: NewOptions,
+) => RecursiveMethod<Options & NewOptions>) &
+  ((command: string) => Promise<void>);
+
+declare const recursiveMethod: RecursiveMethod;
+
+recursiveMethod as RecursiveMethod & {};
+    `,
+    `
 function castToSubtype<T extends string>(value: string): T {
   return value as T;
 }

@@ -35,6 +35,8 @@ export type MessageIds =
   | 'contextuallyUnnecessary'
   | 'unnecessaryAssertion';
 
+const MAX_TYPE_CONTAINS_DEPTH = 50;
+
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
   meta: {
@@ -297,12 +299,14 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    // Recursive generic types instantiate new types forever, so give up past a fixed depth (#12705).
     function typeContains(
       type: ts.Type,
       predicate: (type: ts.Type) => boolean,
       seen = new Set<ts.Type>(),
+      depth = 0,
     ): boolean {
-      if (seen.has(type)) {
+      if (seen.has(type) || depth > MAX_TYPE_CONTAINS_DEPTH) {
         return false;
       }
       seen.add(type);
@@ -310,7 +314,9 @@ export default createRule<Options, MessageIds>({
         return true;
       }
       if (type.isUnionOrIntersection()) {
-        return type.types.some(t => typeContains(t, predicate, seen));
+        return type.types.some(t =>
+          typeContains(t, predicate, seen, depth + 1),
+        );
       }
       const nestedTypes = [
         ...getTypeArguments(type),
@@ -321,22 +327,11 @@ export default createRule<Options, MessageIds>({
             ...sig.getParameters().map(p => checker.getTypeOfSymbol(p)),
           ]),
       ];
-      return nestedTypes.some(t => typeContains(t, predicate, seen));
+      return nestedTypes.some(t => typeContains(t, predicate, seen, depth + 1));
     }
 
     function containsAny(type: ts.Type): boolean {
-      try {
-        return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
-      } catch (error) {
-        // Workaround for https://github.com/typescript-eslint/typescript-eslint/issues/12705
-        if (
-          error instanceof RangeError &&
-          error.message === 'Maximum call stack size exceeded'
-        ) {
-          return false;
-        }
-        throw error;
-      }
+      return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
     }
 
     function containsTypeVariable(type: ts.Type): boolean {
