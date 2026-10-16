@@ -165,6 +165,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
@@ -259,13 +260,12 @@ export default createRule<Options, MessageIds>({
       }
 
       if (
-        tsutils
-          .typeConstituents(type)
-          .some(t =>
-            tsutils
-              .intersectionConstituents(t)
-              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
-          )
+        tsutils.typeConstituents(type).some(t =>
+          tsutils
+            .intersectionConstituents(t)
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
+            .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
+        )
       ) {
         return false;
       }

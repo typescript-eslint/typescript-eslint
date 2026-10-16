@@ -38,7 +38,6 @@ ruleTester.defineRule('use-every-a', {
       VariableDeclaration: useA,
     };
   },
-  defaultOptions: [],
   meta: {
     messages: {},
     schema: [],
@@ -1398,11 +1397,7 @@ const _c = a + 5;
       `,
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          args: 'all',
-          reportUsedIgnorePattern: true,
-          varsIgnorePattern: '^_',
-        },
+        { args: 'all', reportUsedIgnorePattern: true, varsIgnorePattern: '^_' },
       ],
     },
     {
@@ -1412,11 +1407,7 @@ const _c = a + 5;
 })(5);
       `,
       options: [
-        {
-          args: 'all',
-          argsIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
-        },
+        { args: 'all', argsIgnorePattern: '^_', reportUsedIgnorePattern: true },
       ],
     },
     {
@@ -1426,10 +1417,7 @@ console.log(a + c);
       `,
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          destructuredArrayIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
-        },
+        { destructuredArrayIgnorePattern: '^_', reportUsedIgnorePattern: true },
       ],
     },
   ],
@@ -1601,6 +1589,8 @@ setTimeout(function () {
       ],
       options: ['all'],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 var a = 10,
@@ -1618,6 +1608,7 @@ setTimeout(function () {
       ],
       options: ['all'],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function f() {
@@ -1676,6 +1667,8 @@ function foo() {
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function f() {
@@ -1713,6 +1706,7 @@ function f() {
       ],
       options: ['all'],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function f(a) {}
@@ -1862,6 +1856,8 @@ gg();
       ],
       options: [{ args: 'all', vars: 'all' }],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 (function z(foo) {
@@ -1886,6 +1882,7 @@ gg();
       ],
       options: [{ args: 'all', vars: 'all' }],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 (function z(foo) {
@@ -1903,6 +1900,8 @@ gg();
       ],
       options: [{}],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function f() {
@@ -1924,25 +1923,20 @@ function f() {
       ],
       options: [{}],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: "import x from 'y';",
       errors: [
         {
           column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'x',
-          },
+          data: { action: 'defined', additional: '', varName: 'x' },
           endColumn: 9,
           endLine: 1,
           line: 1,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'x',
-              },
+              data: { varName: 'x' },
               messageId: 'removeUnusedImportDeclaration',
               output: '',
             },
@@ -2204,6 +2198,8 @@ const [a, _b, c] = array;
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
       options: [{ destructuredArrayIgnorePattern: '^_' }],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 const array = ['a', 'b', 'c'];
@@ -2259,6 +2255,7 @@ const ignoreArray = ['ignore'];
         { destructuredArrayIgnorePattern: '^_', varsIgnorePattern: 'ignore' },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 const array = [obj];
@@ -2338,11 +2335,7 @@ foo.forEach(item => {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'name',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'name' },
           endColumn: 12,
           endLine: 4,
           line: 4,
@@ -2361,11 +2354,7 @@ foo.forEach(item => {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'name',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'name' },
           endColumn: 12,
           endLine: 4,
           line: 4,
@@ -2383,11 +2372,7 @@ foo.forEach(item => {
       errors: [
         {
           column: 12,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'name',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'name' },
           endColumn: 16,
           endLine: 3,
           line: 3,
@@ -2410,11 +2395,7 @@ foo.forEach(item => {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'name',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'name' },
           endColumn: 12,
           endLine: 4,
           line: 4,
@@ -2434,11 +2415,7 @@ foo.forEach(item => {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'name',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'name' },
           endColumn: 12,
           endLine: 4,
           line: 4,
@@ -2457,11 +2434,7 @@ foo.forEach(item => {
       errors: [
         {
           column: 12,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'name',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'name' },
           endColumn: 16,
           endLine: 3,
           line: 3,
@@ -2480,11 +2453,7 @@ foobar;
       errors: [
         {
           column: 19,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 22,
           endLine: 2,
           line: 2,
@@ -2492,11 +2461,7 @@ foobar;
         },
         {
           column: 24,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'bar',
-          },
+          data: { action: 'defined', additional: '', varName: 'bar' },
           endColumn: 27,
           endLine: 2,
           line: 2,
@@ -2504,6 +2469,8 @@ foobar;
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 /* global foobar,
@@ -2515,11 +2482,7 @@ foobar;
       errors: [
         {
           column: 4,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 7,
           endLine: 3,
           line: 3,
@@ -2527,11 +2490,7 @@ foobar;
         },
         {
           column: 4,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'bar',
-          },
+          data: { action: 'defined', additional: '', varName: 'bar' },
           endColumn: 7,
           endLine: 4,
           line: 4,
@@ -2539,6 +2498,7 @@ foobar;
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
 
     // Rest property sibling without ignoreRestSiblings
     {
@@ -2550,11 +2510,7 @@ console.log(coords);
       errors: [
         {
           column: 9,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'type',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'type' },
           endColumn: 13,
           endLine: 3,
           line: 3,
@@ -2649,11 +2605,7 @@ console.log(coords);
       errors: [
         {
           column: 10,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'x',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'x' },
           endColumn: 11,
           endLine: 4,
           line: 4,
@@ -2676,11 +2628,7 @@ console.log(coords);
       errors: [
         {
           column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'x',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'x' },
           endColumn: 16,
           endLine: 4,
           line: 4,
@@ -2715,11 +2663,7 @@ a$fooz;
       errors: [
         {
           column: 18,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: '$foo',
-          },
+          data: { action: 'defined', additional: '', varName: '$foo' },
           endColumn: 22,
           endLine: 2,
           line: 2,
@@ -2735,11 +2679,7 @@ a$fooz;
       errors: [
         {
           column: 20,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: '$',
-          },
+          data: { action: 'defined', additional: '', varName: '$' },
           endColumn: 21,
           endLine: 2,
           line: 2,
@@ -2752,11 +2692,7 @@ a$fooz;
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: '$foo',
-          },
+          data: { action: 'defined', additional: '', varName: '$foo' },
           endColumn: 15,
           endLine: 1,
           line: 1,
@@ -2769,11 +2705,7 @@ a$fooz;
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'global',
-          },
+          data: { action: 'defined', additional: '', varName: 'global' },
           endColumn: 17,
           endLine: 1,
           line: 1,
@@ -2786,11 +2718,7 @@ a$fooz;
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 13,
           endLine: 1,
           line: 1,
@@ -2809,11 +2737,7 @@ a$fooz;
       errors: [
         {
           column: 14,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: '数',
-          },
+          data: { action: 'defined', additional: '', varName: '数' },
           endColumn: 15,
           endLine: 2,
           line: 2,
@@ -2831,11 +2755,7 @@ a$fooz;
       errors: [
         {
           column: 16,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: '𠮷',
-          },
+          data: { action: 'defined', additional: '', varName: '𠮷' },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -3057,6 +2977,7 @@ try {
     },
 
     // multiple try catch both fail
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 try {
@@ -3088,6 +3009,7 @@ try {
       ],
       options: [{ caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' }],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
 
     // caughtErrors with other configs
     {
@@ -3426,11 +3348,7 @@ foo*/
       errors: [
         {
           column: 1,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 4,
           endLine: 3,
           line: 3,
@@ -3943,6 +3861,8 @@ x = x.concat(x);
       ],
       languageOptions: { parserOptions: { ecmaVersion: 2015 } },
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 let a = 'a';
@@ -3972,6 +3892,7 @@ function foo() {
       ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 let foo;
@@ -4159,11 +4080,7 @@ const _b = _a + 5;
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          args: 'all',
-          reportUsedIgnorePattern: true,
-          varsIgnorePattern: '^_',
-        },
+        { args: 'all', reportUsedIgnorePattern: true, varsIgnorePattern: '^_' },
       ],
     },
     {
@@ -4182,11 +4099,7 @@ foo(() => _a);
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          args: 'all',
-          reportUsedIgnorePattern: true,
-          varsIgnorePattern: '^_',
-        },
+        { args: 'all', reportUsedIgnorePattern: true, varsIgnorePattern: '^_' },
       ],
     },
     {
@@ -4205,11 +4118,7 @@ foo(() => _a);
         },
       ],
       options: [
-        {
-          args: 'all',
-          argsIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
-        },
+        { args: 'all', argsIgnorePattern: '^_', reportUsedIgnorePattern: true },
       ],
     },
     {
@@ -4231,10 +4140,7 @@ console.log(a + _b);
       ],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [
-        {
-          destructuredArrayIgnorePattern: '^_',
-          reportUsedIgnorePattern: true,
-        },
+        { destructuredArrayIgnorePattern: '^_', reportUsedIgnorePattern: true },
       ],
     },
     {
@@ -4358,10 +4264,7 @@ try {
         },
       ],
       options: [
-        {
-          caughtErrorsIgnorePattern: 'ignored',
-          varsIgnorePattern: '_',
-        },
+        { caughtErrorsIgnorePattern: 'ignored', varsIgnorePattern: '_' },
       ],
     },
     {
@@ -4429,12 +4332,7 @@ _ => {
           line: 3,
         },
       ],
-      options: [
-        {
-          argsIgnorePattern: 'ignored',
-          varsIgnorePattern: '_',
-        },
-      ],
+      options: [{ argsIgnorePattern: 'ignored', varsIgnorePattern: '_' }],
     },
   ],
 });

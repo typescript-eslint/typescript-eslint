@@ -1,0 +1,61 @@
+Program {
+  type: "Program",
+  body: [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      attributes: [],
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        abstract: true,
+        body: ClassBody {
+          type: "ClassBody",
+          body: [],
+
+          range: [26, 28],
+          loc: {
+            start: { column: 26, line: 1 },
+            end: { column: 28, line: 1 },
+          },
+        },
+        declare: false,
+        decorators: [],
+        id: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "Foo",
+          optional: false,
+
+          range: [22, 25],
+          loc: {
+            start: { column: 22, line: 1 },
+            end: { column: 25, line: 1 },
+          },
+        },
+        implements: [],
+        superClass: null,
+
+        range: [7, 28],
+        loc: {
+          start: { column: 7, line: 1 },
+          end: { column: 28, line: 1 },
+        },
+      },
+      exportKind: "value",
+      source: null,
+      specifiers: [],
+
+      range: [0, 28],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 28, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 29],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}

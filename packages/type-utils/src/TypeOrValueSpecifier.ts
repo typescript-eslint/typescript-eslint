@@ -6,8 +6,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
-import { typeDeclaredInFile } from './typeOrValueSpecifiers/typeDeclaredInFile';
-import { typeDeclaredInLib } from './typeOrValueSpecifiers/typeDeclaredInLib';
+import { specifierSourceMatches } from './typeOrValueSpecifiers/specifierSourceMatches';
 import { typeDeclaredInPackageDeclarationFile } from './typeOrValueSpecifiers/typeDeclaredInPackageDeclarationFile';
 
 /**
@@ -180,24 +179,11 @@ export function typeMatchesSpecifier(
     if (!specifierNameMatches(type, specifier.name)) {
       return false;
     }
-    const symbol = type.getSymbol() ?? type.aliasSymbol;
-    const declarations = symbol?.getDeclarations() ?? [];
-    const declarationFiles = declarations.map(declaration =>
-      declaration.getSourceFile(),
+    return specifierSourceMatches(
+      specifier,
+      type.getSymbol() ?? type.aliasSymbol,
+      program,
     );
-    switch (specifier.from) {
-      case 'file':
-        return typeDeclaredInFile(specifier.path, declarationFiles, program);
-      case 'lib':
-        return typeDeclaredInLib(declarationFiles, program);
-      case 'package':
-        return typeDeclaredInPackageDeclarationFile(
-          specifier.package,
-          declarations,
-          declarationFiles,
-          program,
-        );
-    }
   })();
 
   if (wholeTypeMatches) {
@@ -270,6 +256,7 @@ export function valueMatchesSpecifier(
     );
     return typeDeclaredInPackageDeclarationFile(
       specifier.package,
+      symbol,
       declarations,
       declarationFiles,
       program,

@@ -209,6 +209,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
@@ -375,6 +376,7 @@ export default createRule({
                   literal: typeValues.map(name => name.typeName).join(' | '),
                   primitive:
                     primitiveTypeFlagNames[
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
                       primitive as keyof typeof primitiveTypeFlagNames
                     ],
                 },

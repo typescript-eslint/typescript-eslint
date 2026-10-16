@@ -53,6 +53,7 @@ export default util.createRule<Options, MessageId>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allowReturnAny: false,
@@ -364,6 +365,7 @@ export default util.createRule<Options, MessageId>({
           .getCallSignaturesOfType(actualType)
           .map(signature => signature.getReturnType())
           .flatMap(returnType => tsutils.unionConstituents(returnType))
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
           .every(type => tsutils.isTypeFlagSet(type, allowedReturnType))
       ) {
         // The function is already void.
@@ -485,6 +487,7 @@ export default util.createRule<Options, MessageId>({
         const returnType = checker.getTypeAtLocation(
           parserServices.esTreeNodeToTSNodeMap.get(statement.argument),
         );
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
         if (tsutils.isTypeFlagSet(returnType, allowedReturnType)) {
           // Only visit return statements with invalid type.
           continue;

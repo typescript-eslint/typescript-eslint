@@ -444,6 +444,76 @@ describe('TypeOrValueSpecifier', () => {
           package: 'assert',
         },
       ],
+      // This has to be a linked workspace package.
+      // See https://github.com/typescript-eslint/typescript-eslint/issues/10038
+      [
+        'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
+        {
+          from: 'package',
+          name: 'ParserOptions',
+          package: '@typescript-eslint/types',
+        },
+      ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        {
+          from: 'package',
+          name: 'VersionlessType',
+          package: 'versionless-package',
+        },
+      ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        {
+          from: 'package',
+          name: 'VersionlessType',
+          package: 'versionless-package/index.d.ts',
+        },
+      ],
+      // Re-exported symbols in ambient declarations.
+      [
+        'import { URL } from "node:url"; declare const url: URL; type Test = typeof url;',
+        { from: 'package', name: 'URL', package: 'node:url' },
+      ],
+      [
+        'import { Buffer } from "node:buffer"; declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buffer' },
+      ],
+      [
+        'import { Buffer } from "node:buffer"; declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'buffer' },
+      ],
+      [
+        'import * as nodeBuffer from "node:buffer"; declare const buffer: nodeBuffer.Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buffer' },
+      ],
+      [
+        'declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buffer' },
+      ],
+      [
+        `
+          declare module "re-exporter" {
+            export { Local as Renamed };
+          }
+          interface Local {}
+          type Test = Local;
+        `,
+        { from: 'package', name: 'Local', package: 're-exporter' },
+      ],
+      // Globals declared in ambient declarations. Mimics how `URL` is declared.
+      // See https://github.com/typescript-eslint/typescript-eslint/issues/9608
+      [
+        `
+          declare module "global-declarer" {
+            global {
+              interface GlobalType {}
+            }
+          }
+          type Test = GlobalType;
+        `,
+        { from: 'package', name: 'GlobalType', package: 'global-declarer' },
+      ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       'matches a matching package specifier: %s\n\t%s',
       ([code, typeOrValueSpecifier], { expect }) => {
@@ -608,6 +678,55 @@ describe('TypeOrValueSpecifier', () => {
       [
         'import {SemVer} from "semver"; type Test = SemVer;',
         { from: 'package', name: 'SemVer', package: 's.mver' },
+      ],
+      [
+        'import type { VersionlessType } from "versionless-package"; type Test = VersionlessType;',
+        { from: 'package', name: 'VersionlessType', package: 'versionless' },
+      ],
+      // Linked workspace packages respect package boundaries too.
+      [
+        'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
+        {
+          from: 'package',
+          name: 'ParserOptions',
+          package: '@typescript-eslint/type',
+        },
+      ],
+      [
+        'import type { ParserOptions } from "@typescript-eslint/types"; type Test = ParserOptions;',
+        {
+          from: 'package',
+          name: 'ParserOptions',
+          package: '@typescript-eslint/utils',
+        },
+      ],
+      [
+        'declare const buffer: Buffer; type Test = typeof buffer;',
+        { from: 'package', name: 'Buffer', package: 'node:buff' },
+      ],
+      [
+        `
+          declare module "re-exporter" {
+            export { Other };
+          }
+
+          interface Local {}
+          interface Other {}
+
+          type Test = Local;
+        `,
+        { from: 'package', name: 'Local', package: 're-exporter' },
+      ],
+      [
+        `
+          declare module "global-declarer" {
+            global {
+              interface GlobalType {}
+            }
+          }
+          type Test = GlobalType;
+        `,
+        { from: 'package', name: 'GlobalType', package: 'other-module' },
       ],
     ] as const satisfies [string, TypeOrValueSpecifier][])(
       "doesn't match a mismatched package specifier: %s\n\t%s",

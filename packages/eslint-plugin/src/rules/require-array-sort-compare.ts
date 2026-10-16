@@ -43,6 +43,7 @@ export default createRule<Options, MessageIds>({
     ],
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       ignoreStringArrays: true,
@@ -61,7 +62,14 @@ export default createRule<Options, MessageIds>({
 
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
         const typeArgs = checker.getTypeArguments(type);
-        return typeArgs.every(arg => getTypeName(checker, arg) === 'string');
+        return typeArgs.every(arg => {
+          const typeName = getTypeName(
+            checker,
+            checker.getBaseConstraintOfType(arg) ?? arg,
+          );
+
+          return typeName === 'string';
+        });
       }
       return false;
     }

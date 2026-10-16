@@ -41,6 +41,7 @@ jobs:
           label-community-flagged: spam:community-flagged
           label-mixed: spam:mixed-signals
           scan-issues: true
+          trusted-author-associations: 'collaborator,member,owner'
 
   anti-slop:
     name: Anti Slop

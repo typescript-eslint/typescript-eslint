@@ -52,6 +52,7 @@ export const useSandboxServices = (
           {
             acquireTypes: true,
             compilerOptions:
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
               compilerOptions as Monaco.languages.typescript.CompilerOptions,
             domID: editorEmbedId,
             monacoSettings: {

@@ -30,6 +30,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     // In theory, we could use the type checker for more advanced constraint types...
@@ -43,6 +44,7 @@ export default createRule({
     function checkRequiresGenericDeclarationDisambiguation(
       filename: string,
     ): boolean {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
       const pathExt = extname(filename).toLocaleLowerCase() as ts.Extension;
       switch (pathExt) {
         case ts.Extension.Cts:

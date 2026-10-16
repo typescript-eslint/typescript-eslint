@@ -20,6 +20,7 @@ import type {
 } from './PreferOptionalChainOptions';
 
 import {
+  getConstrainedTypeAtLocation,
   getFixOrSuggest,
   getOperatorPrecedenceForNode,
   isClosingParenToken,
@@ -49,6 +50,7 @@ function includesType(
   const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
   const types = unionConstituents(parserServices.getTypeAtLocation(node));
   for (const type of types) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
     if (isTypeFlagSet(type, typeFlag)) {
       return true;
     }
@@ -56,13 +58,22 @@ function includesType(
   return false;
 }
 
+const MAYBE_UNDEFINED_FLAGS =
+  ts.TypeFlags.Any |
+  ts.TypeFlags.Unknown |
+  ts.TypeFlags.InstantiableNonPrimitive |
+  ts.TypeFlags.Undefined |
+  ts.TypeFlags.Void;
+
 function isValidAndLastChainOperand(
   ComparisonValueType: TSESTree.Node,
   comparisonType: ComparisonType,
   parserServices: ParserServicesWithTypeInformation,
 ) {
-  const type = parserServices.getTypeAtLocation(ComparisonValueType);
-  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const type = getConstrainedTypeAtLocation(
+    parserServices,
+    ComparisonValueType,
+  );
 
   const types = unionConstituents(type);
   switch (comparisonType) {
@@ -70,14 +81,16 @@ function isValidAndLastChainOperand(
       const isNullish = types.some(t =>
         isTypeFlagSet(
           t,
-          ANY_UNKNOWN_FLAGS | ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
+          MAYBE_UNDEFINED_FLAGS | ts.TypeFlags.Null,
         ),
       );
       return !isNullish;
     }
     case ComparisonType.StrictEqual: {
       const isUndefined = types.some(t =>
-        isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
+        isTypeFlagSet(t, MAYBE_UNDEFINED_FLAGS),
       );
       return !isUndefined;
     }
@@ -96,8 +109,10 @@ function isValidOrLastChainOperand(
   comparisonType: ComparisonType,
   parserServices: ParserServicesWithTypeInformation,
 ) {
-  const type = parserServices.getTypeAtLocation(ComparisonValueType);
-  const ANY_UNKNOWN_FLAGS = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const type = getConstrainedTypeAtLocation(
+    parserServices,
+    ComparisonValueType,
+  );
 
   const types = unionConstituents(type);
   switch (comparisonType) {
@@ -105,14 +120,16 @@ function isValidOrLastChainOperand(
       const isNullish = types.some(t =>
         isTypeFlagSet(
           t,
-          ANY_UNKNOWN_FLAGS | ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
+          MAYBE_UNDEFINED_FLAGS | ts.TypeFlags.Null,
         ),
       );
       return !isNullish;
     }
     case ComparisonType.NotStrictEqual: {
       const isUndefined = types.some(t =>
-        isTypeFlagSet(t, ANY_UNKNOWN_FLAGS | ts.TypeFlags.Undefined),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
+        isTypeFlagSet(t, MAYBE_UNDEFINED_FLAGS),
       );
       return !isUndefined;
     }
@@ -805,9 +822,38 @@ export function analyzeChain(
         // foo !== null && foo !== undefined
         validatedOperands[validatedOperands.length - 1].comparedName,
       );
+
       if (comparisonResult === NodeComparisonResult.Subset) {
-        // the operands are comparable, so we can continue searching
-        subChain.push(currentOperand);
+        if (
+          operator === '||' &&
+          currentOperand.comparisonType ===
+            NullishComparisonType.StrictEqualNull &&
+          // A paired `[=== null, === undefined]` operand is semantically safe
+          // because it merges to `== null`. Only a lone `=== null` can produce
+          // a broken strict-equality check in the merged chain.
+          validatedOperands.length === 1 &&
+          subChain
+            .flat()
+            .some(
+              operand =>
+                operand.comparisonType ===
+                NullishComparisonType.StrictEqualUndefined,
+            )
+        ) {
+          // For OR chains that contain a `=== undefined` guard anywhere,
+          // extending the chain with a lone `=== null` subset changes
+          // semantics: when the guarded node is undefined, `node?.child`
+          // returns `undefined`, and `undefined === null` is false (strict),
+          // but the original `=== undefined` guard was true.
+          //
+          // e.g. `foo === undefined || foo.bar === null` must NOT merge to
+          // `foo?.bar === null`, and neither should a mid-chain form like
+          // `a == null || a.b === undefined || a.b.c === null`.
+          maybeReportThenReset(validatedOperands);
+        } else {
+          // the operands are comparable, so we can continue searching
+          subChain.push(currentOperand);
+        }
       } else if (comparisonResult === NodeComparisonResult.Invalid) {
         maybeReportThenReset(validatedOperands);
       } else {
@@ -819,6 +865,7 @@ export function analyzeChain(
       subChain.push(currentOperand);
     }
   }
+
   const lastOperand = subChain.flat().at(-1);
 
   if (lastOperand && lastChainOperand) {

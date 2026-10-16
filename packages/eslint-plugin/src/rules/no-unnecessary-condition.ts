@@ -33,6 +33,7 @@ import {
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
 
 function isNullishType(type: ts.Type): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
   return tsutils.isTypeFlagSet(type, nullishFlag);
 }
 
@@ -260,6 +261,7 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       allowConstantLoopConditions: 'never',

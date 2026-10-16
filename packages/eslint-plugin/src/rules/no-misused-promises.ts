@@ -191,6 +191,7 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       checksConditionals: true,
@@ -406,8 +407,9 @@ export default createRule<Options, MessageId>({
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       if (
-        node.type === AST_NODE_TYPES.CallExpression &&
-        isPromiseFinallyMethod(node)
+        node.arguments.length === 0 ||
+        (node.type === AST_NODE_TYPES.CallExpression &&
+          isPromiseFinallyMethod(node))
       ) {
         return;
       }

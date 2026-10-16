@@ -96,6 +96,7 @@ export function createParseSettings(
       : getFileName(tsestreeOptions.jsx),
     tsconfigRootDir,
   );
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
   const extension = path.extname(filePath).toLowerCase() as ts.Extension;
   const jsDocParsingMode = ((): ts.JSDocParsingMode => {
     switch (tsestreeOptions.jsDocParsingMode) {
