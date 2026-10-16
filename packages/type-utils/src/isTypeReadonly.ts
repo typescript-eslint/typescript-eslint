@@ -47,6 +47,17 @@ function hasSymbol(node: ts.Node): node is { symbol: ts.Symbol } & ts.Node {
   return Object.hasOwn(node, 'symbol');
 }
 
+const READONLY_CHECK_FLAG = (
+  ts as unknown as Record<'CheckFlags', Record<'Readonly', number>>
+).CheckFlags.Readonly;
+
+// ts-api-utils misses some properties the checker flags readonly, such as
+// those of a spread object asserted `as const`.
+function hasReadonlyCheckFlag(property: ts.Symbol) {
+  const { links } = property as { links?: { checkFlags: number } };
+  return !!links && (links.checkFlags & READONLY_CHECK_FLAG) !== 0;
+}
+
 function isTypeReadonlyArrayOrTuple(
   program: ts.Program,
   type: ts.Type,
@@ -162,6 +173,7 @@ function isTypeReadonlyObject(
       }
 
       if (
+        hasReadonlyCheckFlag(property) ||
         tsutils.isPropertyReadonlyInType(
           type,
           property.getEscapedName(),

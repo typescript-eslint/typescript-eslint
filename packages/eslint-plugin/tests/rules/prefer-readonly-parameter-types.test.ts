@@ -81,6 +81,11 @@ function foo(arg: { readonly [k: number]: string }) {}
 interface Empty {}
 function foo(arg: Empty) {}
     `,
+    `
+declare const base: { foo: string };
+const spread = { ...base } as const;
+function foo(arg: typeof spread) {}
+    `,
 
     // weird other cases
     `
