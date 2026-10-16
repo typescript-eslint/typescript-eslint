@@ -26,7 +26,7 @@ const vitestConfig = mergeConfig(
       root: import.meta.dirname,
       setupFiles: [
         './tests/test-utils/custom-matchers/custom-matchers.ts',
-        './tests/test-utils/tsgo-backend.ts',
+        './tests/test-utils/tsgo-backend.mts',
       ],
       testTimeout: 15_000,
       unstubEnvs: true,
