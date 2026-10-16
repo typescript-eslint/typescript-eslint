@@ -184,7 +184,11 @@ export function parseAndGenerateNativeServices<
   currentAdapters = getAdapters(context);
   const { prefetch, prefetchedSourceFiles, program } = currentAdapters;
   const sourceFile = nodeAdapter.wrapNode(context.sourceFile) as ts.SourceFile;
-  const { astMaps, estree } = astConverter(sourceFile, parseSettings, true);
+  const { astMaps, estree } = astConverter(
+    sourceFile,
+    parseSettings,
+    parseSettings.preserveNodeMaps,
+  );
   nodeAdapter.releaseChildren(context.sourceFile);
   if (!prefetchedSourceFiles.has(context.sourceFile)) {
     prefetchedSourceFiles.add(context.sourceFile);

@@ -12,6 +12,7 @@ afterEach(() => {
 });
 
 async function importWithNative(API: unknown) {
+  vi.resetModules();
   vi.doMock('@typescript/native/unstable/sync', () => ({ API }));
   return (await import('../../src/native/createNativeProjectService.js'))
     .createNativeProjectService;

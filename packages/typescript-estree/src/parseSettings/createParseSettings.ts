@@ -14,7 +14,6 @@ import type { MutableParseSettings } from './index';
 
 import { ensureAbsolutePath } from '../create-program/shared';
 import { validateDefaultProjectForFilesGlob } from '../create-program/validateDefaultProjectForFilesGlob';
-import { getNativeParser } from '../nativeParserRegistry';
 import { isSourceFile } from '../source-files';
 import { getInferredTSConfigRootDir } from './candidateTSConfigRootDirs';
 import {
@@ -300,7 +299,6 @@ function resolveBackend(tsestreeOptions: Partial<TSESTreeOptions>) {
   const viaEnvironment =
     !requested &&
     process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo' &&
-    getNativeParser() != null &&
     projectService !== false &&
     (projectService != null || !!tsestreeOptions.project);
 
