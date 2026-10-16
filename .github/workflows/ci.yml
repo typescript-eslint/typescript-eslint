@@ -69,7 +69,7 @@ jobs:
       is_plugin_affected: ${{ steps.filter.outputs.is_plugin_affected }}
       unit_tests_matrix: ${{ steps.filter.outputs.unit_tests_matrix }}
       snapshot_packages: ${{ steps.filter.outputs.snapshot_packages }}
-      project_service_packages: ${{ steps.filter.outputs.project_service_packages }}
+      project_service_matrix: ${{ steps.filter.outputs.project_service_matrix }}
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -454,16 +454,12 @@ jobs:
     name: Run Unit Tests with Project Service (${{ matrix.backend }}, ${{ matrix.os }})
     environment: ${{ (github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main') && 'main' || '' }} # Have to specify per job
     needs: [build]
-    if: ${{ needs.build.outputs.project_service_packages != '[]' && needs.build.outputs.project_service_packages != '' }}
+    if: ${{ needs.build.outputs.project_service_matrix != '[]' && needs.build.outputs.project_service_matrix != '' }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        backend: [classic, tsgo]
-        os: [ubuntu-latest]
-        include:
-          - backend: tsgo
-            os: windows-latest
+        include: ${{ fromJson(needs.build.outputs.project_service_matrix) }}
     env:
       NX_CI_EXECUTION_ENV: '${{ matrix.os }} - ${{ matrix.backend }}'
       COLLECT_COVERAGE: false,
@@ -478,23 +474,16 @@ jobs:
         with:
           node-version: ${{ matrix.backend == 'tsgo' && 22 || 18 }}
       - name: Run unit tests
+        if: join(matrix.projects, ',') != ''
         run: pnpm exec nx run-many -t test --projects="$PROJECTS" --coverage=false
         env:
           CI: true
           TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND: ${{ matrix.backend }}
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
-          PROJECTS: ${{ join(fromJson(needs.build.outputs.project_service_packages), ',') }}
+          PROJECTS: ${{ join(matrix.projects, ',') }}
 
-      - name: Run type-utils unit tests with tsgo backend
-        if: matrix.backend == 'tsgo'
-        run: pnpm exec nx test type-utils --coverage=false
-        env:
-          CI: true
-          TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND: tsgo
-
-      # collect coverage on just linux
       - name: Run eslint-plugin unit tests with tsgo backend coverage
-        if: matrix.backend == 'tsgo' && matrix.os == 'ubuntu-latest'
+        if: matrix.plugin
         run: pnpm exec nx test eslint-plugin --coverage --coverage.allowExternal "--coverage.include=**/packages/typescript-estree/dist/**" --coverage.reporter=lcov --testTimeout=30000
         env:
           CI: true
@@ -502,11 +491,11 @@ jobs:
           TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
       - name: Make tsgo backend coverage paths repository-relative
-        if: matrix.backend == 'tsgo' && matrix.os == 'ubuntu-latest'
+        if: matrix.plugin
         run: sed -i 's#^SF:\.\./#SF:packages/#' packages/eslint-plugin/coverage/lcov.info
 
       - name: Upload tsgo backend coverage to Codecov
-        if: matrix.backend == 'tsgo' && matrix.os == 'ubuntu-latest'
+        if: matrix.plugin
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
