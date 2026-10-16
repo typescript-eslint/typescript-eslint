@@ -11,6 +11,9 @@ export interface NativeBackend {
   parse: ParseAndGenerateNativeServices;
 }
 
+// Bundlers follow literal require() paths, which would pull in the optional @typescript/native.
+const tsgoBackendPath = './native';
+
 let backend: NativeBackend | undefined;
 let loadError: unknown;
 let loaded = false;
@@ -26,7 +29,7 @@ export function getNativeParser(): ParseAndGenerateNativeServices | undefined {
     loaded = true;
     try {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      require('./native');
+      require(tsgoBackendPath);
     } catch (error) {
       backend = undefined;
       loadError = error;
