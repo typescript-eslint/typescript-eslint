@@ -362,6 +362,19 @@ describe('native adapter parity', () => {
     expect(native).toEqual(classic);
   });
 
+  it('answers private member names', () => {
+    const { classic, native } = onBothBackends(
+      'class Box { #value?: number; static #count = 0; #read() {} }\ndeclare const box: Box;',
+      ({ ast, checker, tsNode }) =>
+        checker
+          .getTypeAtLocation(tsNode(declarationOf(ast, 1).id))
+          .getProperties()
+          .map(property => [property.name, property.getName()]),
+    );
+
+    expect(native).toEqual(classic);
+  });
+
   it('answers symbol and signature documentation', () => {
     const { classic, native } = onBothBackends(
       [

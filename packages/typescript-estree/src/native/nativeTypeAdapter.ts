@@ -580,6 +580,11 @@ export function createNativeTypeAdapter({
       };
     },
     members: symbol => wrapSymbolTable(symbol.getMembers()),
+    // Classic names a private member by its `#name` rather than its unique `__#1@#name`.
+    name: symbol =>
+      symbol.escapedName.startsWith('__#')
+        ? symbol.escapedName.slice(symbol.escapedName.indexOf('@') + 1)
+        : symbol.name,
     parent: symbol => wrapSymbol(symbol.getParent()),
     valueDeclaration: symbol => resolveDeclaration(symbol.valueDeclaration),
   };
