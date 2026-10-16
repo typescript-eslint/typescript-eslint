@@ -185,7 +185,7 @@ export function parseAndGenerateServices<
       throw new Error(
         `The experimental tsgo backend could not be loaded${
           cause instanceof Error ? `: ${cause.message}` : ''
-        }. Install @typescript/native.`,
+        }. Install a TypeScript 7.1 nightly or newer aliased as @typescript/native.`,
         { cause },
       );
     }
