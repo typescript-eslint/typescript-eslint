@@ -190,6 +190,60 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
     : tsutils.unionConstituents(type);
 }
 
+/**
+ * Types that are deliberately broad or branded (`{}`, `object`, empty
+ * interfaces, `string & {}`), and callable or constructable types, whose
+ * signatures are not compared, are never treated as redundant or as overriding.
+ */
+function isIgnoredByAssignability(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  return (
+    tsutils.isTypeFlagSet(
+      type,
+      ts.TypeFlags.Any | ts.TypeFlags.Unknown | ts.TypeFlags.Never,
+    ) ||
+    (type.isUnionOrIntersection() ? type.types : [type]).some(
+      part =>
+        tsutils.isTypeFlagSet(part, ts.TypeFlags.NonPrimitive) ||
+        (tsutils.isObjectType(part) &&
+          (checker.getSignaturesOfType(part, ts.SignatureKind.Call).length >
+            0 ||
+            checker.getSignaturesOfType(part, ts.SignatureKind.Construct)
+              .length > 0 ||
+            (part.getProperties().length === 0 &&
+              checker.getIndexInfosOfType(part).length === 0))),
+    )
+  );
+}
+
+/**
+ * Removing an object type is only safe if the other one accepts the same
+ * property names, optionality, and index signatures. Otherwise excess property
+ * checks and the allowed keys change.
+ */
+function haveSameObjectShape(
+  a: ts.Type,
+  b: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  const aProps = a.getProperties();
+  return (
+    aProps.length === b.getProperties().length &&
+    checker.getIndexInfosOfType(a).length ===
+      checker.getIndexInfosOfType(b).length &&
+    aProps.every(aProp => {
+      const bProp = b.getProperty(aProp.name);
+      return (
+        bProp &&
+        tsutils.isSymbolFlagSet(aProp, ts.SymbolFlags.Optional) ===
+          tsutils.isSymbolFlagSet(bProp, ts.SymbolFlags.Optional)
+      );
+    })
+  );
+}
+
 export default createRule({
   name: 'no-redundant-type-constituents',
   meta: {
@@ -213,6 +267,7 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
 
     function getTypeNodeTypePartFlags(
@@ -270,8 +325,64 @@ export default createRule({
       return created;
     }
 
+    /**
+     * Reports object types that are assignable to (in a union) or from
+     * (in an intersection) another constituent, making them redundant.
+     * Literals, primitives, and null/undefined are left to the checks below,
+     * so this does not depend on `strictNullChecks`.
+     */
+    function checkObjectTypeAssignability(
+      node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
+      container: 'intersection' | 'union',
+    ): void {
+      const types = node.types.map(typeNode =>
+        services.getTypeAtLocation(typeNode),
+      );
+      const isIgnored = types.map(type =>
+        isIgnoredByAssignability(type, checker),
+      );
+      const isArrayOrTuple = (type: ts.Type): boolean =>
+        checker.isArrayType(type) || checker.isTupleType(type);
+
+      node.types.forEach((typeNode, i) => {
+        const type = types[i];
+        if (!tsutils.isObjectType(type) || isIgnored[i]) {
+          return;
+        }
+
+        const isOverridden = types.some((other, j) => {
+          if (i === j || isIgnored[j]) {
+            return false;
+          }
+          const [narrower, wider] =
+            container === 'union' ? [type, other] : [other, type];
+          return (
+            (other.isUnionOrIntersection() ? other.types : [other]).every(
+              part =>
+                !tsutils.isObjectType(part) ||
+                // Array instantiations have differently named symbol members
+                (isArrayOrTuple(type) && isArrayOrTuple(part)) ||
+                haveSameObjectShape(type, part, checker),
+            ) &&
+            checker.isTypeAssignableTo(narrower, wider) &&
+            !checker.isTypeAssignableTo(wider, narrower)
+          );
+        });
+
+        if (isOverridden) {
+          context.report({
+            node: typeNode,
+            messageId: 'overridden',
+            data: { container, typeName: checker.typeToString(type) },
+          });
+        }
+      });
+    }
+
     return {
       'TSIntersectionType:exit'(node: TSESTree.TSIntersectionType): void {
+        checkObjectTypeAssignability(node, 'intersection');
+
         const seenLiteralTypes = new Map<PrimitiveTypeFlag, string[]>();
         const seenPrimitiveTypes = new Map<
           PrimitiveTypeFlag,
@@ -408,6 +519,8 @@ export default createRule({
         }
       },
       'TSUnionType:exit'(node: TSESTree.TSUnionType): void {
+        checkObjectTypeAssignability(node, 'union');
+
         const seenLiteralTypes = new Map<
           PrimitiveTypeFlag,
           TypeNodeWithValue[]

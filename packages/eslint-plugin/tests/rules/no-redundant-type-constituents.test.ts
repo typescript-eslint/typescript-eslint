@@ -1,6 +1,9 @@
-import rule from '../../src/rules/no-redundant-type-constituents';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import path from 'node:path';
 
+import rule from '../../src/rules/no-redundant-type-constituents';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
+
+const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-redundant-type-constituents', rule, {
@@ -159,6 +162,108 @@ type T = 'a' | 1 | 'b';
 type U = T & string;
     `,
     "declare function fn(): never | 'foo';",
+    // Only real arrays and tuples are compared without a shape check
+    `
+class MyArr extends Array<string> {
+  extra = 1;
+}
+type T = MyArr | string[];
+    `,
+    `
+class MyArr extends Array<string> {
+  extra = 1;
+}
+type T = MyArr & string[];
+    `,
+    `
+interface Tagged extends Array<string> {
+  tag: 1;
+}
+type T = Tagged | string[];
+    `,
+    `
+interface Tagged extends Array<string> {
+  tag: 1;
+}
+type T = Tagged & string[];
+    `,
+    // Every object in a union or intersection counterpart must have the same shape
+    'type T = { a: 1; b: 1 } | ({ a: 1 } | { c: 1 });',
+    'type T = { a: 1; b: 1 } & ({ a: 1 } | { c: 1 });',
+    // Callable and constructable types are not compared
+    'type T = (() => void) | (() => Promise<void>);',
+    'type T = (new () => object) | (new () => Date);',
+    'type T = { new (): { a: 1 } } | { new (): { a: 1; b: 2 } };',
+    `
+interface Overloaded {
+  (a: string): string;
+  (a: number): number;
+}
+type T = Overloaded | ((a: string) => string);
+    `,
+    // Equal types are left to no-duplicate-type-constituents
+    'type T = { a: string } | { a: string };',
+    'type T = { a: string } | { a: number };',
+    'type T = { a: string } & { b: string };',
+    // Excess property checks and optionality make these not interchangeable
+    'type T = { a: 1 } | { a: 1; b: 1 };',
+    'type T = { a?: 1 } | { a: 1 };',
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11790
+    `
+interface SafeValue {}
+interface SafeResourceUrl extends SafeValue {}
+type T = SafeResourceUrl | string;
+    `,
+    "type T = 'a' | 'b' | (string & {});",
+    "type T = 'a' | 'b' | (Record<never, never> & string);",
+    `
+type LooseUnion<U> =
+  | U
+  | (U extends string
+      ? Record<never, never> & string
+      : U extends number
+        ? Record<never, never> & number
+        : never);
+    `,
+    `
+enum Currency {
+  Dram = 'AMD',
+}
+type T = keyof Record<Currency, string> | (Currency | number | string | null);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11810
+    `
+interface TypeA {
+  _id?: string;
+}
+type TypeB = TypeA & { _id: string };
+    `,
+    'declare function f(value: object | object[]): void;',
+    `
+declare function f(
+  body: ArrayBuffer | Blob | Error | object | string | null,
+): void;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11811
+    `
+type Foo = Record<string, any>;
+type Bar = Foo & { bar?: string };
+type Baz = Bar & { baz?: string };
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11800
+    'type T = string | undefined | null;',
+    'type T = { a: string | undefined } | { b: string };',
+    {
+      code: `
+type A = string | undefined | null;
+type B = { a: string } | { a: string | null };
+      `,
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootDir, 'unstrict'),
+        },
+      },
+    },
   ],
 
   invalid: [
@@ -847,6 +952,92 @@ type U = S & T & string & number;
           endLine: 4,
           line: 4,
           messageId: 'primitiveOverridden',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7742
+    {
+      code: `
+type T = { a: string } | { a: 'b' | 'c' };
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { container: 'union', typeName: '{ a: "b" | "c"; }' },
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: 'b' | 'c' } & { a: string };
+      `,
+      errors: [
+        {
+          column: 29,
+          data: { container: 'intersection', typeName: '{ a: string; }' },
+          endColumn: 42,
+          endLine: 2,
+          line: 2,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = number[] | (number | string)[];
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { container: 'union', typeName: 'number[]' },
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/11787
+    {
+      code: `
+type T0 = number | T0[];
+type T1 = T0 | T0[];
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { container: 'union', typeName: 'T0[]' },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+type T = { a: string } | { a: 'x' } | { a: 'y' };
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { container: 'union', typeName: '{ a: "x"; }' },
+          endColumn: 36,
+          endLine: 2,
+          line: 2,
+          messageId: 'overridden',
+        },
+        {
+          column: 39,
+          data: { container: 'union', typeName: '{ a: "y"; }' },
+          endColumn: 49,
+          endLine: 2,
+          line: 2,
+          messageId: 'overridden',
         },
       ],
     },

@@ -13,6 +13,8 @@ type UnionNumberLiteral = number | 1;
                                    ~ 1 is overridden by number in this union type.
 type UnionStringLiteral = string | 'foo';
                                    ~~~~~ "foo" is overridden by string in this union type.
+type UnionObject = { a: string } | { a: 'foo' };
+                                   ~~~~~~~~~~~~ '{ a: "foo"; }' is overridden by other types in this union type.
 
 type IntersectionAny = any & 'foo';
                        ~~~ 'any' overrides all other types in this intersection type.
@@ -27,6 +29,8 @@ type IntersectionNumberLiteral = number & 1;
                                  ~~~~~~ number is overridden by the 1 in this intersection type.
 type IntersectionStringLiteral = string & 'foo';
                                  ~~~~~~ string is overridden by the "foo" in this intersection type.
+type IntersectionObject = { a: string } & { a: 'foo' };
+                          ~~~~~~~~~~~~~ '{ a: string; }' is overridden by other types in this intersection type.
 
 Correct
 
@@ -37,6 +41,7 @@ type UnionNever = never;
 type UnionBooleanLiteral = boolean;
 type UnionNumberLiteral = number;
 type UnionStringLiteral = string;
+type UnionObject = { a: string };
 
 type IntersectionAny = any;
 type IntersectionUnknown = string;
@@ -45,3 +50,4 @@ type IntersectionNever = string;
 type IntersectionBooleanLiteral = false;
 type IntersectionNumberLiteral = 1;
 type IntersectionStringLiteral = 'foo';
+type IntersectionObject = { a: 'foo' };

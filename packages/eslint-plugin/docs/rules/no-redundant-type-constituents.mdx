@@ -17,6 +17,7 @@ Within `|` unions:
 - `any` and `unknown` "override" all other union members
 - `never` is dropped from unions in any position except when in a return type position
 - primitive types such as `string` "override" any of their literal types such as `""`
+- object types are overridden by another member they are assignable to, such as `{ a: 'b' }` by `{ a: string }`
 
 Within `&` intersections:
 
@@ -24,6 +25,7 @@ Within `&` intersections:
 - `unknown` is dropped from intersections
 - literal types "override" any primitive types in an intersection
 - literal types such as `""` "override" any of their primitive types such as `string`
+- object types override another member that is assignable from them, such as `{ a: 'b' }` over `{ a: string }`
 
 ## Examples
 
@@ -38,6 +40,7 @@ type UnionNever = never | 'foo';
 type UnionBooleanLiteral = boolean | false;
 type UnionNumberLiteral = number | 1;
 type UnionStringLiteral = string | 'foo';
+type UnionObject = { a: string } | { a: 'foo' };
 
 type IntersectionAny = any & 'foo';
 type IntersectionUnknown = string & unknown;
@@ -46,6 +49,7 @@ type IntersectionNever = string | never;
 type IntersectionBooleanLiteral = boolean & false;
 type IntersectionNumberLiteral = number & 1;
 type IntersectionStringLiteral = string & 'foo';
+type IntersectionObject = { a: string } & { a: 'foo' };
 ```
 
 </TabItem>
@@ -59,6 +63,7 @@ type UnionNever = never;
 type UnionBooleanLiteral = boolean;
 type UnionNumberLiteral = number;
 type UnionStringLiteral = string;
+type UnionObject = { a: string };
 
 type IntersectionAny = any;
 type IntersectionUnknown = string;
@@ -67,6 +72,7 @@ type IntersectionNever = string;
 type IntersectionBooleanLiteral = false;
 type IntersectionNumberLiteral = 1;
 type IntersectionStringLiteral = 'foo';
+type IntersectionObject = { a: 'foo' };
 ```
 
 </TabItem>
@@ -74,7 +80,21 @@ type IntersectionStringLiteral = 'foo';
 
 ## Limitations
 
-This rule plays it safe and only works with bottom types, top types, and comparing literal types to primitive types.
+This rule plays it safe and only works with bottom types, top types, comparing literal types to primitive types, and comparing object types to each other.
+
+Object types are compared using TypeScript's assignability checking.
+Two object types are only reported when they have the same property names, optionality, and index signature count, so that removing one cannot change excess property checks or which keys are allowed, such as in `{ a: 1 } | { a: 1; b: 1 }`.
+Property `readonly` modifiers are not compared.
+Real arrays and tuples are compared by assignability alone, but classes and interfaces that extend `Array` are held to the same property check as other objects.
+When the other type is a union or intersection, every object type inside it must pass the same checks, such as in `{ a: 1; b: 1 } | ({ a: 1 } | { c: 1 })`.
+Non-object members, such as the `number` in `T0 | T0[]` where `T0 = number | T0[]`, are not checked this way.
+
+Types that are deliberately broad, such as `{}`, `object`, empty interfaces, and `string & {}`, are never reported or treated as overriding another type.
+Function and constructor types, and any other type with call or construct signatures, are also never reported or treated as overriding another type.
+
+`null` and `undefined` are not compared by assignability, so `string | undefined` is never reported.
+Assignability results for nested `null` and `undefined`, such as in `{ a: string } | { a: string | null }`, depend on the [`strictNullChecks`](https://www.typescriptlang.org/tsconfig/#strictNullChecks) compiler option.
+Like many typescript-eslint rules, this rule is best used with `strictNullChecks` enabled.
 
 ## When Not To Use It
 
