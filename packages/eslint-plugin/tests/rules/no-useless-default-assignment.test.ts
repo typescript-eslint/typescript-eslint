@@ -157,9 +157,7 @@ const [foo = ''] = g;
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -170,9 +168,7 @@ const { foo = '' } = g;
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -183,9 +179,7 @@ const { bar = '' } = h;
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },

@@ -1,5 +1,7 @@
+import * as path from 'node:path';
+
 import rule from '../../src/rules/non-nullable-type-assertion-style';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes();
 
@@ -257,7 +259,7 @@ const b = (a || undefined)!;
 });
 
 const ruleTesterWithNoUncheckedIndexAccess = createRuleTesterWithTypes({
-  project: './tsconfig.noUncheckedIndexedAccess.json',
+  tsconfigRootDir: path.join(getFixturesRootDir(), 'noUncheckedIndexedAccess'),
 });
 
 ruleTesterWithNoUncheckedIndexAccess.run(

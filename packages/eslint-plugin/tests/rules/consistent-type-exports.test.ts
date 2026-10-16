@@ -1,10 +1,21 @@
-import { noFormat } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/consistent-type-exports';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
-const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.json',
+const rootDir = getFixturesRootDir();
+const ruleTester = new RuleTester({
+  defaultFilenames: {
+    ts: path.join(rootDir, 'file.ts'),
+    tsx: path.join(rootDir, 'react.tsx'),
+  },
+  languageOptions: {
+    parserOptions: {
+      projectService: true,
+      tsconfigRootDir: rootDir,
+    },
+  },
 });
 
 ruleTester.run('consistent-type-exports', rule, {

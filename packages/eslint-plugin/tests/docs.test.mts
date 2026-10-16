@@ -433,8 +433,7 @@ describe('Validating rule docs', () => {
               parser: tseslintParser,
               parserOptions: {
                 disallowAutomaticSingleRunInference: true,
-                project: './tsconfig.json',
-                projectService: false,
+                projectService: true,
                 tsconfigRootDir: FIXTURES_DIR,
               },
             },
