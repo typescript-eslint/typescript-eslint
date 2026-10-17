@@ -68,9 +68,23 @@ describe(isTypeReadonly, () => {
               expect(code).toBeReadOnly(options);
             },
           );
+
+          it('handles deeply readonly symbol-keyed properties', () => {
+            expect(`
+type Test = { readonly [key]: { readonly value: string } };
+declare const key: unique symbol;
+            `).toBeReadOnly(options);
+          });
         });
 
         describe('is not readonly', () => {
+          it('handles mutable values in readonly symbol-keyed properties', () => {
+            expect(`
+type Test = { readonly [key]: { value: string } };
+declare const key: unique symbol;
+            `).not.toBeReadOnly(options);
+          });
+
           // Record.
           it.for([
             ['type Test = { foo: string; };'],
