@@ -13,15 +13,23 @@ import {
 import CodeBlockLayout from '@theme/CodeBlock/Layout';
 import React from 'react';
 
+import {
+  CodeBlockDiagnosticsProvider,
+  parseCodeBlockDiagnostics,
+} from '../diagnostics';
+
 export default function CodeBlockString(props: Props): React.JSX.Element {
   const metadata = useCodeBlockMetadata(props);
   const wordWrap = useCodeWordWrap();
   const eslintrcHash = parseEslintrc(props.metastring);
+  const diagnostics = parseCodeBlockDiagnostics(props.metastring);
 
   return (
-    <CodeBlockContextProvider metadata={metadata} wordWrap={wordWrap}>
-      <CodeBlockLayout eslintrcHash={eslintrcHash} />
-    </CodeBlockContextProvider>
+    <CodeBlockDiagnosticsProvider value={diagnostics}>
+      <CodeBlockContextProvider metadata={metadata} wordWrap={wordWrap}>
+        <CodeBlockLayout eslintrcHash={eslintrcHash} />
+      </CodeBlockContextProvider>
+    </CodeBlockDiagnosticsProvider>
   );
 }
 
