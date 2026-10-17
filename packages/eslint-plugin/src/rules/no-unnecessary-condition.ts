@@ -341,7 +341,8 @@ export default createRule<Options, MessageId>({
     }
 
     // Conditional is always necessary if it involves:
-    //    `any` or `unknown` or a naked type variable
+    //    `any` or `unknown` or a naked type variable, or a conditional type
+    //    whose constraint couldn't be resolved (e.g. `Awaited<T>`)
     function isConditionalAlwaysNecessary(type: ts.Type): boolean {
       return tsutils
         .unionConstituents(type)
@@ -349,7 +350,10 @@ export default createRule<Options, MessageId>({
           part =>
             isTypeAnyType(part) ||
             isTypeUnknownType(part) ||
-            isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
+            isTypeFlagSet(
+              part,
+              ts.TypeFlags.TypeVariable | ts.TypeFlags.Conditional,
+            ),
         );
     }
 
@@ -503,14 +507,16 @@ export default createRule<Options, MessageId>({
     function checkNodeForNullish(node: TSESTree.Expression): void {
       const type = getConstrainedTypeAtLocation(services, node);
 
-      // Conditional is always necessary if it involves `any`, `unknown` or a naked type parameter
+      // Conditional is always necessary if it involves `any`, `unknown`, a naked
+      // type parameter or a conditional type with an unresolvable constraint
       if (
         isTypeFlagSet(
           type,
           ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
             ts.TypeFlags.TypeParameter |
-            ts.TypeFlags.TypeVariable,
+            ts.TypeFlags.TypeVariable |
+            ts.TypeFlags.Conditional,
         )
       ) {
         return;

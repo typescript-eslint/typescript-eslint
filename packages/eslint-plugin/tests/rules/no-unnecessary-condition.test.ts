@@ -246,6 +246,33 @@ function test<T>(arg: T | { value: string }) {
   }
 }
     `,
+    // Conditional types with no resolvable constraint
+    'const truthy = <T,>(value: Awaited<T>) => (value ? 1 : 2);',
+    'const nullish = <T,>(value: Awaited<T>) => value ?? 1;',
+    `
+const fromPromise = async <T,>(promise: Promise<T>) => {
+  const value = await promise;
+  return value ? 1 : 2;
+};
+    `,
+    `
+type Id<T> = T extends unknown ? T : never;
+function test<T>(value: Id<T>) {
+  return value ? 1 : 2;
+}
+    `,
+    `
+type Id<T> = T extends unknown ? T : never;
+function test<T>(value: Id<T>) {
+  return value ?? 1;
+}
+    `,
+    `
+type Id<T> = T extends unknown ? T : never;
+function test<T>(value: Id<T> | string) {
+  return value ? 1 : 2;
+}
+    `,
 
     // Boolean expressions
     `
@@ -1930,6 +1957,22 @@ function test<T extends false>(t: T) {
     {
       code: `
 function test<T extends 'a' | 'b'>(t: T) {
+  return t ? 'yes' : 'no';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T>(t: T extends string ? 'a' : 'b') {
   return t ? 'yes' : 'no';
 }
       `,
