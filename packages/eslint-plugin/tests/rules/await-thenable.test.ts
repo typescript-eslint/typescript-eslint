@@ -230,6 +230,8 @@ await using foo = d;
 
 export {};
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -239,6 +241,8 @@ using foo = {
 
 export {};
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -246,6 +250,8 @@ await using foo = 3 as any;
 
 export {};
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       // bad bad code but not this rule's problem
@@ -256,6 +262,8 @@ using foo = {
 
 export {};
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -264,6 +272,8 @@ async function foo() {
   await using _ = maybeAsyncDisposable;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -272,6 +282,8 @@ async function iterateUsing(arr: Array<AsyncDisposable>) {
   }
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
     },
     {
       code: `
@@ -1189,6 +1201,8 @@ async function foo() {
   await using d = disposable;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 19,
@@ -1218,6 +1232,8 @@ async function foo() {
   };
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 19,
@@ -1253,6 +1269,8 @@ async function foo() {
     e = disposable;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 19,
@@ -1287,6 +1305,8 @@ async function foo() {
     b = disposable;
 }
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 9,

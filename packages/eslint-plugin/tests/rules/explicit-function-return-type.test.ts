@@ -371,6 +371,8 @@ interface R {
 
 const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
@@ -383,6 +385,8 @@ interface R {
 const func = (value: number) =>
   ({ type: 'X', value }) as const satisfies R satisfies R;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
@@ -395,6 +399,8 @@ interface R {
 const func = (value: number) =>
   ({ type: 'X', value }) as const satisfies R satisfies R satisfies R;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       options: [{ allowDirectConstAssertionInArrowFunctions: true }],
     },
     {
@@ -1677,6 +1683,8 @@ interface R {
 
 const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 30,
