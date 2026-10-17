@@ -1,0 +1,86 @@
+name: OctoGuide
+
+on:
+  discussion:
+    types: [created, edited]
+  discussion_comment:
+    types: [created, deleted, edited]
+  issue_comment:
+    # nx bot and netlify bot edit their comments regularly, which floods our
+    # action queue. It's rare that someone edits a comment to add an image, so to
+    # save our queue we ignore the edit.
+    types: [created, deleted]
+  issues:
+    types: [edited, opened]
+  pull_request_review_comment:
+    types: [created, deleted, edited]
+  # WARNING: Using pull_request_target here because we need write permissions to
+  # comment on fork PRs.
+  #
+  # NEVER EVER execute any code from the fork (including checkout, install, scripts, etc.)
+  pull_request_target: # zizmor: ignore[dangerous-triggers] See warning above.
+    # synchronize is needed for pr-force-pushes.
+    types: [edited, opened, synchronize]
+
+permissions: {}
+
+jobs:
+  octoguide:
+    name: OctoGuide
+    runs-on: ubuntu-latest
+
+    permissions:
+      discussions: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - uses: OctoGuide/bot@ba5148358fb3d5f31ff41714db6045546d3bbfac # 0.29.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # pr-force-pushes and pr-title-conventional are in the strict config,
+          # but we want them applied to maintainers as well as contributors.
+          rules: |
+            {
+              "pr-force-pushes": {
+                "include-associations": [
+                  "COLLABORATOR",
+                  "CONTRIBUTOR",
+                  "FIRST_TIMER",
+                  "FIRST_TIME_CONTRIBUTOR",
+                  "MEMBER",
+                  "OWNER"
+                ]
+              },
+              "pr-title-conventional": {
+                "include-associations": [
+                  "COLLABORATOR",
+                  "CONTRIBUTOR",
+                  "FIRST_TIMER",
+                  "FIRST_TIME_CONTRIBUTOR",
+                  "MEMBER",
+                  "OWNER"
+                ],
+                "scopes": [
+                  "ast-spec",
+                  "deps",
+                  "eslint-plugin",
+                  "eslint-plugin-internal",
+                  "integration-tests",
+                  "parser",
+                  "project-service",
+                  "rule-schema-to-typescript-types",
+                  "rule-tester",
+                  "scope-manager",
+                  "tsconfig-utils",
+                  "type-utils",
+                  "types",
+                  "typescript-eslint",
+                  "typescript-estree",
+                  "utils",
+                  "visitor-keys",
+                  "website"
+                ],
+                "types": ["chore", "docs", "feat", "fix", "test"]
+              }
+            }
