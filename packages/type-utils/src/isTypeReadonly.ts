@@ -43,8 +43,63 @@ export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
 };
 
-function hasSymbol(node: ts.Node): node is { symbol: ts.Symbol } & ts.Node {
-  return Object.hasOwn(node, 'symbol');
+function isCommonJSExports(node: ts.Expression) {
+  return ts.isIdentifier(node)
+    ? node.text === 'exports'
+    : ts.isPropertyAccessExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === 'module' &&
+        node.name.text === 'exports';
+}
+
+function isSameEntityName(a: ts.Expression, b: ts.Expression): boolean {
+  return ts.isIdentifier(a)
+    ? ts.isIdentifier(b) && a.text === b.text
+    : ts.isPropertyAccessExpression(a) &&
+        ts.isPropertyAccessExpression(b) &&
+        a.name.text === b.name.text &&
+        isSameEntityName(a.expression, b.expression);
+}
+
+function isFunctionInitializer(node: ts.Expression) {
+  return ts.isFunctionExpression(node) || ts.isArrowFunction(node);
+}
+
+// Matches the functions TypeScript's binder flags as methods, without reading the internal `node.symbol`.
+function isMethodDeclaration(declaration: ts.Declaration) {
+  if (
+    ts.isMethodDeclaration(declaration) ||
+    ts.isMethodSignature(declaration)
+  ) {
+    return true;
+  }
+  const assignment = ts.isBinaryExpression(declaration)
+    ? declaration
+    : declaration.parent;
+  if (
+    !ts.isBinaryExpression(assignment) ||
+    assignment.operatorToken.kind !== ts.SyntaxKind.EqualsToken
+  ) {
+    return false;
+  }
+  const { left, right } = assignment;
+  if (
+    !(
+      ts.isPropertyAccessExpression(left) || ts.isElementAccessExpression(left)
+    ) ||
+    left.expression.kind === ts.SyntaxKind.ThisKeyword ||
+    isCommonJSExports(left.expression)
+  ) {
+    return false;
+  }
+  return (
+    isFunctionInitializer(right) ||
+    (ts.isBinaryExpression(right) &&
+      (right.operatorToken.kind === ts.SyntaxKind.BarBarToken ||
+        right.operatorToken.kind === ts.SyntaxKind.QuestionQuestionToken) &&
+      isSameEntityName(left, right.left) &&
+      isFunctionInitializer(right.right))
+  );
 }
 
 function isTypeReadonlyArrayOrTuple(
@@ -138,11 +193,7 @@ function isTypeReadonlyObject(
       if (options.treatMethodsAsReadonly) {
         if (
           property.valueDeclaration != null &&
-          hasSymbol(property.valueDeclaration) &&
-          tsutils.isSymbolFlagSet(
-            property.valueDeclaration.symbol,
-            ts.SymbolFlags.Method,
-          )
+          isMethodDeclaration(property.valueDeclaration)
         ) {
           continue;
         }
@@ -152,11 +203,7 @@ function isTypeReadonlyObject(
           declarations != null && declarations.length > 0
             ? declarations[declarations.length - 1]
             : undefined;
-        if (
-          lastDeclaration != null &&
-          hasSymbol(lastDeclaration) &&
-          tsutils.isSymbolFlagSet(lastDeclaration.symbol, ts.SymbolFlags.Method)
-        ) {
+        if (lastDeclaration != null && isMethodDeclaration(lastDeclaration)) {
           continue;
         }
       }
