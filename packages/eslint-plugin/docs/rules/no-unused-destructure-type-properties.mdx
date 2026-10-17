@@ -1,0 +1,72 @@
+---
+description: 'Disallow properties of inline object and tuple types that are never destructured.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unused-destructure-type-properties** for documentation.
+
+When a destructuring pattern is annotated with an inline type, nothing else refers to that type.
+Any property the type declares but the pattern does not destructure is effectively dead code.
+These are often left behind when a property is removed from the pattern but not from its type.
+
+This rule reports properties of inline types that a destructuring pattern doesn't use.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function Button({ text }: { text: string; onClick: () => void }) {
+  return text;
+}
+```
+
+```ts
+function getFirst([first]: [string, number]) {
+  return first;
+}
+```
+
+```ts
+function getName({ name }: Record<'id' | 'name', string>) {
+  return name;
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function Button({ text, onClick }: { text: string; onClick: () => void }) {
+  return [text, onClick];
+}
+```
+
+```ts
+function getFirst([first]: [string]) {
+  return first;
+}
+```
+
+```ts
+function getName({ name }: Record<'name', string>) {
+  return name;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If you intentionally require properties you don't read, such as ahead of a planned change, this rule might not be for you.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
+## Related To
+
+- [`no-unused-vars`](./no-unused-vars.mdx): reports destructured variables that are never used.

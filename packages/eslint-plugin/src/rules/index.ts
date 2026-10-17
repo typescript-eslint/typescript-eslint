@@ -89,6 +89,7 @@ import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeTypeAssertion from './no-unsafe-type-assertion';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
+import noUnusedDestructureTypeProperties from './no-unused-destructure-type-properties';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedPrivateClassMembers from './no-unused-private-class-members';
 import noUnusedVars from './no-unused-vars';
@@ -228,6 +229,7 @@ const rules = {
   'no-unsafe-return': noUnsafeReturn,
   'no-unsafe-type-assertion': noUnsafeTypeAssertion,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
+  'no-unused-destructure-type-properties': noUnusedDestructureTypeProperties,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-private-class-members': noUnusedPrivateClassMembers,
   'no-unused-vars': noUnusedVars,
