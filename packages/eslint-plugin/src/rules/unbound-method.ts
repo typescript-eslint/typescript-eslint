@@ -432,16 +432,86 @@ function checkMethod(
 
   return {
     dangerous:
-      !thisArgIsVoid &&
-      !(
-        ignoreStatic &&
-        tsutils.includesModifier(
-          getModifiers(valueDeclaration),
-          ts.SyntaxKind.StaticKeyword,
-        )
-      ),
+      !thisArgIsVoid && !(ignoreStatic && isStaticMethod(valueDeclaration)),
     firstParamIsThis,
   };
+}
+
+/**
+ * Whether the method is a `static` class member, or an object type member of a
+ * constructible type (i.e. one with a construct signature), which is how static
+ * members of a class are typically declared on a `var`, such as `Buffer`
+ * in `@types/node`:
+ *
+ * ```ts
+ * interface BufferConstructor {
+ *   new (str: string): Buffer;
+ *   compare(buf1: Uint8Array, buf2: Uint8Array): number;
+ * }
+ * declare var Buffer: BufferConstructor;
+ * ```
+ *
+ * A construct signature that returns the type itself doesn't count, because
+ * the instances it creates have the same members, so they aren't static:
+ *
+ * ```ts
+ * interface Foo {
+ *   new (): Foo;
+ *   method(): void;
+ * }
+ * ```
+ */
+function isStaticMethod(
+  valueDeclaration:
+    ts.FunctionExpression | ts.MethodDeclaration | ts.MethodSignature,
+): boolean {
+  if (
+    tsutils.includesModifier(
+      getModifiers(valueDeclaration),
+      ts.SyntaxKind.StaticKeyword,
+    )
+  ) {
+    return true;
+  }
+
+  const { parent } = valueDeclaration;
+  if (
+    !ts.isMethodSignature(valueDeclaration) ||
+    !(ts.isInterfaceDeclaration(parent) || ts.isTypeLiteralNode(parent))
+  ) {
+    return false;
+  }
+
+  const typeName = getDeclaredTypeName(parent);
+  return parent.members.some(
+    member =>
+      ts.isConstructSignatureDeclaration(member) &&
+      !isTypeReferenceTo(member.type, typeName),
+  );
+}
+
+function getDeclaredTypeName(
+  node: ts.InterfaceDeclaration | ts.TypeLiteralNode,
+): string | undefined {
+  if (ts.isInterfaceDeclaration(node)) {
+    return node.name.text;
+  }
+  return ts.isTypeAliasDeclaration(node.parent)
+    ? node.parent.name.text
+    : undefined;
+}
+
+function isTypeReferenceTo(
+  type: ts.TypeNode | undefined,
+  typeName: string | undefined,
+): boolean {
+  return (
+    typeName != null &&
+    type != null &&
+    ts.isTypeReferenceNode(type) &&
+    ts.isIdentifier(type.typeName) &&
+    type.typeName.text === typeName
+  );
 }
 
 function isSafeUse(node: TSESTree.Node): boolean {
