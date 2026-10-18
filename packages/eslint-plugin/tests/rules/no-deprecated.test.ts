@@ -4040,6 +4040,8 @@ interface A {
 }
 const x = { deprecatedField: 'string' } satisfies A;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 13,
@@ -4219,6 +4221,8 @@ interface A {
 }
 const x: A = { ['deprecatedField' satisfies string]: 'string' };
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 17,
@@ -4259,6 +4263,8 @@ interface A {
 }
 const x: A = { [\`\${'deprecated'}Field\`]: 'string' };
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 17,
