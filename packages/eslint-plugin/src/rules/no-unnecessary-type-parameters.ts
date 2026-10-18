@@ -36,6 +36,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     const parserServices = getParserServices(context);
@@ -127,7 +128,8 @@ export default createRule({
                       grandparent.type === AST_NODE_TYPES.TSIntersectionType ||
                       grandparent.type === AST_NODE_TYPES.TSUnionType ||
                       grandparent.type === AST_NODE_TYPES.TSConditionalType ||
-                      grandparent.type === AST_NODE_TYPES.TSTypeOperator;
+                      grandparent.type === AST_NODE_TYPES.TSTypeOperator ||
+                      grandparent.type === AST_NODE_TYPES.TSOptionalType;
 
                     if (
                       isWeakPrecedenceConstraint &&
