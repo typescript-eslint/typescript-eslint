@@ -26,7 +26,6 @@ ruleTester.defineRule('collect-unused-vars', {
     collectVariables(context);
     return {};
   },
-  defaultOptions: [],
   meta: {
     messages: {},
     schema: [],

@@ -35,6 +35,9 @@ const vitestConfig = mergeConfig(
 
       name: packageJson.name.replace('@typescript-eslint/', ''),
       root: import.meta.dirname,
+
+      // To support `require` calls of the rules lazy loading.
+      setupFiles: ['tsx/cjs'],
     },
   }),
 );

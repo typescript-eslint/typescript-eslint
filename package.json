@@ -80,7 +80,7 @@
     "@typescript/native": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/eslint-plugin": "1.6.16",
-    "console-fail-test": "^0.9.0",
+    "console-fail-test": "^0.10.0",
     "cspell": "^10.3.0",
     "eslint": "catalog:",
     "eslint-plugin-eslint-plugin": "^7.6.2",
@@ -97,7 +97,7 @@
     "get-github-auth-token": "^0.2.0",
     "globals": "catalog:",
     "husky": "^9.1.7",
-    "knip": "6.39.0",
+    "knip": "6.41.0",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.49.0",
     "nx": "23.2.0",
@@ -110,7 +110,7 @@
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.10.0+sha512.122a7b6ddf9d40268bc0db1a9780899b95e4fa8badfca7bd450615ad8cf7c2659f5f569c20ed7c53886bc7b08d0d50a54f4ad50706847f5682ec6c5048416539",
+  "packageManager": "pnpm@12.11.2+sha512.25a51652a196785af5f28bda6dfe8dc582ebefa4ac1d180221ce1390231c5fb76637822ea4b6e4633ce74acdcb0a77f725af11bad38177fdeddaee818a955cb9",
   "nx": {
     "name": "repo",
     "includedScripts": [
