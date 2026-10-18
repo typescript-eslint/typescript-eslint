@@ -122,8 +122,8 @@ console.log(
     ['Rule', 'Status', 'TC', 'Ext', "Rec'd", 'Strict', 'Style'],
     ...Object.entries(rulesImport).map(([ruleName, { meta }]) => {
       const { deprecated } = meta;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- all of our rules have meta.docs
-      const { extendsBaseRule, recommended, requiresTypeChecking } = meta.docs!;
+
+      const { extendsBaseRule, recommended, requiresTypeChecking } = meta.docs;
 
       return [
         `[\`${ruleName}\`](https://typescript-eslint.io/rules/${ruleName})`,
