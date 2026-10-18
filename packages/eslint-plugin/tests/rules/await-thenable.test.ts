@@ -486,6 +486,22 @@ Promise.all(x);
     },
     {
       code: `
+declare const x: { [Symbol.iterator]: any };
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const a: {
+  [Symbol.iterator](): Iterator<number>;
+  [Symbol.iterator](s?: string): Iterator<Promise<number>>;
+};
+
+Promise.all(a);
+      `,
+    },
+    {
+      code: `
 declare const x: Iterable<Promise<number>> | Iterable<Promise<string>>;
 
 // @ts-expect-error
@@ -1256,7 +1272,6 @@ async function foo() {
         },
       ],
     },
-    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const disposable: Disposable;
@@ -1293,7 +1308,6 @@ async function foo() {
         },
       ],
     },
-    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const anee: any;
@@ -1619,6 +1633,74 @@ Promise.all('abc');
           endColumn: 18,
           endLine: 2,
           line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+interface NIter extends Iterator<number> {}
+declare const x: { [Symbol.iterator](): NIter };
+
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyIter<T> extends Iterator<number> {}
+declare const x: { [Symbol.iterator](): MyIter<Promise<number>> };
+
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: { [Symbol.iterator](): { next(): IteratorResult<number> } };
+
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: {
+  [Symbol.iterator](): Iterator<number> | IterableIterator<number>;
+};
+
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],

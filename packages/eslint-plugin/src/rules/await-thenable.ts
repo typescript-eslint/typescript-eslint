@@ -53,7 +53,6 @@ export default createRule<[], MessageId>({
     },
     schema: [],
   },
-  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
 
   create(context) {
@@ -318,29 +317,85 @@ function getValueTypesOfArrayLike(
   }
 
   // Yield type of `[Symbol.iterator]()`, not this type's own type arguments.
-  const yieldType = getIterableYieldType(type, node, checker);
-  return yieldType == null ? null : [yieldType];
+  return getIterableYieldTypes(type, node, checker);
 }
 
-function getIterableYieldType(
+function getIterableYieldTypes(
   type: ts.Type,
   node: ts.Node,
   checker: ts.TypeChecker,
-): ts.Type | undefined {
+): readonly ts.Type[] | null {
   const iteratorProperty = nullThrows(
     tsutils.getWellKnownSymbolPropertyOfType(type, 'iterator', checker),
     'Expected an iterable type to have a [Symbol.iterator] property.',
   );
 
-  const iteratorType = checker.getReturnTypeOfSignature(
-    checker
-      .getTypeOfSymbolAtLocation(iteratorProperty, node)
-      .getCallSignatures()[0],
-  );
+  const signatures = checker
+    .getTypeOfSymbolAtLocation(iteratorProperty, node)
+    .getCallSignatures();
+  if (signatures.length === 0) {
+    return null;
+  }
 
-  return tsutils.isTypeReference(iteratorType)
-    ? checker.getTypeArguments(iteratorType).at(0)
-    : undefined;
+  const yieldTypes: ts.Type[] = [];
+  for (const signature of signatures) {
+    const signatureYields: ts.Type[] = [];
+    for (const part of tsutils.unionConstituents(
+      checker.getReturnTypeOfSignature(signature),
+    )) {
+      const yieldType = getYieldTypeFromNextMethod(part, node, checker);
+      if (yieldType == null) {
+        return null;
+      }
+      signatureYields.push(yieldType);
+    }
+    // An overload that only yields thenables means the call may be fine.
+    if (
+      !signatureYields.every(yieldType =>
+        containsNonAwaitableType(yieldType, node, checker),
+      )
+    ) {
+      return null;
+    }
+    yieldTypes.push(...signatureYields);
+  }
+  return yieldTypes;
+}
+
+function getYieldTypeFromNextMethod(
+  type: ts.Type,
+  node: ts.Node,
+  checker: ts.TypeChecker,
+): ts.Type | undefined {
+  const nextSymbol = checker.getPropertyOfType(
+    checker.getApparentType(type),
+    'next',
+  );
+  if (nextSymbol == null) {
+    return undefined;
+  }
+
+  for (const signature of checker
+    .getTypeOfSymbolAtLocation(nextSymbol, node)
+    .getCallSignatures()) {
+    for (const part of tsutils.unionConstituents(
+      checker.getReturnTypeOfSignature(signature),
+    )) {
+      if (
+        !tsutils.isTypeReference(part) ||
+        part.target.getSymbol()?.getName() !== 'IteratorYieldResult'
+      ) {
+        continue;
+      }
+      const typeArguments = checker.getTypeArguments(part);
+      if (typeArguments.length > 0) {
+        // Prefer IteratorYieldResult over IteratorReturnResult (value: any).
+        return typeArguments[0];
+      }
+    }
+  }
+
+  return undefined;
 }
 
 function isAlwaysNonAwaitableType(
