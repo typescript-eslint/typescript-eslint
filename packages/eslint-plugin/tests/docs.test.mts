@@ -210,8 +210,6 @@ describe('Validating rule docs', () => {
   });
 
   describe.for(rulesData)('%s.mdx', async ([ruleName, rule]) => {
-    assert.isDefined(rule.meta.docs);
-
     const { description } = rule.meta.docs;
 
     const filePath = path.join(docsRoot, `${ruleName}.mdx`);
@@ -589,7 +587,7 @@ describe('Validating rule metadata', () => {
     it('`name` field in rule must match the filename', () => {
       // validate if rule name is same as url
       // there is no way to access this field but it's used only in generation of docs url
-      expect(rule.meta.docs?.url).toBe(
+      expect(rule.meta.docs.url).toBe(
         `https://typescript-eslint.io/rules/${ruleName}`,
       );
     });
@@ -600,7 +598,7 @@ describe('Validating rule metadata', () => {
     it.runIf(isTypeInfoDifficultToDetect)(
       '`requiresTypeChecking` should be set if the rule uses type information (in a way that is hard to detect)',
       () => {
-        expect(true).toBe(rule.meta.docs?.requiresTypeChecking ?? false);
+        expect(true).toBe(rule.meta.docs.requiresTypeChecking ?? false);
       },
     );
 
@@ -621,7 +619,7 @@ describe('Validating rule metadata', () => {
         );
 
         expect(requiresFullTypeInformation(ruleFileContents)).toBe(
-          rule.meta.docs?.requiresTypeChecking ?? false,
+          rule.meta.docs.requiresTypeChecking ?? false,
         );
       },
     );
