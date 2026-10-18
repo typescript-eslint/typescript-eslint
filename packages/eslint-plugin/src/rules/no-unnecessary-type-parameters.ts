@@ -36,6 +36,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     const parserServices = getParserServices(context);
@@ -127,7 +128,8 @@ export default createRule({
                       grandparent.type === AST_NODE_TYPES.TSIntersectionType ||
                       grandparent.type === AST_NODE_TYPES.TSUnionType ||
                       grandparent.type === AST_NODE_TYPES.TSConditionalType ||
-                      grandparent.type === AST_NODE_TYPES.TSTypeOperator;
+                      grandparent.type === AST_NODE_TYPES.TSTypeOperator ||
+                      grandparent.type === AST_NODE_TYPES.TSOptionalType;
 
                     if (
                       isWeakPrecedenceConstraint &&
@@ -466,6 +468,12 @@ function collectTypeParameterUsageCounts(
       if (isMappedType(type)) {
         visitType(type.typeParameter, false);
         if (properties.length === 0) {
+          // Instantiated mapped types populate `templateType` lazily, which
+          // building a type node forces.
+          if (!type.templateType) {
+            checker.typeToTypeNode(type, undefined, undefined);
+          }
+
           // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
           // They have properties, so we need to avoid double-counting.
           visitType(type.templateType ?? type.constraintType, false);

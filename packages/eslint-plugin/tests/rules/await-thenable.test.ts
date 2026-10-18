@@ -1294,6 +1294,7 @@ async function foo() {
         },
       ],
     },
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const disposable: Disposable;
@@ -1330,6 +1331,7 @@ async function foo() {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const anee: any;

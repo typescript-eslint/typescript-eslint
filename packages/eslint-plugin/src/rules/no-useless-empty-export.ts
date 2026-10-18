@@ -39,6 +39,7 @@ export default createRule({
     },
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     // In a definition file, export {} is necessary to make the module properly

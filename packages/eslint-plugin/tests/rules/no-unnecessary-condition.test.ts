@@ -1388,22 +1388,6 @@ t.A?.A?.A?.VALUE;
 const b1 = true;
 declare const b2: boolean;
 const t1 = b1 && b2;
-const t2 = b1 || b2;
-if (b1 && b2) {
-}
-if (b2 && b1) {
-}
-while (b1 && b2) {}
-while (b2 && b1) {}
-for (let i = 0; b1 && b2; i++) {
-  break;
-}
-const t1 = b1 && b2 ? 'yes' : 'no';
-const t1 = b2 && b1 ? 'yes' : 'no';
-switch (b1) {
-  case true:
-  default:
-}
       `,
       errors: [
         {
@@ -1413,62 +1397,149 @@ switch (b1) {
           line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const b1 = true;
+declare const b2: boolean;
+const t2 = b1 || b2;
+      `,
+      errors: [
         {
           column: 12,
           endColumn: 14,
-          endLine: 5,
-          line: 5,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const b1 = true;
+declare const b2: boolean;
+if (b1 && b2) {
+}
+      `,
+      errors: [
         {
           column: 5,
           endColumn: 7,
-          endLine: 6,
-          line: 6,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const b1 = true;
+declare const b2: boolean;
+if (b2 && b1) {
+}
+      `,
+      errors: [
         {
           column: 11,
           endColumn: 13,
-          endLine: 8,
-          line: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const b1 = true;
+declare const b2: boolean;
+while (b1 && b2) {}
+      `,
+      errors: [
         {
           column: 8,
           endColumn: 10,
-          endLine: 10,
-          line: 10,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const b1 = true;
+declare const b2: boolean;
+while (b2 && b1) {}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 16,
-          endLine: 11,
-          line: 11,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const b1 = true;
+declare const b2: boolean;
+for (let i = 0; b1 && b2; i++) {
+  break;
+}
+      `,
+      errors: [
         {
           column: 17,
           endColumn: 19,
-          endLine: 12,
-          line: 12,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const b1 = true;
+declare const b2: boolean;
+const t1 = b1 && b2 ? 'yes' : 'no';
+      `,
+      errors: [
         {
           column: 12,
           endColumn: 14,
-          endLine: 15,
-          line: 15,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const b1 = true;
+declare const b2: boolean;
+const t1 = b2 && b1 ? 'yes' : 'no';
+      `,
+      errors: [
         {
           column: 18,
           endColumn: 20,
-          endLine: 16,
-          line: 16,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const b1 = true;
+switch (b1) {
+  case true:
+  default:
+}
+      `,
+      errors: [
         {
           column: 8,
           data: {
@@ -1478,8 +1549,8 @@ switch (b1) {
             trueOrFalse: 'true',
           },
           endColumn: 12,
-          endLine: 18,
-          line: 18,
+          endLine: 4,
+          line: 4,
           messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
@@ -1695,10 +1766,6 @@ declare const b1: boolean;
 declare const b2: boolean;
 if (true && b1 && b2) {
 }
-if (b1 && false && b2) {
-}
-if (b1 || b2 || true) {
-}
       `,
       errors: [
         {
@@ -1708,18 +1775,38 @@ if (b1 || b2 || true) {
           line: 4,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if (b1 && false && b2) {
+}
+      `,
+      errors: [
         {
           column: 11,
           endColumn: 16,
-          endLine: 6,
-          line: 6,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysFalsy',
         },
+      ],
+    },
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: boolean;
+if (b1 || b2 || true) {
+}
+      `,
+      errors: [
         {
           column: 17,
           endColumn: 21,
-          endLine: 8,
-          line: 8,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysTruthy',
         },
       ],
@@ -2309,13 +2396,6 @@ true === undefined;
       code: `
 function test(a: string) {
   const t1 = a === undefined;
-  const t2 = undefined === a;
-  const t3 = a !== undefined;
-  const t4 = undefined !== a;
-  const t5 = a === null;
-  const t6 = null === a;
-  const t7 = a !== null;
-  const t8 = null !== a;
 }
       `,
       errors: [
@@ -2326,53 +2406,116 @@ function test(a: string) {
           line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test(a: string) {
+  const t2 = undefined === a;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 29,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test(a: string) {
+  const t3 = a !== undefined;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 29,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test(a: string) {
+  const t4 = undefined !== a;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 29,
-          endLine: 6,
-          line: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test(a: string) {
+  const t5 = a === null;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 24,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test(a: string) {
+  const t6 = null === a;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 24,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test(a: string) {
+  const t7 = a !== null;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 24,
-          endLine: 9,
-          line: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test(a: string) {
+  const t8 = null !== a;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 24,
-          endLine: 10,
-          line: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
       ],
@@ -2385,8 +2528,65 @@ function test(a?: string) {
   const t3 = a !== undefined;
   const t4 = undefined !== a;
   const t5 = a === null;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'noOverlapBooleanExpression',
+        },
+      ],
+    },
+    {
+      code: `
+function test(a?: string) {
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t3 = a !== undefined;
+  const t4 = undefined !== a;
   const t6 = null === a;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'noOverlapBooleanExpression',
+        },
+      ],
+    },
+    {
+      code: `
+function test(a?: string) {
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t3 = a !== undefined;
+  const t4 = undefined !== a;
   const t7 = a !== null;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
+          messageId: 'noOverlapBooleanExpression',
+        },
+      ],
+    },
+    {
+      code: `
+function test(a?: string) {
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t3 = a !== undefined;
+  const t4 = undefined !== a;
   const t8 = null !== a;
 }
       `,
@@ -2398,25 +2598,24 @@ function test(a?: string) {
           line: 7,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test(a: null | string) {
+  const t1 = a === undefined;
+  const t5 = a === null;
+  const t6 = null === a;
+  const t7 = a !== null;
+  const t8 = null !== a;
+}
+      `,
+      errors: [
         {
           column: 14,
-          endColumn: 24,
-          endLine: 8,
-          line: 8,
-          messageId: 'noOverlapBooleanExpression',
-        },
-        {
-          column: 14,
-          endColumn: 24,
-          endLine: 9,
-          line: 9,
-          messageId: 'noOverlapBooleanExpression',
-        },
-        {
-          column: 14,
-          endColumn: 24,
-          endLine: 10,
-          line: 10,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
       ],
@@ -2424,9 +2623,46 @@ function test(a?: string) {
     {
       code: `
 function test(a: null | string) {
-  const t1 = a === undefined;
   const t2 = undefined === a;
+  const t5 = a === null;
+  const t6 = null === a;
+  const t7 = a !== null;
+  const t8 = null !== a;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'noOverlapBooleanExpression',
+        },
+      ],
+    },
+    {
+      code: `
+function test(a: null | string) {
   const t3 = a !== undefined;
+  const t5 = a === null;
+  const t6 = null === a;
+  const t7 = a !== null;
+  const t8 = null !== a;
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
+          messageId: 'noOverlapBooleanExpression',
+        },
+      ],
+    },
+    {
+      code: `
+function test(a: null | string) {
   const t4 = undefined !== a;
   const t5 = a === null;
   const t6 = null === a;
@@ -2442,48 +2678,12 @@ function test(a: null | string) {
           line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
-        {
-          column: 14,
-          endColumn: 29,
-          endLine: 4,
-          line: 4,
-          messageId: 'noOverlapBooleanExpression',
-        },
-        {
-          column: 14,
-          endColumn: 29,
-          endLine: 5,
-          line: 5,
-          messageId: 'noOverlapBooleanExpression',
-        },
-        {
-          column: 14,
-          endColumn: 29,
-          endLine: 6,
-          line: 6,
-          messageId: 'noOverlapBooleanExpression',
-        },
       ],
     },
     {
       code: `
 function test<T extends object>(a: T) {
   const t1 = a == null;
-  const t2 = null == a;
-  const t3 = a != null;
-  const t4 = null != a;
-  const t5 = a == undefined;
-  const t6 = undefined == a;
-  const t7 = a != undefined;
-  const t8 = undefined != a;
-  const t9 = a === null;
-  const t10 = null === a;
-  const t11 = a !== null;
-  const t12 = null !== a;
-  const t13 = a === undefined;
-  const t14 = undefined === a;
-  const t15 = a !== undefined;
-  const t16 = undefined !== a;
 }
       `,
       errors: [
@@ -2494,109 +2694,244 @@ function test<T extends object>(a: T) {
           line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t2 = null == a;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 23,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t3 = a != null;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 23,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t4 = null != a;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 23,
-          endLine: 6,
-          line: 6,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t5 = a == undefined;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 28,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t6 = undefined == a;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 28,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t7 = a != undefined;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 28,
-          endLine: 9,
-          line: 9,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t8 = undefined != a;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 28,
-          endLine: 10,
-          line: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t9 = a === null;
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 24,
-          endLine: 11,
-          line: 11,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t10 = null === a;
+}
+      `,
+      errors: [
         {
           column: 15,
           endColumn: 25,
-          endLine: 12,
-          line: 12,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t11 = a !== null;
+}
+      `,
+      errors: [
         {
           column: 15,
           endColumn: 25,
-          endLine: 13,
-          line: 13,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t12 = null !== a;
+}
+      `,
+      errors: [
         {
           column: 15,
           endColumn: 25,
-          endLine: 14,
-          line: 14,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t13 = a === undefined;
+}
+      `,
+      errors: [
         {
           column: 15,
           endColumn: 30,
-          endLine: 15,
-          line: 15,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t14 = undefined === a;
+}
+      `,
+      errors: [
         {
           column: 15,
           endColumn: 30,
-          endLine: 16,
-          line: 16,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t15 = a !== undefined;
+}
+      `,
+      errors: [
         {
           column: 15,
           endColumn: 30,
-          endLine: 17,
-          line: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
+      ],
+    },
+    {
+      code: `
+function test<T extends object>(a: T) {
+  const t16 = undefined !== a;
+}
+      `,
+      errors: [
         {
           column: 15,
           endColumn: 30,
-          endLine: 18,
-          line: 18,
+          endLine: 3,
+          line: 3,
           messageId: 'noOverlapBooleanExpression',
         },
       ],
@@ -2722,7 +3057,13 @@ function test(a: never) {
 }
       `,
       errors: [
-        { column: 10, endColumn: 11, endLine: 3, line: 3, messageId: 'never' },
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'never',
+        },
       ],
     },
     {
@@ -2745,22 +3086,6 @@ function test<T extends { foo: number }, K extends 'foo'>(num: T[K]) {
     {
       code: `
 [1, 3, 5].filter(() => true);
-[1, 2, 3].find(() => {
-  return false;
-});
-
-// with non-literal array
-function nothing(x: string[]) {
-  return x.filter(() => false);
-}
-// with readonly array
-function nothing2(x: readonly string[]) {
-  return x.filter(() => false);
-}
-// with tuple
-function nothing3(x: [string, string]) {
-  return x.filter(() => false);
-}
       `,
       errors: [
         {
@@ -2770,32 +3095,71 @@ function nothing3(x: [string, string]) {
           line: 2,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+[1, 2, 3].find(() => {
+  return false;
+});
+      `,
+      errors: [
         {
           column: 10,
           endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+    },
+    {
+      code: `
+// with non-literal array
+function nothing(x: string[]) {
+  return x.filter(() => false);
+}
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 30,
           endLine: 4,
           line: 4,
           messageId: 'alwaysFalsy',
         },
+      ],
+    },
+    {
+      code: `
+// with readonly array
+function nothing2(x: readonly string[]) {
+  return x.filter(() => false);
+}
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 30,
-          endLine: 9,
-          line: 9,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysFalsy',
         },
+      ],
+    },
+    {
+      code: `
+// with tuple
+function nothing3(x: [string, string]) {
+  return x.filter(() => false);
+}
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 30,
-          endLine: 13,
-          line: 13,
-          messageId: 'alwaysFalsy',
-        },
-        {
-          column: 25,
-          endColumn: 30,
-          endLine: 17,
-          line: 17,
+          endLine: 4,
+          line: 4,
           messageId: 'alwaysFalsy',
         },
       ],
@@ -2835,14 +3199,12 @@ if (dict['mightNotExist']) {
         },
       ],
     },
+    // Should still check tuples when accessed with literal numbers, since they don't have
+    //   unsound index signatures
     {
-      // Should still check tuples when accessed with literal numbers, since they don't have
-      //   unsound index signatures
       code: `
 const x = [{}] as [{ foo: string }];
 if (x[0]) {
-}
-if (x[0]?.foo) {
 }
       `,
       errors: [
@@ -2853,19 +3215,26 @@ if (x[0]?.foo) {
           line: 3,
           messageId: 'alwaysTruthy',
         },
+      ],
+    },
+    {
+      code: `
+const x = [{}] as [{ foo: string }];
+if (x[0]?.foo) {
+}
+      `,
+      errors: [
         {
           column: 9,
           endColumn: 11,
-          endLine: 5,
-          line: 5,
+          endLine: 3,
+          line: 3,
           messageId: 'neverOptionalChain',
           suggestions: [
             {
               messageId: 'suggestRemoveOptionalChain',
               output: `
 const x = [{}] as [{ foo: string }];
-if (x[0]) {
-}
 if (x[0].foo) {
 }
       `,
@@ -2896,31 +3265,44 @@ if (arr.filter) {
 function truthy() {
   return [];
 }
-function falsy() {}
 [1, 3, 5].filter(truthy);
-[1, 2, 3].find(falsy);
-[1, 2, 3].findLastIndex(falsy);
       `,
       errors: [
         {
           column: 18,
           endColumn: 24,
-          endLine: 6,
-          line: 6,
+          endLine: 5,
+          line: 5,
           messageId: 'alwaysTruthyFunc',
         },
+      ],
+    },
+    {
+      code: `
+function falsy() {}
+[1, 2, 3].find(falsy);
+      `,
+      errors: [
         {
           column: 16,
           endColumn: 21,
-          endLine: 7,
-          line: 7,
+          endLine: 3,
+          line: 3,
           messageId: 'alwaysFalsyFunc',
         },
+      ],
+    },
+    {
+      code: `
+function falsy() {}
+[1, 2, 3].findLastIndex(falsy);
+      `,
+      errors: [
         {
           column: 25,
           endColumn: 30,
-          endLine: 8,
-          line: 8,
+          endLine: 3,
+          line: 3,
           messageId: 'alwaysFalsyFunc',
         },
       ],
@@ -3155,14 +3537,9 @@ while ('truthy') {}
       options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
-      code: noFormat`
+      code: `
 let foo = { bar: true };
 foo?.bar;
-foo ?. bar;
-foo ?.
-  bar;
-foo
-  ?. bar;
       `,
       errors: [
         {
@@ -3177,18 +3554,72 @@ foo
               output: `
 let foo = { bar: true };
 foo.bar;
-foo ?. bar;
-foo ?.
-  bar;
-foo
-  ?. bar;
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: noFormat`
+let foo = { bar: true };
+foo ?. bar;
+      `,
+      errors: [
         {
           column: 5,
           endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+let foo = { bar: true };
+foo . bar;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let foo = { bar: true };
+foo ?.
+  bar;
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+let foo = { bar: true };
+foo .
+  bar;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let foo = { bar: true };
+foo
+  ?. bar;
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
@@ -3197,52 +3628,6 @@ foo
               messageId: 'suggestRemoveOptionalChain',
               output: `
 let foo = { bar: true };
-foo?.bar;
-foo . bar;
-foo ?.
-  bar;
-foo
-  ?. bar;
-      `,
-            },
-          ],
-        },
-        {
-          column: 5,
-          endColumn: 7,
-          endLine: 5,
-          line: 5,
-          messageId: 'neverOptionalChain',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveOptionalChain',
-              output: `
-let foo = { bar: true };
-foo?.bar;
-foo ?. bar;
-foo .
-  bar;
-foo
-  ?. bar;
-      `,
-            },
-          ],
-        },
-        {
-          column: 3,
-          endColumn: 5,
-          endLine: 8,
-          line: 8,
-          messageId: 'neverOptionalChain',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveOptionalChain',
-              output: `
-let foo = { bar: true };
-foo?.bar;
-foo ?. bar;
-foo ?.
-  bar;
 foo
   . bar;
       `,
@@ -3252,14 +3637,9 @@ foo
       ],
     },
     {
-      code: noFormat`
+      code: `
 let foo = () => {};
 foo?.();
-foo ?. ();
-foo ?.
-  ();
-foo
-  ?. ();
       `,
       errors: [
         {
@@ -3274,74 +3654,6 @@ foo
               output: `
 let foo = () => {};
 foo();
-foo ?. ();
-foo ?.
-  ();
-foo
-  ?. ();
-      `,
-            },
-          ],
-        },
-        {
-          column: 5,
-          endColumn: 7,
-          endLine: 4,
-          line: 4,
-          messageId: 'neverOptionalChain',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveOptionalChain',
-              output: `
-let foo = () => {};
-foo?.();
-foo  ();
-foo ?.
-  ();
-foo
-  ?. ();
-      `,
-            },
-          ],
-        },
-        {
-          column: 5,
-          endColumn: 7,
-          endLine: 5,
-          line: 5,
-          messageId: 'neverOptionalChain',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveOptionalChain',
-              output: `
-let foo = () => {};
-foo?.();
-foo ?. ();
-foo${' '}
-  ();
-foo
-  ?. ();
-      `,
-            },
-          ],
-        },
-        {
-          column: 3,
-          endColumn: 5,
-          endLine: 8,
-          line: 8,
-          messageId: 'neverOptionalChain',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveOptionalChain',
-              output: `
-let foo = () => {};
-foo?.();
-foo ?. ();
-foo ?.
-  ();
-foo
-   ();
       `,
             },
           ],
@@ -3351,12 +3663,83 @@ foo
     {
       code: noFormat`
 let foo = () => {};
-foo?.(bar);
-foo ?. (bar);
+foo ?. ();
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+let foo = () => {};
+foo  ();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let foo = () => {};
 foo ?.
-  (bar);
+  ();
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+let foo = () => {};
+foo\u0020
+  ();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let foo = () => {};
 foo
-  ?. (bar);
+  ?. ();
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+let foo = () => {};
+foo
+   ();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let foo = () => {};
+foo?.(bar);
       `,
       errors: [
         {
@@ -3371,18 +3754,72 @@ foo
               output: `
 let foo = () => {};
 foo(bar);
-foo ?. (bar);
-foo ?.
-  (bar);
-foo
-  ?. (bar);
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: noFormat`
+let foo = () => {};
+foo ?. (bar);
+      `,
+      errors: [
         {
           column: 5,
           endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+let foo = () => {};
+foo  (bar);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let foo = () => {};
+foo ?.
+  (bar);
+      `,
+      errors: [
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+          suggestions: [
+            {
+              messageId: 'suggestRemoveOptionalChain',
+              output: `
+let foo = () => {};
+foo\u0020
+  (bar);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+let foo = () => {};
+foo
+  ?. (bar);
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 5,
           endLine: 4,
           line: 4,
           messageId: 'neverOptionalChain',
@@ -3391,52 +3828,6 @@ foo
               messageId: 'suggestRemoveOptionalChain',
               output: `
 let foo = () => {};
-foo?.(bar);
-foo  (bar);
-foo ?.
-  (bar);
-foo
-  ?. (bar);
-      `,
-            },
-          ],
-        },
-        {
-          column: 5,
-          endColumn: 7,
-          endLine: 5,
-          line: 5,
-          messageId: 'neverOptionalChain',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveOptionalChain',
-              output: `
-let foo = () => {};
-foo?.(bar);
-foo ?. (bar);
-foo${' '}
-  (bar);
-foo
-  ?. (bar);
-      `,
-            },
-          ],
-        },
-        {
-          column: 3,
-          endColumn: 5,
-          endLine: 8,
-          line: 8,
-          messageId: 'neverOptionalChain',
-          suggestions: [
-            {
-              messageId: 'suggestRemoveOptionalChain',
-              output: `
-let foo = () => {};
-foo?.(bar);
-foo ?. (bar);
-foo ?.
-  (bar);
 foo
    (bar);
       `,
@@ -4084,9 +4475,17 @@ if (!speech) {
 }
       `,
       errors: [
-        { column: 5, endColumn: 12, endLine: 7, line: 7, messageId: 'never' },
+        {
+          column: 5,
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
+          messageId: 'never',
+        },
       ],
     },
+    // Unstrict
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare const x: string[] | null;
@@ -4115,6 +4514,7 @@ if (x) {
         },
       },
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 interface Foo {
