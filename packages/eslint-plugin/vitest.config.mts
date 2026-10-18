@@ -1,3 +1,5 @@
+import type { ViteUserConfig } from 'vitest/config';
+
 import * as path from 'node:path';
 import ts from 'typescript';
 import { defineProject, mergeConfig, configDefaults } from 'vitest/config';
@@ -5,17 +7,16 @@ import { defineProject, mergeConfig, configDefaults } from 'vitest/config';
 import { vitestBaseConfig } from '../../vitest.config.base.mjs';
 import packageJson from './package.json' with { type: 'json' };
 
-const oldTypeScriptSkippedTests = [
-  // We're already testing this with latest supported TS version.
-  './docs.test.mts',
+const isOldTypeScript = ts.version.startsWith('4.8.');
 
+const oldTypeScriptSkippedTests = [
   // TODO: these rules have known failures on TS < 4.9
   // See https://github.com/typescript-eslint/typescript-eslint/pull/13024#issuecomment-6161399272
   './rules/no-unnecessary-type-parameters.test.ts',
   './rules/no-unsafe-enum-assignment.test.ts',
 ];
 
-const vitestConfig = mergeConfig(
+const vitestConfig: ViteUserConfig = mergeConfig(
   vitestBaseConfig,
 
   defineProject({
@@ -30,7 +31,7 @@ const vitestConfig = mergeConfig(
         // Skip rules tests on Windows CI since they aren't affected by OS.
         ...(isWindowsCI() ? ['./rules/**/*', './eslint-rules/**/*'] : []),
 
-        ...(ts.version.startsWith('4.8.') ? oldTypeScriptSkippedTests : []),
+        ...(isOldTypeScript ? oldTypeScriptSkippedTests : []),
       ],
 
       name: packageJson.name.replace('@typescript-eslint/', ''),
@@ -41,6 +42,11 @@ const vitestConfig = mergeConfig(
     },
   }),
 );
+
+if (isOldTypeScript) {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  vitestConfig.test!.include = ['./rules/**/*.test.ts'];
+}
 
 export default vitestConfig;
 
