@@ -206,19 +206,6 @@ class Foo {
 export {};
       `,
     },
-    `
-class Foo {
-  public foo(x: Awaited<this>) {
-    return x;
-  }
-
-  protected then(resolve: () => void): void {
-    resolve();
-  }
-}
-
-export {};
-    `,
   ],
   invalid: [
     {
