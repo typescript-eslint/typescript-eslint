@@ -263,6 +263,11 @@ const isUndefined = <T,>(value: Awaited<T>) => value === undefined;
 const isNull = <T,>(value: Awaited<T>) => value === null;
     `,
     `
+function test<T, K extends keyof T>(value: Awaited<T[K]>) {
+  return value ?? 1;
+}
+    `,
+    `
 function test<T>(arg: T, key: keyof T) {
   if (arg[key]?.toString()) {
   }
