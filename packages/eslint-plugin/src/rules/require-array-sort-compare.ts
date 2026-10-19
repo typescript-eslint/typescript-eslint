@@ -1,4 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -6,7 +9,6 @@ import {
   getParserServices,
   getTypeName,
   isStaticMemberAccessOfValue,
-  isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
 
 export type Options = [
@@ -87,7 +89,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
+      if (isAlwaysArray(calleeObjType, checker)) {
         context.report({ node: callee.parent, messageId: 'requireCompare' });
       }
     }
@@ -98,3 +100,9 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function isAlwaysArray(type: ts.Type, checker: ts.TypeChecker): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .every(t => checker.isArrayType(t) || checker.isTupleType(t));
+}
