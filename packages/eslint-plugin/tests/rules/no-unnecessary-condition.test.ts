@@ -229,6 +229,45 @@ function test<T>(t: T | []) {
 }
     `,
     `
+const truthy = <T,>(value: Awaited<T>) => (value ? 1 : 2);
+    `,
+    `
+const nullish = <T,>(value: Awaited<T>) => value ?? 1;
+    `,
+    `
+const fromPromise = async <T,>(promise: Promise<T>) => {
+  const value = await promise;
+  return value ? 1 : 2;
+};
+    `,
+    `
+type Id<T> = T extends unknown ? T : never;
+function test<T>(t: Id<T>) {
+  return t ? 'yes' : 'no';
+}
+    `,
+    `
+const truthyUnion = <T,>(value: Awaited<T> | string) => (value ? 1 : 2);
+    `,
+    `
+const truthy = <T extends string>(value: Awaited<T>) => (value ? 1 : 2);
+    `,
+    `
+const nullish = <T extends Promise<string | null>>(value: Awaited<T>) =>
+  value ?? 1;
+    `,
+    `
+const isUndefined = <T,>(value: Awaited<T>) => value === undefined;
+    `,
+    `
+const isNull = <T,>(value: Awaited<T>) => value === null;
+    `,
+    `
+function test<T, K extends keyof T>(value: Awaited<T[K]>) {
+  return value ?? 1;
+}
+    `,
+    `
 function test<T>(arg: T, key: keyof T) {
   if (arg[key]?.toString()) {
   }
@@ -2972,6 +3011,70 @@ function test(a: string | false) {
     {
       code: `
 function test<T extends string>(a: T) {
+  return a ?? 'default';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T extends string>(a: Awaited<T>) {
+  return a ?? 'default';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T extends Promise<object>>(a: Awaited<T>) {
+  return a ? 'yes' : 'no';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T>(a: T extends string ? 'a' : 'b') {
+  return a ? 'yes' : 'no';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T>(a: T extends string ? 'a' : 'b') {
   return a ?? 'default';
 }
       `,
