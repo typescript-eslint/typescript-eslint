@@ -1,3 +1,30 @@
+## 8.72.0 (2026-10-19)
+
+### 🚀 Features
+
+- **eslint-plugin:** [await-thenable] add `allowMixedPromiseArrays` option ([#12992](https://github.com/typescript-eslint/typescript-eslint/pull/12992))
+- **eslint-plugin:** lazy load rules ([#13010](https://github.com/typescript-eslint/typescript-eslint/pull/13010))
+
+### 🩹 Fixes
+
+- **type-utils:** discriminateAnyType crashes when calling getAwaitedType on awaited type in TS < 5.0 ([#13054](https://github.com/typescript-eslint/typescript-eslint/pull/13054))
+- **eslint-plugin:** [require-array-sort-compare] ignore extra this type argument on TS < 5.1 ([#13055](https://github.com/typescript-eslint/typescript-eslint/pull/13055))
+- **eslint-plugin:** [require-array-sort-compare] check tuples ([#13058](https://github.com/typescript-eslint/typescript-eslint/pull/13058))
+- **eslint-plugin:** use isTypeLiteralType instead of type.isLiteral() to include bigint literals on TS < 5.0 ([#13053](https://github.com/typescript-eslint/typescript-eslint/pull/13053))
+- **eslint-plugin:** [no-deprecated] report deprecated properties in object literals ([#12704](https://github.com/typescript-eslint/typescript-eslint/pull/12704))
+- **eslint-plugin:** [prefer-readonly-parameter-types] check where allowed type aliases are declared ([#13016](https://github.com/typescript-eslint/typescript-eslint/pull/13016))
+- **typescript-estree:** include leading and trailing comments & whitespace in Program range ([#12991](https://github.com/typescript-eslint/typescript-eslint/pull/12991))
+
+### ❤️ Thank You
+
+- Evyatar Daud @StyleShit
+- Junichiro Kasuya @jksy
+- Mitch Fultz @fitchmultz
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.71.2 (2026-10-12)
 
 ### 🩹 Fixes

@@ -350,7 +350,10 @@ export default createRule<Options, MessageId>({
           part =>
             isTypeAnyType(part) ||
             isTypeUnknownType(part) ||
-            isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
+            isTypeFlagSet(
+              part,
+              ts.TypeFlags.TypeVariable | ts.TypeFlags.Conditional,
+            ),
         );
     }
 
@@ -511,7 +514,8 @@ export default createRule<Options, MessageId>({
           ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
             ts.TypeFlags.TypeParameter |
-            ts.TypeFlags.TypeVariable,
+            ts.TypeFlags.TypeVariable |
+            ts.TypeFlags.Conditional,
         )
       ) {
         return;
@@ -606,7 +610,8 @@ export default createRule<Options, MessageId>({
             ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
             ts.TypeFlags.TypeParameter |
-            ts.TypeFlags.TypeVariable;
+            ts.TypeFlags.TypeVariable |
+            ts.TypeFlags.Conditional;
 
           // Allow loose comparison to nullish values.
           if (operator === '==' || operator === '!=') {
