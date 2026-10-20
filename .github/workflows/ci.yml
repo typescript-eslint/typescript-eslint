@@ -86,7 +86,7 @@ jobs:
 
       # Sets NX_BASE and NX_HEAD, used by `nx show projects --affected`
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
+        uses: nrwl/nx-set-shas@e602fada7ad5987b0f7b1905e7a99ea1c661514c # v5.1.0
 
       - name: Get affected projects for tests
         id: affected
