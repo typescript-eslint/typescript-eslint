@@ -9,6 +9,7 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getParserServices,
+  isTypeLiteralType,
   nullThrows,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
@@ -479,7 +480,7 @@ export default createRule<Options, MessageIds>({
 
       const propertyType = services.getTypeAtLocation(node.property);
 
-      if (propertyType.isLiteral()) {
+      if (isTypeLiteralType(propertyType)) {
         const objectType = services.getTypeAtLocation(node.object);
 
         const propertyName = propertyType.isStringLiteral()

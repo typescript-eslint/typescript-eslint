@@ -176,22 +176,30 @@ class A {
 
 new A()['b']();
     `,
-    `
+    {
+      code: `
 class A {
   accessor b: 1;
   /** @deprecated */ accessor c: 2;
 }
 
 new A().b;
-    `,
-    `
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 class A {
   accessor b: 1;
   /** @deprecated */ accessor c: 2;
 }
 
 new A()['b'];
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 declare class A {
   /** @deprecated */
@@ -210,7 +218,8 @@ declare class A {
 
 A['c'];
     `,
-    `
+    {
+      code: `
 declare class A {
   /** @deprecated */
   static accessor b: string;
@@ -218,8 +227,12 @@ declare class A {
 }
 
 A.c;
-    `,
-    `
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 declare class A {
   /** @deprecated */
   static accessor b: string;
@@ -227,7 +240,10 @@ declare class A {
 }
 
 A['c'];
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 namespace A {
   /** @deprecated */
@@ -379,12 +395,20 @@ export {
   default as ts,
 } from 'typescript';
     `,
-    `
+    {
+      code: `
 export { deprecatedFunction as 'bur' } from './deprecated';
-    `,
-    `
+      `,
+      // Arbitrary module namespace identifier names require TS 5.6
+      dependencyConstraints: { typescript: '5.6' },
+    },
+    {
+      code: `
 export { 'deprecatedFunction' } from './deprecated';
-    `,
+      `,
+      // Arbitrary module namespace identifier names require TS 5.6
+      dependencyConstraints: { typescript: '5.6' },
+    },
     `
 namespace A {
   /** @deprecated */
@@ -3694,6 +3718,8 @@ declare const a: A;
 
 a.b;
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3716,6 +3742,8 @@ declare const a: A;
 
 a['b'];
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3738,6 +3766,8 @@ declare const a: A;
 
 a.b();
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3760,6 +3790,8 @@ declare const a: A;
 
 a['b']();
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3784,6 +3816,8 @@ declare const a: A;
 
 a.b();
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -3804,6 +3838,8 @@ declare class A {
 
 A.b();
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -4004,6 +4040,8 @@ interface A {
 }
 const x = { deprecatedField: 'string' } satisfies A;
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 13,
@@ -4183,6 +4221,8 @@ interface A {
 }
 const x: A = { ['deprecatedField' satisfies string]: 'string' };
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 17,
@@ -4223,6 +4263,8 @@ interface A {
 }
 const x: A = { [\`\${'deprecated'}Field\`]: 'string' };
       `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 17,

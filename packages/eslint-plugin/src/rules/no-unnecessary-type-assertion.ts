@@ -20,6 +20,7 @@ import {
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatementNeedingParentheses,
   isTypeFlagSet,
+  isTypeLiteralType,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -283,7 +284,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function isTypeLiteral(type: ts.Type): boolean {
-      return type.isLiteral() || tsutils.isBooleanLiteralType(type);
+      return isTypeLiteralType(type) || tsutils.isBooleanLiteralType(type);
     }
 
     function hasIndexSignature(type: ts.Type): boolean {

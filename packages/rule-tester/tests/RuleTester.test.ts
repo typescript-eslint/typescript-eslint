@@ -122,11 +122,7 @@ describe(RuleTester, () => {
       messages: Linter.LintMessage[];
       outputs: string[];
     }
-  > = vi.spyOn(
-    RuleTester.prototype,
-    // @ts-expect-error -- method is private
-    'runRuleForItem',
-  );
+  > = vi.spyOn(RuleTester.prototype, 'runRuleForItem');
   beforeEach(() => {
     vi.clearAllMocks();
   });

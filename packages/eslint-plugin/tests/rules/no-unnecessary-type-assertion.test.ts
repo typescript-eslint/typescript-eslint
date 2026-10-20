@@ -699,7 +699,8 @@ type Tuple = [string | undefined, number];
 const tuple: Tuple = ['hello', 42];
 const [first, second] = tuple as [string, number];
     `,
-    `
+    {
+      code: `
 interface Wide {
   name?: string;
 }
@@ -708,8 +709,12 @@ interface Narrow {
 }
 declare const narrow: Narrow;
 const obj = { value: narrow as Wide } satisfies Record<string, Wide>;
-    `,
-    `
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 interface Wide {
   name?: string;
 }
@@ -718,8 +723,12 @@ interface Narrow {
 }
 declare const narrow: Narrow;
 const value = narrow as Wide satisfies Wide;
-    `,
-    `
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 interface Wide {
   name?: string;
 }
@@ -729,7 +738,10 @@ interface Narrow {
 declare const narrow: Narrow;
 declare function identity<T>(x: T): T;
 const result = identity({ value: narrow as Wide }) satisfies { value: Wide };
-    `,
+      `,
+      // `satisfies` requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 declare const x: string | number;
 const result: { tag: string; value: string | number } | { value: number } = {

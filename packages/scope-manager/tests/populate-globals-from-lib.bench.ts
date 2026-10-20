@@ -1,4 +1,4 @@
-import { bench, describe } from 'vitest';
+import { describe, test } from 'vitest';
 
 import { analyze } from '../src';
 import { parse } from './test-utils';
@@ -32,28 +32,36 @@ const complexAst = parse(COMPLEX_CODE, { range: true });
 
 describe('populateGlobalsFromLib performance', () => {
   describe('es5', () => {
-    bench('simple code', () => {
-      analyze(simpleAst, { lib: ['es5'] });
+    test('simple code', async ({ bench }) => {
+      await bench('simple code', () => {
+        analyze(simpleAst, { lib: ['es5'] });
+      }).run();
     });
   });
 
   describe('es2018', () => {
-    bench('medium code', () => {
-      analyze(mediumAst, { lib: ['es2018'] });
+    test('medium code', async ({ bench }) => {
+      await bench('medium code', () => {
+        analyze(mediumAst, { lib: ['es2018'] });
+      }).run();
     });
   });
 
   describe('esnext.full', () => {
-    bench('complex code', () => {
-      analyze(complexAst, { lib: ['esnext.full'] });
+    test('complex code', async ({ bench }) => {
+      await bench('complex code', () => {
+        analyze(complexAst, { lib: ['esnext.full'] });
+      }).run();
     });
   });
 
   describe('repeated analyze (cache signal)', () => {
-    bench('100x analyze with esnext.full', () => {
-      for (let i = 0; i < 100; i++) {
-        analyze(simpleAst, { lib: ['esnext.full'] });
-      }
+    test('100x analyze with esnext.full', async ({ bench }) => {
+      await bench('100x analyze with esnext.full', () => {
+        for (let i = 0; i < 100; i++) {
+          analyze(simpleAst, { lib: ['esnext.full'] });
+        }
+      }).run();
     });
   });
 });
