@@ -24,7 +24,7 @@
     "start": "pnpm -w run start",
     "swizzle": "docusaurus swizzle",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
+    "typecheck:tsc6": "pnpm -w exec nx typecheck:tsc6"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
@@ -142,7 +142,7 @@
           "cwd": "{projectRoot}"
         }
       },
-      "typecheck:tsgo": {}
+      "typecheck:tsc6": {}
     }
   }
 }

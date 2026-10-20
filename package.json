@@ -49,7 +49,7 @@
     "test-coverage": "pnpm run test --coverage",
     "test-integration": "nx run integration-tests:test",
     "typecheck": "nx run-many -t typecheck",
-    "typecheck:tsgo": "nx run-many -t typecheck:tsgo"
+    "typecheck:tsc6": "nx run-many -t typecheck:tsc6"
   },
   "engines": {
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
@@ -132,7 +132,7 @@
       },
       "// These targets are used for repo level utils and checking repo files which do not belong to specific published packages": {},
       "typecheck": {
-        "command": "tsc6 -b tsconfig.repo-config-files.json",
+        "command": "tsc -b tsconfig.repo-config-files.json",
         "dependsOn": [
           "types:copy-ast-spec",
           "website:build"
@@ -142,11 +142,11 @@
         ],
         "cache": true
       },
-      "typecheck:tsgo": {
-        "command": "tsc -b tsconfig.repo-config-files.json",
+      "typecheck:tsc6": {
+        "command": "tsc6 -b tsconfig.repo-config-files.json",
         "dependsOn": [
-          "types:copy-ast-spec",
-          "website:build"
+          "^typecheck:tsc6",
+          "website:typecheck:tsc6"
         ],
         "outputs": [
           "{workspaceRoot}/dist"
