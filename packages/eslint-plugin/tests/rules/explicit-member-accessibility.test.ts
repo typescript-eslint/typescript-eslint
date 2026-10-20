@@ -318,6 +318,8 @@ class Test {
   private accessor foo = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
     },
     {
       code: `
@@ -325,6 +327,8 @@ abstract class Test {
   private abstract accessor foo: number;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
     },
   ],
   invalid: [
@@ -2053,6 +2057,8 @@ class SomeClass {
   accessor foo = 1;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -2100,6 +2106,8 @@ abstract class SomeClass {
   abstract accessor foo: string;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
