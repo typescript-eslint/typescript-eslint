@@ -10,7 +10,6 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstraintInfo,
   getParserServices,
   getTextWithParentheses,
   getTypeFlags,
@@ -465,14 +464,12 @@ export default createRule<Options, MessageIds>({
         let flags = getTypeFlags(type);
 
         for (const part of tsutils.unionConstituents(type)) {
-          const { constraintType, isTypeParameter } = getConstraintInfo(
-            checker,
-            part,
-          );
-          if (!isTypeParameter) {
+          // a generic type (`T`, `NoInfer<T>`, `T[K]`, ...) may be `null` or
+          // `undefined` unless its constraint rules that out
+          if (!tsutils.isTypeFlagSet(part, ts.TypeFlags.Instantiable)) {
             continue;
           }
-          // an unconstrained type parameter may be `null` or `undefined`
+          const constraintType = checker.getBaseConstraintOfType(part);
           if (constraintType == null) {
             return false;
           }

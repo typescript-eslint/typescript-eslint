@@ -319,6 +319,59 @@ function test<T>(val: T | undefined, fallback: T) {
     },
     {
       code: `
+function test<T extends string | undefined>(val: T | null) {
+  return val !== null ? val : 'foo';
+}
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+function test<T>(val: NoInfer<T> | undefined, fallback: T): T {
+  if (val === undefined) {
+    val = fallback;
+  }
+  return val;
+}
+      `,
+      options: [{ ignoreIfStatements: false }],
+    },
+    {
+      code: `
+function test<T extends Record<string, null>, K extends keyof T>(
+  val: T[K] | undefined,
+) {
+  return val !== undefined ? val : 'fallback';
+}
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+function test<T>(val: T) {
+  return val !== undefined ? val : 'fallback';
+}
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+function test<T extends unknown>(val: T | undefined) {
+  return val !== undefined ? val : 'fallback';
+}
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
+function test<T, U extends T>(val: U | undefined) {
+  return val !== undefined ? val : 'fallback';
+}
+      `,
+      options: [{ ignoreTernaryTests: false }],
+    },
+    {
+      code: `
 declare let x: any;
 x === null ? x : y;
       `,
@@ -12755,6 +12808,160 @@ function test<T extends string>(val: T | undefined) {
         },
       ],
       options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+function test<T extends {}>(val: T | undefined) {
+  return val !== undefined ? val : 'fallback';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { equals: '' },
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+function test<T extends {}>(val: T | undefined) {
+  return val ?? 'fallback';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | undefined) {
+  return val != undefined ? val : 'fallback';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { equals: '' },
+          endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | undefined) {
+  return val ?? 'fallback';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+function test<T>(val: T | undefined) {
+  return val !== undefined && val !== null ? val : 'fallback';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { equals: '' },
+          endColumn: 62,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+function test<T>(val: T | undefined) {
+  return val ?? 'fallback';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+function test<T extends string, U extends T>(val: U | undefined) {
+  return val !== undefined ? val : 'fallback';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { equals: '' },
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              data: { equals: '' },
+              messageId: 'suggestNullish',
+              output: `
+function test<T extends string, U extends T>(val: U | undefined) {
+  return val ?? 'fallback';
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+function test<T extends string>(val: T | undefined, fallback: T) {
+  if (val === undefined) {
+    val = fallback;
+  }
+  return val;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { equals: '=' },
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferNullishOverAssignment',
+          suggestions: [
+            {
+              data: { equals: '=' },
+              messageId: 'suggestNullish',
+              output: `
+function test<T extends string>(val: T | undefined, fallback: T) {
+  val ??= fallback;
+  return val;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreIfStatements: false }],
       output: null,
     },
   ],
