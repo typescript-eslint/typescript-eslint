@@ -76,6 +76,7 @@ describe('parser', () => {
   it('sets `onUnsupportedTypeScriptVersion: ignore` on typescript-estree when provided `warnOnUnsupportedTypeScriptVersion: false`', () => {
     const code = 'const valid = true;';
     const spy = vi.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: false });
     expect(spy).toHaveBeenCalledExactlyOnceWith(code, {
       comment: true,
@@ -94,6 +95,7 @@ describe('parser', () => {
   it('sets `onUnsupportedTypeScriptVersion: warn` on typescript-estree when provided `warnOnUnsupportedTypeScriptVersion: true`', () => {
     const code = 'const valid = true;';
     const spy = vi.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: true });
     expect(spy).toHaveBeenCalledExactlyOnceWith(code, {
       comment: true,
@@ -132,6 +134,7 @@ describe('parser', () => {
     expect(() =>
       parseForESLint(code, {
         onUnsupportedTypeScriptVersion: 'error',
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         warnOnUnsupportedTypeScriptVersion: false,
       }),
     ).toThrow(
