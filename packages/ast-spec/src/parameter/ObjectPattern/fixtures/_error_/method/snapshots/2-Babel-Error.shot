@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > ObjectPattern > _error_ > method > Babel - Error`]
+BabelError
+> 1 | ({ a() {} } = x);
+    |    ^ Object pattern can't contain methods. (1:3)
+  2 |
+  

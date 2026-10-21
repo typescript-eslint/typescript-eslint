@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > ObjectPattern > _error_ > value-with-default-not-assignment-target > TSESTree - Error`]
+TSError
+> 1 | ({ a: f() = 1 } = x);
+    |       ^^^ The left-hand side of an assignment expression must be a variable or a property access.
+  2 |

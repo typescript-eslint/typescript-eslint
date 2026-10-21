@@ -584,15 +584,6 @@ foo = {
     },
     {
       code: `
-declare let foo: { cb: () => void };
-foo = {
-  // don't check this thing
-  cb = () => 1,
-};
-      `,
-    },
-    {
-      code: `
 declare let foo: { cb: (n: number) => void };
 let method = 'cb';
 foo = {

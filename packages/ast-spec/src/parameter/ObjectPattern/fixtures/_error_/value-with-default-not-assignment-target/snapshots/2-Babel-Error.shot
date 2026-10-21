@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > ObjectPattern > _error_ > value-with-default-not-assignment-target > Babel - Error`]
+BabelError
+> 1 | ({ a: f() = 1 } = x);
+    |       ^ Invalid left-hand side in assignment expression. (1:6)
+  2 |
+  

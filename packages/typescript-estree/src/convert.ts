@@ -1103,9 +1103,11 @@ export class Converter {
             key: this.convertChild(node.name),
             kind: 'init',
             method: node.kind === SyntaxKind.MethodDeclaration,
-            optional: !!node.questionToken,
+            // Guaranteed to be false / have a body in a valid AST but
+            // technically could differ at runtime with allowInvalidAST: true.
+            optional: !!node.questionToken as false,
             shorthand: false,
-            value: method,
+            value: method as TSESTree.FunctionExpression,
           });
         } else {
           // class
@@ -1756,7 +1758,7 @@ export class Converter {
           operator,
           // Guaranteed to be true in a valid AST (and asserted above) but
           // technically could be false at runtime with allowInvalidAST: true.
-          // eslint-disable-next-line @typescript-eslint/no-deprecated -- `prefix` is a required property
+
           prefix: isPrefixUnaryExpression as true,
         });
       }
@@ -1766,7 +1768,7 @@ export class Converter {
           type: AST_NODE_TYPES.UnaryExpression,
           argument: this.convertChild(node.expression),
           operator: 'delete',
-          // eslint-disable-next-line @typescript-eslint/no-deprecated -- `prefix` is a required property
+
           prefix: true,
         });
 
@@ -1775,7 +1777,7 @@ export class Converter {
           type: AST_NODE_TYPES.UnaryExpression,
           argument: this.convertChild(node.expression),
           operator: 'void',
-          // eslint-disable-next-line @typescript-eslint/no-deprecated -- `prefix` is a required property
+
           prefix: true,
         });
 
@@ -1784,7 +1786,7 @@ export class Converter {
           type: AST_NODE_TYPES.UnaryExpression,
           argument: this.convertChild(node.expression),
           operator: 'typeof',
-          // eslint-disable-next-line @typescript-eslint/no-deprecated -- `prefix` is a required property
+
           prefix: true,
         });
 
@@ -2483,16 +2485,19 @@ export class Converter {
             {
               type: AST_NODE_TYPES.ObjectExpression,
               properties: node.attributes.elements.map(importAttribute =>
-                this.createNode<TSESTree.Property>(importAttribute, {
-                  type: AST_NODE_TYPES.Property,
-                  computed: false,
-                  key: this.convertChild(importAttribute.name),
-                  kind: 'init',
-                  method: false,
-                  optional: false,
-                  shorthand: false,
-                  value: this.convertChild(importAttribute.value),
-                }),
+                this.createNode<TSESTree.ObjectExpressionPropertyNonComputedName>(
+                  importAttribute,
+                  {
+                    type: AST_NODE_TYPES.Property,
+                    computed: false,
+                    key: this.convertChild(importAttribute.name),
+                    kind: 'init',
+                    method: false,
+                    optional: false,
+                    shorthand: false,
+                    value: this.convertChild(importAttribute.value),
+                  },
+                ),
               ),
             },
           );
@@ -2524,24 +2529,27 @@ export class Converter {
             type: AST_NODE_TYPES.ObjectExpression,
             range: [openBraceToken.getStart(this.ast), closeBraceToken.end],
             properties: [
-              this.createNode<TSESTree.Property>(node, {
-                type: AST_NODE_TYPES.Property,
-                range: [withOrAssertTokenRange[0], node.attributes.end],
-                computed: false,
-                key: this.createNode<TSESTree.Identifier>(node, {
-                  type: AST_NODE_TYPES.Identifier,
-                  range: withOrAssertTokenRange,
-                  decorators: [],
-                  name: withOrAssertName,
+              this.createNode<TSESTree.ObjectExpressionPropertyNonComputedName>(
+                node,
+                {
+                  type: AST_NODE_TYPES.Property,
+                  range: [withOrAssertTokenRange[0], node.attributes.end],
+                  computed: false,
+                  key: this.createNode<TSESTree.Identifier>(node, {
+                    type: AST_NODE_TYPES.Identifier,
+                    range: withOrAssertTokenRange,
+                    decorators: [],
+                    name: withOrAssertName,
+                    optional: false,
+                    typeAnnotation: undefined,
+                  }),
+                  kind: 'init',
+                  method: false,
                   optional: false,
-                  typeAnnotation: undefined,
-                }),
-                kind: 'init',
-                method: false,
-                optional: false,
-                shorthand: false,
-                value,
-              }),
+                  shorthand: false,
+                  value,
+                },
+              ),
             ],
           });
         }
@@ -2631,7 +2639,7 @@ export class Converter {
               return {
                 body: this.convertChild(node.body) as TSESTree.TSModuleBlock,
                 declare: false,
-                // eslint-disable-next-line @typescript-eslint/no-deprecated -- `global` is a required property
+
                 global: false,
                 id: this.convertChild(node.name),
                 kind: 'global',
@@ -2646,7 +2654,7 @@ export class Converter {
                 kind: 'module',
                 ...(body != null ? { body } : {}),
                 declare: false,
-                // eslint-disable-next-line @typescript-eslint/no-deprecated -- `global` is a required property
+
                 global: false,
                 id: this.convertChild(node.name),
               };
@@ -2696,7 +2704,7 @@ export class Converter {
             return {
               body: this.convertChild(node.body),
               declare: false,
-              // eslint-disable-next-line @typescript-eslint/no-deprecated -- `global` is a required property
+
               global: false,
               id: name,
               kind:
