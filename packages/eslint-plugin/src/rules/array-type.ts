@@ -268,8 +268,16 @@ export default createRule<Options, MessageIds>({
         const typeParens = typeNeedsParentheses(type);
         const parentParens =
           readonlyPrefix &&
-          node.parent.type === AST_NODE_TYPES.TSArrayType &&
-          !isParenthesized(node.parent.elementType, context.sourceCode);
+          ((node.parent.type === AST_NODE_TYPES.TSArrayType &&
+            !isParenthesized(node.parent.elementType, context.sourceCode)) ||
+            // A `readonly X[]` produced by this fixer needs parentheses when
+            // it is the object of an indexed access type (e.g.
+            // `ReadonlyArray<X>[number]`), because otherwise `readonly` would
+            // apply to the whole indexed access type, which is invalid TS
+            // (TS1354) or silently changes the type.
+            (node.parent.type === AST_NODE_TYPES.TSIndexedAccessType &&
+              node.parent.objectType === node &&
+              !isParenthesized(node, context.sourceCode)));
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''

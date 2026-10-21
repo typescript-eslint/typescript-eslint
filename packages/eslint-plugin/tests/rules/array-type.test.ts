@@ -2394,6 +2394,22 @@ type BrokenArray = {
       'type T = ReadonlyArray<ReadonlyArray<string>>',
       'generic',
     );
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13063
+    testOutput(
+      'array',
+      'type Foo1 = ReadonlyArray<X>[number];',
+      'type Foo1 = (readonly X[])[number];',
+    );
+    testOutput(
+      'array',
+      'type Foo2 = ReadonlyArray<X>[number][];',
+      'type Foo2 = (readonly X[])[number][];',
+    );
+    testOutput(
+      'array',
+      'type Foo3 = (ReadonlyArray<X>)[number];',
+      'type Foo3 = (readonly X[])[number];',
+    );
   });
 });
 
