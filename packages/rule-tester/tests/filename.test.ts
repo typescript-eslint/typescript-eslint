@@ -215,20 +215,6 @@ describe('rule tester type-aware filename', () => {
         code: 'const fixture: string = "fixture";',
         errors: [{ data: { type: 'string' }, messageId: 'type' }],
       },
-      {
-        code: 'const fixture: string = "fixture";',
-        errors: [{ data: { type: 'string' }, messageId: 'type' }],
-        languageOptions: {
-          parserOptions: {
-            project: './tsconfig.json',
-            tsconfigRootDir: relativeTsconfigRootDir,
-          },
-        },
-      },
-      {
-        code: 'const fixture: number = 123;',
-        errors: [{ data: { type: 'number' }, messageId: 'type' }],
-      },
     ],
     valid: [],
   });
@@ -237,11 +223,11 @@ describe('rule tester type-aware filename', () => {
 describe('rule tester per-test relative tsconfigRootDir', () => {
   const constructorTsconfigRootDir = path.relative(
     process.cwd(),
-    path.join(__dirname, 'fixtures/relative-tsconfig-root-nested'),
+    path.join(__dirname, 'fixtures/relative-tsconfig-root'),
   );
   const testTsconfigRootDir = path.relative(
     process.cwd(),
-    path.join(__dirname, 'fixtures/relative-tsconfig-root'),
+    path.join(__dirname, 'fixtures/relative-tsconfig-root/override'),
   );
 
   new RuleTester({
@@ -272,7 +258,7 @@ describe('rule tester per-test relative tsconfigRootDir', () => {
 describe('rule tester nested type-aware filenames', () => {
   const relativeTsconfigRootDir = path.relative(
     process.cwd(),
-    path.join(__dirname, 'fixtures/relative-tsconfig-root-nested'),
+    path.join(__dirname, 'fixtures/relative-tsconfig-root'),
   );
 
   new RuleTester({

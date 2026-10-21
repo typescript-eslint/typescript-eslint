@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
+    "jsx": "preserve",
     "strict": true
   },
-  "include": ["file.ts"]
+  "include": ["file.ts", "fixture/file.ts", "fixture/react.tsx"]
 }

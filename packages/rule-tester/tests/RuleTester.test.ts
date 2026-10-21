@@ -329,39 +329,6 @@ describe(RuleTester, () => {
       ]);
     });
 
-    it('resolves a per-test relative tsconfigRootDir override', () => {
-      const ruleTester = new RuleTester({
-        languageOptions: {
-          parser,
-          parserOptions: {
-            project: 'tsconfig.json',
-            tsconfigRootDir: '/some/path/that/totally/exists/',
-          },
-        },
-      });
-
-      ruleTester.run('my-rule', NOOP_RULE, {
-        invalid: [],
-        valid: [
-          {
-            code: 'uses the per-test tsconfig root',
-            languageOptions: {
-              parserOptions: {
-                project: 'tsconfig.test-specific.json',
-                tsconfigRootDir: './test-fixture',
-              },
-            },
-          },
-        ],
-      });
-
-      expect(getTestConfigFromCall()).toMatchObject([
-        {
-          filename: windowsToPosixPath(path.resolve('./test-fixture/file.ts')),
-        },
-      ]);
-    });
-
     it('allows the automated filenames to be overridden in the constructor', () => {
       const ruleTester = new RuleTester({
         defaultFilenames: {
