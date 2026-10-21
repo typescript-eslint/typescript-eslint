@@ -329,6 +329,26 @@ describe(RuleTester, () => {
       ]);
     });
 
+    it('resolves filenames from the current working directory when tsconfigRootDir is omitted', () => {
+      const ruleTester = new RuleTester({
+        languageOptions: {
+          parser,
+          parserOptions: {
+            project: 'tsconfig.json',
+          },
+        },
+      });
+
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [],
+        valid: ['uses the default filename'],
+      });
+
+      expect(getTestConfigFromCall()).toMatchObject([
+        { filename: windowsToPosixPath(path.resolve('file.ts')) },
+      ]);
+    });
+
     it('allows the automated filenames to be overridden in the constructor', () => {
       const ruleTester = new RuleTester({
         defaultFilenames: {

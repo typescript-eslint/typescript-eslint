@@ -84,7 +84,7 @@ export default {
     },
 
     'packages/rule-tester': {
-      ignore: ['typings/eslint.d.ts'],
+      ignore: ['tests/fixtures/**', 'typings/eslint.d.ts'],
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],

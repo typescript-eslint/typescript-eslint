@@ -227,7 +227,7 @@ describe('rule tester per-test relative tsconfigRootDir', () => {
   );
   const testTsconfigRootDir = path.relative(
     process.cwd(),
-    path.join(__dirname, 'fixtures/relative-tsconfig-root/override'),
+    path.join(__dirname, 'fixtures/relative-tsconfig-root/fixture'),
   );
 
   new RuleTester({
@@ -243,6 +243,7 @@ describe('rule tester per-test relative tsconfigRootDir', () => {
       {
         code: 'const fixture: string = "fixture";',
         errors: [{ data: { type: 'string' }, messageId: 'type' }],
+        filename: 'per-test-root.ts',
         languageOptions: {
           parserOptions: {
             project: './tsconfig.json',
