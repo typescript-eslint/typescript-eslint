@@ -59,13 +59,6 @@ const typeAwareRule = ESLintUtils.RuleCreator.withoutDocs({
 
     return {
       VariableDeclarator(node): void {
-        if (
-          node.id.type !== AST_NODE_TYPES.Identifier ||
-          node.id.name !== 'fixture'
-        ) {
-          return;
-        }
-
         const tsNode = services.esTreeNodeToTSNodeMap.get(node.id);
         context.report({
           data: {
