@@ -1,6 +1,7 @@
 import rule from '../../src/rules/no-misused-promises';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
+const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 ruleTester.run('no-misused-promises', rule, {
@@ -3288,6 +3289,71 @@ arrayFn<() => void>(
           messageId: 'voidReturnArgument',
         },
       ],
+    },
+    // A generic parameter whose constraint is a large union of handler types
+    // must be checked one member at a time. Asking the unsplit type for its
+    // call signatures merges every member into union signatures, which took
+    // minutes for this input. TypeScript's default type ordering is used
+    // because it makes that merge far more expensive than stable ordering.
+    {
+      code: `
+type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+type Group = \`\${'a' | 'b' | 'c' | 'd'}\${Digit}\`;
+type Topic = \`\${Group}.\${'x' | 'y' | 'z'}\`;
+type Payloads = {
+  [T in Topic]: { readonly topic: T } & Readonly<Record<\`p_\${T}\`, string>>;
+};
+type Wildcard = '*' | \`\${Group}.*\`;
+type Selector = Topic | Wildcard | \`!\${Exclude<Topic | Wildcard, '*'>}\`;
+type Matches<S extends string> = S extends '*'
+  ? Topic
+  : S extends \`!\${infer X}\`
+    ? Exclude<Topic, Matches<X>>
+    : S extends \`\${infer G}.*\`
+      ? Extract<Topic, \`\${G}.\${string}\`>
+      : Extract<Topic, S>;
+type UnionToIntersection<U> = (
+  U extends unknown ? (u: U) => void : never
+) extends (i: infer I) => void
+  ? I
+  : never;
+type Next<T extends Topic> = UnionToIntersection<
+  { [K in T]: (payload: Payloads[K]) => Promise<void> }[T]
+>;
+type Handler<S extends Selector, T extends Topic = Matches<S>> = (
+  payload: Payloads[T],
+  next: Next<T>,
+) => void;
+type HandlerFor<S extends Selector> = S extends '*'
+  ? Handler<'*'>
+  : S extends Topic
+    ? Handler<S>
+    : Handler<S>;
+declare function subscribe<S extends Selector>(
+  selector: S,
+  handler: NoInfer<HandlerFor<S>>,
+): void;
+
+subscribe('a0.x', async (payload, next) => {
+  await next(payload);
+});
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 2,
+          endLine: 41,
+          line: 39,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.unstableTypeOrdering.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
     },
     {
       code: `

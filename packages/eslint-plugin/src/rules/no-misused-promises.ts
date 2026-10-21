@@ -1024,7 +1024,12 @@ function isThenableReturningFunctionType(
   node: ts.Node,
   type: ts.Type,
 ): boolean {
-  for (const subType of tsutils.unionConstituents(type)) {
+  // Split the apparent type, not the type itself: a generic type whose
+  // constraint is a union would otherwise have its members' signatures
+  // merged into union signatures, which gets very expensive as the union grows.
+  for (const subType of tsutils.unionConstituents(
+    checker.getApparentType(type),
+  )) {
     if (anySignatureIsThenableType(checker, node, subType)) {
       return true;
     }
@@ -1043,7 +1048,11 @@ function isVoidReturningFunctionType(
 ): boolean {
   let hadVoidReturn = false;
 
-  for (const subType of tsutils.unionConstituents(type)) {
+  // Split the apparent type for the same reason as in
+  // isThenableReturningFunctionType.
+  for (const subType of tsutils.unionConstituents(
+    checker.getApparentType(type),
+  )) {
     for (const signature of subType.getCallSignatures()) {
       const returnType = signature.getReturnType();
 
