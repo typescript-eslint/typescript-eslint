@@ -3,5 +3,5 @@
     "jsx": "preserve",
     "strict": true
   },
-  "include": ["file.ts", "fixture/file.ts", "fixture/react.tsx"]
+  "include": ["file.ts", "react.tsx", "fixture/file.ts", "fixture/react.tsx"]
 }

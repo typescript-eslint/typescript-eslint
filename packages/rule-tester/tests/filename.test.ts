@@ -208,6 +208,25 @@ describe('rule tester type-aware filename', () => {
         code: 'const fixture: string = "fixture";',
         errors: [{ data: { type: 'string' }, messageId: 'type' }],
       },
+      {
+        code: `
+namespace JSX {
+  export interface Element {
+    type: string;
+  }
+  export interface IntrinsicElements {
+    div: {};
+  }
+}
+const fixture = <div />;
+        `,
+        errors: [{ data: { type: 'Element' }, messageId: 'type' }],
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: { jsx: true },
+          },
+        },
+      },
     ],
     valid: [],
   });
@@ -236,7 +255,7 @@ describe('rule tester per-test relative tsconfigRootDir', () => {
       {
         code: 'const fixture: string = "fixture";',
         errors: [{ data: { type: 'string' }, messageId: 'type' }],
-        filename: 'per-test-root.ts',
+        filename: 'test-root-override.ts',
         languageOptions: {
           parserOptions: {
             project: './tsconfig.json',
@@ -274,8 +293,18 @@ describe('rule tester nested type-aware filenames', () => {
         errors: [{ data: { type: 'string' }, messageId: 'type' }],
       },
       {
-        code: 'const fixture = <div />;',
-        errors: [{ data: { type: 'any' }, messageId: 'type' }],
+        code: `
+namespace JSX {
+  export interface Element {
+    type: string;
+  }
+  export interface IntrinsicElements {
+    div: {};
+  }
+}
+const fixture = <div />;
+        `,
+        errors: [{ data: { type: 'Element' }, messageId: 'type' }],
         languageOptions: {
           parserOptions: {
             ecmaFeatures: { jsx: true },

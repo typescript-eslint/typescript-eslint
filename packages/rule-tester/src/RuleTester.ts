@@ -733,13 +733,11 @@ export class RuleTester extends TestFramework {
     config.languageOptions ??= {};
     config.languageOptions.parser ??= defaultParser;
     config.languageOptions.parser = wrapParser(config.languageOptions.parser);
-    const tsconfigRootDir =
-      config.languageOptions.parserOptions?.tsconfigRootDir;
-    if (tsconfigRootDir != null) {
-      config.languageOptions.parserOptions = {
-        ...config.languageOptions.parserOptions,
-        tsconfigRootDir: path.resolve(tsconfigRootDir),
-      };
+    const parserOptions = config.languageOptions.parserOptions;
+    if (parserOptions?.tsconfigRootDir != null) {
+      parserOptions.tsconfigRootDir = path.resolve(
+        parserOptions.tsconfigRootDir,
+      );
     }
 
     const schema = getRuleOptionsSchema(rule);

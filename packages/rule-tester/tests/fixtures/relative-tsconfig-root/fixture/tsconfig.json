@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "preserve",
     "strict": true
   },
-  "include": ["file.ts", "react.tsx", "per-test-root.ts"]
+  "include": ["test-root-override.ts"]
 }
