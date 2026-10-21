@@ -240,9 +240,9 @@ export function checkSyntaxError(
         );
       }
 
-      if (node.objectAssignmentInitializer && !allowPattern) {
+      if (node.equalsToken && !allowPattern) {
         throw createError(
-          node.equalsToken ?? node,
+          node.equalsToken,
           "Did you mean to use a ':'? An '=' can only follow a property name when the containing object literal is part of a destructuring pattern.",
         );
       }
