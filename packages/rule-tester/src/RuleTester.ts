@@ -316,9 +316,8 @@ export class RuleTester extends TestFramework {
           ? this.#testerConfig.defaultFilenames.tsx
           : this.#testerConfig.defaultFilenames.ts);
       if (resolvedOptions.project) {
-        return path.join(
-          resolvedOptions.tsconfigRootDir ?? process.cwd(),
-          filename,
+        return path.resolve(
+          path.join(resolvedOptions.tsconfigRootDir ?? process.cwd(), filename),
         );
       }
       return filename;
@@ -734,6 +733,14 @@ export class RuleTester extends TestFramework {
     config.languageOptions ??= {};
     config.languageOptions.parser ??= defaultParser;
     config.languageOptions.parser = wrapParser(config.languageOptions.parser);
+    const tsconfigRootDir =
+      config.languageOptions.parserOptions?.tsconfigRootDir;
+    if (tsconfigRootDir != null) {
+      config.languageOptions.parserOptions = {
+        ...config.languageOptions.parserOptions,
+        tsconfigRootDir: path.resolve(tsconfigRootDir),
+      };
+    }
 
     const schema = getRuleOptionsSchema(rule);
 
