@@ -36,7 +36,7 @@ export const ERROR_OBJECT_PARAMETERS: ReadonlySet<string> = new Set([
   'suggestions',
   'type',
 ]);
-export const FRIENDLY_ERROR_OBJECT_PARAMETER_LIST = `[${[
+export const FRIENDLY_ERROR_OBJECT_PARAMETER_LIST: string = `[${[
   ...ERROR_OBJECT_PARAMETERS,
 ]
   .map(key => `'${key}'`)
@@ -51,7 +51,7 @@ export const SUGGESTION_OBJECT_PARAMETERS: ReadonlySet<string> = new Set([
   'messageId',
   'output',
 ]);
-export const FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST = `[${[
+export const FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST: string = `[${[
   ...SUGGESTION_OBJECT_PARAMETERS,
 ]
   .map(key => `'${key}'`)

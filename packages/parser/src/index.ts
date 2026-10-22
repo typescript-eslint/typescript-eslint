@@ -32,7 +32,7 @@ export {
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 export const version: string = require('../package.json').version;
 
-export const meta = {
+export const meta: { name: string; version: string } = {
   name: 'typescript-eslint/parser',
   version,
 };

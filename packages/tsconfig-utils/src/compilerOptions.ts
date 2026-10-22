@@ -3,7 +3,11 @@ import type * as ts from 'typescript';
 /**
  * Compiler options required to avoid critical functionality issues
  */
-export const CORE_COMPILER_OPTIONS = {
+export const CORE_COMPILER_OPTIONS: {
+  noEmit: true;
+  noUnusedLocals: true;
+  noUnusedParameters: true;
+} = {
   // Required to avoid parse from causing emit to occur
   noEmit: true,
 

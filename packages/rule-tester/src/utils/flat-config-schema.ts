@@ -532,7 +532,9 @@ const eslintrcKeys = [
   'root',
 ];
 
-export const flatConfigSchema = {
+export const flatConfigSchema: Record<string, unknown> & {
+  settings: typeof deepObjectAssignSchema;
+} = {
   $schema: { type: 'string' },
 
   // Original ESLint schemas from flat-config-schema.js

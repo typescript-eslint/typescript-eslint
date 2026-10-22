@@ -222,7 +222,8 @@ declare class RuleTesterBase {
   ): void;
 }
 
+const RuleTesterClass = ESLintRuleTester as typeof RuleTesterBase;
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-export class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
+export class RuleTester extends RuleTesterClass {}

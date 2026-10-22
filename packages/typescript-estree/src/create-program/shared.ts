@@ -26,7 +26,7 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   checkJs: true,
 };
 
-export const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([
+export const DEFAULT_EXTRA_FILE_EXTENSIONS: Set<string> = new Set<string>([
   ts.Extension.Cjs,
   ts.Extension.Cts,
   ts.Extension.Js,
