@@ -2419,6 +2419,92 @@ switch (value) {
       ],
     },
     {
+      // a backslash in a member name that needs quoting
+      code: `
+        enum Enum {
+          'a' = 1,
+          'a\\\\b' = 2,
+        }
+
+        declare const a: Enum;
+
+        switch (a) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            missingBranches: '(typeof Enum)["a\\\\b"] | Enum.a',
+          },
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+        enum Enum {
+          'a' = 1,
+          'a\\\\b' = 2,
+        }
+
+        declare const a: Enum;
+
+        switch (a) {
+        case Enum['a\\\\b']: { throw new Error('Not implemented yet: Enum[\\'a\\\\\\\\b\\'] case') }
+        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // a member name that needs quoting and starts with two underscores
+      code: `
+        enum Enum {
+          'a' = 1,
+          '__a-b' = 2,
+        }
+
+        declare const a: Enum;
+
+        switch (a) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            missingBranches: '(typeof Enum)["__a-b"] | Enum.a',
+          },
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+        enum Enum {
+          'a' = 1,
+          '__a-b' = 2,
+        }
+
+        declare const a: Enum;
+
+        switch (a) {
+        case Enum['__a-b']: { throw new Error('Not implemented yet: Enum[\\'__a-b\\'] case') }
+        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       // superfluous switch with a string-based union
       code: `
 type MyUnion = 'foo' | 'bar' | 'baz';

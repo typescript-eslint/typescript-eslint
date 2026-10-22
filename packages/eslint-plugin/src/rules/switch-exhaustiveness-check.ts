@@ -294,12 +294,19 @@ export default createRule<Options, MessageIds>({
             missingBranchName!
           : typeToString(missingBranchType);
 
+        // escapedName prefixes names starting with "__" with another "_"
+        const missingBranchText =
+          missingBranchName == null
+            ? undefined
+            : ts.unescapeLeadingUnderscores(missingBranchName);
+
         if (
           symbolName &&
-          (missingBranchName || missingBranchName === '') &&
-          requiresQuoting(missingBranchName.toString(), compilerOptions.target)
+          missingBranchText != null &&
+          requiresQuoting(missingBranchText, compilerOptions.target)
         ) {
-          const escapedBranchName = missingBranchName
+          const escapedBranchName = missingBranchText
+            .replaceAll('\\', '\\\\')
             .replaceAll("'", "\\'")
             .replaceAll('\n', '\\n')
             .replaceAll('\r', '\\r');
