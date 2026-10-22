@@ -118,6 +118,9 @@
       },
       {
         "runtime": "echo $NETLIFY"
+      },
+      {
+        "runtime": "echo $GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
       }
     ],
     "production": [
