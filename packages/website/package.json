@@ -124,7 +124,8 @@
           "{projectRoot}/static/img/og"
         ],
         "options": {
-          "cwd": "{projectRoot}"
+          "cwd": "{projectRoot}",
+          "args": []
         }
       },
       "lint": {
