@@ -45,8 +45,7 @@
     "build": {
       "options": {
         "args": ["--noCheck"]
-      },
-      "inputs": ["default", "^default"]
+      }
     },
     "typecheck:tsgo": {
       "cache": true,
@@ -119,9 +118,6 @@
       },
       {
         "runtime": "echo $NETLIFY"
-      },
-      {
-        "runtime": "echo $GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
       }
     ],
     "production": [
