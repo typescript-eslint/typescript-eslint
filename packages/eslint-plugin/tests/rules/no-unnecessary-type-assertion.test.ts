@@ -42,7 +42,7 @@ type R = { a: string };
 declare const response: { json(): Promise<any> };
 declare function fn<T>(cb: () => T): T;
 fn(async () => {
-  return response.json() as unknown as R;
+  return response.json() as unknown as Promise<R>;
 });
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
