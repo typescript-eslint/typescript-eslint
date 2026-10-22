@@ -45,7 +45,8 @@
     "build": {
       "options": {
         "args": ["--noCheck"]
-      }
+      },
+      "inputs": ["default", "^default"]
     },
     "typecheck:tsgo": {
       "cache": true,
