@@ -459,6 +459,7 @@ export default createRule<Options, MessageIds>({
       if (contextualType) {
         const intermediateType = services.getTypeAtLocation(innerExpression);
         if (
+          !containsAny(originalType) &&
           (isTypeFlagSet(intermediateType, ts.TypeFlags.Any) ||
             isTypeFlagSet(intermediateType, ts.TypeFlags.Unknown)) &&
           checker.isTypeAssignableTo(originalType, contextualType)
