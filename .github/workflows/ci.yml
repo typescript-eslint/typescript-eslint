@@ -106,7 +106,7 @@ jobs:
       # Downstream jobs don't restore these outputs from disk -- their Nx targets depend on `build`
       # and pull it from the Nx Cloud remote cache, which this job populates.
       - name: Build
-        run: pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint --skip-nx-cache
+        run: pnpm exec nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
 
   generate_configs:
     name: Generate Configs
