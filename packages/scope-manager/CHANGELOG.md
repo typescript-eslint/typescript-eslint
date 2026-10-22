@@ -1,3 +1,17 @@
+## 8.72.0 (2026-10-19)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] report deprecated properties in object literals ([#12704](https://github.com/typescript-eslint/typescript-eslint/pull/12704))
+
+### ❤️ Thank You
+
+- Junichiro Kasuya @jksy
+
+See [GitHub Releases](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v8.72.0) for more information.
+
+You can read about our [versioning strategy](https://typescript-eslint.io/users/versioning) and [releases](https://typescript-eslint.io/users/releases) on our website.
+
 ## 8.71.2 (2026-10-12)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.

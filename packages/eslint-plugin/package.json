@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.71.2",
+  "version": "8.72.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",

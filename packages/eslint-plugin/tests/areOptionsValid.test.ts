@@ -5,8 +5,8 @@ const exampleRule = createRule<['value-a' | 'value-b'], never>({
   create() {
     return {};
   },
-  defaultOptions: ['value-a'],
   meta: {
+    defaultOptions: ['value-a'],
     docs: {
       description: 'Detects something or other',
     },
