@@ -175,6 +175,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [{ ignoreStatic }]) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const currentSourceFile = services.program.getSourceFile(context.filename);
 
     function checkIfMethodAndReport(
@@ -186,6 +187,7 @@ export default createRule<Options, MessageIds>({
       }
 
       const { dangerous, firstParamIsThis } = checkIfMethod(
+        checker,
         symbol,
         ignoreStatic,
       );
@@ -386,6 +388,7 @@ interface CheckMethodResult {
 }
 
 function checkIfMethod(
+  checker: ts.TypeChecker,
   symbol: ts.Symbol,
   ignoreStatic: boolean,
 ): CheckMethodResult {
@@ -403,11 +406,12 @@ function checkIfMethod(
       if (!initializer || !ts.isFunctionExpression(initializer)) {
         return { dangerous: false };
       }
-      return checkMethod(initializer, ignoreStatic);
+      return checkMethod(checker, initializer, ignoreStatic);
     }
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature: {
       return checkMethod(
+        checker,
         valueDeclaration as ts.MethodDeclaration | ts.MethodSignature,
         ignoreStatic,
       );
@@ -418,6 +422,7 @@ function checkIfMethod(
 }
 
 function checkMethod(
+  checker: ts.TypeChecker,
   valueDeclaration:
     ts.FunctionExpression | ts.MethodDeclaration | ts.MethodSignature,
   ignoreStatic: boolean,
@@ -432,7 +437,8 @@ function checkMethod(
 
   return {
     dangerous:
-      !thisArgIsVoid && !(ignoreStatic && isStaticMethod(valueDeclaration)),
+      !thisArgIsVoid &&
+      !(ignoreStatic && isStaticMethod(checker, valueDeclaration)),
     firstParamIsThis,
   };
 }
@@ -462,6 +468,7 @@ function checkMethod(
  * ```
  */
 function isStaticMethod(
+  checker: ts.TypeChecker,
   valueDeclaration:
     ts.FunctionExpression | ts.MethodDeclaration | ts.MethodSignature,
 ): boolean {
@@ -482,35 +489,16 @@ function isStaticMethod(
     return false;
   }
 
-  const typeName = getDeclaredTypeName(parent);
-  return parent.members.some(
-    member =>
-      ts.isConstructSignatureDeclaration(member) &&
-      !isTypeReferenceTo(member.type, typeName),
-  );
-}
-
-function getDeclaredTypeName(
-  node: ts.InterfaceDeclaration | ts.TypeLiteralNode,
-): string | undefined {
-  if (ts.isInterfaceDeclaration(node)) {
-    return node.name.text;
-  }
-  return ts.isTypeAliasDeclaration(node.parent)
-    ? node.parent.name.text
-    : undefined;
-}
-
-function isTypeReferenceTo(
-  type: ts.TypeNode | undefined,
-  typeName: string | undefined,
-): boolean {
+  // the declared type includes construct signatures from merged declarations
+  const type = checker.getTypeAtLocation(parent);
+  const constructSignatures = type.getConstructSignatures();
   return (
-    typeName != null &&
-    type != null &&
-    ts.isTypeReferenceNode(type) &&
-    ts.isIdentifier(type.typeName) &&
-    type.typeName.text === typeName
+    constructSignatures.length > 0 &&
+    constructSignatures.every(signature =>
+      tsutils
+        .unionConstituents(signature.getReturnType())
+        .every(instanceType => instanceType !== type),
+    )
   );
 }
 
