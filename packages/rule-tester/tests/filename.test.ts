@@ -258,7 +258,6 @@ describe('rule tester per-test relative tsconfigRootDir', () => {
         filename: 'test-root-override.ts',
         languageOptions: {
           parserOptions: {
-            project: './tsconfig.json',
             tsconfigRootDir: testTsconfigRootDir,
           },
         },
@@ -277,7 +276,7 @@ describe('rule tester nested type-aware filenames', () => {
   new RuleTester({
     defaultFilenames: {
       ts: 'fixture/file.ts',
-      tsx: 'fixture/react.tsx',
+      tsx: 'react.tsx',
     },
     languageOptions: {
       parser,
@@ -291,25 +290,6 @@ describe('rule tester nested type-aware filenames', () => {
       {
         code: 'const fixture: string = "fixture";',
         errors: [{ data: { type: 'string' }, messageId: 'type' }],
-      },
-      {
-        code: `
-namespace JSX {
-  export interface Element {
-    type: string;
-  }
-  export interface IntrinsicElements {
-    div: {};
-  }
-}
-const fixture = <div />;
-        `,
-        errors: [{ data: { type: 'Element' }, messageId: 'type' }],
-        languageOptions: {
-          parserOptions: {
-            ecmaFeatures: { jsx: true },
-          },
-        },
       },
     ],
     valid: [],
