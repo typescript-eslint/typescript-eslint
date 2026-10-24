@@ -4,6 +4,7 @@
     "outDir": "${configDir}/dist",
     "rootDir": "${configDir}/src",
     "emitDeclarationOnly": false,
+    "isolatedDeclarations": true,
     "tsBuildInfoFile": "${configDir}/dist/tsconfig.build.tsbuildinfo"
   },
   "include": [
