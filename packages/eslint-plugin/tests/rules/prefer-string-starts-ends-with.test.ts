@@ -1551,8 +1551,8 @@ function f(s: string) {
   s.startsWith("ar");
 }
       `,
-      // Node 18 can't construct `v`-flag RegExps, so the literal has no static value
-      skip: !('unicodeSets' in RegExp.prototype),
+      // Node 18 doesn't support the `v` flag; remove once Node 18 support is dropped
+      skip: Number(process.versions.node.split('.')[0]) < 20,
     },
     {
       code: `
