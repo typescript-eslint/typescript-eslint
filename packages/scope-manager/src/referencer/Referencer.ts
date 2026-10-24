@@ -2,9 +2,13 @@ import type { Lib, TSESTree } from '@typescript-eslint/types';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import type { GlobalScope, Scope } from '../scope';
+import type { Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
-import type { ImplicitLibVariableOptions, LibDefinition } from '../variable';
+import type {
+  ImplicitLibVariableMap,
+  ImplicitLibVariableOptions,
+  LibDefinition,
+} from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -34,6 +38,8 @@ export interface ReferencerOptions extends VisitorOptions {
   lib: Lib[];
 }
 
+const implicitVariablesByLibSet = new Map<string, ImplicitLibVariableMap>();
+
 // Referencing variables and creating bindings.
 export class Referencer extends Visitor {
   #hasReferencedJsxFactory = false;
@@ -51,14 +57,18 @@ export class Referencer extends Visitor {
     this.#lib = options.lib;
   }
 
-  private populateGlobalsFromLib(globalScope: GlobalScope): void {
-    const libs = this.resolveLibDefinitions();
-    const variables = new Map<string, ImplicitLibVariableOptions>();
+  private getImplicitVariablesFromLib(): ImplicitLibVariableMap {
+    const cacheKey = JSON.stringify([...new Set(this.#lib)].sort());
+    const cached = implicitVariablesByLibSet.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
 
-    for (const lib of libs) {
+    const implicitVariables = new Map<string, ImplicitLibVariableOptions>();
+    for (const lib of this.resolveLibDefinitions()) {
       for (const [name, variable] of lib.variables) {
-        const existing = variables.get(name);
-        variables.set(
+        const existing = implicitVariables.get(name);
+        implicitVariables.set(
           name,
           existing
             ? {
@@ -73,16 +83,8 @@ export class Referencer extends Visitor {
       }
     }
 
-    for (const [name, variable] of variables) {
-      globalScope.defineImplicitVariable(name, variable);
-    }
-
-    // Special implicit global for const assertions (`{} as const`, `<const>{}`)
-    globalScope.defineImplicitVariable('const', {
-      eslintImplicitGlobalSetting: 'readonly',
-      isTypeVariable: true,
-      isValueVariable: false,
-    });
+    implicitVariablesByLibSet.set(cacheKey, implicitVariables);
+    return implicitVariables;
   }
 
   /**
@@ -616,8 +618,18 @@ export class Referencer extends Visitor {
   }
 
   protected Program(node: TSESTree.Program): void {
-    const globalScope = this.scopeManager.nestGlobalScope(node);
-    this.populateGlobalsFromLib(globalScope);
+    const implicitVariables = this.getImplicitVariablesFromLib();
+    const globalScope = this.scopeManager.nestGlobalScope(
+      node,
+      implicitVariables,
+    );
+
+    // Special implicit global for const assertions (`{} as const`, `<const>{}`)
+    globalScope.defineImplicitVariable('const', {
+      eslintImplicitGlobalSetting: 'readonly',
+      isTypeVariable: true,
+      isValueVariable: false,
+    });
 
     if (this.scopeManager.isGlobalReturn()) {
       // Force strictness of GlobalScope to false when using node.js scope.
