@@ -60,7 +60,7 @@ describe('parseAndGenerateServices with projectService in single-run mode', () =
   it('prefers a nearer jsconfig.json over a farther tsconfig.json', () => {
     const { services } = parse('jsconfigProject', 'sub/file.js');
 
-    expect(services.program.getCompilerOptions().configFilePath).toBe(
+    expect(services.program?.getCompilerOptions().configFilePath).toBe(
       path.join(fixturesDir, 'jsconfigProject', 'sub', 'jsconfig.json'),
     );
     expect(useProgramFromProjectService).not.toHaveBeenCalled();
