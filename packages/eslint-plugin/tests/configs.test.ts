@@ -7,12 +7,12 @@ const rulesEntriesList = Object.entries(rules);
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const EXTENSION_RULES = rulesEntriesList
-  .filter(([, rule]) => rule.meta.docs?.extendsBaseRule)
+  .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
   .map(
     ([ruleName, rule]) =>
       [
         `${RULE_NAME_PREFIX}${ruleName}`,
-        typeof rule.meta.docs?.extendsBaseRule === 'string'
+        typeof rule.meta.docs.extendsBaseRule === 'string'
           ? rule.meta.docs.extendsBaseRule
           : ruleName,
       ] as const,
@@ -46,14 +46,14 @@ function filterAndMapRuleConfigs({
   if (typeChecked) {
     result = result.filter(([, rule]) =>
       typeChecked === 'exclude'
-        ? !rule.meta.docs?.requiresTypeChecking
-        : rule.meta.docs?.requiresTypeChecking,
+        ? !rule.meta.docs.requiresTypeChecking
+        : rule.meta.docs.requiresTypeChecking,
     );
   }
 
   if (recommendations) {
     result = result.filter(([, rule]) => {
-      switch (typeof rule.meta.docs?.recommended) {
+      switch (typeof rule.meta.docs.recommended) {
         case 'object':
           return Object.keys(rule.meta.docs.recommended).some(recommended =>
             recommendations.includes(recommended as RuleRecommendation),
@@ -71,7 +71,7 @@ function filterAndMapRuleConfigs({
   return result.map(([name, rule]) => {
     const customRecommendation =
       highestRecommendation &&
-      typeof rule.meta.docs?.recommended === 'object' &&
+      typeof rule.meta.docs.recommended === 'object' &&
       rule.meta.docs.recommended[
         highestRecommendation as 'recommended' | 'strict'
       ];
@@ -144,7 +144,7 @@ describe('disable-type-checked.ts', () => {
 
   localTest('disables all type checked rules', ({ configRulesObject }) => {
     const ruleConfigs = rulesEntriesList
-      .filter(([, rule]) => rule.meta.docs?.requiresTypeChecking)
+      .filter(([, rule]) => rule.meta.docs.requiresTypeChecking)
       .map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'off'] as const);
 
     expect(Object.fromEntries(ruleConfigs)).toStrictEqual(configRulesObject);
