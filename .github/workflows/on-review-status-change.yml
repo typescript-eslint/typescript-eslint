@@ -20,10 +20,10 @@ jobs:
     name: Record Review Intent
     if: >-
       github.event_name == 'pull_request' ||
-      github.event.review.state == 'approved' ||
+      github.event.review.state == 'rejected' ||
       github.event.review.state == 'changes_requested'
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Record intent
         env:
