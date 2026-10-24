@@ -43,12 +43,13 @@ export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
 };
 
-// `exports` or `module.exports`
 function isCommonJSExports(node: ts.Expression) {
+  // `exports`
   if (ts.isIdentifier(node)) {
     return node.text === 'exports';
   }
 
+  // `module.exports`
   return (
     ts.isPropertyAccessExpression(node) &&
     ts.isIdentifier(node.expression) &&
