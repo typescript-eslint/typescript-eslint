@@ -212,6 +212,21 @@ function f(s: string) {
     `,
     `
 function f(s: string) {
+  /^\\p{N}/u.test(s); // property escape is not a static string
+}
+    `,
+    `
+function f(s: string) {
+  /^\\p{N}/v.test(s); // v flag: property escape is not a static string
+}
+    `,
+    `
+function f(s: string) {
+  /\\p{N}$/v.test(s);
+}
+    `,
+    `
+function f(s: string) {
   s.match() !== null;
 }
     `,
