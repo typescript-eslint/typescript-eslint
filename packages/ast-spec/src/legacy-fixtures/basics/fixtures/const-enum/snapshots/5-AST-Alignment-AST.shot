@@ -100,11 +100,9 @@ Snapshot Diff:
     ],
     sourceType: 'script',
 
--   range: [73, 110],
-+   range: [0, 110],
+    range: [0, 110],
     loc: {
--     start: { column: 0, line: 3 },
-+     start: { column: 0, line: 1 },
+      start: { column: 0, line: 1 },
       end: { column: 0, line: 7 },
     },
   }

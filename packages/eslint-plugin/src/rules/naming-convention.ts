@@ -89,6 +89,7 @@ export default createRule<Options, MessageIds>({
     },
     schema: SCHEMA,
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: defaultCamelCaseAllTheThingsConfig,
   create(contextWithoutDefaults) {
     const context =

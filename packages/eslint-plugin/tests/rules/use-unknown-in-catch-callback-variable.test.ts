@@ -872,7 +872,7 @@ declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
     ? ((err => {}, err => {}, maybeNullishHandler) ?? (err => {}))
-    : (condition && (err => {})) || (err => {}),
+    : (condition && ((err: unknown) => {})) || ((err: unknown) => {}),
 );
       `,
       errors: [
@@ -892,12 +892,25 @@ declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
     ? ((err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {}))
-    : (condition && (err => {})) || (err => {}),
+    : (condition && ((err: unknown) => {})) || ((err: unknown) => {}),
 );
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+declare const condition: boolean;
+declare const maybeNullishHandler: null | ((err: any) => void);
+Promise.resolve('foo').catch(
+  condition
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {}))
+    : (condition && (err => {})) || ((err: unknown) => {}),
+);
+      `,
+      errors: [
         {
           column: 22,
           data: { append: '', method: 'catch' },
@@ -913,17 +926,30 @@ declare const condition: boolean;
 declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
-    ? ((err => {}, err => {}, maybeNullishHandler) ?? (err => {}))
-    : (condition && ((err: unknown) => {})) || (err => {}),
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {}))
+    : (condition && ((err: unknown) => {})) || ((err: unknown) => {}),
 );
       `,
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+declare const condition: boolean;
+declare const maybeNullishHandler: null | ((err: any) => void);
+Promise.resolve('foo').catch(
+  condition
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {}))
+    : (condition && ((err: unknown) => {})) || (err => {}),
+);
+      `,
+      errors: [
         {
-          column: 38,
+          column: 49,
           data: { append: '', method: 'catch' },
-          endColumn: 41,
+          endColumn: 52,
           endLine: 7,
           line: 7,
           messageId: 'useUnknown',
@@ -935,8 +961,8 @@ declare const condition: boolean;
 declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
-    ? ((err => {}, err => {}, maybeNullishHandler) ?? (err => {}))
-    : (condition && (err => {})) || ((err: unknown) => {}),
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {}))
+    : (condition && ((err: unknown) => {})) || ((err: unknown) => {}),
 );
       `,
             },
