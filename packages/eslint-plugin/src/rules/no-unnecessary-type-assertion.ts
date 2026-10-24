@@ -280,6 +280,14 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
+      // Mutually assignable signatures can still differ in overloads, rest or optional parameters
+      if (
+        uncast.getCallSignatures().length ||
+        uncast.getConstructSignatures().length
+      ) {
+        return false;
+      }
+
       return areMutuallyAssignable(uncast, cast);
     }
 
