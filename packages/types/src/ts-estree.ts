@@ -131,10 +131,16 @@ declare module './generated/ast-spec' {
   interface MethodDefinitionNonComputedName {
     parent: TSESTree.ClassBody;
   }
+  interface MethodDefinitionConstructor {
+    parent: TSESTree.ClassBody;
+  }
   interface TSAbstractMethodDefinitionComputedName {
     parent: TSESTree.ClassBody;
   }
   interface TSAbstractMethodDefinitionNonComputedName {
+    parent: TSESTree.ClassBody;
+  }
+  interface TSAbstractMethodDefinitionConstructor {
     parent: TSESTree.ClassBody;
   }
 
