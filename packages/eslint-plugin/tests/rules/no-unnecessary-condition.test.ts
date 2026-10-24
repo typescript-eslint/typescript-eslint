@@ -1276,7 +1276,6 @@ declare function assert(x: unknown): asserts x;
 
 assert(Math.random() > 0.5);
       `,
-      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -1284,7 +1283,6 @@ declare function assert(x: unknown, y: unknown): asserts x;
 
 assert(Math.random() > 0.5, true);
       `,
-      options: [{ checkTypePredicates: true }],
     },
     {
       // should not report because option is disabled.
@@ -1304,7 +1302,6 @@ class ThisAsserter {
 const thisAsserter: ThisAsserter = new ThisAsserter();
 thisAsserter.assertThis(true);
       `,
-      options: [{ checkTypePredicates: true }],
     },
     {
       // could be argued that this should report since `thisAsserter` is truthy.
@@ -1316,14 +1313,12 @@ class ThisAsserter {
 const thisAsserter: ThisAsserter = new ThisAsserter();
 thisAsserter.assertThis(Math.random());
       `,
-      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
 declare function assert(x: unknown): asserts x;
 assert(...[]);
       `,
-      options: [{ checkTypePredicates: true }],
     },
     {
       // ok to report if we start unpacking spread params one day.
@@ -1331,7 +1326,6 @@ assert(...[]);
 declare function assert(x: unknown): asserts x;
 assert(...[], {});
       `,
-      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -1355,7 +1349,6 @@ isString(a);
 declare function assertString(x: unknown): asserts x is string;
 assertString('falafel');
       `,
-      options: [{ checkTypePredicates: true }],
     },
     {
       // Technically, this has type 'falafel' and not string.
@@ -1363,7 +1356,6 @@ assertString('falafel');
 declare function isString(x: unknown): x is string;
 isString('falafel');
       `,
-      options: [{ checkTypePredicates: true }],
     },
     {
       // string | number | bigint is not a subtype of string | number
@@ -5084,7 +5076,6 @@ assert(true);
           messageId: 'alwaysTruthy',
         },
       ],
-      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -5100,7 +5091,6 @@ assert(false);
           messageId: 'alwaysFalsy',
         },
       ],
-      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -5117,7 +5107,6 @@ assert(true, Math.random() > 0.5);
           messageId: 'alwaysTruthy',
         },
       ],
-      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -5133,7 +5122,6 @@ assert({});
           messageId: 'alwaysTruthy',
         },
       ],
-      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -5151,7 +5139,6 @@ assertsString(a);
           messageId: 'typeGuardAlreadyIsType',
         },
       ],
-      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -5169,7 +5156,6 @@ isString(a);
           messageId: 'typeGuardAlreadyIsType',
         },
       ],
-      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -5187,7 +5173,6 @@ isString('fa' + 'lafel');
           messageId: 'typeGuardAlreadyIsType',
         },
       ],
-      options: [{ checkTypePredicates: true }],
     },
     {
       // string is a strict subtype of string | number.
