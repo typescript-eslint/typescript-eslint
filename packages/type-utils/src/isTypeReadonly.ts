@@ -43,22 +43,32 @@ export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
 };
 
+// `exports` or `module.exports`
 function isCommonJSExports(node: ts.Expression) {
-  return ts.isIdentifier(node)
-    ? node.text === 'exports'
-    : ts.isPropertyAccessExpression(node) &&
-        ts.isIdentifier(node.expression) &&
-        node.expression.text === 'module' &&
-        node.name.text === 'exports';
+  if (ts.isIdentifier(node)) {
+    return node.text === 'exports';
+  }
+
+  return (
+    ts.isPropertyAccessExpression(node) &&
+    ts.isIdentifier(node.expression) &&
+    node.expression.text === 'module' &&
+    node.name.text === 'exports'
+  );
 }
 
+// `a` and `a`, or `a.b.c` and `a.b.c`
 function isSameEntityName(a: ts.Expression, b: ts.Expression): boolean {
-  return ts.isIdentifier(a)
-    ? ts.isIdentifier(b) && a.text === b.text
-    : ts.isPropertyAccessExpression(a) &&
-        ts.isPropertyAccessExpression(b) &&
-        a.name.text === b.name.text &&
-        isSameEntityName(a.expression, b.expression);
+  if (ts.isIdentifier(a)) {
+    return ts.isIdentifier(b) && a.text === b.text;
+  }
+
+  return (
+    ts.isPropertyAccessExpression(a) &&
+    ts.isPropertyAccessExpression(b) &&
+    a.name.text === b.name.text &&
+    isSameEntityName(a.expression, b.expression)
+  );
 }
 
 function isFunctionInitializer(node: ts.Expression) {
@@ -67,12 +77,15 @@ function isFunctionInitializer(node: ts.Expression) {
 
 // Matches the functions TypeScript's binder flags as methods, without reading the internal `node.symbol`.
 function isMethodDeclaration(declaration: ts.Declaration) {
+  // `class C { m() {} }`, `({ m() {} })`, and `interface I { m(): void }`
   if (
     ts.isMethodDeclaration(declaration) ||
     ts.isMethodSignature(declaration)
   ) {
     return true;
   }
+
+  // JS assignment declarations: the declaration is either the assignment itself or its left side
   const assignment = ts.isBinaryExpression(declaration)
     ? declaration
     : declaration.parent;
@@ -82,6 +95,8 @@ function isMethodDeclaration(declaration: ts.Declaration) {
   ) {
     return false;
   }
+
+  // `obj.m = ...` and `obj['m'] = ...`, but not `this.m = ...` or CommonJS `exports.m = ...`
   const { left, right } = assignment;
   if (
     !(
@@ -92,13 +107,19 @@ function isMethodDeclaration(declaration: ts.Declaration) {
   ) {
     return false;
   }
+
+  // `obj.m = function () {}` and `obj.m = () => {}`
+  if (isFunctionInitializer(right)) {
+    return true;
+  }
+
+  // `obj.m = obj.m || function () {}` and `obj.m = obj.m ?? function () {}`
   return (
-    isFunctionInitializer(right) ||
-    (ts.isBinaryExpression(right) &&
-      (right.operatorToken.kind === ts.SyntaxKind.BarBarToken ||
-        right.operatorToken.kind === ts.SyntaxKind.QuestionQuestionToken) &&
-      isSameEntityName(left, right.left) &&
-      isFunctionInitializer(right.right))
+    ts.isBinaryExpression(right) &&
+    (right.operatorToken.kind === ts.SyntaxKind.BarBarToken ||
+      right.operatorToken.kind === ts.SyntaxKind.QuestionQuestionToken) &&
+    isSameEntityName(left, right.left) &&
+    isFunctionInitializer(right.right)
   );
 }
 
