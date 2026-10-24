@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-for-of';
 
@@ -262,6 +262,11 @@ for (var a = 0; a < obj.arr.length; a++) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of obj.arr) {
+  console.log(value);
+}
+      `,
     },
     {
       code: `
@@ -276,6 +281,9 @@ for (var b = 0; b < arr.length; b++) console.log(arr[b]);
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) console.log(value);
+      `,
     },
     {
       code: `
@@ -292,6 +300,11 @@ for (let a = 0; a < arr.length; a++) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  console.log(value);
+}
+      `,
     },
     {
       code: `
@@ -306,6 +319,9 @@ for (var b = 0; b < arr.length; b++) console?.log(arr[b]);
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) console?.log(value);
+      `,
     },
     {
       code: `
@@ -322,6 +338,11 @@ for (let a = 0; a < arr.length; a++) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  console?.log(value);
+}
+      `,
     },
     {
       code: `
@@ -338,6 +359,11 @@ for (let a = 0; a < arr.length; ++a) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  value.whatever();
+}
+      `,
     },
     {
       code: `
@@ -352,6 +378,9 @@ for (let x = 0; x < arr.length; x++) {}
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {}
+      `,
     },
     {
       code: `
@@ -366,6 +395,9 @@ for (let x = 0; x < arr.length; x += 1) {}
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {}
+      `,
     },
     {
       code: `
@@ -380,6 +412,9 @@ for (let x = 0; x < arr.length; x = x + 1) {}
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {}
+      `,
     },
     {
       code: `
@@ -394,6 +429,9 @@ for (let x = 0; x < arr.length; x = 1 + x) {}
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {}
+      `,
     },
     // Nested loops
     /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
@@ -419,6 +457,90 @@ for (let shadow = 0; shadow < arr.length; shadow++) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  for (const value1 of arr) {}
+}
+      `,
+    },
+    {
+      code: `
+const value = 1;
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+
+  for (let j = 0; j < arr2.length; j++) {
+    console.log(arr2[j]);
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 9,
+          line: 3,
+          messageId: 'preferForOf',
+        },
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 8,
+          line: 6,
+          messageId: 'preferForOf',
+        },
+      ],
+      output: `
+const value = 1;
+for (const value1 of arr) {
+  console.log(value1);
+
+  for (const value2 of arr2) {
+    console.log(value2);
+  }
+}
+      `,
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  for (let j = 0; j < arr[i].length; j++) {
+    console.log(arr[i][j]);
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 6,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'preferForOf',
+        },
+      ],
+      output: [
+        `
+for (const value of arr) {
+  for (let j = 0; j < value.length; j++) {
+    console.log(value[j]);
+  }
+}
+      `,
+        `
+for (const value of arr) {
+  for (const value1 of value) {
+    console.log(value1);
+  }
+}
+      `,
+      ],
     },
     /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
@@ -436,6 +558,11 @@ for (let i = 0; i < arr.length; i++) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  obj[value] = 1;
+}
+      `,
     },
     {
       code: `
@@ -452,6 +579,11 @@ for (let i = 0; i < arr.length; i++) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  delete obj[value];
+}
+      `,
     },
     {
       code: `
@@ -468,6 +600,11 @@ for (let i = 0; i < arr.length; i++) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  [obj[value]] = [1];
+}
+      `,
     },
     {
       code: `
@@ -484,6 +621,11 @@ for (let i = 0; i < arr.length; i++) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  [...obj[value]] = [1];
+}
+      `,
     },
     {
       code: `
@@ -500,6 +642,11 @@ for (let i = 0; i < arr.length; i++) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of arr) {
+  ({ foo: obj[value] } = { foo: 1 });
+}
+      `,
     },
     {
       code: `
@@ -516,6 +663,11 @@ for (let i = 0; i < this.item.length; ++i) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of this.item) {
+  value;
+}
+      `,
     },
     {
       code: `
@@ -532,6 +684,151 @@ for (let i = 0; i < this.array.length; ++i) {
           messageId: 'preferForOf',
         },
       ],
+      output: `
+for (const value of this.array) {
+  yield value;
+}
+      `,
+    },
+    {
+      code: noFormat`
+for (let i = 0; i < arr.length; (i++)) {
+  console.log(arr[i]);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+      output: `
+for (const value of arr) {
+  console.log(value);
+}
+      `,
+    },
+    {
+      code: `
+for (let i = 0; i < (arr as string[]).length; i++) {
+  console.log((arr as string[])[i]);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+      output: `
+for (const value of (arr as string[])) {
+  console.log(value);
+}
+      `,
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  const value = arr[i];
+  console.log(value);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 5,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+      output: `
+for (const value1 of arr) {
+  const value = value1;
+  console.log(value);
+}
+      `,
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  arr2.forEach(value => console.log(arr[i]));
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+      output: `
+for (const value1 of arr) {
+  arr2.forEach(value => console.log(value1));
+}
+      `,
+    },
+    {
+      code: `
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i], value);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+      output: `
+for (const value1 of arr) {
+  console.log(value1, value);
+}
+      `,
+    },
+    {
+      code: `
+for (var i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+console.log(i);
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+for (let i = 0; i < arr[i].length; i++) {}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 43,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferForOf',
+        },
+      ],
+      output: null,
     },
   ],
 });
