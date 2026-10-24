@@ -208,6 +208,10 @@ export function checkSyntaxError(
           'A property assignment cannot have an exclamation token.',
         );
       }
+
+      if (allowPattern) {
+        checkDestructuringTarget(node.initializer);
+      }
       break;
     }
 
@@ -235,8 +239,50 @@ export function checkSyntaxError(
           'A shorthand property assignment cannot have an exclamation token.',
         );
       }
+
+      if (node.equalsToken && !allowPattern) {
+        throw createError(
+          node.equalsToken,
+          "Did you mean to use a ':'? An '=' can only follow a property name when the containing object literal is part of a destructuring pattern.",
+        );
+      }
       break;
     }
+
+    case SyntaxKind.SpreadAssignment:
+      if (allowPattern) {
+        checkDestructuringTarget(
+          node.expression,
+          'The target of an object rest assignment must be a variable or a property access.',
+        );
+      }
+      break;
+
+    case SyntaxKind.ArrayLiteralExpression:
+      if (!allowPattern) {
+        break;
+      }
+
+      for (const element of node.elements) {
+        if (ts.isOmittedExpression(element)) {
+          continue;
+        }
+
+        if (!ts.isSpreadElement(element)) {
+          checkDestructuringTarget(element);
+          continue;
+        }
+
+        if (isDefaultValue(element.expression)) {
+          throw createError(
+            element.expression.operatorToken,
+            'A rest element cannot have an initializer.',
+          );
+        }
+
+        checkDestructuringTarget(element.expression);
+      }
+      break;
 
     case SyntaxKind.PropertyDeclaration: {
       const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
@@ -608,6 +654,19 @@ export function checkSyntaxError(
             : `Method '${declarationNameToString(node.name)}' cannot have an implementation because it is marked abstract.`,
         );
       }
+
+      if (node.parent.kind === SyntaxKind.ObjectLiteralExpression) {
+        if (allowPattern) {
+          throw createError(node.name, 'Property assignment expected.');
+        }
+
+        if (node.questionToken) {
+          throw createError(
+            node.questionToken,
+            'An object member cannot be declared optional.',
+          );
+        }
+      }
       break;
     }
 
@@ -706,6 +765,37 @@ export function checkSyntaxError(
 
     // No default
   }
+}
+
+/**
+ * Checks an element of an object or array destructuring assignment,
+ * e.g. `b` in `({ a: b } = x)` or `[b = 1] = x`
+ */
+function checkDestructuringTarget(
+  node: ts.Expression,
+  message = 'The left-hand side of an assignment expression must be a variable or a property access.',
+): void {
+  const target = isDefaultValue(node) ? node.left : node;
+
+  if (
+    !isValidAssignmentTarget(target) &&
+    !ts.isObjectLiteralExpression(target) &&
+    !ts.isArrayLiteralExpression(target)
+  ) {
+    throw createError(target, message);
+  }
+}
+
+/**
+ * `b = 1` in `({ a: b = 1 } = x)` or `[b = 1] = x`
+ */
+function isDefaultValue(
+  node: ts.Expression,
+): node is ts.AssignmentExpression<ts.EqualsToken> {
+  return (
+    ts.isBinaryExpression(node) &&
+    node.operatorToken.kind === SyntaxKind.EqualsToken
+  );
 }
 
 function checkForStatementDeclaration(
