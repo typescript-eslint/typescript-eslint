@@ -335,6 +335,17 @@ export default createRule<Options, MessageIds>({
       return typeContains(type, t => isTypeFlagSet(t, ts.TypeFlags.Any));
     }
 
+    /**
+     * The element type of an "evolving" array (`const arr = [];`) is a special
+     * `any` that TypeScript later replaces with the types of the added elements.
+     */
+    function isEvolvingAny(type: ts.Type): boolean {
+      return tsutils.isObjectFlagSet(
+        type as ts.ObjectType,
+        ts.ObjectFlags.NonInferrableType,
+      );
+    }
+
     function containsTypeVariable(type: ts.Type): boolean {
       return typeContains(type, t =>
         isTypeFlagSet(t, ts.TypeFlags.TypeVariable | ts.TypeFlags.Index),
@@ -1002,7 +1013,9 @@ export default createRule<Options, MessageIds>({
             node.parent.arguments.includes(node);
 
           const anyInvolvedInContextualCheck = contextualTypeIsAny
-            ? isCallArgument && !containsAny(castType)
+            ? isCallArgument &&
+              !containsAny(castType) &&
+              !isEvolvingAny(contextualType)
             : !containsAny(contextualType);
 
           const isNullishLiteralToUnion =
