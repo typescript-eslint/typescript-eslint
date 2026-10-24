@@ -35,7 +35,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: OctoGuide/bot@ba5148358fb3d5f31ff41714db6045546d3bbfac # 0.29.0
+      - uses: OctoGuide/bot@566236613d04a933e6f1a0d8c85039027a200ab2 # 0.32.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # pr-force-pushes and pr-title-conventional are in the strict config,
@@ -81,6 +81,10 @@ jobs:
                   "visitor-keys",
                   "website"
                 ],
+                "subject-case": "lower",
+                "subject-pattern": "^(\\[[a-z\\-]+(, [a-z\\-]+)*\\] )?[a-z].+$",
+                "subject-pattern-error": "Subjects must start with a lower-case letter. PRs that add or change ESLint plugin rules should begin the subject with \"[rule-name] \".",
+                "subject-trailing-punctuation": false,
                 "types": ["chore", "docs", "feat", "fix", "test"]
               }
             }
