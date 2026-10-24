@@ -51,9 +51,16 @@ const existingPrograms = new Map<CanonicalPath, ts.Program>();
  */
 const configFilesWithReferences = new Set<CanonicalPath>();
 
+/**
+ * Directories' config files as the project service finds them, which unlike
+ * `parserOptions.project: true` includes jsconfig.json files.
+ */
+const projectServiceConfigFileMatches = new Map<string, string>();
+
 export function clearProgramCache(): void {
   existingPrograms.clear();
   configFilesWithReferences.clear();
+  projectServiceConfigFileMatches.clear();
 }
 
 /**
@@ -76,7 +83,15 @@ function useSingleRunProgramForProjectService(
 
   let configFile: string | undefined;
   try {
-    [configFile] = getProjectConfigFiles(parseSettings, true) ?? [];
+    [configFile] =
+      getProjectConfigFiles(
+        {
+          ...parseSettings,
+          tsconfigMatchCache: projectServiceConfigFileMatches,
+        },
+        true,
+        ['tsconfig.json', 'jsconfig.json'],
+      ) ?? [];
   } catch {
     return undefined;
   }
