@@ -251,12 +251,18 @@ export default createRule<Options, MessageIds>({
     /**
      * Parse a given `RegExp` pattern to that string if it's a static string.
      * @param pattern The RegExp pattern text to parse.
-     * @param unicode Whether the RegExp is unicode.
+     * @param unicode Whether the RegExp has the `u` flag.
+     * @param unicodeSets Whether the RegExp has the `v` flag.
      */
-    function parseRegExpText(pattern: string, unicode: boolean): string | null {
+    function parseRegExpText(
+      pattern: string,
+      unicode: boolean,
+      unicodeSets: boolean,
+    ): string | null {
       // Parse it.
       const ast = regexpp.parsePattern(pattern, undefined, undefined, {
         unicode,
+        unicodeSets,
       });
       if (ast.alternatives.length !== 1) {
         return null;
@@ -304,7 +310,11 @@ export default createRule<Options, MessageIds>({
         return null;
       }
 
-      const text = parseRegExpText(source, flags.includes('u'));
+      const text = parseRegExpText(
+        source,
+        flags.includes('u'),
+        flags.includes('v'),
+      );
       if (text == null) {
         return null;
       }
