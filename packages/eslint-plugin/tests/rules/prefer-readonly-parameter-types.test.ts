@@ -290,11 +290,15 @@ function foo<T>(
 ) {}
     `,
     'function foo(arg: Partial<Readonly<{ prop: string }>>) {}',
-    `
+    {
+      code: `
 declare function constant<const T>(value: T): T;
 const value = constant({ prop: 1 });
 function foo(arg: typeof value) {}
-    `,
+      `,
+      // `const` type parameters require TS 5.0
+      dependencyConstraints: { typescript: '5.0' },
+    },
     // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
     {
       code: `
