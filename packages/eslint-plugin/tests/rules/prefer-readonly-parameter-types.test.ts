@@ -896,33 +896,6 @@ function foo(arg) {}
     },
     {
       code: `
-function Factory() {
-  this.method = function () {};
-}
-/** @param {Factory} arg */
-function foo(arg) {}
-      `,
-      errors: [
-        {
-          column: 14,
-          endColumn: 17,
-          endLine: 6,
-          line: 6,
-          messageId: 'shouldBeReadonly',
-        },
-      ],
-      filename: 'file.js',
-      languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootDir, 'javascript'),
-        },
-      },
-      options: [{ treatMethodsAsReadonly: true }],
-      // TypeScript 7 doesn't treat constructor functions as classes.
-      skip: process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo',
-    },
-    {
-      code: `
 exports.method = function () {};
 /** @param {typeof exports} arg */
 function foo(arg) {}
@@ -1698,3 +1671,37 @@ foo<string[]>(arg => {});
     },
   ],
 });
+
+// TypeScript 7 doesn't treat constructor functions as classes.
+if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND !== 'tsgo') {
+  ruleTester.run('prefer-readonly-parameter-types', rule, {
+    valid: [],
+    invalid: [
+      {
+        code: `
+function Factory() {
+  this.method = function () {};
+}
+/** @param {Factory} arg */
+function foo(arg) {}
+        `,
+        errors: [
+          {
+            column: 14,
+            endColumn: 17,
+            endLine: 6,
+            line: 6,
+            messageId: 'shouldBeReadonly',
+          },
+        ],
+        filename: 'file.js',
+        languageOptions: {
+          parserOptions: {
+            tsconfigRootDir: path.join(rootDir, 'javascript'),
+          },
+        },
+        options: [{ treatMethodsAsReadonly: true }],
+      },
+    ],
+  });
+}
