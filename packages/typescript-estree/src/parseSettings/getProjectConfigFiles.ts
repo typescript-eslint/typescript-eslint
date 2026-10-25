@@ -24,6 +24,7 @@ export function getProjectConfigFiles(
     'filePath' | 'tsconfigMatchCache' | 'tsconfigRootDir'
   >,
   project: TSESTreeOptions['project'],
+  configFileNames: readonly string[] = ['tsconfig.json'],
 ): string[] | null {
   if (project !== true) {
     if (project == null || project === false) {
@@ -41,10 +42,11 @@ export function getProjectConfigFiles(
 
   do {
     log('Checking tsconfig.json path: %s', directory);
-    const tsconfigPath = path.join(directory, 'tsconfig.json');
     const cached =
       parseSettings.tsconfigMatchCache.get(directory) ??
-      (fs.existsSync(tsconfigPath) && tsconfigPath);
+      configFileNames
+        .map(configFileName => path.join(directory, configFileName))
+        .find(configFilePath => fs.existsSync(configFilePath));
 
     if (cached) {
       for (const directory of checkedDirectories) {

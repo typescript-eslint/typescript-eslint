@@ -172,7 +172,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lint-task: ['typecheck', 'typecheck:tsgo', 'knip']
+        lint-task: ['typecheck', 'typecheck:tsc6', 'knip']
     env:
       NX_CI_EXECUTION_ENV: 'ubuntu-latest'
     steps:
