@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "8.71.1",
+  "version": "8.72.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -54,7 +54,7 @@
     "lint": "pnpm -w exec nx lint",
     "test": "pnpm -w exec nx test",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo",
+    "typecheck:tsc6": "pnpm -w exec nx typecheck:tsc6",
     "attw-check": "pnpm -w exec nx attw-check"
   },
   "dependencies": {
@@ -119,7 +119,7 @@
       "lint": {
         "command": "eslint"
       },
-      "typecheck:tsgo": {},
+      "typecheck:tsc6": {},
       "attw-check": {
         "cache": false,
         "dependsOn": [

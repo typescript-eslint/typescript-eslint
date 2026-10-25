@@ -240,6 +240,8 @@ function foo(flag: boolean): undefined {
         },
       ],
     },
+    // Verifying nested function
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare function foo(): void;
@@ -271,6 +273,7 @@ function bar(flag: boolean): undefined {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function foo(flag: boolean): Promise<void> {

@@ -907,13 +907,9 @@ type Foo1 = {
   [key: string]: { foo2: Foo2 };
 };
 
-type Foo2 = {
-  [key: string]: Foo3;
-};
+type Foo2 = Record<string, Foo3>;
 
-type Foo3 = {
-  [key: string]: Record<string, Foo1>;
-};
+type Foo3 = Record<string, Record<string, Foo1>>;
       `,
       errors: [
         {
@@ -923,18 +919,58 @@ type Foo3 = {
           line: 2,
           messageId: 'preferRecord',
         },
+      ],
+      output: `
+type Foo1 = Record<string, { foo2: Foo2 }>;
+
+type Foo2 = Record<string, Foo3>;
+
+type Foo3 = Record<string, Record<string, Foo1>>;
+      `,
+    },
+    {
+      code: `
+type Foo1 = Record<string, { foo2: Foo2 }>;
+
+type Foo2 = {
+  [key: string]: Foo3;
+};
+
+type Foo3 = Record<string, Record<string, Foo1>>;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 2,
+          endLine: 6,
+          line: 4,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Foo1 = Record<string, { foo2: Foo2 }>;
+
+type Foo2 = Record<string, Foo3>;
+
+type Foo3 = Record<string, Record<string, Foo1>>;
+      `,
+    },
+    {
+      code: `
+type Foo1 = Record<string, { foo2: Foo2 }>;
+
+type Foo2 = Record<string, Foo3>;
+
+type Foo3 = {
+  [key: string]: Record<string, Foo1>;
+};
+      `,
+      errors: [
         {
           column: 13,
           endColumn: 2,
           endLine: 8,
           line: 6,
-          messageId: 'preferRecord',
-        },
-        {
-          column: 13,
-          endColumn: 2,
-          endLine: 12,
-          line: 10,
           messageId: 'preferRecord',
         },
       ],

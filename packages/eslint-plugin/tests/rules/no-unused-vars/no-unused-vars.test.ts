@@ -26,7 +26,6 @@ ruleTester.defineRule('collect-unused-vars', {
     collectVariables(context);
     return {};
   },
-  defaultOptions: [],
   meta: {
     messages: {},
     schema: [],
@@ -608,13 +607,7 @@ export interface Bar extends foo.i18n<bar> {}
 import { TypeA } from './interface';
 export const a = <GenericComponent<TypeA> />;
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/160
@@ -628,13 +621,7 @@ export function Foo() {
   );
 }
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/535
     `
@@ -889,13 +876,7 @@ export const ComponentFoo: React.FC = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     {
       code: `
@@ -906,12 +887,7 @@ export const ComponentFoo: h.FC = () => {
 };
       `,
       languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-          jsxPragma: 'h',
-        },
+        parserOptions: { ecmaFeatures: { jsx: true }, jsxPragma: 'h' },
       },
     },
     {
@@ -924,9 +900,7 @@ export const ComponentFoo: Fragment = () => {
       `,
       languageOptions: {
         parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
+          ecmaFeatures: { jsx: true },
           jsxFragmentName: 'Fragment',
         },
       },
@@ -1360,6 +1334,8 @@ declare class Bar {}
 using resource = getResource();
 resource;
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
@@ -1370,6 +1346,8 @@ resource;
       code: `
 using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
@@ -1381,6 +1359,8 @@ using resource = getResource();
       code: `
 await using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       languageOptions: {
         parserOptions: {
           ecmaVersion: 2026,
@@ -1419,9 +1399,7 @@ export class Foo {}
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'ClassDecoratorFactory',
-              },
+              data: { varName: 'ClassDecoratorFactory' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 export class Foo {}
@@ -1440,20 +1418,14 @@ baz<Bar>();
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 13,
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Foo',
-              },
+              data: { varName: 'Foo' },
               messageId: 'removeUnusedVar',
               output: `
 import {  Bar } from 'foo';
@@ -1474,20 +1446,14 @@ console.log(a);
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Nullable',
-          },
+          data: { action: 'defined', additional: '', varName: 'Nullable' },
           endColumn: 18,
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Nullable',
-              },
+              data: { varName: 'Nullable' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 const a: string = 'hello';
@@ -1508,20 +1474,14 @@ console.log(a);
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'SomeOther',
-          },
+          data: { action: 'defined', additional: '', varName: 'SomeOther' },
           endColumn: 19,
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'SomeOther',
-              },
+              data: { varName: 'SomeOther' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
@@ -1548,20 +1508,14 @@ new A();
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
+          data: { action: 'defined', additional: '', varName: 'Another' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Another',
-              },
+              data: { varName: 'Another' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
@@ -1591,20 +1545,14 @@ new A();
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
+          data: { action: 'defined', additional: '', varName: 'Another' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Another',
-              },
+              data: { varName: 'Another' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
@@ -1634,20 +1582,14 @@ new A();
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
+          data: { action: 'defined', additional: '', varName: 'Another' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Another',
-              },
+              data: { varName: 'Another' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
@@ -1674,20 +1616,14 @@ export interface A {
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
+          data: { action: 'defined', additional: '', varName: 'Another' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Another',
-              },
+              data: { varName: 'Another' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
@@ -1711,20 +1647,14 @@ export interface A {
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Another',
-          },
+          data: { action: 'defined', additional: '', varName: 'Another' },
           endColumn: 17,
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Another',
-              },
+              data: { varName: 'Another' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
@@ -1748,20 +1678,14 @@ foo();
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Nullable',
-          },
+          data: { action: 'defined', additional: '', varName: 'Nullable' },
           endColumn: 18,
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Nullable',
-              },
+              data: { varName: 'Nullable' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 function foo(a: string) {
@@ -1785,20 +1709,14 @@ foo();
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Nullable',
-          },
+          data: { action: 'defined', additional: '', varName: 'Nullable' },
           endColumn: 18,
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Nullable',
-              },
+              data: { varName: 'Nullable' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 function foo(): string | null {
@@ -1824,20 +1742,14 @@ new A();
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'SomeOther',
-          },
+          data: { action: 'defined', additional: '', varName: 'SomeOther' },
           endColumn: 19,
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'SomeOther',
-              },
+              data: { varName: 'SomeOther' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
@@ -1865,20 +1777,14 @@ new A();
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'SomeOther',
-          },
+          data: { action: 'defined', additional: '', varName: 'SomeOther' },
           endColumn: 19,
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'SomeOther',
-              },
+              data: { varName: 'SomeOther' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { Nullable } from 'nullable';
@@ -1903,11 +1809,7 @@ enum FormFieldIds {
       errors: [
         {
           column: 6,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'FormFieldIds',
-          },
+          data: { action: 'defined', additional: '', varName: 'FormFieldIds' },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -1924,20 +1826,14 @@ export interface Bar extends baz.test {}
       errors: [
         {
           column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'test',
-          },
+          data: { action: 'defined', additional: '', varName: 'test' },
           endColumn: 12,
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'test',
-              },
+              data: { varName: 'test' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import baz from 'baz';
@@ -1957,20 +1853,14 @@ export class Bar implements baz.test {}
       errors: [
         {
           column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'test',
-          },
+          data: { action: 'defined', additional: '', varName: 'test' },
           endColumn: 12,
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'test',
-              },
+              data: { varName: 'test' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import baz from 'baz';
@@ -1988,11 +1878,7 @@ namespace Foo {}
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 14,
           endLine: 2,
           line: 2,
@@ -2009,11 +1895,7 @@ namespace Foo {
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 14,
           endLine: 2,
           line: 2,
@@ -2031,11 +1913,7 @@ namespace Foo {
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 14,
           endLine: 2,
           line: 2,
@@ -2053,11 +1931,7 @@ namespace Foo {
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 14,
           endLine: 2,
           line: 2,
@@ -2068,7 +1942,7 @@ namespace Foo {
     {
       code: `
 namespace Foo {
-  namespace Foo {
+  export namespace Foo {
     export const Bar = 1;
     console.log(Foo.Bar);
   }
@@ -2077,23 +1951,27 @@ namespace Foo {
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 14,
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
         },
+      ],
+    },
+    {
+      code: `
+export namespace Foo {
+  namespace Foo {
+    export const Bar = 1;
+    console.log(Foo.Bar);
+  }
+}
+      `,
+      errors: [
         {
           column: 13,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 16,
           endLine: 3,
           line: 3,
@@ -2112,11 +1990,7 @@ interface Foo {
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 14,
           endLine: 2,
           line: 2,
@@ -2131,11 +2005,7 @@ type Foo = Array<Foo>;
       errors: [
         {
           column: 6,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 9,
           endLine: 2,
           line: 2,
@@ -2156,20 +2026,14 @@ export const ComponentFoo = () => {
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Fragment',
-          },
+          data: { action: 'defined', additional: '', varName: 'Fragment' },
           endColumn: 18,
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'Fragment',
-              },
+              data: { varName: 'Fragment' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import React from 'react';
@@ -2182,13 +2046,7 @@ export const ComponentFoo = () => {
           ],
         },
       ],
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     },
     {
       code: `
@@ -2202,20 +2060,14 @@ export const ComponentFoo = () => {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'React',
-          },
+          data: { action: 'defined', additional: '', varName: 'React' },
           endColumn: 13,
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'React',
-              },
+              data: { varName: 'React' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 import { h } from 'some-other-jsx-lib';
@@ -2229,12 +2081,7 @@ export const ComponentFoo = () => {
         },
       ],
       languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-          jsxPragma: 'h',
-        },
+        parserOptions: { ecmaFeatures: { jsx: true }, jsxPragma: 'h' },
       },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/3303
@@ -2249,20 +2096,14 @@ export const ComponentFoo = () => {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'React',
-          },
+          data: { action: 'defined', additional: '', varName: 'React' },
           endColumn: 13,
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'React',
-              },
+              data: { varName: 'React' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 
@@ -2275,12 +2116,7 @@ export const ComponentFoo = () => {
         },
       ],
       languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-          jsxPragma: null,
-        },
+        parserOptions: { ecmaFeatures: { jsx: true }, jsxPragma: null },
       },
     },
     {
@@ -2294,11 +2130,7 @@ declare module 'foo' {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Test',
-          },
+          data: { action: 'defined', additional: '', varName: 'Test' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -2311,9 +2143,9 @@ declare module 'foo' {
 // not declared
 export namespace Foo {
   namespace Bar {
-    namespace Baz {
-      namespace Bam {
-        const x = 1;
+    export namespace Baz {
+      export namespace Bam {
+        export const x = 1;
       }
     }
   }
@@ -2322,47 +2154,79 @@ export namespace Foo {
       errors: [
         {
           column: 13,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bar',
-          },
+          data: { action: 'defined', additional: '', varName: 'Bar' },
           endColumn: 16,
           endLine: 4,
           line: 4,
           messageId: 'unusedVar',
         },
+      ],
+    },
+    {
+      code: `
+// not declared
+export namespace Foo {
+  export namespace Bar {
+    namespace Baz {
+      export namespace Bam {
+        export const x = 1;
+      }
+    }
+  }
+}
+      `,
+      errors: [
         {
           column: 15,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Baz',
-          },
+          data: { action: 'defined', additional: '', varName: 'Baz' },
           endColumn: 18,
           endLine: 5,
           line: 5,
           messageId: 'unusedVar',
         },
+      ],
+    },
+    {
+      code: `
+// not declared
+export namespace Foo {
+  export namespace Bar {
+    export namespace Baz {
+      namespace Bam {
+        export const x = 1;
+      }
+    }
+  }
+}
+      `,
+      errors: [
         {
           column: 17,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bam',
-          },
+          data: { action: 'defined', additional: '', varName: 'Bam' },
           endColumn: 20,
           endLine: 6,
           line: 6,
           messageId: 'unusedVar',
         },
+      ],
+    },
+    {
+      code: `
+// not declared
+export namespace Foo {
+  export namespace Bar {
+    export namespace Baz {
+      export namespace Bam {
+        const x = 1;
+      }
+    }
+  }
+}
+      `,
+      errors: [
         {
           column: 15,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'x',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'x' },
           endColumn: 16,
           endLine: 7,
           line: 7,
@@ -2382,11 +2246,7 @@ interface Foo {
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 14,
           endLine: 2,
           line: 2,
@@ -2402,11 +2262,7 @@ x = foo(x);
       errors: [
         {
           column: 1,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'x',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'x' },
           endColumn: 2,
           endLine: 3,
           line: 3,
@@ -2424,11 +2280,7 @@ const Foo = 'bar';
       errors: [
         {
           column: 7,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'Foo' },
           endColumn: 10,
           endLine: 5,
           line: 5,
@@ -2444,11 +2296,7 @@ foo += 1;
       errors: [
         {
           column: 1,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'foo' },
           endColumn: 4,
           endLine: 3,
           line: 3,
@@ -2467,11 +2315,7 @@ export = Bar;
       errors: [
         {
           column: 11,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 14,
           endLine: 2,
           line: 2,
@@ -2490,11 +2334,7 @@ export = Foo;
       errors: [
         {
           column: 6,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bar',
-          },
+          data: { action: 'defined', additional: '', varName: 'Bar' },
           endColumn: 9,
           endLine: 5,
           line: 5,
@@ -2514,20 +2354,14 @@ export namespace Bar {
       errors: [
         {
           column: 10,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'TheFoo',
-          },
+          data: { action: 'defined', additional: '', varName: 'TheFoo' },
           endColumn: 16,
           endLine: 6,
           line: 6,
           messageId: 'unusedVar',
           suggestions: [
             {
-              data: {
-                varName: 'TheFoo',
-              },
+              data: { varName: 'TheFoo' },
               messageId: 'removeUnusedImportDeclaration',
               output: `
 namespace Foo {
@@ -2548,11 +2382,7 @@ const foo: number = 1;
       errors: [
         {
           column: 7,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -2570,11 +2400,7 @@ enum Foo {
       errors: [
         {
           column: 6,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 9,
           endLine: 2,
           line: 2,
@@ -2675,11 +2501,7 @@ export type Foo = typeof foo;
       errors: [
         {
           column: 7,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -2781,11 +2603,7 @@ export type Foo = typeof foo;
       errors: [
         {
           column: 15,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -2802,11 +2620,7 @@ export type Foo = typeof foo | string;
       errors: [
         {
           column: 7,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -2823,11 +2637,7 @@ export type Foo = (typeof foo | string) & { __brand: 'foo' };
       errors: [
         {
           column: 7,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -2848,11 +2658,7 @@ export type Bar = typeof foo.bar;
       errors: [
         {
           column: 7,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -2873,11 +2679,7 @@ export type Bar = (typeof foo)['bar'];
       errors: [
         {
           column: 7,
-          data: {
-            action: 'assigned a value',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'assigned a value', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -2898,11 +2700,7 @@ export class Foo {
       errors: [
         {
           column: 18,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'command',
-          },
+          data: { action: 'defined', additional: '', varName: 'command' },
           endColumn: 25,
           endLine: 7,
           line: 7,
@@ -2921,11 +2719,7 @@ export class Foo {
       errors: [
         {
           column: 15,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'deco',
-          },
+          data: { action: 'defined', additional: '', varName: 'deco' },
           endColumn: 19,
           endLine: 5,
           line: 5,
@@ -2933,11 +2727,7 @@ export class Foo {
         },
         {
           column: 29,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'param',
-          },
+          data: { action: 'defined', additional: '', varName: 'param' },
           endColumn: 34,
           endLine: 5,
           line: 5,
@@ -2955,11 +2745,7 @@ export namespace Foo {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -2976,11 +2762,7 @@ export {};
       errors: [
         {
           column: 7,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -2999,11 +2781,7 @@ declare module 'foo' {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3024,11 +2802,7 @@ export namespace Foo {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3047,11 +2821,7 @@ export { bar };
       errors: [
         {
           column: 7,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -3072,11 +2842,7 @@ declare module 'foo' {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3098,11 +2864,7 @@ export namespace Foo {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3122,11 +2884,7 @@ export { bar };
       errors: [
         {
           column: 7,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -3148,11 +2906,7 @@ declare module 'foo' {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3173,11 +2927,7 @@ export namespace Foo {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3196,11 +2946,7 @@ export default bar;
       errors: [
         {
           column: 7,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -3221,11 +2967,7 @@ declare module 'foo' {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3247,11 +2989,7 @@ export namespace Foo {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3271,11 +3009,7 @@ export default bar;
       errors: [
         {
           column: 7,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -3297,11 +3031,7 @@ declare module 'foo' {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3322,11 +3052,7 @@ export namespace Foo {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3345,11 +3071,7 @@ export * from '...';
       errors: [
         {
           column: 7,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -3370,11 +3092,7 @@ declare module 'foo' {
       errors: [
         {
           column: 9,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'foo' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3395,11 +3113,7 @@ namespace Foo {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -3418,11 +3132,7 @@ export = Bar;
       errors: [
         {
           column: 6,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 9,
           endLine: 2,
           line: 2,
@@ -3443,11 +3153,7 @@ declare module 'foo' {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 11,
           endLine: 3,
           line: 3,
@@ -3466,11 +3172,7 @@ declare module 'foo' {
       errors: [
         {
           column: 8,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Test',
-          },
+          data: { action: 'defined', additional: '', varName: 'Test' },
           endColumn: 12,
           endLine: 3,
           line: 3,
@@ -3496,11 +3198,7 @@ export declare namespace Foo {
       errors: [
         {
           column: 17,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bam',
-          },
+          data: { action: 'defined', additional: '', varName: 'Bam' },
           endColumn: 20,
           endLine: 5,
           line: 5,
@@ -3525,11 +3223,7 @@ declare module 'foo' {
       errors: [
         {
           column: 17,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bam',
-          },
+          data: { action: 'defined', additional: '', varName: 'Bam' },
           endColumn: 20,
           endLine: 5,
           line: 5,
@@ -3545,11 +3239,7 @@ export {};
       errors: [
         {
           column: 14,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 17,
           endLine: 2,
           line: 2,
@@ -3566,11 +3256,7 @@ export {};
       errors: [
         {
           column: 15,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Bar',
-          },
+          data: { action: 'defined', additional: '', varName: 'Bar' },
           endColumn: 18,
           endLine: 2,
           line: 2,
@@ -3588,11 +3274,7 @@ export {};
       errors: [
         {
           column: 7,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'Foo',
-          },
+          data: { action: 'defined', additional: '', varName: 'Foo' },
           endColumn: 10,
           endLine: 2,
           line: 2,
@@ -3605,6 +3287,8 @@ export {};
       code: `
 using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 7,
@@ -3629,6 +3313,8 @@ using resource = getResource();
       code: `
 await using resource = getResource();
       `,
+      // `using` declarations require TS 5.2
+      dependencyConstraints: { typescript: '5.2' },
       errors: [
         {
           column: 13,
@@ -3658,11 +3344,7 @@ export const myTypeGuard2 = (data2: unknown): typeof data2 => {
       errors: [
         {
           column: 30,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'data2',
-          },
+          data: { action: 'defined', additional: '', varName: 'data2' },
           endColumn: 35,
           endLine: 2,
           line: 2,
@@ -3679,11 +3361,7 @@ export const myTypeGuard = (data: unknown): data is string => {
       errors: [
         {
           column: 29,
-          data: {
-            action: 'defined',
-            additional: '',
-            varName: 'data',
-          },
+          data: { action: 'defined', additional: '', varName: 'data' },
           endColumn: 33,
           endLine: 2,
           line: 2,
