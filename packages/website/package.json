@@ -16,6 +16,7 @@
     "clear": "docusaurus clear",
     "clean": "rimraf dist/ build/ .docusaurus/ && pnpm run clear",
     "format": "pnpm -w run format",
+    "generate-recent-blog-posts": "tsx ./tools/generate-recent-blog-posts.ts",
     "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
@@ -24,7 +25,7 @@
     "start": "pnpm -w run start",
     "swizzle": "docusaurus swizzle",
     "typecheck": "pnpm -w exec nx typecheck",
-    "typecheck:tsgo": "pnpm -w exec nx typecheck:tsgo"
+    "typecheck:tsc6": "pnpm -w exec nx typecheck:tsc6"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
@@ -84,7 +85,7 @@
     "monaco-editor": "0.54.0",
     "prismjs": "1.30.0",
     "rimraf": "catalog:",
-    "satori": "^0.57.2",
+    "satori": "^0.60.0",
     "stylelint": "^16.26.1",
     "stylelint-config-recommended": "^16.0.0",
     "stylelint-config-standard": "^38.0.0",
@@ -109,6 +110,7 @@
     "name": "website",
     "includedScripts": [
       "clean",
+      "generate-recent-blog-posts",
       "generate-website-dts"
     ],
     "targets": {
@@ -131,7 +133,9 @@
       "lint": {
         "command": "eslint",
         "dependsOn": [
-          "build"
+          "eslint-plugin-internal:build",
+          "typescript-eslint:build",
+          "generate-recent-blog-posts"
         ]
       },
       "start": {
@@ -143,7 +147,24 @@
           "cwd": "{projectRoot}"
         }
       },
-      "typecheck:tsgo": {}
+      "generate-recent-blog-posts": {
+        "cache": true,
+        "outputs": [
+          "{projectRoot}/data/recent-blog-posts.json"
+        ]
+      },
+      "typecheck": {
+        "dependsOn": [
+          "generate-recent-blog-posts",
+          "^typecheck"
+        ]
+      },
+      "typecheck:tsc6": {
+        "dependsOn": [
+          "generate-recent-blog-posts",
+          "^typecheck:tsc6"
+        ]
+      }
     }
   }
 }
