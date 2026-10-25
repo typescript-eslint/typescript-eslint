@@ -914,6 +914,8 @@ function foo(arg) {}
         },
       },
       options: [{ treatMethodsAsReadonly: true }],
+      // TypeScript 7 doesn't treat constructor functions as classes.
+      skip: process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo',
     },
     {
       code: `
