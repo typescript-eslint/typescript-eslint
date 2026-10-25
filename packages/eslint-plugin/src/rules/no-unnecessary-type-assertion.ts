@@ -236,6 +236,7 @@ export default createRule<Options, MessageIds>({
         (isTypeFlagSet(uncast, ts.TypeFlags.NonPrimitive) &&
           !isTypeFlagSet(cast, ts.TypeFlags.NonPrimitive)) ||
         hasIndexSignature(uncast) !== hasIndexSignature(cast) ||
+        isNumberToEnumAssertion(uncast, cast) ||
         containsAny(uncast) ||
         containsAny(cast) ||
         (containsTypeVariable(cast) && !containsTypeVariable(uncast))
@@ -291,6 +292,32 @@ export default createRule<Options, MessageIds>({
       return tsutils
         .unionConstituents(type)
         .some(part => checker.getIndexInfosOfType(part).length > 0);
+    }
+
+    // `number` and a numeric enum are assignable to each other, so they count
+    // as mutually assignable even though the assertion changes the type:
+    // `values[+key as Color]` compiles where `values[+key]` does not.
+    function isNumberToEnumAssertion(uncast: ts.Type, cast: ts.Type): boolean {
+      return (
+        (hasEnumConstituent(uncast) || hasEnumConstituent(cast)) &&
+        hasPlainNumberConstituent(uncast) !== hasPlainNumberConstituent(cast)
+      );
+    }
+
+    function hasEnumConstituent(type: ts.Type): boolean {
+      return tsutils
+        .unionConstituents(type)
+        .some(part => isTypeFlagSet(part, ts.TypeFlags.EnumLike));
+    }
+
+    function hasPlainNumberConstituent(type: ts.Type): boolean {
+      return tsutils
+        .unionConstituents(type)
+        .some(
+          part =>
+            isTypeFlagSet(part, ts.TypeFlags.NumberLike) &&
+            !isTypeFlagSet(part, ts.TypeFlags.EnumLike),
+        );
     }
 
     function getTypeArguments(type: ts.Type): readonly ts.Type[] {
