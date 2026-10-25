@@ -5,7 +5,9 @@ on:
   # NOTE: Never use pull_request_target here because that would populate secrets for forks
   pull_request:
     types: [opened, edited]
-  issue_comment:
+  # issue_comment can be UNSAFE because it runs in the TARGET repo context (not fork context).
+  # DO NOT CHECK OUT THE REPO IN THIS WORKFLOW
+  issue_comment: # zizmor: ignore[dangerous-triggers] See warning above.
     # nx bot and netlify bot edit their comments regularly, this floods our action queue with this action
     # it's rare that someone edits a comment to add an image so to save our queue we ignore the edit
     types: [created]
