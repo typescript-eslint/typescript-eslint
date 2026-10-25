@@ -108,7 +108,7 @@ export function createNativeProgram({
         nodeAdapter.unwrapNode(sourceFile) as NativeSourceFile,
       ),
 
-    sourceFileToPackageName: { get: packageNameFromPath },
+    sourceFileToPackageName: { get: packageIdNameFromPath },
   } satisfies Partial<ts.Program> & Record<string, unknown>;
 
   return throwOnUnsupportedMembers(
@@ -119,14 +119,11 @@ export function createNativeProgram({
   ) as unknown as ts.Program;
 }
 
-function packageNameFromPath(filePath: string) {
+// Classic's package id names are paths within the package, such as `typescript/lib/typescript.d.ts`.
+function packageIdNameFromPath(filePath: string) {
   const segments = filePath.split(/[/\\]/);
   const index = segments.lastIndexOf('node_modules');
-  if (index === -1 || index === segments.length - 1) {
-    return undefined;
-  }
-  const name = segments[index + 1];
-  return name.startsWith('@') && index + 2 < segments.length
-    ? `${name}/${segments[index + 2]}`
-    : name;
+  return index === -1 || index === segments.length - 1
+    ? undefined
+    : segments.slice(index + 1).join('/');
 }
