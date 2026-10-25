@@ -35,11 +35,15 @@ class Foo {
   private a = 1;
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   accessor a = 1;
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     'const x: Set<string> = new Set();',
     'const x: Set<string> = new Set<string>();',
     'const [x] = [1];',
@@ -180,6 +184,8 @@ class Foo {
   accessor a = 1 as any;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 3,
@@ -221,6 +227,8 @@ const [[[x]]] = [spooky];
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 const {
@@ -246,6 +254,7 @@ const {
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 let value: number;

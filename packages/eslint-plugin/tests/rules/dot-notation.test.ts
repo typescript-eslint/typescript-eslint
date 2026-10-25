@@ -174,6 +174,8 @@ type Foo = {
 declare const foo: Foo;
 foo['bar'];
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       languageOptions: {
         parserOptions: {
           tsconfigRootDir: path.join(
@@ -421,6 +423,8 @@ a
   .SHOUT_CASE;
       `,
     },
+    // Verify multiple instances of error
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 getResource()
@@ -455,6 +459,7 @@ getResource()
   .catch(function () {});
       `,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: noFormat`
 foo

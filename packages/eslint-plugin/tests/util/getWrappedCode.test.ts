@@ -50,7 +50,6 @@ const removeFunctionRule = createRule({
       'CallExpression[callee.name="fn"]': report,
     };
   },
-  defaultOptions: [],
   meta: {
     docs: {
       description:

@@ -1,4 +1,5 @@
 interface UnitTestsGroup {
+  codecovName: string;
   name: string;
   os: 'ubuntu-latest' | 'windows-latest';
   projects: string[];
@@ -74,6 +75,8 @@ const WINDOWS_GROUPS = [
   ['eslint-plugin', 'type-utils', 'parser', 'tsconfig-utils'],
 ];
 
+const CODECOV_NAME_MAX_LENGTH = 100;
+
 const toMatrix = (
   os: UnitTestsGroup['os'],
   groups: string[][],
@@ -82,7 +85,12 @@ const toMatrix = (
   groups
     .map(group => group.filter(pkg => packages.includes(pkg)))
     .filter(projects => projects.length > 0)
-    .map(projects => ({ name: projects.join(', '), os, projects }));
+    .map(projects => ({
+      codecovName: projects.join('-').slice(0, CODECOV_NAME_MAX_LENGTH),
+      name: projects.join(', '),
+      os,
+      projects,
+    }));
 
 function toProjectServiceMatrix(affected: string[]): ProjectServiceGroup[] {
   const tsgoPackages = TSGO_PACKAGES.filter(pkg => affected.includes(pkg));
@@ -145,7 +153,13 @@ export function getTestMatrices(affected: string[]): TestMatrices {
     ),
 
     unitTestsMatrix: [
-      ...toMatrix('ubuntu-latest', LINUX_GROUPS, unitTests),
+      ...toMatrix(
+        'ubuntu-latest',
+        LINUX_GROUPS.filter(group =>
+          group.some(pkg => unitTests.includes(pkg)),
+        ),
+        LINUX_GROUPS.flat(),
+      ),
       ...toMatrix('windows-latest', WINDOWS_GROUPS, unitTests),
     ],
   };

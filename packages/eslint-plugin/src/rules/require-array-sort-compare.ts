@@ -1,4 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -6,7 +9,6 @@ import {
   getParserServices,
   getTypeName,
   isStaticMemberAccessOfValue,
-  isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
 
 export type Options = [
@@ -43,6 +45,7 @@ export default createRule<Options, MessageIds>({
     ],
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [
     {
       ignoreStringArrays: true,
@@ -60,7 +63,11 @@ export default createRule<Options, MessageIds>({
       const type = getConstrainedTypeAtLocation(services, node);
 
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
-        const typeArgs = checker.getTypeArguments(type);
+        // Before TS 5.1, a constrained type parameter's array type has an extra `this` type argument
+        const typeArgs = checker
+          .getTypeArguments(type)
+          .slice(0, type.target.typeParameters?.length);
+
         return typeArgs.every(arg => {
           const typeName = getTypeName(
             checker,
@@ -86,7 +93,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
+      if (isAlwaysArray(calleeObjType, checker)) {
         context.report({ node: callee.parent, messageId: 'requireCompare' });
       }
     }
@@ -97,3 +104,9 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function isAlwaysArray(type: ts.Type, checker: ts.TypeChecker): boolean {
+  return tsutils
+    .unionConstituents(type)
+    .every(t => checker.isArrayType(t) || checker.isTupleType(t));
+}

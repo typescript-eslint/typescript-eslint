@@ -123,6 +123,15 @@ import * as foo from 'foo';
       `,
       options: [{ lib: 'never', path: 'never', types: 'never' }],
     },
+    {
+      code: `
+import * as foo from 'foo';
+/// <reference path="foo" />
+/// <reference types="bar" />
+/// <reference lib="baz" />
+      `,
+      options: [{ lib: 'never', path: 'never', types: 'never' }],
+    },
   ],
   invalid: [
     {

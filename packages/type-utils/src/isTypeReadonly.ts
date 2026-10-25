@@ -11,6 +11,7 @@ import {
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
+import { specifierSourceMatches } from './typeOrValueSpecifiers/specifierSourceMatches';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */
@@ -43,41 +44,83 @@ export const readonlynessOptionsDefaults: ReadonlynessOptions = {
 };
 
 function isCommonJSExports(node: ts.Expression) {
-  return ts.isIdentifier(node)
-    ? node.text === 'exports'
-    : ts.isPropertyAccessExpression(node) &&
-        ts.isIdentifier(node.expression) &&
-        node.expression.text === 'module' &&
-        node.name.text === 'exports';
+  // `exports`
+  if (ts.isIdentifier(node)) {
+    return node.text === 'exports';
+  }
+
+  // `module.exports`
+  return (
+    ts.isPropertyAccessExpression(node) &&
+    ts.isIdentifier(node.expression) &&
+    node.expression.text === 'module' &&
+    node.name.text === 'exports'
+  );
 }
 
-// Classic flags functions assigned to function or prototype members as methods; tsgo doesn't.
+// `a` and `a`, or `a.b.c` and `a.b.c`
+function isSameEntityName(a: ts.Expression, b: ts.Expression): boolean {
+  if (ts.isIdentifier(a)) {
+    return ts.isIdentifier(b) && a.text === b.text;
+  }
+
+  return (
+    ts.isPropertyAccessExpression(a) &&
+    ts.isPropertyAccessExpression(b) &&
+    a.name.text === b.name.text &&
+    isSameEntityName(a.expression, b.expression)
+  );
+}
+
+function isFunctionInitializer(node: ts.Expression) {
+  return ts.isFunctionExpression(node) || ts.isArrowFunction(node);
+}
+
+// Matches the functions TypeScript's binder flags as methods, without reading the internal `node.symbol`.
 function isMethodDeclaration(declaration: ts.Declaration) {
+  // `class C { m() {} }`, `({ m() {} })`, and `interface I { m(): void }`
   if (
     ts.isMethodDeclaration(declaration) ||
     ts.isMethodSignature(declaration)
   ) {
     return true;
   }
+
+  // JS assignment declarations: the declaration is either the assignment itself or its left side
   const assignment = ts.isBinaryExpression(declaration)
     ? declaration
     : declaration.parent;
   if (
     !ts.isBinaryExpression(assignment) ||
-    assignment.operatorToken.kind !== ts.SyntaxKind.EqualsToken ||
-    !(
-      ts.isFunctionExpression(assignment.right) ||
-      ts.isArrowFunction(assignment.right)
-    )
+    assignment.operatorToken.kind !== ts.SyntaxKind.EqualsToken
   ) {
     return false;
   }
-  const { left } = assignment;
+
+  // `obj.m = ...` and `obj['m'] = ...`, but not `this.m = ...` or CommonJS `exports.m = ...`
+  const { left, right } = assignment;
+  if (
+    !(
+      ts.isPropertyAccessExpression(left) || ts.isElementAccessExpression(left)
+    ) ||
+    left.expression.kind === ts.SyntaxKind.ThisKeyword ||
+    isCommonJSExports(left.expression)
+  ) {
+    return false;
+  }
+
+  // `obj.m = function () {}` and `obj.m = () => {}`
+  if (isFunctionInitializer(right)) {
+    return true;
+  }
+
+  // `obj.m = obj.m || function () {}` and `obj.m = obj.m ?? function () {}`
   return (
-    (ts.isPropertyAccessExpression(left) ||
-      ts.isElementAccessExpression(left)) &&
-    left.expression.kind !== ts.SyntaxKind.ThisKeyword &&
-    !isCommonJSExports(left.expression)
+    ts.isBinaryExpression(right) &&
+    (right.operatorToken.kind === ts.SyntaxKind.BarBarToken ||
+      right.operatorToken.kind === ts.SyntaxKind.QuestionQuestionToken) &&
+    isSameEntityName(left, right.left) &&
+    isFunctionInitializer(right.right)
   );
 }
 
@@ -287,12 +330,16 @@ function isTypeReadonlyRecurser(
   if (type.aliasSymbol && options.allow) {
     const aliasSymbol = type.aliasSymbol;
     const aliasMatches = options.allow.some(specifier => {
-      const specifierName =
-        typeof specifier === 'string' ? specifier : specifier.name;
-      const names = Array.isArray(specifierName)
-        ? specifierName
-        : [specifierName];
-      return names.includes(aliasSymbol.getName());
+      if (typeof specifier === 'string') {
+        return specifier === aliasSymbol.getName();
+      }
+      const names = Array.isArray(specifier.name)
+        ? specifier.name
+        : [specifier.name];
+      return (
+        names.includes(aliasSymbol.getName()) &&
+        specifierSourceMatches(specifier, aliasSymbol, program)
+      );
     });
 
     if (aliasMatches) {

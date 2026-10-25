@@ -20,6 +20,7 @@ import {
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatementNeedingParentheses,
   isTypeFlagSet,
+  isTypeLiteralType,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -87,6 +88,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [{}],
   create(context, [options]) {
     const services = getParserServices(context);
@@ -293,7 +295,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function isTypeLiteral(type: ts.Type): boolean {
-      return type.isLiteral() || tsutils.isBooleanLiteralType(type);
+      return isTypeLiteralType(type) || tsutils.isBooleanLiteralType(type);
     }
 
     function hasIndexSignature(type: ts.Type): boolean {
