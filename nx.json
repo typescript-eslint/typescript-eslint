@@ -42,12 +42,12 @@
     }
   },
   "targetDefaults": {
-    "typecheck:tsgo": {
+    "typecheck:tsc6": {
       "cache": true,
       "executor": "nx:run-commands",
-      "dependsOn": ["build", "^typecheck:tsgo"],
+      "dependsOn": ["^typecheck:tsc6"],
       "options": {
-        "command": "tsc --build --emitDeclarationOnly",
+        "command": "tsc6 --build --emitDeclarationOnly",
         "cwd": "{projectRoot}"
       },
       "outputs": [
@@ -63,7 +63,7 @@
       "executor": "nx:run-commands",
       "dependsOn": ["build", "^typecheck"],
       "options": {
-        "command": "tsc6 --build --emitDeclarationOnly",
+        "command": "tsc --build --emitDeclarationOnly",
         "cwd": "{projectRoot}"
       },
       "outputs": [
