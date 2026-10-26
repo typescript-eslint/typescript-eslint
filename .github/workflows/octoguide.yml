@@ -1,11 +1,20 @@
 name: OctoGuide
 
+# WARNING: issue_comment and pull_request_target run in the TARGET repo context
+# (not the fork context) so that we have write permissions to comment on fork PRs.
+#
+# NEVER EVER execute any code from the fork (including checkout, install, scripts, etc.)
+#
+# Across all events:
+# - created/opened: check the new entity or comment
+# - edited: re-check, so OctoGuide can update or remove its report after fixes
+# - deleted: remove OctoGuide's report comment about the deleted comment
 on:
   discussion:
     types: [created, edited]
   discussion_comment:
     types: [created, deleted, edited]
-  issue_comment:
+  issue_comment: # zizmor: ignore[dangerous-triggers] See warning above.
     # nx bot and netlify bot edit their comments regularly, which floods our
     # action queue. It's rare that someone edits a comment to add an image, so to
     # save our queue we ignore the edit.
@@ -14,10 +23,6 @@ on:
     types: [edited, opened]
   pull_request_review_comment:
     types: [created, deleted, edited]
-  # WARNING: Using pull_request_target here because we need write permissions to
-  # comment on fork PRs.
-  #
-  # NEVER EVER execute any code from the fork (including checkout, install, scripts, etc.)
   pull_request_target: # zizmor: ignore[dangerous-triggers] See warning above.
     # synchronize is needed for pr-force-pushes.
     types: [edited, opened, synchronize]
@@ -37,6 +42,7 @@ jobs:
     steps:
       - uses: OctoGuide/bot@566236613d04a933e6f1a0d8c85039027a200ab2 # 0.32.0
         with:
+          config: recommended
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # pr-force-pushes and pr-title-conventional are in the strict config,
           # but we want them applied to maintainers as well as contributors.
