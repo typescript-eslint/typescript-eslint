@@ -176,6 +176,40 @@ async function shouldAwait() {
 </TabItem>
 </Tabs>
 
+## Options
+
+### `allowMixedPromiseArrays`
+
+{/* insert option description */}
+
+By default, this rule reports when a promise aggregator method (such as `Promise.all`) receives an iterable that may contain non-Promise values, since those values are needlessly awaited.
+
+However, it's sometimes reasonable to pass an iterable of values that may or may not be Promises, such as `Array<Promise<T> | T>`.
+With this option enabled, the rule only reports when none of the values passed may be a Promise.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "allowMixedPromiseArrays": true }'
+declare const numbers: number[];
+
+await Promise.all(numbers);
+await Promise.all([1, 2, 3]);
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "allowMixedPromiseArrays": true }'
+declare const maybePromises: (number | Promise<number>)[];
+
+await Promise.all(maybePromises);
+await Promise.all([1, 2, Promise.resolve(3)]);
+```
+
+</TabItem>
+</Tabs>
+
 ## When Not To Use It
 
 If you want to allow code to `await` non-Promise values.

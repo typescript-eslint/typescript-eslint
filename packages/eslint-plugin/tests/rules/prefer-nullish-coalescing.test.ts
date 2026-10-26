@@ -12128,6 +12128,8 @@ function lazyInitialize() {
       ],
       output: null,
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare let foo: { a: string } | null;
@@ -12189,6 +12191,7 @@ function lazyInitialize() {
       ],
       output: null,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 declare let foo: { a: string } | null;
