@@ -3331,7 +3331,7 @@ type HandlerFor<S extends Selector> = S extends '*'
     : Handler<S>;
 declare function subscribe<S extends Selector>(
   selector: S,
-  handler: NoInfer<HandlerFor<S>>,
+  handler: HandlerFor<S>,
 ): void;
 
 subscribe('a0.x', async (payload, next) => {
