@@ -818,6 +818,14 @@ declare const b: B;
 declare const arrayA: A[];
 const a = mapDefined(() => b as A);
 [a].concat(arrayA);
+const c = mapDefined(() => {
+  return b as A;
+});
+[c].concat(arrayA);
+const d = mapDefined(() => {
+  return b as unknown as A;
+});
+[d].concat(arrayA);
     `,
     `
 interface A {
@@ -833,6 +841,10 @@ const a = mapDefined(() =>
   Math.random() > 0.5 ? (b as A) : (null as unknown as A),
 );
 [a].concat(arrayA);
+const c = mapDefined(() => {
+  return Math.random() > 0.5 ? (b as A) : (null as unknown as A);
+});
+[c].concat(arrayA);
     `,
     `
 interface Params {
@@ -987,6 +999,41 @@ const x: E | undefined = o?.fn(n => n | 0, 0 as E);
   ],
 
   invalid: [
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare const b: B;
+const fn: () => A = () => {
+  return b as A;
+};
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 16,
+          endLine: 10,
+          line: 10,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare const b: B;
+const fn: () => A = () => {
+  return b;
+};
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [

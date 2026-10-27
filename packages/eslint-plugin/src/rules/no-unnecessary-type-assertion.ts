@@ -685,11 +685,16 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
       let seenFunction = false;
+      let seenReturn = false;
       for (
         let current: TSESTree.Node | undefined = node.parent;
         current;
         current = current.parent
       ) {
+        if (current.type === AST_NODE_TYPES.ReturnStatement) {
+          seenReturn = true;
+          continue;
+        }
         if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
           return false;
         }
@@ -697,13 +702,17 @@ export default createRule<Options, MessageIds>({
           current.type === AST_NODE_TYPES.FunctionExpression ||
           current.type === AST_NODE_TYPES.ArrowFunctionExpression
         ) {
-          if (current.body.type === AST_NODE_TYPES.BlockStatement) {
-            return false;
-          }
           if (seenFunction) {
             return false;
           }
+          if (
+            current.body.type === AST_NODE_TYPES.BlockStatement &&
+            !seenReturn
+          ) {
+            return false;
+          }
           seenFunction = true;
+          continue;
         }
         if (
           current.type === AST_NODE_TYPES.CallExpression ||
