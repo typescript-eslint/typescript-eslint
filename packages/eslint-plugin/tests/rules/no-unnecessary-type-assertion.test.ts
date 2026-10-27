@@ -984,7 +984,6 @@ enum E {
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12271
     `
 enum Color {
   Red,
@@ -1054,6 +1053,36 @@ enum Computed {
 
 declare const value: number;
 const computed = value as Computed;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as Color | number;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | 5;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as number;
     `,
   ],
 
@@ -2071,7 +2100,6 @@ declare const a: T.Value1;
 const b = a;
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/12271
     {
       code: `
 enum Color {
@@ -2118,6 +2146,68 @@ const other = value as number;
         {
           column: 15,
           endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value as number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 38,
           endLine: 9,
           line: 9,
           messageId: 'unnecessaryAssertion',

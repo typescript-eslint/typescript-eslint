@@ -299,8 +299,8 @@ export default createRule<Options, MessageIds>({
     // `values[+key as Color]` compiles where `values[+key]` does not.
     function isNumberToEnumAssertion(uncast: ts.Type, cast: ts.Type): boolean {
       return (
-        (hasEnumConstituent(uncast) || hasEnumConstituent(cast)) &&
-        hasPlainNumberConstituent(uncast) !== hasPlainNumberConstituent(cast)
+        (hasEnumConstituent(cast) && hasPlainNumberConstituent(uncast)) ||
+        (hasEnumConstituent(uncast) && hasPlainNumberConstituent(cast))
       );
     }
 
