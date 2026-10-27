@@ -200,7 +200,7 @@ export class RuleTester extends TestFramework {
     });
   }
 
-  #getLinterForFilename(filename: string | undefined): Linter {
+  #getLinterBasePath(filename: string | undefined): string | undefined {
     let basePath: string | undefined =
       this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir;
     // For an absolute path (`/foo.ts`), or a path that steps
@@ -218,6 +218,30 @@ export class RuleTester extends TestFramework {
         path.resolve(basePath ?? process.cwd(), filename),
       ).root;
     }
+
+    return basePath;
+  }
+
+  /**
+   * When the linter base path is a filesystem root, ESLint sets `context.cwd` to
+   * that root (e.g. `/`). Rules expect `process.cwd()` (or `tsconfigRootDir`) instead.
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/11274
+   */
+  #getContextCwdOverride(filename: string | undefined): string | undefined {
+    const basePath = this.#getLinterBasePath(filename);
+
+    if (basePath != null && basePath === path.parse(basePath).root) {
+      return (
+        this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir ??
+        process.cwd()
+      );
+    }
+
+    return undefined;
+  }
+
+  #getLinterForFilename(filename: string | undefined): Linter {
+    const basePath = this.#getLinterBasePath(filename);
 
     let linterForBasePath = this.#lintersByBasePath.get(basePath);
     if (!linterForBasePath) {
@@ -424,7 +448,11 @@ export class RuleTester extends TestFramework {
     return normalizedTests;
   }
 
-  defineRule(name: string, rule: AnyRuleModule): void {
+  defineRule(
+    name: string,
+    rule: AnyRuleModule,
+    contextCwdOverride?: string,
+  ): void {
     this.#rules[name] = {
       ...rule,
       name,
@@ -435,7 +463,22 @@ export class RuleTester extends TestFramework {
         // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8
         freezeDeeply(context.parserOptions);
 
-        return (typeof rule === 'function' ? rule : rule.create)(context);
+        const contextForRule =
+          contextCwdOverride == null
+            ? context
+            : new Proxy(context, {
+                get(target, prop, receiver): unknown {
+                  if (prop === 'cwd') {
+                    return contextCwdOverride;
+                  }
+
+                  return Reflect.get(target, prop, receiver);
+                },
+              });
+
+        return (typeof rule === 'function' ? rule : rule.create)(
+          contextForRule,
+        );
       },
     };
   }
@@ -646,7 +689,16 @@ export class RuleTester extends TestFramework {
     messages: Linter.LintMessage[];
     outputs: string[];
   } {
-    this.defineRule(ruleName, rule);
+    let filenameForCwdOverride: string | undefined;
+    if (typeof item !== 'string' && hasOwnProperty(item, 'filename')) {
+      filenameForCwdOverride = item.filename;
+    }
+
+    this.defineRule(
+      ruleName,
+      rule,
+      this.#getContextCwdOverride(filenameForCwdOverride),
+    );
 
     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig, {
       files: ['**'],

@@ -41,6 +41,72 @@ const rule = ESLintUtils.RuleCreator.withoutDocs({
   }),
 });
 
+const cwdRule = ESLintUtils.RuleCreator.withoutDocs({
+  meta: {
+    docs: {
+      description: 'reports context.cwd',
+    },
+    messages: {
+      cwd: '{{cwd}}',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  create: context => ({
+    Program(node): void {
+      context.report({
+        node,
+        messageId: 'cwd',
+        data: { cwd: context.cwd },
+      });
+    },
+  }),
+});
+
+describe('rule tester context.cwd', () => {
+  new RuleTester().run('without tsconfigRootDir', cwdRule, {
+    invalid: [
+      {
+        name: 'absolute filename uses process.cwd',
+        code: 'foo',
+        errors: [
+          {
+            messageId: 'cwd',
+            data: { cwd: process.cwd() },
+          },
+        ],
+        filename: '/test/file.ts',
+      },
+    ],
+    valid: [],
+  });
+
+  new RuleTester({
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: path.resolve('/some/path/that/totally/exists/'),
+      },
+    },
+  }).run('with tsconfigRootDir', cwdRule, {
+    invalid: [
+      {
+        name: 'absolute filename uses tsconfigRootDir instead of filesystem root',
+        code: 'foo',
+        errors: [
+          {
+            messageId: 'cwd',
+            data: {
+              cwd: path.resolve('/some/path/that/totally/exists/'),
+            },
+          },
+        ],
+        filename: '/test/file.ts',
+      },
+    ],
+    valid: [],
+  });
+});
+
 describe('rule tester filename', () => {
   new RuleTester().run('without tsconfigRootDir', rule, {
     invalid: [
