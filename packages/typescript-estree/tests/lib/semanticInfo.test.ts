@@ -354,6 +354,45 @@ describe('semanticInfo', async () => {
     ).toBe(arrayBoundName);
   });
 
+  it.for([
+    {
+      allowJs: false,
+      expectedType: 'any',
+      project: './tsconfig.json',
+    },
+    {
+      allowJs: true,
+      expectedType: `typeof import("${path.join(FIXTURES_DIR, 'untyped')}")`,
+      project: './tsconfig.allowJs.json',
+    },
+  ])(
+    'resolves imported JS files according to tsconfig (allowJs: $allowJs)',
+    async ({ allowJs, expectedType, project }, { expect }) => {
+      const fileName = path.resolve(FIXTURES_DIR, 'import-untyped.ts');
+      const parseResult = parseCodeAndGenerateServices(
+        await fs.readFile(fileName, { encoding: 'utf-8' }),
+        { ...createOptions(fileName), project },
+      );
+
+      assert.isParserServices(parseResult.services);
+
+      const checker = parseResult.services.program.getTypeChecker();
+      const identifier = (
+        parseResult.ast.body[1] as TSESTree.ExpressionStatement
+      ).expression;
+      const type = checker.getTypeAtLocation(
+        parseResult.services.esTreeNodeToTSNodeMap.get(identifier),
+      );
+
+      expect(checker.typeToString(type)).toBe(expectedType);
+      expect(
+        parseResult.services.program.getSourceFile(
+          path.resolve(FIXTURES_DIR, 'untyped.js'),
+        ) != null,
+      ).toBe(allowJs);
+    },
+  );
+
   it('non-existent file tests', () => {
     const parseResult = parseCodeAndGenerateServices(
       `const x = [parseInt("5")];`,
