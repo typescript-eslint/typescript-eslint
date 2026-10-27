@@ -1,0 +1,96 @@
+name: OctoGuide
+
+# WARNING: issue_comment and pull_request_target run in the TARGET repo context
+# (not the fork context) so that we have write permissions to comment on fork PRs.
+#
+# NEVER EVER execute any code from the fork (including checkout, install, scripts, etc.)
+#
+# Across all events:
+# - created/opened: check the new entity or comment
+# - edited: re-check, so OctoGuide can update or remove its report after fixes
+# - deleted: remove OctoGuide's report comment about the deleted comment
+on:
+  discussion:
+    types: [created, edited]
+  discussion_comment:
+    types: [created, deleted, edited]
+  issue_comment: # zizmor: ignore[dangerous-triggers] See warning above.
+    # nx bot and netlify bot edit their comments regularly, which floods our
+    # action queue. It's rare that someone edits a comment to add an image, so to
+    # save our queue we ignore the edit.
+    types: [created, deleted]
+  issues:
+    types: [edited, opened]
+  pull_request_review_comment:
+    types: [created, deleted, edited]
+  pull_request_target: # zizmor: ignore[dangerous-triggers] See warning above.
+    # synchronize is needed for pr-force-pushes.
+    types: [edited, opened, synchronize]
+
+permissions: {}
+
+jobs:
+  octoguide:
+    name: OctoGuide
+    runs-on: ubuntu-latest
+
+    permissions:
+      discussions: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - uses: OctoGuide/bot@566236613d04a933e6f1a0d8c85039027a200ab2 # 0.32.0
+        with:
+          config: recommended
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # pr-force-pushes and pr-title-conventional are in the strict config,
+          # but we want them applied to maintainers as well as contributors.
+          rules: |
+            {
+              "pr-force-pushes": {
+                "include-associations": [
+                  "COLLABORATOR",
+                  "CONTRIBUTOR",
+                  "FIRST_TIMER",
+                  "FIRST_TIME_CONTRIBUTOR",
+                  "MEMBER",
+                  "OWNER"
+                ]
+              },
+              "pr-title-conventional": {
+                "include-associations": [
+                  "COLLABORATOR",
+                  "CONTRIBUTOR",
+                  "FIRST_TIMER",
+                  "FIRST_TIME_CONTRIBUTOR",
+                  "MEMBER",
+                  "OWNER"
+                ],
+                "scopes": [
+                  "ast-spec",
+                  "deps",
+                  "eslint-plugin",
+                  "eslint-plugin-internal",
+                  "integration-tests",
+                  "parser",
+                  "project-service",
+                  "rule-schema-to-typescript-types",
+                  "rule-tester",
+                  "scope-manager",
+                  "tsconfig-utils",
+                  "type-utils",
+                  "types",
+                  "typescript-eslint",
+                  "typescript-estree",
+                  "utils",
+                  "visitor-keys",
+                  "website"
+                ],
+                "subject-case": "lower",
+                "subject-pattern": "^(\\[[a-z\\-]+(, [a-z\\-]+)*\\] )?[a-z].+$",
+                "subject-pattern-error": "Subjects must start with a lower-case letter. PRs that add or change ESLint plugin rules should begin the subject with \"[rule-name] \".",
+                "subject-trailing-punctuation": false,
+                "types": ["chore", "docs", "feat", "fix", "test"]
+              }
+            }
