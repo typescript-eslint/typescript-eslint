@@ -240,4 +240,99 @@ function foo<T>() {
 
     assert.isUndefined(constraintType);
   });
+
+  it('does not treat indexed access over a type parameter as a type parameter', () => {
+    const sourceCode = `
+function test<T>(arg: T, key: keyof T) {
+  arg[key];
+}
+    `;
+
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
+    const checker = services.program.getTypeChecker();
+
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const indexedAccessNode = (
+      functionNode.body!.body[0] as TSESTree.ExpressionStatement
+    ).expression as TSESTree.MemberExpression;
+    const indexedAccessType = services.getTypeAtLocation(indexedAccessNode);
+
+    const { constraintType, isTypeParameter } = getConstraintInfo(
+      checker,
+      indexedAccessType,
+    );
+
+    expect(isTypeParameter).toBe(false);
+    assert.isDefined(constraintType);
+    expect(constraintType).toBe(indexedAccessType);
+    expect(tsutils.isIndexedAccessType(constraintType)).toBe(true);
+  });
+
+  it('still treats a bare type parameter reference as a type parameter', () => {
+    const sourceCode = `
+function test<T>(arg: T, key: keyof T) {
+  arg;
+}
+    `;
+
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
+    const checker = services.program.getTypeChecker();
+
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const argReferenceNode = (
+      functionNode.body!.body[0] as TSESTree.ExpressionStatement
+    ).expression as TSESTree.Identifier;
+    const argReferenceType = services.getTypeAtLocation(argReferenceNode);
+
+    const { constraintType, isTypeParameter } = getConstraintInfo(
+      checker,
+      argReferenceType,
+    );
+
+    expect(isTypeParameter).toBe(true);
+    assert.isUndefined(constraintType);
+  });
+
+  it('does not treat a union containing a type parameter as a type parameter', () => {
+    const sourceCode = `
+function test<T>(arg: T | []) {
+  arg;
+}
+    `;
+
+    const { ast, services } = parseForESLint(
+      sourceCode,
+      DEFAULT_PARSER_OPTIONS,
+    );
+
+    assert.isNotNull(services.program);
+
+    const checker = services.program.getTypeChecker();
+
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
+    const parameterType = services.getTypeAtLocation(parameterNode);
+
+    const { constraintType, isTypeParameter } = getConstraintInfo(
+      checker,
+      parameterType,
+    );
+
+    expect(isTypeParameter).toBe(false);
+    assert.isDefined(constraintType);
+    expect(constraintType).toBe(parameterType);
+    expect(tsutils.isUnionType(constraintType)).toBe(true);
+  });
 });
