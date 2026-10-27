@@ -41,3 +41,21 @@ export function byDefault(value = 3): number {
 }
 ({ changed: byDefault = (value = 4): number => value } = {});
 export const union = Math.random() ? connect : byArray;
+
+export function withUnrelatedAssignments(value = 3): number {
+  let values: number[];
+  let count: number;
+  let remaining: { other?: number };
+  [...values] = [1, 2];
+  ({ count, ...remaining } = { count: 1, other: 2 });
+  [count = 0] = [];
+  for (const item of values) {
+    count = item;
+  }
+  for (const key in remaining) {
+    count += key.length;
+  }
+  const box = { count };
+  box.count = count;
+  return value;
+}

@@ -1,14 +1,29 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
 
-import rule from '../../src/rules/no-redundant-default-arguments';
+import rules from '../../src/rules';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes();
 const jsxFilename = path.join(getFixturesRootDir(), 'react.tsx');
+const rule = rules['no-redundant-default-arguments'];
 ruleTester.run('no-redundant-default-arguments', rule, {
   assertionOptions: { requireData: true },
   valid: [
+    `
+import { connect, withOptions } from './redundant-default-arguments';
+connect(4);
+withOptions({ retries: 4 });
+connect(5);
+    `,
+    `
+declare const external: (value?: number) => void;
+external(0);
+    `,
+    `
+function foo(value = ~1) {}
+foo(-2);
+    `,
     `
 function foo(value = 0) {}
 foo();
@@ -352,6 +367,46 @@ function Button({ value = 0 }: { value: number }) {
     },
   ],
   invalid: [
+    {
+      code: `
+import { withUnrelatedAssignments as foo } from './redundant-default-arguments';
+foo(3);
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { kind: 'argument', name: 'value' },
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+import { withUnrelatedAssignments as foo } from './redundant-default-arguments';
+foo();
+      `,
+    },
+    {
+      code: noFormat`
+function foo({ value = 0 }: { value?: number }) {}
+foo({ value: 0, });
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { kind: 'property', name: 'value' },
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'redundantDefaultValue',
+        },
+      ],
+      output: `
+function foo({ value = 0 }: { value?: number }) {}
+foo({  });
+      `,
+    },
     {
       code: `
 function foo(value = 0) {}
