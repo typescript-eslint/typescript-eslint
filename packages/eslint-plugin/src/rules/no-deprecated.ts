@@ -429,6 +429,37 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
+     * `getProperty` on a union only finds a property declared by every
+     * member, so a key is missed when the contextual type is, for example,
+     * `Options | undefined` (an optional parameter under `strictNullChecks`)
+     * or `Options | { other: string }`. Instead, look at each member that
+     * declares the key, and only report when all of them deprecate it, so a
+     * member that still supports the key doesn't cause a false positive.
+     */
+    function getObjectLiteralPropertyDeprecation(
+      contextualType: ts.Type,
+      propertyName: string,
+    ): string | undefined {
+      let reason: string | undefined;
+
+      for (const part of tsutils.unionConstituents(contextualType)) {
+        const property = part.getProperty(propertyName);
+        if (!property) {
+          continue;
+        }
+
+        const partReason = getJsDocDeprecation(property);
+        if (partReason == null) {
+          return undefined;
+        }
+
+        reason ??= partReason;
+      }
+
+      return reason;
+    }
+
+    /**
      * A key of an object literal refers to a property of the literal's
      * contextual type, rather than declaring a property of its own, so it is
      * checked against that type instead of the key's own symbol.
@@ -448,8 +479,9 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const reason = getJsDocDeprecation(
-        contextualType.getProperty(propertyName),
+      const reason = getObjectLiteralPropertyDeprecation(
+        contextualType,
+        propertyName,
       );
       if (reason == null) {
         return;
