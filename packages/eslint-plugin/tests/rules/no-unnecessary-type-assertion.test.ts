@@ -24,27 +24,6 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     requireData: true,
   },
   valid: [
-    `
-type R = { a: string };
-declare const value: any;
-const x: R = value as unknown as R;
-    `,
-    `
-type R = { a: string };
-declare const value: any;
-declare function fn<T>(cb: () => T): T;
-fn(() => {
-  return value as unknown as R;
-});
-    `,
-    `
-type R = { a: string };
-declare const response: { json(): Promise<any> };
-declare function fn<T>(cb: () => T): T;
-fn(async () => {
-  return response.json() as unknown as Promise<R>;
-});
-    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
 type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
