@@ -760,6 +760,16 @@ const x: A = { [key]: 'string' };
     `
 interface A {
   /** @deprecated */
+  field: string;
+}
+interface B {
+  field: string;
+}
+const x: A | B = { field: 'string' };
+    `,
+    `
+interface A {
+  /** @deprecated */
   deprecatedField: string;
   notDeprecatedField: string;
 }
@@ -4049,6 +4059,68 @@ const x = { deprecatedField: 'string' } satisfies A;
           endColumn: 28,
           endLine: 6,
           line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface Options {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+  b?: string;
+}
+declare function optional(options?: Options): void;
+optional({ a: 'x' });
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 13,
+          endLine: 8,
+          line: 8,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField?: string;
+}
+const x: A | undefined = { deprecatedField: 'string' };
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { name: 'deprecatedField' },
+          endColumn: 43,
+          endLine: 6,
+          line: 6,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated */
+  deprecatedField: string;
+}
+interface B {
+  otherField: string;
+}
+const x: A | B = { deprecatedField: 'string' };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'deprecatedField' },
+          endColumn: 35,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
