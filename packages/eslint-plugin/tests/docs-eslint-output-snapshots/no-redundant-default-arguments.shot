@@ -1,0 +1,45 @@
+Incorrect
+
+function connect(retries = 3) {
+  return retries;
+}
+
+connect(3);
+        ~ This argument matches the default value of 'retries' and can be omitted.
+
+function search({ limit = 20 }: { limit?: number }) {
+  return limit;
+}
+
+search({ limit: 20 });
+         ~~~~~~~~~ This property matches the default value of 'limit' and can be omitted.
+
+function Button({ disabled = false }: { disabled?: boolean }) {
+  return null;
+}
+
+<Button disabled={false} />;
+        ~~~~~~~~~~~~~~~~ This prop matches the default value of 'disabled' and can be omitted.
+
+Correct
+
+function connect(retries = 3) {
+  return retries;
+}
+
+connect();
+connect(5);
+
+function search({ limit = 20 }: { limit?: number }) {
+  return limit;
+}
+
+search({});
+search({ limit: 50 });
+
+function Button({ disabled = false }: { disabled?: boolean }) {
+  return null;
+}
+
+<Button />;
+<Button disabled />;
