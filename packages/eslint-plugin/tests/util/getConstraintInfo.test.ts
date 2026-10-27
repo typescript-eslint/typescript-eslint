@@ -259,7 +259,7 @@ function test<T>(arg: T, key: keyof T) {
 
     const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
     const indexedAccessNode = (
-      functionNode.body!.body[0] as TSESTree.ExpressionStatement
+      functionNode.body.body[0] as TSESTree.ExpressionStatement
     ).expression as TSESTree.MemberExpression;
     const indexedAccessType = services.getTypeAtLocation(indexedAccessNode);
 
@@ -292,7 +292,7 @@ function test<T>(arg: T, key: keyof T) {
 
     const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
     const argReferenceNode = (
-      functionNode.body!.body[0] as TSESTree.ExpressionStatement
+      functionNode.body.body[0] as TSESTree.ExpressionStatement
     ).expression as TSESTree.Identifier;
     const argReferenceType = services.getTypeAtLocation(argReferenceNode);
 
