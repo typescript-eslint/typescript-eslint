@@ -857,6 +857,16 @@ const e = mapDefined(() => {
   return Math.random() > 0.5 ? (b as A) : (null as unknown as A);
 });
 [e].concat(arrayA);
+const f = mapDefined(() => () => b as A);
+[f()].concat(arrayA);
+const g = mapDefined(() => {
+  return () => {
+    return b as A;
+  };
+});
+[g()].concat(arrayA);
+const h = mapDefined(() => () => () => b as A);
+[h()()].concat(arrayA);
     `,
     `
 interface Params {
@@ -1045,6 +1055,166 @@ declare const b: B;
 const fn: () => A = () => {
   return b;
 };
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare function take(x: A): number;
+mapDefined(() => take(b as A));
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 29,
+          endLine: 11,
+          line: 11,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare function take(x: A): number;
+mapDefined(() => take(b));
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare function run(fn: () => A): number;
+mapDefined(() => {
+  return run(() => {
+    return b as A;
+  });
+});
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 13,
+          line: 13,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare function run(fn: () => A): number;
+mapDefined(() => {
+  return run(() => {
+    return b;
+  });
+});
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare function id<T>(x: T): T;
+mapDefined(() => id<A>(b as A));
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 30,
+          endLine: 11,
+          line: 11,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare function id<T>(x: T): T;
+mapDefined(() => id<A>(b));
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
+    {
+      code: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+mapDefined(() => {
+  const f = (): A => {
+    return b as A;
+  };
+  return f();
+});
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          endLine: 12,
+          line: 12,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+mapDefined(() => {
+  const f = (): A => {
+    return b;
+  };
+  return f();
+});
       `,
     },
     {

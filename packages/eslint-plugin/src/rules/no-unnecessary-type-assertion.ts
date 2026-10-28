@@ -684,12 +684,12 @@ export default createRule<Options, MessageIds>({
     function isInGenericContext(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
-      let seenFunction = false;
       let seenReturn = false;
+      let previous: TSESTree.Node = node;
       for (
         let current: TSESTree.Node | undefined = node.parent;
         current;
-        current = current.parent
+        previous = current, current = current.parent
       ) {
         if (current.type === AST_NODE_TYPES.ReturnStatement) {
           seenReturn = true;
@@ -702,37 +702,36 @@ export default createRule<Options, MessageIds>({
           current.type === AST_NODE_TYPES.FunctionExpression ||
           current.type === AST_NODE_TYPES.ArrowFunctionExpression
         ) {
-          if (seenFunction) {
-            return false;
-          }
           if (
             current.body.type === AST_NODE_TYPES.BlockStatement &&
             !seenReturn
           ) {
             return false;
           }
-          seenFunction = true;
+          seenReturn = false;
           continue;
         }
         if (
           current.type === AST_NODE_TYPES.CallExpression ||
           current.type === AST_NODE_TYPES.NewExpression
         ) {
-          if (current.typeArguments != null) {
-            continue;
+          if (current.typeArguments == null) {
+            if (
+              current.type === AST_NODE_TYPES.CallExpression &&
+              current.callee.type === AST_NODE_TYPES.MemberExpression &&
+              current.arguments.includes(node)
+            ) {
+              continue;
+            }
+            const calleeType = checker.getTypeAtLocation(
+              services.esTreeNodeToTSNodeMap.get(current.callee),
+            );
+            if (hasGenericCallSignature(calleeType)) {
+              return true;
+            }
           }
-          if (
-            current.type === AST_NODE_TYPES.CallExpression &&
-            current.callee.type === AST_NODE_TYPES.MemberExpression &&
-            current.arguments.includes(node)
-          ) {
-            continue;
-          }
-          const calleeType = checker.getTypeAtLocation(
-            services.esTreeNodeToTSNodeMap.get(current.callee),
-          );
-          if (hasGenericCallSignature(calleeType)) {
-            return true;
+          if (current.arguments.some(argument => argument === previous)) {
+            return false;
           }
         }
       }
