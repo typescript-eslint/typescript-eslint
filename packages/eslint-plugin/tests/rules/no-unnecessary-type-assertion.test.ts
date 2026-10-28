@@ -818,14 +818,6 @@ declare const b: B;
 declare const arrayA: A[];
 const a = mapDefined(() => b as A);
 [a].concat(arrayA);
-const c = mapDefined(() => {
-  return b as A;
-});
-[c].concat(arrayA);
-const d = mapDefined(() => {
-  return b as unknown as A;
-});
-[d].concat(arrayA);
     `,
     `
 interface A {
@@ -841,10 +833,30 @@ const a = mapDefined(() =>
   Math.random() > 0.5 ? (b as A) : (null as unknown as A),
 );
 [a].concat(arrayA);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
+    `
+interface A {
+  a: string;
+}
+interface B extends A {
+  b: string;
+}
+declare function mapDefined<T>(fn: () => T): T;
+declare const b: B;
+declare const arrayA: A[];
 const c = mapDefined(() => {
-  return Math.random() > 0.5 ? (b as A) : (null as unknown as A);
+  return b as A;
 });
 [c].concat(arrayA);
+const d = mapDefined(() => {
+  return b as unknown as A;
+});
+[d].concat(arrayA);
+const e = mapDefined(() => {
+  return Math.random() > 0.5 ? (b as A) : (null as unknown as A);
+});
+[e].concat(arrayA);
     `,
     `
 interface Params {
@@ -999,6 +1011,7 @@ const x: E | undefined = o?.fn(n => n | 0, 0 as E);
   ],
 
   invalid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
     {
       code: `
 interface A {
