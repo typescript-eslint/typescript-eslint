@@ -28,6 +28,11 @@ export interface MutableParseSettings {
   allowInvalidAST: boolean;
 
   /**
+   * Which TypeScript implementation powers type information: classic TypeScript or the experimental tsgo.
+   */
+  backend: 'classic' | 'tsgo';
+
+  /**
    * Code of the file being parsed, or raw source file containing it.
    */
   code: string | ts.SourceFile;

@@ -50,6 +50,7 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
+  const backend = resolveBackend(tsestreeOptions);
 
   const tsconfigRootDir = (() => {
     if (tsestreeOptions.tsconfigRootDir == null) {
@@ -118,6 +119,7 @@ export function createParseSettings(
     loc: tsestreeOptions.loc === true,
     range: tsestreeOptions.range === true,
     allowInvalidAST: tsestreeOptions.allowInvalidAST === true,
+    backend,
     code,
     codeFullText,
     comment: tsestreeOptions.comment === true,
@@ -150,10 +152,11 @@ export function createParseSettings(
       : null,
     projects: new Map(),
     projectService:
-      tsestreeOptions.projectService ||
-      (tsestreeOptions.project &&
-        tsestreeOptions.projectService !== false &&
-        process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')
+      backend === 'classic' &&
+      (tsestreeOptions.projectService ||
+        (tsestreeOptions.project &&
+          tsestreeOptions.projectService !== false &&
+          process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'))
         ? populateProjectService(tsestreeOptions.projectService, {
             jsDocParsingMode,
             tsconfigRootDir,
@@ -223,7 +226,11 @@ export function createParseSettings(
   }
 
   // Providing a program or project service overrides project resolution
-  if (!parseSettings.programs && !parseSettings.projectService) {
+  if (
+    !parseSettings.programs &&
+    !parseSettings.projectService &&
+    parseSettings.backend === 'classic'
+  ) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: tsestreeOptions.cacheLifetime,
       project: getProjectConfigFiles(parseSettings, tsestreeOptions.project),
@@ -239,7 +246,8 @@ export function createParseSettings(
     tsestreeOptions.jsDocParsingMode == null &&
     parseSettings.projects.size === 0 &&
     parseSettings.programs == null &&
-    parseSettings.projectService == null
+    parseSettings.projectService == null &&
+    parseSettings.backend === 'classic'
   ) {
     parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
   }
@@ -251,6 +259,76 @@ export function createParseSettings(
   );
 
   return parseSettings;
+}
+
+function findUnsupportedNativeOption(
+  tsestreeOptions: Partial<TSESTreeOptions>,
+  projectServiceOptions: ProjectServiceOptions,
+  ignoreProject: boolean,
+) {
+  const unsupported: readonly (readonly [string, unknown])[] = [
+    [
+      'parserOptions.project',
+      !ignoreProject &&
+        tsestreeOptions.project != null &&
+        tsestreeOptions.project !== false,
+    ],
+    ['parserOptions.programs', tsestreeOptions.programs != null],
+    ['extraFileExtensions', tsestreeOptions.extraFileExtensions?.length],
+    ['allowDefaultProject', projectServiceOptions.allowDefaultProject?.length],
+    ['defaultProject', projectServiceOptions.defaultProject != null],
+    [
+      'loadTypeScriptPlugins',
+      projectServiceOptions.loadTypeScriptPlugins === true,
+    ],
+    [
+      'maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING',
+      projectServiceOptions.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING !=
+        null,
+    ],
+  ];
+  return unsupported.find(([, value]) => value)?.[0];
+}
+
+function resolveBackend(tsestreeOptions: Partial<TSESTreeOptions>) {
+  const { projectService } = tsestreeOptions;
+  const requested =
+    typeof projectService === 'object' &&
+    projectService.EXPERIMENTAL_backend === 'tsgo';
+
+  const viaEnvironment =
+    !requested &&
+    process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo' &&
+    projectService !== false &&
+    (projectService != null || !!tsestreeOptions.project);
+
+  if (!requested && !viaEnvironment) {
+    return 'classic';
+  }
+
+  const unsupportedOption = findUnsupportedNativeOption(
+    tsestreeOptions,
+    typeof projectService === 'object' ? projectService : {},
+    viaEnvironment,
+  );
+  const unsupportedNodeVersion = !process.features.require_module;
+
+  if (viaEnvironment) {
+    return unsupportedOption || unsupportedNodeVersion ? 'classic' : 'tsgo';
+  }
+
+  if (unsupportedNodeVersion) {
+    throw new Error(
+      'The experimental tsgo backend requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',
+    );
+  }
+  if (unsupportedOption) {
+    throw new Error(
+      `${unsupportedOption} is not supported by the experimental tsgo backend.`,
+    );
+  }
+
+  return 'tsgo';
 }
 
 export function clearTSConfigMatchCache(): void {

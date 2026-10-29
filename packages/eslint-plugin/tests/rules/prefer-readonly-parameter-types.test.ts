@@ -284,6 +284,21 @@ function foo(arg) {}
       },
       options: [{ treatMethodsAsReadonly: true }],
     },
+    `
+function foo<T>(
+  arg: T extends string ? readonly string[] : readonly number[],
+) {}
+    `,
+    'function foo(arg: Partial<Readonly<{ prop: string }>>) {}',
+    {
+      code: `
+declare function constant<const T>(value: T): T;
+const value = constant({ prop: 1 });
+function foo(arg: typeof value) {}
+      `,
+      // `const` type parameters require TS 5.0
+      dependencyConstraints: { typescript: '5.0' },
+    },
     // ReadonlySet and ReadonlyMap are seen as readonly when methods are treated as readonly
     {
       code: `
@@ -711,6 +726,18 @@ function foo(arg: import('foo-lib').Foo) {}
     },
   ],
   invalid: [
+    {
+      code: 'function foo<T>(arg: T extends string ? string[] : number[]) {}',
+      errors: [
+        {
+          column: 17,
+          endColumn: 60,
+          endLine: 1,
+          line: 1,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
+    },
     // arrays
     // Removing readonly causes duplicates
     {
@@ -848,31 +875,6 @@ var other;
 var Factory = {};
 Factory.method = other || function () {};
 /** @param {typeof Factory} arg */
-function foo(arg) {}
-      `,
-      errors: [
-        {
-          column: 14,
-          endColumn: 17,
-          endLine: 6,
-          line: 6,
-          messageId: 'shouldBeReadonly',
-        },
-      ],
-      filename: 'file.js',
-      languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootDir, 'javascript'),
-        },
-      },
-      options: [{ treatMethodsAsReadonly: true }],
-    },
-    {
-      code: `
-function Factory() {
-  this.method = function () {};
-}
-/** @param {Factory} arg */
 function foo(arg) {}
       `,
       errors: [
@@ -1669,3 +1671,37 @@ foo<string[]>(arg => {});
     },
   ],
 });
+
+// TypeScript 7 doesn't treat constructor functions as classes.
+if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND !== 'tsgo') {
+  ruleTester.run('prefer-readonly-parameter-types', rule, {
+    valid: [],
+    invalid: [
+      {
+        code: `
+function Factory() {
+  this.method = function () {};
+}
+/** @param {Factory} arg */
+function foo(arg) {}
+        `,
+        errors: [
+          {
+            column: 14,
+            endColumn: 17,
+            endLine: 6,
+            line: 6,
+            messageId: 'shouldBeReadonly',
+          },
+        ],
+        filename: 'file.js',
+        languageOptions: {
+          parserOptions: {
+            tsconfigRootDir: path.join(rootDir, 'javascript'),
+          },
+        },
+        options: [{ treatMethodsAsReadonly: true }],
+      },
+    ],
+  });
+}

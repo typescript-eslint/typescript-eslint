@@ -32,6 +32,10 @@ import {
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
 import { createParserServices } from './createParserServices';
+import {
+  getNativeBackendLoadError,
+  getNativeParser,
+} from './nativeParserRegistry';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getProjectConfigFiles } from './parseSettings/getProjectConfigFiles';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
@@ -268,6 +272,28 @@ export function parseAndGenerateServices<
    */
   const parseSettings = createParseSettings(code, tsestreeOptions);
 
+  if (
+    typeof tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues ===
+      'boolean' &&
+    tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues
+  ) {
+    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
+  }
+
+  if (parseSettings.backend === 'tsgo') {
+    const nativeParser = getNativeParser();
+    if (!nativeParser) {
+      const cause = getNativeBackendLoadError();
+      throw new Error(
+        `The experimental tsgo backend could not be loaded${
+          cause instanceof Error ? `: ${cause.message}` : ''
+        }. Install a TypeScript 7.1 nightly or newer aliased as @typescript/native.`,
+        { cause },
+      );
+    }
+    return nativeParser<T>(parseSettings);
+  }
+
   /**
    * If this is a single run in which the user has not provided any existing programs but there
    * are programs which need to be created from the provided "project" option,
@@ -302,14 +328,6 @@ export function parseAndGenerateServices<
     parseSettings.programs != null ||
     parseSettings.projects.size > 0 ||
     !!parseSettings.projectService;
-
-  if (
-    typeof tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues ===
-      'boolean' &&
-    tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues
-  ) {
-    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
-  }
 
   if (
     parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues &&

@@ -1,0 +1,43 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`native-project-service > eslint > should work successfully 1`] = `
+[
+  {
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "filePath": "<root>/src/dependency.ts",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [],
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+  {
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "filePath": "<root>/src/index.ts",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "column": 1,
+        "endColumn": 19,
+        "endLine": 3,
+        "line": 3,
+        "message": "\`deprecatedFunction\` is deprecated. Use a replacement.",
+        "messageId": "deprecatedWithReason",
+        "ruleId": "@typescript-eslint/no-deprecated",
+        "severity": 2,
+      },
+    ],
+    "source": "import { deprecatedFunction } from './dependency.js';
+
+deprecatedFunction();
+",
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+]
+`;

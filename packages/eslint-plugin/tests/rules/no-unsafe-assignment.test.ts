@@ -1,10 +1,11 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-unsafe-assignment';
-import { createRuleTesterWithTypes } from '../RuleTester';
+import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = createRuleTesterWithTypes({
-  project: './tsconfig.noImplicitThis.json',
+  tsconfigRootDir: path.join(getFixturesRootDir(), 'noImplicitThis'),
 });
 
 ruleTester.run('no-unsafe-assignment', rule, {

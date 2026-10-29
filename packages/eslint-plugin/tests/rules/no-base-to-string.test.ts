@@ -1,3 +1,5 @@
+import * as path from 'node:path';
+
 import rule from '../../src/rules/no-base-to-string';
 import { createRuleTesterWithTypes, getFixturesRootDir } from '../RuleTester';
 
@@ -1453,9 +1455,7 @@ array.join('');
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -1718,9 +1718,7 @@ String(array);
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -2028,9 +2026,7 @@ array.toString();
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -2293,9 +2289,7 @@ const array = ['string', { foo: 'bar' }];
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },

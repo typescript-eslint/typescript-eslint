@@ -8,15 +8,11 @@ const rootDir = getFixturesRootDir();
 const ruleTester = createRuleTesterWithTypes();
 
 const optionsWithExactOptionalPropertyTypes = {
-  project: './tsconfig.exactOptionalPropertyTypes.json',
-  projectService: false,
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'exactOptionalPropertyTypes'),
 };
 
 const optionsWithNoUncheckedIndexedAccess = {
-  project: './tsconfig.noUncheckedIndexedAccess.json',
-  projectService: false,
-  tsconfigRootDir: rootDir,
+  tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
 };
 
 ruleTester.run('no-unnecessary-condition', rule, {
@@ -532,9 +528,7 @@ arr[41]?.();
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -567,9 +561,7 @@ foo[index]?.toString();
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -881,9 +873,7 @@ foo?.[key].trim();
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -901,9 +891,7 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -1207,9 +1195,7 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -5632,9 +5618,7 @@ if (test[0]?.a) {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -5679,9 +5663,7 @@ arr2[42]?.x?.y.z;
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -5704,9 +5686,7 @@ if (arr[0]) {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },
@@ -5728,9 +5708,7 @@ if (arr[42] && arr[42]) {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
+          tsconfigRootDir: path.join(rootDir, 'noUncheckedIndexedAccess'),
         },
       },
     },

@@ -9,8 +9,7 @@ const ruleTester = new RuleTester();
 // only need parserOptions for the `type` option tests
 const rootDir = getFixturesRootDir();
 const parserOptions = {
-  project: './tsconfig.json',
-  projectService: false,
+  projectService: true,
   tsconfigRootDir: rootDir,
 };
 
