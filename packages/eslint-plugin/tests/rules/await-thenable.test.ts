@@ -482,6 +482,50 @@ Promise.all(x);
     },
     {
       code: `
+interface NumIter extends Iterable<Promise<number>> {}
+
+declare const x: NumIter;
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: {
+  [Symbol.iterator](): any;
+};
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: { [Symbol.iterator]: any };
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const a: {
+  [Symbol.iterator](): Iterator<number>;
+  [Symbol.iterator](s?: string): Iterator<Promise<number>>;
+};
+
+Promise.all(a);
+      `,
+    },
+    {
+      code: `
+declare const x: { [Symbol.iterator](): { next(): string } };
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
+declare const x: { [Symbol.iterator](): {} };
+Promise.all(x);
+      `,
+    },
+    {
+      code: `
 declare const x: Iterable<Promise<number>> | Iterable<Promise<string>>;
 
 // @ts-expect-error
@@ -1591,6 +1635,160 @@ Promise.all(x);
           endColumn: 14,
           endLine: 3,
           line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13023
+    {
+      code: `
+interface NumIter extends Iterable<number> {}
+
+declare const x: NumIter;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  *[Symbol.iterator]() {
+    yield 1;
+  }
+}
+
+Promise.all(new Foo());
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 22,
+          endLine: 8,
+          line: 8,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare class Box<T> {
+  [Symbol.iterator](): Iterator<number>;
+}
+
+declare const x: Box<Promise<number>>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Map<Promise<number>, number>;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all('abc');
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+interface NIter extends Iterator<number> {}
+declare const x: { [Symbol.iterator](): NIter };
+
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyIter<T> extends Iterator<number> {}
+declare const x: { [Symbol.iterator](): MyIter<Promise<number>> };
+
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: { [Symbol.iterator](): { next(): IteratorResult<number> } };
+
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: {
+  [Symbol.iterator](): Iterator<number> | IterableIterator<number>;
+};
+
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
