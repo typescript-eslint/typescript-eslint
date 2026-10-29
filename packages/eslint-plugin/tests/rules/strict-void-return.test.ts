@@ -4136,11 +4136,7 @@ async function* cb() {
         },
       ],
     },
-    // A generic parameter whose constraint is a large union of handler types
-    // must be checked one member at a time. Asking the unsplit type for its
-    // call signatures merges every member into union signatures, which took
-    // minutes for this input. TypeScript's default type ordering is used
-    // because it makes that merge far more expensive than stable ordering.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13078
     {
       code: `
 type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
