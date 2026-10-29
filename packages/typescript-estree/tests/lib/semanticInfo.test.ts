@@ -354,6 +354,30 @@ describe('semanticInfo', async () => {
     ).toBe(arrayBoundName);
   });
 
+  it('does not resolve JS files when allowJs is not enabled in tsconfig', async () => {
+    const fileName = path.resolve(FIXTURES_DIR, 'import-untyped.ts');
+    const parseResult = parseCodeAndGenerateServices(
+      await fs.readFile(fileName, { encoding: 'utf-8' }),
+      createOptions(fileName),
+    );
+
+    assert.isParserServices(parseResult.services);
+
+    const checker = parseResult.services.program.getTypeChecker();
+    const identifier = (parseResult.ast.body[1] as TSESTree.ExpressionStatement)
+      .expression;
+    const type = checker.getTypeAtLocation(
+      parseResult.services.esTreeNodeToTSNodeMap.get(identifier),
+    );
+
+    expect(checker.typeToString(type)).toBe('any');
+    expect(
+      parseResult.services.program.getSourceFile(
+        path.resolve(FIXTURES_DIR, 'untyped.js'),
+      ),
+    ).toBeUndefined();
+  });
+
   it('non-existent file tests', () => {
     const parseResult = parseCodeAndGenerateServices(
       `const x = [parseInt("5")];`,
