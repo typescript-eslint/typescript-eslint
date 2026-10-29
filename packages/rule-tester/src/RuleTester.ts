@@ -168,6 +168,7 @@ function getUnsubstitutedMessagePlaceholders(
 }
 
 export class RuleTester extends TestFramework {
+  #contextCwdOverride: string | undefined;
   readonly #lintersByBasePath: Map<string | undefined, Linter>;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
   readonly #testerConfig: TesterConfigWithDefaults;
@@ -200,7 +201,7 @@ export class RuleTester extends TestFramework {
     });
   }
 
-  #getLinterForFilename(filename: string | undefined): Linter {
+  #getLinterBasePath(filename: string | undefined): string | undefined {
     let basePath: string | undefined =
       this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir;
     // For an absolute path (`/foo.ts`), or a path that steps
@@ -218,6 +219,27 @@ export class RuleTester extends TestFramework {
         path.resolve(basePath ?? process.cwd(), filename),
       ).root;
     }
+
+    return basePath;
+  }
+
+  // Linter cwd is the filesystem root for absolute filenames and `..` paths.
+  // Rules should still see tsconfigRootDir, or process.cwd().
+  #getContextCwdOverride(filename: string | undefined): string | undefined {
+    const basePath = this.#getLinterBasePath(filename);
+
+    if (basePath != null && basePath === path.parse(basePath).root) {
+      return (
+        this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir ??
+        process.cwd()
+      );
+    }
+
+    return undefined;
+  }
+
+  #getLinterForFilename(filename: string | undefined): Linter {
+    const basePath = this.#getLinterBasePath(filename);
 
     let linterForBasePath = this.#lintersByBasePath.get(basePath);
     if (!linterForBasePath) {
@@ -429,13 +451,29 @@ export class RuleTester extends TestFramework {
       ...rule,
       name,
       // Create a wrapper rule that freezes the `context` properties.
-      create(context): RuleListener {
+      create: (context): RuleListener => {
         freezeDeeply(context.options);
         freezeDeeply(context.settings);
         // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8
         freezeDeeply(context.parserOptions);
 
-        return (typeof rule === 'function' ? rule : rule.create)(context);
+        const contextCwdOverride = this.#contextCwdOverride;
+        const contextForRule =
+          contextCwdOverride == null
+            ? context
+            : new Proxy(context, {
+                get(target, prop, receiver): unknown {
+                  if (prop === 'cwd') {
+                    return contextCwdOverride;
+                  }
+
+                  return Reflect.get(target, prop, receiver);
+                },
+              });
+
+        return (typeof rule === 'function' ? rule : rule.create)(
+          contextForRule,
+        );
       },
     };
   }
@@ -721,6 +759,8 @@ export class RuleTester extends TestFramework {
       );
       filename = item.filename;
     }
+
+    this.#contextCwdOverride = this.#getContextCwdOverride(filename);
 
     const prefixedRuleName = `${RULE_TESTER_PLUGIN_PREFIX}${ruleName}`;
 
