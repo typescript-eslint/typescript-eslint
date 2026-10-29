@@ -88,7 +88,7 @@
     "eslint-plugin-jsdoc": "^50.8.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-n": "^17.23.1",
-    "eslint-plugin-perfectionist": "^5.12.0",
+    "eslint-plugin-perfectionist": "^5.13.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-regexp": "^2.10.0",
@@ -97,7 +97,7 @@
     "get-github-auth-token": "^0.2.0",
     "globals": "catalog:",
     "husky": "^9.1.7",
-    "knip": "6.41.0",
+    "knip": "6.42.1",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.49.0",
     "nx": "23.3.0",
@@ -110,7 +110,7 @@
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6",
+  "packageManager": "pnpm@12.15.0+sha512.b3951d6d6ff4a9f13dc7cf56cd28d2b8eb37dbcc9c68e52e1e1191873ea9f82a017287ab50baadc5ccc494f036c67c0e47eb13608c2fa36f47711b61ea128e61",
   "nx": {
     "name": "repo",
     "includedScripts": [
