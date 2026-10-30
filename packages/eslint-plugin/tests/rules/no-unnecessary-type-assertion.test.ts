@@ -984,6 +984,27 @@ enum E {
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
     `,
+    `
+declare const overloaded: {
+  (a: string, b: number): void;
+  (a: string, b: number, c: number): void;
+};
+declare const rest: number[];
+(overloaded as (a: string, ...rest: number[]) => void)('', ...rest);
+    `,
+    `
+declare const Overloaded: {
+  new (a: string, b: number): object;
+  new (a: string, b: number, c: number): object;
+};
+declare const rest: number[];
+new (Overloaded as new (a: string, ...rest: number[]) => object)('', ...rest);
+    `,
+    `
+declare const fixed: (a: string, b: number) => void;
+declare const rest: number[];
+(fixed as (a: string, ...rest: number[]) => void)('', ...rest);
+    `,
   ],
 
   invalid: [
