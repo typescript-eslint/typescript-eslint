@@ -24,6 +24,17 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     requireData: true,
   },
   valid: [
+    `
+type AnyObject =
+  | { type: 'a'; options?: { foo: string } }
+  | { type: 'b'; options?: { bar: number } };
+declare const obj1: AnyObject;
+declare const obj2: AnyObject;
+declare function use(obj: AnyObject): void;
+if (obj1.type === obj2.type) {
+  use({ ...obj1, options: obj2.options as any });
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
 type RecursiveMethod<Options = {}> = (<NewOptions = {}>(

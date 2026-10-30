@@ -754,6 +754,10 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
       castIsAny: boolean,
     ): boolean {
+      if (isPropertyInProblematicContext(node)) {
+        return true;
+      }
+
       if (castIsAny) {
         return (
           node.parent.type === AST_NODE_TYPES.LogicalExpression ||
@@ -774,7 +778,6 @@ export default createRule<Options, MessageIds>({
         SKIP_PARENT_TYPES.has(node.parent.type) ||
         node.expression.type === AST_NODE_TYPES.ArrayExpression ||
         isInDestructuringDeclaration(node) ||
-        isPropertyInProblematicContext(node) ||
         isAssignmentInNonStatementContext(node) ||
         isRightHandSideOfLogicalAssignment(node) ||
         isArgumentToOverloadedFunction(node)
