@@ -10,6 +10,11 @@ export interface ImplicitLibVariableOptions {
   readonly writeable?: boolean;
 }
 
+export type ImplicitLibVariableMap = ReadonlyMap<
+  string,
+  ImplicitLibVariableOptions
+>;
+
 export interface LibDefinition {
   libs: readonly LibDefinition[];
   variables: readonly [string, ImplicitLibVariableOptions][];
