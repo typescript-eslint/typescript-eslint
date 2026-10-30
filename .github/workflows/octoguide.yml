@@ -44,7 +44,7 @@ jobs:
         with:
           config: recommended
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          # pr-force-pushes and pr-title-conventional are in the strict config,
+          # pr-force-pushes and pr-title-conventional are in the recommended config,
           # but we want them applied to maintainers as well as contributors.
           rules: |
             {
