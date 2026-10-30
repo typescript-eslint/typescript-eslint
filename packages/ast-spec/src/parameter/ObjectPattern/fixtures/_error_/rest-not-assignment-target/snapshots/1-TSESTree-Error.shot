@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > ObjectPattern > _error_ > rest-not-assignment-target > TSESTree - Error`]
+TSError
+> 1 | ({ ...f() } = x);
+    |       ^^^ The target of an object rest assignment must be a variable or a property access.
+  2 |
