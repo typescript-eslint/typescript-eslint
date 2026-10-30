@@ -9,7 +9,7 @@ import type { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
 import { analyze } from '@typescript-eslint/scope-manager';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/types';
 import { parse } from '@typescript-eslint/typescript-estree';
-import { FlatESLint } from '@typescript-eslint/utils/ts-eslint';
+import { ESLint } from 'eslint';
 import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
@@ -291,9 +291,9 @@ const formattedLibUnionCode = await formatCode(libUnionCode);
 fs.writeFileSync(TYPES_FILE, formattedLibUnionCode);
 console.log('Wrote Lib union type file');
 
-const lint = new FlatESLint({
+const lint = new ESLint({
   fix: true,
 });
 const results = await lint.lintFiles(filesWritten);
-await FlatESLint.outputFixes(results);
+await ESLint.outputFixes(results);
 console.log('Autofixed lint errors');
