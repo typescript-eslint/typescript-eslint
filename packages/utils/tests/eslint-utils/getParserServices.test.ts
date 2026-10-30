@@ -63,6 +63,7 @@ describe(ESLintUtils.getParserServices, () => {
         } as FlatConfig.Parser,
         parserOptions: {},
       },
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
@@ -81,6 +82,7 @@ describe(ESLintUtils.getParserServices, () => {
   it('throws a standard error with an unknown parser when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is missing', () => {
     const context = createMockRuleContext({
       languageOptions: { parserOptions: {} },
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
@@ -102,6 +104,7 @@ describe(ESLintUtils.getParserServices, () => {
         parser: {} as FlatConfig.Parser,
         parserOptions: {},
       },
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       parserPath: undefined,
       sourceCode: {
         ...defaults.sourceCode,
@@ -119,6 +122,7 @@ describe(ESLintUtils.getParserServices, () => {
 
   it('throws an augment error when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is unknown', () => {
     const context = createMockRuleContext({
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       parserPath: '@babel/parser.js',
       sourceCode: {
         ...defaults.sourceCode,
