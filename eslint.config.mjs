@@ -121,6 +121,8 @@ export default defineConfig(
       ],
       '@typescript-eslint/explicit-module-boundary-types': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
+      // conflicts with isolatedDeclarations, which requires these annotations on exports
+      '@typescript-eslint/no-inferrable-types': 'off',
       '@typescript-eslint/no-require-imports': [
         'error',
         {

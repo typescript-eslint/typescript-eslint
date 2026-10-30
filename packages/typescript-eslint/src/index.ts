@@ -68,7 +68,7 @@ from using them.
 export const plugin: CompatiblePlugin =
   pluginBase satisfies FlatConfig.Plugins['string'];
 
-export const configs = createConfigsGetters({
+const configValues = {
   /**
    * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
    * @see {@link https://typescript-eslint.io/users/configs#all}
@@ -167,7 +167,14 @@ export const configs = createConfigsGetters({
   stylisticTypeCheckedOnly: rawPlugin.flatConfigs[
     'flat/stylistic-type-checked-only'
   ] as CompatibleConfigArray,
-}) satisfies Record<string, FlatConfig.Config | FlatConfig.ConfigArray>;
+};
+
+export const configs: typeof configValues = createConfigsGetters(
+  configValues satisfies Record<
+    string,
+    FlatConfig.Config | FlatConfig.ConfigArray
+  >,
+);
 
 function createConfigsGetters<T extends object>(values: T): T {
   const configs = {};
@@ -238,7 +245,15 @@ module.exports = config(
 );
 ```
 */
-export default {
+const tseslint: {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  config: typeof config;
+  configs: typeof configs;
+  extensions: typeof extensions;
+  globs: typeof globs;
+  parser: typeof parser;
+  plugin: typeof plugin;
+} = {
   // eslint-disable-next-line @typescript-eslint/no-deprecated
   config,
   configs,
@@ -247,6 +262,7 @@ export default {
   parser,
   plugin,
 };
+export default tseslint;
 
 export {
   // eslint-disable-next-line @typescript-eslint/no-deprecated

@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/types';
-import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
@@ -65,7 +64,60 @@ export interface PackageSpecifier {
 export type TypeOrValueSpecifier =
   string | FileSpecifier | LibSpecifier | PackageSpecifier;
 
-export const typeOrValueSpecifiersSchema = {
+interface TypeOrValueSpecifierNameSchema {
+  readonly oneOf: [
+    { readonly type: 'string' },
+    {
+      readonly items: { readonly type: 'string' };
+      readonly minItems: 1;
+      readonly type: 'array';
+      readonly uniqueItems: true;
+    },
+  ];
+}
+
+interface TypeOrValueSpecifiersSchema {
+  readonly items: {
+    readonly oneOf: [
+      { readonly type: 'string' },
+      {
+        readonly additionalProperties: false;
+        readonly properties: {
+          readonly from: { readonly enum: ['file']; readonly type: 'string' };
+          readonly name: TypeOrValueSpecifierNameSchema;
+          readonly path: { readonly type: 'string' };
+        };
+        readonly required: ['from', 'name'];
+        readonly type: 'object';
+      },
+      {
+        readonly additionalProperties: false;
+        readonly properties: {
+          readonly from: { readonly enum: ['lib']; readonly type: 'string' };
+          readonly name: TypeOrValueSpecifierNameSchema;
+        };
+        readonly required: ['from', 'name'];
+        readonly type: 'object';
+      },
+      {
+        readonly additionalProperties: false;
+        readonly properties: {
+          readonly from: {
+            readonly enum: ['package'];
+            readonly type: 'string';
+          };
+          readonly name: TypeOrValueSpecifierNameSchema;
+          readonly package: { readonly type: 'string' };
+        };
+        readonly required: ['from', 'name', 'package'];
+        readonly type: 'object';
+      },
+    ];
+  };
+  readonly type: 'array';
+}
+
+export const typeOrValueSpecifiersSchema: TypeOrValueSpecifiersSchema = {
   items: {
     oneOf: [
       {
@@ -158,7 +210,7 @@ export const typeOrValueSpecifiersSchema = {
     ],
   },
   type: 'array',
-} as const satisfies JSONSchema4;
+};
 
 export function typeMatchesSpecifier(
   type: ts.Type,

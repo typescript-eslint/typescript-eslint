@@ -42,6 +42,11 @@
     }
   },
   "targetDefaults": {
+    "build": {
+      "options": {
+        "args": ["--noCheck"]
+      }
+    },
     "typecheck:tsc6": {
       "cache": true,
       "executor": "nx:run-commands",

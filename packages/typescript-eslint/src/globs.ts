@@ -9,24 +9,29 @@ Object.freeze(jstsExtensions);
  * File extensions for JS- and TS-based files, provided to facilitate
  * programmatic construction of globs used in configs.
  */
-export const extensions = {
+export const extensions: {
   /**
    * File extensions (without leading .) for standard JS-based files supported by typescript-eslint.
    *
    * The value of this property is the array `['mjs', 'js', 'cjs', 'jsx']`
    */
-  js: jsExtensions,
+  js: string[];
   /**
    * File extensions (without leading .) for standard TS-based files supported by typescript-eslint.
    *
    * The value of this property is the array `['mts', 'ts', 'cts', 'tsx']`
    */
-  ts: tsExtensions,
+  ts: string[];
   /**
    * File extensions (without leading .) for both standard JS- and TS-based files supported by typescript-eslint.
    *
    * The value of this property is the array `['mjs', 'js', 'cjs', 'jsx', 'mts', 'ts', 'cts', 'tsx', ]`
    */
+  jsts: string[];
+} = {
+  js: jsExtensions,
+  ts: tsExtensions,
+  // eslint-disable-next-line perfectionist/sort-objects -- keep the documented key order
   jsts: jstsExtensions,
 };
 
