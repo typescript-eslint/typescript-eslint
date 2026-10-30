@@ -1,5 +1,5 @@
 import type * as mdast from 'mdast';
-import type { MdxFlowExpression } from 'mdast-util-mdx';
+import type { MdxFlowExpression, MdxJsxFlowElement } from 'mdast-util-mdx';
 import type * as unist from 'unist';
 
 export function nodeIsCode(node: unist.Node): node is mdast.Code {
@@ -18,6 +18,12 @@ export function nodeIsMdxFlowExpression(
   node: unist.Node,
 ): node is MdxFlowExpression {
   return node.type === 'mdxFlowExpression';
+}
+
+export function nodeIsMdxJsxFlowElement(
+  node: unist.Node,
+): node is MdxJsxFlowElement {
+  return node.type === 'mdxJsxFlowElement';
 }
 
 export function nodeIsParent(node: unist.Node): node is unist.Parent {
