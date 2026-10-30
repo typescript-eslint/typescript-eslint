@@ -984,6 +984,37 @@ enum E {
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12268
+    `
+function foo() {
+  const arr = [];
+
+  for (let i = 0; i < 1; i++) {
+    arr.push({ x: 1 } as { x: number; y: number });
+  }
+
+  for (let i = 0; i < 1; i++) {
+    arr[i].y = 2;
+  }
+
+  return arr;
+}
+    `,
+    `
+function foo() {
+  const arr = [];
+  arr.unshift({ x: 1 } as { x: number; y?: number });
+  return arr;
+}
+    `,
+    `
+function foo() {
+  let arr;
+  arr = [];
+  arr.push(1 as 1 | 2);
+  return arr;
+}
+    `,
   ],
 
   invalid: [
@@ -3500,6 +3531,46 @@ const value = get<string>() as string;
       output: `
 declare function get<T>(): T;
 const value = get<string>();
+      `,
+    },
+    {
+      code: `
+const arr: any[] = [];
+arr.push({ x: 1 } as { x: number; y?: number });
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 47,
+          endLine: 3,
+          line: 3,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+const arr: any[] = [];
+arr.push({ x: 1 });
+      `,
+    },
+    {
+      code: `
+declare const value: number;
+const arr = [];
+arr.push(value as number);
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const value: number;
+const arr = [];
+arr.push(value);
       `,
     },
   ],
