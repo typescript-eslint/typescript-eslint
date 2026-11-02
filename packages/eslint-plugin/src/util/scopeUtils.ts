@@ -10,17 +10,17 @@ export function isReferenceToGlobalFunction(
   // `switch` discriminant belongs to the switch scope but is referenced from
   // the scope that contains the `switch`.
   let ref: Scope.Reference | undefined;
-  for (
-    let scope: Scope.Scope | null = sourceCode.getScope(node);
-    scope && !ref;
-    scope = scope.upper
-  ) {
+  let scope: Scope.Scope | null = sourceCode.getScope(node);
+
+  while (scope && !ref) {
     ref = scope.references.find(
       ref =>
         ref.identifier.name === calleeName &&
         ref.identifier.range[0] >= node.range[0] &&
         ref.identifier.range[1] <= node.range[1],
     );
+
+    scope = scope.upper;
   }
 
   // ensure it's the "global" version
