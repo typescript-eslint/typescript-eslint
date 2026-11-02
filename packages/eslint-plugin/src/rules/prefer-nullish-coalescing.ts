@@ -198,6 +198,7 @@ export default createRule<Options, MessageIds>({
   ) {
     const parserServices = getParserServices(context);
     const compilerOptions = parserServices.program.getCompilerOptions();
+    const checker = parserServices.program.getTypeChecker();
 
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -461,7 +462,20 @@ export default createRule<Options, MessageIds>({
         const type = parserServices.getTypeAtLocation(
           nullishCoalescingLeftNode,
         );
-        const flags = getTypeFlags(type);
+        let flags = getTypeFlags(type);
+
+        for (const part of tsutils.unionConstituents(type)) {
+          // a generic type (`T`, `NoInfer<T>`, `T[K]`, ...) may be `null` or
+          // `undefined` unless its constraint rules that out
+          if (!tsutils.isTypeFlagSet(part, ts.TypeFlags.Instantiable)) {
+            continue;
+          }
+          const constraintType = checker.getBaseConstraintOfType(part);
+          if (constraintType == null) {
+            return false;
+          }
+          flags |= getTypeFlags(constraintType);
+        }
 
         if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
           return false;
