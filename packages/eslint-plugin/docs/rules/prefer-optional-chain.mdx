@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 Because the optional chain operator _only_ chains when the property value is `null` or `undefined`, it is much safer than relying upon logical AND operator chaining `&&`; which chains on any _truthy_ value.
 It is also often less code to use `?.` optional chaining than `&&` truthiness checks.
 
-This rule reports on code where an `&&` operator can be safely replaced with `?.` optional chaining.
+This rule reports on code where an `&&` operator, or a ternary that checks for `null`, can be safely replaced with `?.` optional chaining.
 
 ## Examples
 
@@ -36,6 +36,10 @@ foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 
 // this rule also supports converting chained strict nullish checks:
 foo.a !== null && foo.a !== undefined && foo.a.b;
+
+// With ternaries
+foo == null ? undefined : foo.bar;
+foo != null ? foo.bar : undefined;
 ```
 
 </TabItem>
@@ -53,6 +57,8 @@ foo?.a?.b?.c?.d?.e;
 !foo?.bar?.baz?.();
 
 foo?.a != null;
+
+foo?.bar;
 ```
 
 </TabItem>
