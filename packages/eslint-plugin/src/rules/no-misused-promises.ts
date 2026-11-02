@@ -34,6 +34,7 @@ export interface ChecksVoidReturnOptions {
   arguments?: boolean;
   attributes?: boolean;
   inheritedMethods?: boolean;
+  indexSignatures?: boolean;
   properties?: boolean;
   returns?: boolean;
   variables?: boolean;
@@ -45,6 +46,7 @@ export type MessageId =
   | 'spread'
   | 'voidReturnArgument'
   | 'voidReturnAttribute'
+  | 'voidReturnIndexSignature'
   | 'voidReturnInheritedMethod'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
@@ -62,6 +64,7 @@ function parseChecksVoidReturn(
       return {
         arguments: true,
         attributes: true,
+        indexSignatures: true,
         inheritedMethods: true,
         properties: true,
         returns: true,
@@ -72,6 +75,7 @@ function parseChecksVoidReturn(
       return {
         arguments: checksVoidReturn.arguments ?? true,
         attributes: checksVoidReturn.attributes ?? true,
+        indexSignatures: checksVoidReturn.indexSignatures ?? true,
         inheritedMethods: checksVoidReturn.inheritedMethods ?? true,
         properties: checksVoidReturn.properties ?? true,
         returns: checksVoidReturn.returns ?? true,
@@ -97,6 +101,8 @@ export default createRule<Options, MessageId>({
         'Promise returned in function argument where a void return was expected.',
       voidReturnAttribute:
         'Promise-returning function provided to attribute where a void return was expected.',
+      voidReturnIndexSignature:
+        'Promise-returning function provided where a void return was expected by an index signature.',
       voidReturnInheritedMethod:
         "Promise-returning method provided where a void return was expected by extended/implemented type '{{ heritageTypeName }}'.",
       voidReturnProperty:
@@ -163,6 +169,11 @@ export default createRule<Options, MessageId>({
                     description:
                       'Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`.',
                   },
+                  indexSignatures: {
+                    type: 'boolean',
+                    description:
+                      'Disables checking Promise-void mismatches involving index signatures in classes, interfaces, and type literals.',
+                  },
                   inheritedMethods: {
                     type: 'boolean',
                     description:
@@ -221,29 +232,33 @@ export default createRule<Options, MessageId>({
       WhileStatement: checkTestConditional,
     };
 
-    checksVoidReturn = parseChecksVoidReturn(checksVoidReturn);
+    const voidReturnOptions = parseChecksVoidReturn(checksVoidReturn);
 
-    const voidReturnChecks: TSESLint.RuleListener = checksVoidReturn
+    const voidReturnChecks: TSESLint.RuleListener = voidReturnOptions
       ? {
-          ...(checksVoidReturn.arguments && {
+          ...(voidReturnOptions.arguments && {
             CallExpression: checkArguments,
             NewExpression: checkArguments,
           }),
-          ...(checksVoidReturn.attributes && {
+          ...(voidReturnOptions.attributes && {
             JSXAttribute: checkJSXAttribute,
           }),
-          ...(checksVoidReturn.inheritedMethods && {
+          ...((voidReturnOptions.inheritedMethods ||
+            voidReturnOptions.indexSignatures) && {
             ClassDeclaration: checkClassLikeOrInterfaceNode,
             ClassExpression: checkClassLikeOrInterfaceNode,
             TSInterfaceDeclaration: checkClassLikeOrInterfaceNode,
           }),
-          ...(checksVoidReturn.properties && {
+          ...(voidReturnOptions.indexSignatures && {
+            TSTypeLiteral: checkTypeLiteral,
+          }),
+          ...(voidReturnOptions.properties && {
             Property: checkProperty,
           }),
-          ...(checksVoidReturn.returns && {
+          ...(voidReturnOptions.returns && {
             ReturnStatement: checkReturnStatement,
           }),
-          ...(checksVoidReturn.variables && {
+          ...(voidReturnOptions.variables && {
             AssignmentExpression: checkAssignment,
             VariableDeclarator: checkVariableDeclaration,
           }),
@@ -560,9 +575,6 @@ export default createRule<Options, MessageId>({
           });
         }
       } else if (ts.isMethodDeclaration(tsNode)) {
-        if (ts.isComputedPropertyName(tsNode.name)) {
-          return;
-        }
         const obj = tsNode.parent;
 
         // Below condition isn't satisfied unless something goes wrong,
@@ -582,20 +594,41 @@ export default createRule<Options, MessageId>({
         if (objType == null) {
           return;
         }
-        const propertySymbol = tsutils
+        const propertyName = checker
+          .getSymbolAtLocation(tsNode.name)
+          ?.getName();
+        const keyType = getTypeOfPropertyName(checker, tsNode.name);
+        const contextualTypes = tsutils
           .unionConstituents(objType)
-          .map(t => checker.getPropertyOfType(t, tsNode.name.getText()))
-          .find(p => p);
-        if (propertySymbol == null) {
-          return;
-        }
+          .flatMap(type => {
+            const property =
+              propertyName && checker.getPropertyOfType(type, propertyName);
+            if (property) {
+              return [checker.getTypeOfSymbolAtLocation(property, tsNode.name)];
+            }
 
-        const contextualType = checker.getTypeOfSymbolAtLocation(
-          propertySymbol,
-          tsNode.name,
-        );
+            const indexInfos = checker
+              .getIndexInfosOfType(type)
+              .filter(info =>
+                isApplicableIndexKeyType(checker, keyType, info.keyType),
+              );
+            // A number or template index takes precedence over a string index.
+            const specificInfos = indexInfos.filter(
+              info => !tsutils.isTypeFlagSet(info.keyType, ts.TypeFlags.String),
+            );
+            return (specificInfos.length ? specificInfos : indexInfos).map(
+              info => info.type,
+            );
+          });
 
-        if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
+        if (
+          contextualTypes.some(type =>
+            isVoidReturningFunctionType(checker, tsNode.name, type),
+          ) &&
+          !contextualTypes.some(type =>
+            isThenableReturningFunctionType(checker, tsNode.name, type),
+          )
+        ) {
           const functionNode = node.value as TSESTree.FunctionExpression;
 
           if (functionNode.returnType) {
@@ -678,37 +711,154 @@ export default createRule<Options, MessageId>({
         | TSESTree.TSInterfaceDeclaration,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+      const heritageTypes = getHeritageTypes(checker, tsNode) ?? [];
 
-      const heritageTypes = getHeritageTypes(checker, tsNode);
-      if (!heritageTypes?.length) {
+      checkTypeMembers(tsNode, heritageTypes);
+    }
+
+    function checkTypeLiteral(node: TSESTree.TSTypeLiteral): void {
+      checkTypeMembers(services.esTreeNodeToTSNodeMap.get(node), []);
+    }
+
+    function checkTypeMembers(
+      tsNode:
+        ts.ClassLikeDeclaration | ts.InterfaceDeclaration | ts.TypeLiteralNode,
+      heritageTypes: ts.Type[],
+    ): void {
+      const indexInfos: ts.IndexInfo[] = [];
+      if (voidReturnOptions && voidReturnOptions.indexSignatures) {
+        indexInfos.push(
+          ...heritageTypes.flatMap(type => checker.getIndexInfosOfType(type)),
+        );
+        if (tsNode.members.some(ts.isIndexSignatureDeclaration)) {
+          const type = checker.getTypeAtLocation(tsNode);
+          const instanceType = ts.isClassExpression(tsNode)
+            ? type.getConstructSignatures()[0].getReturnType()
+            : type;
+          indexInfos.push(...checker.getIndexInfosOfType(instanceType));
+        }
+      }
+      if (
+        indexInfos.length === 0 &&
+        !(
+          voidReturnOptions &&
+          voidReturnOptions.inheritedMethods &&
+          heritageTypes.length
+        )
+      ) {
         return;
       }
 
       for (const nodeMember of tsNode.members) {
-        const memberName = nodeMember.name?.getText();
-        if (memberName == null) {
-          // Call/construct/index signatures don't have names. TS allows call signatures to mismatch,
-          // and construct signatures can't be async.
-          // TODO - Once we're able to use `checker.isTypeAssignableTo` (v8), we can check an index
-          // signature here against its compatible index signatures in `heritageTypes`
+        if (ts.isIndexSignatureDeclaration(nodeMember)) {
+          if (
+            voidReturnOptions &&
+            voidReturnOptions.indexSignatures &&
+            !(ts.getCombinedModifierFlags(nodeMember) & ts.ModifierFlags.Static)
+          ) {
+            checkIndexSignature(nodeMember, indexInfos, heritageTypes);
+          }
+          continue;
+        }
+        const name = nodeMember.name;
+        if (name == null) {
+          // TS allows call signatures to mismatch, and construct signatures can't be async.
+          continue;
+        }
+        const node = services.tsNodeToESTreeNodeMap.get(nodeMember);
+        if (isStaticMember(node)) {
           continue;
         }
         if (!returnsThenable(checker, nodeMember)) {
           continue;
         }
 
-        const node = services.tsNodeToESTreeNodeMap.get(nodeMember);
-        if (isStaticMember(node)) {
-          continue;
+        let reported = false;
+        if (voidReturnOptions && voidReturnOptions.inheritedMethods) {
+          for (const heritageType of heritageTypes) {
+            reported =
+              checkHeritageTypeForMemberReturningVoid(
+                nodeMember,
+                heritageType,
+                name.getText(),
+              ) || reported;
+          }
         }
+        if (
+          !reported &&
+          !ts.isPrivateIdentifier(name) &&
+          indexInfos.some(
+            info =>
+              isApplicableIndexKeyType(
+                checker,
+                getTypeOfPropertyName(checker, name),
+                info.keyType,
+              ) && isVoidReturningFunctionType(checker, nodeMember, info.type),
+          )
+        ) {
+          context.report({ node, messageId: 'voidReturnIndexSignature' });
+        }
+      }
+    }
 
-        for (const heritageType of heritageTypes) {
-          checkHeritageTypeForMemberReturningVoid(
-            nodeMember,
-            heritageType,
-            memberName,
+    function checkIndexSignature(
+      node: ts.IndexSignatureDeclaration,
+      indexInfos: ts.IndexInfo[],
+      heritageTypes: ts.Type[],
+    ): void {
+      const keyType = checker.getTypeAtLocation(node.parameters[0]);
+      const valueType = checker.getTypeAtLocation(node.type);
+      const hasMismatch = isThenableReturningFunctionType(
+        checker,
+        node,
+        valueType,
+      )
+        ? indexInfos.some(
+            info =>
+              info.declaration !== node &&
+              isApplicableIndexKeyType(checker, keyType, info.keyType) &&
+              isVoidReturningFunctionType(checker, node, info.type),
+          )
+        : isVoidReturningFunctionType(checker, node, valueType) &&
+          heritageTypes.some(
+            type =>
+              checker
+                .getIndexInfosOfType(type)
+                .some(
+                  info =>
+                    isApplicableIndexKeyType(checker, info.keyType, keyType) &&
+                    isThenableReturningFunctionType(checker, node, info.type),
+                ) ||
+              type.getProperties().some(property => {
+                const declaration =
+                  property.valueDeclaration ?? property.declarations?.[0];
+                const name = ts.getNameOfDeclaration(declaration);
+                // Mapped properties (for example Record<'run', ...>) may not
+                // have declarations. Their symbol names still identify string keys.
+                // Compiler-generated symbol keys have an __@ prefix in escapedName.
+                const propertyName = property.getName();
+                const propertyKeyType =
+                  name && ts.isPropertyName(name)
+                    ? !ts.isPrivateIdentifier(name) &&
+                      getTypeOfPropertyName(checker, name)
+                    : !String(property.escapedName).startsWith('__@') &&
+                      checker.getStringLiteralType(propertyName);
+                return (
+                  propertyKeyType &&
+                  isApplicableIndexKeyType(checker, propertyKeyType, keyType) &&
+                  isThenableReturningFunctionType(
+                    checker,
+                    node,
+                    checker.getTypeOfSymbolAtLocation(property, node),
+                  )
+                );
+              }),
           );
-        }
+      if (hasMismatch) {
+        context.report({
+          node: services.tsNodeToESTreeNodeMap.get(node),
+          messageId: 'voidReturnIndexSignature',
+        });
       }
     }
 
@@ -723,23 +873,24 @@ export default createRule<Options, MessageId>({
       nodeMember: ts.Node,
       heritageType: ts.Type,
       memberName: string,
-    ): void {
+    ): boolean {
       const heritageMember = getMemberIfExists(heritageType, memberName);
       if (heritageMember == null) {
-        return;
+        return false;
       }
       const memberType = checker.getTypeOfSymbolAtLocation(
         heritageMember,
         nodeMember,
       );
       if (!isVoidReturningFunctionType(checker, nodeMember, memberType)) {
-        return;
+        return false;
       }
       context.report({
         node: services.tsNodeToESTreeNodeMap.get(nodeMember),
         messageId: 'voidReturnInheritedMethod',
         data: { heritageTypeName: checker.typeToString(heritageType) },
       });
+      return true;
     }
 
     function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
@@ -782,7 +933,7 @@ export default createRule<Options, MessageId>({
 
     return {
       ...(checksConditionals ? conditionalChecks : {}),
-      ...(checksVoidReturn ? voidReturnChecks : {}),
+      ...(voidReturnOptions ? voidReturnChecks : {}),
       ...(checksSpreads ? spreadChecks : {}),
     };
   },
@@ -1091,6 +1242,43 @@ function getMemberIfExists(
   return (
     symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
   );
+}
+
+function getTypeOfPropertyName(
+  checker: ts.TypeChecker,
+  name: ts.PropertyName,
+): ts.Type {
+  if (ts.isComputedPropertyName(name)) {
+    return checker.getTypeAtLocation(name.expression);
+  }
+  if (ts.isNumericLiteral(name)) {
+    return checker.getNumberLiteralType(Number(name.text));
+  }
+  return checker.getStringLiteralType(name.text);
+}
+
+/** Matches TypeScript's index applicability, including numeric property names. */
+function isApplicableIndexKeyType(
+  checker: ts.TypeChecker,
+  source: ts.Type,
+  target: ts.Type,
+): boolean {
+  return tsutils
+    .unionConstituents(source)
+    .some(
+      type =>
+        checker.isTypeAssignableTo(type, target) ||
+        (tsutils.isTypeFlagSet(target, ts.TypeFlags.String) &&
+          checker.isTypeAssignableTo(type, checker.getNumberType())) ||
+        (tsutils.isTypeFlagSet(target, ts.TypeFlags.Number) &&
+          ((tsutils.isStringLiteralType(type) &&
+            String(Number(type.value)) === type.value) ||
+            (tsutils.isTemplateLiteralType(type) &&
+              type.texts.length === 2 &&
+              type.texts.every(text => text === '') &&
+              type.types.length === 1 &&
+              tsutils.isTypeFlagSet(type.types[0], ts.TypeFlags.Number)))),
+    );
 }
 
 function isStaticMember(node: TSESTree.Node): boolean {

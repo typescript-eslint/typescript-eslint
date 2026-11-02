@@ -1034,7 +1034,11 @@ interface MyAsyncInterface extends MySyncInterfaceSignatures {
   [key: number]: () => Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { inheritedMethods: true } }],
+      options: [
+        {
+          checksVoidReturn: { indexSignatures: false, inheritedMethods: true },
+        },
+      ],
     },
     {
       code: `
@@ -1070,7 +1074,11 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
   syncMethodProperty: () => void;
 }
       `,
-      options: [{ checksVoidReturn: { inheritedMethods: true } }],
+      options: [
+        {
+          checksVoidReturn: { indexSignatures: false, inheritedMethods: true },
+        },
+      ],
     },
     "const notAFn1: string = '';",
     'const notAFn2: number = 1;',
@@ -3000,6 +3008,7 @@ interface MyAsyncInterface extends MySyncInterface {
           messageId: 'voidReturnInheritedMethod',
         },
       ],
+      options: [{ checksVoidReturn: { indexSignatures: false } }],
     },
     {
       code: `
@@ -3043,6 +3052,7 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
           messageId: 'voidReturnInheritedMethod',
         },
       ],
+      options: [{ checksVoidReturn: { indexSignatures: false } }],
     },
     {
       code: `
@@ -3086,6 +3096,7 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
           messageId: 'voidReturnInheritedMethod',
         },
       ],
+      options: [{ checksVoidReturn: { indexSignatures: false } }],
     },
     {
       code: `

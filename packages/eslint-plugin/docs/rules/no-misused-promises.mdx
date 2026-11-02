@@ -182,8 +182,51 @@ Disables checking an asynchronous function passed as a JSX attribute expected to
 Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`.
 
 :::note
-For now, `no-misused-promises` only checks _named_ methods against extended/implemented types: that is, call/construct/index signatures are ignored. Call signatures are not required in TypeScript to be consistent with one another, and construct signatures cannot be `async` in the first place. Index signature checking may be implemented in the future.
+This option checks named methods against named members of extended/implemented types. Call signatures are not required in TypeScript to be consistent with one another, and construct signatures cannot be `async` in the first place. Checks involving index signatures in type declarations are controlled separately by `indexSignatures`.
 :::
+
+#### `indexSignatures`
+
+Disables checking Promise-returning functions against void-returning index signatures in classes, interfaces, and type literals.
+This includes methods, function-valued properties, and overlapping index signatures, both within a type and across its extended/implemented types.
+For example, a method returning `Promise<void>` conflicts with a `[key: string]: () => void` index signature: callers using the index signature can ignore the returned Promise.
+
+This option defaults to `true` and is independent of `inheritedMethods`.
+Checks for methods in object literals, including those contextually typed by an index signature, are controlled by `properties` instead.
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    { "checksVoidReturn": { "indexSignatures": false } }
+  ]
+}
+```
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+interface Handlers {
+  [key: string]: () => void;
+  run(): Promise<void>;
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+interface Handlers {
+  [key: string]: () => void | Promise<void>;
+  run(): Promise<void>;
+}
+```
+
+</TabItem>
+</Tabs>
+
+See [the index signature checking proposal](https://github.com/typescript-eslint/typescript-eslint/issues/10943) for the motivating cases.
 
 #### `properties`
 

@@ -63,6 +63,21 @@ if (await structuralFn()) {
 }
 
 Incorrect
+
+interface Handlers {
+  [key: string]: () => void;
+  run(): Promise<void>;
+  ~~~~~~~~~~~~~~~~~~~~~ Promise-returning function provided where a void return was expected by an index signature.
+}
+
+Correct
+
+interface Handlers {
+  [key: string]: () => void | Promise<void>;
+  run(): Promise<void>;
+}
+
+Incorrect
 Options: { "checksConditionals": true }
 
 const promise = Promise.resolve('value');
