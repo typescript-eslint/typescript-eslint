@@ -350,6 +350,43 @@ This option brings two main benefits over the older `project`:
 
 See [FAQs > Typed Linting > Project Service Issues](../troubleshooting/typed-linting/index.mdx#project-service-issues) for help on working with the project service.
 
+#### Experimental tsgo backend
+
+The parser includes an experimental backend for tsgo, TypeScript >=7.1's native implementation.
+It requires a Node.js version that can `require()` ES modules (20.19, 22.12, or newer) and a side-by-side installation of classic TypeScript 6 and a TypeScript 7.1 nightly aliased as `@typescript/native`.
+The nightly must be at least `7.1.0-dev.20261001.1`:
+
+```shell
+pnpm add --save-dev typescript@^6 @typescript/native@npm:typescript@7.1.0-dev.20261001.1
+```
+
+Select the tsgo backend by specifying it as `projectService.EXPERIMENTAL_backend`:
+
+```js
+import parser from '@typescript-eslint/parser';
+
+export default [
+  {
+    // ...
+    languageOptions: {
+      parser,
+      parserOptions: {
+        projectService: {
+          EXPERIMENTAL_backend: 'tsgo',
+        },
+      },
+    },
+  },
+];
+```
+
+The tsgo backend operates as a facade over TypeScript 7's program, types, symbols, and other entities.
+See [#12803](https://github.com/typescript-eslint/typescript-eslint/pull/12803) for more information.
+
+The tsgo backend does not support the legacy `parserOptions.project` and `parserOptions.programs` configuration options.
+Use `projectService` instead.
+It also does not yet support `parserOptions.extraFileExtensions` or the `allowDefaultProject`, `defaultProject`, `loadTypeScriptPlugins`, and `maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING` project service options.
+
 #### `ProjectServiceOptions`
 
 The behavior of `parserOptions.projectService` can be customized by setting it to an object.
@@ -384,6 +421,12 @@ There are several restrictions on this option to prevent it from being overused:
 
 - `**` is not allowed in globs passed to it
 - Files that match `allowDefaultProject` may not also be included in their nearest `tsconfig.json`
+
+##### `EXPERIMENTAL_backend`
+
+> Default: `undefined` _(the classic TypeScript backend)_
+
+Set to `'tsgo'` to opt in to the experimental tsgo backend described [above](#experimental-tsgo-backend).
 
 ##### `defaultProject`
 

@@ -1,4 +1,5 @@
 import { noFormat } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import rule from '../../src/rules/no-deprecated';
 import { getFixturesRootDir, createRuleTesterWithTypes } from '../RuleTester';
@@ -8,7 +9,6 @@ const ruleTester = createRuleTesterWithTypes({
   ecmaFeatures: {
     jsx: true,
   },
-  project: './tsconfig.json',
 });
 
 ruleTester.run('no-deprecated', rule, {
@@ -461,15 +461,13 @@ const [{ anchor = 'bar' }] = x;
     {
       code: `
 async function fn() {
-  const d = await import('./deprecated.js');
+  const d = await import('../deprecated.js');
   d.default;
 }
       `,
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.moduleResolution-node16.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'moduleResolution-node16'),
         },
       },
     },
@@ -3419,7 +3417,7 @@ imported;
     {
       code: `
 async function fn() {
-  const d = await import('./deprecated.js');
+  const d = await import('../deprecated.js');
   d.default.default;
 }
       `,
@@ -3435,9 +3433,7 @@ async function fn() {
       ],
       languageOptions: {
         parserOptions: {
-          project: './tsconfig.moduleResolution-node16.json',
-          projectService: false,
-          tsconfigRootDir: rootDir,
+          tsconfigRootDir: path.join(rootDir, 'moduleResolution-node16'),
         },
       },
     },
@@ -4639,6 +4635,35 @@ void { normalVariable };
           endLine: 4,
           line: 4,
           messageId: 'deprecated',
+        },
+      ],
+    },
+  ],
+});
+
+// The tsgo backend only runs under the project service.
+createRuleTesterWithTypes().run('no-deprecated', rule, {
+  valid: [],
+  invalid: [
+    {
+      code: `
+class Base {
+  /** @deprecated Use other. */
+  method(): void {}
+}
+class Sub extends Base {
+  override method(): void {}
+}
+new Sub().method();
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: 'method', reason: 'Use other.' },
+          endColumn: 17,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecatedWithReason',
         },
       ],
     },

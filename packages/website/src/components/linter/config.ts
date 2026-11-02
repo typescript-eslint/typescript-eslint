@@ -3,6 +3,7 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export const defaultParseSettings: ParseSettings = {
   allowInvalidAST: false,
+  backend: 'classic',
   code: '',
   codeFullText: '',
   comment: true,

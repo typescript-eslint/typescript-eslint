@@ -259,8 +259,8 @@ async function getPnpmCatalog() {
   return parsed.catalog;
 }
 
-// Using the root pnpm-workspace.yaml content but without the catalog and packages,
-// so it contains only pnpm's settings without the monorepo-related stuff.
+// Using the root pnpm-workspace.yaml content but without the packages,
+// so it contains only pnpm's settings and catalog without the monorepo-related stuff.
 async function getPnpmWorkspaceContent({
   overrides,
 }: {
@@ -273,7 +273,6 @@ async function getPnpmWorkspaceContent({
 
   const parsed = yaml.parse(pnpmWorkspace) as Record<string, unknown>;
 
-  delete parsed.catalog;
   delete parsed.packages;
 
   parsed.overrides = overrides;

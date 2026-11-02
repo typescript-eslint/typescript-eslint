@@ -9,7 +9,7 @@ const matrices = getTestMatrices(affected);
 
 const outputs = {
   is_plugin_affected: matrices.isPluginAffected,
-  project_service_packages: matrices.projectServicePackages,
+  project_service_matrix: matrices.projectServiceMatrix,
   snapshot_packages: matrices.snapshotPackages,
   unit_tests_matrix: matrices.unitTestsMatrix,
 };
