@@ -4278,6 +4278,201 @@ const x: A = { [\`\${'deprecated'}Field\`]: 'string' };
     },
     {
       code: `
+interface Options {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+  b?: string;
+}
+declare function optional(options?: Options): void;
+optional({ a: 'x' });
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 13,
+          endLine: 8,
+          line: 8,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface Options {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+  b?: string;
+}
+const x: Options | undefined = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 34,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 35,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface Options {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+  b?: string;
+}
+const x: Options | { c: string } = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 38,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 39,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  a?: string;
+}
+interface B {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+}
+const x: A | B = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 21,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+}
+interface B {
+  /** @deprecated Use \`c\` instead. */
+  a?: string;
+}
+const x: A | B = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 21,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  a?: string;
+}
+interface B {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+}
+const x: A & B = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 21,
+          endLine: 9,
+          line: 9,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  /** @deprecated Use \`b\` instead. */
+  a?: string;
+}
+interface B {
+  /** @deprecated Use \`c\` instead. */
+  a?: string;
+}
+const x: A & B = { a: 'x' };
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'a', reason: 'Use `b` instead.' },
+          endColumn: 21,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface Options {
+  /** @deprecated */
+  a?: string;
+}
+declare const o: Options | undefined;
+o?.['a'];
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'a' },
+          endColumn: 8,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+interface AProps {
+  /** @deprecated Use \`c\` instead. */
+  b?: string;
+}
+
+function A(props: AProps | { c: string }) {
+  return <div />;
+}
+
+const a = <A b="" />;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { name: 'b', reason: 'Use `c` instead.' },
+          endColumn: 15,
+          endLine: 11,
+          line: 11,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
 interface Foo {
   /** @deprecated */
   1: string;
