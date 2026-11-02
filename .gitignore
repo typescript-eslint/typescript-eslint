@@ -43,6 +43,8 @@ build/Release
 
 # Dependency directories
 node_modules/
+!packages/type-utils/tests/fixtures/node_modules/
+!packages/type-utils/tests/fixtures/node_modules/**
 jspm_packages/
 
 # Optional npm cache directory
