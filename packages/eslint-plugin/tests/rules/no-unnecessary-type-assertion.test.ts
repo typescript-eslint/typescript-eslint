@@ -834,7 +834,6 @@ const a = mapDefined(() =>
 );
 [a].concat(arrayA);
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
     `
 interface A {
   a: string;
@@ -1021,7 +1020,6 @@ const x: E | undefined = o?.fn(n => n | 0, 0 as E);
   ],
 
   invalid: [
-    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
     {
       code: `
 interface A {
@@ -1057,7 +1055,6 @@ const fn: () => A = () => {
 };
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
     {
       code: `
 interface A {
@@ -1093,7 +1090,6 @@ declare function take(x: A): number;
 mapDefined(() => take(b));
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
     {
       code: `
 interface A {
@@ -1137,7 +1133,6 @@ mapDefined(() => {
 });
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
     {
       code: `
 interface A {
@@ -1173,7 +1168,6 @@ declare function id<T>(x: T): T;
 mapDefined(() => id<A>(b));
       `,
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/13089
     {
       code: `
 interface A {
