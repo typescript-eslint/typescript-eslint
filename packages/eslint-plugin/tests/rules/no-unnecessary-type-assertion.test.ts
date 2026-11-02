@@ -984,6 +984,106 @@ enum E {
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
     `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const values: Record<Color, string>;
+declare const valueStr: string;
+values[+valueStr as Color] = 'updated';
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const values: Record<Color, string>;
+declare const valueStr: string;
+const color = +valueStr as Color;
+values[color] = 'updated';
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const color = <Color>value;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const value = color as number;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const color = value as Color;
+    `,
+    `
+enum Direction {
+  Up = 1,
+  Down,
+}
+
+declare const value: number | undefined;
+const direction = value as Direction | undefined;
+    `,
+    `
+enum Computed {
+  Length = 'abc'.length,
+}
+
+declare const value: number;
+const computed = value as Computed;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as Color | number;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | 5;
+    `,
+    `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | 5;
+const other = value as number;
+    `,
   ],
 
   invalid: [
@@ -1998,6 +2098,130 @@ enum T {
 
 declare const a: T.Value1;
 const b = a;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const other = color as Color;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 29,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const color: Color;
+const other = color;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value as number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 30,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: Color | number;
+const other = value;
+      `,
+    },
+    {
+      code: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value as Color | number;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 38,
+          endLine: 9,
+          line: 9,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+declare const value: number;
+const other = value;
       `,
     },
     {
