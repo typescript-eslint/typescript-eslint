@@ -77,6 +77,8 @@ const rules = lazyRules({
     require('./no-non-null-asserted-optional-chain'),
   'no-non-null-assertion': () => require('./no-non-null-assertion'),
   'no-redeclare': () => require('./no-redeclare'),
+  'no-redundant-default-arguments': () =>
+    require('./no-redundant-default-arguments'),
   'no-redundant-type-constituents': () =>
     require('./no-redundant-type-constituents'),
   'no-require-imports': () => require('./no-require-imports'),
