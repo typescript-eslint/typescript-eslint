@@ -18,7 +18,7 @@ import {
 } from '@typescript-eslint/typescript-estree';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import debug from 'debug';
-import { ScriptTarget } from 'typescript';
+import { JsxEmit, ScriptTarget } from 'typescript';
 
 const log = debug('typescript-eslint:parser:parser');
 
@@ -176,6 +176,15 @@ export function parseForESLint(
       const factory = compilerOptions.jsxFactory.split('.')[0].trim();
       analyzeOptions.jsxPragma = factory;
       log('Resolved jsxPragma from program: %s', analyzeOptions.jsxPragma);
+    } else if (
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
+      analyzeOptions.jsxPragma === undefined &&
+      (compilerOptions.jsx === JsxEmit.ReactJSX ||
+        compilerOptions.jsx === JsxEmit.ReactJSXDev)
+    ) {
+      // the automatic JSX runtime imports its own factory, so JSX doesn't reference a variable in scope
+      analyzeOptions.jsxPragma = null;
+      log('Resolved jsxPragma from program: null (automatic JSX runtime)');
     }
     if (
       // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
