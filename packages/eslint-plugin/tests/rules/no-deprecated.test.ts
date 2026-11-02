@@ -409,6 +409,10 @@ export { 'deprecatedFunction' } from './deprecated';
       // Arbitrary module namespace identifier names require TS 5.6
       dependencyConstraints: { typescript: '5.6' },
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13116
+    `
+export { circular } from './react';
+    `,
     `
 namespace A {
   /** @deprecated */
