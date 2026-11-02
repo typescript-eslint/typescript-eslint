@@ -684,17 +684,21 @@ export default createRule<Options, MessageIds>({
     function isInGenericContext(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): boolean {
+      // Set to true on a `return`, to tell whether the value leaves a function with a block body
       let seenReturn = false;
+      // The child of `current`, to tell a call argument from the callee
       let previous: TSESTree.Node = node;
       for (
         let current: TSESTree.Node | undefined = node.parent;
         current;
         previous = current, current = current.parent
       ) {
+        // `return x as T` leaves the function like an expression body does
         if (current.type === AST_NODE_TYPES.ReturnStatement) {
           seenReturn = true;
           continue;
         }
+        // A declaration, like `function f() { return x as T; }`, is never passed to a call
         if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
           return false;
         }
@@ -702,12 +706,14 @@ export default createRule<Options, MessageIds>({
           current.type === AST_NODE_TYPES.FunctionExpression ||
           current.type === AST_NODE_TYPES.ArrowFunctionExpression
         ) {
+          // A block body without a `return`, like `function () { fn(x as T); }`, keeps the value inside
           if (
             current.body.type === AST_NODE_TYPES.BlockStatement &&
             !seenReturn
           ) {
             return false;
           }
+          // The value leaves `function () { return x as T; }` or `() => x as T`
           seenReturn = false;
           continue;
         }
@@ -715,6 +721,7 @@ export default createRule<Options, MessageIds>({
           current.type === AST_NODE_TYPES.CallExpression ||
           current.type === AST_NODE_TYPES.NewExpression
         ) {
+          // A generic call without explicit type arguments, like `fn(x as T)`, infers from the value
           if (current.typeArguments == null) {
             if (
               current.type === AST_NODE_TYPES.CallExpression &&
@@ -730,6 +737,7 @@ export default createRule<Options, MessageIds>({
               return true;
             }
           }
+          // Any other call takes the argument as is, so the value goes no further
           if (current.arguments.some(argument => argument === previous)) {
             return false;
           }
