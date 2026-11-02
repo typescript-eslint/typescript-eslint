@@ -190,7 +190,13 @@ export default util.createRule<Options, MessageId>({
           .map(param =>
             checker.getTypeOfSymbolAtLocation(param, callTsNode.expression),
           )
-          .flatMap(paramType => tsutils.unionConstituents(paramType))
+          // Use the apparent type as the source of the unionConstituents instead
+          // of the parameter type, to prevent getCallSignatures from going
+          // ballistic doing a union type merge that is not needed to collect
+          // the expected return types
+          .flatMap(paramType =>
+            tsutils.unionConstituents(checker.getApparentType(paramType)),
+          )
           .flatMap(paramType => paramType.getCallSignatures())
           .map(paramSignature => paramSignature.getReturnType());
 
