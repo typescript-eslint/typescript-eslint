@@ -89,7 +89,7 @@
     "title-case": "^4.3.2",
     "tsx": "catalog:",
     "typescript": "catalog:",
-    "unist-util-visit": "^5.0.0",
+    "unist-util-visit": "^5.2.0",
     "vitest": "catalog:"
   },
   "peerDependencies": {
