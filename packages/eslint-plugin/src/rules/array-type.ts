@@ -268,8 +268,10 @@ export default createRule<Options, MessageIds>({
         const typeParens = typeNeedsParentheses(type);
         const parentParens =
           readonlyPrefix &&
-          node.parent.type === AST_NODE_TYPES.TSArrayType &&
-          !isParenthesized(node.parent.elementType, context.sourceCode);
+          (node.parent.type === AST_NODE_TYPES.TSArrayType ||
+            (node.parent.type === AST_NODE_TYPES.TSIndexedAccessType &&
+              node.parent.objectType === node)) &&
+          !isParenthesized(node, context.sourceCode);
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''

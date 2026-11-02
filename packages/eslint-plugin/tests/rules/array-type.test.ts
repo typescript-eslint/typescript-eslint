@@ -2042,6 +2042,82 @@ interface FooInterface {
       output: 'type Foo = (readonly object[])[];',
     },
     {
+      code: 'type Foo = ReadonlyArray<object>[number];',
+      errors: [
+        {
+          column: 12,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'object',
+          },
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type Foo = (readonly object[])[number];',
+    },
+    {
+      code: 'type Foo = ReadonlyArray<object>[number][];',
+      errors: [
+        {
+          column: 12,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'object',
+          },
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type Foo = (readonly object[])[number][];',
+    },
+    {
+      code: 'type Foo = Readonly<object[]>[number];',
+      errors: [
+        {
+          column: 12,
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'object[]',
+          },
+          endColumn: 30,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArrayReadonly',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type Foo = (readonly object[])[number];',
+    },
+    {
+      code: 'type Foo = X[ReadonlyArray<object>];',
+      errors: [
+        {
+          column: 14,
+          data: {
+            className: 'ReadonlyArray',
+            readonlyPrefix: 'readonly ',
+            type: 'object',
+          },
+          endColumn: 35,
+          endLine: 1,
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type Foo = X[readonly object[]];',
+    },
+    {
       code: 'const foo: Array<new (...args: any[]) => void> = [];',
       errors: [
         {
