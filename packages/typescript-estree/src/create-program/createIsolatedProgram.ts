@@ -67,6 +67,8 @@ export function createIsolatedProgram(
   const program = ts.createProgram(
     [parseSettings.filePath],
     {
+      allowJs: true,
+      checkJs: true,
       jsDocParsingMode: parseSettings.jsDocParsingMode,
       jsx: parseSettings.jsx ? ts.JsxEmit.Preserve : undefined,
       noResolve: true,
