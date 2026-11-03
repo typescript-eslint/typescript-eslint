@@ -770,6 +770,40 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    /**
+     * `const arr = [];` declares an evolving array: its element type is inferred
+     * from what is pushed into it. At the call site the checker reports `any[]`,
+     * so an assertion on the pushed value is what determines the element type.
+     * @see https://github.com/typescript-eslint/typescript-eslint/issues/12268
+     */
+    function isArgumentToEvolvingArrayMethod(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      const { parent } = node;
+      if (
+        parent.type !== AST_NODE_TYPES.CallExpression ||
+        !parent.arguments.includes(node) ||
+        parent.callee.type !== AST_NODE_TYPES.MemberExpression ||
+        parent.callee.object.type !== AST_NODE_TYPES.Identifier
+      ) {
+        return false;
+      }
+      const symbol = services.getSymbolAtLocation(parent.callee.object);
+      if (!symbol) {
+        return false;
+      }
+      const declaredType = checker.getTypeOfSymbol(symbol);
+      if (!checker.isArrayType(declaredType)) {
+        return false;
+      }
+      const [elementType] = checker.getTypeArguments(declaredType);
+      // evolving arrays use an internal `any` that is not the global one
+      return (
+        isTypeFlagSet(elementType, ts.TypeFlags.Any) &&
+        elementType !== checker.getAnyType()
+      );
+    }
+
     const SKIP_PARENT_TYPES = new Set([
       AST_NODE_TYPES.TSAsExpression,
       AST_NODE_TYPES.TSTypeAssertion,
@@ -804,7 +838,8 @@ export default createRule<Options, MessageIds>({
         isPropertyInProblematicContext(node) ||
         isAssignmentInNonStatementContext(node) ||
         isRightHandSideOfLogicalAssignment(node) ||
-        isArgumentToOverloadedFunction(node)
+        isArgumentToOverloadedFunction(node) ||
+        isArgumentToEvolvingArrayMethod(node)
       ) {
         return true;
       }

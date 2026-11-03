@@ -24,6 +24,21 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     requireData: true,
   },
   valid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12268
+    `
+function foo() {
+  const arr = [];
+  arr.push({ x: 1 } as { x: number; y: number });
+  return arr;
+}
+    `,
+    `
+function foo() {
+  const arr = [];
+  arr.push(1, { x: 1 } as { x: number; y: number });
+  return arr;
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
 type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
@@ -1087,6 +1102,52 @@ const other = value as number;
   ],
 
   invalid: [
+    {
+      code: `
+function foo() {
+  const arr: { x: number; y: number }[] = [];
+  arr.push({ x: 1, y: 2 } as { x: number; y: number });
+  return arr;
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 54,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function foo() {
+  const arr: { x: number; y: number }[] = [];
+  arr.push({ x: 1, y: 2 });
+  return arr;
+}
+      `,
+    },
+    {
+      code: `
+declare const collection: { add(item: number): void };
+declare const n: 1 | 2;
+collection.add(n as number);
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+declare const collection: { add(item: number): void };
+declare const n: 1 | 2;
+collection.add(n);
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [
