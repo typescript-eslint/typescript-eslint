@@ -1139,7 +1139,7 @@ collection.add(n as number);
           endColumn: 27,
           endLine: 4,
           line: 4,
-          messageId: 'unnecessaryAssertion',
+          messageId: 'contextuallyUnnecessary',
         },
       ],
       output: `
