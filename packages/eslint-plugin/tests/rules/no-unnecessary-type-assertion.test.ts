@@ -24,6 +24,21 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     requireData: true,
   },
   valid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/12268
+    `
+function foo() {
+  const arr = [];
+  arr.push({ x: 1 } as { x: number; y: number });
+  return arr;
+}
+    `,
+    `
+function foo() {
+  const arr = [];
+  arr.push(1, { x: 1 } as { x: number; y: number });
+  return arr;
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
 type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
@@ -1087,6 +1102,23 @@ const other = value as number;
   ],
 
   invalid: [
+    {
+      code: `
+function foo() {
+  const arr: { x: number; y: number }[] = [];
+  arr.push({ x: 1, y: 2 } as { x: number; y: number });
+  return arr;
+}
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+      output: `
+function foo() {
+  const arr: { x: number; y: number }[] = [];
+  arr.push({ x: 1, y: 2 });
+  return arr;
+}
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [
