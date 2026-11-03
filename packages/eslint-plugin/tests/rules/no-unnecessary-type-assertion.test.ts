@@ -1110,13 +1110,42 @@ function foo() {
   return arr;
 }
       `,
-      errors: [{ messageId: 'unnecessaryAssertion' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 54,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
       output: `
 function foo() {
   const arr: { x: number; y: number }[] = [];
   arr.push({ x: 1, y: 2 });
   return arr;
 }
+      `,
+    },
+    {
+      code: `
+declare const collection: { add(item: number): void };
+declare const n: number;
+collection.add(n as number);
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const collection: { add(item: number): void };
+declare const n: number;
+collection.add(n);
       `,
     },
     {
