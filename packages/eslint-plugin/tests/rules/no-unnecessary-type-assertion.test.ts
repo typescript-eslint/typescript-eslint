@@ -1130,7 +1130,7 @@ function foo() {
     {
       code: `
 declare const collection: { add(item: number): void };
-declare const n: number;
+declare const n: 1 | 2;
 collection.add(n as number);
       `,
       errors: [
@@ -1144,7 +1144,7 @@ collection.add(n as number);
       ],
       output: `
 declare const collection: { add(item: number): void };
-declare const n: number;
+declare const n: 1 | 2;
 collection.add(n);
       `,
     },
