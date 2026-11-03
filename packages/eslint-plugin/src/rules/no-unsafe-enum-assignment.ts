@@ -439,10 +439,11 @@ export default createRule<[], MessageIds>({
             ?.declarations?.flatMap(declaration =>
               getMappedKeyConstraintTypes(checker, declaration),
             ) ?? [];
-        const enumReceiverTypes = receiverTypes.filter(
-          receiverType => getEnumTypes(checker, receiverType).length > 0,
-        );
-        if (enumReceiverTypes.length === 0) {
+        if (
+          !receiverTypes.some(
+            receiverType => getEnumTypes(checker, receiverType).length > 0,
+          )
+        ) {
           return;
         }
 
@@ -456,7 +457,7 @@ export default createRule<[], MessageIds>({
               !checker.isTypeAssignableTo(senderType, receiverType),
           )
         ) {
-          report(node.property, 'unsafeEnumAccess', enumReceiverTypes);
+          report(node.property, 'unsafeEnumAccess', receiverTypes);
         }
       },
       ObjectExpression(node) {
