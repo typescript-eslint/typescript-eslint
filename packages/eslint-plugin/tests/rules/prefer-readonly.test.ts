@@ -769,8 +769,117 @@ class Test3 {
   }
 }
     `,
+    `
+export class OuterClass {
+  private wasWritten = false;
+
+  public getInner() {
+    const outer = this;
+
+    return class {
+      public doSomething() {
+        outer.wasWritten = true;
+      }
+    };
+  }
+}
+    `,
+    `
+class Outer {
+  private value = 0;
+
+  constructor() {
+    const outer = this;
+
+    class Inner {
+      increment() {
+        outer.value++;
+      }
+    }
+  }
+}
+    `,
+    `
+class Outer {
+  private static count = 0;
+
+  static Inner = class {
+    increment() {
+      Outer.count += 1;
+    }
+  };
+}
+    `,
+    `
+class Outer {
+  #value = 0;
+
+  getInner() {
+    return class {
+      reset(outer: Outer) {
+        outer.#value = 0;
+      }
+    };
+  }
+}
+    `,
+    `
+class Outer {
+  private value = 0;
+
+  getInner() {
+    return class {
+      reset(outer: Outer) {
+        outer['value'] = 0;
+      }
+    };
+  }
+}
+    `,
   ],
   invalid: [
+    {
+      code: `
+class Outer {
+  private value = 0;
+
+  getInner() {
+    const outer = this;
+
+    return class {
+      read() {
+        return outer.value;
+      }
+    };
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { name: 'value' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+class Outer {
+  private readonly value = 0;
+
+  getInner() {
+    const outer = this;
+
+    return class {
+      read() {
+        return outer.value;
+      }
+    };
+  }
+}
+      `,
+    },
     {
       code: `
 class Test2 {
