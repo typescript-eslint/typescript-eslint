@@ -1094,6 +1094,8 @@ declare const base: { a: string };
 const spread = { ...base } as const;
 const asserted = spread as { readonly a: string };
       `,
+      // CheckFlags.Readonly on spread `as const` properties is not reliable on TS 4.8
+      dependencyConstraints: { typescript: '5.0' },
       errors: [
         {
           column: 18,

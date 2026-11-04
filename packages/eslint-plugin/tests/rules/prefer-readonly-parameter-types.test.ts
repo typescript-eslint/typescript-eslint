@@ -83,11 +83,15 @@ interface Empty {}
 function foo(arg: Empty) {}
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/13036
-    `
+    {
+      code: `
 declare const base: { foo: string };
 const spread = { ...base } as const;
 function foo(arg: typeof spread) {}
-    `,
+      `,
+      // CheckFlags.Readonly on spread `as const` properties is not reliable on TS 4.8
+      dependencyConstraints: { typescript: '5.0' },
+    },
 
     // weird other cases
     `
