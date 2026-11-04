@@ -1087,6 +1087,28 @@ const other = value as number;
   ],
 
   invalid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/13036
+    {
+      code: `
+declare const base: { a: string };
+const spread = { ...base } as const;
+const asserted = spread as { readonly a: string };
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 50,
+          endLine: 4,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const base: { a: string };
+const spread = { ...base } as const;
+const asserted = spread;
+      `,
+    },
     {
       code: 'const foo = <3>3;',
       errors: [

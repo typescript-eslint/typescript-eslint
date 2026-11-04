@@ -1,6 +1,13 @@
 import 'typescript';
 
 declare module 'typescript' {
+  interface Symbol {
+    // Compiler-internal links on transient symbols. Not in the public API.
+    links?: {
+      checkFlags: number;
+    };
+  }
+
   interface TypeChecker {
     // internal TS APIs
 

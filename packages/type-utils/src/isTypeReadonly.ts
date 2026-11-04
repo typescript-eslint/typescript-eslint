@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
 
+import { isPropertyReadonly } from './isPropertyReadonly';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import {
   typeMatchesSomeSpecifier,
@@ -230,13 +231,7 @@ function isTypeReadonlyObject(
         }
       }
 
-      if (
-        tsutils.isPropertyReadonlyInType(
-          type,
-          property.getEscapedName(),
-          checker,
-        )
-      ) {
+      if (isPropertyReadonly(type, property, checker)) {
         continue;
       }
 

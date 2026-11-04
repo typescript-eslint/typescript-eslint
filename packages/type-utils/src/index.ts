@@ -7,6 +7,7 @@ export * from './getSourceFileOfNode';
 export * from './getTypeName';
 export * from './isSymbolFromDefaultLibrary';
 export * from './isTypeBrandedLiteralLike';
+export * from './isPropertyReadonly';
 export * from './isTypeReadonly';
 export * from './isUnsafeAssignment';
 export * from './predicates';
