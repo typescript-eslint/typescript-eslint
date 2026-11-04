@@ -337,7 +337,7 @@ function hasMaybeAwaitableValue(
   return tsutils
     .unionConstituents(getConstrainedTypeAtLocation(services, node))
     .some(part =>
-      getValueTypesOfArrayLike(part, checker)?.some(
+      getValueTypesOfArrayLike(part, tsNode, checker)?.some(
         valueType => !isAlwaysNonAwaitableType(valueType, tsNode, checker),
       ),
     );

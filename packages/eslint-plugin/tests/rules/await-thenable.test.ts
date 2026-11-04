@@ -791,15 +791,16 @@ Promise.all([]);
     },
     {
       code: `
-Promise.all('abc');
+function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
+  Promise.all(maybePromises);
+}
       `,
       options: [{ allowMixedPromiseArrays: true }],
     },
     {
       code: `
-function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
-  Promise.all(maybePromises);
-}
+declare const mixed: Iterable<number | Promise<number>>;
+Promise.all(mixed);
       `,
       options: [{ allowMixedPromiseArrays: true }],
     },
@@ -2100,6 +2101,38 @@ Promise.all([1, 2]);
           endColumn: 18,
           endLine: 2,
           line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+Promise.all('abc');
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+      options: [{ allowMixedPromiseArrays: true }],
+    },
+    {
+      code: `
+interface NumIter extends Iterable<number> {}
+declare const x: NumIter;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
