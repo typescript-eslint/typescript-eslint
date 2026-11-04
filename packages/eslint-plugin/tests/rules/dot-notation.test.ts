@@ -172,6 +172,8 @@ type Foo = {
 declare const foo: Foo;
 foo['bar'];
       `,
+      // `Lowercase<string>` and `Uppercase<string>` index signatures require TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noPropertyAccessFromIndexSignature.json',

@@ -9,6 +9,7 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getParserServices,
+  isTypeLiteralType,
   nullThrows,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
@@ -91,7 +92,14 @@ export default createRule<Options, MessageIds>({
           : undefined;
       }
       const targetSymbol = checker.getAliasedSymbol(symbol);
-      while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
+      // A circular alias (e.g. `export { x } from './self'`) never reaches a
+      // non-alias symbol, so stop once the chain comes back to a seen symbol.
+      const visitedSymbols = new Set<ts.Symbol>();
+      while (
+        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias) &&
+        !visitedSymbols.has(symbol)
+      ) {
+        visitedSymbols.add(symbol);
         const reason = getJsDocDeprecation(symbol);
         if (reason != null) {
           return reason;
@@ -479,7 +487,7 @@ export default createRule<Options, MessageIds>({
 
       const propertyType = services.getTypeAtLocation(node.property);
 
-      if (propertyType.isLiteral()) {
+      if (isTypeLiteralType(propertyType)) {
         const objectType = services.getTypeAtLocation(node.object);
 
         const propertyName = propertyType.isStringLiteral()

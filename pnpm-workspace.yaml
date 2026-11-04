@@ -43,9 +43,9 @@ catalog:
   '@types/node': ^24.1.0
   '@types/react': ^18.3.21
   '@typescript/native': 'npm:typescript@^7.0.2'
-  '@vitest/coverage-v8': ^4.0.18
-  '@vitest/pretty-format': ^4.0.18
-  '@vitest/utils': ^4.0.18
+  '@vitest/coverage-v8': ^5.0.3
+  '@vitest/pretty-format': ^5.0.3
+  '@vitest/utils': ^5.0.3
   ajv: ^6.12.6
   eslint: ^10.0.0
   esquery: ^1.7.0
@@ -59,7 +59,7 @@ catalog:
   tsx: ^4.7.2
   typescript: '>=4.8.4 <6.1.0'
   vite: ^7.3.0
-  vitest: ^4.0.18
+  vitest: ^5.0.3
   yaml: ^2.8.2
 
 # The typescript version range is very loose, allowing pnpm to install 5.8.2,

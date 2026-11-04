@@ -22,4 +22,11 @@ declare module 'typescript' {
      */
     isTupleType(type: Type): type is TupleTypeReference;
   }
+
+  interface Type {
+    /**
+     * @deprecated don't use this directly as it does not include bigint literals pre-5.0; instead use isTypeLiteralType from `@typescript-eslint/type-utils`.
+     */
+    isLiteral(): this is LiteralType;
+  }
 }
