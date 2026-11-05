@@ -8,8 +8,8 @@ import ASTViewer from '../ast/ASTViewer';
 import astStyles from '../ast/ASTViewer.module.css';
 
 export interface TypeInfoProps {
-  readonly onHoverNode?: OnHoverNodeFn;
-  readonly typeChecker?: ts.TypeChecker;
+  readonly onHoverNode?: OnHoverNodeFn | undefined;
+  readonly typeChecker?: ts.TypeChecker | undefined;
   readonly value: ts.Node;
 }
 
@@ -30,8 +30,8 @@ interface SimpleFieldProps {
 
 interface TypeGroupProps {
   readonly label: string;
-  readonly onHoverNode?: OnHoverNodeFn;
-  readonly string?: string;
+  readonly onHoverNode?: OnHoverNodeFn | undefined;
+  readonly string?: string | undefined;
   readonly type?: unknown;
 }
 

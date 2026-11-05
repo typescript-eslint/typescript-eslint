@@ -17,5 +17,5 @@ export interface RuleTesterConfig extends FlatConfig.Config {
   /**
    * Constraints that must pass in the current environment for any tests to run.
    */
-  readonly dependencyConstraints?: DependencyConstraint;
+  readonly dependencyConstraints?: DependencyConstraint | undefined;
 }

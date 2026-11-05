@@ -232,7 +232,7 @@ async function writeConfig({
   const flatExtends: string[] = [];
   const flatConfig: FlatConfig.Config = {
     name: `typescript-eslint/${name}`,
-    rules: config.rules,
+    ...(config.rules ? { rules: config.rules } : {}),
   };
   if (config.extends) {
     for (const extendPath of config.extends) {

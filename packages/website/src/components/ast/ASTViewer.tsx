@@ -12,12 +12,12 @@ import DataRender from './DataRenderer';
 import { findSelectionPath } from './selectedRange';
 
 export interface ASTViewerProps {
-  readonly cursorPosition?: number;
-  readonly enableScrolling?: boolean;
-  readonly filter?: ESQuery.Selector;
+  readonly cursorPosition?: number | undefined;
+  readonly enableScrolling?: boolean | undefined;
+  readonly filter?: ESQuery.Selector | undefined;
   readonly hideCopyButton?: boolean;
-  readonly onHoverNode?: OnHoverNodeFn;
-  readonly showTokens?: boolean;
+  readonly onHoverNode?: OnHoverNodeFn | undefined;
+  readonly showTokens?: boolean | undefined;
   readonly value: unknown;
 }
 
