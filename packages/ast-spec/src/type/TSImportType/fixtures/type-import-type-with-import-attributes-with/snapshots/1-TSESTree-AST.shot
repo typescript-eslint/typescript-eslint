@@ -18,91 +18,40 @@ Program {
       },
       typeAnnotation: TSImportType {
         type: "TSImportType",
-        options: ObjectExpression {
-          type: "ObjectExpression",
-          properties: [
-            Property {
-              type: "Property",
-              computed: false,
-              key: Identifier {
-                type: "Identifier",
-                decorators: [],
-                name: "with",
-                optional: false,
-
-                range: [23, 27],
-                loc: {
-                  start: { column: 23, line: 1 },
-                  end: { column: 27, line: 1 },
-                },
-              },
-              kind: "init",
-              method: false,
+        options: [
+          ImportAttribute {
+            type: "ImportAttribute",
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "type",
               optional: false,
-              shorthand: false,
-              value: ObjectExpression {
-                type: "ObjectExpression",
-                properties: [
-                  Property {
-                    type: "Property",
-                    computed: false,
-                    key: Identifier {
-                      type: "Identifier",
-                      decorators: [],
-                      name: "type",
-                      optional: false,
 
-                      range: [31, 35],
-                      loc: {
-                        start: { column: 31, line: 1 },
-                        end: { column: 35, line: 1 },
-                      },
-                    },
-                    kind: "init",
-                    method: false,
-                    optional: false,
-                    shorthand: false,
-                    value: Literal {
-                      type: "Literal",
-                      raw: "'json'",
-                      value: "json",
-
-                      range: [37, 43],
-                      loc: {
-                        start: { column: 37, line: 1 },
-                        end: { column: 43, line: 1 },
-                      },
-                    },
-
-                    range: [31, 43],
-                    loc: {
-                      start: { column: 31, line: 1 },
-                      end: { column: 43, line: 1 },
-                    },
-                  },
-                ],
-
-                range: [29, 45],
-                loc: {
-                  start: { column: 29, line: 1 },
-                  end: { column: 45, line: 1 },
-                },
-              },
-
-              range: [23, 45],
+              range: [31, 35],
               loc: {
-                start: { column: 23, line: 1 },
-                end: { column: 45, line: 1 },
+                start: { column: 31, line: 1 },
+                end: { column: 35, line: 1 },
               },
             },
-          ],
+            value: Literal {
+              type: "Literal",
+              raw: "'json'",
+              value: "json",
 
-          range: [21, 47],
-          loc: {
-            start: { column: 21, line: 1 },
-            end: { column: 47, line: 1 },
+              range: [37, 43],
+              loc: {
+                start: { column: 37, line: 1 },
+                end: { column: 43, line: 1 },
+              },
+            },
+
+            range: [31, 43],
+            loc: {
+              start: { column: 31, line: 1 },
+              end: { column: 43, line: 1 },
+            },
           },
-        },
+        ],
         qualifier: null,
         source: Literal {
           type: "Literal",
