@@ -3,7 +3,7 @@
  */
 export const NullThrowsReasons = {
   MissingParent: 'Expected node to have a parent.',
-  MissingToken: (token: string, thing: string) =>
+  MissingToken: (token: string, thing: string): string =>
     `Expected to find a ${token} for the ${thing}.`,
 } as const;
 

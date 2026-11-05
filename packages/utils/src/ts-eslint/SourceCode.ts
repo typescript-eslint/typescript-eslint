@@ -451,6 +451,7 @@ namespace SourceCode {
       };
 }
 
-class SourceCode extends (ESLintSourceCode as typeof SourceCodeBase) {}
+const SourceCodeClass = ESLintSourceCode as typeof SourceCodeBase;
+class SourceCode extends SourceCodeClass {}
 
 export { SourceCode };
