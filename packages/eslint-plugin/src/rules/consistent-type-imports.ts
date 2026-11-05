@@ -380,33 +380,43 @@ export default createRule<Options, MessageIds>({
                 specifier => `"${specifier.local.name}"`,
               );
 
-              const message = ((): {
-                data: Record<string, unknown>;
-                messageId: MessageIds;
-              } => {
-                const typeImports = formatWordList(importNames);
-
-                if (importNames.length === 1) {
-                  return {
+              if (
+                fixStyle === 'inline-type-imports' &&
+                report.typeSpecifiers.length > 1 &&
+                report.typeSpecifiers.every(
+                  specifier =>
+                    specifier.type === AST_NODE_TYPES.ImportSpecifier,
+                )
+              ) {
+                for (const specifier of report.typeSpecifiers) {
+                  context.report({
+                    node: specifier,
                     messageId: 'someImportsAreOnlyTypes',
                     data: {
-                      typeImports,
+                      typeImports: `"${specifier.local.name}"`,
                     },
-                  };
+                    *fix(fixer) {
+                      yield* fixToTypeImportDeclaration(
+                        fixer,
+                        { ...report, typeSpecifiers: [specifier] },
+                        sourceImports,
+                      );
+                    },
+                  });
                 }
-                return {
-                  messageId: 'someImportsAreOnlyTypes',
-                  data: {
-                    typeImports,
-                  },
-                };
-              })();
+                continue;
+              }
 
               context.report({
-                node: report.node,
-                ...message,
+                node:
+                  report.typeSpecifiers.length === 1
+                    ? report.typeSpecifiers[0]
+                    : report.node,
+                messageId: 'someImportsAreOnlyTypes',
+                data: {
+                  typeImports: formatWordList(importNames),
+                },
                 *fix(fixer) {
-                  // take all the typeSpecifiers and put them on a new line
                   yield* fixToTypeImportDeclaration(
                     fixer,
                     report,
