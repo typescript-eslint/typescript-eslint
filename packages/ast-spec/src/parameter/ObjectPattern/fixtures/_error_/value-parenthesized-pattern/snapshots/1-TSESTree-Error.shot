@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > ObjectPattern > _error_ > value-parenthesized-pattern > TSESTree - Error`]
+TSError
+> 1 | ({ a: ({ b }) } = x);
+    |       ^^^^^^^ The left-hand side of an assignment expression must be a variable or a property access.
+  2 |

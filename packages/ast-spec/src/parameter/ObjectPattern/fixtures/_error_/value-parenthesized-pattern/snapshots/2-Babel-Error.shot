@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > parameter > ObjectPattern > _error_ > value-parenthesized-pattern > Babel - Error`]
+BabelError
+> 1 | ({ a: ({ b }) } = x);
+    |        ^ Invalid parenthesized assignment pattern. (1:7)
+  2 |
+  
