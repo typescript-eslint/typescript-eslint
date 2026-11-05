@@ -23,10 +23,10 @@ export interface JsonRenderProps<T> {
   readonly lastElement?: boolean;
   readonly level: string;
   readonly nodeType?: ParentNodeType;
-  readonly onHover?: OnHoverNodeFn;
-  readonly selectedPath?: string;
-  readonly showTokens?: boolean;
-  readonly typeName?: string;
+  readonly onHover?: OnHoverNodeFn | undefined;
+  readonly selectedPath?: string | undefined;
+  readonly showTokens?: boolean | undefined;
+  readonly typeName?: string | undefined;
   readonly value: T;
 }
 

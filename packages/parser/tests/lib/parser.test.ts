@@ -232,7 +232,7 @@ describe('parser', () => {
         services: {
           program: {
             // Explicitly not setting a target so that the default is used
-            getCompilerOptions: () => ({ target: undefined }),
+            getCompilerOptions: () => ({}),
           },
         },
       } as typescriptESTree.ParseAndGenerateServicesResult<typescriptESTree.TSESTreeOptions>);

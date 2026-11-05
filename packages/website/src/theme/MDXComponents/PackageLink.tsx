@@ -23,7 +23,7 @@ export function PackageLink({
       className={styles.packageLink}
       href={`https://npmjs.com/${fullPackageName}`}
       packageName={packageName}
-      scope={scope}
+      {...(scope != null ? { scope } : {})}
     />
   );
 }

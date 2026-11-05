@@ -102,7 +102,7 @@ if (process.env.CI !== 'true' && !options.dryRun) {
 }
 
 const { projectsVersionData, workspaceVersion } = await releaseVersion({
-  specifier: options.version,
+  ...(options.version != null ? { specifier: options.version } : {}),
   // stage package.json updates to be committed later by the changelog command
   dryRun: options.dryRun,
   firstRelease: options.firstRelease,
@@ -125,7 +125,9 @@ await releaseChangelog({
   dryRun: options.dryRun,
   firstRelease: options.firstRelease,
   verbose: options.verbose,
-  version: workspaceVersion,
+  // An explicit null version means that no changes were detected, so only undefined is omitted
+  // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
+  ...(workspaceVersion !== undefined ? { version: workspaceVersion } : {}),
   versionData: projectsVersionData,
 });
 

@@ -67,6 +67,8 @@ export function createProgramFromConfigFile(
 ): ts.Program {
   const parsed = getParsedConfigFile(ts, configFile, projectDirectory);
   const host = ts.createCompilerHost(parsed.options, true);
-  host.jsDocParsingMode = jsDocParsingMode;
+  if (jsDocParsingMode != null) {
+    host.jsDocParsingMode = jsDocParsingMode;
+  }
   return ts.createProgram(parsed.fileNames, parsed.options, host);
 }

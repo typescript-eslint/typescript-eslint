@@ -10,7 +10,7 @@ export interface ConfigOptionsField {
   defaults?: unknown[];
   enum?: string[];
   key: string;
-  label?: string;
+  label?: string | undefined;
   type: 'boolean' | 'string';
 }
 
@@ -22,7 +22,7 @@ export interface ConfigOptionsType {
 export type ConfigEditorValues = Record<string, unknown>;
 
 export interface ConfigEditorProps {
-  readonly className?: string;
+  readonly className?: string | undefined;
   readonly onChange: (config: ConfigEditorValues) => void;
   readonly options: ConfigOptionsType[];
   readonly values: ConfigEditorValues;

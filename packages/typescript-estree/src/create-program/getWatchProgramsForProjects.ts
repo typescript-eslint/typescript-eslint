@@ -354,8 +354,8 @@ function createWatchProgram(
 
   // Since we don't want to asynchronously update program we want to disable timeout methods
   // So any changes in the program will be delayed and updated when getProgram is called on watch
-  watchCompilerHost.setTimeout = undefined;
-  watchCompilerHost.clearTimeout = undefined;
+  delete watchCompilerHost.setTimeout;
+  delete watchCompilerHost.clearTimeout;
   return ts.createWatchProgram(watchCompilerHost);
 }
 

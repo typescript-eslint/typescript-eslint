@@ -12,9 +12,9 @@ import { SimplifiedTreeView } from './SimplifiedTreeView';
 import { TypeInfo } from './TypeInfo';
 
 export interface TypesDetailsProps {
-  readonly cursorPosition?: number;
-  readonly onHoverNode?: OnHoverNodeFn;
-  readonly typeChecker?: ts.TypeChecker;
+  readonly cursorPosition?: number | undefined;
+  readonly onHoverNode?: OnHoverNodeFn | undefined;
+  readonly typeChecker?: ts.TypeChecker | undefined;
   readonly value: ts.Node;
 }
 
