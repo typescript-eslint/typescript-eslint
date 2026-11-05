@@ -644,9 +644,9 @@ let bar: C;
           `,
           errors: [
             {
-              column: 10,
+              column: 1,
               data: { typeImports: '"A" and "C"' },
-              endColumn: 17,
+              endColumn: 31,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -667,9 +667,9 @@ type T = { bar: C; baz: D };
           `,
           errors: [
             {
-              column: 10,
+              column: 1,
               data: { typeImports: '"A", "C" and "D"' },
-              endColumn: 20,
+              endColumn: 34,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -690,9 +690,9 @@ type T = { foo: A; bar: C; baz: D };
           `,
           errors: [
             {
-              column: 8,
+              column: 1,
               data: { typeImports: '"A", "C" and "D"' },
-              endColumn: 20,
+              endColumn: 34,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -761,9 +761,9 @@ type T = { c: C; d: D };
           `,
           errors: [
             {
-              column: 10,
+              column: 1,
               data: { typeImports: '"C" and "D"' },
-              endColumn: 14,
+              endColumn: 31,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -977,9 +977,9 @@ type T = Type1 | Type2 | Type3 | Type4 | Type5;
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 8,
+              column: 1,
               data: { typeImports: '"Type4" and "Type5"' },
-              endColumn: 22,
+              endColumn: 65,
               endLine: 5,
               line: 5,
               messageId: 'someImportsAreOnlyTypes',
@@ -1562,8 +1562,7 @@ type T = A;
 const b = B;
           `,
         },
-        // Multi-line mixed import: underline from the first to the last
-        // type-only specifier rather than the full declaration.
+        // Splitting multiple type-only imports reports the entire declaration.
         {
           code: noFormat`
 import {
@@ -1576,11 +1575,11 @@ B();
           `,
           errors: [
             {
-              column: 3,
+              column: 1,
               data: { typeImports: '"A" and "C"' },
-              endColumn: 4,
-              endLine: 5,
-              line: 3,
+              endColumn: 14,
+              endLine: 6,
+              line: 2,
               messageId: 'someImportsAreOnlyTypes',
             },
           ],
@@ -1596,7 +1595,6 @@ type T = A | C;
 B();
           `,
         },
-        // https://github.com/typescript-eslint/typescript-eslint/issues/4915
         {
           code: `
 import { A, B, type C } from 'foo';
@@ -1778,7 +1776,15 @@ A();
           errors: [
             {
               column: 13,
-              data: { typeImports: '"B" and "C"' },
+              data: { typeImports: '"B"' },
+              endColumn: 14,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+            {
+              column: 16,
+              data: { typeImports: '"C"' },
               endColumn: 17,
               endLine: 2,
               line: 2,
@@ -1907,7 +1913,15 @@ let baz: D;
           errors: [
             {
               column: 10,
-              data: { typeImports: '"A" and "C"' },
+              data: { typeImports: '"A"' },
+              endColumn: 11,
+              endLine: 2,
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+            {
+              column: 16,
+              data: { typeImports: '"C"' },
               endColumn: 17,
               endLine: 2,
               line: 2,

@@ -380,22 +380,43 @@ export default createRule<Options, MessageIds>({
                 specifier => `"${specifier.local.name}"`,
               );
 
-              const firstSpecifier = report.typeSpecifiers[0];
-              const lastSpecifier =
-                report.typeSpecifiers[report.typeSpecifiers.length - 1];
+              if (
+                fixStyle === 'inline-type-imports' &&
+                report.typeSpecifiers.length > 1 &&
+                report.typeSpecifiers.every(
+                  specifier =>
+                    specifier.type === AST_NODE_TYPES.ImportSpecifier,
+                )
+              ) {
+                for (const specifier of report.typeSpecifiers) {
+                  context.report({
+                    node: specifier,
+                    messageId: 'someImportsAreOnlyTypes',
+                    data: {
+                      typeImports: `"${specifier.local.name}"`,
+                    },
+                    *fix(fixer) {
+                      yield* fixToTypeImportDeclaration(
+                        fixer,
+                        { ...report, typeSpecifiers: [specifier] },
+                        sourceImports,
+                      );
+                    },
+                  });
+                }
+                continue;
+              }
 
               context.report({
-                loc: {
-                  start: firstSpecifier.loc.start,
-                  end: lastSpecifier.loc.end,
-                },
-                node: firstSpecifier,
+                node:
+                  report.typeSpecifiers.length === 1
+                    ? report.typeSpecifiers[0]
+                    : report.node,
                 messageId: 'someImportsAreOnlyTypes',
                 data: {
                   typeImports: formatWordList(importNames),
                 },
                 *fix(fixer) {
-                  // take all the typeSpecifiers and put them on a new line
                   yield* fixToTypeImportDeclaration(
                     fixer,
                     report,
