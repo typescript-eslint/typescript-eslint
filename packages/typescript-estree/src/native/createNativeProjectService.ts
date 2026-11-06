@@ -127,7 +127,9 @@ export function createNativeProjectService(
     }
     snapshot = nextSnapshot;
     fileContexts.clear();
-    previousSnapshot?.dispose();
+    if (previousSnapshot !== nextSnapshot) {
+      previousSnapshot?.dispose();
+    }
     return nextSnapshot;
   }
 
