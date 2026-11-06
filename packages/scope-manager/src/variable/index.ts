@@ -4,6 +4,7 @@ import type { Variable } from './Variable';
 export { ESLintScopeVariable } from './ESLintScopeVariable';
 export {
   ImplicitLibVariable,
+  type ImplicitLibVariableMap,
   type ImplicitLibVariableOptions,
   type LibDefinition,
 } from './ImplicitLibVariable';
