@@ -32,3 +32,22 @@
   white-space: break-spaces;
   word-wrap: break-word;
 }
+
+.fixDetails {
+  margin-top: 0.5rem;
+  white-space: normal;
+}
+
+.fixDetails summary {
+  cursor: pointer;
+}
+
+.fixDetails p {
+  margin: 0.5rem 0;
+}
+
+.fixData {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

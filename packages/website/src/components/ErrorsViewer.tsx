@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 
 import type { AlertBlockProps } from './layout/AlertBlock';
-import type { ErrorGroup, ErrorItem } from './types';
+import type { ErrorFix, ErrorGroup, ErrorItem } from './types';
 
 import styles from './ErrorsViewer.module.css';
 import AlertBlock from './layout/AlertBlock';
@@ -65,6 +65,34 @@ function FixButton(props: FixButtonProps): React.JSX.Element {
   );
 }
 
+function FixDetails({
+  fixer,
+  label,
+}: {
+  readonly fixer: ErrorFix;
+  readonly label: string;
+}): React.JSX.Element {
+  return (
+    <details className={styles.fixDetails}>
+      <summary>{label}</summary>
+      <p>
+        Range offsets are zero-based UTF-16 positions; the end is exclusive.
+      </p>
+      <pre className={styles.fixData}>
+        {JSON.stringify(fixer.edit, null, 2)}
+      </pre>
+      {fixer.originalText != null && (
+        <>
+          <p>Original text (JSON-escaped):</p>
+          <pre className={styles.fixData}>
+            {JSON.stringify(fixer.originalText)}
+          </pre>
+        </>
+      )}
+    </details>
+  );
+}
+
 function ErrorBlock({
   isLocked,
   item,
@@ -87,21 +115,22 @@ function ErrorBlock({
           </FixButton>
         )}
       </div>
+      {item.fixer && <FixDetails fixer={item.fixer} label="inspect fix" />}
       {item.suggestions && item.suggestions.length > 0 && (
         <div>
           {item.suggestions.map((fixer, index) => (
-            <div
-              className={clsx(styles.fixerContainer, styles.fixer)}
-              key={index}
-            >
-              <span>&gt; {fixer.message}</span>
-              <FixButton
-                disabled={isLocked}
-                fix={fixer.fix}
-                setIsLocked={setIsLocked}
-              >
-                apply suggestion
-              </FixButton>
+            <div className={styles.fixer} key={index}>
+              <div className={styles.fixerContainer}>
+                <span>&gt; {fixer.message}</span>
+                <FixButton
+                  disabled={isLocked}
+                  fix={fixer.fix}
+                  setIsLocked={setIsLocked}
+                >
+                  apply suggestion
+                </FixButton>
+              </div>
+              <FixDetails fixer={fixer} label="inspect suggestion" />
             </div>
           ))}
         </div>

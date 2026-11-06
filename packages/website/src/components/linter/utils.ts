@@ -70,12 +70,14 @@ export function parseMarkers(
   editor: Monaco.editor.IStandaloneCodeEditor,
 ): ErrorGroup[] {
   const result: Record<string, ErrorGroup> = {};
+  const source = editor.getModel()?.getValue();
   for (const marker of markers) {
     const code = normalizeCode(marker.code);
     const uri = createURI(marker);
 
     const fixers =
       fixes.get(uri)?.map(item => ({
+        edit: item.fix,
         fix(): void {
           const model = editor.getModel();
           if (model) {
@@ -84,6 +86,7 @@ export function parseMarkers(
         },
         isPreferred: item.isPreferred,
         message: item.message,
+        originalText: source?.slice(...item.fix.range),
       })) ?? [];
 
     const group =

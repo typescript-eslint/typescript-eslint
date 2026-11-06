@@ -38,12 +38,22 @@ export interface ConfigModel {
 
 export type SelectedRange = [number, number];
 
+export interface ErrorFix {
+  edit: {
+    range: Readonly<[number, number]>;
+    text: string;
+  };
+  fix(): void;
+  message: string;
+  originalText?: string;
+}
+
 export interface ErrorItem {
-  fixer?: { fix(): void; message: string };
+  fixer?: ErrorFix;
   location?: string;
   message: string;
   severity: number;
-  suggestions?: { fix(): void; message: string }[];
+  suggestions?: ErrorFix[];
 }
 
 export interface ErrorGroup {
