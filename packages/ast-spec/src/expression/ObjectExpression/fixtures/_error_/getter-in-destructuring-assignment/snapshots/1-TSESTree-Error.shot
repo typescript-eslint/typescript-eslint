@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > getter-in-destructuring-assignment > TSESTree - Error`]
+TSError
+> 1 | ({ get g() { return 1; } } = object);
+    |    ^^^^^^^^^^^^^^^^^^^^^ Object patterns cannot contain getters or setters.
+  2 |

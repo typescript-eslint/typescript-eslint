@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AST Fixtures > expression > ObjectExpression > _error_ > getter-in-destructuring-assignment > Babel - Error`]
+BabelError
+> 1 | ({ get g() { return 1; } } = object);
+    |        ^ Object pattern can't contain getter or setter. (1:7)
+  2 |
+  

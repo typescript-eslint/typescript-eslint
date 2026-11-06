@@ -636,20 +636,30 @@ export function checkSyntaxError(
     }
 
     case SyntaxKind.ObjectLiteralExpression: {
-      if (!allowPattern) {
-        for (const property of node.properties) {
-          if (
-            (property.kind === SyntaxKind.GetAccessor ||
-              property.kind === SyntaxKind.SetAccessor ||
-              property.kind === SyntaxKind.MethodDeclaration) &&
-            !property.body
-          ) {
-            throw createError(
-              property.end - 1,
-              "'{' expected.",
-              node.getSourceFile(),
-            );
-          }
+      for (const property of node.properties) {
+        if (
+          property.kind !== SyntaxKind.GetAccessor &&
+          property.kind !== SyntaxKind.SetAccessor &&
+          property.kind !== SyntaxKind.MethodDeclaration
+        ) {
+          continue;
+        }
+
+        if (allowPattern) {
+          throw createError(
+            property,
+            property.kind === SyntaxKind.MethodDeclaration
+              ? 'Object patterns cannot contain method shorthand.'
+              : 'Object patterns cannot contain getters or setters.',
+          );
+        }
+
+        if (!property.body) {
+          throw createError(
+            property.end - 1,
+            "'{' expected.",
+            node.getSourceFile(),
+          );
         }
       }
       break;
