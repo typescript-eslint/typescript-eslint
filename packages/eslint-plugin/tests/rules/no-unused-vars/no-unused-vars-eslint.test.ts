@@ -1435,6 +1435,14 @@ function foox() {
           endColumn: 14,
           endLine: 2,
           line: 2,
+          suggestions: [
+            {
+              data: { varName: 'foox' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1455,6 +1463,16 @@ function foox() {
           endColumn: 16,
           endLine: 3,
           line: 3,
+          suggestions: [
+            {
+              data: { varName: 'foox' },
+              messageId: 'removeUnusedVar',
+              output: `
+(function () {
+})();
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1480,6 +1498,14 @@ function f() {
           endColumn: 11,
           endLine: 2,
           line: 2,
+          suggestions: [
+            {
+              data: { varName: 'f' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1499,6 +1525,14 @@ function f() {
           endColumn: 11,
           endLine: 2,
           line: 2,
+          suggestions: [
+            {
+              data: { varName: 'f' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1529,6 +1563,14 @@ function foo(first, second) {
           endColumn: 13,
           endLine: 2,
           line: 2,
+          suggestions: [
+            {
+              data: { varName: 'foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1623,6 +1665,14 @@ function f() {
           endColumn: 11,
           endLine: 2,
           line: 2,
+          suggestions: [
+            {
+              data: { varName: 'f' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
       options: ['all'],
@@ -1641,6 +1691,14 @@ function f() {
           endColumn: 11,
           endLine: 2,
           line: 2,
+          suggestions: [
+            {
+              data: { varName: 'f' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
       options: ['all'],
@@ -1664,6 +1722,14 @@ function foo() {
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1688,6 +1754,14 @@ function f() {
           endColumn: 11,
           endLine: 2,
           line: 2,
+          suggestions: [
+            {
+              data: { varName: 'f' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
         {
           ...definedError('a'),
@@ -1695,6 +1769,20 @@ function f() {
           endColumn: 13,
           endLine: 4,
           line: 4,
+          suggestions: [
+            {
+              data: { varName: 'a' },
+              messageId: 'removeUnusedVar',
+              output: `
+function f() {
+  var x;
+  function b() {
+    alert(x);
+  }
+}
+      `,
+            },
+          ],
         },
         {
           ...definedError('b'),
@@ -1702,6 +1790,20 @@ function f() {
           endColumn: 13,
           endLine: 7,
           line: 7,
+          suggestions: [
+            {
+              data: { varName: 'b' },
+              messageId: 'removeUnusedVar',
+              output: `
+function f() {
+  var x;
+  function a() {
+    x = 42;
+  }
+}
+      `,
+            },
+          ],
         },
       ],
       options: ['all'],
@@ -1918,6 +2020,14 @@ function f() {
           endColumn: 11,
           endLine: 2,
           line: 2,
+          suggestions: [
+            {
+              data: { varName: 'f' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
         { ...assignedError('a'), column: 7, endColumn: 8, endLine: 3, line: 3 },
       ],
@@ -3888,6 +3998,16 @@ function foo() {
           endColumn: 13,
           endLine: 4,
           line: 4,
+          suggestions: [
+            {
+              data: { varName: 'foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+let a = 'a';
+a = 10;
+      `,
+            },
+          ],
         },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },
@@ -3927,6 +4047,14 @@ function foo(n) {
           endColumn: 13,
           endLine: 2,
           line: 2,
+          suggestions: [
+            {
+              data: { varName: 'foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
       languageOptions: { parserOptions: { ecmaVersion: 2020 } },

@@ -27,6 +27,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 import { isTypeOnlyReference } from '../util/isTypeOnlyReference';
+import { needsPrecedingSemicolon } from '../util/needsPrecedingSemiColon';
 
 export type MessageIds =
   | 'removeUnusedImportDeclaration'
@@ -151,6 +152,19 @@ interface Predicate {
   predicate: (token: TSESTree.Token) => boolean;
   tokenChar: string;
 }
+
+// Tokens that would continue the previous statement when placed after it
+// without a separating semicolon.
+const ASI_HAZARD_PUNCTUATORS = new Set(['(', '+', '-', '/', '<', '[']);
+function isAsiHazard(token: TSESTree.Token): boolean {
+  return (
+    token.type === AST_TOKEN_TYPES.Template ||
+    token.type === AST_TOKEN_TYPES.RegularExpression ||
+    (token.type === AST_TOKEN_TYPES.Punctuator &&
+      ASI_HAZARD_PUNCTUATORS.has(token.value))
+  );
+}
+
 const isCommaToken: Predicate = {
   predicate: (token: TSESTree.Token): boolean =>
     token.type === AST_TOKEN_TYPES.Punctuator && token.value === ',',
@@ -370,9 +384,7 @@ export default createRule<Options, MessageIds>({
               return {};
 
             case VariableType.FunctionName:
-              // TODO(bradzacher) -- this would be really easy to implement and
-              // is side-effect free!
-              return {};
+              return getDeclarationRemovalFixer(def.node, unusedVar);
 
             case VariableType.ImportBinding:
               return {
@@ -400,9 +412,7 @@ export default createRule<Options, MessageIds>({
               return {};
 
             case VariableType.TSEnumName:
-              // TODO(bradzacher) -- this would be really easy to implement and
-              // is side-effect free!
-              return {};
+              return getDeclarationRemovalFixer(def.node, unusedVar);
 
             case VariableType.TSModuleName:
               // This is easy to implement -- but TS namespaces are eagerly
@@ -413,9 +423,7 @@ export default createRule<Options, MessageIds>({
               return {};
 
             case VariableType.Type:
-              // TODO(bradzacher) -- this would be really easy to implement and
-              // is side-effect free!
-              return {};
+              return getDeclarationRemovalFixer(def.node, unusedVar);
 
             case VariableType.Variable:
               // TODO(bradzacher) -- this would be really easy to implement
@@ -548,6 +556,64 @@ export default createRule<Options, MessageIds>({
         return fixer.removeRange([lineRangeStart, lineRangeEnd]);
       }
       return fixer.remove(node);
+    }
+
+    /**
+     * Removes a whole declaration statement when doing so cannot change how
+     * the surrounding code parses.
+     */
+    function getDeclarationRemovalFixer(
+      node: TSESTree.Node,
+      unusedVar: ScopeVariable,
+    ): { fix?: TSESLint.ReportFixFunction } {
+      switch (node.type) {
+        case AST_NODE_TYPES.FunctionDeclaration:
+        case AST_NODE_TYPES.TSDeclareFunction:
+        case AST_NODE_TYPES.TSEnumDeclaration:
+        case AST_NODE_TYPES.TSInterfaceDeclaration:
+        case AST_NODE_TYPES.TSTypeAliasDeclaration:
+          break;
+        default:
+          // e.g. a named function expression or a type parameter, which can't
+          // be removed without changing the enclosing expression or signature
+          return {};
+      }
+
+      switch (node.parent.type) {
+        case AST_NODE_TYPES.BlockStatement:
+        case AST_NODE_TYPES.Program:
+        case AST_NODE_TYPES.TSModuleBlock:
+          break;
+        default:
+          return {};
+      }
+
+      // e.g. `foo = 1` or `typeof foo` elsewhere would be left dangling
+      if (
+        unusedVar.references.some(
+          ref =>
+            ref.identifier.range[0] < node.range[0] ||
+            ref.identifier.range[1] > node.range[1],
+        )
+      ) {
+        return {};
+      }
+
+      const nextToken = context.sourceCode.getTokenAfter(node);
+      if (
+        nextToken &&
+        // a string could become a directive once the declaration is gone
+        (nextToken.type === AST_TOKEN_TYPES.String ||
+          // `a = b\n type T = 1\n (c)` would become `a = b(c)`
+          (needsPrecedingSemicolon(context.sourceCode, node) &&
+            isAsiHazard(nextToken)))
+      ) {
+        return {};
+      }
+
+      return {
+        fix: fixer => removeNodeWithTrailingNewline(fixer, node),
+      };
     }
 
     function getImportFixer(def: ImportBindingDefinition): {

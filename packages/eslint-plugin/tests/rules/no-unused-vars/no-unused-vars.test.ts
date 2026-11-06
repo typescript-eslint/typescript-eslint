@@ -1814,6 +1814,14 @@ enum FormFieldIds {
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'FormFieldIds' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1995,6 +2003,14 @@ interface Foo {
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2010,6 +2026,14 @@ type Foo = Array<Foo>;
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2135,6 +2159,18 @@ declare module 'foo' {
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Test' },
+              messageId: 'removeUnusedVar',
+              output: `
+declare module 'foo' {
+  const x = 1;
+  export = x;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2320,6 +2356,16 @@ export = Bar;
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+type Bar = 1;
+export = Bar;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2339,6 +2385,18 @@ export = Foo;
           endLine: 5,
           line: 5,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Bar' },
+              messageId: 'removeUnusedVar',
+              output: `
+interface Foo {
+  bar: string;
+}
+export = Foo;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2405,6 +2463,14 @@ enum Foo {
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
         },
       ],
     },
@@ -3118,6 +3184,19 @@ namespace Foo {
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+namespace Foo {
+  type Bar = 1;
+
+  export = Bar;
+}
+      `,
+            },
+          ],
         },
       ],
       filename: 'foo.d.ts',
@@ -3137,6 +3216,17 @@ export = Bar;
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+type Bar = 1;
+
+export = Bar;
+      `,
+            },
+          ],
         },
       ],
       filename: 'foo.d.ts',
@@ -3158,6 +3248,19 @@ declare module 'foo' {
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+declare module 'foo' {
+  type Bar = 1;
+
+  export = Bar;
+}
+      `,
+            },
+          ],
         },
       ],
       filename: 'foo.d.ts',
@@ -3177,6 +3280,17 @@ declare module 'foo' {
           endLine: 3,
           line: 3,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Test' },
+              messageId: 'removeUnusedVar',
+              output: `
+declare module 'foo' {
+  export {};
+}
+      `,
+            },
+          ],
         },
       ],
       filename: 'foo.d.ts',
@@ -3244,6 +3358,15 @@ export {};
           endLine: 2,
           line: 2,
           messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Foo' },
+              messageId: 'removeUnusedVar',
+              output: `
+export {};
+      `,
+            },
+          ],
         },
       ],
     },
@@ -3552,6 +3675,239 @@ export function g(a: string, b: unknown, c: string) {
         },
       ],
       options: [{ args: 'after-used' }],
+    },
+    {
+      code: noFormat`
+declare const b: (x: unknown) => void;
+const a = b;
+function unused() {}
+(a);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { action: 'defined', additional: '', varName: 'unused' },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+declare const b: (x: unknown) => void;
+const a = b;
+(a);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const b: (x: unknown) => void;
+const a = b
+function unused() {}
+(a);
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { action: 'defined', additional: '', varName: 'unused' },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'unusedVar',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+declare const b: (x: unknown) => void;
+const a = b
+type Unused = 1
+[a].forEach(b);
+      `,
+      errors: [
+        {
+          column: 6,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'unusedVar',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+function unused() {}
+'use strict';
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { action: 'defined', additional: '', varName: 'unused' },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+function unused() {}
+export type T = typeof unused;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { action: 'defined', additional: '', varName: 'unused' },
+          endColumn: 16,
+          endLine: 2,
+          line: 2,
+          messageId: 'usedOnlyAsType',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+function unused() {}
+unused = () => {};
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            action: 'assigned a value',
+            additional: '',
+            varName: 'unused',
+          },
+          endColumn: 7,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+export function f<Unused>() {}
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+interface Unused {
+  a: 1;
+}
+interface Unused {
+  b: 1;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 17,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [],
+        },
+      ],
+    },
+    {
+      code: `
+declare function unused(): void;
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { action: 'defined', additional: '', varName: 'unused' },
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const a = 1; type Unused = 1; console.log(a);
+      `,
+      errors: [
+        {
+          column: 19,
+          data: { action: 'defined', additional: '', varName: 'Unused' },
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'Unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+const a = 1;  console.log(a);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+export namespace NS {
+  function unused() {}
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          data: { action: 'defined', additional: '', varName: 'unused' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
+          messageId: 'unusedVar',
+          suggestions: [
+            {
+              data: { varName: 'unused' },
+              messageId: 'removeUnusedVar',
+              output: `
+export namespace NS {
+}
+      `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });
