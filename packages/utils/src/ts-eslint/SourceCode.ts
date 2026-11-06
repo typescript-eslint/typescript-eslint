@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 
-import { SourceCode as ESLintSourceCode } from 'eslint';
-
 import type { ParserServices, TSESTree } from '../ts-estree';
 import type { Parser } from './Parser';
 import type { Scope } from './Scope';
@@ -209,8 +207,7 @@ declare class TokenStore {
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-declare class SourceCodeBase extends TokenStore {
+declare class SourceCode extends TokenStore {
   /**
    * Represents parsed source code.
    * @param ast The Program node of the AST representing the code. This AST should be created from the text that BOM was stripped.
@@ -451,6 +448,4 @@ namespace SourceCode {
       };
 }
 
-class SourceCode extends (ESLintSourceCode as typeof SourceCodeBase) {}
-
-export { SourceCode };
+export type { SourceCode };

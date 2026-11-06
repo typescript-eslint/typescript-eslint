@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-deprecated */
-import { RuleTester as ESLintRuleTester } from 'eslint';
-
+/* eslint-disable @typescript-eslint/no-deprecated, no-restricted-syntax */
 import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import type { ClassicConfig } from './Config';
 import type { Linter } from './Linter';
@@ -171,8 +169,7 @@ export interface RuleTesterConfig extends ClassicConfig.Config {
 /**
  * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-declare class RuleTesterBase {
+declare class RuleTester {
   /**
    * Creates a new instance of RuleTester.
    * @param testerConfig extra configuration for the tester
@@ -222,7 +219,4 @@ declare class RuleTesterBase {
   ): void;
 }
 
-/**
- * @deprecated Use `@typescript-eslint/rule-tester` instead.
- */
-export class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
+export type { RuleTester };
