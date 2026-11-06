@@ -2,15 +2,15 @@ import type {
   Node as NativeNode,
   NodeArray as NativeNodeArray,
   SourceFile as NativeSourceFile,
-} from '@typescript/native/unstable/ast';
-import type { Diagnostic as NativeDiagnostic } from '@typescript/native/unstable/sync';
+} from '@typescript/native/ast';
+import type { Diagnostic as NativeDiagnostic } from '@typescript/native/sync';
 
 import {
   isAsExpression,
   isSatisfiesExpression,
   NodeFlags as NativeNodeFlags,
   SyntaxKind as NativeSyntaxKind,
-} from '@typescript/native/unstable/ast';
+} from '@typescript/native/ast';
 import * as ts from 'typescript';
 
 import { createFlagTranslations, translateFlags } from './translateFlags';
@@ -60,11 +60,13 @@ function toMessageChain(
   };
 }
 
+const classicToNativeKind = new Map<ts.SyntaxKind, NativeSyntaxKind>();
 const nativeToClassicKind = new Map<NativeSyntaxKind, ts.SyntaxKind>();
 for (const [name, value] of Object.entries(NativeSyntaxKind)) {
   if (typeof value === 'number') {
     const classic = ts.SyntaxKind[name as keyof typeof ts.SyntaxKind];
     if (typeof classic === 'number') {
+      classicToNativeKind.set(classic, value);
       nativeToClassicKind.set(value, classic);
     }
   }
@@ -73,6 +75,20 @@ nativeToClassicKind.set(
   NativeSyntaxKind.EndOfFile,
   ts.SyntaxKind.EndOfFileToken,
 );
+
+export function toNativeKind(kind: ts.SyntaxKind): NativeSyntaxKind {
+  const translated = classicToNativeKind.get(kind);
+  if (translated != null) {
+    return translated;
+  }
+  throw new Error(
+    `Unsupported classic SyntaxKind: ${ts.SyntaxKind[kind]} (${kind})`,
+  );
+}
+
+export function hasClassicKind({ kind }: NativeNode): boolean {
+  return nativeToClassicKind.has(kind);
+}
 
 function translateKind(kind: NativeSyntaxKind) {
   const translated = nativeToClassicKind.get(kind);
@@ -391,14 +407,11 @@ export function createNativeNodeAdapter({
       return translateKind(value);
     }
     if (isNativeNode(value)) {
-      if (isReparsed(value)) {
-        return undefined;
+      if (property === 'externalModuleIndicator' || property === 'parent') {
+        const reference = skipReparsedCastParents(value);
+        return hasClassicKind(reference) ? wrapNode(reference) : undefined;
       }
-      return wrapNode(
-        property === 'parent'
-          ? skipReparsedCastParents(value)
-          : skipReparsedCasts(value),
-      );
+      return isReparsed(value) ? undefined : wrapNode(skipReparsedCasts(value));
     }
     if (isNativeNodeArray(value)) {
       const adapted = adaptArray(value);

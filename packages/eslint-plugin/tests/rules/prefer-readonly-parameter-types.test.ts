@@ -13,6 +13,25 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     requireData: true,
   },
   valid: [
+    {
+      code: `
+declare const source: { a: number };
+const value = { ...source } as const;
+function foo(arg: typeof value) {}
+      `,
+      dependencyConstraints: {
+        typescript: '5.0',
+      },
+    },
+    {
+      code: `
+type Renamed<T> = { [K in keyof T as \`x\${string & K}\`]: T[K] };
+function foo(arg: Renamed<{ readonly a: number }>) {}
+      `,
+      dependencyConstraints: {
+        typescript: '5.0',
+      },
+    },
     'function foo() {}',
 
     // primitives
@@ -1673,35 +1692,38 @@ foo<string[]>(arg => {});
 });
 
 // TypeScript 7 doesn't treat constructor functions as classes.
-if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND !== 'tsgo') {
-  ruleTester.run('prefer-readonly-parameter-types', rule, {
-    valid: [],
-    invalid: [
-      {
-        code: `
+describe.skipIf(process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND === 'tsgo')(
+  'constructor functions',
+  () => {
+    ruleTester.run('prefer-readonly-parameter-types', rule, {
+      valid: [],
+      invalid: [
+        {
+          code: `
 function Factory() {
   this.method = function () {};
 }
 /** @param {Factory} arg */
 function foo(arg) {}
-        `,
-        errors: [
-          {
-            column: 14,
-            endColumn: 17,
-            endLine: 6,
-            line: 6,
-            messageId: 'shouldBeReadonly',
+          `,
+          errors: [
+            {
+              column: 14,
+              endColumn: 17,
+              endLine: 6,
+              line: 6,
+              messageId: 'shouldBeReadonly',
+            },
+          ],
+          filename: 'file.js',
+          languageOptions: {
+            parserOptions: {
+              tsconfigRootDir: path.join(rootDir, 'javascript'),
+            },
           },
-        ],
-        filename: 'file.js',
-        languageOptions: {
-          parserOptions: {
-            tsconfigRootDir: path.join(rootDir, 'javascript'),
-          },
+          options: [{ treatMethodsAsReadonly: true }],
         },
-        options: [{ treatMethodsAsReadonly: true }],
-      },
-    ],
-  });
-}
+      ],
+    });
+  },
+);

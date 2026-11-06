@@ -1,14 +1,14 @@
 import type {
   Node as NativeNode,
   SourceFile as NativeSourceFile,
-} from '@typescript/native/unstable/ast';
+} from '@typescript/native/ast';
 import type {
   Diagnostic as NativeDiagnostic,
   Program as NativeProgram,
-} from '@typescript/native/unstable/sync';
+} from '@typescript/native/sync';
 import type * as ts from 'typescript';
 
-import { SyntaxKind as NativeSyntaxKind } from '@typescript/native/unstable/ast';
+import { SyntaxKind as NativeSyntaxKind } from '@typescript/native/ast';
 
 import type { ParseAndGenerateServicesResult } from '../parser';
 import type { TSESTreeOptions } from '../parser-options';

@@ -17,6 +17,7 @@ import {
   getModifiers,
   getParserServices,
   isNullableType,
+  isPropertyReadonlyInType,
   isStartOfArrowFunctionBodyNeedingParentheses,
   isStartOfExpressionStatementNeedingParentheses,
   isTypeFlagSet,
@@ -37,17 +38,6 @@ export type MessageIds =
   | 'unnecessaryAssertion';
 
 const MAX_TYPE_CONTAINS_DEPTH = 50;
-
-const READONLY_CHECK_FLAG = (
-  ts as unknown as Record<'CheckFlags', Record<'Readonly', number>>
-).CheckFlags.Readonly;
-
-// ts-api-utils sees through mapped types via their modifiers types, which the
-// tsgo backend can't provide. Both backends flag those properties instead.
-function hasReadonlyCheckFlag(property: ts.Symbol) {
-  const { links } = property as { links?: { checkFlags: number } };
-  return !!links && (links.checkFlags & READONLY_CHECK_FLAG) !== 0;
-}
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
@@ -395,21 +385,10 @@ export default createRule<Options, MessageIds>({
         const castProp = castPropsByName.get(prop.getEscapedName());
         return (
           castProp != null &&
-          isPropertyReadonly(uncast, prop) ===
-            isPropertyReadonly(cast, castProp)
+          isPropertyReadonlyInType(uncast, prop, checker) ===
+            isPropertyReadonlyInType(cast, castProp, checker)
         );
       });
-    }
-
-    function isPropertyReadonly(type: ts.Type, property: ts.Symbol) {
-      return (
-        hasReadonlyCheckFlag(property) ||
-        tsutils.isPropertyReadonlyInType(
-          type,
-          property.getEscapedName(),
-          checker,
-        )
-      );
     }
 
     function haveSameTypeArguments(uncast: ts.Type, cast: ts.Type): boolean {

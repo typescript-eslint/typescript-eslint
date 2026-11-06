@@ -21,6 +21,16 @@ ruleTester.run('no-unnecessary-type-assertion', rule, {
     requireData: true,
   },
   valid: [
+    {
+      code: `
+declare const source: { a: number };
+const value = { ...source } as const;
+export const mutable = value as { a: number };
+      `,
+      dependencyConstraints: {
+        typescript: '5.0',
+      },
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/12705
     `
 type RecursiveMethod<Options = {}> = (<NewOptions = {}>(
@@ -980,6 +990,15 @@ enum E {
   A = 1,
 }
 const x: E | undefined = o?.fn(n => n | 0, 0 as E);
+    `,
+    `
+interface Obj {
+  id: number;
+}
+type Optional<T> = { [K in keyof T]?: T[K] };
+type ReadonlyOptional<T> = { [K in keyof Readonly<T>]?: Readonly<T>[K] };
+declare const obj: ReadonlyOptional<Obj>;
+const obj2 = obj as Optional<Obj>;
     `,
   ],
 
@@ -3500,20 +3519,4 @@ const value = get<string>();
       `,
     },
   ],
-});
-
-// The tsgo backend only runs under the project service.
-createRuleTesterWithTypes().run('no-unnecessary-type-assertion', rule, {
-  valid: [
-    `
-interface Obj {
-  id: number;
-}
-type Optional<T> = { [K in keyof T]?: T[K] };
-type ReadonlyOptional<T> = { [K in keyof Readonly<T>]?: Readonly<T>[K] };
-declare const obj: ReadonlyOptional<Obj>;
-const obj2 = obj as Optional<Obj>;
-    `,
-  ],
-  invalid: [],
 });

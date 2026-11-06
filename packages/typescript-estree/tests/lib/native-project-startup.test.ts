@@ -1,4 +1,4 @@
-import type * as NativeSync from '@typescript/native/unstable/sync';
+import type * as NativeSync from '@typescript/native/sync';
 import type { ChildProcess } from 'node:child_process';
 
 import fs from 'node:fs';
@@ -7,13 +7,13 @@ import path from 'node:path';
 const fixtures = path.join(__dirname, '../fixtures/nativeProject');
 
 afterEach(() => {
-  vi.doUnmock('@typescript/native/unstable/sync');
+  vi.doUnmock('@typescript/native/sync');
   vi.resetModules();
 });
 
 async function importWithNative(API: unknown) {
   vi.resetModules();
-  vi.doMock('@typescript/native/unstable/sync', () => ({ API }));
+  vi.doMock('@typescript/native/sync', () => ({ API }));
   return (await import('../../src/native/createNativeProjectService.js'))
     .createNativeProjectService;
 }
@@ -36,7 +36,7 @@ it.each([
 
 it('opens the next file after the native process exits between files', async () => {
   const { API: NativeAPI } = await vi.importActual<typeof NativeSync>(
-    '@typescript/native/unstable/sync',
+    '@typescript/native/sync',
   );
   const children: ChildProcess[] = [];
   class TrackedAPI extends NativeAPI {

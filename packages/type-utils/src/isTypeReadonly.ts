@@ -148,6 +148,17 @@ function hasReadonlyCheckFlag(property: ts.Symbol) {
   return !!links && (links.checkFlags & READONLY_CHECK_FLAG) !== 0;
 }
 
+export function isPropertyReadonlyInType(
+  type: ts.Type,
+  property: ts.Symbol,
+  checker: ts.TypeChecker,
+): boolean {
+  return (
+    hasReadonlyCheckFlag(property) ||
+    tsutils.isPropertyReadonlyInType(type, property.getEscapedName(), checker)
+  );
+}
+
 function isTypeReadonlyArrayOrTuple(
   program: ts.Program,
   type: ts.Type,
@@ -254,14 +265,7 @@ function isTypeReadonlyObject(
         }
       }
 
-      if (
-        hasReadonlyCheckFlag(property) ||
-        tsutils.isPropertyReadonlyInType(
-          type,
-          property.getEscapedName(),
-          checker,
-        )
-      ) {
+      if (isPropertyReadonlyInType(type, property, checker)) {
         continue;
       }
 

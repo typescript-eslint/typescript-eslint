@@ -1,11 +1,11 @@
 import type {
   SourceFile as NativeSourceFile,
   StringLiteralLikeNode as NativeStringLiteralLike,
-} from '@typescript/native/unstable/ast';
+} from '@typescript/native/ast';
 import type {
   Diagnostic as NativeDiagnostic,
   Project as NativeProject,
-} from '@typescript/native/unstable/sync';
+} from '@typescript/native/sync';
 import type * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';

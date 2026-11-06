@@ -50,6 +50,40 @@ describe('native project service lifecycle', () => {
     });
   });
 
+  it('finds a file created after its project loaded', () => {
+    const createdPath = nativePath(nativeFixtures, 'createdAfterLoad.ts');
+    const code = 'export const created = true;';
+
+    withService(service => {
+      service.openFile(filePath, readFixture());
+      fs.writeFileSync(createdPath, code);
+      try {
+        expect(service.openFile(createdPath, code).sourceFile.text).toBe(code);
+      } finally {
+        fs.rmSync(createdPath);
+      }
+    });
+  });
+
+  it('finds a file renamed after its project loaded', () => {
+    const originalPath = nativePath(nativeFixtures, 'beforeRename.ts');
+    const renamedPath = nativePath(nativeFixtures, 'afterRename.ts');
+    const code = 'export const renamed = true;';
+
+    fs.writeFileSync(originalPath, code);
+    try {
+      withService(service => {
+        service.openFile(originalPath, code);
+        fs.renameSync(originalPath, renamedPath);
+
+        expect(service.openFile(renamedPath, code).sourceFile.text).toBe(code);
+      });
+    } finally {
+      fs.rmSync(originalPath, { force: true });
+      fs.rmSync(renamedPath, { force: true });
+    }
+  });
+
   it('discovers different configured projects', () => {
     withService(service => {
       const first = service.openFile(filePath, readFixture());

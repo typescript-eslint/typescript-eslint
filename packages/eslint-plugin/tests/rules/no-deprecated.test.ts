@@ -4638,13 +4638,6 @@ void { normalVariable };
         },
       ],
     },
-  ],
-});
-
-// The tsgo backend only runs under the project service.
-createRuleTesterWithTypes().run('no-deprecated', rule, {
-  valid: [],
-  invalid: [
     {
       code: `
 class Base {

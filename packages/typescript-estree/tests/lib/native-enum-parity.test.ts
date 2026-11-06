@@ -1,5 +1,5 @@
-import * as nativeAst from '@typescript/native/unstable/ast';
-import * as nativeSync from '@typescript/native/unstable/sync';
+import * as nativeAst from '@typescript/native/ast';
+import * as nativeSync from '@typescript/native/sync';
 import * as ts from 'typescript';
 
 // Composite masks are unions of the single members and are compared only by

@@ -1,4 +1,4 @@
-import type { Declaration as NativeDeclaration } from '@typescript/native/unstable/ast';
+import type { Declaration as NativeDeclaration } from '@typescript/native/ast';
 import type {
   Checker as NativeChecker,
   FreshableType as NativeFreshableType,
@@ -10,24 +10,22 @@ import type {
   Symbol as NativeSymbol,
   Type as NativeType,
   TypePredicate as NativeTypePredicate,
-} from '@typescript/native/unstable/sync';
+} from '@typescript/native/sync';
 
-import {
-  getJSDocTags,
-  getTextOfJSDocComment,
-} from '@typescript/native/unstable/ast';
+import { getJSDocTags, getTextOfJSDocComment } from '@typescript/native/ast';
 import {
   CheckFlags,
   ElementFlags,
   ObjectFlags,
   SymbolFlags,
   TypeFlags,
-} from '@typescript/native/unstable/sync';
+} from '@typescript/native/sync';
 import * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 
 import { getModifiers } from '../getModifiers';
+import { hasClassicKind } from './nativeNodeAdapter';
 import { createFlagTranslations, translateFlags } from './translateFlags';
 
 export interface NativeTypeAdapter {
@@ -60,6 +58,8 @@ interface NativeTypeAdapterContext {
   nodeAdapter: NativeNodeAdapter;
   project: NativeProject;
 }
+
+const LIST_PROPERTIES_AFTER_NAMES = 2;
 
 /**
  * Above `CouldContainTypeVariables` the numbering diverges: classic's
@@ -223,7 +223,9 @@ export function createNativeTypeAdapter({
     handle: NativeNodeHandle<NativeDeclaration> | undefined,
   ) {
     const resolved = handle?.resolve(project);
-    return resolved && (nodeAdapter.wrapNode(resolved) as ts.Declaration);
+    return resolved && hasClassicKind(resolved)
+      ? (nodeAdapter.wrapNode(resolved) as ts.Declaration)
+      : undefined;
   }
 
   function wrapTypeList(types: readonly NativeType[]) {
@@ -292,7 +294,9 @@ export function createNativeTypeAdapter({
       }
       const listed =
         listedPropertiesByName.get(this) ??
-        (properties.size >= 2 ? listPropertiesByName(this) : undefined);
+        (properties.size >= LIST_PROPERTIES_AFTER_NAMES
+          ? listPropertiesByName(this)
+          : undefined);
       const property =
         listed?.get(name) ?? wrapSymbol(unwrapType(this).getProperty(name));
       properties.set(name, property);
@@ -335,9 +339,13 @@ export function createNativeTypeAdapter({
 
   // Like classic, the same member of the first base type that has it, if declared once.
   function getInheritedJsDocTags(declaration: ts.Declaration) {
-    const container = ts.isConstructorDeclaration(declaration.parent)
-      ? declaration.parent.parent
-      : declaration.parent;
+    const parent = declaration.parent as ts.Node | undefined;
+    if (!parent) {
+      return undefined;
+    }
+    const container = ts.isConstructorDeclaration(parent)
+      ? parent.parent
+      : parent;
     const name = ts.getNameOfDeclaration(declaration);
     if (
       !name ||
@@ -446,6 +454,10 @@ export function createNativeTypeAdapter({
   };
 
   const classicTypeProperties: Record<string, (type: NativeType) => unknown> = {
+    type: type =>
+      type.isIndexType() || type.isStringMappingType()
+        ? wrapType(type.getTarget())
+        : undefined,
     aliasSymbol: type => wrapSymbol(type.getAliasSymbol()),
     aliasTypeArguments: type => wrapTypeList(type.getAliasTypeArguments()),
     baseType: type =>
@@ -466,10 +478,6 @@ export function createNativeTypeAdapter({
       type.isTypeParameter() ? wrapType(type.getDefault()) : undefined,
     // `UniqueESSymbolType` spells its name the way the checker does for the
     // symbol's own property, which native only exposes piecewise.
-    type: type =>
-      type.isIndexType() || type.isStringMappingType()
-        ? wrapType(type.getTarget())
-        : undefined,
     escapedName: type => {
       const symbol =
         type.flags & TypeFlags.UniqueESSymbol ? type.getSymbol() : undefined;
@@ -555,15 +563,14 @@ export function createNativeTypeAdapter({
     string,
     (symbol: NativeSymbol) => unknown
   > = {
-    // Classic leaves a synthesized alias, such as a CommonJS module's
-    // `default`, without declarations.
+    // Classic leaves a synthesized symbol, such as a CommonJS module's
+    // `default` or a mapped type's property, without declarations.
     declarations: symbol => {
       const { declarations } = symbol;
-      return declarations.length === 0 && symbol.flags & SymbolFlags.Alias
-        ? undefined
-        : declarations
-            .map(resolveDeclaration)
-            .filter(declaration => declaration != null);
+      const resolved = declarations
+        .map(resolveDeclaration)
+        .filter(declaration => declaration != null);
+      return resolved.length ? resolved : undefined;
     },
     exports: symbol => wrapSymbolTable(symbol.getExports()),
     // Classic keeps a transient symbol's check flags and type in its links.

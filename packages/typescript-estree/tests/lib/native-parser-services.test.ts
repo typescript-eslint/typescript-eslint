@@ -4,10 +4,15 @@ import v8 from 'node:v8';
 import vm from 'node:vm';
 import * as ts from 'typescript';
 
+import type { NativeQueryContext } from './nativeTestUtils';
+
 import { parseAndGenerateServices } from '../../src/index.js';
 import {
   isolateNativeBackend,
   nativeFilePath as filePath,
+  nativeFixtures,
+  nativePath,
+  onBothBackends,
   parseOnBackend,
 } from './nativeTestUtils';
 
@@ -31,6 +36,126 @@ describe('native parser services', () => {
     expect(promiseDeclaration('const value = Promise.resolve(1);')).toBe(
       promiseDeclaration('const value = Promise.resolve(2);'),
     );
+  });
+
+  it('leaves a mapped type property without declarations', () => {
+    const { classic, native } = onBothBackends(
+      `
+        declare const value: Record<'a', () => void>;
+        value;
+      `,
+      ({ ast, checker, tsNode }) => {
+        const statement = ast.body[1] as TSESTree.ExpressionStatement;
+        return checker
+          .getTypeAtLocation(tsNode(statement.expression))
+          .getProperty('a')
+          ?.getDeclarations();
+      },
+    );
+
+    expect(native).toBeUndefined();
+    expect(native).toBe(classic);
+  });
+
+  describe('JSDoc declarations', () => {
+    function parameterType({ ast, checker, tsNode }: NativeQueryContext) {
+      const declaration = ast.body[0] as TSESTree.ExportNamedDeclaration;
+      const fn = declaration.declaration as TSESTree.FunctionDeclaration;
+      return checker.getTypeAtLocation(tsNode(fn.params[0]));
+    }
+
+    const jsFilePath = nativePath(nativeFixtures, 'jsdoc.js');
+
+    it('omits the native-only declaration of a @typedef', () => {
+      const type = parameterType(
+        parseOnBackend(
+          `
+            /** @typedef {{ a: string }} Obj */
+            /** @param {Obj} value */
+            export function f(value) {}
+          `,
+          true,
+          jsFilePath,
+        ),
+      );
+
+      expect(type.aliasSymbol?.getDeclarations()).toBeUndefined();
+    });
+
+    it('answers the type of a symbol at a @typedef literal', () => {
+      const { classic, native } = onBothBackends(
+        `
+          /** @typedef {{ x: string }} Obj */
+          /** @param {Obj} value */
+          export function f(value) {}
+        `,
+        context => {
+          const symbol = parameterType(context).getSymbol()!;
+          return context.checker.typeToString(
+            context.checker.getTypeOfSymbolAtLocation(
+              symbol,
+              symbol.getDeclarations()![0],
+            ),
+          );
+        },
+        jsFilePath,
+      );
+
+      expect(native).toBe(classic);
+    });
+
+    it('keeps a file with an @overload export a module', () => {
+      const { classic, native } = onBothBackends(
+        `
+          /**
+           * @overload
+           * @param {string} value
+           * @returns {string}
+           */
+          /** @param {any} value */
+          export function f(value) {}
+        `,
+        ({ ast }) => ast.sourceType,
+        jsFilePath,
+      );
+
+      expect(native).toBe('module');
+      expect(native).toBe(classic);
+    });
+
+    it('answers the parent of a @typedef member', () => {
+      const { classic, native } = onBothBackends(
+        `
+          /** @typedef {{ toString(): string }} Obj */
+          /** @param {Obj} value */
+          export function f(value) {}
+        `,
+        context =>
+          parameterType(context).getProperty('toString')?.getDeclarations()?.[0]
+            .parent.kind,
+        jsFilePath,
+      );
+
+      expect(native).toBe(ts.SyntaxKind.TypeLiteral);
+      expect(native).toBe(classic);
+    });
+
+    it('answers the tags of a @callback signature', () => {
+      const { classic, native } = onBothBackends(
+        `
+          /**
+           * @callback Callback
+           * @param {string} a
+           */
+          /** @param {Callback} value */
+          export function f(value) {}
+        `,
+        context => parameterType(context).getCallSignatures()[0].getJsDocTags(),
+        jsFilePath,
+      );
+
+      expect(native).toEqual(classic);
+    });
   });
 
   it('releases checkers that wrapped symbols of unchanged files', async () => {

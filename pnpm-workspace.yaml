@@ -25,7 +25,7 @@ catalog:
   '@types/natural-compare': ^1.4.3
   '@types/node': ^24.1.0
   '@types/react': ^18.3.21
-  '@typescript/native': 'npm:typescript@7.1.0-dev.20261001.1'
+  '@typescript/native': 'npm:typescript@7.1.0-dev.20261009.1'
   '@vitest/coverage-v8': ^5.0.3
   '@vitest/pretty-format': ^5.0.3
   '@vitest/utils': ^5.0.3

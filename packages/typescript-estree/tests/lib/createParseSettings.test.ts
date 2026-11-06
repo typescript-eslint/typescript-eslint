@@ -10,6 +10,7 @@ import {
   clearTSServerProjectService,
   createParseSettings,
 } from '../../src/parseSettings/createParseSettings';
+import { typescriptVersionIsAtLeast } from '../../src/version-check';
 import '../../src/native/index.js';
 
 const { createProjectService, projectService } = vi.hoisted(() => {
@@ -209,6 +210,81 @@ describe(createParseSettings, () => {
           expect(parseSettings.projects.size).toBe(1);
           expect(createProjectService).not.toHaveBeenCalled();
         });
+      },
+    );
+
+    describe.runIf(process.features.require_module)(
+      'with classic TypeScript older than 6',
+      () => {
+        beforeEach(() => {
+          vi.spyOn(typescriptVersionIsAtLeast, '6.0', 'get').mockReturnValue(
+            false,
+          );
+        });
+
+        it('rejects the tsgo backend when it is requested explicitly', () => {
+          expect(() =>
+            createParseSettings('', {
+              filePath: '/project/file.ts',
+              projectService: { EXPERIMENTAL_backend: 'tsgo' },
+            }),
+          ).toThrow(
+            'The experimental tsgo backend requires classic TypeScript 6',
+          );
+        });
+
+        it('falls back to the classic backend for the environment variable', () => {
+          vi.stubEnv('TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND', 'tsgo');
+
+          const parseSettings = createParseSettings('', {
+            filePath: '/project/file.ts',
+            projectService: true,
+          });
+
+          expect(parseSettings.backend).toBe('classic');
+        });
+      },
+    );
+
+    it('treats a null projectService as not requesting a backend', () => {
+      const parseSettings = createParseSettings('', {
+        filePath: '/project/file.ts',
+        projectService: null as never,
+      });
+
+      expect(parseSettings.backend).toBe('classic');
+    });
+
+    it.runIf(process.features.require_module)(
+      'accepts a null projectService with the environment variable',
+      () => {
+        vi.stubEnv('TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND', 'tsgo');
+
+        const parseSettings = createParseSettings('', {
+          filePath: '/project/file.ts',
+          project: './tsconfig.json',
+          projectService: null as never,
+        });
+
+        expect(parseSettings.backend).toBe('tsgo');
+      },
+    );
+
+    it.runIf(process.features.require_module)(
+      'rejects the tsgo backend with classic TypeScript newer than 6.0',
+      () => {
+        vi.spyOn(typescriptVersionIsAtLeast, '6.1', 'get').mockReturnValue(
+          true,
+        );
+
+        expect(() =>
+          createParseSettings('', {
+            filePath: '/project/file.ts',
+            projectService: { EXPERIMENTAL_backend: 'tsgo' },
+          }),
+        ).toThrow(
+          'The experimental tsgo backend requires classic TypeScript 6.0',
+        );
       },
     );
 

@@ -5,17 +5,26 @@ import type {
   Signature as NativeSignature,
   Symbol as NativeSymbol,
   Type as NativeType,
-} from '@typescript/native/unstable/sync';
+} from '@typescript/native/sync';
 
-import { SyntaxKind as NativeSyntaxKind } from '@typescript/native/unstable/ast';
-import { SymbolFlags } from '@typescript/native/unstable/sync';
+import { SyntaxKind as NativeSyntaxKind } from '@typescript/native/ast';
+import { SymbolFlags } from '@typescript/native/sync';
+import debug from 'debug';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { NativeNodeAdapter } from './nativeNodeAdapter';
 import type { NativeTypeAdapter } from './nativeTypeAdapter';
 
+import { toNativeKind } from './nativeNodeAdapter';
 import { throwOnUnsupportedMembers } from './throwOnUnsupportedMembers';
+
+const log = debug(
+  'typescript-eslint:typescript-estree:native:nativeCheckerAdapter',
+);
+
+const MINIMUM_PREFETCH_MISSES = 2;
+const PREFETCH_TYPES_AFTER_MISSES = 0.1;
 
 interface NativeCheckerAdapterContext {
   api: API;
@@ -74,18 +83,18 @@ const PRIMITIVE_KINDS: readonly ts.TypeFlags[] = [
 
 /** Where classic's answer can differ from the symbol's own type: narrowing and write types. */
 function isTypeOfSymbolLocation(symbol: ts.Symbol, node: ts.Node) {
+  const parent = node.parent as ts.Node | undefined;
   return (
+    !!parent &&
     // An identifier only narrows the symbol it names.
-    (ts.isIdentifier(node) &&
+    ((ts.isIdentifier(node) &&
       (node.text === symbol.name ||
-        ts.isPropertyAccessExpression(node.parent) ||
-        ts.isQualifiedName(node.parent))) ||
-    node.kind === ts.SyntaxKind.PrivateIdentifier ||
-    (!ts.isSourceFile(node) &&
-      ((ts.isSetAccessorDeclaration(node.parent) &&
-        node.parent.name === node) ||
-        (ts.isElementAccessExpression(node.parent) &&
-          node.parent.argumentExpression === node)))
+        ts.isPropertyAccessExpression(parent) ||
+        ts.isQualifiedName(parent))) ||
+      node.kind === ts.SyntaxKind.PrivateIdentifier ||
+      (ts.isSetAccessorDeclaration(parent) && parent.name === node) ||
+      (ts.isElementAccessExpression(parent) &&
+        parent.argumentExpression === node))
   );
 }
 
@@ -175,7 +184,8 @@ export function createNativeChecker({
   function batch<Result>(generators: APIRequestGenerator<Result>[]) {
     try {
       return api.batch(...generators);
-    } catch {
+    } catch (error) {
+      log('Falling back from a failed batch: %O', error);
       return undefined;
     }
   }
@@ -187,7 +197,10 @@ export function createNativeChecker({
     if (
       !pending ||
       ++pending.misses <
-        Math.max(2, pending.nodes.length * PREFETCH_TYPES_AFTER_MISSES)
+        Math.max(
+          MINIMUM_PREFETCH_MISSES,
+          pending.nodes.length * PREFETCH_TYPES_AFTER_MISSES,
+        )
     ) {
       return undefined;
     }
@@ -523,10 +536,9 @@ export function createNativeChecker({
       enclosingDeclaration,
       flags,
     ) => {
-      // Every signature declaration kind native has shares its classic number.
       const declaration = checker.signatureToSignatureDeclaration(
         unwrapSignature(signature),
-        kind as never,
+        toNativeKind(kind),
         enclosingDeclaration && unwrapNode(enclosingDeclaration),
         // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment -- values match classic; see native-enum-parity.test.ts
         flags,
@@ -595,8 +607,6 @@ export function createNativeChecker({
 }
 
 type CheckerMethod = (...args: unknown[]) => unknown;
-
-const PREFETCH_TYPES_AFTER_MISSES = 0.1;
 
 class MemoEntry {
   objects: WeakMap<object, MemoEntry> | undefined = undefined;

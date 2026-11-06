@@ -1,10 +1,7 @@
-import type {
-  CreateSnapshotParams,
-  Snapshot,
-} from '@typescript/native/unstable/sync';
+import type { CreateSnapshotParams, Snapshot } from '@typescript/native/sync';
 
-import { createFileSystemLayer } from '@typescript/native/unstable/fs';
-import { API } from '@typescript/native/unstable/sync';
+import { createFileSystemLayer } from '@typescript/native/fs';
+import { API } from '@typescript/native/sync';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -144,7 +141,7 @@ export function createNativeProjectService(
     if (!project || !sourceFile) {
       throw new Error(`The tsgo project did not contain '${compilerPath}'.`);
     }
-    const context = { api, project, sourceFile };
+    const context = { api, configFileName, project, sourceFile };
     fileContexts.set(getCanonicalFileName(compilerPath), context);
     return context;
   }
@@ -161,7 +158,7 @@ export function createNativeProjectService(
             ensurePrograms: true,
             fileSystem: createFileSystemLayer([[compilerPath, code]]),
           }),
-          context.project.configFileName,
+          context.configFileName,
           compilerPath,
         );
   }
@@ -187,6 +184,7 @@ export function createNativeProjectService(
     );
     const openedFiles = [compilerPath, ...verifyingFiles];
     const discoverySnapshot = replaceSnapshot({
+      fileNotifications: { created: [compilerPath] },
       fileSystem: createFileSystemLayer([[compilerPath, code]]),
       openFiles: openedFiles,
     });

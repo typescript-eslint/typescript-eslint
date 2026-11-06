@@ -15,6 +15,7 @@ import type { MutableParseSettings } from './index';
 import { ensureAbsolutePath } from '../create-program/shared';
 import { validateDefaultProjectForFilesGlob } from '../create-program/validateDefaultProjectForFilesGlob';
 import { isSourceFile } from '../source-files';
+import { typescriptVersionIsAtLeast } from '../version-check';
 import { getInferredTSConfigRootDir } from './candidateTSConfigRootDirs';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
@@ -225,31 +226,28 @@ export function createParseSettings(
     );
   }
 
-  // Providing a program or project service overrides project resolution
-  if (
-    !parseSettings.programs &&
-    !parseSettings.projectService &&
-    parseSettings.backend === 'classic'
-  ) {
-    parseSettings.projects = resolveProjectList({
-      cacheLifetime: tsestreeOptions.cacheLifetime,
-      project: getProjectConfigFiles(parseSettings, tsestreeOptions.project),
-      projectFolderIgnoreList: tsestreeOptions.projectFolderIgnoreList,
-      singleRun: parseSettings.singleRun,
-      tsconfigRootDir,
-    });
-  }
+  if (backend === 'classic') {
+    // Providing a program or project service overrides project resolution
+    if (!parseSettings.programs && !parseSettings.projectService) {
+      parseSettings.projects = resolveProjectList({
+        cacheLifetime: tsestreeOptions.cacheLifetime,
+        project: getProjectConfigFiles(parseSettings, tsestreeOptions.project),
+        projectFolderIgnoreList: tsestreeOptions.projectFolderIgnoreList,
+        singleRun: parseSettings.singleRun,
+        tsconfigRootDir,
+      });
+    }
 
-  // No type-aware linting which means that cross-file (or even same-file) JSDoc is useless
-  // So in this specific case we default to 'none' if no value was provided
-  if (
-    tsestreeOptions.jsDocParsingMode == null &&
-    parseSettings.projects.size === 0 &&
-    parseSettings.programs == null &&
-    parseSettings.projectService == null &&
-    parseSettings.backend === 'classic'
-  ) {
-    parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
+    // No type-aware linting which means that cross-file (or even same-file) JSDoc is useless
+    // So in this specific case we default to 'none' if no value was provided
+    if (
+      tsestreeOptions.jsDocParsingMode == null &&
+      parseSettings.projects.size === 0 &&
+      parseSettings.programs == null &&
+      parseSettings.projectService == null
+    ) {
+      parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
+    }
   }
 
   handleUnsupportedTSVersion(
@@ -292,9 +290,9 @@ function findUnsupportedNativeOption(
 
 function resolveBackend(tsestreeOptions: Partial<TSESTreeOptions>) {
   const { projectService } = tsestreeOptions;
-  const requested =
-    typeof projectService === 'object' &&
-    projectService.EXPERIMENTAL_backend === 'tsgo';
+  const projectServiceOptions =
+    projectService && typeof projectService === 'object' ? projectService : {};
+  const requested = projectServiceOptions.EXPERIMENTAL_backend === 'tsgo';
 
   const viaEnvironment =
     !requested &&
@@ -308,18 +306,37 @@ function resolveBackend(tsestreeOptions: Partial<TSESTreeOptions>) {
 
   const unsupportedOption = findUnsupportedNativeOption(
     tsestreeOptions,
-    typeof projectService === 'object' ? projectService : {},
+    projectServiceOptions,
     viaEnvironment,
   );
   const unsupportedNodeVersion = !process.features.require_module;
+  const unsupportedClassicVersion =
+    !typescriptVersionIsAtLeast['6.0'] || typescriptVersionIsAtLeast['6.1'];
 
   if (viaEnvironment) {
-    return unsupportedOption || unsupportedNodeVersion ? 'classic' : 'tsgo';
+    if (
+      unsupportedOption ||
+      unsupportedNodeVersion ||
+      unsupportedClassicVersion
+    ) {
+      log('Falling back to the classic backend: %o', {
+        unsupportedClassicVersion,
+        unsupportedNodeVersion,
+        unsupportedOption,
+      });
+      return 'classic';
+    }
+    return 'tsgo';
   }
 
   if (unsupportedNodeVersion) {
     throw new Error(
       'The experimental tsgo backend requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',
+    );
+  }
+  if (unsupportedClassicVersion) {
+    throw new Error(
+      `The experimental tsgo backend requires classic TypeScript 6.0, but found ${ts.version}.`,
     );
   }
   if (unsupportedOption) {

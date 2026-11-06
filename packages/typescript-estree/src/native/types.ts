@@ -1,8 +1,9 @@
-import type { SourceFile } from '@typescript/native/unstable/ast';
-import type { API, Project } from '@typescript/native/unstable/sync';
+import type { SourceFile } from '@typescript/native/ast';
+import type { API, Project } from '@typescript/native/sync';
 
 export interface NativeProjectContext {
   api: API;
+  configFileName: string;
   project: Project;
   sourceFile: SourceFile;
 }
