@@ -62,6 +62,22 @@ export function getProjectConfigFiles(
     directory.length >= parseSettings.tsconfigRootDir.length
   );
 
+  const relativeDirectory = path.relative(
+    parseSettings.tsconfigRootDir,
+    path.dirname(parseSettings.filePath),
+  );
+  if (
+    relativeDirectory === '..' ||
+    relativeDirectory.startsWith(`..${path.sep}`) ||
+    path.isAbsolute(relativeDirectory)
+  ) {
+    throw new Error(
+      `The file '${parseSettings.filePath}' is outside of the configured tsconfigRootDir '${parseSettings.tsconfigRootDir}'. ` +
+        'Set parserOptions.tsconfigRootDir to a directory that contains the file, ' +
+        'or set parserOptions.project to an explicit TSConfig path.',
+    );
+  }
+
   throw new Error(
     `project was set to \`true\` but couldn't find any tsconfig.json relative to '${parseSettings.filePath}' within '${parseSettings.tsconfigRootDir}'.`,
   );

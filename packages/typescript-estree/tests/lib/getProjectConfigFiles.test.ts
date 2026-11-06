@@ -163,6 +163,62 @@ describe(getProjectConfigFiles, () => {
   });
 
   describe('when caching misses', () => {
+    it.for([
+      ['posix', '/other/file.ts', '/repos/repo'],
+      ['posix', '/repos/repo/file.ts', '/repos/repo/src'],
+      ['posix', '/repos/repo-other/file.ts', '/repos/repo'],
+      ['win32', 'H:\\other\\file.ts', 'H:\\repos\\repo'],
+      ['win32', 'H:\\repos\\repo\\file.ts', 'H:\\repos\\repo\\src'],
+      ['win32', 'H:\\repos\\repo-other\\file.ts', 'H:\\repos\\repo'],
+      ['win32', 'I:\\other\\file.ts', 'H:\\repos\\repo'],
+    ] as const)(
+      'explains a failed lookup outside the search root (%s, %s)',
+      async ([pathType, filePath, tsconfigRootDir]) => {
+        vi.doMock(import('node:path'), async importActual => {
+          const actualPath = await importActual();
+          return { ...actualPath[pathType], default: actualPath[pathType] };
+        });
+
+        try {
+          const { getProjectConfigFiles } =
+            await import('../../src/parseSettings/getProjectConfigFiles.js');
+
+          mockExistsSync.mockReturnValue(false);
+
+          expect(() =>
+            getProjectConfigFiles(
+              { ...parseSettings, filePath, tsconfigRootDir },
+              true,
+            ),
+          ).toThrow(
+            `The file '${filePath}' is outside of the configured tsconfigRootDir '${tsconfigRootDir}'. ` +
+              'Set parserOptions.tsconfigRootDir to a directory that contains the file, ' +
+              'or set parserOptions.project to an explicit TSConfig path.',
+          );
+        } finally {
+          vi.doUnmock(import('node:path'));
+        }
+      },
+    );
+
+    it('still returns an existing local TSConfig outside the search root', () => {
+      mockExistsSync.mockReturnValueOnce(true);
+
+      expect(
+        getProjectConfigFiles(
+          {
+            ...parseSettings,
+            tsconfigRootDir: !isWindows ? '/unrelated' : 'H:\\unrelated',
+          },
+          true,
+        ),
+      ).toStrictEqual([
+        !isWindows
+          ? '/repos/repo/packages/package/tsconfig.json'
+          : 'H:\\repos\\repo\\packages\\package\\tsconfig.json',
+      ]);
+    });
+
     it('returns a local tsconfig.json when matched', () => {
       mockExistsSync.mockReturnValueOnce(true);
 
