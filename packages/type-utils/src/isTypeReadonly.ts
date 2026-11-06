@@ -148,6 +148,8 @@ function hasReadonlyCheckFlag(property: ts.Symbol) {
   return !!links && (links.checkFlags & READONLY_CHECK_FLAG) !== 0;
 }
 
+// TODO: Remove when ts-api-utils includes this check:
+// https://github.com/typescript-eslint/ts-api-utils/pull/1059
 export function isPropertyReadonlyInType(
   type: ts.Type,
   property: ts.Symbol,
