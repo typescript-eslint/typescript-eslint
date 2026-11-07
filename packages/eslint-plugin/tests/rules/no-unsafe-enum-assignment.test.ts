@@ -1333,6 +1333,16 @@ declare const wrapper: Wrapper<0>;
 
 const widened: Wrapper<0 | 1> = wrapper;
     `,
+    `
+function get(foo: { ['a']: string; ['b']: string }, key: 'a' | 'b') {
+  return foo[key];
+}
+    `,
+    `
+declare const foo: { [key in 'a' | 'b']: string };
+
+foo['c'];
+    `,
   ],
   invalid: [
     {

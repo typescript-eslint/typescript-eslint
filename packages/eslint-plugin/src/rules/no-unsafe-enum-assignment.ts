@@ -444,17 +444,32 @@ export default createRule<[], MessageIds>({
           return;
         }
 
+        // Only enum-keyed receivers are this rule's business. Computed
+        // literal keys are ordinary property access, not an enum shape:
+        //
+        // function get(foo: { ["a"]: string }, key: "a") {
+        //   return foo[key];
+        // }
+        const enumReceiverTypes = receiverTypes.filter(
+          receiverType =>
+            getEnumTypes(checker, getConstraintType(checker, receiverType))
+              .length > 0,
+        );
+        if (enumReceiverTypes.length === 0) {
+          return;
+        }
+
         // declare const foo: { [key in Fruit]: string };
         // foo[0];
         const senderType = services.getTypeAtLocation(node.property);
         if (
-          receiverTypes.every(
+          enumReceiverTypes.every(
             receiverType =>
               hasEnumAssignmentMismatch(checker, senderType, receiverType) ||
               !checker.isTypeAssignableTo(senderType, receiverType),
           )
         ) {
-          report(node.property, 'unsafeEnumAccess', receiverTypes);
+          report(node.property, 'unsafeEnumAccess', enumReceiverTypes);
         }
       },
       ObjectExpression(node) {
