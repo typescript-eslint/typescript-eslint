@@ -313,7 +313,7 @@ function isInvalidPromiseAggregatorInput(
   }
 
   for (const part of tsutils.unionConstituents(type)) {
-    const valueTypes = getValueTypesOfArrayLike(part, checker);
+    const valueTypes = getValueTypesOfArrayLike(part, checker, node);
 
     if (valueTypes != null) {
       for (const typeArgument of valueTypes) {
@@ -337,7 +337,7 @@ function hasMaybeAwaitableValue(
   return tsutils
     .unionConstituents(getConstrainedTypeAtLocation(services, node))
     .some(part =>
-      getValueTypesOfArrayLike(part, checker)?.some(
+      getValueTypesOfArrayLike(part, checker, tsNode)?.some(
         valueType => !isAlwaysNonAwaitableType(valueType, tsNode, checker),
       ),
     );
@@ -346,6 +346,7 @@ function hasMaybeAwaitableValue(
 function getValueTypesOfArrayLike(
   type: ts.Type,
   checker: ts.TypeChecker,
+  node: ts.Node,
 ): readonly ts.Type[] | null {
   if (checker.isTupleType(type)) {
     return checker.getTypeArguments(type);
@@ -360,12 +361,33 @@ function getValueTypesOfArrayLike(
     ];
   }
 
-  // `Iterable<...>`
-  if (tsutils.isTypeReference(type)) {
-    return checker.getTypeArguments(type).slice(0, 1);
+  // Any other iterable reports its values through its iterator: the yield
+  // type of `[Symbol.iterator]()`. Resolving it that way instead of trusting
+  // a type reference's first type argument also covers interfaces that
+  // extend `Iterable<T>`, custom iterator classes, `Map`s (whose yielded
+  // entries, not key type argument, are the values), and strings.
+  const iterator = tsutils.getWellKnownSymbolPropertyOfType(
+    type,
+    'iterator',
+    checker,
+  );
+  if (iterator == null) {
+    return null;
   }
 
-  return null;
+  const iteratorType = checker.getTypeOfSymbolAtLocation(iterator, node);
+  const signature = iteratorType.getCallSignatures().at(0);
+  if (!signature) {
+    return null;
+  }
+
+  const iteratorReturnType = checker.getReturnTypeOfSignature(signature);
+  if (!tsutils.isTypeReference(iteratorReturnType)) {
+    return null;
+  }
+
+  const valueType = checker.getTypeArguments(iteratorReturnType).at(0);
+  return valueType == null ? null : [valueType];
 }
 
 function isAlwaysNonAwaitableType(

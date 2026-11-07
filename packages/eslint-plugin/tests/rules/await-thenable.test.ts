@@ -747,12 +747,6 @@ Promise.all([]);
     },
     {
       code: `
-Promise.all('abc');
-      `,
-      options: [{ allowMixedPromiseArrays: true }],
-    },
-    {
-      code: `
 function test<T extends Iterable<number | Promise<number>>>(maybePromises: T) {
   Promise.all(maybePromises);
 }
@@ -1591,6 +1585,89 @@ Promise.all(x);
           endColumn: 14,
           endLine: 3,
           line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+interface NumIter extends Iterable<number> {}
+declare const x: NumIter;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  *[Symbol.iterator]() {
+    yield 1;
+  }
+}
+declare const x: Foo;
+Promise.all(x);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 8,
+          line: 8,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare class Box {
+  [Symbol.iterator](): Iterator<number>;
+}
+declare const b: Box;
+Promise.all(b);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+declare const m: Map<Promise<number>, number>;
+Promise.all(m);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'invalidPromiseAggregatorInput',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.all('abc');
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 18,
+          endLine: 2,
+          line: 2,
           messageId: 'invalidPromiseAggregatorInput',
         },
       ],
