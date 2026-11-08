@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
@@ -129,14 +129,21 @@ export default createRule<Options, MessageIds>({
                   ) {
                     return lhsName;
                   }
-                  if (!node.computed) {
-                    return node.key;
-                  }
                   // If the property's computed, we have to attach the
                   // annotation after the square bracket, not the enclosed expression
+                  const keyEnd = node.computed
+                    ? nullThrows(
+                        context.sourceCode.getTokenAfter(node.key),
+                        NullThrowsReasons.MissingToken(']', 'key'),
+                      )
+                    : node.key;
+                  if (!node.optional) {
+                    return keyEnd;
+                  }
+                  // An optional property's annotation goes after the `?`
                   return nullThrows(
-                    context.sourceCode.getTokenAfter(node.key),
-                    NullThrowsReasons.MissingToken(']', 'key'),
+                    context.sourceCode.getTokenAfter(keyEnd),
+                    NullThrowsReasons.MissingToken('?', 'key'),
                   );
                 }
                 return [
@@ -169,10 +176,13 @@ export default createRule<Options, MessageIds>({
             *fix(fixer) {
               yield fixer.remove(lhs.parent);
               for (const comment of extraComments) {
-                yield fixer.insertTextAfter(
-                  rhs.callee,
-                  context.sourceCode.getText(comment),
-                );
+                // A line comment runs to the end of the line, so it needs a
+                // line break to keep the type arguments out of it
+                const commentText =
+                  comment.type === AST_TOKEN_TYPES.Line
+                    ? `${context.sourceCode.getText(comment)}\n`
+                    : context.sourceCode.getText(comment);
+                yield fixer.insertTextAfter(rhs.callee, commentText);
               }
               yield fixer.insertTextAfter(
                 rhs.callee,
