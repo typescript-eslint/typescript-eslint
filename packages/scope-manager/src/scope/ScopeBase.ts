@@ -113,22 +113,15 @@ function registerScope(scopeManager: ScopeManager, scope: Scope): void {
   }
 }
 
-function isValidTypeVariable(ref: Reference, variable: Variable): boolean {
-  if (variable.defs.length === 0) {
-    return variable.isTypeVariable;
-  }
-
-  if (ref.isTypeQualifiedNameReference) {
-    return variable.defs.some(
+function isTypeQualifiedNameVariable(variable: Variable): boolean {
+  return (
+    variable.defs.length === 0 ||
+    variable.defs.some(
       def =>
         def.type === DefinitionType.ImportBinding ||
         def.type === DefinitionType.TSEnumName ||
         def.type === DefinitionType.TSModuleName,
-    );
-  }
-
-  return variable.defs.some(
-    def => def.isTypeDefinition && def.type !== DefinitionType.TSModuleName,
+    )
   );
 }
 
@@ -254,9 +247,16 @@ export abstract class ScopeBase<
         return false;
       }
 
+      if (
+        ref.isTypeQualifiedNameReference &&
+        !isTypeQualifiedNameVariable(variable)
+      ) {
+        return false;
+      }
+
       // make sure we don't match a type reference to a value variable
       const isValidTypeReference =
-        ref.isTypeReference && isValidTypeVariable(ref, variable);
+        ref.isTypeReference && variable.isTypeVariable;
       const isValidValueReference =
         ref.isValueReference && variable.isValueVariable;
       if (!isValidTypeReference && !isValidValueReference) {
