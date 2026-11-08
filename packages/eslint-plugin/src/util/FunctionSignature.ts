@@ -45,6 +45,11 @@ export class FunctionSignature {
   public static create(
     checker: ts.TypeChecker,
     tsNode: ts.CallLikeExpression,
+    getFixedParameterType?: (
+      signature: ts.Signature,
+      index: number,
+      type: ts.Type,
+    ) => ts.Type | undefined,
   ): FunctionSignature {
     // getResolvedSignature only returns undefined for nodes outside the parse
     // tree, and tsNode always comes from the AST node map.
@@ -82,7 +87,7 @@ export class FunctionSignature {
         break;
       }
 
-      paramTypes.push(type);
+      paramTypes.push(getFixedParameterType?.(signature, index, type) ?? type);
     }
 
     return new FunctionSignature(paramTypes, restType);

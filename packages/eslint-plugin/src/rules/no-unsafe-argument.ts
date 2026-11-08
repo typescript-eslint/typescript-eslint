@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   FunctionSignature,
+  getConstraintInfo,
   getParserServices,
   isTypeAnyArrayType,
   isTypeAnyType,
@@ -81,12 +82,48 @@ export default createRule<[], MessageIds>({
       }
 
       // ignore any-typed calls as these are caught by no-unsafe-call
-      if (isTypeAnyType(services.getTypeAtLocation(callee))) {
+      const calleeType = services.getTypeAtLocation(callee);
+      if (isTypeAnyType(calleeType)) {
         return;
       }
 
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      const signature = FunctionSignature.create(checker, tsNode);
+      let uninstantiatedParameters: readonly ts.Symbol[] | undefined;
+      const signature = FunctionSignature.create(
+        checker,
+        tsNode,
+        (resolvedSignature, index, type) => {
+          if (node.typeArguments || !isTypeAnyType(type)) {
+            return undefined;
+          }
+
+          // Inference can replace a constrained type parameter with `any`.
+          // Match the selected overload on the callee before call-site inference.
+          if (!uninstantiatedParameters) {
+            const signatures =
+              node.type === AST_NODE_TYPES.NewExpression
+                ? calleeType.getConstructSignatures()
+                : calleeType.getCallSignatures();
+            const declaration = resolvedSignature.getDeclaration();
+            const matches = signatures.filter(
+              candidate => candidate.getDeclaration() === declaration,
+            );
+            uninstantiatedParameters =
+              matches.length === 1 ? matches[0].getParameters() : [];
+          }
+
+          const parameter = uninstantiatedParameters.at(index);
+          if (!parameter) {
+            return undefined;
+          }
+
+          const { constraintType, isTypeParameter } = getConstraintInfo(
+            checker,
+            checker.getTypeOfSymbolAtLocation(parameter, tsNode),
+          );
+          return isTypeParameter ? constraintType : undefined;
+        },
+      );
 
       if (node.type === AST_NODE_TYPES.TaggedTemplateExpression) {
         // Consumes the first parameter (TemplateStringsArray) of the function called with TaggedTemplateExpression.
