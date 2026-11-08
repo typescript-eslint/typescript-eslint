@@ -1484,13 +1484,12 @@ export namespace One {
     },
     {
       code: `
-type T = 1;
-export namespace Outer {
+export namespace Two {
   namespace T {
     export type Foo<U = 1> = U;
   }
 
-  export type Bar = T;
+  export type Foo<T> = T;
 }
       `,
       errors: [
@@ -1502,8 +1501,8 @@ export namespace Outer {
             varName: 'T',
           },
           endColumn: 14,
-          endLine: 4,
-          line: 4,
+          endLine: 3,
+          line: 3,
           messageId: 'unusedVar',
         },
       ],
