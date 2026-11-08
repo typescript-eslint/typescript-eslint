@@ -88,7 +88,7 @@ export default createRule<[], MessageIds>({
       }
 
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      let uninstantiatedParameters: readonly ts.Symbol[] | undefined;
+      let parametersBeforeInference: readonly ts.Symbol[] | undefined;
       const signature = FunctionSignature.create(
         checker,
         tsNode,
@@ -99,7 +99,7 @@ export default createRule<[], MessageIds>({
 
           // Inference can replace a constrained type parameter with `any`.
           // Match the selected overload on the callee before call-site inference.
-          if (!uninstantiatedParameters) {
+          if (!parametersBeforeInference) {
             const signatures =
               node.type === AST_NODE_TYPES.NewExpression
                 ? calleeType.getConstructSignatures()
@@ -108,11 +108,11 @@ export default createRule<[], MessageIds>({
             const matches = signatures.filter(
               candidate => candidate.getDeclaration() === declaration,
             );
-            uninstantiatedParameters =
+            parametersBeforeInference =
               matches.length === 1 ? matches[0].getParameters() : [];
           }
 
-          const parameter = uninstantiatedParameters.at(index);
+          const parameter = parametersBeforeInference.at(index);
           if (!parameter) {
             return undefined;
           }
