@@ -298,6 +298,86 @@ describe('referencing a type - positive', () => {
       referencingNode,
     );
   });
+
+  it('records a reference to an outer namespace when shadowed by a generic in a qualified type name', () => {
+    const { ast, scopeManager } = parseAndAnalyze(`
+      namespace T {
+        export type Foo = 1;
+        export interface Bar {}
+      }
+      type Alias<T> = T.Foo;
+      class Class<T> implements T.Bar {}
+    `);
+
+    const moduleDecls: TSESTree.Node[] = [];
+    const typeParams: TSESTree.Node[] = [];
+
+    simpleTraverse(
+      ast,
+      {
+        visitors: {
+          [AST_NODE_TYPES.TSModuleDeclaration](node) {
+            moduleDecls.push(node);
+          },
+          [AST_NODE_TYPES.TSTypeParameter](node) {
+            typeParams.push(node);
+          },
+        },
+      },
+      true,
+    );
+
+    const namespaceVar = scopeManager.getDeclaredVariables(moduleDecls[0])[0];
+    expect(namespaceVar.references).toHaveLength(2);
+    expect(namespaceVar.references[0].isTypeQualifiedNameReference).toBe(true);
+    expect(namespaceVar.references[1].isTypeQualifiedNameReference).toBe(true);
+
+    expect(
+      scopeManager.getDeclaredVariables(typeParams[0])[0].references,
+    ).toHaveLength(0);
+    expect(
+      scopeManager.getDeclaredVariables(typeParams[1])[0].references,
+    ).toHaveLength(0);
+  });
+
+  it('records a reference to an outer type when shadowed by an inner namespace in a non-qualified type reference', () => {
+    const { ast, scopeManager } = parseAndAnalyze(`
+      type T = 1;
+      namespace Outer {
+        namespace T {
+          export type Foo = 2;
+        }
+        export type Bar = T;
+      }
+    `);
+
+    const typeDecls: TSESTree.Node[] = [];
+    const moduleDecls: TSESTree.Node[] = [];
+
+    simpleTraverse(
+      ast,
+      {
+        visitors: {
+          [AST_NODE_TYPES.TSModuleDeclaration](node) {
+            moduleDecls.push(node);
+          },
+          [AST_NODE_TYPES.TSTypeAliasDeclaration](node) {
+            typeDecls.push(node);
+          },
+        },
+      },
+      true,
+    );
+
+    const outerTypeVar = scopeManager.getDeclaredVariables(typeDecls[0])[0];
+    expect(outerTypeVar.references).toHaveLength(1);
+    expect(outerTypeVar.references[0].isTypeQualifiedNameReference).toBe(false);
+
+    const innerNamespaceVar = scopeManager.getDeclaredVariables(
+      moduleDecls[1],
+    )[0];
+    expect(innerNamespaceVar.references).toHaveLength(0);
+  });
 });
 
 describe('referencing a type - negative', () => {
