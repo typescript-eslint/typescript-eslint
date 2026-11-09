@@ -52,7 +52,7 @@ What draws this request is narrow: **unrelated refactors** of code the PR did no
 
 Extra test cases are not scope creep, nor are docs improvements alongside a fix. A `docs:` PR that also tightens some test options is fine. Do not raise scope on additive changes that only improve coverage.
 
-Don't ask for a force-push or rebase to tidy this up; keeping git history pristine is explicitly not a task we ask of authors — see [Pull Requests](https://typescript-eslint.io/contributing/pull-requests).
+Don't ask for a force-push or rebase to tidy this up; keeping git history pristine is explicitly not a task we ask of authors — see [Pull Requests](https://typescript-eslint.io/contributing/pull-requests/).
 
 ## New rules, presets, and semver
 

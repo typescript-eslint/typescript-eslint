@@ -21,7 +21,7 @@ export default createRule<Options, MessageIds>({
         {
           rule: {
             name: '@typescript-eslint/no-require-imports',
-            url: 'https://typescript-eslint.io/rules/no-require-imports',
+            url: 'https://typescript-eslint.io/rules/no-require-imports/',
           },
         },
       ],

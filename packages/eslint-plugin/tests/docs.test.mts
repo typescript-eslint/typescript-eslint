@@ -236,7 +236,7 @@ describe('Validating rule docs', () => {
         text: [
           `🛑 This file is source code, not the primary documentation location! 🛑`,
           ``,
-          `See **https://typescript-eslint.io/rules/${ruleName}** for documentation.`,
+          `See **https://typescript-eslint.io/rules/${ruleName}/** for documentation.`,
         ].join('\n'),
         type: 'blockquote',
       });
@@ -588,7 +588,7 @@ describe('Validating rule metadata', () => {
       // validate if rule name is same as url
       // there is no way to access this field but it's used only in generation of docs url
       expect(rule.meta.docs.url).toBe(
-        `https://typescript-eslint.io/rules/${ruleName}`,
+        `https://typescript-eslint.io/rules/${ruleName}/`,
       );
     });
 
