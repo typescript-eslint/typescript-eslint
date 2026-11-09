@@ -131,6 +131,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
     const baseCheck: AccessibilityLevel = option.accessibility ?? 'explicit';

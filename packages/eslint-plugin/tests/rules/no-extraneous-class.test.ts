@@ -90,34 +90,50 @@ abstract class Foo {
   abstract method(): string;
 }
     `,
-    `
+    {
+      code: `
 class Foo {
   accessor prop: string;
 }
-    `,
-    `
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 class Foo {
   accessor prop = 'bar';
   static bar() {
     return false;
   }
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
     `
 class Foo {
   [key: string]: string;
 }
     `,
-    `
+    {
+      code: `
 abstract class Foo {
   accessor prop: string;
 }
-    `,
-    `
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
+    {
+      code: `
 abstract class Foo {
   abstract accessor prop: string;
 }
-    `,
+      `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
+    },
   ],
 
   invalid: [
@@ -143,12 +159,6 @@ class Foo {
     }
   }
 }
-export class Bar {
-  public static helper(): void {}
-  private static privateHelper(): boolean {
-    return true;
-  }
-}
       `,
       errors: [
         {
@@ -158,11 +168,23 @@ export class Bar {
           line: 5,
           messageId: 'onlyStatic',
         },
+      ],
+    },
+    {
+      code: `
+export class Bar {
+  public static helper(): void {}
+  private static privateHelper(): boolean {
+    return true;
+  }
+}
+      `,
+      errors: [
         {
           column: 14,
           endColumn: 17,
-          endLine: 10,
-          line: 10,
+          endLine: 2,
+          line: 2,
           messageId: 'onlyStatic',
         },
       ],
@@ -191,7 +213,9 @@ export class AClass {
     return true;
   }
   constructor() {
-    class nestedClass {}
+    class nestedClass {
+      public prop = 1;
+    }
   }
 }
       `,
@@ -203,6 +227,21 @@ export class AClass {
           line: 2,
           messageId: 'onlyStatic',
         },
+      ],
+    },
+    {
+      code: `
+export class AClass {
+  public helper(): void {}
+  private privateHelper(): boolean {
+    return true;
+  }
+  constructor() {
+    class nestedClass {}
+  }
+}
+      `,
+      errors: [
         {
           column: 11,
           endColumn: 22,
@@ -319,6 +358,8 @@ class Foo {
   static accessor prop: string;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 7,
@@ -335,6 +376,8 @@ abstract class Foo {
   static accessor prop: string;
 }
       `,
+      // `accessor` keyword requires TS 4.9
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 16,

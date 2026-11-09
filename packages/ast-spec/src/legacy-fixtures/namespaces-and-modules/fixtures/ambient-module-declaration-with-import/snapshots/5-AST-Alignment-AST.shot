@@ -92,11 +92,9 @@ Snapshot Diff:
 -   sourceType: 'script',
 +   sourceType: 'module',
 
--   range: [73, 130],
-+   range: [0, 130],
+    range: [0, 130],
     loc: {
--     start: { column: 0, line: 3 },
-+     start: { column: 0, line: 1 },
+      start: { column: 0, line: 1 },
       end: { column: 0, line: 6 },
     },
   }

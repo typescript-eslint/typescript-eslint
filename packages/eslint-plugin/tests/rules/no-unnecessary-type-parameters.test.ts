@@ -1057,11 +1057,10 @@ function fn(param: string) {
     },
     {
       code: `
-function both<
-  Args extends unknown[],
-  CB1 extends (...args: Args) => void,
-  CB2 extends (...args: Args) => void,
->(fn1: CB1, fn2: CB2): (...args: Args) => void {
+function both<Args extends unknown[], CB1 extends (...args: Args) => void>(
+  fn1: CB1,
+  fn2: (...args: Args) => void,
+): (...args: Args) => void {
   return function (...args: Args) {
     fn1(...args);
     fn2(...args);
@@ -1070,20 +1069,20 @@ function both<
       `,
       errors: [
         {
-          column: 3,
+          column: 39,
           data: { descriptor: 'function', name: 'CB1', uses: 'used only once' },
-          endColumn: 38,
-          endLine: 4,
-          line: 4,
+          endColumn: 74,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
               messageId: 'replaceUsagesWithConstraint',
               output: `
-function both<
-  Args extends unknown[],
-  CB2 extends (...args: Args) => void,
->(fn1: (...args: Args) => void, fn2: CB2): (...args: Args) => void {
+function both<Args extends unknown[]>(
+  fn1: (...args: Args) => void,
+  fn2: (...args: Args) => void,
+): (...args: Args) => void {
   return function (...args: Args) {
     fn1(...args);
     fn2(...args);
@@ -1093,21 +1092,36 @@ function both<
             },
           ],
         },
+      ],
+    },
+    {
+      code: `
+function both<Args extends unknown[], CB2 extends (...args: Args) => void>(
+  fn1: (...args: Args) => void,
+  fn2: CB2,
+): (...args: Args) => void {
+  return function (...args: Args) {
+    fn1(...args);
+    fn2(...args);
+  };
+}
+      `,
+      errors: [
         {
-          column: 3,
+          column: 39,
           data: { descriptor: 'function', name: 'CB2', uses: 'used only once' },
-          endColumn: 38,
-          endLine: 5,
-          line: 5,
+          endColumn: 74,
+          endLine: 2,
+          line: 2,
           messageId: 'sole',
           suggestions: [
             {
               messageId: 'replaceUsagesWithConstraint',
               output: `
-function both<
-  Args extends unknown[],
-  CB1 extends (...args: Args) => void,
->(fn1: CB1, fn2: (...args: Args) => void): (...args: Args) => void {
+function both<Args extends unknown[]>(
+  fn1: (...args: Args) => void,
+  fn2: (...args: Args) => void,
+): (...args: Args) => void {
   return function (...args: Args) {
     fn1(...args);
     fn2(...args);
@@ -1967,6 +1981,8 @@ interface StorageService {
         },
       ],
     },
+    // Multiple errors
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       // This isn't actually an important test case.
       // However, we use it as an example in the docs of code that is flagged,
@@ -2027,6 +2043,7 @@ type Equal<X, Y> =
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function f<T extends any>(x: T): void {
@@ -2346,6 +2363,63 @@ declare function foo(arg: (keyof Foo)[]): void;
             {
               messageId: 'replaceUsagesWithConstraint',
               output: 'declare function foo(arg: (() => void) | string): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends string | number>(arg: [T?]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 47,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: [(string | number)?]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends () => void>(arg: [T?]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 42,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: [(() => void)?]): void;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'declare function foo<T extends string>(arg: [T?]): void;',
+      errors: [
+        {
+          column: 22,
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function foo(arg: [string?]): void;',
             },
           ],
         },

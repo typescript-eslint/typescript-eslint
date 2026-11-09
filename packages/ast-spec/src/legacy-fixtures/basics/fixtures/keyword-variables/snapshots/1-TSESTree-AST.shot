@@ -2870,9 +2870,9 @@ Program {
   ],
   sourceType: "module",
 
-  range: [73, 1151],
+  range: [0, 1151],
   loc: {
-    start: { column: 0, line: 3 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 80 },
   },
 }

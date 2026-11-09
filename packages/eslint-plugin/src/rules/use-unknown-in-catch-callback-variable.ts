@@ -55,6 +55,7 @@ export default createRule<[], MessageIds>({
     schema: [],
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
 
   create(context) {

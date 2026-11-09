@@ -823,6 +823,7 @@ function f(
       output: null,
     },
     // noStrictNullCheck tests
+    /* eslint-disable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function Bar({ foo = '' }: { foo: string }) {
@@ -857,9 +858,7 @@ function Bar({ foo }: { foo: string }) {
         },
       ],
       languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootDir, 'unstrict'),
-        },
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
       },
       output: null,
     },
@@ -893,12 +892,11 @@ function foo(a) {}
         },
       ],
       languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootDir, 'unstrict'),
-        },
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
       },
       output: null,
     },
+    /* eslint-enable @typescript-eslint/internal/no-multiple-lines-of-errors */
     {
       code: `
 function Bar({ foo = '' }: { foo: string }) {
@@ -926,9 +924,7 @@ function Bar({ foo }: { foo: string }) {
         },
       ],
       languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootDir, 'unstrict'),
-        },
+        parserOptions: { tsconfigRootDir: path.join(rootDir, 'unstrict') },
       },
       options: [
         { allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true },

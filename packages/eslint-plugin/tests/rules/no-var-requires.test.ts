@@ -187,11 +187,10 @@ const json = require('./some.json');
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3883
     {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/3883
       code: `
 const configValidator = new Validator(require('./a.json'));
-configValidator.addSchema(require('./a.json'));
       `,
       errors: [
         {
@@ -201,6 +200,14 @@ configValidator.addSchema(require('./a.json'));
           line: 2,
           messageId: 'noVarReqs',
         },
+      ],
+    },
+    {
+      code: `
+const configValidator = new Validator();
+configValidator.addSchema(require('./a.json'));
+      `,
+      errors: [
         {
           column: 27,
           endColumn: 46,

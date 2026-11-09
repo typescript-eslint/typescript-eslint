@@ -1,3 +1,4 @@
+import { isTypeLiteralType } from '@typescript-eslint/type-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -6,7 +7,7 @@ import { getValueOfLiteralType } from './getValueOfLiteralType';
 // Truthiness utilities
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
-  (type.isLiteral() && !!getValueOfLiteralType(type));
+  (isTypeLiteralType(type) && !!getValueOfLiteralType(type));
 
 export const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils

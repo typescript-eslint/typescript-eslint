@@ -64,6 +64,7 @@ export default createRule<Options, MessageIds>({
     ],
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [{ allowSingleElementEquality: 'never' }],
 
   create(context, [{ allowSingleElementEquality }]) {
@@ -250,12 +251,13 @@ export default createRule<Options, MessageIds>({
     /**
      * Parse a given `RegExp` pattern to that string if it's a static string.
      * @param pattern The RegExp pattern text to parse.
-     * @param unicode Whether the RegExp is unicode.
+     * @param flags The RegExp's flags, of which `u` and `v` change how the pattern parses.
      */
-    function parseRegExpText(pattern: string, unicode: boolean): string | null {
+    function parseRegExpText(pattern: string, flags: string): string | null {
       // Parse it.
       const ast = regexpp.parsePattern(pattern, undefined, undefined, {
-        unicode,
+        unicode: flags.includes('u'),
+        unicodeSets: flags.includes('v'),
       });
       if (ast.alternatives.length !== 1) {
         return null;
@@ -303,7 +305,7 @@ export default createRule<Options, MessageIds>({
         return null;
       }
 
-      const text = parseRegExpText(source, flags.includes('u'));
+      const text = parseRegExpText(source, flags);
       if (text == null) {
         return null;
       }

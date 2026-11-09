@@ -19,7 +19,6 @@ const rule = ESLintUtils.RuleCreator.withoutDocs({
     type: 'problem',
     hasSuggestions: true,
   },
-  defaultOptions: [],
   create: context => ({
     Program(node): void {
       context.report({

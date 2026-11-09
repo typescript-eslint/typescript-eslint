@@ -31,9 +31,11 @@ export default createRule<[], MessageIds>({
       preferExpectErrorComment:
         'Use "@ts-expect-error" to ensure an error is actually being suppressed.',
     },
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint < 9.21
     replacedBy: ['@typescript-eslint/ban-ts-comment'],
     schema: [],
   },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- For compatibility with ESLint 8, see #12842
   defaultOptions: [],
   create(context) {
     const tsIgnoreRegExpSingleLine = /^\s*\/?\s*@ts-ignore/;

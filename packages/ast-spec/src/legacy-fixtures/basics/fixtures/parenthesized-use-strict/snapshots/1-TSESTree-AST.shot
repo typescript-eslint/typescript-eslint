@@ -24,9 +24,9 @@ Program {
   ],
   sourceType: "script",
 
-  range: [118, 134],
+  range: [0, 134],
   loc: {
-    start: { column: 0, line: 4 },
+    start: { column: 0, line: 1 },
     end: { column: 0, line: 5 },
   },
 }
