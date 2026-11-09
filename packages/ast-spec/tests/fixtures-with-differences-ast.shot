@@ -35,5 +35,7 @@ exports[`AST Fixtures > List fixtures with AST differences`]
   "legacy-fixtures/namespaces-and-modules/fixtures/global-module-declaration/fixture.ts",
   "legacy-fixtures/namespaces-and-modules/fixtures/module-with-default-exports/fixture.ts",
   "special/ImportSpecifier/fixtures/type-only-import-specifier/fixture.ts",
-  "special/ImportSpecifier/fixtures/type-only-import-specifiers/fixture.ts"
+  "special/ImportSpecifier/fixtures/type-only-import-specifiers/fixture.ts",
+  "type/TSImportType/fixtures/type-import-type-with-import-attributes-with/fixture.ts",
+  "type/TSImportType/fixtures/type-import-type-with-trailing-comma-in-import-attributes/fixture.ts"
 ]
