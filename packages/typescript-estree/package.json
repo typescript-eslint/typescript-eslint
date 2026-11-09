@@ -58,7 +58,7 @@
     "@typescript-eslint/types": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
     "debug": "^4.4.3",
-    "minimatch": "^10.2.2",
+    "minimatch": "^11.0.0",
     "semver": "^7.7.3",
     "tinyglobby": "^0.2.15",
     "ts-api-utils": "^2.5.0"
