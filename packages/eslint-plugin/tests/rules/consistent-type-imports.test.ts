@@ -761,9 +761,9 @@ type T = { c: C; d: D };
           `,
           errors: [
             {
-              column: 1,
+              column: 10,
               data: { typeImports: '"C" and "D"' },
-              endColumn: 31,
+              endColumn: 14,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',
@@ -977,9 +977,9 @@ type T = Type1 | Type2 | Type3 | Type4 | Type5;
               messageId: 'someImportsAreOnlyTypes',
             },
             {
-              column: 1,
+              column: 8,
               data: { typeImports: '"Type4" and "Type5"' },
-              endColumn: 65,
+              endColumn: 22,
               endLine: 5,
               line: 5,
               messageId: 'someImportsAreOnlyTypes',
@@ -1776,15 +1776,7 @@ A();
           errors: [
             {
               column: 13,
-              data: { typeImports: '"B"' },
-              endColumn: 14,
-              endLine: 2,
-              line: 2,
-              messageId: 'someImportsAreOnlyTypes',
-            },
-            {
-              column: 16,
-              data: { typeImports: '"C"' },
+              data: { typeImports: '"B" and "C"' },
               endColumn: 17,
               endLine: 2,
               line: 2,
@@ -1912,17 +1904,9 @@ let baz: D;
           `,
           errors: [
             {
-              column: 10,
-              data: { typeImports: '"A"' },
-              endColumn: 11,
-              endLine: 2,
-              line: 2,
-              messageId: 'someImportsAreOnlyTypes',
-            },
-            {
-              column: 16,
-              data: { typeImports: '"C"' },
-              endColumn: 17,
+              column: 1,
+              data: { typeImports: '"A" and "C"' },
+              endColumn: 31,
               endLine: 2,
               line: 2,
               messageId: 'someImportsAreOnlyTypes',

@@ -380,38 +380,20 @@ export default createRule<Options, MessageIds>({
                 specifier => `"${specifier.local.name}"`,
               );
 
-              if (
-                fixStyle === 'inline-type-imports' &&
-                report.typeSpecifiers.length > 1 &&
-                report.typeSpecifiers.every(
-                  specifier =>
-                    specifier.type === AST_NODE_TYPES.ImportSpecifier,
-                )
-              ) {
-                for (const specifier of report.typeSpecifiers) {
-                  context.report({
-                    node: specifier,
-                    messageId: 'someImportsAreOnlyTypes',
-                    data: {
-                      typeImports: `"${specifier.local.name}"`,
-                    },
-                    *fix(fixer) {
-                      yield* fixToTypeImportDeclaration(
-                        fixer,
-                        { ...report, typeSpecifiers: [specifier] },
-                        sourceImports,
-                      );
-                    },
-                  });
-                }
-                continue;
-              }
+              const firstTypeSpecifier = report.typeSpecifiers[0];
+              const lastTypeSpecifier =
+                report.typeSpecifiers[report.typeSpecifiers.length - 1];
 
               context.report({
-                node:
-                  report.typeSpecifiers.length === 1
-                    ? report.typeSpecifiers[0]
-                    : report.node,
+                loc:
+                  report.node.specifiers.indexOf(lastTypeSpecifier) -
+                    report.node.specifiers.indexOf(firstTypeSpecifier) ===
+                  report.typeSpecifiers.length - 1
+                    ? {
+                        start: firstTypeSpecifier.loc.start,
+                        end: lastTypeSpecifier.loc.end,
+                      }
+                    : report.node.loc,
                 messageId: 'someImportsAreOnlyTypes',
                 data: {
                   typeImports: formatWordList(importNames),
