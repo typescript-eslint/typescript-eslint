@@ -212,6 +212,11 @@ function f(s: string) {
     `,
     `
 function f(s: string) {
+  /^\\p{N}/v.test(s); // property escape, not 'p{N}'
+}
+    `,
+    `
+function f(s: string) {
   s.match() !== null;
 }
     `,
@@ -1525,6 +1530,29 @@ function f(s: string) {
   s.startsWith("bar");
 }
       `,
+    },
+    {
+      code: `
+function f(s: string) {
+  /^\\u{61}r/v.test(s);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferStartsWith',
+        },
+      ],
+      output: `
+function f(s: string) {
+  s.startsWith("ar");
+}
+      `,
+      // Node 18 doesn't support the `v` flag; remove once Node 18 support is dropped
+      skip: Number(process.versions.node.split('.')[0]) < 20,
     },
     {
       code: `
