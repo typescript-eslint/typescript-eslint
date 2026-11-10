@@ -157,6 +157,8 @@ const rules = lazyRules({
   'related-getter-setter-pairs': () => require('./related-getter-setter-pairs'),
   'require-array-sort-compare': () => require('./require-array-sort-compare'),
   'require-await': () => require('./require-await'),
+  'restrict-comparison-operands': () =>
+    require('./restrict-comparison-operands'),
   'restrict-plus-operands': () => require('./restrict-plus-operands'),
   'restrict-template-expressions': () =>
     require('./restrict-template-expressions'),

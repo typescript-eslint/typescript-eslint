@@ -1,0 +1,42 @@
+Incorrect
+
+declare const a: { value: number };
+declare const b: { value: number };
+a < b;
+~ Values of type `{ value: number; }` have no meaningful order. Comparing them with '<' compares their string form instead.
+    ~ Values of type `{ value: number; }` have no meaningful order. Comparing them with '<' compares their string form instead.
+
+declare const versions: number[];
+versions >= 2;
+~~~~~~~~ Values of type `number[]` have no meaningful order. Comparing them with '>=' compares their string form instead.
+
+class Point {
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
+}
+declare const point: Point;
+point > 0;
+~~~~~ Values of type `Point` have no meaningful order. Comparing them with '>' compares their string form instead.
+
+Correct
+
+declare const a: { value: number };
+declare const b: { value: number };
+a.value < b.value;
+
+declare const start: Date;
+declare const end: Date;
+start < end;
+
+class Money {
+  constructor(private cents: number) {}
+
+  valueOf(): number {
+    return this.cents;
+  }
+}
+declare const price: Money;
+declare const budget: Money;
+price <= budget;
