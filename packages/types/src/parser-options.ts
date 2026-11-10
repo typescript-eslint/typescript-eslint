@@ -55,6 +55,16 @@ export interface ProjectServiceOptions {
   EXPERIMENTAL_backend?: 'tsgo';
 
   /**
+   * Whether the tsgo backend may run external code configured in the TSConfig,
+   * such as `contentMappers`. Ignored by the classic backend.
+   *
+   * @experimental This is not part of the public API. It may change or be
+   * removed in any release, including a patch.
+   * @default false
+   */
+  EXPERIMENTAL_runExternalCode?: boolean;
+
+  /**
    * Globs of files to allow running with the default project compiler options
    * despite not being matched by the project service.
    */

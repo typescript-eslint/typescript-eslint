@@ -387,6 +387,8 @@ The tsgo backend does not support the legacy `parserOptions.project` and `parser
 Use `projectService` instead.
 It also does not yet support `parserOptions.extraFileExtensions` or the `allowDefaultProject`, `defaultProject`, `loadTypeScriptPlugins`, and `maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING` project service options.
 
+tsgo only runs external code configured in a TSConfig, such as `contentMappers`, if `projectService.EXPERIMENTAL_runExternalCode` is set to `true`.
+
 The tsgo backend also differs from classic TypeScript in a few known ways:
 
 - A file that a project only includes through a symlinked path is not found by its real path.
