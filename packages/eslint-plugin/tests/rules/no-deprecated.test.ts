@@ -797,6 +797,12 @@ const {
   foo: { notDeprecatedProperty: deprecatedProperty },
 } = a;
     `,
+    `
+class Foo implements Foo {
+  value = 1;
+}
+new Foo().value;
+    `,
   ],
   invalid: [
     {
@@ -4656,6 +4662,29 @@ new Sub().method();
           endColumn: 17,
           endLine: 9,
           line: 9,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+interface Base {
+  /** @deprecated Use other. */
+  value: number;
+}
+interface Override extends Base {
+  value: number;
+}
+declare const override: Override;
+override.value;
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { name: 'value', reason: 'Use other.' },
+          endColumn: 15,
+          endLine: 10,
+          line: 10,
           messageId: 'deprecatedWithReason',
         },
       ],

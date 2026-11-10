@@ -337,6 +337,13 @@ export function createNativeTypeAdapter({
     },
   };
 
+  function shouldInheritJsDocTags(tags: ts.JSDocTagInfo[]) {
+    return (
+      !tags.length ||
+      tags.some(tag => tag.name === 'inheritDoc' || tag.name === 'inheritdoc')
+    );
+  }
+
   // Like classic, the same member of the first base type that has it, if declared once.
   function getInheritedJsDocTags(declaration: ts.Declaration) {
     const parent = declaration.parent as ts.Node | undefined;
@@ -400,6 +407,15 @@ export function createNativeTypeAdapter({
           .getJsDocTags(checker)
           .map(tag => toJSDocTagInfo(tag.name, tag.text));
         jsDocTagsBySymbol.set(this, tags);
+        if (shouldInheritJsDocTags(tags)) {
+          for (const declaration of this.getDeclarations() ?? []) {
+            const inherited = getInheritedJsDocTags(declaration);
+            if (inherited) {
+              tags = [...inherited, ...tags];
+            }
+          }
+        }
+        jsDocTagsBySymbol.set(this, tags);
       }
       return tags;
     },
@@ -425,17 +441,14 @@ export function createNativeTypeAdapter({
       const tags = getJSDocTags(declaration).map(tag =>
         toJSDocTagInfo(tag.tagName.text, getTextOfJSDocComment(tag.comment)),
       );
-      return tags.length &&
-        !tags.some(
-          tag => tag.name === 'inheritDoc' || tag.name === 'inheritdoc',
-        )
-        ? tags
-        : [
+      return shouldInheritJsDocTags(tags)
+        ? [
             ...(getInheritedJsDocTags(
               nodeAdapter.wrapNode(declaration) as ts.Declaration,
             ) ?? []),
             ...tags,
-          ];
+          ]
+        : tags;
     },
     getParameters(this: ts.Signature) {
       return this.parameters;
