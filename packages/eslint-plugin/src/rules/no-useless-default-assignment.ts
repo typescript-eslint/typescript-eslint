@@ -30,6 +30,9 @@ type Options = [
   },
 ];
 
+type PatternStep =
+  { index: number; type: 'element' } | { name: string; type: 'property' };
+
 export default createRule<Options, MessageId>({
   name: 'no-useless-default-assignment',
   meta: {
@@ -264,39 +267,58 @@ export default createRule<Options, MessageId>({
         return null;
       }
 
-      if (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Optional)) {
-        const parent = objectPattern.parent;
-        if (
-          parent.type === AST_NODE_TYPES.VariableDeclarator &&
-          parent.init &&
-          hasConditionalInitializer(objectPattern)
-        ) {
-          const propertyName = getPropertyName(node.key);
-
-          if (
-            !propertyName ||
-            !hasPropertyInAllBranches(parent.init, propertyName)
-          ) {
-            return null;
-          }
-        }
+      if (
+        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Optional) &&
+        !hasConditionalPropertyInAllBranches(objectPattern, propertyName)
+      ) {
+        return null;
       }
 
       return checker.getTypeOfSymbol(symbol);
     }
 
-    function hasConditionalInitializer(node: TSESTree.Node): boolean {
-      const parent = node.parent;
-      if (!parent) {
-        return false;
+    function hasConditionalPropertyInAllBranches(
+      objectPattern: TSESTree.ObjectPattern,
+      propertyName: string,
+    ): boolean {
+      const steps: PatternStep[] = [{ name: propertyName, type: 'property' }];
+      let current: TSESTree.DestructuringPattern = objectPattern;
+
+      while (true) {
+        const parent: TSESTree.Node = current.parent;
+        if (parent.type === AST_NODE_TYPES.Property) {
+          steps.unshift({
+            name: nullThrows(
+              getPropertyName(parent.key),
+              NullThrowsReasons.MissingToken('property name', 'property'),
+            ),
+            type: 'property',
+          });
+          current = parent.parent as TSESTree.ObjectPattern;
+        } else if (parent.type === AST_NODE_TYPES.ArrayPattern) {
+          const index = parent.elements.indexOf(current);
+          steps.unshift({ type: 'element', index });
+          current = parent;
+        } else if (parent.type === AST_NODE_TYPES.AssignmentPattern) {
+          if (
+            hasConditionalAlongPath(parent.right, steps, 0) &&
+            !hasPropertyAlongPath(parent.right, steps, 0)
+          ) {
+            return false;
+          }
+          current = parent;
+        } else if (
+          parent.type === AST_NODE_TYPES.VariableDeclarator &&
+          parent.init
+        ) {
+          return (
+            !hasConditionalAlongPath(parent.init, steps, 0) ||
+            hasPropertyAlongPath(parent.init, steps, 0)
+          );
+        } else {
+          return true;
+        }
       }
-      if (parent.type === AST_NODE_TYPES.VariableDeclarator && parent.init) {
-        return (
-          parent.init.type === AST_NODE_TYPES.ConditionalExpression ||
-          parent.init.type === AST_NODE_TYPES.LogicalExpression
-        );
-      }
-      return hasConditionalInitializer(parent);
     }
 
     function getSourceTypeForPattern(pattern: TSESTree.Node): ts.Type | null {
@@ -435,20 +457,90 @@ export default createRule<Options, MessageId>({
       return fixer.removeRange([start, end]);
     }
 
-    function hasPropertyInAllBranches(
+    function hasConditionalAlongPath(
       expression: TSESTree.Expression,
-      propertyName: string,
+      steps: PatternStep[],
+      stepIndex: number,
     ): boolean {
-      return (
-        (expression.type === AST_NODE_TYPES.ObjectExpression &&
+      if (
+        expression.type === AST_NODE_TYPES.ConditionalExpression ||
+        expression.type === AST_NODE_TYPES.LogicalExpression
+      ) {
+        return true;
+      }
+
+      if (stepIndex >= steps.length - 1) {
+        return false;
+      }
+
+      const step = steps[stepIndex];
+
+      if (step.type === 'property') {
+        return (
+          expression.type === AST_NODE_TYPES.ObjectExpression &&
           expression.properties.some(
             prop =>
               prop.type === AST_NODE_TYPES.Property &&
-              getPropertyName(prop.key) === propertyName,
-          )) ||
-        (expression.type === AST_NODE_TYPES.ConditionalExpression &&
-          hasPropertyInAllBranches(expression.consequent, propertyName) &&
-          hasPropertyInAllBranches(expression.alternate, propertyName))
+              getPropertyName(prop.key) === step.name &&
+              hasConditionalAlongPath(
+                prop.value as TSESTree.Expression,
+                steps,
+                stepIndex + 1,
+              ),
+          )
+        );
+      }
+
+      const element =
+        expression.type === AST_NODE_TYPES.ArrayExpression
+          ? expression.elements[step.index]
+          : null;
+      return (
+        element != null &&
+        element.type !== AST_NODE_TYPES.SpreadElement &&
+        hasConditionalAlongPath(element, steps, stepIndex + 1)
+      );
+    }
+
+    function hasPropertyAlongPath(
+      expression: TSESTree.Expression,
+      steps: PatternStep[],
+      stepIndex: number,
+    ): boolean {
+      if (expression.type === AST_NODE_TYPES.ConditionalExpression) {
+        return (
+          hasPropertyAlongPath(expression.consequent, steps, stepIndex) &&
+          hasPropertyAlongPath(expression.alternate, steps, stepIndex)
+        );
+      }
+
+      const step = steps[stepIndex];
+
+      if (step.type === 'property') {
+        return (
+          expression.type === AST_NODE_TYPES.ObjectExpression &&
+          expression.properties.some(
+            prop =>
+              prop.type === AST_NODE_TYPES.Property &&
+              getPropertyName(prop.key) === step.name &&
+              (stepIndex === steps.length - 1 ||
+                hasPropertyAlongPath(
+                  prop.value as TSESTree.Expression,
+                  steps,
+                  stepIndex + 1,
+                )),
+          )
+        );
+      }
+
+      const element =
+        expression.type === AST_NODE_TYPES.ArrayExpression
+          ? expression.elements[step.index]
+          : null;
+      return (
+        element != null &&
+        element.type !== AST_NODE_TYPES.SpreadElement &&
+        hasPropertyAlongPath(element, steps, stepIndex + 1)
       );
     }
 
