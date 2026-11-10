@@ -112,6 +112,7 @@ const rules = lazyRules({
   'no-unsafe-enum-comparison': () => require('./no-unsafe-enum-comparison'),
   'no-unsafe-function-type': () => require('./no-unsafe-function-type'),
   'no-unsafe-member-access': () => require('./no-unsafe-member-access'),
+  'no-unsafe-operand': () => require('./no-unsafe-operand'),
   'no-unsafe-return': () => require('./no-unsafe-return'),
   'no-unsafe-type-assertion': () => require('./no-unsafe-type-assertion'),
   'no-unsafe-unary-minus': () => require('./no-unsafe-unary-minus'),
