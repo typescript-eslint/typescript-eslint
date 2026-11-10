@@ -7,6 +7,7 @@ import {
 } from './parser';
 import { clearCandidateTSConfigRootDirs } from './parseSettings/candidateTSConfigRootDirs';
 import {
+  clearBackendFallbackWarning,
   clearTSConfigMatchCache,
   clearTSServerProjectService,
 } from './parseSettings/createParseSettings';
@@ -29,6 +30,7 @@ export function clearCaches(): void {
   clearTSServerProjectService();
   clearGlobCache();
   clearNativeBackendCaches();
+  clearBackendFallbackWarning();
 }
 
 // TODO - delete this in next major

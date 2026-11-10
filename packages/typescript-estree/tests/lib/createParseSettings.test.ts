@@ -7,6 +7,7 @@ import {
   clearCandidateTSConfigRootDirs,
 } from '../../src/parseSettings/candidateTSConfigRootDirs';
 import {
+  clearBackendFallbackWarning,
   clearTSServerProjectService,
   createParseSettings,
 } from '../../src/parseSettings/createParseSettings';
@@ -150,8 +151,26 @@ describe(createParseSettings, () => {
       'TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND',
       () => {
         beforeEach(() => {
+          clearBackendFallbackWarning();
           vi.stubEnv('TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND', 'tsgo');
           vi.stubEnv('TYPESCRIPT_ESLINT_PROJECT_SERVICE', 'true');
+        });
+
+        it('warns once when falling back to the classic backend', () => {
+          const loggerFn = vi.fn();
+          const options = {
+            extraFileExtensions: ['.vue'],
+            filePath: '/project/file.ts',
+            loggerFn,
+            projectService: true,
+          };
+
+          createParseSettings('', options);
+          createParseSettings('', options);
+
+          expect(loggerFn).toHaveBeenCalledExactlyOnceWith(
+            'WARNING: TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND=tsgo is set, but some files are being linted with the classic backend. extraFileExtensions is not supported by the experimental tsgo backend.',
+          );
         });
 
         it.each([

@@ -32,6 +32,7 @@ const log = debug(
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 let TSSERVER_PROJECT_SERVICE: ProjectServiceAndMetadata | null = null;
+let warnedAboutBackendFallback = false;
 
 // NOTE - we intentionally use "unnecessary" `?.` here because in TS<5.3 this enum doesn't exist
 // This object exists so we can centralize these for tracking and so we don't proliferate these across the file
@@ -51,7 +52,7 @@ export function createParseSettings(
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(tsestreeOptions);
-  const backend = resolveBackend(tsestreeOptions);
+  const { backend, fallbackReason } = resolveBackend(tsestreeOptions);
 
   const tsconfigRootDir = (() => {
     if (tsestreeOptions.tsconfigRootDir == null) {
@@ -250,6 +251,7 @@ export function createParseSettings(
     }
   }
 
+  warnAboutBackendFallback(parseSettings, fallbackReason, passedLoggerFn);
   handleUnsupportedTSVersion(
     parseSettings,
     tsestreeOptions.onUnsupportedTypeScriptVersion ?? 'warn',
@@ -301,7 +303,7 @@ function resolveBackend(tsestreeOptions: Partial<TSESTreeOptions>) {
     (projectService != null || !!tsestreeOptions.project);
 
   if (!requested && !viaEnvironment) {
-    return 'classic';
+    return { backend: 'classic' } as const;
   }
 
   const unsupportedOption = findUnsupportedNativeOption(
@@ -309,43 +311,46 @@ function resolveBackend(tsestreeOptions: Partial<TSESTreeOptions>) {
     projectServiceOptions,
     viaEnvironment,
   );
-  const unsupportedNodeVersion = !process.features.require_module;
-  const unsupportedClassicVersion =
-    !typescriptVersionIsAtLeast['6.0'] || typescriptVersionIsAtLeast['6.1'];
+  const unsupportedReason = !process.features.require_module
+    ? 'The experimental tsgo backend requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.'
+    : !typescriptVersionIsAtLeast['6.0'] || typescriptVersionIsAtLeast['6.1']
+      ? `The experimental tsgo backend requires classic TypeScript 6.0, but found ${ts.version}.`
+      : unsupportedOption &&
+        `${unsupportedOption} is not supported by the experimental tsgo backend.`;
+
+  if (!unsupportedReason) {
+    return { backend: 'tsgo' } as const;
+  }
 
   if (viaEnvironment) {
-    if (
-      unsupportedOption ||
-      unsupportedNodeVersion ||
-      unsupportedClassicVersion
-    ) {
-      log('Falling back to the classic backend: %o', {
-        unsupportedClassicVersion,
-        unsupportedNodeVersion,
-        unsupportedOption,
-      });
-      return 'classic';
-    }
-    return 'tsgo';
+    log('Falling back to the classic backend: %s', unsupportedReason);
+    return { backend: 'classic', fallbackReason: unsupportedReason } as const;
   }
 
-  if (unsupportedNodeVersion) {
-    throw new Error(
-      'The experimental tsgo backend requires a Node.js version that can require() ES modules: 20.19, 22.12, or newer.',
-    );
+  throw new Error(unsupportedReason);
+}
+
+function warnAboutBackendFallback(
+  parseSettings: MutableParseSettings,
+  fallbackReason: string | undefined,
+  passedLoggerFn: boolean,
+) {
+  if (!fallbackReason || warnedAboutBackendFallback) {
+    return;
   }
-  if (unsupportedClassicVersion) {
-    throw new Error(
-      `The experimental tsgo backend requires classic TypeScript 6.0, but found ${ts.version}.`,
-    );
-  }
-  if (unsupportedOption) {
-    throw new Error(
-      `${unsupportedOption} is not supported by the experimental tsgo backend.`,
+
+  if (
+    passedLoggerFn ||
+    // See https://github.com/typescript-eslint/typescript-eslint/issues/7896
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    (typeof process === 'undefined' ? false : process.stdout?.isTTY)
+  ) {
+    parseSettings.log(
+      `WARNING: TYPESCRIPT_ESLINT_EXPERIMENTAL_BACKEND=tsgo is set, but some files are being linted with the classic backend. ${fallbackReason}`,
     );
   }
 
-  return 'tsgo';
+  warnedAboutBackendFallback = true;
 }
 
 export function clearTSConfigMatchCache(): void {
@@ -354,6 +359,10 @@ export function clearTSConfigMatchCache(): void {
 
 export function clearTSServerProjectService(): void {
   TSSERVER_PROJECT_SERVICE = null;
+}
+
+export function clearBackendFallbackWarning(): void {
+  warnedAboutBackendFallback = false;
 }
 
 /**
