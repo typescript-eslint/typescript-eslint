@@ -282,7 +282,10 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      return areMutuallyAssignable(uncast, cast);
+      return (
+        areMutuallyAssignable(uncast, cast) &&
+        !castIntroducesNewProperties(uncast, cast, new WeakMap())
+      );
     }
 
     function isTypeLiteral(type: ts.Type): boolean {
@@ -431,6 +434,117 @@ export default createRule<Options, MessageIds>({
       return (
         checker.isTypeAssignableTo(a, b) && checker.isTypeAssignableTo(b, a)
       );
+    }
+
+    /**
+     * Checks whether the asserted type contains properties (at any depth)
+     * that the asserted expression's type lacks.
+     *
+     * Mutual assignability alone is not enough to conclude that removing an
+     * assertion is safe: TypeScript's excess property checking on fresh
+     * object literals keys off the property names of the target type, so an
+     * assertion that adds a new - usually optional - property can be
+     * load-bearing for downstream object literal assignments.
+     * @see https://github.com/typescript-eslint/typescript-eslint/issues/12270
+     */
+    function castIntroducesNewProperties(
+      uncast: ts.Type,
+      cast: ts.Type,
+      seen: WeakMap<ts.Type, WeakSet<ts.Type>>,
+    ): boolean {
+      // Optional properties include `undefined` in their type; strip nullish
+      // constituents so that the comparison sees the underlying shapes.
+      uncast = checker.getNonNullableType(uncast);
+      cast = checker.getNonNullableType(cast);
+
+      if (uncast === cast) {
+        return false;
+      }
+
+      // A union's properties only include those shared by every constituent,
+      // so they can neither prove nor disprove that a property is new.
+      if (uncast.isUnion() || cast.isUnion()) {
+        return false;
+      }
+
+      // Call and construct signatures can hide nested shape changes in their
+      // parameters and return types, which this check does not traverse.
+      if (
+        uncast.getCallSignatures().length > 0 ||
+        cast.getCallSignatures().length > 0 ||
+        uncast.getConstructSignatures().length > 0 ||
+        cast.getConstructSignatures().length > 0
+      ) {
+        return false;
+      }
+
+      const uncastPropsByName = new Map(
+        uncast
+          .getProperties()
+          .map(prop => [prop.getEscapedName(), prop] as const),
+      );
+
+      const introducesNewProperty = cast.getProperties().some(prop => {
+        const uncastProp = uncastPropsByName.get(prop.getEscapedName());
+        if (uncastProp == null) {
+          return true;
+        }
+        const uncastPropType = checker.getTypeOfSymbol(uncastProp);
+        const castPropType = checker.getTypeOfSymbol(prop);
+        if (hasSeenTypePair(seen, uncastPropType, castPropType)) {
+          return false;
+        }
+        markTypePairAsSeen(seen, uncastPropType, castPropType);
+        return castIntroducesNewProperties(uncastPropType, castPropType, seen);
+      });
+      if (introducesNewProperty) {
+        return true;
+      }
+
+      const castIndexInfos = checker.getIndexInfosOfType(cast);
+      if (castIndexInfos.length === 0) {
+        return false;
+      }
+
+      const uncastIndexInfos = checker.getIndexInfosOfType(uncast);
+      return castIndexInfos.some(castIndexInfo => {
+        const uncastIndexInfo = uncastIndexInfos.find(
+          uncastIndexInfo => uncastIndexInfo.keyType === castIndexInfo.keyType,
+        );
+        if (uncastIndexInfo == null) {
+          return true;
+        }
+        if (hasSeenTypePair(seen, uncastIndexInfo.type, castIndexInfo.type)) {
+          return false;
+        }
+        markTypePairAsSeen(seen, uncastIndexInfo.type, castIndexInfo.type);
+        return castIntroducesNewProperties(
+          uncastIndexInfo.type,
+          castIndexInfo.type,
+          seen,
+        );
+      });
+    }
+
+    function hasSeenTypePair(
+      seen: WeakMap<ts.Type, WeakSet<ts.Type>>,
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): boolean {
+      return seen.get(uncast)?.has(cast) ?? false;
+    }
+
+    function markTypePairAsSeen(
+      seen: WeakMap<ts.Type, WeakSet<ts.Type>>,
+      uncast: ts.Type,
+      cast: ts.Type,
+    ): void {
+      const seenCasts = seen.get(uncast);
+      if (seenCasts) {
+        seenCasts.add(cast);
+      } else {
+        seen.set(uncast, new WeakSet([cast]));
+      }
     }
 
     function areUnionPartsEquivalentIgnoringUndefined(
