@@ -722,6 +722,7 @@ class Point {
 }
 const point = { x: 1, y: 2 } satisfies Point;
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 15,
@@ -1482,6 +1483,7 @@ class Point {
 declare const plain: { x: number; y: number };
 const point = Promise.resolve(plain) satisfies Promise<Point>;
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 15,
@@ -1857,6 +1859,7 @@ class Holder {
   accessor point: Point = plain;
 }
       `,
+      dependencyConstraints: { typescript: '4.9' },
       errors: [
         {
           column: 27,
